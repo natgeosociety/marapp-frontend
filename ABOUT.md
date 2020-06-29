@@ -21,7 +21,6 @@ Links
 -----
 * [UN Biodiversity Lab website](https://www.unbiodiversitylab.org/)
 * [Follow UN Biodiversity on Twitter](https://twitter.com/UNBiodiversity)
-* [Follow UN Biodiversity on Facebook](https://www.facebook.com/sourcerer.io/)
 
 ***
 [Terms of Use](https://www.unbiodiversitylab.org/terms-of-use.html)<br />
