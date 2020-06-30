@@ -1,0 +1,307 @@
+@import '~styles/config';
+
+$legend_component: 'vizzuality';
+
+@mixin icon-font {
+  color: $marapp-gray-0;
+  font-family: $marapp-icon-font;
+  display: inline-block;
+  line-height: 1;
+  font-weight: normal;
+  font-style: normal;
+  speak: none;
+  text-decoration: inherit;
+  text-transform: none;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.c-legend {
+  position: absolute;
+   left: $space-1 * 3;
+  right: auto;
+  bottom: $space-1 * 5;
+  width: 300px;
+
+  z-index: $z-index-4;
+
+  .vizzuality__c-legend-map .vizzuality__legend-title {
+    color: $marapp-gray-1;
+    font-size: $font-size-small;
+    font-family: $marapp-primary-color;
+    letter-spacing: 2.2px;
+    font-weight: 500;
+    text-transform: uppercase;
+    line-height: 14px;
+    margin: 0;
+    width: 100%;
+  }
+}
+
+body {
+  .vizzuality__c-legend-list {
+    padding-left: 0 !important;
+  }
+
+  .vizzuality__c-legend-map {
+    border-radius: 0;
+  }
+
+  .vizzuality__c {
+    &-legend-map {
+      border: none;
+      background: $marapp-gray-8;
+
+      .vizzuality__open-legend.vizzuality__-active {
+        .vizzuality__toggle-legend {
+          background: $marapp-gray-8;
+          border-radius: 0;
+          border-bottom: 1px solid $marapp-gray-7;
+          box-shadow: 0 0 5px 0 rgba($marapp-gray-100, 0.5);
+          right: 0;
+          transform: none;
+        }
+      }
+
+      .vizzuality__open-legend {
+        .vizzuality__-active {
+          border-radius: 0;
+        }
+      }
+
+      .vizzuality__close-legend.vizzuality__-active {
+        background: $marapp-gray-8;
+        border-radius: 0;
+        border-bottom: 1px solid $marapp-gray-7;
+        box-shadow: 0 0 5px 0 rgba($marapp-gray-100, 0.5);
+        display: flex;
+        height: auto;
+        justify-content: space-between;
+        right: 0;
+        transform: none;
+        padding: 10px 0;
+        width: 100%;
+
+        .vizzuality__toggle-legend {
+          background: $marapp-gray-8;
+          border-radius: 0;
+          right: 0;
+          transform: none;
+        }
+      }
+    }
+  }
+
+  .vizzuality__c-legend-item .vizzuality__legend-item-header > h3,
+  .c-legend .vizzuality__c-legend-item .vizzuality__legend-item-header > h3 {
+    color: $marapp-gray-1;
+    font-size: $font-size-small;
+    font-family: $marapp-primary-font;
+    letter-spacing: 2.2px;
+    font-weight: 500;
+    text-transform: uppercase;
+    line-height: 14px;
+    margin: 0;
+  }
+
+  .vizzuality__c-legend-item {
+    opacity: 1;
+    color: $marapp-gray-0;
+    background: $marapp-gray-8;
+    fill: $marapp-gray-0;
+    border-bottom: $marapp-gray-7;
+
+    .vizzuality__legend-item-container {
+      border-bottom: 1px solid $marapp-gray-7;
+    }
+
+    .vizzuality__legend-item-header {
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .vizzuality__c-legend-item-toolbar {
+      margin: 0;
+    }
+
+    .vizzuality__c-legend-type-choropleth > li {
+      flex: 1 0 0;
+    }
+
+    .vizzuality__c-legend-handler {
+      top: 14px;
+    }
+
+    .vizzuality__vertical {
+      padding-left: 0 !important;
+    }
+
+    .vizzuality__c-legend-type-basic > ul.vizzuality__vertical li {
+      margin-bottom: $space-1;
+    }
+
+    .vizzuality__c-timestep {
+      &.vizzuality__can-play {
+        margin: 12px 0 0 -4px;
+      }
+
+      .vizzuality__player-btn {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid $marapp-gray-6;
+        border-radius: 50%;
+
+        &:hover {
+          background: $marapp-gray-6;
+        }
+
+        &.-playing {
+          background: $marapp-gray-0;
+          border-color: $marapp-gray-0;
+
+          > svg {
+            left: 0;
+            fill: $marapp-gray-8;
+          }
+        }
+
+        > svg {
+          position: relative;
+          width: 10px;
+          height: 10px;
+          fill: $marapp-gray-2;
+          left: 1px;
+        }
+      }
+
+      > .vizzuality__range-slider {
+        .vizzuality__range.vizzuality__can-play {
+          width: calc(100% - 40px);
+          margin-left: 14px;
+        }
+      }
+
+      .rc-slider-handle {
+        &:active {
+          box-shadow: none;
+        }
+
+        &.rc-slider-handle-1,
+        &:nth-last-child(2) {
+          &::after {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background-color: $marapp-gray-8;
+            position: absolute;
+            border-radius: 4px;
+            top: calc(50% - 2px);
+            left: calc(50% - 2px);
+          }
+        }
+      }
+
+      .rc-slider-disabled {
+        background-color: transparent;
+      }
+
+      .rc-slider-mark-text {
+        font-size: $font-size-extra-small;
+        font-weight: $font-weight-bold;
+        color: rgba($marapp-gray-0, 0.5);
+        letter-spacing: 1px;
+
+        &-active {
+          color: rgba($marapp-gray-0, 0.85);
+        }
+      }
+    }
+
+    .vizzuality__custom-icon,
+    .vizzuality__icon-circle,
+    .vizzuality__icon-line,
+    .vizzuality__icon-triangle {
+      margin-right: $space-1;
+      margin-top: 0px;
+    }
+
+    .vizzuality__icon-square {
+      border-radius: 0;
+      margin-top: 2px;
+      margin-right: 10px;
+    }
+
+    .vizzuality__legend-gradient-icon {
+      .vizzuality__name {
+        color: $marapp-gray-1;
+        font-size: 13px;
+        font-weight: 500;
+        font-family: $marapp-primary-font;
+        letter-spacing: 2.6px;
+      }
+    }
+  }
+
+  .vizzuality__c-legend-type-gradient ul {
+    padding-left: 0 !important;
+  }
+
+  .c-legend-item-group .legend-item-group--radio label .legend-item-group--name {
+    font-family: $marapp-secondary-font;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 27px;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  .c-legend-item-group .legend-item-group--radio label {
+    padding: 0 0 0 16px;
+  }
+
+  .vizzuality__c-legend-item {
+    font-family: $marapp-primary-font;
+  }
+
+  .vizzuality__c-legend-item .vizzuality__legend-info > * {
+    margin-top: 0;
+  }
+
+  .vizzuality__c-legend-type-gradient .vizzuality__icon-gradient {
+    margin-top: 5px;
+  }
+
+  .vizzuality__c-legend-item-basic {
+    font-family: $marapp-primary-font;
+
+    .vizzuality__name {
+      color: $marapp-gray-0;
+      font-family: $marapp-primary-font;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2.2px;
+      line-height: 14px;
+      text-transform: uppercase;
+    }
+  }
+
+  .c-legend .vizzuality__c-legend-item-types {
+    background: $marapp-gray-8;
+  }
+
+  .vizzuality__c-legend-item-types {
+    background: $marapp-gray-8;
+  }
+
+  .vizzuality__c-legend-item {
+    background: $marapp-gray-8 !important;
+  }
+
+  .vizzuality__c-legend-handler > svg {
+    fill: $marapp-gray-0;
+  }
+}

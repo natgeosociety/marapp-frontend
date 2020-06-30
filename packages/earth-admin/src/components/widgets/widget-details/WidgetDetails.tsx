@@ -1,0 +1,122 @@
+import * as React from 'react';
+import { useState } from 'react';
+import renderHTML from 'react-render-html';
+
+import { formatDate, hasAccess } from 'utils';
+
+import { WidgetProps } from '../model';
+import { JsonEditor } from 'components/json-editor';
+import { ActionModal } from 'components/action-modal';
+import { LinkWithOrg } from 'components/LinkWithOrg';
+import { useAuth0 } from 'auth/auth0';
+import { AuthzGuards } from 'auth/permissions';
+
+export default function WidgetDetails(props: WidgetProps) {
+  const {
+    data: { id, name, createdAt, updatedAt, published, description, slug, config, metrics, layers },
+  } = props;
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const { getPermissions } = useAuth0();
+
+  const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
+
+  const publishIcon = published ? 'check' : 'close';
+
+  function handleDeleteToggle() {
+    setShowDeleteModal(!showDeleteModal);
+  }
+
+  return (
+    <div>
+      {showDeleteModal && (
+        <ActionModal
+          id={id}
+          navigateRoute={'widgets'}
+          name={name}
+          toggleModal={handleDeleteToggle}
+          visibility={showDeleteModal}
+        />
+      )}
+      <div className="ng-flex ng-flex-space-between">
+        <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
+        <div className="ng-flex ng-align-center ng-flex-center ng-text-center ng-center">
+          <span className="ng-padding-horizontal">
+            Published
+            <br />
+            <i className={`ng-icon-${publishIcon}`}></i>
+          </span>
+        </div>
+      </div>
+
+      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+        <h3 className="ng-text-display-s">Widget details</h3>
+
+        <p>
+          <span className="ng-text-weight-medium">Created at: </span>
+          {formatDate(createdAt)}
+        </p>
+
+        <p>
+          <span className="ng-text-weight-medium">Last updated at: </span>
+          {formatDate(updatedAt)}
+        </p>
+
+        <p>
+          <span className="ng-text-weight-medium">Description:</span>
+        </p>
+        {description && <div className="ng-border-add ng-padding">{renderHTML(description)}</div>}
+
+        <p>
+          <span className="ng-text-weight-medium">Slug: </span>
+          {slug || '-'}
+        </p>
+
+        {!!config && <JsonEditor json={config} readOnly={true} />}
+
+        <p>
+          <span className="ng-text-weight-medium">Metric slug: </span>
+          {(!!metrics && metrics.length > 0 && metrics[0]) || '-'}
+        </p>
+      </div>
+
+      {layers && layers.length > 0 && (
+        <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+          <span className="ng-text-weight-medium">Layers: </span>
+          <div className="ng-flex ng-flex-wrap">
+            {layers.map((layer, index) => (
+              <LinkWithOrg
+                to={`/layers/${layer.id}`}
+                key={layer.id}
+                className="ng-margin-medium-right"
+              >
+                {layer.name}
+              </LinkWithOrg>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+        {writePermissions && (
+          <LinkWithOrg
+            to={`/widgets/${id}/edit`}
+            className="ng-button ng-button-primary ng-margin-medium-right"
+          >
+            Edit widget
+          </LinkWithOrg>
+        )}
+        <LinkWithOrg className="ng-button" to="/widgets">
+          Go back to widgets list
+        </LinkWithOrg>
+      </div>
+      {writePermissions && (
+        <div className="ng-padding-medium ng-background-white ng-text-right">
+          <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
+            Delete widget
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}

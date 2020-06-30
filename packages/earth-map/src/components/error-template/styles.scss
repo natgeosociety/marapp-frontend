@@ -1,0 +1,89 @@
+@import '~styles/config';
+
+.c-not-found {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  color: $marapp-gray-0;
+  background: $marapp-gray-100;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  background-color: $marapp-gray-7;
+
+  .not-found--container {
+    padding: $space-1 * 6;
+    max-width: 800px;
+  }
+
+  .not-found--status {
+    font-size: 75px;
+    color: $marapp-primary-color;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+
+    @media screen and (min-width: map-get($flexboxgrid-breakpoints, md)) {
+      font-size: 140px;
+    }
+  }
+
+  .not-found--text {
+    font-size: 20px;
+    font-weight: $font-weight-bold;
+    color: $marapp-gray-0;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+
+    @media screen and (min-width: map-get($flexboxgrid-breakpoints, md)) {
+      font-size: 40px;
+    }
+  }
+
+  .not-found--links {
+    margin: $space-1 * 4 0 0;
+
+    .not-found--links--title {
+      font-size: 16px;
+      font-weight: $font-weight-bold;
+      color: $marapp-gray-0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .not-found--links--list {
+      margin-top: $space-1 * 4;
+
+      @media screen and (min-width: map-get($flexboxgrid-breakpoints, md)) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+
+      li {
+        min-width: 250px;
+        margin-top: $space-1 * 2;
+
+        &:first-child { margin-top: 0; }
+
+        @media screen and (min-width: map-get($flexboxgrid-breakpoints, md)) {
+          margin-top: 0;
+          margin-left: $space-1 * 2;
+
+          &:first-child { margin-left: 0; }
+        }
+
+        a {
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}

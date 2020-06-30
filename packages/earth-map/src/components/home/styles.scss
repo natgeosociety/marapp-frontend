@@ -1,0 +1,62 @@
+@import '~styles/config';
+
+.c-landing {
+  position: relative;
+  width: 100%;
+
+  .fullpage-wrapper {
+    z-index: $z-index-2;
+  }
+
+  .landing--section {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    pointer-events: none; // XXX : this allows us to interface with the globe
+  }
+
+  .landing-step {
+    width: 100%;
+    height: 100%;
+  }
+
+  .landing-step--sidebar {
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 40%;
+    height: 100vh;
+    padding: $space-1 * 8;
+    background: linear-gradient(
+      to right,
+      rgba($marapp-gray-100, 1) 0%,
+      rgba($marapp-gray-100, 0.5) 50%,
+      rgba($marapp-gray-100, 0) 100%
+    );
+  }
+
+  .landing-step--content {
+    color: $marapp-gray-0;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-default * 1.25;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    line-height: 40px;
+  }
+
+  .landing-step-sub--content {
+    color: $marapp-gray-0;
+  }
+
+  .-highlight {
+    color: $marapp-primary-color;
+    &.-ocean {
+      color: #00ddff;
+    }
+  }
+
+  .-bold {
+    font-weight: $font-weight-bold;
+  }
+}

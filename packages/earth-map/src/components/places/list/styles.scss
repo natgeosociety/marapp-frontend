@@ -1,0 +1,36 @@
+@import '~styles/config';
+
+.c-places-list {
+  position: relative;
+  margin-bottom: $space-1 * 6;
+
+  .places-list--title {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    font-size: $font-size-medium;
+    height: $space-1 * 7.5;
+    padding: 0 $space-1 * 3;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken($marapp-gray-0, 2%);
+    }
+
+    svg {
+      display: block;
+      margin-right: $space-1;
+    }
+  }
+
+  .places-list--item {
+    display: flex;
+    font-size: $font-size-default;
+    cursor: pointer;
+    padding: $space-1 * 0.75 $space-1 * 3;
+
+    &:hover {
+      background-color: darken($marapp-gray-0, 2%);
+    }
+  }
+}

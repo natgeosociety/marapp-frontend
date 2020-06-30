@@ -1,0 +1,15 @@
+@import '~styles/config';
+
+.c-index-sidebar {
+  height: 100%;
+  z-index: $z-index-2;
+  opacity: 0;
+
+  .index-sidebar--btn-close {
+    position: absolute;
+    top: $space-1 * 2;
+    right: $space-1 * 2;
+    fill: $marapp-gray-0;
+    z-index: $z-index-3;
+  }
+}

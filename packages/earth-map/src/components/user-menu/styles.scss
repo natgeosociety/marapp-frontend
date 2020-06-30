@@ -1,0 +1,50 @@
+@import '~styles/config';
+
+.ng-user-account {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  z-index: 10000;
+}
+
+.ng-user-profile {
+  box-shadow: 0 0 5px 0 rgba($marapp-gray-8, 0.5);
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+}
+
+.ng-user-profile-dropdown {
+  box-shadow: 0 0 5px 0 rgba($marapp-gray-100, 0.5);
+  background: $marapp-gray-7;
+  min-width: 175px;
+  padding: 25px !important;
+  position: absolute;
+  right: 0;
+  transform: translateY(15px);
+  li {
+    color: $marapp-gray-5;
+    font-family: $marapp-primary-font;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2.6px;
+    line-height: 25px;
+    padding-bottom: 10px;
+    &.ng-user-profile-signout {
+      border-top: 1px solid $marapp-gray-8;
+      padding-top: 20px;
+      padding-bottom: 0;
+    }
+    a {
+      border-bottom: 0;
+      color: $marapp-gray-0;
+      font-family: $marapp-secondary-font;
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0;
+      &:hover {
+        border-bottom: 1px solid $marapp-primary-color;
+      }
+    }
+  }
+}

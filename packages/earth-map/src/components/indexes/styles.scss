@@ -1,0 +1,65 @@
+@import '~styles/config';
+
+.c-indexes {
+  position: absolute;
+  z-index: $z-index-1;
+  top: 0;
+  right: 0;
+  padding: $space-1 * 3;
+  color: $marapp-gray-100;
+
+  .indexes--list {
+    > * {
+      margin-top: 2px;
+      &:first-child { margin-top: 0; }
+    }
+  }
+
+  .indexes--list-item {
+    position: relative;
+    padding: $space-1 * 1.5 $space-1 * 2;
+    padding-right: $space-1 * 6;
+    background: $marapp-gray-100;
+    color: $marapp-gray-0;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px 0 rgba($marapp-gray-100, 0.5);
+    cursor: pointer;
+
+    .indexes--list-item-title {
+      transition: opacity $animation-time linear $animation-time-2;
+      opacity: 1;
+
+      &.-open {
+        > span {
+          opacity: 0;
+        }
+      }
+    }
+
+
+    .indexes--list-item-icon {
+      position: absolute;
+      top: 50%;
+      right: $space-1 * 2;
+      transform: translate(0,-50%);
+      fill: $marapp-gray-0;
+      animation: none;
+
+      > svg {
+        display: block;
+      }
+    }
+
+    &.-active {
+      opacity: 1 !important;
+    }
+
+    &:hover {
+      background: lighten($marapp-gray-100, 10);
+
+      .indexes--list-item-icon {
+        animation: pulse 1s infinite $ease-in-out-sine;
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+@import '~styles/config';
+
+.c-terrestial-carbon-widget {
+
+  .tcw--content {
+    margin: $space-1 * 3 0 0;
+  }
+
+  .tcw--number {
+    position: relative;
+    font-size: $font-size-big;
+    font-weight: $font-weight-bold;
+    margin: 0 0 $space-1;
+    padding: 0;
+
+    &.-center {
+      font-size: 50px;
+      text-align: center;
+    }
+
+    &.-left {
+      text-align: left;
+
+      &:before {
+        content: "";
+        position: absolute;
+        top: -$space-1 * 1.5;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-bottom: 8px solid #FD9E59;
+        border-right: 8px solid transparent;
+      }
+    }
+
+    &.-right {
+      text-align: right;
+
+      &:before {
+        content: "";
+        position: absolute;
+        top: -$space-1 * 1.5;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-bottom: 8px solid #8C510A;
+        border-left: 8px solid transparent;
+      }
+    }
+  }
+
+  .tcw--subtitle {
+    font-size: $font-size-extra-small;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .tcw--sum {
+    margin-top: -$space-1;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .tcw--unit {
+    font-size: $font-size-default;
+  }
+}

@@ -1,0 +1,19 @@
+---
+name: Modal
+menu: Components
+---
+import { PropsTable } from 'docz';
+import { Modal } from '@marapp/earth-components';
+
+# Share
+<PropsTable of={Modal} />
+
+## Basic usage
+```jsx
+<Modal
+  isOpen={false}
+  onRequestClose={whenClosingModalFn}
+>
+  <h3>Im a modal</h3>
+</Modal>
+```

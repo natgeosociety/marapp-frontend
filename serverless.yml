@@ -1,0 +1,137 @@
+service:
+  name: marapp-fe
+
+plugins:
+  - serverless-s3-sync
+
+provider:
+  name: aws
+  runtime: python3.7
+  region: ${opt:region, self:custom.defaultRegion}
+
+custom:
+  defaultRegion: us-east-1
+  stageEnv: ${opt:stage, self:provider.stage}
+
+  mapS3Bucket: ${self:service}-map-static-${self:custom.stageEnv}
+  adminS3Bucket: ${self:service}-admin-static-${self:custom.stageEnv}
+
+  # Plugins configuration
+  s3Sync:
+    - bucketName: ${self:custom.mapS3Bucket}
+      localDir: packages/earth-map/build
+      acl: public-read
+      params:
+        - index.html:
+            CacheControl: 'no-cache'
+        - "*.js":
+            CacheControl: 'public, max-age=86400' # TTL cache 1 day
+    - bucketName: ${self:custom.adminS3Bucket}
+      bucketPrefix: admin/
+      localDir: packages/earth-admin/public
+      acl: public-read
+      params:
+        - index.html:
+            CacheControl: 'no-cache'
+        - "*.js":
+            CacheControl: 'public, max-age=86400' # TTL cache 1 day
+
+resources:
+  Resources:
+    WebAppMapS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.mapS3Bucket}
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
+    WebAppAdminS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: ${self:custom.adminS3Bucket}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: admin/index.html
+    WebAppMapS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: WebAppMapS3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+                - s3:GetObject
+              Resource: arn:aws:s3:::${self:custom.mapS3Bucket}/*
+    WebAppAdminS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: WebAppAdminS3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+                - s3:GetObject
+              Resource: arn:aws:s3:::${self:custom.adminS3Bucket}/*
+    WebAppCloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+            - DomainName: ${self:custom.mapS3Bucket}.s3-website-${self:provider.region}.amazonaws.com
+              Id: WebAppMap
+              CustomOriginConfig:
+                HTTPPort: 80
+                HTTPSPort: 443
+                OriginProtocolPolicy: http-only
+            - DomainName: ${self:custom.adminS3Bucket}.s3-website-${self:provider.region}.amazonaws.com
+              Id: WebAppAdmin
+              CustomOriginConfig:
+                HTTPPort: 80
+                HTTPSPort: 443
+                OriginProtocolPolicy: http-only
+          Enabled: true
+          ## Uncomment the following section in case you are using a custom domain
+          # Aliases:
+          # - mysite.example.com
+          DefaultCacheBehavior:
+            AllowedMethods:
+              - DELETE
+              - GET
+              - HEAD
+              - OPTIONS
+              - PATCH
+              - POST
+              - PUT
+            TargetOriginId: WebAppMap
+            ForwardedValues:
+              QueryString: false
+              Cookies:
+                Forward: none
+            ViewerProtocolPolicy: redirect-to-https
+          CacheBehaviors:
+            - PathPattern: /admin/*
+              TargetOriginId: WebAppAdmin
+              AllowedMethods:
+                - DELETE
+                - GET
+                - HEAD
+                - OPTIONS
+                - PATCH
+                - POST
+                - PUT
+              ForwardedValues:
+                QueryString: false
+                Cookies:
+                  Forward: none
+              ViewerProtocolPolicy: 'redirect-to-https'
+          ## The certificate to use when viewers use HTTPS to request objects.
+          ViewerCertificate:
+            CloudFrontDefaultCertificate: true

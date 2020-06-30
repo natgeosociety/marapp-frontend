@@ -1,0 +1,69 @@
+import { all, put, call, takeLatest, select } from 'redux-saga/effects';
+
+// Services
+import { fetchPlaces } from 'services/places';
+import { serializeFilters } from 'utils/filters';
+
+// Actions
+import {
+  setPlacesSearch,
+  setPlacesSearchResults,
+  setPlacesSearchLoading,
+  setPlacesSearchAvailableFilters,
+  nextPlacesPage,
+  resetPlacesResults,
+} from 'modules/places/actions';
+import { persistData } from 'modules/global/actions';
+import { LOCATION_QUERY } from '../model';
+import { getGroup, getPlaces } from 'sagas/saga-utils';
+
+export default function* places() {
+  yield all([
+    takeLatest(setPlacesSearch, searchPlaces),
+    takeLatest(nextPlacesPage, nextPage)
+  ]);
+}
+
+/**
+ * Search places by title
+ */
+function* searchPlaces(params) {
+  // reset results every time the filters change
+  yield put(resetPlacesResults());
+  const { meta } = yield nextPage(params);
+  yield put(setPlacesSearchAvailableFilters(meta.filters));
+  yield put(persistData());
+}
+
+/**
+ * Used to retrieve a page of results
+ */
+export function* nextPage({ payload }) {
+  const group = yield select(getGroup);
+  const { search } = yield select(getPlaces);
+  const { filters, search: userInput } = search;
+  const { pageCursor, pageSize } = payload;
+
+  const filterQuery = serializeFilters(filters);
+
+  yield put(setPlacesSearchLoading(true));
+  const page = yield call(fetchPlaces, {
+    ...LOCATION_QUERY,
+    ...(!!userInput && { search: userInput }),
+    ...(!!filters && { filter: filterQuery }),
+    'page[cursor]': pageCursor ? pageCursor : -1,
+    ...(pageSize && { 'page[size]': pageSize }),
+    ...{ group: group.toString() },
+  });
+  const { data: results, meta } = page;
+
+  yield put(
+    setPlacesSearchResults({
+      results,
+      nextPageCursor: meta.pagination.nextCursor,
+    })
+  );
+  yield put(setPlacesSearchLoading(false));
+
+  return page;
+}

@@ -1,0 +1,47 @@
+{
+  "name": "@marapp/earth-admin",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.tsx",
+  "scripts": {
+    "start": "GATSBY_ACTIVE_ENV=.env.local gatsby develop",
+    "build": "gatsby build --prefix-paths",
+    "serve": "gatsby serve --prefix-paths --port 8000",
+    "clean": "gatsby clean",
+    "lint": "tslint -p tsconfig.json",
+    "test": "jest --runInBand --passWithNoTests",
+    "typecheck": "tsc --emitDeclarationOnly"
+  },
+  "dependencies": {
+    "@auth0/auth0-spa-js": "^1.6.5",
+    "@ckeditor/ckeditor5-build-classic": "^16.0.0",
+    "@ckeditor/ckeditor5-react": "^2.1.0",
+    "@marapp/earth-components": "*",
+    "@loadable/component": "^5.10.3",
+    "@types/loadable__component": "^5.10.0",
+    "@types/lodash": "^4.14.146",
+    "@types/node": "^12.12.6",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
+    "@types/url-join": "^4.0.0",
+    "codemirror": "^5.51.0",
+    "gatsby": "^2.17.10",
+    "gatsby-plugin-create-client-paths": "^2.1.15",
+    "gatsby-plugin-root-import": "^2.0.5",
+    "gatsby-plugin-sass": "^2.1.20",
+    "gatsby-plugin-typescript": "^2.1.15",
+    "jshint": "^2.11.0",
+    "lodash": "^4.17.15",
+    "query-string-encode": "^1.0.1",
+    "react": "^16.11.0",
+    "react-codemirror2": "^7.1.0",
+    "react-dom": "^16.11.0",
+    "react-helmet": "^6.1.0",
+    "react-hook-form": "^4.8.2",
+    "ts-jsonapi": "^2.1.2",
+    "url-join": "^4.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^3.7.2"
+  }
+}

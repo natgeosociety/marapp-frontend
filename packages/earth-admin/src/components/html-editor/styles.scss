@@ -1,0 +1,9 @@
+@import "../../styles/config";
+
+:root {
+  --ck-color-focus-border: #{$marapp-primary-color};
+}
+
+.ck-editor .ck-content {
+  max-height: 400px;
+}

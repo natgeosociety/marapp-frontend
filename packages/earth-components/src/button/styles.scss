@@ -1,0 +1,202 @@
+@import '~styles/config';
+
+.c-button {
+  // Layout
+  display: inline-block;
+  flex-shrink: 0;
+  height: 56px;
+  padding: 0 24px;
+  margin: 0;
+
+  // Look and feel
+  appearance: none;
+  border: 2px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  background-image: none; // reset unusual Firefox-on-Android
+
+  // Typography
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: $font-weight-bold;
+  line-height: 54px;
+  vertical-align: middle;
+  white-space: nowrap;
+  user-select: none;
+  font-size: $font-size-small;
+  font-family: inherit;
+  letter-spacing: 2px;
+
+  // For ripples
+  position: relative;
+  overflow: hidden;
+  z-index: $z-index-2;
+
+  transition: all $animation-time linear;
+  pointer-events: auto;
+
+  &:hover,
+  &:focus,
+  &:active {
+    outline: 0;
+    text-decoration: none;
+  }
+
+  &:hover,
+  &:focus {
+    // @include x-btn-box-shadow-raised();
+  }
+
+  &:active:hover {
+    // @include x-btn-box-shadow-active();
+  }
+
+  &:disabled,
+  &.-disabled {
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.60;
+    box-shadow: none;
+  }
+
+  .button--children-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    > * {
+      margin: 0 0 0 $space-1;
+
+      &:first-child {
+        margin: 0;
+      }
+    }
+  }
+
+  // RIPPLE
+  .button--ripple-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+
+    .button--ripple {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.0001, 0.0001);
+
+      &.-is-animating {
+        transform: none;
+        transition: transform $animation-time-3 $ease-in-out-sine,
+          width $animation-time-3 $ease-in-out-sine,
+          height $animation-time-3 $ease-in-out-sine,
+          opacity $animation-time-3 $ease-in-out-sine;
+      }
+
+      &.-is-visible {
+        opacity: 0.6;
+      }
+    }
+  }
+
+  // SIZES
+  &.-small {
+    border-width: 1px;
+    font-size: $font-size-extra-small;
+    height: 22px;
+    padding: 0 12px;
+    line-height: 20px;
+
+    &.-square {
+      padding: 0;
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  &.-medium {
+    font-size: $font-size-extra-small;
+    height: 42px;
+    padding: 0 24px;
+    line-height: 40px;
+
+    &.-square {
+      padding: 0;
+      width: 42px;
+      height: 42px;
+    }
+  }
+
+  &.-square {
+    padding: 0;
+    width: 56px;
+    height: 56px;
+  }
+
+  &.-no-padding {
+    padding: 0;
+  }
+
+  &.-fullwidth { width: 100%; }
+  &.-fullheight { height: 100%; }
+
+  // THEMES
+  &.-primary {
+    background: $marapp-primary-color;
+    border-color: $marapp-primary-color;
+    color: rgba($marapp-gray-100, 0.8);
+    fill: rgba($marapp-gray-100, 0.8);
+
+    .button--ripple-container {
+      .button--ripple {
+        background: lighten($marapp-primary-color, 25%);
+      }
+    }
+  }
+
+  // THEMES
+  &.-light {
+    background: transparent;
+    border-color: $marapp-gray-0;
+    color: $marapp-gray-0;
+    fill: $marapp-gray-0;
+
+    &.-active, &:hover {
+      background: $marapp-primary-color;
+      border-color: $marapp-primary-color;
+      color: rgba($marapp-gray-100, 0.8);
+      fill: rgba($marapp-gray-100, 0.8);
+    }
+
+    .button--ripple-container {
+      .button--ripple {
+        background: lighten($marapp-primary-color, 25%);
+      }
+    }
+  }
+
+  &.-dark {
+    background: $marapp-gray-100;
+    color: $marapp-primary-color;
+    border-color: $marapp-primary-color;
+    fill: $marapp-primary-color;
+
+    .button--ripple-container {
+      .button--ripple {
+        background: lighten($marapp-gray-100, 5%);
+      }
+    }
+  }
+}

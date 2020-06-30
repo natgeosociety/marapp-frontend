@@ -1,0 +1,27 @@
+@import '~styles/config';
+
+.c-recenter-control {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .recenter-control--btn {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    background: $marapp-gray-8;
+    position: relative;
+    box-shadow: 0 0 5px 0 rgba($marapp-gray-100, 0.5);
+    margin-bottom: 5px;
+
+    &:hover {
+      background: lighten($marapp-gray-100, 10);
+    }
+
+
+    &.-disabled {
+      opacity: 0.8;
+      cursor: default;
+    }
+  }
+}

@@ -1,0 +1,47 @@
+@import '~styles/config';
+
+.ng-ep-dropdown {
+  box-shadow: 0 8px 16px 0 rgba($marapp-gray-100, 0.15);
+  padding: 0 !important;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% -  20px);
+  z-index: 100;
+  li {
+    color: $marapp-gray-5;
+    position: relative;
+    &.ng-ep-dropdown-category {
+      border-top: 1px solid $marapp-gray-8;
+    }
+    &.ng-ep-dropdown-selected {
+      background: $marapp-gray-6;
+      &:before {
+        background: $marapp-primary-color;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+      }
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+    .ng-dropdown-item {
+      border-bottom: 0;
+      color: $marapp-gray-0;
+      display: block;
+      font-family: $marapp-secondary-font;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 2.6px;
+      padding: 10px 20px;
+      &:hover {
+        background: $marapp-gray-6;
+      }
+    }
+  }
+}

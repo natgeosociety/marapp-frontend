@@ -1,0 +1,22 @@
+@import '~styles/config';
+
+.ng-c-tooltip.tooltip-bottom {
+  -webkit-box-flex: 1;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  .ng-c-tooltip-content {
+    background: $marapp-gray-7;
+    border: 0;
+    box-shadow: 0 1px 1px 0 rgba($marapp-gray-100, 0.5);
+    color: $marapp-gray-1;
+    &:after {
+      display: none;
+    }
+  }
+  .ng-org-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "name": "@marapp/earth-map",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "dotenv -e .env.local react-app-rewired start",
+    "build": "dotenv -e .env react-app-rewired build",
+    "lint": "tslint -p tsconfig.json",
+    "test": "jest --runInBand --passWithNoTests",
+    "typecheck": "tsc --emitDeclarationOnly"
+  },
+  "dependencies": {
+    "@auth0/auth0-spa-js": "1.2.4",
+    "@marapp/earth-components": "*",
+    "@fullpage/react-fullpage": "^0.1.14",
+    "@researchgate/react-intersection-list": "^3.0.10",
+    "@types/classnames": "^2.2.9",
+    "@types/node": "^13.7.1",
+    "@types/react": "^16.9.20",
+    "@types/react-dom": "^16.9.5",
+    "@types/react-redux": "^7.1.7",
+    "chroma-js": "^2.1.0",
+    "fuse.js": "^3.4.4",
+    "lodash": "^4.17.15",
+    "orbit-controls-es6": "^2.0.0",
+    "prettier": "^1.19.1",
+    "three": "^0.103.0",
+    "three-css2drender": "^1.0.0",
+    "url-join": "^4.0.1",
+    "viewport-mercator-project": "^6.1.1"
+  },
+  "devDependencies": {
+    "babel-loader": "8.1.0",
+    "eslint": "^6.6.0",
+    "babel-eslint": "10.1.0",
+    "react-app-rewired": "^2.1.6",
+    "react-scripts": "^3.4.1",
+    "tslint-react": "^5.0.0",
+    "typescript": "^3.7.2",
+    "webpack": "4.42.0"
+  },
+  "tslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

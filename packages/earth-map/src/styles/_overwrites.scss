@@ -1,0 +1,37 @@
+.ng-button-secondary {
+  background: $marapp-gray-8;
+  border: 1px solid $marapp-gray-3;
+  color: $marapp-gray-0;
+  &:hover {
+    background: $marapp-gray-9;
+    border: 1px solid $marapp-gray-3;
+    color: $marapp-gray-0;
+  }
+  &:active, &:focus, &.active {
+    background: $marapp-gray-100;
+    border: 1px solid $marapp-gray-3;
+    color: $marapp-gray-0;
+  }
+  &:disabled {
+    opacity: .65;
+  }
+}
+
+.ng-small-select {
+  min-width: 100px;
+  width: auto;
+  .ng-select-display-values {
+    padding: 5px;
+  }
+}
+
+.rc-tooltip {
+  .rc-slider-track {
+    background: $marapp-primary-color!important;
+  }
+
+  .rc-slider-handle {
+    background: $marapp-primary-color!important;
+  }
+}
+

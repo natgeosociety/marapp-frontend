@@ -1,0 +1,32 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: $marapp-gray-1;
+  position: relative;
+  overflow: hidden;
+}
+
+.ng-page-container {
+  height: 100vh;
+  overflow-y: auto;
+  margin-left: $sidebar-width;
+  width: calc(100% - #{$sidebar-width});
+}
+
+.ng-space-wrap {
+  white-space: normal;
+}
+
+.ng-c-position-z-index-10 {
+  z-index: 10;
+}
+
+.c-modal .modal-content {
+  border-radius: 0;
+  min-height: 20px;
+  padding: 20px;
+  width: auto;
+}

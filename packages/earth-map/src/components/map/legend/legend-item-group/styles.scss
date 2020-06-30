@@ -1,0 +1,87 @@
+@import '~styles/config';
+
+.c-legend-item-group {
+  padding: $space-1 0;
+
+  > * {
+    margin-top: $space-1/2;
+    &:first-child { margin-top: 0; }
+  }
+
+  .legend-item-group--radio {
+    label {
+      display: block;
+      padding: 2px 0;
+      text-transform: none;
+      position: relative;
+      padding-left: $space-1 * 2;
+      font-size: $font-size-small;
+      line-height: 1;
+      cursor: pointer;
+      width: auto;
+      top: 0;
+      left: 0;
+      transform: none;
+      text-align: left;
+
+      .legend-item-group--symbol {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 14px;
+        height: 14px;
+        border: 1px solid $marapp-gray-0;
+        border-radius: 50%;
+        transform: translate(0,-50%);
+
+        &:after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 7px;
+          height: 7px;
+          background: $marapp-primary-color;
+          border-radius: 50%;
+          display: block;
+          transform: translate(-50%,-50%) scale(0);
+          transition: all .16s cubic-bezier(0.445, 0.050, 0.550, 0.950);
+        }
+      }
+
+      .legend-item-group--name {
+        text-transform: uppercase;
+        font-size: $font-size-extra-small;
+        letter-spacing: 2px;
+        font-weight: $font-weight-bold;
+        margin: 0 0 0 $space-1/2;
+        color: rgba($marapp-gray-0, 0.85);
+      }
+    }
+
+    input[type=radio] {
+      display: none;
+    }
+
+    input[type=radio]:checked + label {
+      .legend-item-group--symbol {
+        border-color: $marapp-primary-color;
+
+        &:after {
+          transform: translate(-50%,-50%) scale(1);
+        }
+      }
+
+      .legend-item-group--name {
+        color: rgba($marapp-gray-0, 1);
+      }
+    }
+
+    &:hover {
+      .legend-item-group--name {
+        color: rgba($marapp-gray-0, 1);
+      }
+    }
+  }
+}
+

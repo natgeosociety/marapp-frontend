@@ -1,0 +1,76 @@
+@import '~styles/config';
+
+$legend_component: 'vizzuality';
+
+.c-legend {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  min-width: 350px;
+
+  z-index: 10;
+
+  .#{$legend_component}__c {
+    &-legend-item-types {
+      background: $marapp-gray-100;
+    }
+
+    &-legend-map {
+      border: none;
+      background: $marapp-gray-100;
+
+      .#{$legend_component}__toggle-legend {
+        background: $marapp-gray-100;
+        border-radius: 5px 5px 0 0;
+        right: 0;
+        transform: none;
+      }
+
+      .#{$legend_component}__open-legend {
+        .#{$legend_component}__-active {
+          border-radius: 5px 0 5px 5px;
+        }
+      }
+
+      .#{$legend_component}__legend-title {
+        color: $marapp-gray-0;
+        font-size: $font-size-extra-small;
+        font-family: $marapp-primary-font;
+        font-weight: $font-weight-bold;
+        letter-spacing: 2px;
+
+        .#{$legend_component}__toggle-legend svg {
+          fill: $marapp-gray-0;
+        }
+      }
+    }
+
+  }
+
+  .#{$legend_component}__c-legend-item {
+    opacity: 1;
+    color: $marapp-gray-0;
+    background: $marapp-gray-100;
+    fill: $marapp-gray-0;
+
+    .#{$legend_component}__legend-item-container {
+      border-bottom: 1px solid $marapp-gray-9;
+    }
+
+    .#{$legend_component}__legend-item-header > h3 {
+      color: $marapp-gray-0;
+      font-size: $font-size-extra-small;
+      text-transform: uppercase;
+    }
+  }
+
+  .#{$legend_component}__c-legend-handler {
+    svg {
+      fill: $marapp-gray-0;
+    }
+  }
+
+  .#{$legend_component}__c-legend-type-choropleth > li {
+    flex: 1 0 0;
+  }
+}

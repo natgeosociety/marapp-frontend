@@ -1,0 +1,93 @@
+@import '~styles/config';
+
+.c-html {
+  > * {
+    margin-top: $space-1 * 2;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  p {
+    font-family: $marapp-primary-font;
+    font-size: $font-size-default;
+
+    a {
+      text-decoration: underline;
+    }
+
+  }
+
+  ol,
+  ul {
+    margin-left: $space-1 * 2;
+
+    li {
+      font-family: $marapp-primary-font;
+      font-size: $font-size-default;
+      margin-bottom: $space-1 * 2;
+      position: relative;
+      padding-left: $space-1 * 2;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      > ol,
+      > ul {
+        margin-top: $space-1 * 2;
+      }
+    }
+  }
+
+  ul {
+    li {
+      &:before {
+        position: absolute;
+        content: '';
+        width: 5px;
+        height: 5px;
+        background-color: $marapp-gray-0;
+        border-radius: 50%;
+        top: $font-size-medium / 1.5;
+        left: 0;
+        transform: translateY(-50%);
+      }
+    }
+  }
+
+  ol {
+    counter-reset: item;
+
+    > li {
+      &:before {
+        position: absolute;
+        content: counters(item, '.') '.';
+        counter-increment: item;
+        top: 0;
+        left: 0;
+      }
+
+      > ol {
+        counter-reset: nestedItem;
+
+        > li {
+          padding-left: $space-1 * 6;
+
+          &:before {
+            position: absolute;
+            content: counters(item, '.') counter(nestedItem, lower-alpha) '.';
+            counter-increment: nestedItem;
+            top: 0;
+            left: 0;
+          }
+        }
+      }
+    }
+  }
+
+  strong, b {
+    font-weight: $font-weight-bold;
+  }
+}

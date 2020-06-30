@@ -1,0 +1,202 @@
+@import '~styles/config';
+
+.c-place {
+  position: absolute;
+  z-index: $z-index-2;
+  width: 250px;
+  top: 24px;
+  left: $space-1 * 3;
+  border-radius: 4px;
+
+  .place--selected {
+    position: relative;
+    padding: $space-1 * 1.5 $space-1 * 8 $space-1 * 1.5 $space-1 * 2;
+    color: $marapp-gray-0;
+    background: $marapp-gray-100;
+    border-radius: 4px;
+    user-select: none;
+
+
+    &:not(.-no-data) {
+      cursor: pointer;
+
+      &:hover {
+        background: lighten($marapp-gray-100, 10);
+      }
+    }
+
+    > * {
+      margin: $space-1/2 0 0;
+      &:first-child { margin: 0; }
+    }
+  }
+
+  .place--spinner {
+    background: $marapp-gray-9;
+    margin: 0;
+    top: 0;
+    left: 0;
+  }
+
+  .place--content {
+    position: relative;
+    margin: $space-1 * 1.5 0 0;
+
+    .place--content-animated {
+      position: absolute;
+      width: 100%;
+      background: $marapp-gray-9;
+      border-radius: 4px;
+
+      &:before {
+        content: "";
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid $marapp-gray-9;
+        position: absolute;
+        top: -7px;
+        right: 50%;
+      }
+    }
+  }
+
+  .place--title {
+    display: flex;
+    align-items: center;
+    color: $marapp-gray-0;
+    fill: $marapp-gray-0;
+    font-size: $font-size-medium;
+    text-transform: initial;
+    letter-spacing: 0;
+
+    > * {
+      margin-left: $space-1 * 3;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  .place--item {
+    margin: 0 $space-1 * 1.5 $space-1 0;
+    display: inline-block;
+
+    &.-block {
+      display: block;
+    }
+
+    a {
+      display: inline-block;
+      color: $marapp-gray-0;
+
+      h5 {
+        padding: 0 0 5px;
+        display: inline;
+        background-image: linear-gradient(to right, $marapp-primary-color 0%, $marapp-primary-color 100%);
+        background-repeat: repeat-x; // make it horizontal
+        background-position: 0 95%; // change the second value to adjust how far from the top the underline should be
+        background-size: 100% 1px; // change the second value to the desired height of the underline
+      }
+    }
+  }
+
+  .place--section {
+    padding: ($space-1 * 2) 20px;
+    background: $marapp-gray-9;
+    border-bottom:  1px solid $marapp-gray-9;;
+
+    &:last-child {
+      border-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    &.-back {
+      position: relative;
+      margin-bottom: 0;
+      padding-top: $space-1 * 2;
+      padding-bottom: $space-1 * 2;
+      cursor: pointer;
+
+      &:hover {
+        background: lighten($marapp-gray-9, 5);
+      }
+    }
+
+    &.-link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+      padding-top: $space-1 * 2;
+      padding-bottom: $space-1 * 2;
+      cursor: pointer;
+
+      &:hover {
+        background: lighten($marapp-gray-9, 5);
+      }
+
+      span {
+        display: block;
+        padding: 2px 10px;
+        border-radius: 20px;
+        margin: 0 0 0 $space-1;
+        height: 14px;
+        line-height: 1;
+
+        background: $marapp-primary-color;
+        color: $marapp-gray-100;
+        font-weight: $font-weight-bold;
+        font-size: $font-size-extra-small;
+      }
+    }
+  }
+
+  .place--icon {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translate(0, -50%);
+    fill: $marapp-gray-0;
+    -webkit-animation: none;
+    animation: none;
+    margin: 0;
+
+    &.-left {
+      right: initial;
+      left: 16px;
+    }
+
+  }
+
+  .place--filter {
+    width: 100%;
+    height: 100%;
+    background: lighten($marapp-gray-9, 10);
+
+    .c-searchbox {
+      background: lighten($marapp-gray-9, 10);
+      border-bottom: 1px solid $marapp-gray-6
+      svg { fill: $marapp-gray-0; }
+      input { color: $marapp-gray-0; }
+    }
+
+    .place--list {
+      margin: 10px 0;
+      max-height: 300px;
+      overflow-y: scroll;
+
+      > * {
+        padding: 0 $space-1 * 3;
+        margin-top: $space-1;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+
+}

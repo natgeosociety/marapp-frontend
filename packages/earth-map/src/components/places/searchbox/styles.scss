@@ -1,0 +1,17 @@
+@import "~styles/config";
+
+.ng-icon-toggle-layer {
+  min-width: 50px;
+  .ng-icon-label {
+    font-family: $marapp-primary-font;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    line-height: 11px;
+    text-align: center;
+  }
+}
+
+.ng-search-box {
+  min-height: 36px;
+}

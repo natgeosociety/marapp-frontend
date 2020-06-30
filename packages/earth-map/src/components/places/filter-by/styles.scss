@@ -1,0 +1,28 @@
+@import '~styles/config';
+
+.with-count {
+  display: flex;
+
+  // specific selector needed to overwrite default margin-top
+  input[type="checkbox"].ng-checkbox-input {
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  em {
+    color: $marapp-gray-5;
+    padding-left: 3px;
+    font-style: normal;
+  }
+
+  &.disabled {
+    color: $marapp-gray-5;
+    cursor: default;
+  }
+}
+
+.ng-ep-background-dark {
+  h6 {
+    margin-bottom: 0;
+  }
+}

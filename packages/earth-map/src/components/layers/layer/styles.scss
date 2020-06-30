@@ -1,0 +1,49 @@
+@import '~styles/config';
+
+.c-sidebar-panel {
+
+  &.no-scroll {
+    overflow: hidden;
+  }
+
+  .c-layers {
+    padding: 25px;
+    .layers--item-title {
+      color: $marapp-gray-1;
+      font-family: $marapp-secondary-font;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 27px;
+      text-transform: none;
+    }
+  }
+  .c-layer {
+    .layers--item-switch {
+      background: #ccc;
+      border: none;
+      height: 12px;
+
+      span {
+        background-color: $marapp-gray-1;
+        box-shadow: 0 1px 3px 0 rgba($marapp-gray-100, 0.5);
+        height: 16px;
+        transform: translate(0px, -50%);
+        width: 16px;
+      }
+    }
+    &.-active {
+      .layers--item-switch {
+        background-color: lighten($marapp-primary-color, 25%);
+        span {
+          background-color: $marapp-primary-color;
+          box-shadow: 0 1px 3px 0 rgba($marapp-gray-100, 0.5);
+          transform: translate(-16px, -50%);
+        }
+      }
+    }
+  }
+  .c-layer.-horizontal {
+    margin-top: 5px;
+  }
+}

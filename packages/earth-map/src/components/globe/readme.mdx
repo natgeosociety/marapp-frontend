@@ -1,0 +1,107 @@
+---
+name: Globe
+menu: App tool components
+---
+import { PropsTable } from 'docz';
+import Globe, { Markers, Marker, Layer } from './';
+
+# Globe
+<PropsTable of={Globe} />
+
+## Globe Child components
+
+The globe Component returns a function where you can return any globe child component you want, below you will see what each of them does.
+
+```jsx
+import { Markers, Marker, Layer } from 'components/globe';
+```
+
+### Markers
+
+<PropsTable of={Markers} />
+
+Markers has an **active** prop, wich determens if we should render the individual markers on the globe. The markers component expects Marker as a child array.
+
+```jsx
+<Markers>
+  ... Marker array here
+</Markers>
+```
+
+
+### Marker
+
+<PropsTable of={Marker} />
+
+Marker requires a centroid array as a prop with lat long of where to place the marker on the globe.
+
+```jsx
+<Marker centroid={[1.2233, 2.34145]} />
+```
+
+### Layer
+
+<PropsTable of={Layer} />
+
+Layer can be of type **video** or of type **image**, a layer renders an image or a video on the globe.
+
+**Prop: onLayerLoaded** Usefull when using videos, so you can use the video node when video is loaded to control the video.
+
+```jsx
+<Layer
+  active={activeStep === 1}
+  layer={{
+    url: '/media/video/globe/my_video.mp4',
+    type: 'video'
+  }}
+  onLayerLoaded={video => this.setState({ video })}
+/>
+```
+
+
+## Basic usage
+```jsx
+          <Globe
+            autoRotate
+            presentationMode={!activeStep || activeStep === 0 || activeStep === 4}
+          >
+            {props => {
+              return (
+                <Fragment>
+                  <Markers {...props} active={activeStep === 3}>
+                    {featured.map(f => {
+                      return (
+                        <Marker key={f.id} centroid={f.centroid}>
+                          <Link
+                              to={`/earth/${f.id}`}
+                            >
+                              <p>{f.title}</p>
+                          </Link>
+                        </Marker>
+                      )
+                    })}
+                  </Markers>
+
+                  <Layer
+                    {...props}
+                    active={activeStep === 1}
+                    layer={{
+                      url: '/media/video/globe/hyde_anthromes-min.mp4',
+                      type: 'video'
+                    }}
+                    onLayerLoaded={video => this.setState({ video })}
+                  />
+
+                  <Layer
+                    {...props}
+                    active={activeStep === 2}
+                    layer={{
+                      url: '/media/image/layers/protected_areas_landing_page.png',
+                      type: 'image'
+                    }}
+                  />
+                </Fragment>
+              )
+            }}
+          </Globe>
+```

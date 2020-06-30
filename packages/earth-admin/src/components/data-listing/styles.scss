@@ -1,0 +1,15 @@
+@import '~styles/config';
+
+.ng-c-data-link {
+  background-color: $marapp-gray-7;
+  color: $marapp-gray-0;
+  border-bottom: 1px solid $marapp-gray-8;
+  border-left: 4px solid $marapp-gray-7;
+
+  &:hover {
+    background-color: #444;
+    color: $marapp-gray-0;
+    border-bottom: 1px solid $marapp-gray-8;
+    border-left: 4px solid $marapp-primary-color;
+  }
+}

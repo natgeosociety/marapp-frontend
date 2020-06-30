@@ -1,0 +1,66 @@
+// Typography
+$font-size-extra-small: 9px;
+$font-size-small: 12px;
+$font-size-default: 16px;
+$font-size-medium: 18px;
+
+$font-size-h2: 32px;
+
+// Weights
+$font-weight-bold: 500;
+
+// Space
+$space-1: 8px;
+$space-2: 12.5px;
+
+// Z-index
+$z-index-1: 0;
+$z-index-2: 1;
+$z-index-4: 10;
+
+// Times
+$animation-time: 0.16s;
+$animation-time-2: 0.24s;
+$animation-time-3: 0.5s;
+
+// Eases
+$ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+$ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+$ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+$ease-in-sine: cubic-bezier(0.47, 0, 0.745, 0.715);
+$ease-out-sine: cubic-bezier(0.39, 0.575, 0.565, 1);
+$ease-in-out-sine: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
+// Flexbox grid
+$sm: 24rem;
+$md: 48rem;
+$lg: 62rem;
+$xlg: 80rem;
+
+$flexboxgrid-breakpoints: (
+  sm: $sm,
+  md: $md,
+  lg: $lg,
+  xlg: $xlg,
+);
+
+$sidebar-width: 300px;
+
+//overwrites for FE framework
+$ultraltgray: $marapp-gray-1;
+$ltgray: $marapp-gray-2;
+$mdltgray: $marapp-gray-3;
+$mdgray: $marapp-gray-5;
+$mddkgray: $marapp-gray-6;
+$dkgray: $marapp-gray-7;
+$ultradkgray: $marapp-gray-8;
+
+$ng-gold: $marapp-primary-color;
+
+$theme-primary-background: $marapp-primary-color;
+$theme-primary-muted-background: lighten($theme-primary-background, 25%);
+
+$base-heading-font-family: $marapp-primary-font;
+$base-body-font-family: $marapp-secondary-font;
+$theme-color: $marapp-gray-100;
+$theme-primary-color: $marapp-primary-color;

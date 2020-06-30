@@ -1,0 +1,174 @@
+import React from 'react';
+
+// Utils
+import { format } from 'd3-format';
+import { replace } from 'components/widget/utils';
+import sum from 'lodash/sum';
+import groupBy from 'lodash/groupBy';
+import sortBy from 'lodash/sortBy';
+
+// Components
+import WidgetTooltip from 'components/widget/tooltip';
+
+import { IWidgetConfig } from 'modules/widget/model';
+import { IPlace } from 'modules/places/model';
+import { LandCoverMetric } from './model';
+interface LandCoverConfig {
+  metric: LandCoverMetric;
+}
+
+export const CONFIG = {
+  parse: ({ metric }: LandCoverConfig, params, widgetConfig: IWidgetConfig, place: IPlace) => {
+    if (!metric) {
+      return {
+        noData: true,
+        chart: [],
+        template: '',
+      };
+    }
+
+    const data = metric;
+    const { sentence, legendConfig } = widgetConfig;
+
+    const parsedYears = {
+      2015: data.data_2015,
+    };
+
+    const data2015 = parsedYears['2015'];
+
+    const px_2015 = sum(
+      Object.values(data2015).map(value => {
+        return value;
+      })
+    );
+
+    let data2015Perc = {};
+    Object.keys(data2015).forEach(key => {
+      data2015Perc = {
+        ...data2015Perc,
+        [key]: (100 * data2015[key]) / px_2015,
+      };
+    });
+
+    const graphValues = Object.keys(data2015Perc).reduce((acc, value) => {
+      return {
+        ...acc,
+        [value.toLowerCase()]: data2015Perc[value],
+      };
+    }, {});
+
+    return {
+      chart: sortBy(
+        legendConfig.items
+          .filter(l => graphValues[l.label.toLowerCase()])
+          .map(l => {
+            const percentage = graphValues[l.label.toLowerCase()];
+            const area = data2015[l.label.toLowerCase()];
+
+            return {
+              x: l.label,
+              color: l.color,
+              percentage,
+              area,
+              y: 100,
+            };
+          }),
+        'percentage'
+      ).reverse(),
+      template: replace(
+        sentence.default,
+        {
+          location: place.name,
+        },
+        {},
+        {
+          className: 'ng-text-weight-bold',
+        }
+      ),
+      config: {
+        type: 'pie',
+        margin: { top: 0, right: 0, left: 0, bottom: 0 },
+        xKey: 'percentage',
+        yKeys: {
+          pies: {
+            y: {
+              cx: '60%',
+              cy: '45%',
+              dataKey: 'percentage',
+              nameKey: 'x',
+              innerRadius: '60%',
+              outerRadius: '80%',
+            },
+          },
+        },
+        legend: {
+          align: 'left',
+          verticalAlign: 'middle',
+          layout: 'vertical',
+          content: properties => {
+            const { payload } = properties;
+            const groups = groupBy(payload, p => p.payload.category);
+
+            return (
+              <div className="widget--legend">
+                {Object.keys(groups).map(g => (
+                  <div key={g} className="widget--legend-group">
+                    <ul className="widget--legend-list">
+                      {sortBy(groups[g], 'payload.percent')
+                        .reverse()
+                        .map(item => (
+                          <li key={`item-${item.color}`} className="widget--legend-list-item">
+                            <span
+                              className="widget--legend-list-item-square"
+                              style={{ background: item.color }}
+                            />
+
+                            <span>
+                              {item.value}{' '}
+                              <span className="widget--legend-list-item-value">
+                                {' '}
+                                - {format('.2%')(item.payload.percentage / 100)}
+                              </span>
+                            </span>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            );
+          },
+        },
+        tooltip: {
+          cursor: false,
+          content: (
+            <WidgetTooltip
+              style={{
+                color: '#FFFFFF',
+                backgroundColor: '#383838',
+              }}
+              settings={[
+                {
+                  label: 'Category:',
+                  key: 'x',
+                },
+                {
+                  label: 'Area:',
+                  key: 'area',
+                  format: value => `${format(',.0f')(value)}km²`,
+                },
+                {
+                  label: 'Percentage:',
+                  key: 'percentage',
+                  format: value => `${format('.2%')(value / 100)}`,
+                },
+              ]}
+            />
+          ),
+        },
+      },
+    };
+  },
+};
+
+export default CONFIG;

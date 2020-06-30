@@ -1,0 +1,39 @@
+@import '~styles/config';
+
+.c-layer-popup {
+  font-size: $font-size-small;
+  max-width: 300px;
+  padding: $space-1 * 1.5;
+
+  .layer-popup--title {
+    position: relative;
+    margin: 0 0 $space-1 * 2;
+  }
+
+  .layer-popup--select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+
+  .layer-popup--table {
+    width: inherit;
+    line-height: 1.25;
+
+    .layer-popup--list-dt {
+      padding: 0 0 $space-1 * 1.5;
+      font-weight: $font-weight-bold;
+      vertical-align: baseline;
+      text-align: right;
+    }
+
+    .layer-popup--list-dd {
+      width: 60%; // Make sure data in tooltip always have 60% of the free space
+      padding: 0 0 $space-1 * 1.5 $space-1;
+      vertical-align: baseline;
+    }
+  }
+}

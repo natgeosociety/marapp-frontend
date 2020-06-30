@@ -1,0 +1,60 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css');
+
+@import '~styles/config';
+@import '~styles/animations';
+
+.c-slick {
+  &.--with-dots {
+    margin-bottom: 50px;
+  }
+  .slick-slide {
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      margin: 0 auto;
+    }
+  }
+
+  .slick-next,
+  .slick-prev {
+    border-radius: 50%;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    z-index: $z-index-2;
+    fill: $marapp-gray-0;
+    background: rgba($marapp-gray-100, 0.25);
+
+    &:hover,
+    &:focus {
+      background: rgba($marapp-gray-100, 0.5);
+    }
+  }
+
+  .slick-next {
+    &:before {
+      content: '';
+    }
+    right: $space-1;
+  }
+
+  .slick-prev {
+    &:before {
+      content: '';
+    }
+    left: $space-1;
+  }
+
+  .slick-dots li {
+    button:before {
+      color: $marapp-gray-0;
+    }
+
+    &.slick-active {
+      color: $marapp-gray-0;
+    }
+  }
+}

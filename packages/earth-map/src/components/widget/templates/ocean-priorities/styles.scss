@@ -1,0 +1,59 @@
+@import '~styles/config';
+
+.c-chart-ocean-carbon-priorities {
+  .ocp--chart {
+    width: 100%;
+    margin-top: $space-1 * 10;
+  }
+
+  .ocp--chart-list {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .ocp--chart-list-item {
+    position: relative;
+    height: 5px;
+
+    &.-selected {
+      height: 18px;
+
+      .ocp--chart-list-item-label {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  .ocp--chart-list-item-label {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-bottom: $space-1 * 1.5;
+    transform: translate(-50%, 0);
+    text-transform: uppercase;
+    color: $marapp-gray-0;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-small;
+    letter-spacing: 2px;
+    white-space: nowrap;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      margin-top: 1px;
+      margin-left: -2px;
+      border-left: 3px solid transparent;
+      border-right: 3px solid transparent;
+      border-top: 5px solid $marapp-gray-0;
+    }
+  }
+}

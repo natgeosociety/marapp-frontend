@@ -1,0 +1,38 @@
+@import '~styles/config';
+
+.c-datepicker-input {
+  width: auto;
+  border-radius: 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: $font-size-extra-small;
+  font-weight: $font-weight-bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  color: $marapp-gray-0;
+  padding: 3px 12px 3px 0;
+  border-bottom: 2px solid $marapp-primary-color;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 0;
+    height: 0;
+    margin: -3px 0 0;
+    border-style: solid;
+    border-width: 4px 3px 0px 3px;
+    border-color: $marapp-gray-0 transparent transparent transparent;
+  }
+
+  &.-focus, &:focus {
+    outline: none;
+    color: $marapp-primary-color;
+
+    &:after {
+      border-width: 0px 3px 4px 3px;
+      border-color: transparent transparent $marapp-primary-color transparent;
+    }
+  }
+}

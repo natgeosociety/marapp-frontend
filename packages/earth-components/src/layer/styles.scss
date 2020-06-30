@@ -1,0 +1,140 @@
+@import '~styles/config';
+
+.c-layer {
+  cursor: pointer;
+  position: relative;
+  outline: none;
+
+  > * {
+    margin: $space-1/2 0 0;
+  }
+
+  .layers--item-title {
+    font-size: 9px;
+    font-weight: $font-weight-bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .layers--item-category {
+    color: $marapp-gray-5;
+  }
+
+  .layers--item-bg {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    background: $marapp-gray-100;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid $marapp-gray-2;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 2px solid transparent;
+    }
+  }
+
+  .layers--item-switch {
+    position: relative;
+    width: 30px;
+    height: 16px;
+    background: $marapp-gray-2;
+    border: 1px solid darken($marapp-gray-2, 5%);
+    border-radius: 15px;
+    transition: background $animation-time linear;
+    flex-shrink: 0;
+    top: 8px;
+
+    span {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translate(2px,-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: $marapp-gray-0;
+      transition: all $animation-time $ease-in-out-sine;
+      box-shadow: 0 2px 3px rgba($marapp-gray-100, 0.25);
+    }
+  }
+
+  .layers--item-info {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 14px;
+    height: 14px;
+    background: $marapp-gray-0;
+    fill: $marapp-gray-100;
+    border-radius: 50%;
+
+    svg {
+      display: block;
+    }
+  }
+
+  &:hover {
+    .layers--item-bg {
+      &:after {
+        border-color: rgba($marapp-primary-color, 0.5);
+      }
+    }
+  }
+
+  // THEMES
+  &.-horizontal {
+    display: flex;
+    justify-content: flex-start;
+    padding-right: $space-1 * 3;
+    margin: $space-1 * 2 0 0;
+
+    &:first-child {
+      margin: 0;
+    }
+
+    > * {
+      margin: 0 0 0 $space-1;
+
+      &:first-child {
+        margin: 0;
+      }
+    }
+  }
+
+  &.-dark {
+    .layers--item-switch {
+      background: $marapp-gray-6;
+      border: 1px solid darken($marapp-gray-6, 5%);
+    }
+  }
+
+  // STATES
+  &.-active {
+    .layers--item-bg {
+      &:after {
+        border-color: $marapp-primary-color;
+      }
+    }
+
+    .layers--item-switch {
+      background: $marapp-primary-color;
+      border-color: $marapp-primary-color;
+
+      span {
+        left: 100%;
+        transform: translate(calc(-100% - 2px), -50%);
+      }
+    }
+  }
+}

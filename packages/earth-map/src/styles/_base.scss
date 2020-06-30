@@ -1,0 +1,57 @@
+@import 'config';
+
+html,
+body {
+  &.-no-scroll,
+  &.no-scroll {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  font-size: $font-size-default;
+  background: #000;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page-content {
+  position: relative;
+}
+
+//custom scrollbar
+body {
+  scrollbar-width: thin;
+  scrollbar-color: $marapp-gray-7 $marapp-gray-8;
+}
+::-webkit-scrollbar-track {
+  background: $marapp-gray-8;
+}
+::-webkit-scrollbar-thumb {
+  background-color: $marapp-gray-7;
+  border-radius: 6px;
+  border: 3px solid $marapp-gray-8;
+}
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+.ng-section-background {
+  background: $marapp-gray-7;
+  color: $marapp-gray-0;
+}
+
+.ng-subsection-background {
+  background: $marapp-gray-8;
+  color: $marapp-gray-0;
+}
+
+.ng-body-color {
+  color: $marapp-gray-0;
+}

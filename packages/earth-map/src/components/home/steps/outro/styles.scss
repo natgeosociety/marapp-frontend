@@ -1,0 +1,34 @@
+@import '~styles/config';
+
+.landing-outro--container {
+  .outro {
+    pointer-events: all;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+    .landing-outro--text {
+      color: $marapp-gray-0;
+      font-size: $font-size-medium;
+      text-transform: uppercase;
+      text-align: center;
+      font-weight: $font-weight-regular;
+      text-shadow: 0px 2px 6px rgba($marapp-gray-100, 0.7);
+      letter-spacing: 9px;
+    }
+
+    .landing-outro--title {
+      color: $marapp-gray-0;
+      font-size: $font-size-huge;
+      font-weight: 500;
+      font-family: $marapp-primary-font;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: $space-1 * 6;
+      letter-spacing: 16px;
+      white-space: nowrap;
+    }
+  }
+}

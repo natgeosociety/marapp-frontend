@@ -1,0 +1,212 @@
+import React from 'react';
+
+import debounce from 'lodash/debounce';
+
+import { Keyframes, animated } from 'react-spring'
+
+import Modal from 'components/modal';
+
+import {
+  Legend,
+  LegendListItem,
+  LegendItemTypes,
+  LegendItemToolbar,
+  LegendItemButtonInfo,
+  LegendItemButtonOpacity,
+  LegendItemButtonVisibility,
+  LegendItemButtonRemove,
+  LegendItemTimeStep,
+} from 'vizzuality-components';
+
+import LegendInfo from './legend-info';
+import LegendItemGroup from './legend-item-group';
+
+import TEMPLATES from './templates';
+
+// styles
+import './styles.scss';
+
+// Creates a spring with predefined animation slots
+const LegendWrapper: any = Keyframes.Spring({
+  open: { x: 375, opacity: 1, delay: 0 },
+  openW: { x: 500, opacity: 1 },
+  close: { x: 0, opacity: 1, delay: 100 },
+});
+
+interface ILegend {
+  layerGroups?: [];
+  setLayerVisibility?: (data: any) => void;
+  setLayerOrder?: (data: any) => void;
+  setLayerOpacity?: (data: any) => void;
+  setLayerGroupCurrent?: (data: any) => void;
+  setLayerInfo?: (data: any) => void;
+  toggleLayer?: any;
+  setLayerSettings?: (data: any) => void;
+  open?: boolean;
+  selected?: string;
+}
+
+class LegendComponent extends React.PureComponent<ILegend> {
+  onChangeOpacity = debounce((l, opacity, slug) => {
+    const { setLayerOpacity } = this.props;
+    setLayerOpacity({ slug, dataset: { id: l.dataset }, opacity });
+  }, 250);
+
+  onChangeInfo = (info, slug) => {
+    const { setLayerInfo } = this.props;
+    setLayerInfo({ slug, info });
+  };
+
+  onChangeVisibility = (l, visibility, slug) => {
+    const { setLayerVisibility } = this.props;
+    setLayerVisibility({ slug, dataset: { id: l.dataset }, visibility });
+  };
+
+  onChangeOrder = datasetIds => {
+    const { setLayerOrder } = this.props;
+    setLayerOrder({ datasetIds });
+  };
+
+  onChangeCurrent = (l, current, slug) => {
+    const { setLayerGroupCurrent } = this.props;
+
+    setLayerGroupCurrent({ slug, current });
+  };
+
+  onRemoveLayer = layer => {
+    const { toggleLayer } = this.props;
+    toggleLayer(layer);
+  };
+
+  onChangeLayerDate = (dates, layer) => {
+    const { setLayerSettings } = this.props;
+    const {
+      slug,
+      layerConfig: { decodeConfig },
+    } = layer;
+
+    setLayerSettings({
+      slug,
+      settings: {
+        ...(decodeConfig && {
+          decodeParams: {
+            startDate: dates[0],
+            endDate: dates[1],
+            trimEndDate: dates[2],
+          },
+        }),
+        ...(!decodeConfig && {
+          params: {
+            startDate: dates[0],
+            endDate: dates[1],
+          },
+        }),
+      },
+    });
+  };
+
+  getState = () => {
+    const { open, selected } = this.props;
+    if (open) {
+      if (!!selected) return 'openW';
+      return 'open';
+    } else {
+      return 'close';
+    }
+  };
+
+  render() {
+    const { layerGroups } = this.props;
+
+    const state = this.getState();
+
+    return (
+      <LegendWrapper native state={state}>
+        {({ x, ...props }) => (
+          <animated.div
+            className="c-legend"
+            style={{
+              transform: x.interpolate(x => `translate3d(${x}px,0,0)`),
+              ...props,
+            }}
+          >
+            <Legend maxHeight={'65vh'} onChangeOrder={this.onChangeOrder}>
+              {layerGroups.map((layerGroup: any, i) => {
+                return (
+                  <LegendListItem
+                    index={i}
+                    key={layerGroup.slug}
+                    layerGroup={layerGroup}
+                    toolbar={
+                      <LegendItemToolbar>
+                        {layerGroup.description && <LegendItemButtonInfo />}
+                        <LegendItemButtonOpacity
+                          trackStyle={{
+                            background: '#FFCC00',
+                          }}
+                          handleStyle={{
+                            background: '#FFCC00',
+                          }}
+                        />
+                        <LegendItemButtonVisibility />
+                        <LegendItemButtonRemove />
+                      </LegendItemToolbar>
+                    }
+                    onChangeInfo={l => this.onChangeInfo(true, layerGroup.slug)}
+                    onChangeVisibility={(l, visibility) =>
+                      this.onChangeVisibility(l, visibility, layerGroup.slug)
+                    }
+                    onChangeOpacity={(l, opacity) =>
+                      this.onChangeOpacity(l, opacity, layerGroup.slug)
+                    }
+                    onRemoveLayer={l => {
+                      this.onRemoveLayer(l);
+                    }}
+                  >
+                    {!!TEMPLATES[layerGroup.slug] &&
+                      React.createElement(TEMPLATES[layerGroup.slug])}
+
+                    {!!TEMPLATES[layerGroup.legendType] &&
+                      React.createElement(TEMPLATES[layerGroup.legendType])}
+
+                    <LegendItemGroup
+                      onChangeCurrent={(l, current) =>
+                        this.onChangeCurrent(l, current, layerGroup.slug)
+                      }
+                    />
+
+                    <LegendItemTypes />
+
+                    <LegendItemTimeStep
+                      defaultStyles={{
+                        handleStyle: {
+                          backgroundColor: 'white',
+                          borderRadius: '50%',
+                          boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.29)',
+                          border: '0px',
+                          zIndex: 2,
+                        },
+                        railStyle: { backgroundColor: '#d6d6d9' },
+                        dotStyle: { visibility: 'hidden', border: '0px' },
+                      }}
+                      handleChange={this.onChangeLayerDate}
+                    />
+
+                    <Modal
+                      isOpen={!!layerGroup.info}
+                      onRequestClose={() => this.onChangeInfo(false, layerGroup.slug)}
+                    >
+                      <LegendInfo title={layerGroup.name} description={layerGroup.description} />
+                    </Modal>
+                  </LegendListItem>
+                );
+              })}
+            </Legend>
+          </animated.div>
+        )}
+      </LegendWrapper>
+    );
+  }
+}
+
+export default LegendComponent;

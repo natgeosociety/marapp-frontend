@@ -1,0 +1,27 @@
+@import '~styles/config';
+
+.c-ocean-carbon-widget {
+
+  .ocw--content {
+    margin: $space-1 * 3 0 0;
+  }
+
+  .ocw--number {
+    position: relative;
+    font-size: $font-size-big;
+    font-weight: $font-weight-bold;
+    margin: 0 0 $space-1;
+    padding: 0;
+
+    &.-center {
+      font-size: 50px;
+      text-align: center;
+    }
+  }
+
+  .ocw--subtitle {
+    font-size: $font-size-extra-small;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}

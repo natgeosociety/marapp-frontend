@@ -1,0 +1,73 @@
+---
+name: Button
+menu: Components
+---
+import { PropsTable } from 'docz';
+import { Button } from '@marapp/earth-components';
+
+# Button
+<PropsTable of={Button} />
+
+## Basic usage
+```jsx
+<Button
+  className="-primary"
+>
+  <h4>Primary</h4>
+</Button>
+```
+
+## Sizes
+These are all the possible classes you can pass to your buttons:
+- `-default`
+- `-small`
+- `-medium`
+- `-fullwidth`
+- `-fullheight`
+
+#### -default
+<div>
+  <Button className="-primary"><h4>Primary</h4></Button>
+</div>
+
+#### -small
+<div>
+  <Button className="-primary -small"><h4>Small</h4></Button>
+</div>
+
+#### -medium
+<div>
+  <Button className="-primary -medium"><h4>Medium</h4></Button>
+</div>
+
+#### -fullwidth
+<div>
+  <Button className="-primary -fullwidth"><h4>Fullwidth</h4></Button>
+</div>
+
+#### -fullheight
+<div style={{ height: 100 }}>
+  <Button className="-primary -fullheight"><h4>Fullheight</h4></Button>
+</div>
+
+
+## Themes
+These are all the possible classes you can pass to your buttons:
+- `-primary`
+- `-light`
+- `-dark`
+
+#### -primary
+<div>
+  <Button className="-primary"><h4>Primary</h4></Button>
+</div>
+
+#### -light
+<div>
+  <Button className="-light"><h4>Light</h4></Button>
+</div>
+
+#### -dark
+<div>
+  <Button className="-dark"><h4>Dark</h4></Button>
+</div>
