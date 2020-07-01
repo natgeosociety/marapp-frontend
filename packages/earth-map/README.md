@@ -124,10 +124,7 @@ They could be `raster`, `vector` and `geojson`. It’s very important to know th
 It helps Layer Manager to define how it should fetch the layer. Possible options are => `cartodb`, `gee`, `mapbox`
 
 ##### `layerConfig`
-It will be used by the layer manager to know how to fetch or handle the current layer. Check the different types of layerConfig depending on the layer type
-- [Geojson](https://github.com/Vizzuality/layer-manager/wiki/Layer:-geojson)
-- [Raster](https://github.com/Vizzuality/layer-manager/wiki/Layer:-raster)
-- [Vector](https://github.com/Vizzuality/layer-manager/wiki/Layer:-vector)
+It will be used by the layer manager to know how to fetch or handle the current layer. 
 
 ##### `legendConfig`
 It helps us to know how to display the legend. We are using this [Legend Component](https://vizzuality.github.io/vizzuality-components/#!/Legend)
@@ -138,137 +135,65 @@ It helps us to know how to display the popup.
 #### EXAMPLE
 ```json
 {
-  "name": "Simple View",
-  "slug": "Simple-View",
-  "description": "Description...",
-  "provider": "cartodb",
-  "layerConfig": {
-    "account": "wri-01",
-    "body": {
-      "layers": [
+    "layerConfig": {
+      "account": "carto-account",
+      "body": {
+        "layers": [
+          {
+            "options": {
+              "cartocss": "#selector {  polygon-opacity: 1.0; polygon-fill: #704489 }",
+              "cartocss_version": "2.3.0",
+              "sql": "SELECT * FROM table"
+            },
+            "type": "cartodb"
+          }
+        ],
+        "maxzoom": 19,
+        "minzoom": 2,
+        "vectorLayers": [
+          {
+            "paint": {
+              "fill-color": "#704489",
+              "fill-opacity": 1
+            },
+            "source-layer": "layer0",
+            "type": "fill"
+          }
+        ]
+      }
+    },
+    "legendConfig": {
+      "items": [
         {
-          "options": {
-            "cartocss": "#wdpa_protected_areas {  polygon-opacity: 1.0; polygon-fill: #704489 }",
-            "cartocss_version": "2.3.0",
-            "sql": "SELECT * FROM wdpa_protected_areas"
-          },
-          "type": "cartodb"
+          "color": "#704489",
+          "name": "legend name"
         }
       ],
-      "maxzoom": 19,
-      "minzoom": 2,
-      "vectorLayers": [
+      "type": "basic"
+    },
+    "interactionConfig": {
+      "output": [
         {
-          "paint": {
-            "fill-color": "#704489",
-            "fill-opacity": 1
-          },
-          "source-layer": "layer0",
-          "type": "fill"
-        }
+          "column": "name",
+          "format": null,
+          "prefix": "",
+          "property": "Name",
+          "suffix": "",
+          "type": "string"
+        },        
       ]
-    }
-  },
-  "legendConfig": {
-    "items": [
-      {
-        "color": "#704489",
-        "name": "Protected Areas"
-      }
-    ],
-    "type": "basic"
-  },
-  "interactionConfig": {
-    "type": "click",
-    "output": [
-      {
-        "column": "name",
-        "format": null,
-        "prefix": "",
-        "property": "Name",
-        "suffix": "",
-        "type": "string"
-      },
-      {
-        "column": "wdpaid",
-        "format": null,
-        "prefix": "",
-        "property": "WDPA ID",
-        "suffix": "",
-        "type": "string"
-      },
-      {
-        "column": "iucn_cat",
-        "format": null,
-        "prefix": "",
-        "property": "IUCN Category",
-        "suffix": "",
-        "type": "string"
-      },
-      {
-        "column": "status",
-        "format": null,
-        "prefix": "",
-        "property": "Status",
-        "suffix": "",
-        "type": "string"
-      },
-      {
-        "column": "status_yr",
-        "format": null,
-        "prefix": "",
-        "property": "Status year",
-        "suffix": "",
-        "type": "string"
-      },
-      {
-        "column": "desig",
-        "format": null,
-        "prefix": "",
-        "property": "Designation",
-        "suffix": "",
-        "type": "string"
-      },
-      {
-        "column": "own_type",
-        "format": null,
-        "prefix": "",
-        "property": "Ownership Type",
-        "suffix": "",
-        "type": "string"
-      },
-      {
-        "column": "gov_type",
-        "format": null,
-        "prefix": "",
-        "property": "Governance Type",
-        "suffix": "",
-        "type": "string"
-      },
-      {
-        "column": "mang_auth",
-        "format": null,
-        "prefix": "",
-        "property": "Management Authority",
-        "suffix": "",
-        "type": "string"
-      },
-      {
-        "column": "gis_area",
-        "format": ",.0f",
-        "prefix": "",
-        "property": "Area",
-        "suffix": "km²",
-        "type": "number"
-      }
-    ]
+    },
+    "applicationConfig": {
+      "order": 0,
+      "slug": "slug"
+    },
+    "staticImageConfig": {}
   }
-}
 ```
 
 #### 3. Visualizing data
 
-You MUST take into account that all the layers go trough the [layer-manager](https://github.com/Vizzuality/layer-manager). It gives us the possibility of loading layers from different sources, style them, live re-style them by using a json spec. Knowing this, we can talk about the different types of layer we have: Raster, Vector, Geojson (Isn't this one a vector one...?).
+You MUST take into account that all the layers go trough the [layer-manager](https://github.com/Vizzuality/layer-manager). It gives us the possibility of loading layers from different sources, style them, live re-style them by using a json spec. Knowing this, we can talk about the different types of layer we have: Raster, Vector, Geojson.
 
 #### Vector tiles
 Vector tiles can come from two sources => **CartoDB** and **Mapbox**. They both use the same [Mapbox spec](https://docs.mapbox.com/mapbox-gl-js/style-spec/?utm_medium=sem&utm_source=google&utm_campaign=sem|google|brand|chko-googlesearch-pr01-dynamicsearchcampaign-nb.broad-all-landingpage-search&utm_term=brand&utm_content=chko-googlesearch-pr01-dynamicsearchcampaign-nb.broad-all-landingpage-search&gclid=CjwKCAiA58fvBRAzEiwAQW-hzVzTrBLk-1yL0afZ3NwljNFGOY2X9pQT0uwQddFVpJyewCaXZ1FZvxoC4KAQAvD_BwE#layers) for styling. This spec has a powerful thing called [expressions](https://docs.mapbox.com/mapbox-gl-js/style-spec/?utm_medium=sem&utm_source=google&utm_campaign=sem|google|brand|chko-googlesearch-pr01-dynamicsearchcampaign-nb.broad-all-landingpage-search&utm_term=brand&utm_content=chko-googlesearch-pr01-dynamicsearchcampaign-nb.broad-all-landingpage-search&gclid=CjwKCAiA58fvBRAzEiwAQW-hzVzTrBLk-1yL0afZ3NwljNFGOY2X9pQT0uwQddFVpJyewCaXZ1FZvxoC4KAQAvD_BwE#expressions) for some properties. Thanks to that you can some data driven properties depending on several things (i.e: different sizes of a circle depending on the zoom, different colors depending on the category, different set of geometries depending on zoom)
@@ -278,7 +203,7 @@ Sources:
 - [Mapbox Vector Tiles](https://docs.mapbox.com/vector-tiles/reference/?utm_medium=sem&utm_source=google&utm_campaign=sem|google|brand|chko-googlesearch-pr01-dynamicsearchcampaign-nb.broad-all-landingpage-search&utm_term=brand&utm_content=chko-googlesearch-pr01-dynamicsearchcampaign-nb.broad-all-landingpage-search&gclid=CjwKCAiA58fvBRAzEiwAQW-hzRwxpaZKHu6YlHYh36aVRRlB4_cQTg5sh_RCeXzMWLl0nvtKaO05NxoCgNQQAvD_BwE)
 
 ###### EXAMPLE
-Check `layerConfig.body.layers`. Pay attention of how we are using the Mapbox style spec insde the attribute `vectorLayers`. It's just an example of filtering.
+Check `layerConfig.body.layers`. Pay attention of how we are using the Mapbox style spec inside the attribute `vectorLayers`. It's just an example of filtering.
 
 ```json
 {
@@ -286,18 +211,18 @@ Check `layerConfig.body.layers`. Pay attention of how we are using the Mapbox st
   "type": "layer",
   "name": "All Categories",
   "slug": "All-Categories",
-  "dataset": "abef53ef-03ce-4b25-91be-ea0c9b2dbbfd",
-  "description": "Complex view of WDPA protected areas",
+  "dataset": "id",
+  "description": "layer description",
   "provider": "cartodb",
   "layerConfig": {
-    "account": "wri-01",
+    "account": "carto-account",
     "body": {
       "layers": [
         {
           "options": {
-            "cartocss": "#wdpa_protected_areas {   polygon-opacity: 0.7;  }#wdpa_protected_areas[iucn_cat='II'] {   polygon-fill: #7c549e;}#wdpa_protected_areas[iucn_cat='III'] {   polygon-fill: #966db3;}#wdpa_protected_areas[iucn_cat='IV'] {   polygon-fill: #b087c9;}#wdpa_protected_areas[iucn_cat='Ia'] {   polygon-fill: #4a2574;}#wdpa_protected_areas[iucn_cat='Ib'] {   polygon-fill: #633c89;}#wdpa_protected_areas[iucn_cat='Not Applicable'] {   polygon-fill: #eed54c;}#wdpa_protected_areas[iucn_cat='Not Assigned'] {   polygon-fill: #e7ab36;}#wdpa_protected_areas[iucn_cat='Not Reported'] {   polygon-fill: #fa894b;}#wdpa_protected_areas[iucn_cat='V'] {   polygon-fill: #caa1df;}#wdpa_protected_areas[iucn_cat='VI'] {   polygon-fill: #e5bcf6;}",
+            "cartocss": "#selector {   polygon-opacity: 0.7;  }#selector[iucn_cat='II'] {   polygon-fill: #7c549e;}#selector[iucn_cat='III'] {   polygon-fill: #966db3;}#selector[iucn_cat='IV'] {   polygon-fill: #b087c9;}#selector[iucn_cat='Ia'] {   polygon-fill: #4a2574;}#selector[iucn_cat='Ib'] {   polygon-fill: #633c89;}",
             "cartocss_version": "2.3.0",
-            "sql": "SELECT * FROM wdpa_protected_areas"
+            "sql": "SELECT * FROM table"
           },
           "type": "cartodb"
         }
@@ -394,82 +319,7 @@ Check `layerConfig.body.layers`. Pay attention of how we are using the Mapbox st
           },
           "source-layer": "layer0",
           "type": "fill"
-        },
-        {
-          "filter": [
-            "all",
-            [
-              "==",
-              "iucn_cat",
-              "Not Applicable"
-            ]
-          ],
-          "paint": {
-            "fill-color": "#82347F"
-          },
-          "source-layer": "layer0",
-          "type": "fill"
-        },
-        {
-          "filter": [
-            "all",
-            [
-              "==",
-              "iucn_cat",
-              "Not Assigned"
-            ]
-          ],
-          "paint": {
-            "fill-color": "#82347F"
-          },
-          "source-layer": "layer0",
-          "type": "fill"
-        },
-        {
-          "filter": [
-            "all",
-            [
-              "==",
-              "iucn_cat",
-              "Not Reported"
-            ]
-          ],
-          "paint": {
-            "fill-color": "#82347F"
-          },
-          "source-layer": "layer0",
-          "type": "fill"
-        },
-        {
-          "filter": [
-            "all",
-            [
-              "==",
-              "iucn_cat",
-              "V"
-            ]
-          ],
-          "paint": {
-            "fill-color": "#caa1df"
-          },
-          "source-layer": "layer0",
-          "type": "fill"
-        },
-        {
-          "filter": [
-            "all",
-            [
-              "==",
-              "iucn_cat",
-              "VI"
-            ]
-          ],
-          "paint": {
-            "fill-color": "#e5bcf6"
-          },
-          "source-layer": "layer0",
-          "type": "fill"
-        }
+        }        
       ]
     }
   }
@@ -485,14 +335,14 @@ Check `layerConfig.body.url`
 {
   "id": "1ea9b4bf-0904-47ae-8ba8-127eefea2ab9",
   "type": "layer",
-  "name": "Biodiversity Intactness",
-  "slug": "Biodiversity-Intactness_1",
+  "name": "layer name",
+  "slug": "layer_slug",
   "dataset": "65af4a9f-6a7e-40d1-ad8e-9137c9493d1d",
   "description": "Description...",
   "provider": "gee",
   "layerConfig": {
     "body": {
-      "url": "https://staging-api.globalforestwatch.org/v1/layer/1ea9b4bf-0904-47ae-8ba8-127eefea2ab9/tile/gee/{z}/{x}/{y}"
+      "url": "layer_url"
     }
   },
   "category": "Metrics"
@@ -506,6 +356,8 @@ For example, Loss layer has the accumulate loss for the last 20 years. We encode
 
 How are we doing this? We use deck.gl and luma.gl to decode each image in the GPU using WegGL.
 
+There are two types of preset decodes: `fires` and `treeCoverLoss`.
+
 ##### EXAMPLE
 See how we are using `params` and `decodeParams`. The difference between them is the effect that they will cause. A change in `params` will trigger a refetch of the entire layer. A change in `decodeParams` will trigger a repaint. That's why we can animate layers during a period of time, by using `decodeParams`.
 
@@ -513,15 +365,15 @@ See how we are using `params` and `decodeParams`. The difference between them is
 {
   "id": "dd9cf552-720e-45f1-a92b-22fabb32fda1",
   "type": "layer",
-  "name": "Tree cover loss",
-  "slug": "Tree-cover-loss_1",
+  "name": "layer name",
+  "slug": "layer slug",
   "dataset": "084cd3e6-dd90-40ec-9816-eca4862e2131",
   "description": "Description...",
   "layerConfig": {
     "body": {
       "maxzoom": 12,
       "minzoom": 2,
-      "url": "https://storage.googleapis.com/wri-public/Hansen18/tiles/hansen_world/v1/tc{thresh}/{z}/{x}/{y}.png"
+      "url": "layer_url"
     },
     "decode_config": [
       {
@@ -566,6 +418,130 @@ See how we are using `params` and `decodeParams`. The difference between them is
   "decodeFunction": "\n    // values for creating power scale, domain (input), and range (output)\n    float domainMin = 0.;\n    float domainMax = 255.;\n    float rangeMin = 0.;\n    float rangeMax = 255.;\n\n    float exponent = zoom < 13. ? 0.3 + (zoom - 3.) / 20. : 1.;\n    float intensity = color.r * 255.;\n\n    // get the min, max, and current values on the power scale\n    float minPow = pow(domainMin, exponent - domainMin);\n    float maxPow = pow(domainMax, exponent);\n    float currentPow = pow(intensity, exponent);\n\n    // get intensity value mapped to range\n    float scaleIntensity = ((currentPow - minPow) / (maxPow - minPow) * (rangeMax - rangeMin)) + rangeMin;\n    // a value between 0 and 255\n    alpha = zoom < 13. ? scaleIntensity / 255. : color.g;\n\n    float year = 2000.0 + (color.b * 255.);\n    // map to years\n    if (year >= startYear && year <= endYear && year >= 2001.) {\n      color.r = 220. / 255.;\n      color.g = (72. - zoom + 102. - 3. * scaleIntensity / zoom) / 255.;\n      color.b = (33. - zoom + 153. - intensity / zoom) / 255.;\n    } else {\n      alpha = 0.;\n    }\n  "
 }
 ```
+
+Layers can be defined as placeholder category layers. In order to achieve this, you can add child layers in the admin section "Included layers". the first child layer will be displayed as default when the "category layer" is selected.
+
+Special configs:
+1. There are two types of special legend displays: `yearpicker` and `yeardatepicker`. 
+
+```
+{
+    legendConfig": {
+        "legendType": "yearpicker",
+        ...other configs
+      }
+}
+```
+This will take the child layers from "Included layers" and add a dropdown selector in the layer legend, that allows switching between the child layers.
+
+
+```
+{
+    "legendConfig": {      
+       "legendType": "yeardatepicker",
+        ...other configs
+     }
+}
+```
+This will take the child layers from "Included layers" and add a dropdown selector in the layer legend, that allows switching between the child layers.
+
+This is an example of a child layer for this type of parent layer:
+
+```json
+{
+  "layerConfig": {
+    "assetId": "assed_id",
+    "type": "tileLayer",
+    "timelineConfig": {
+      "railStyle": {
+        "background": "#333"
+      },
+      "trackStyle": [
+        {
+          "background": "#f79a28",
+          "top": "50%",
+          "transform": "translate(0, -50%)",
+          "height": 12,
+          "borderRadius": 0,
+          "gradient": {
+            "{year}0101": "#5A0000",
+            "{year}0201": "#7F0101",
+            "{year}0301": "#9B0E01",
+            "{year}0401": "#BA1001",
+            "{year}0501": "#D51301",
+            "{year}0601": "#FA1500",
+            "{year}0701": "#FF5900",
+            "{year}0801": "#FF7E00",
+            "{year}0901": "#FFA300",
+            "{year}1001": "#FFC800",
+            "{year}1101": "#FFEB00",
+            "{year}1201": "#FFFF00"
+          }
+        },
+        {
+          "background": "#999",
+          "top": "50%",
+          "transform": "translate(0, -50%)",
+          "borderRadius": 0
+        }
+      ],
+      "handleStyle": {
+        "opacity": 0
+      },
+      "step": 1,
+      "speed": 75,
+      "interval": "days",
+      "dateFormat": "YYYY-MM-DD",
+      "trimEndDate": "{year}-12-31",
+      "maxDate": "{year}-12-31",
+      "minDate": "{year}-01-01",
+      "canPlay": true
+    },
+    "paramsConfig": [
+      {
+        "required": true,
+        "key": "year",
+        "default": "2001",
+        "year": "2001"
+      }
+    ],
+    "decodeConfig": {
+      "type": "fire",
+      "values": [
+        {
+          "required": true,
+          "key": "startDate",
+          "default": "2001-01-01"
+        },
+        {
+          "required": true,
+          "key": "endDate",
+          "default": "2001-12-31"
+        }
+      ]
+    },
+    "body": {
+      "url": "tile_url",
+      "format": "image/png",
+      "options": {
+        "useCors": true
+      },
+      "minzoom": 2,
+      "maxzoom": 8
+    }
+  },
+  "legendConfig": {
+    "legendType": "yeardatepicker",
+    "enable": true
+  },
+  "interactionConfig": {},
+  "applicationConfig": {},
+  "staticImageConfig": {}
+}
+
+```
+
+The `year` value from `paramsConfig` represents the layer year. In `decodeConfig` you need to setup `startDate` and `endDate`. These dates will be used in the datePickers from the layer legend.
 
 #### Widgets
 We use the Widget component for rendering all the widgets. It acts as a wrapper where header, toolbar and footer will be shared. To decide what goes inside you need to render a template that will be unique for each of them.
