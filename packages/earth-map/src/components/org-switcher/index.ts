@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { setUserGroup } from 'modules/user/actions';
 import { resetPlacesFeatured, setPlacesSearch } from 'modules/places/actions';
 import { resetLayerCache } from 'modules/layers/actions';
+import { resetMap } from 'modules/map/actions';
 
 export default connect(
   (state: any) => ({
@@ -14,5 +15,6 @@ export default connect(
     setPlacesSearch,
     resetPlacesFeatured,
     resetLayerCache,
+    resetMap
   }
 )(OrgSwitcher);
