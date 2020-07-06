@@ -81,7 +81,7 @@ export default function LocationEdit(props: LocationProps) {
   return (
     <div>
       <div className="ng-flex ng-flex-space-between">
-        <h2 className="ng-text-display-m">{ newLocation ? 'Add Location' : `Edit Location - ${name}` }</h2>
+        <h2 className="ng-text-display-m ng-c-flex-grow-1">{ newLocation ? 'Add Location' : `Edit Location - ${name}` }</h2>
 
         <span>
           Last updated at: {formatDate(updatedAt)}; Created at: {formatDate(createdAt)}

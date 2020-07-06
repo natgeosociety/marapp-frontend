@@ -52,7 +52,7 @@ export default function DashboardEdit(props: DashboardProps) {
   return (
     <div>
       <div className="ng-flex ng-flex-space-between">
-        <h2 className="ng-text-display-m">
+        <h2 className="ng-text-display-m ng-c-flex-grow-1">
           {newDashboard ? 'Add dashboard' : `Edit Dashboard - ${name}`}
         </h2>
       </div>
