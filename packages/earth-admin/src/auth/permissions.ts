@@ -76,4 +76,10 @@ export const AuthzGuards = {
     [ScopesEnum.WriteUsers],
     [ScopesEnum.WriteAll],
   ],
+  accessOrganizationsGuard: [
+    [ScopesEnum.ReadUsers],
+    [ScopesEnum.ReadAll],
+    [ScopesEnum.WriteUsers],
+    [ScopesEnum.WriteAll],
+  ]
 };
