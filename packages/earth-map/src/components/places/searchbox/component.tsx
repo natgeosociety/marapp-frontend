@@ -72,7 +72,7 @@ const SearchBoxComponent = (props: ISearchbox) => {
         {!!search && (
           <Link to={{ type: 'EARTH' }} className="ng-c-panel-link ng-unstyled ng-flex">
             <div onClick={() => handleResetLocation()}>
-              <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close"></i>
+              <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close ng-display-block"></i>
             </div>
           </Link>
         )}
