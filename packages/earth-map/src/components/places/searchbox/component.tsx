@@ -8,12 +8,15 @@ interface ISearchbox {
   setPlacesSearch?: (value: any) => {};
   setSidebarLayers?: (value: any) => {};
   setIndexesSelected?: (value: any) => {};
+  setPlacesSearchOpen?: (value: any) => {};
   setPlace?: (value: any) => {};
   setMapBounds?: (value: any) => {};
   resetMap?: () => {};
   resetLayers?: () => {};
   resetPlace?: () => {};
   search?: any;
+  open?: boolean;
+  showClose?: boolean;
 }
 
 const SearchBoxComponent = (props: ISearchbox) => {
@@ -21,11 +24,13 @@ const SearchBoxComponent = (props: ISearchbox) => {
     setPlacesSearch,
     setSidebarLayers,
     setIndexesSelected,
+    setPlacesSearchOpen,
     resetMap,
     resetPlace,
     search,
+    open,
+    showClose,
   } = props;
-  const [isSearchBoxFocused, setIsSearchBoxFocused] = useState(false);
 
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -52,7 +57,7 @@ const SearchBoxComponent = (props: ISearchbox) => {
     'ng-flex',
     'ng-flex-middle',
     {
-      'is-focused': isSearchBoxFocused,
+      'is-focused': open,
     }
   );
 
@@ -66,10 +71,9 @@ const SearchBoxComponent = (props: ISearchbox) => {
           className="ng-width-1-1 ng-search-box"
           value={search}
           onChange={(e) => handleChange(e)}
-          onFocus={() => setIsSearchBoxFocused(true)}
-          onBlur={() => setIsSearchBoxFocused(false)}
+          onFocus={() => setPlacesSearchOpen(true)}
         />
-        {!!search && (
+        {showClose && (
           <Link to={{ type: 'EARTH' }} className="ng-c-panel-link ng-unstyled ng-flex">
             <div onClick={() => handleResetLocation()}>
               <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close ng-display-block"></i>

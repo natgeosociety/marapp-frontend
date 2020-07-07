@@ -8,7 +8,6 @@ import Place from 'components/place';
 import Fullscreen from 'components/fullscreen';
 import { URL_PROPS } from './url';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
-import IndexSidebar from 'components/index-sidebar';
 
 interface IEarth {
   setFullscreen?: (p: { data: {}; open: boolean }) => void;
@@ -35,9 +34,7 @@ class EarthPage extends React.Component<IEarth> {
         />
 
         <Sidebar>
-          <SidebarLayoutSearch>
-            {!!selected && <IndexSidebar />}
-          </SidebarLayoutSearch>
+          <SidebarLayoutSearch selected={!!selected} />
         </Sidebar>
 
         <div className="l-content">

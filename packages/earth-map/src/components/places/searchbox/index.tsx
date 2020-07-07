@@ -1,8 +1,7 @@
 import { connect } from 'react-redux';
 
-import { resetPlace, setPlacesSearch } from 'modules/places/actions';
+import { resetPlace, setPlacesSearch, setPlacesSearchOpen } from 'modules/places/actions';
 import { setRouter } from 'modules/router/actions';
-
 import SearchBoxComponent from './component';
 import { setSidebarLayers } from 'modules/sidebar/actions';
 import { setIndexesSelected } from 'modules/indexes/actions';
@@ -17,6 +16,7 @@ export default connect(
     setPlacesSearch,
     setSidebarLayers,
     setIndexesSelected,
+    setPlacesSearchOpen,
     resetMap,
     resetPlace,
   }
