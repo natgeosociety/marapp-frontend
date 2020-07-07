@@ -88,7 +88,7 @@ export default function LayerEdit(props: LayerProps) {
   return (
     <div>
       <div className="ng-flex ng-flex-space-between">
-        <h2 className="ng-text-display-m">{ newLayer ? 'Add Layer' : `Edit Layer - ${name}` }</h2>
+        <h2 className="ng-text-display-m ng-c-flex-grow-1">{ newLayer ? 'Add Layer' : `Edit Layer - ${name}` }</h2>
 
         <span>
           Last updated at: {formatDate(updatedAt)}; Created at: {formatDate(createdAt)}

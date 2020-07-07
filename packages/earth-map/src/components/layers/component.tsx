@@ -99,7 +99,7 @@ class LayersComponent extends React.PureComponent<ILayers, ILayersState> {
       <>
         {loading && <Spinner />}
         <div className="ng-flex ng-flex-space-between ng-flex-center ng-margin-medium-bottom">
-          <h4 className="ng-text-display-m ng-color-ultraltgray ng-margin-remove">Select layers</h4>
+          <h4 className="ng-text-display-m ng-color-ultraltgray ng-margin-remove ng-c-flex-grow-1">Select layers</h4>
           <button
             className="ng-unstyled ng-c-icon-with-label"
             onClick={() => this.handleToggleClick()}

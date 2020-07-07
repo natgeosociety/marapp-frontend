@@ -53,7 +53,7 @@ const OrgSwitcher = (props) => {
                   'ng-ep-dropdown-selected': selectedGroup === g,
                 })}
               >
-                <LinkWithOrg to="/" switchOrgTo={g}>
+                <LinkWithOrg to="/" switchOrgTo={g} className="ng-display-block ng-border-remove">
                   <span
                     className="ng-text-display-s ng-display-block ng-dropdown-item"
                     onClick={(e) => handleOrgSwitch(g)}
