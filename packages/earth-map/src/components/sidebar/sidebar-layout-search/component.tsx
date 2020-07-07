@@ -66,9 +66,11 @@ const SidebarLayoutSearch = (props: IProps) => {
           <SearchBox showClose={showCloseLocation} />
           {showFilter && <Filter />}
           {showBack && (
-            <div className="ng-c-cursor-pointer ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-ep-border-top">
-              <em className="ng-color-white" onClick={() => setPlacesSearchOpen(false)}>
-                Return to {locationName}<span className="ng-icon-bullet ng-margin-small-horizontal"/><span className="ng-color-mdgray">{locationOrganization}</span>
+            <div
+              onClick={() => setPlacesSearchOpen(false)}
+              className="ng-c-cursor-pointer ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-ep-border-top">
+              <em className="ng-color-white">
+                Return to {locationName}<span className="ng-icon-bullet ng-margin-small-horizontal" /><span className="ng-color-mdgray">{locationOrganization}</span>
               </em>
             </div>
           )}
