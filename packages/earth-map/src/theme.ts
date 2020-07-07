@@ -2,7 +2,7 @@ import grayscale from './images/layers/grayscale.png';
 import satellite from './images/layers/satellite.png';
 
 export const APP_NAME = process.env.REACT_APP_NAME;
-export const APP_LOGO = require('images/marapp.svg');
+export const APP_LOGO = require('images/unbl_logo.svg');
 
 export const APP_BASEMAPS = [
   {
