@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SidebarLayoutSearch from './component';
-import { setPlacesSearchOpen } from 'modules/places/actions';
+import { setPlacesSearchOpen, setPlacesSearch } from 'modules/places/actions';
 
 export default connect(
   (state: any) => ({
@@ -10,6 +10,7 @@ export default connect(
     locationName: state.places.data.name,
     locationOrganization: state.places.data.organization,
   }), {
-    setPlacesSearchOpen
+    setPlacesSearchOpen,
+    setPlacesSearch,
   }
 )(SidebarLayoutSearch);

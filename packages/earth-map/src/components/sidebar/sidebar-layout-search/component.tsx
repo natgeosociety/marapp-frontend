@@ -12,6 +12,8 @@ import PlacesResults from 'components/places/list';
 import IndexSidebar from 'components/index-sidebar';
 import { hasFilters } from 'utils/filters';
 
+import './styles.scss';
+
 const LayersDropdown: any = Keyframes.Spring({
   close: { x: `-100vh`, delay: 0 },
   open: { x: '0vh', from: { x: '0vh' } },
@@ -24,6 +26,7 @@ interface IProps {
   selected?: boolean;
   locationName?: string;
   locationOrganization?: string;
+  setPlacesSearch?: Function;
   setPlacesSearchOpen?: Function;
 }
 
@@ -35,6 +38,7 @@ const SidebarLayoutSearch = (props: IProps) => {
     setPlacesSearchOpen,
     locationName,
     locationOrganization,
+    setPlacesSearch,
   } = props;
   const { open } = search;
   const state = layersPanel ? 'open' : 'close';
@@ -43,7 +47,13 @@ const SidebarLayoutSearch = (props: IProps) => {
   const showFilter = !selected || open;
   const showBack = selected && open;
   const showResults = hasSearchTerm || withFilters;
-  const showCloseLocation = selected && !open;
+  const showX = selected || hasSearchTerm;
+  const handleBack = () => {
+    if (selected) {
+      setPlacesSearch({ search: locationName });
+    }
+    setPlacesSearchOpen(false);
+  }
 
   return (
     <>
@@ -63,11 +73,11 @@ const SidebarLayoutSearch = (props: IProps) => {
       <div style={{ height: '100%', overflow: 'auto' }}>
         <div style={{ position: 'sticky', top: 0, zIndex: 1 }}>
           <OrgSwitcher />
-          <SearchBox showClose={showCloseLocation} />
+          <SearchBox showClose={showX} />
           {showFilter && <Filter />}
           {showBack && (
             <div
-              onClick={() => setPlacesSearchOpen(false)}
+              onClick={handleBack}
               className="ng-c-cursor-pointer ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-ep-border-top">
               <em className="ng-color-white">
                 Return to {locationName}<span className="ng-icon-bullet ng-margin-small-horizontal" /><span className="ng-color-mdgray">{locationOrganization}</span>
