@@ -15,9 +15,1228 @@ import {getGroup} from 'sagas/saga-utils';
 const LAYERS = [
   {
 
-    'id': '4adc9b7b-37be-442c-b90f-18aa9abe7f76',
-    'slug': 'aqueduct-baseline-water-stress',
-    'name': 'Aqueduct Baseline Water Stress',
+    'id': '526d2cc8-443b-4e20-a8c9-5ea4fd45d3f7',
+    'slug': 'modis-fires-unbl',
+    'name': 'MODIS fires',
+    'description': '<p>The MODIS burned area mapping algorithm takes advantage of spectral, temporal, and structural changes&nbsp; characterized by deposits of charcoal and ash, removal of vegetation, and alteration of the vegetation structure (Pereira et al.,1997, Roy et al., 1999).</p><p>It detects the approximate date of burning at 500m by locating the occurrence of rapid changes in daily surface reflectance time series data. The algorithm maps the spatial extent of recent fires and has been aggregated on a weekly scale.</p><p>Learn More</p><p><a href="http://modis-fire.umd.edu/">Read about and download the Data</a></p><p>Source(s)</p><p>National Aeronautics and Space Administration (NASA)</p><p>Suggested Citation &nbsp;</p><p>L. Giglio, C. Justice, L. Boschetti, D. Roy. 2015. MCD64A1 MODIS/Terra+Aqua Burned Area Monthly L3 Global 500m SIN Grid V006. NASA EOSDIS Land Processes DAAC. https://doi.org/10.5067/MODIS/MCD64A1.006</p><p>License</p><p><a href="https://earthdata.nasa.gov/earth-observation-data/near-real-time/citation"><i>We acknowledge the use of data and imagery from LANCE FIRMS operated by NASA\'s Earth Science Data and Information System (ESDIS) with funding provided by NASA Headquarters.</i></a></p>',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Natural Hazards'
+    ],
+    'config': {
+      'source': {
+        'type': 'tileLayer',
+
+          'format': 'image/png',
+          'options': {
+            'useCors': true
+          },
+          'minzoom': 2,
+          'maxzoom': 19
+        },
+        'timelineConfig': {
+          'railStyle': {
+            'background': '#333'
+          },
+          'trackStyle': [
+            {
+              'background': '#f79a28',
+              'top': '50%',
+              'transform': 'translate(0, -50%)',
+              'height': 12,
+              'borderRadius': 0,
+              'gradient': {
+                '{year}0101': '#5A0000',
+                '{year}0201': '#7F0101',
+                '{year}0301': '#9B0E01',
+                '{year}0401': '#BA1001',
+                '{year}0501': '#D51301',
+                '{year}0601': '#FA1500',
+                '{year}0701': '#FF5900',
+                '{year}0801': '#FF7E00',
+                '{year}0901': '#FFA300',
+                '{year}1001': '#FFC800',
+                '{year}1101': '#FFEB00',
+                '{year}1201': '#FFFF00'
+              }
+            },
+            {
+              'background': '#999',
+              'top': '50%',
+              'transform': 'translate(0, -50%)',
+              'borderRadius': 0
+            }
+          ],
+          'handleStyle': {
+            'opacity': 0
+          },
+          'step': 1,
+          'speed': 75,
+          'interval': 'days',
+          'dateFormat': 'YYYY-MM-DD',
+          'trimEndDate': '{year}-12-31',
+          'maxDate': '{year}-12-31',
+          'minDate': '{year}-01-01',
+          'canPlay': true
+        },
+        'paramsConfig': [
+          {
+            'required': true,
+            'key': 'year',
+            'default': '2019'
+          }
+        ],
+        'decodeConfig': {
+          'type': 'fire',
+          'values': [
+            {
+              'required': true,
+              'key': 'startDate',
+              'default': '2019-01-01'
+            },
+            {
+              'required': true,
+              'key': 'endDate',
+              'default': '2019-12-31'
+            },
+            {
+              'required': true,
+              'key': 'maxAbsoluteDate',
+              'default': '2019-07-31'
+            },
+            {
+              'required': true,
+              'key': 'minAbsoluteDate',
+              'default': '2001-01-01'
+            }
+          ]
+        },
+
+      'legendConfig': {
+        'enable': true,
+        'legendType': 'yeardatepicker'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {},
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-25T14:27:20.377Z',
+    'updatedAt': '2020-06-26T13:07:29.866Z',
+    'version': 6,
+    'references': [
+      {
+        'category': [
+          'Natural Hazards'
+        ],
+        'published': true,
+        'version': 9,
+        'references': [],
+        'name': 'MODIS fires 2018',
+        'slug': 'modis-fires-2018-unbl',
+        'type': 'raster',
+        'provider': 'gee',
+        'config': {
+          'layerConfig': {
+            'assetId': 'projects/earthpulse-sandbox/assets/layers/modis_fires_2018',
+            'type': 'tileLayer',
+            'timelineConfig': {
+              'railStyle': {
+                'background': '#333'
+              },
+              'trackStyle': [
+                {
+                  'background': '#f79a28',
+                  'top': '50%',
+                  'transform': 'translate(0, -50%)',
+                  'height': 12,
+                  'borderRadius': 0,
+                  'gradient': {
+                    '{year}0101': '#5A0000',
+                    '{year}0201': '#7F0101',
+                    '{year}0301': '#9B0E01',
+                    '{year}0401': '#BA1001',
+                    '{year}0501': '#D51301',
+                    '{year}0601': '#FA1500',
+                    '{year}0701': '#FF5900',
+                    '{year}0801': '#FF7E00',
+                    '{year}0901': '#FFA300',
+                    '{year}1001': '#FFC800',
+                    '{year}1101': '#FFEB00',
+                    '{year}1201': '#FFFF00'
+                  }
+                },
+                {
+                  'background': '#999',
+                  'top': '50%',
+                  'transform': 'translate(0, -50%)',
+                  'borderRadius': 0
+                }
+              ],
+              'handleStyle': {
+                'opacity': 0
+              },
+              'step': 1,
+              'speed': 75,
+              'interval': 'days',
+              'dateFormat': 'YYYY-MM-DD',
+              'trimEndDate': '{year}-12-31',
+              'maxDate': '{year}-12-31',
+              'minDate': '{year}-01-01',
+              'canPlay': true
+            },
+            'paramsConfig': [
+              {
+                'required': true,
+                'key': 'year',
+                'default': '2018',
+                'year': '2018'
+              }
+            ],
+            'decodeConfig': {
+              'type': 'fire',
+              'values': [
+                {
+                  'required': true,
+                  'key': 'startDate',
+                  'default': '2018-01-01'
+                },
+                {
+                  'required': true,
+                  'key': 'endDate',
+                  'default': '2018-12-31'
+                }
+              ]
+            },
+            'source': {
+              'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/6f55f734-5789-4bd9-8037-449574d09e3c/{z}/{x}/{y}'],
+              'format': 'image/png',
+              'options': {
+                'useCors': true
+              },
+              'minzoom': 2,
+              'maxzoom': 8
+            }
+          },
+          'legendConfig': {
+            'legendType': 'yeardatepicker',
+            'enable': true
+          },
+          'interactionConfig': {},
+          'applicationConfig': {},
+          'staticImageConfig': {}
+        },
+        'organization': 'UNBL',
+        'createdAt': '2020-06-25T14:28:30.764Z',
+        'updatedAt': '2020-06-30T20:09:38.835Z',
+        'id': '6f55f734-5789-4bd9-8037-449574d09e3c'
+      }
+    ]
+
+  },
+  {
+
+    'id': '0a3a5d27-3c73-4009-9252-24b113a034e8',
+    'slug': 'land-cover-esa-cci-2015',
+    'name': 'Land Cover ESA CCI 2015',
+    'description': '<p>Description</p><p>In the framework of the Climate Change Initiative (CCI) of the European Space Agency, the CCI Land Cover partnership released the CCI 300 m annual global land cover time series from 1992 to 2015. This map was created by reprocessing and interpreting five different satellite missions to assign a land use classification for every terrestrial area on Earth.&nbsp;</p><p>Learn More&nbsp;</p><p><a href="https://www.esa-landcover-cci.org/?q=node/175">ESA Landcover</a><br><br>&nbsp;</p><p><a href="http://maps.elie.ucl.ac.be/CCI/viewer/">Download the Data</a></p><p>Sources</p><p>European Space Agency (ESA)</p><p>European Space Agency Climate Change Initiative (ESA CCI)</p><p>University of Louvain (UCLouvain)</p><p>Suggested Citation</p><p>European Space Agency Climate Change Initiative, Land Cover project. 2017. "300 M Annual Global Land Cover Time Series from 1992 to 2015." Retrieved from <a href="https://www.esa-landcover-cci.org/?q=node/175">https://www.esa-landcover-cci.org/?q=node/175</a>.&nbsp;</p><p>License</p><p><a href="http://maps.elie.ucl.ac.be/CCI/viewer/download.php">Attribution Required</a></p>',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Land Cover'
+    ],
+    'config': {
+      'source': {
+        'assetId': 'projects/earthpulse-sandbox/assets/layers/ESACCI-LC-L4-300m_2015',
+        'sldValue': '<RasterSymbolizer> <ColorMap type="intervals" extended="false"> <ColorMapEntry color="#356122" label="Forest" quantity="50" opacity="1" /> + <ColorMapEntry color="#356122" label="Forest" quantity="51" opacity="1" /> + <ColorMapEntry color="#356122" label="Forest" quantity="52" opacity="1" /> + <ColorMapEntry color="#356122" label="Forest" quantity="60" opacity="1" /> + <ColorMapEntry color="#356122" label="Forest" quantity="61" opacity="1" /> + <ColorMapEntry color="#356122" label="Forest" quantity="62" opacity="1" /> + <ColorMapEntry color="#356122" label="Forest" quantity="70" opacity="1" /> + <ColorMapEntry color="#356122" label="Forest" quantity="71" opacity="1" /> + <ColorMapEntry color="#356122" label="Forest" quantity="72" opacity="1" /> + <ColorMapEntry color="#356122" label="Forest" quantity="80" opacity="1" /> + <ColorMapEntry color="#356122" label="Forest" quantity="81" opacity="1" /> + <ColorMapEntry color="#356122" label="Forest" quantity="82" opacity="1" /> + <ColorMapEntry color="#356122" label="Forest" quantity="90" opacity="1" /> + <ColorMapEntry color="#6f823b" label="Shrubland" quantity="100" opacity="1" /> + <ColorMapEntry color="#6f823b" label="Shrubland" quantity="110" opacity="1" /> + <ColorMapEntry color="#6f823b" label="Shrubland" quantity="120" opacity="1" /> + <ColorMapEntry color="#6f823b" label="Shrubland" quantity="121" opacity="1" /> + <ColorMapEntry color="#6f823b" label="Shrubland" quantity="122" opacity="1" /> + <ColorMapEntry color="#b2b881" label="Sparse vegetation" quantity="140" opacity="1" /> + <ColorMapEntry color="#b2b881" label="Sparse vegetation" quantity="150" opacity="1" /> + <ColorMapEntry color="#b2b881" label="Sparse vegetation" quantity="151" opacity="1" /> + <ColorMapEntry color="#b2b881" label="Sparse vegetation" quantity="152" opacity="1" /> + <ColorMapEntry color="#b2b881" label="Sparse vegetation" quantity="153" opacity="1" /> + <ColorMapEntry color="#9da321" label="Grassland" quantity="130" opacity="1" /> + <ColorMapEntry color="#3da096" label="Wetland" quantity="160" opacity="1" /> + <ColorMapEntry color="#3da096" label="Wetland" quantity="170" opacity="1" /> + <ColorMapEntry color="#3da096" label="Wetland" quantity="180" opacity="1" /> + <ColorMapEntry color="#17253d" label="Water" quantity="210" opacity="0" /> + <ColorMapEntry color="#cfe1e5" label="Permanent Snow and Ice" quantity="220" opacity="1" /> + <ColorMapEntry color="#ccc8b8" label="Bare" quantity="200" opacity="1" /> + <ColorMapEntry color="#ccc8b8" label="Bare" quantity="201" opacity="1" /> + <ColorMapEntry color="#ccc8b8" label="Bare" quantity="202" opacity="1" /> + <ColorMapEntry color="#4575b4" label="No data" quantity="0" opacity="0" /> + <ColorMapEntry color="#ed985f" label="Agriculture" quantity="10" opacity="1" /> + <ColorMapEntry color="#ed985f" label="Agriculture" quantity="11" opacity="1" /> + <ColorMapEntry color="#ed985f" label="Agriculture" quantity="12" opacity="1" /> + <ColorMapEntry color="#ed985f" label="Agriculture" quantity="30" opacity="1" /> + <ColorMapEntry color="#ed985f" label="Agriculture" quantity="40" opacity="1" /> + <ColorMapEntry color="#ed985f" label="Agriculture" quantity="41" opacity="1" /> + <ColorMapEntry color="#f7330c" label="Settlements" quantity="190" opacity="1" /> + <ColorMapEntry color="#75aaff" quantity="210" opacity="0" /> + </ColorMap> </RasterSymbolizer>',
+        'styleType': 'sld',
+        'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/0a3a5d27-3c73-4009-9252-24b113a034e8/{z}/{x}/{y}'],
+        'type': 'raster',
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#356122',
+            'name': 'Forest'
+          },
+          {
+            'color': '#6f823b',
+            'name': 'Shrubland'
+          },
+          {
+            'color': '#b2b881',
+            'name': 'Sparse vegetation'
+          },
+          {
+            'color': '#9da321',
+            'name': 'Grassland'
+          },
+          {
+            'color': '#3da096',
+            'name': 'Wetland'
+          },
+          {
+            'color': '#cfe1e5',
+            'name': 'Permanent Snow and Ice'
+          },
+          {
+            'color': '#ccc8b8',
+            'name': 'Bare'
+          },
+          {
+            'color': '#ed985f',
+            'name': 'Agriculture'
+          },
+          {
+            'color': '#f7330c',
+            'name': 'Settlements'
+          }
+        ],
+        'type': 'basic'
+      },
+      'interactionConfig': {
+        'type': '',
+        'config': {
+          'url': ''
+        },
+        'output': [
+          {
+            'column': '',
+            'property': '',
+            'type': '',
+            'format': ''
+          }
+        ]
+      },
+      'applicationConfig': {},
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-25T18:42:27.448Z',
+    'updatedAt': '2020-06-29T16:30:22.974Z',
+    'version': 5,
+    'references': []
+
+  },
+  {
+
+    'id': 'fcde4862-1f92-4e2c-8ca0-a5825e5575b7',
+    'slug': 'internationally-important-wetlands',
+    'name': 'Internationally Important Wetlands',
+    'type': 'vector',
+    'category': [
+      'Protected Areas'
+    ],
+    'config': {
+      'source': {
+        type: 'vector',
+        provider: {
+          type: 'carto',
+          'account': 'wri-rw',
+          'layers': [
+            {
+              'type': 'cartodb',
+              'options': {
+                'sql': 'SELECT * FROM for_014_internationally_important_wetlands',
+                'cartocss': '#for_014_internationally_important_wetlands { marker-width: 4; marker-opacity: 1;marker-allow-overlap: true;marker-line-width: 0.3; marker-line-color: #FFF; marker-line-opacity: 0.75; [zoom > 0] {marker-width: 4;}[zoom > 5] {marker-width: 7;} [zoom > 7] {marker-width: 12;} [zoom > 9] {marker-width: 15;} [wetland_type_general = \'Human-made wetlands\']{ marker-fill: #d95f02;} [wetland_type_general = \'Inland wetlands\']{ marker-fill: #1b9e77;} [wetland_type_general = \'Marine or coastal wetlands\']{ marker-fill: #7570b3;}[wetland_type_general = \'Other\']{ marker-fill: #4F4F4F;}}',
+                'cartocss_version': '2.3.0'
+              }
+            }
+          ],
+        },
+      },
+      render: {
+        'layers': [
+          {
+            'paint': {
+              'circle-radius': [
+                'interpolate',
+                [
+                  'linear'
+                ],
+                [
+                  'zoom'
+                ],
+                5,
+                7,
+                7,
+                12,
+                9,
+                15
+              ],
+              'circle-stroke-width': 0.3,
+              'circle-stroke-color': ' #FFF',
+              'circle-stroke-opacity': 0.75,
+              'circle-color': [
+                'match',
+                [
+                  'get',
+                  'wetland_type_general'
+                ],
+                'Human-made wetlands',
+                '#d95f02',
+                'Inland wetlands',
+                '#1b9e77',
+                'Marine or coastal wetlands',
+                '#7570b3',
+                'Other',
+                '#4F4F4F',
+                '#4F4F4F'
+              ]
+            },
+            'source-layer': 'layer0',
+            'type': 'circle'
+          }
+        ],
+      },
+      'legendConfig': {
+        'type': 'basic',
+        'items': [
+          {
+            'name': 'Human-made wetlands',
+            'color': '#d95f02',
+            'id': 0
+          },
+          {
+            'name': 'Inland wetlands',
+            'color': '#1b9e77',
+            'id': 1
+          },
+          {
+            'name': 'Marine or coastal wetlands',
+            'color': '#7570b3',
+            'id': 2
+          },
+          {
+            'name': 'Other',
+            'color': '#4F4F4F',
+            'id': 3
+          }
+        ]
+      },
+      'interactionConfig': {
+        'output': [
+          {
+            'column': 'site_name',
+            'format': null,
+            'prefix': '',
+            'property': 'Site Name',
+            'suffix': '',
+            'type': 'string'
+          },
+          {
+            'column': 'country',
+            'format': null,
+            'prefix': '',
+            'property': 'Country',
+            'suffix': '',
+            'type': 'string'
+          },
+          {
+            'column': 'area_ha',
+            'format': null,
+            'prefix': '',
+            'property': 'Area',
+            'suffix': ' hectares',
+            'type': 'number'
+          }
+        ]
+      },
+      'applicationConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-26T10:16:25.907Z',
+    'updatedAt': '2020-06-26T10:16:25.907Z',
+    'version': 0,
+    'references': []
+
+  },
+  {
+
+    'id': 'c4200dea-a4ff-4d46-8246-3cbf0ad188ed',
+    'slug': 'intact-forest-landscapes',
+    'name': 'Intact Forest Landscapes',
+    'type': 'vector',
+    'provider': 'cartodb',
+    'category': [
+      'Protected Areas'
+    ],
+    'config': {
+      'source': {
+        type: 'vector',
+        'maxzoom': 18,
+        provider: {
+          type: 'carto',
+          'account': 'wri-01',
+          'layers': [
+            {
+              'options': {
+                'cartocss_version': '2.3.0',
+                'cartocss': '#intact_forest_landscapes {polygon-opacity: 0.7;polygon-fill: #136400;line-width: 0;line-opacity: 1;}#intact_forest_landscapes[class_name=\'IFL change 2000-2013\'] { polygon-fill:  rgb(152, 155, 5);}',
+                'sql': 'SELECT * FROM intact_forest_landscapes'
+              },
+              'type': 'mapnik'
+            }
+          ],
+          'pulseConfig': {
+            'urlTemplate': 'https://{{account}}.carto.com/api/v1/map/static/bbox/{{token_groupid}}/{{bbox}}/{{width}}/{{height}}.{{format}}',
+            'sql': 'SELECT st_transform(the_geom_webmercator,32663) as the_geom_webmercator, class_name FROM intact_forest_landscapes',
+            'values': {
+              'height': 1024,
+              'width': 2048,
+              'bbox': [
+                -110,
+                -65,
+                110,
+                65
+              ],
+              'format': 'png'
+            },
+            'type': 'imageOverlay'
+          },
+        },
+      },
+      render: {
+        'layers': [
+          {
+            'paint': {
+              'line-width': 0,
+              'line-opacity': 1
+            },
+            'source-layer': 'layer0',
+            'type': 'line',
+            'filter': [
+              'all'
+            ]
+          },
+          {
+            'paint': {
+              'fill-opacity': 0.7,
+              'fill-color': ' #136400'
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all'
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '  rgb(152, 155, 5)'
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'class_name',
+                'IFL change 2000-2013'
+              ]
+            ]
+          }
+        ]
+      },
+      'legendConfig': {
+        'type': 'basic',
+        'items': [
+          {
+            'name': 'Intact Forest Landscapes',
+            'color': '#136400',
+            'id': 0
+          },
+          {
+            'name': 'IFL change 2000-2013',
+            'color': 'rgb(152, 155, 5)',
+            'id': 1
+          }
+        ]
+      },
+      'interactionConfig': {
+        'output': [
+          {
+            'format': null,
+            'type': 'string',
+            'property': 'Class Name',
+            'column': 'class_name'
+          },
+          {
+            'format': null,
+            'type': 'string',
+            'property': 'IFL ID',
+            'column': 'ifl_id'
+          },
+          {
+            'format': null,
+            'type': 'string',
+            'property': 'IFL13 ID',
+            'column': 'ifl13_id'
+          },
+          {
+            'column': 'cartodb_id',
+            'format': null,
+            'prefix': '',
+            'property': 'Area ID',
+            'suffix': '',
+            'type': 'number'
+          }
+        ],
+        'config': {
+          'url': 'https://api.resourcewatch.org/v1/query/71b81fe0-23fc-4154-8601-ba987381594c?sql=SELECT class_name, ifl_id, ifl13_id FROM intact_forest_landscapes WHERE st_intersects(the_geom,st_buffer(ST_SetSRID(st_geomfromgeojson(\'{"type":"Point","coordinates":{{point}}}\'),4326),1))'
+        },
+        'type': 'gridjson'
+      },
+      'applicationConfig': {
+        'config one': {
+          'type': 'lorem',
+          'from': {
+            'data': 'table'
+          }
+        }
+      }
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-26T10:09:24.116Z',
+    'updatedAt': '2020-06-26T10:09:24.116Z',
+    'version': 0,
+    'references': []
+
+  },
+  {
+
+    'id': '78a7d785-2f82-4c96-9f98-13d9c8f50f73',
+    'slug': 'human-footprint',
+    'name': 'Human Footprint 2009,1993',
+    'description': '<p>The global terrestrial Human Footprint map created by Venter et al. (2016) compiles remotely-sensed and bottom-up survey information to measure the direct and indirect human pressures altering the natural state of the environment globally. The Human Footprint map shown here indicates human pressure scores ranging from 0 - 50, representing five classes of human pressure, each encompassing an equal proportion (~20%) of the planet:</p><ul><li>0 = No Pressure</li><li>1 - 2 = Low Pressure</li><li>3 - 5 = Moderate Pressure</li><li>6 - 11 = High Pressure</li><li>12 - 50 = Very High Pressure</li></ul><p>The Human Footprint includes pressure data for:</p><ol><li>built environments,</li><li>population density,</li><li>electric infrastructure,</li><li>crop lands,</li><li>pasture lands,</li><li>roads,</li><li>railways, and</li><li>navigable waterways.</li></ol><p>These data were weighted according to estimates of their relative levels of human pressure and then summed together to create the standardized human footprint for all non-Antarctic land areas at 1 km resolution.</p><h4>LEARN MORE</h4><p><a href="https://www.nature.com/articles/sdata201667">Read the paper.</a></p><p><a href="https://datadryad.org/resource/doi:10.5061/dryad.052q5">Download the data.</a></p><h4>SOURCE(S)</h4><ul><li>University of Northern British Columbia (UNBC)</li><li>Wildlife Conservation Society (WCS)</li><li>Swiss Federal Institute of Technology in Zurich (ETH Zurich)</li><li>University of Queensland (UQ)</li><li>James Cook University (JCU)</li><li>City University of New York (CUNY)</li><li>Columbia University Earth Institute Center for International Earth</li><li>Science Information Network (CIESIN)</li></ul><h4>SUGGESTED CITATION</h4><p>(From the articles):</p><p>Venter, O. et al. Global terrestrial Human Footprint maps for 1993 and 2009. Sci. Data 3:160067 doi: 10.1038/sdata.2016.67 (2016).</p><p>Venter, O. et al. Sixteen years of change in the global terrestrial human footprint and implications for biodiversity conservation. Nat. Commun. 7:12558 doi: 10.1038/ncomms12558 (2016).</p><h4>LICENSE</h4><p><a href="https://creativecommons.org/publicdomain/zero/1.0/">Public Domain</a></p>',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Human Impact'
+    ],
+    'config': {
+      'source': {
+        'format': 'image/png',
+        'type': 'raster',
+        'options': {
+          'useCors': true
+        },
+        'minzoom': 2,
+        'maxzoom': 19
+      },
+      'legendConfig': {
+        'legendType': 'yearpicker',
+        'items': [
+          {
+            'color': '#8c510a',
+            'value': '0'
+          },
+          {
+            'color': '#d8b365',
+            'value': ''
+          },
+          {
+            'color': '#e6f598',
+            'value': ''
+          },
+          {
+            'color': '#91cf60',
+            'value': ''
+          },
+          {
+            'color': '#31a354',
+            'value': ''
+          },
+          {
+            'color': '#006837',
+            'value': '1'
+          }
+        ],
+        'type': 'gradient'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'active': true,
+        'default': true,
+        'global': true,
+        'metadata': 'human-footprint'
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-25T17:49:52.315Z',
+    'updatedAt': '2020-06-26T22:01:32.559Z',
+    'version': 4,
+    'references': [
+      {
+        'category': [
+          'Human Impact'
+        ],
+        'published': true,
+        'version': 2,
+        'references': [],
+        'description': '',
+        'name': 'Human Footprint 2009',
+        'slug': 'human-footprint-2009',
+        'type': 'raster',
+        'provider': 'gee',
+        'config': {
+          'source': {
+            'assetId': 'projects/earthpulse-sandbox/assets/layers/human_footprint_2009',
+            'type': 'raster',
+            'sldValue': '<RasterSymbolizer> <ColorMap type="ramp" extended="true"> <ColorMapEntry color="#ECE5F4" label="0" quantity="0" /> + <ColorMapEntry color="#D5BBDB" quantity="10" /> + <ColorMapEntry color="#D47DBC" quantity="20" /> + <ColorMapEntry color="#E62C90" quantity="30" /> + <ColorMapEntry color="#BF0650" quantity="40" /> + <ColorMapEntry color="#780126" label="50" quantity="50" /> + </ColorMap> </RasterSymbolizer>',
+            'styleType': 'sld',
+            'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/d6f8fbf9-04f4-4f48-9415-9f6212223275/{z}/{x}/{y}'],
+
+          },
+          'legendConfig': {
+            'items': [
+              {
+                'color': '#ECE5F4',
+                'value': '0'
+              },
+              {
+                'color': '#D5BBDB',
+                'value': ''
+              },
+              {
+                'color': '#D47DBC',
+                'value': ''
+              },
+              {
+                'color': '#E62C90',
+                'value': ''
+              },
+              {
+                'color': '#BF0650',
+                'value': ''
+              },
+              {
+                'color': '#780126',
+                'value': '50'
+              }
+            ],
+            'type': 'gradient'
+          },
+          'interactionConfig': {
+            'type': '',
+            'config': {
+              'url': ''
+            },
+            'output': [
+              {
+                'column': '',
+                'property': '',
+                'type': '',
+                'format': ''
+              }
+            ]
+          },
+          'applicationConfig': {},
+          'staticImageConfig': {}
+        },
+        'organization': 'UNBL',
+        'createdAt': '2020-06-25T17:52:33.605Z',
+        'updatedAt': '2020-06-26T22:33:52.477Z',
+        'id': 'd6f8fbf9-04f4-4f48-9415-9f6212223275'
+      },
+      {
+        'category': [
+          'Human Impact'
+        ],
+        'published': true,
+        'version': 2,
+        'references': [],
+        'name': 'Human Footprint 1993',
+        'slug': 'human-footprint-1993',
+        'type': 'raster',
+        'provider': 'gee',
+        'config': {
+          'source': {
+            'assetId': 'projects/earthpulse-sandbox/assets/layers/human_footprint_1993',
+            'sldValue': '<RasterSymbolizer> <ColorMap type="ramp" extended="true"> <ColorMapEntry color="#ECE5F4" label="0" quantity="0" /> + <ColorMapEntry color="#D5BBDB" quantity="10" /> + <ColorMapEntry color="#D47DBC" quantity="20" /> + <ColorMapEntry color="#E62C90" quantity="30" /> + <ColorMapEntry color="#BF0650" quantity="40" /> + <ColorMapEntry color="#780126" label="50" quantity="50" /> + </ColorMap> </RasterSymbolizer>',
+            'styleType': 'sld',
+            'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/66481e5a-a611-4684-beee-419944b4d883/{z}/{x}/{y}'],
+            'type': 'raster',
+          },
+          'legendConfig': {
+            'items': [
+              {
+                'color': '#ECE5F4',
+                'value': '0'
+              },
+              {
+                'color': '#D5BBDB',
+                'value': ''
+              },
+              {
+                'color': '#D47DBC',
+                'value': ''
+              },
+              {
+                'color': '#E62C90',
+                'value': ''
+              },
+              {
+                'color': '#BF0650',
+                'value': ''
+              },
+              {
+                'color': '#780126',
+                'value': '50'
+              }
+            ],
+            'type': 'gradient'
+          },
+          'interactionConfig': {
+            'type': '',
+            'config': {
+              'url': ''
+            },
+            'output': [
+              {
+                'column': '',
+                'property': '',
+                'type': '',
+                'format': ''
+              }
+            ]
+          },
+          'applicationConfig': {},
+          'staticImageConfig': {}
+        },
+        'organization': 'UNBL',
+        'createdAt': '2020-06-25T17:51:26.521Z',
+        'updatedAt': '2020-06-26T22:33:40.093Z',
+        'id': '66481e5a-a611-4684-beee-419944b4d883'
+      }
+    ]
+
+  },
+  {
+
+    'id': 'ff23dc9c-80fd-4b67-8c9e-930e10f268a9',
+    'slug': 'human-development-index',
+    'name': 'Human Development Index 2015',
+    'description': '<p>The Human Development Index (HDI), created by the United Nations Development Programme, is a summary measure of average achievement in key dimensions of human development:</p><ul><li>A long and healthy life: assessed by life expectancy at birth</li><li>Education: measured by mean of years of schooling for adults aged 25 years and more and expected years of schooling for children of school entering age</li><li>A decent standard of living: measured by gross national income per capita</li></ul><p>The HDI is the geometric mean of normalized indices for each of the three dimensions.</p><p>The cutoff points for HDI categories are:</p><ul><li>Less than 0.550 = low human development,</li><li>0.550\\\\u20130.699 = medium human development</li><li>0.700\\\\u20130.799 = high human development</li><li>0.800 or greater = very high human development.</li></ul><p>Learn More</p><p><a href="http://hdr.undp.org/en/content/human-development-index-hdi">United Nations Development Programme Read about HDI and download the data</a></p><p>Source(s)</p><p>United Nations Development Programme (UNDP)</p><p>&nbsp;</p><p>Suggested Citation</p><p>United Nations Development Programme, Human Development Report. 1980-2015. \'Human Development Index.\' Retrieved from http://hdr.undp.org/en/composite/HDI.</p><p>License</p><p><a href="https://creativecommons.org/licenses/by/3.0/igo/">Creative Commons Attribution 3.0 IGO</a></p>',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Human Impact'
+    ],
+    'config': {
+      'source': {
+        'assetId': 'projects/earthpulse-sandbox/assets/layers/human_development_index_2015',
+        'sldValue': '<RasterSymbolizer> <ColorMap type="ramp" extended="false"> <ColorMapEntry color="#ECE5F4" label="0" quantity="0" /> + <ColorMapEntry color="#D5BBDB" label="0.20" quantity="0.20" /> + <ColorMapEntry color="#D47DBC" label="0.40" quantity="0.40" /> + <ColorMapEntry color="#E62C90" label="0.60" quantity="0.60" /> + <ColorMapEntry color="#BF0650" label="0.80" quantity="0.80" /> + <ColorMapEntry color="#780126" label="1" quantity="1" /> + </ColorMap> </RasterSymbolizer>',
+        'styleType': 'sld',
+        'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/ff23dc9c-80fd-4b67-8c9e-930e10f268a9/{z}/{x}/{y}'],
+        type: 'raster',
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#ECE5F4',
+            'value': '0'
+          },
+          {
+            'color': '#D5BBDB',
+            'value': ''
+          },
+          {
+            'color': '#D47DBC',
+            'value': ''
+          },
+          {
+            'color': '#E62C90',
+            'value': ''
+          },
+          {
+            'color': '#BF0650',
+            'value': ''
+          },
+          {
+            'color': '#780126',
+            'value': '1'
+          }
+        ],
+        'type': 'gradient'
+      },
+      'interactionConfig': {
+        'type': '',
+        'config': {
+          'url': ''
+        },
+        'output': [
+          {
+            'column': '',
+            'property': '',
+            'type': '',
+            'format': ''
+          }
+        ]
+      },
+      'applicationConfig': {},
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-25T17:45:04.724Z',
+    'updatedAt': '2020-06-25T18:46:25.498Z',
+    'version': 2,
+    'references': []
+
+  },
+  {
+
+    'id': '034f3529-2dc7-4a88-a604-613b5fdf09cf',
+    'slug': 'gridded-livestock-sheep',
+    'name': 'Gridded Livestock of the World - Sheep 2010',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Human Impact'
+    ],
+    'config': {
+      'source': {
+        'assetId': 'projects/earthpulse-sandbox/assets/layers/gridded_livestock_sheep_2010',
+        'maxNativeZoom': 13,
+        'maxzoom': 19,
+        'minNativeZoom': 4,
+        'minzoom': 2,
+        'sldValue': '<RasterSymbolizer><ColorMap type="ramp" extended="false" ><ColorMapEntry color="#ffffcc" quantity="0" opacity="1" label="0"/><ColorMapEntry color="#f8f8bf" quantity="10" opacity="1" label="10"/><ColorMapEntry color="#f1f194" quantity="100" opacity="1" label="100"/><ColorMapEntry color="#ffeda0" quantity="1000" opacity="1" label="1000" /><ColorMapEntry color="#feb24c" quantity="10000" opacity="1" label="10000" /><ColorMapEntry color="#ed4827" quantity="100000" opacity="1" label="100000" /></ColorMap></RasterSymbolizer>',
+        'styleType': 'sld',
+        'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/034f3529-2dc7-4a88-a604-613b5fdf09cf/{z}/{x}/{y}'],
+        'params_config': [],
+        'type': 'raster'
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#ffffcc',
+            'value': '0'
+          },
+          {
+            'color': '#f8f8bf',
+            'value': '10'
+          },
+          {
+            'color': '#f1f194',
+            'value': '100'
+          },
+          {
+            'color': '#ffeda0',
+            'value': '1000'
+          },
+          {
+            'color': '#feb24c',
+            'value': '10000'
+          },
+          {
+            'color': '#ed4827',
+            'value': '100000'
+          }
+        ],
+        'type': 'gradient'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'active': true,
+        'default': true,
+        'global': true,
+        'metadata': 'livestock'
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-26T21:59:03.410Z',
+    'updatedAt': '2020-06-26T21:59:23.060Z',
+    'version': 1,
+    'references': []
+  },
+  {
+
+    'id': 'e5571c3c-f252-4084-baf9-6b0521ba96f5',
+    'slug': 'gridded-livestock-goats',
+    'name': 'Gridded Livestock of the World - Goats 2010',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Human Impact'
+    ],
+    'config': {
+      'source': {
+        'assetId': 'projects/earthpulse-sandbox/assets/layers/gridded_livestock_goats_2010',
+        'maxNativeZoom': 13,
+        'maxzoom': 19,
+        'minNativeZoom': 4,
+        'minzoom': 2,
+        'sldValue': '<RasterSymbolizer><ColorMap type="ramp" extended="false" ><ColorMapEntry color="#ffffcc" quantity="0" opacity="1" label="0"/><ColorMapEntry color="#f8f8bf" quantity="10" opacity="1" label="10"/><ColorMapEntry color="#f1f194" quantity="100" opacity="1" label="100"/><ColorMapEntry color="#ffeda0" quantity="1000" opacity="1" label="1000" /><ColorMapEntry color="#feb24c" quantity="10000" opacity="1" label="10000" /><ColorMapEntry color="#ed4827" quantity="100000" opacity="1" label="100000" /></ColorMap></RasterSymbolizer>',
+        'styleType': 'sld',
+        'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/e5571c3c-f252-4084-baf9-6b0521ba96f5/{z}/{x}/{y}'],
+        'params_config': [],
+        'type': 'raster'
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#ffffcc',
+            'value': '0'
+          },
+          {
+            'color': '#f8f8bf',
+            'value': '10'
+          },
+          {
+            'color': '#f1f194',
+            'value': '100'
+          },
+          {
+            'color': '#ffeda0',
+            'value': '1000'
+          },
+          {
+            'color': '#feb24c',
+            'value': '10000'
+          },
+          {
+            'color': '#ed4827',
+            'value': '100000'
+          }
+        ],
+        'type': 'gradient'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'active': true,
+        'default': true,
+        'global': true,
+        'metadata': 'livestock'
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-26T21:53:39.841Z',
+    'updatedAt': '2020-06-26T21:53:59.689Z',
+    'version': 1,
+    'references': []
+
+  },
+  {
+
+    'id': 'ce02e5d6-035e-433d-a09b-00d6629e403a',
+    'slug': 'gridded-livestock-chickens',
+    'name': 'Gridded Livestock of the World - Chickens 2010',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Human Impact'
+    ],
+    'config': {
+      'source': {
+        'assetId': 'projects/earthpulse-sandbox/assets/layers/gridded_livestock_chickens_2010',
+        'maxNativeZoom': 13,
+        'maxzoom': 19,
+        'minNativeZoom': 4,
+        'minzoom': 2,
+        'sldValue': '<RasterSymbolizer><ColorMap type="ramp" extended="false" ><ColorMapEntry color="#ffffcc" quantity="0" opacity="1" label="0"/><ColorMapEntry color="#f8f8bf" quantity="10" opacity="1" label="10"/><ColorMapEntry color="#f1f194" quantity="100" opacity="1" label="100"/><ColorMapEntry color="#ffeda0" quantity="1000" opacity="1" label="1000" /><ColorMapEntry color="#feb24c" quantity="10000" opacity="1" label="10000" /><ColorMapEntry color="#ed4827" quantity="100000" opacity="1" label="100000" /><ColorMapEntry color="#870021" quantity="1000000" label="1000000" /></ColorMap></RasterSymbolizer>',
+        'styleType': 'sld',
+        'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/ce02e5d6-035e-433d-a09b-00d6629e403a/{z}/{x}/{y}'],
+        'params_config': [],
+        'type': 'raster'
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#ffffcc',
+            'value': '0'
+          },
+          {
+            'color': '#f8f8bf',
+            'value': '10'
+          },
+          {
+            'color': '#f1f194',
+            'value': '100'
+          },
+          {
+            'color': '#ffeda0',
+            'value': '1000'
+          },
+          {
+            'color': '#feb24c',
+            'value': '10000'
+          },
+          {
+            'color': '#ed4827',
+            'value': '100000'
+          },
+          {
+            'color': '#870021',
+            'value': '1000000'
+          }
+        ],
+        'type': 'gradient'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'active': true,
+        'default': true,
+        'global': true,
+        'metadata': 'livestock'
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-26T21:38:28.057Z',
+    'updatedAt': '2020-06-29T06:50:48.925Z',
+    'version': 2,
+    'references': []
+  },
+  {
+    'id': 'fe60548e-a2ba-4b4e-9b21-37383880f532',
+    'slug': 'gridded-livestock-cattle',
+    'name': 'Gridded Livestock of the World - Cattle 2010',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Human Impact'
+    ],
+    'config': {
+      'source': {
+        'assetId': 'projects/earthpulse-sandbox/assets/layers/gridded_livestock_cattle_2010',
+        'maxNativeZoom': 13,
+        'maxzoom': 19,
+        'minNativeZoom': 4,
+        'minzoom': 2,
+        'sldValue': '<RasterSymbolizer><ColorMap type="ramp" extended="false" ><ColorMapEntry color="#ffffcc" quantity="0" opacity="1" label="0"/><ColorMapEntry color="#f8f8bf" quantity="10" opacity="1" label="10"/><ColorMapEntry color="#f1f194" quantity="100" opacity="1" label="100"/><ColorMapEntry color="#ffeda0" quantity="1000" opacity="1" label="1000" /><ColorMapEntry color="#feb24c" quantity="10000" opacity="1" label="10000" /><ColorMapEntry color="#ed4827" quantity="100000" opacity="1" label="100000" /></ColorMap></RasterSymbolizer>',
+        'styleType': 'sld',
+        'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/fe60548e-a2ba-4b4e-9b21-37383880f532/{z}/{x}/{y}'],
+        'params_config': [],
+        'type': 'raster'
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#ffffcc',
+            'value': '0'
+          },
+          {
+            'color': '#f8f8bf',
+            'value': '10'
+          },
+          {
+            'color': '#f1f194',
+            'value': '100'
+          },
+          {
+            'color': '#ffeda0',
+            'value': '1000'
+          },
+          {
+            'color': '#feb24c',
+            'value': '10000'
+          },
+          {
+            'color': '#ed4827',
+            'value': '100000'
+          }
+        ],
+        'type': 'gradient'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'active': true,
+        'default': true,
+        'global': true,
+        'metadata': 'livestock'
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-26T21:29:50.776Z',
+    'updatedAt': '2020-06-29T06:50:07.333Z',
+    'version': 2,
+    'references': []
+
+  },
+  {
+    'id': '936f76e2-78f0-4c45-a6d2-6c27679d695a',
+    'slug': 'prob-urban-expansion-2030',
+    'name': 'Global Grid of Probabilities of Urban Expansion to 2030',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Human Impact'
+    ],
+    'config': {
+      'source': {
+        'assetId': '',
+        'maxNativeZoom': 13,
+        'maxzoom': 19,
+        'minNativeZoom': 4,
+        'minzoom': 2,
+        'sldValue': '',
+        'styleType': 'sld',
+        'tiles': ['https://api.resourcewatch.org/v1/layer/822bf5bb-f521-410b-aa29-ccfbd64b20a7/tile/gee/{z}/{x}/{y}'],
+        'params_config': [],
+        'type': 'raster'
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#fef0d9',
+            'name': '20%'
+          },
+          {
+            'color': '#fdbb84',
+            'name': '40%'
+          },
+          {
+            'color': '#fc8d59',
+            'name': '60%'
+          },
+          {
+            'color': '#e34a33',
+            'name': '80%'
+          },
+          {
+            'color': '#b30000',
+            'name': '100%'
+          }
+        ],
+        'type': 'basic'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'active': true,
+        'default': true,
+        'global': true,
+        'metadata': 'modis-evi-2015'
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-26T20:48:54.293Z',
+    'updatedAt': '2020-06-30T19:49:04.785Z',
+    'version': 6,
+    'references': []
+
+  },
+  {
+
+    'id': '6de2daab-9e41-4360-a6cc-a280ed05a542',
+    'slug': 'ecoregion-by-biome',
+    'name': 'Ecoregion by Biome',
     'type': 'vector',
     'provider': 'cartodb',
     'category': [
@@ -28,19 +1247,629 @@ const LAYERS = [
         'type': 'vector',
         provider: {
           type: 'carto',
-          "options": {
-            "account": "wri-rw",
-            "layers": [
-              {
-                'type': 'cartodb',
-                'options': {
-                  'sql': 'SELECT * FROM wat_050_aqueduct_baseline_water_stress',
-                  'cartocss': '#layer {polygon-opacity:1; line-width:0.1;line-opacity:1;} [bws_cat=4]{polygon-fill:#990000; line-color:#990000}[bws_cat=3]{polygon-fill:#FF1900; line-color:#FF1900} [bws_cat=2]{polygon-fill:#FF9900; line-color:#FF9900} [bws_cat=1]{polygon-fill:#FFE600; line-color:#FFE600} [bws_cat=0]{polygon-fill:#FFFF99; line-color:#FFFF99}[bws_cat=-1]{polygon-fill:#808080; line-color:#808080}[bws_cat=-9999]{polygon-fill:#4E4E4E; line-color:#4E4E4E}',
-                  'cartocss_version': '2.3.0'
-                }
+          'account': 'wri-rw',
+          'layers': [
+            {
+              'type': 'mapnik',
+              'options': {
+                'sql': 'SELECT * From bio_042_ecoregions_by_biome_1_14',
+                'cartocss': '#layer {polygon-opacity: 1; line-width: 0.5; line-color: #FFF; line-opacity: 0; } [biome_name =\'Boreal Forests/Taiga\']{polygon-fill:#7AB6F5;} [biome_name =\'Deserts & Xeric Shrublands\']{polygon-fill:#CC6767;} [biome_name=\'Flooded Grasslands & Savannas\']{polygon-fill:#BEE7FF ;} [biome_name=\'Mangroves\']{polygon-fill:#FE01C4 ;} [biome_name=\'Mediterranean Forests, Woodlands & Scrub\'] {polygon-fill:#FE0000 ;} [biome_name=\'Montane Grasslands & Shrublands\']{polygon-fill:#D6C39D ;} [biome_name=\'Rock and Ice\']{polygon-fill:#FFEAAF ;} [biome_name=\'Temperate Broadleaf & Mixed Forests\']{polygon-fill:#00734C ;} [biome_name=\'Temperate Conifer Forests\']{polygon-fill:#458970 ;} [biome_name=\'Temperate Grasslands, Savannas & Shrublands\']{polygon-fill:#FEFF73 ;} [biome_name=\'Tropical & Subtropical Coniferous Forests\']{polygon-fill:#88CE66;} [biome_name=\'Tropical & Subtropical Dry Broadleaf Forests\']{polygon-fill:#CCCD65 ;} [biome_name=\'Tropical & Subtropical Grasslands, Savannas & Shrublands\']{polygon-fill:#FEAA01 ;} [biome_name=\'Tropical & Subtropical Moist Broadleaf Forests\']{polygon-fill:#38A700 ;} [biome_name=\'Tundra\']{polygon-fill:#9ED7C2 ;}',
+                'cartocss_version': '2.3.0'
               }
+            }
+          ],
+        },
+        'layerType': 'vector'
+      },
+      render: {
+        'layers': [
+          {
+            'paint': {
+              'fill-opacity': 1
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all'
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#7AB6F5'
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Boreal Forests/Taiga'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#CC6767'
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Deserts & Xeric Shrublands'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#BEE7FF '
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Flooded Grasslands & Savannas'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#FE01C4 '
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Mangroves'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#FE0000 '
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Mediterranean Forests, Woodlands & Scrub'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#D6C39D '
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Montane Grasslands & Shrublands'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#FFEAAF '
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Rock and Ice'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#00734C '
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Temperate Broadleaf & Mixed Forests'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#458970 '
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Temperate Conifer Forests'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#FEFF73 '
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Temperate Grasslands, Savannas & Shrublands'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#88CE66'
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Tropical & Subtropical Coniferous Forests'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#CCCD65 '
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Tropical & Subtropical Dry Broadleaf Forests'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#FEAA01 '
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Tropical & Subtropical Grasslands, Savannas & Shrublands'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#38A700 '
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Tropical & Subtropical Moist Broadleaf Forests'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#9ED7C2 '
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'biome_name',
+                'Tundra'
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'line-width': 0.5,
+              'line-color': ' #525252',
+              'line-opacity': 0.5
+            },
+            'source-layer': 'layer0',
+            'type': 'line',
+            'filter': [
+              'all'
             ]
           }
+        ]
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#7AB6F5',
+            'name': 'Boreal Forests/Taiga',
+            'id': 0
+          },
+          {
+            'color': '#CC6767',
+            'name': 'Deserts & Xeric Shrublands',
+            'id': 1
+          },
+          {
+            'color': '#BEE7FF',
+            'name': 'Flooded Grasslands & Savannas',
+            'id': 2
+          },
+          {
+            'color': '#FE01C4',
+            'name': 'Mangroves',
+            'id': 3
+          },
+          {
+            'color': '#FE0000',
+            'name': 'Mediterranean Forests, Woodlands & Scrub',
+            'id': 4
+          },
+          {
+            'color': '#D6C39D',
+            'name': 'Montane Grasslands & Shrublands',
+            'id': 5
+          },
+          {
+            'color': '#FFEAAF',
+            'name': 'Rock and Ice',
+            'id': 6
+          },
+          {
+            'color': '#00734C',
+            'name': 'Temperate Broadleaf & Mixed Forests',
+            'id': 7
+          },
+          {
+            'color': '#458970',
+            'name': 'Temperate Conifer Forests',
+            'id': 8
+          },
+          {
+            'color': '#FEFF73',
+            'name': 'Temperate Grasslands, Savannas & Shrublands',
+            'id': 9
+          },
+          {
+            'color': '#88CE66',
+            'name': 'Tropical & Subtropical Coniferous Forests',
+            'id': 10
+          },
+          {
+            'color': '#CCCD65',
+            'name': 'Tropical & Subtropical Dry Broadleaf Forests',
+            'id': 11
+          },
+          {
+            'color': '#FEAA01',
+            'name': 'Tropical & Subtropical Grasslands, Savannas & Shrublands',
+            'id': 12
+          },
+          {
+            'color': '#38A700',
+            'name': 'Tropical & Subtropical Moist Broadleaf Forests',
+            'id': 13
+          },
+          {
+            'color': '#9ED7C2',
+            'name': 'Tundra',
+            'id': 14
+          }
+        ],
+        'type': 'basic'
+      },
+      'interactionConfig': {
+        'output': [
+          {
+            'type': 'string',
+            'suffix': '',
+            'property': 'Biome Name',
+            'prefix': '',
+            'format': null,
+            'column': 'biome_name'
+          },
+          {
+            'type': 'string',
+            'suffix': '',
+            'property': 'Ecoregion Name',
+            'prefix': '',
+            'format': null,
+            'column': 'eco_name'
+          },
+          {
+            'column': 'cartodb_id',
+            'format': null,
+            'prefix': '',
+            'property': 'Area ID',
+            'suffix': '',
+            'type': 'number'
+          }
+        ]
+      },
+      'applicationConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-26T10:02:21.181Z',
+    'updatedAt': '2020-06-26T10:02:21.181Z',
+    'version': 0,
+    'references': []
+
+  },
+  {
+
+    'id': '0cfe2272-615c-4e28-a91e-38c9c187059c',
+    'slug': 'biodiversity-intactness',
+    'name': 'Biodiversity Intactness 2015',
+    'description': '<p>&nbsp;</p><p>Biodiversity intactness is the average proportion of natural biodiversity remaining in local ecosystems.</p><p>The Biodiversity Intactness Index (BII) shown here indicates the modeled average abundance for 2005 of a large, diverse set of naturally-occurring species in a terrestrial area, relative to a baseline with minimal human impacts.</p><p>A score of 100% indicates no loss in species from the baseline ecosystem to the current ecosystem.</p><p>The values are categorized from very low intactness to very high intactness based on the following thresholds</p><ul><li>Very low: 0-20%</li><li>Low: 20-40%</li><li>Medium: 40-60%</li><li>High: 60-80%</li><li>Very High: 80-100%</li></ul><p>&nbsp;</p><h5>Learn More</h5><p><a href="https://science.sciencemag.org/content/353/6296/288">Read the Paper</a>.</p><p><a href="https://data.nhm.ac.uk/dataset/global-map-of-the-biodiversity-intactness-index-from-newbold-et-al-2016-science">Download the Data.</a></p><p>Source(s)</p><p>United Nations Environment Programme World Conservation Monitoring Centre (UNEP-WCMC)</p><p>University College London (UCL)</p><p>Natural History Museum (NHM)</p><p>Imperial College London (Imperial)</p><p>Commonwealth Scientific and Industrial Research Organisation, Canberra (CSIRO)</p><p>Luc Hoffmann Institute</p><p>University of Copenhagen (UCPH)</p><p>University of Sussex (Sussex)</p><h5>Suggested Citation</h5><p>Newbold, Tim, Lawrence N. Hudson, Andrew P. Arnell, Sara Contu, et al. 2016. "Dataset: Global Map of the Biodiversity Intactness Index." From Tim Newbold et al., "Has Land Use Pushed Territorial Biodiversity beyond the Planetary Boundary? A Global Assessment," Science 353 (2016): 288-289. <a href="http://dx.doi.org/10.5519/0009936">http://dx.doi.org/10.5519/0009936</a>. Retrieved: 01 Dec 2017.&nbsp;</p><p>License</p><p><a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International</a></p><p>&nbsp;</p>',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Biodiversity'
+    ],
+    'config': {
+      'source': {
+        'type': 'raster',
+        'assetId': 'projects/earthpulse-sandbox/assets/layers/BIIAb-2015-old',
+        'sldValue': '<RasterSymbolizer> <ColorMap type="ramp" extended="false"> <ColorMapEntry color="#efffd1" quantity="0.0" opacity="1" /> <ColorMapEntry color="#bad4a0" quantity="0.25" /> <ColorMapEntry color="#87ab71" quantity="0.50" /> <ColorMapEntry color="#568345" quantity="0.75" />  <ColorMapEntry color="#235c1a" quantity="1.0" /> </ColorMap> </RasterSymbolizer>',
+        'styleType': 'sld',
+        'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/0cfe2272-615c-4e28-a91e-38c9c187059c/{z}/{x}/{y}']
+
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#efffd1',
+            'value': '0'
+          },
+          {
+            'color': '#bad4a0'
+          },
+          {
+            'color': '#87ab71'
+          },
+          {
+            'color': '#568345'
+          },
+          {
+            'color': '#235c1a',
+            'value': '100'
+          }
+        ],
+        'type': 'gradient'
+      },
+      'interactionConfig': {
+        'type': '',
+        'config': {
+          'url': ''
+        },
+        'output': [
+          {
+            'column': '',
+            'property': '',
+            'type': '',
+            'format': ''
+          }
+        ]
+      },
+      'applicationConfig': {},
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-25T13:25:20.834Z',
+    'updatedAt': '2020-06-30T17:30:26.856Z',
+    'version': 5,
+    'references': []
+
+  },
+  {
+    'id': 'c3b94afd-1970-4801-8ffe-5a8a61d08e1d',
+    'slug': 'aqueduct-groundwater-table-decline',
+    'name': 'Aqueduct Groundwater Table Decline',
+    'type': 'vector',
+    'category': [
+      'Protected Areas'
+    ],
+    'config': {
+      'source': {
+        type: 'vector',
+        'maxzoom': 18,
+        'minzoom': 0,
+        provider: {
+          type: 'carto',
+          'account': 'wri-rw',
+          'layers': [
+            {
+              'type': 'mapnik',
+              'options': {
+                'sql': 'SELECT * FROM wat_054_aqueduct_groundwater_table_decline',
+                'cartocss': '#layer {polygon-opacity:1; line-width:0; line-color:#FFF; line-opacity:0;} [gtd_cat=4]{polygon-fill:#990000;}[gtd_cat=3]{polygon-fill:#FF1900;} [gtd_cat=2]{polygon-fill:#FF9900;} [gtd_cat=1]{polygon-fill:#FFE600;} [gtd_cat=0]{polygon-fill:#FFFF99;}[gtd_cat=-1]{polygon-fill:#808080;}[gtd_cat=-9999]{polygon-fill:#4E4E4E;}',
+                'cartocss_version': '2.3.0'
+              }
+            }
+          ]
+        },
+        'layerType': 'vector'
+      },
+      render: {
+        'layers': [
+          {
+            'paint': {
+              'fill-color': [
+                'step',
+                [
+                  'to-number',
+                  [
+                    'get',
+                    'gtd_cat'
+                  ]
+                ],
+                '#4E4E4E',
+                -1,
+                '#808080',
+                0,
+                '#FFFF99',
+                1,
+                '#FFE600',
+                2,
+                '#FF9900',
+                3,
+                '#FF1900',
+                4,
+                '#990000'
+              ],
+              'fill-opacity': 1
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all'
+            ]
+          },
+          {
+            'paint': {
+              'line-width': 0.5,
+              'line-color': '#888',
+              'line-opacity': 0.4
+            },
+            'source-layer': 'layer0',
+            'type': 'line',
+            'filter': [
+              'all'
+            ]
+          }
+        ]
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'id': 0,
+            'color': '#FFFF99',
+            'name': 'Low'
+          },
+          {
+            'id': 1,
+            'color': '#FFE600',
+            'name': 'Low to medium'
+          },
+          {
+            'id': 1,
+            'color': '#FF9900',
+            'name': 'Medium to high'
+          },
+          {
+            'id': 2,
+            'color': '#FF1900',
+            'name': 'High'
+          },
+          {
+            'id': 3,
+            'color': '#990000',
+            'name': 'Extremely high'
+          },
+          {
+            'id': 4,
+            'color': '#808080',
+            'name': 'Insignificant trend'
+          },
+          {
+            'id': 5,
+            'color': '#4E4E4E',
+            'name': 'No data'
+          }
+        ],
+        'type': 'basic'
+      },
+      'interactionConfig': {
+        'output': [
+          {
+            'type': 'string',
+            'suffix': '',
+            'property': 'Groundwater table decline',
+            'prefix': '',
+            'format': null,
+            'column': 'gtd_label'
+          },
+          {
+            'column': 'cartodb_id',
+            'format': null,
+            'prefix': '',
+            'property': 'Area ID',
+            'suffix': '',
+            'type': 'number'
+          }
+        ]
+      },
+      'applicationConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-26T10:11:46.218Z',
+    'updatedAt': '2020-06-30T17:53:25.608Z',
+    'version': 3,
+    'references': []
+  },
+  {
+
+    'id': '4adc9b7b-37be-442c-b90f-18aa9abe7f76',
+    'slug': 'aqueduct-baseline-water-stress',
+    'name': 'Aqueduct Baseline Water Stress',
+    'type': 'vector',
+    'category': [
+      'Protected Areas'
+    ],
+    'config': {
+      'source': {
+        'type': 'vector',
+        provider: {
+          type: 'carto',
+          'account': 'wri-rw',
+          'layers': [
+            {
+              'type': 'cartodb',
+              'options': {
+                'sql': 'SELECT * FROM wat_050_aqueduct_baseline_water_stress',
+                'cartocss': '#layer {polygon-opacity:1; line-width:0.1;line-opacity:1;} [bws_cat=4]{polygon-fill:#990000; line-color:#990000}[bws_cat=3]{polygon-fill:#FF1900; line-color:#FF1900} [bws_cat=2]{polygon-fill:#FF9900; line-color:#FF9900} [bws_cat=1]{polygon-fill:#FFE600; line-color:#FFE600} [bws_cat=0]{polygon-fill:#FFFF99; line-color:#FFFF99}[bws_cat=-1]{polygon-fill:#808080; line-color:#808080}[bws_cat=-9999]{polygon-fill:#4E4E4E; line-color:#4E4E4E}',
+                'cartocss_version': '2.3.0'
+              }
+            }
+          ]
+
         },
       },
       render: {
@@ -278,8 +2107,7 @@ const LAYERS = [
             ]
           }
         ]
-      }
-      ,
+      },
       'legendConfig': {
         'items': [
           {
