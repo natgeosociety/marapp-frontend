@@ -15,6 +15,1484 @@ import {getGroup} from 'sagas/saga-utils';
 const LAYERS = [
   {
 
+    'id': '4adc9b7b-37be-442c-b90f-18aa9abe7f76',
+    'slug': 'aqueduct-baseline-water-stress',
+    'name': 'Aqueduct Baseline Water Stress',
+    'type': 'vector',
+    'provider': 'cartodb',
+    'category': [
+      'Protected Areas'
+    ],
+    'config': {
+      'source': {
+        'type': 'vector',
+        provider: {
+          type: 'carto',
+          "options": {
+            "account": "wri-rw",
+            "layers": [
+              {
+                'type': 'cartodb',
+                'options': {
+                  'sql': 'SELECT * FROM wat_050_aqueduct_baseline_water_stress',
+                  'cartocss': '#layer {polygon-opacity:1; line-width:0.1;line-opacity:1;} [bws_cat=4]{polygon-fill:#990000; line-color:#990000}[bws_cat=3]{polygon-fill:#FF1900; line-color:#FF1900} [bws_cat=2]{polygon-fill:#FF9900; line-color:#FF9900} [bws_cat=1]{polygon-fill:#FFE600; line-color:#FFE600} [bws_cat=0]{polygon-fill:#FFFF99; line-color:#FFFF99}[bws_cat=-1]{polygon-fill:#808080; line-color:#808080}[bws_cat=-9999]{polygon-fill:#4E4E4E; line-color:#4E4E4E}',
+                  'cartocss_version': '2.3.0'
+                }
+              }
+            ]
+          }
+        },
+      },
+      render: {
+        'layers': [
+          {
+            'paint': {
+              'fill-opacity': 1
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all'
+            ]
+          },
+          {
+            'paint': {
+              'line-color': '#990000'
+            },
+            'source-layer': 'layer0',
+            'type': 'line',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                4
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#990000'
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                4
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'line-color': '#FF1900'
+            },
+            'source-layer': 'layer0',
+            'type': 'line',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                3
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#FF1900'
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                3
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'line-color': '#FF9900'
+            },
+            'source-layer': 'layer0',
+            'type': 'line',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                2
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#FF9900'
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                2
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'line-color': '#FFE600'
+            },
+            'source-layer': 'layer0',
+            'type': 'line',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                1
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#FFE600'
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                1
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'line-color': '#FFFF99'
+            },
+            'source-layer': 'layer0',
+            'type': 'line',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                0
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#FFFF99'
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                0
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'line-color': '#808080'
+            },
+            'source-layer': 'layer0',
+            'type': 'line',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                -1
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#808080'
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                -1
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'line-color': '#4E4E4E'
+            },
+            'source-layer': 'layer0',
+            'type': 'line',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                -9999
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'fill-color': '#4E4E4E'
+            },
+            'source-layer': 'layer0',
+            'type': 'fill',
+            'filter': [
+              'all',
+              [
+                '==',
+                'bws_cat',
+                -9999
+              ]
+            ]
+          },
+          {
+            'paint': {
+              'line-color': '#525252',
+              'line-width': 0.1,
+              'line-opacity': 0.3
+            },
+            'source-layer': 'layer0',
+            'type': 'line',
+            'filter': [
+              'all'
+            ]
+          }
+        ]
+      }
+      ,
+      'legendConfig': {
+        'items': [
+          {
+            'id': 0,
+            'color': '#FFFF99',
+            'name': 'Low'
+          },
+          {
+            'id': 1,
+            'color': '#FFE600',
+            'name': 'Low to medium'
+          },
+          {
+            'id': 1,
+            'color': '#FF9900',
+            'name': 'Medium to high'
+          },
+          {
+            'id': 2,
+            'color': '#FF1900',
+            'name': 'High'
+          },
+          {
+            'id': 3,
+            'color': '#990000',
+            'name': 'Extremely high'
+          },
+          {
+            'id': 4,
+            'color': '#808080',
+            'name': 'Arid and low water use'
+          },
+          {
+            'id': 5,
+            'color': '#4E4E4E',
+            'name': 'No⠀data'
+          }
+        ],
+        'type': 'choropleth'
+      },
+      'interactionConfig': {
+        'output': [
+          {
+            'type': 'string',
+            'suffix': '',
+            'property': 'Baseline water stress',
+            'prefix': '',
+            'format': null,
+            'column': 'bws_label'
+          },
+          {
+            'column': 'cartodb_id',
+            'format': null,
+            'prefix': '',
+            'property': 'Area ID',
+            'suffix': '',
+            'type': 'number'
+          }
+        ]
+      },
+      'applicationConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-26T10:13:15.006Z',
+    'updatedAt': '2020-06-30T17:54:05.880Z',
+    'version': 1,
+    'references': []
+
+  },
+  {
+
+    'id': 'c39013f5-27c3-4a93-8355-1b9a25271a0b',
+    'slug': 'accessibility-to-cities-2015',
+    'name': 'Accessibility to Cities 2015',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Human Impact'
+    ],
+    'config': {
+      'source': {
+        'assetId': 'Oxford/MAP/accessibility_to_cities_2015_v1_0',
+
+        'maxNativeZoom': 13,
+        'maxzoom': 19,
+        'minNativeZoom': 4,
+        'minzoom': 2,
+        'sldValue': '<RasterSymbolizer><ColorMap type="ramp" extended="false" ><ColorMapEntry color="#ebebe8" quantity="-9999" opacity="0" label="NoData"/><ColorMapEntry color="#8c510a" quantity="0" label="0"/><ColorMapEntry color="#d8b365" quantity="2" label="" /><ColorMapEntry color="#e6f598" quantity="4" label="" /><ColorMapEntry color="#91cf60" quantity="6" label="" /><ColorMapEntry color="#31a354" quantity="12" label="" /><ColorMapEntry color="#006837" quantity="15" label="1" /></ColorMap></RasterSymbolizer>',
+        'styleType': 'sld',
+        'tiles': ['https://api.resourcewatch.org/v1/layer/d787d894-f7af-47c4-af0f-0849b06686ee/tile/gee/{z}/{x}/{y}'],
+
+        'params_config': [],
+        'type': 'raster'
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#FFFFFF',
+            'name': '0 hours'
+          },
+          {
+            'color': '#C0F09C',
+            'name': '1 hour'
+          },
+          {
+            'color': '#E3DA64',
+            'name': '2 hours'
+          },
+          {
+            'color': '#D16638',
+            'name': '3 hours'
+          },
+          {
+            'color': '#BA2D2F',
+            'name': '6 hours'
+          },
+          {
+            'color': '#A11F4A',
+            'name': '12 hours'
+          },
+          {
+            'color': '#730D6F',
+            'name': '1 day'
+          },
+          {
+            'color': '#0D0437',
+            'name': '14 days'
+          },
+          {
+            'color': '#00030F',
+            'name': '1 month'
+          }
+        ],
+        'type': 'basic'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'active': true,
+        'default': true,
+        'global': true,
+        'metadata': 'modis-evi-2015'
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-25T14:23:12.162Z',
+    'updatedAt': '2020-06-26T22:01:05.558Z',
+    'version': 3,
+    'references': []
+
+  },
+  {
+
+    'id': 'a217ee5c-4536-4237-a031-ecadcee71f4a',
+    'slug': 'aboveground-live-woody-biomass-density',
+    'name': 'Aboveground Live Woody Biomass Density 2000',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Climate & Carbon'
+    ],
+    'config': {
+      'source': {
+        'assetId': '',
+
+        'maxNativeZoom': 13,
+        'maxzoom': 19,
+        'minNativeZoom': 4,
+        'minzoom': 2,
+        'sldValue': '',
+        'styleType': 'sld',
+        'tiles': ['https://api.resourcewatch.org/v1/layer/8605072c-cfc7-4bc7-b145-90ad7e95976c/tile/gee/{z}/{x}/{y}'],
+
+        'params_config': [],
+        'type': 'raster'
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#440154',
+            'name': '50'
+          },
+          {
+            'color': '#404387',
+            'name': '100'
+          },
+          {
+            'color': '#29788E',
+            'name': '150'
+          },
+          {
+            'color': '#22A784',
+            'name': '200'
+          },
+          {
+            'color': '#79D151',
+            'name': '300'
+          },
+          {
+            'color': '#FDE724',
+            'name': '400 Mg C/Ha'
+          }
+        ],
+        'type': 'gradient'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'active': true,
+        'default': true,
+        'global': true,
+        'metadata': 'modis-evi-2015'
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-25T17:06:47.785Z',
+    'updatedAt': '2020-06-30T17:58:21.805Z',
+    'version': 4,
+    'references': []
+
+  },
+  {
+
+    'id': '8947fd12-a010-4d4a-a964-c1eea82ced47',
+    'slug': 'elsa-kazakhstan',
+    'name': 'ELSA Mapping - Kazakhstan',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Human Impact'
+    ],
+    'config': {
+      'source': {
+        'assetId': 'projects/earthpulse-sandbox/assets/layers/KAZ_121010_wgs',
+        'maxNativeZoom': 13,
+        'maxzoom': 19,
+        'minNativeZoom': 4,
+        'minzoom': 2,
+        'sldValue': '<RasterSymbolizer> <ColorMap type="intervals" extended="false"> <ColorMapEntry color="#08E334" label="Protect" quantity="1" opacity="1" /> + <ColorMapEntry color="#E3D208" label="Manage" quantity="2" opacity="1" /> + <ColorMapEntry color="#08DDE3" label="Restore" quantity="3" opacity="1" /> + <ColorMapEntry color="#B615BA" label="Urban" quantity="4" opacity="1" /> + </ColorMap> </RasterSymbolizer>',
+        'styleType': 'sld',
+        'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/8947fd12-a010-4d4a-a964-c1eea82ced47/{z}/{x}/{y}'],
+        'params_config': [],
+        'type': 'raster'
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#08E334',
+            'name': 'Protect'
+          },
+          {
+            'color': '#E3D208',
+            'name': 'Manage'
+          },
+          {
+            'color': '#08DDE3',
+            'name': 'Restore'
+          }
+        ],
+        'type': 'basic'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'defaultLayer': true,
+        'contextLayer': true,
+        'widget': [
+          {
+            'id': 3,
+            'slug': 'human'
+          }
+        ]
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL-ELSA',
+    'published': true,
+    'createdAt': '2020-06-30T16:48:08.225Z',
+    'updatedAt': '2020-06-30T16:48:30.610Z',
+    'version': 1,
+    'references': []
+
+  },
+  {
+
+    'id': '1c073b0b-4af6-4224-ac4e-27ade34f2678',
+    'slug': 'elsa-uganda',
+    'name': 'ELSA Mapping - Uganda',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Human Impact'
+    ],
+    'config': {
+      'source': {
+        'assetId': 'projects/earthpulse-sandbox/assets/layers/uga_p17_m15_r15_all',
+        'maxNativeZoom': 13,
+        'maxzoom': 19,
+        'minNativeZoom': 4,
+        'minzoom': 2,
+        'sldValue': '<RasterSymbolizer> <ColorMap type="intervals" extended="false"> <ColorMapEntry color="#08E334" label="Protect" quantity="1" opacity="1" /> + <ColorMapEntry color="#E3D208" label="Manage" quantity="2" opacity="1" /> + <ColorMapEntry color="#08DDE3" label="Restore" quantity="3" opacity="1" /> + <ColorMapEntry color="#B615BA" label="Urban" quantity="4" opacity="1" /> + </ColorMap> </RasterSymbolizer>',
+        'styleType': 'sld',
+        'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/1c073b0b-4af6-4224-ac4e-27ade34f2678/{z}/{x}/{y}'],
+        'params_config': [],
+        'type': 'raster'
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#08E334',
+            'name': 'Protect'
+          },
+          {
+            'color': '#E3D208',
+            'name': 'Manage'
+          },
+          {
+            'color': '#08DDE3',
+            'name': 'Restore'
+          }
+        ],
+        'type': 'basic'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'defaultLayer': true,
+        'contextLayer': true,
+        'widget': [
+          {
+            'id': 3,
+            'slug': 'human'
+          }
+        ]
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL-ELSA',
+    'published': true,
+    'createdAt': '2020-06-26T22:53:45.711Z',
+    'updatedAt': '2020-06-26T22:59:31.891Z',
+    'version': 3,
+    'references': []
+
+  },
+  {
+
+    'id': '60870eaa-706e-4b53-9e8d-ed063325b38b',
+    'slug': 'elsa-costa-rica',
+    'name': 'ELSA Mapping - Costa Rica',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Human Impact'
+    ],
+    'config': {
+      'source': {
+        'assetId': 'projects/earthpulse-sandbox/assets/layers/cri_p27_m8_r5_u03_all',
+        'maxNativeZoom': 13,
+        'maxzoom': 19,
+        'minNativeZoom': 4,
+        'minzoom': 2,
+        'sldValue': '<RasterSymbolizer> <ColorMap type="intervals" extended="false"> <ColorMapEntry color="#08E334" label="Protect" quantity="1" opacity="1" /> + <ColorMapEntry color="#E3D208" label="Manage" quantity="2" opacity="1" /> + <ColorMapEntry color="#08DDE3" label="Restore" quantity="3" opacity="1" /> + <ColorMapEntry color="#B615BA" label="Urban" quantity="4" opacity="1" /> + </ColorMap> </RasterSymbolizer>',
+        'styleType': 'sld',
+        'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/60870eaa-706e-4b53-9e8d-ed063325b38b/{z}/{x}/{y}'],
+        'params_config': [],
+        'type': 'raster'
+      },
+      'legendConfig': {
+        'items': [
+          {
+            'color': '#08E334',
+            'name': 'Protect'
+          },
+          {
+            'color': '#E3D208',
+            'name': 'Manage'
+          },
+          {
+            'color': '#08DDE3',
+            'name': 'Restore'
+          },
+          {
+            'color': '#B615BA',
+            'name': 'Urban'
+          }
+        ],
+        'type': 'basic'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'defaultLayer': true,
+        'contextLayer': true,
+        'widget': [
+          {
+            'id': 3,
+            'slug': 'human'
+          }
+        ]
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL-ELSA',
+    'published': true,
+    'createdAt': '2020-06-26T22:51:20.396Z',
+    'updatedAt': '2020-06-26T22:52:01.096Z',
+    'version': 1,
+    'references': []
+
+  },
+  {
+
+    'id': 'e04026e7-e9be-4a65-9913-1b36604ed8d7',
+    'slug': 'protected-area-connectivity',
+    'name': 'Protected Area Connectivity',
+    'description': '',
+    'type': 'vector',
+    'provider': 'cartodb',
+    'category': [
+      'Protected Areas'
+    ],
+    'config': {
+      'source': {
+        'format': 'image/png',
+        'options': {
+          'useCors': true
+        },
+        'minzoom': 2,
+        'maxzoom': 19
+
+      },
+      'legendConfig': {
+        'legendType': 'yearpicker',
+        'items': [
+          {
+            'color': '#8c510a',
+            'value': '0'
+          },
+          {
+            'color': '#d8b365',
+            'value': ''
+          },
+          {
+            'color': '#e6f598',
+            'value': ''
+          },
+          {
+            'color': '#91cf60',
+            'value': ''
+          },
+          {
+            'color': '#31a354',
+            'value': ''
+          },
+          {
+            'color': '#006837',
+            'value': '1'
+          }
+        ],
+        'type': 'gradient'
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'active': true,
+        'default': true,
+        'global': true
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-26T08:38:21.557Z',
+    'updatedAt': '2020-06-26T13:00:47.276Z',
+    'version': 1,
+    'references': [
+      {
+        'category': [
+          'Protected Areas'
+        ],
+        'published': true,
+        'version': 0,
+        'references': [],
+        'name': 'Protected Connected Land by Country (%)',
+        'slug': 'protected-connected-land-by-country',
+        'type': 'vector',
+        'provider': 'cartodb',
+        'config': {
+          'source': {
+            'account': 'wri-rw',
+            'maxzoom': 18,
+            'layerType': 'vector'
+          },
+          render: {
+            'layers': [
+              {
+                'type': 'fill',
+                'source-layer': 'layer0',
+                'options': {
+                  'sql': 'SELECT wri.cartodb_id, ST_Transform(wri.the_geom, 3857) AS the_geom_webmercator, wri.name, data.iso3, data.protconn_b FROM bio_040_prot_conn_countries data LEFT OUTER JOIN wri_countries_a wri ON data.iso3 = wri.iso_a3 AND wri.name IS NOT NULL',
+                  'cartocss': '#bio_040_prot_conn_countries {polygon-opacity: 1; line-width: 0; line-color: #FFF; line-opacity: 1;} [protconn_b>=50]{polygon-fill:#597D58;} [protconn_b>=30][protconn_b<50]{polygon-fill:#729D64;} [protconn_b>=17][protconn_b<30]{polygon-fill:#9CBE6F;} [protconn_b>=12][protconn_b<17]{polygon-fill:#C4DB70;}  [protconn_b>=8][protconn_b<12]{polygon-fill:#FAEE70;}  [protconn_b>=5][protconn_b<8]{polygon-fill:#F8D86A;}  [protconn_b>=2][protconn_b<5]{polygon-fill:#F9B361;} [protconn_b>=1][protconn_b<2]{polygon-fill:#F19158;} [protconn_b<1]{polygon-fill:#F17651;}',
+                  'cartocss_version': '2.3.0'
+                }
+              }
+            ],
+            'vectorLayers': [
+              {
+                'paint': {
+                  'fill-opacity': 1
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all'
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#597D58'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn_b',
+                    50
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#729D64'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn_b',
+                    30
+                  ],
+                  [
+                    '<',
+                    'protconn_b',
+                    50
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#9CBE6F'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn_b',
+                    17
+                  ],
+                  [
+                    '<',
+                    'protconn_b',
+                    30
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#C4DB70'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn_b',
+                    12
+                  ],
+                  [
+                    '<',
+                    'protconn_b',
+                    17
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#FAEE70'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn_b',
+                    8
+                  ],
+                  [
+                    '<',
+                    'protconn_b',
+                    12
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#F8D86A'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn_b',
+                    5
+                  ],
+                  [
+                    '<',
+                    'protconn_b',
+                    8
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#F9B361'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn_b',
+                    2
+                  ],
+                  [
+                    '<',
+                    'protconn_b',
+                    5
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#F19158'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn_b',
+                    1
+                  ],
+                  [
+                    '<',
+                    'protconn_b',
+                    2
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#F17651'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '<',
+                    'protconn_b',
+                    1
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'line-width': 0.5,
+                  'line-color': '#525252',
+                  'line-opacity': 0.3
+                },
+                'source-layer': 'layer0',
+                'type': 'line',
+                'filter': [
+                  'all'
+                ]
+              }
+            ],
+          },
+          'legendConfig': {
+            'items': [
+              {
+                'color': '#F17651',
+                'name': '<1',
+                'id': 0
+              },
+              {
+                'color': '#F19158',
+                'name': '<2',
+                'id': 1
+              },
+              {
+                'color': '#F9B361',
+                'name': '<5',
+                'id': 2
+              },
+              {
+                'color': '#F8D86A',
+                'name': '<8',
+                'id': 3
+              },
+              {
+                'color': '#FAEE70',
+                'name': '<12',
+                'id': 4
+              },
+              {
+                'color': '#C4DB70',
+                'name': '<17',
+                'id': 5
+              },
+              {
+                'color': '#9CBE6F',
+                'name': '<30',
+                'id': 6
+              },
+              {
+                'color': '#729D64',
+                'name': '<50',
+                'id': 7
+              },
+              {
+                'color': '#597D58',
+                'name': '≥50',
+                'id': 8
+              }
+            ],
+            'type': 'choropleth'
+          },
+          'interactionConfig': {
+            'output': [
+              {
+                'column': 'name',
+                'format': null,
+                'prefix': '',
+                'property': 'Country',
+                'suffix': ''
+              },
+              {
+                'column': 'protconn_b',
+                'format': null,
+                'prefix': '',
+                'property': 'Percent of country area covered by protected connected lands',
+                'suffix': ''
+              }
+            ]
+          },
+          'applicationConfig': {}
+        },
+        'organization': 'UNBL',
+        'createdAt': '2020-06-26T08:34:16.929Z',
+        'updatedAt': '2020-06-26T08:34:16.929Z',
+        'id': '76d4d440-7ea1-4b68-94c0-c76f8a147fbd'
+      },
+      {
+        'category': [
+          'Protected Areas'
+        ],
+        'published': true,
+        'version': 3,
+        'references': [],
+        'description': '',
+        'name': 'Protected Land That Is Connected by Ecoregion (%25)',
+        'slug': 'protected-land-that-is-connected-by-ecoregion',
+        'type': 'vector',
+        'provider': 'cartodb',
+        'config': {
+          'source': {
+            'maxzoom': 18,
+            'account': 'wri-rw',
+            'layerType': 'vector',
+          },
+          render: {
+            'layers': [
+              {
+                'options': {
+                  'cartocss_version': '2.3.0',
+                  'cartocss': '#bio_040_prot_conn_ecoregions {polygon-opacity: 1; line-width: 0; line-color: #FFF; line-opacity: 1;} [protconn>=50]{polygon-fill:#597D58;} [protconn>=30][protconn<50]{polygon-fill:#729D64;} [protconn>=17][protconn<30]{polygon-fill:#9CBE6F;} [protconn>=12][protconn<17]{polygon-fill:#C4DB70;}  [protconn>=8][protconn<12]{polygon-fill:#FAEE70;}  [protconn>=5][protconn<8]{polygon-fill:#F8D86A;}  [protconn>=2][protconn<5]{polygon-fill:#F9B361;} [protconn>=1][protconn<2]{polygon-fill:#F19158;} [protconn<1]{polygon-fill:#F17651;}',
+                  'sql': 'SELECT * FROM bio_040_prot_conn_ecoregions'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill'
+              }
+            ],
+            'vectorLayers': [
+              {
+                'paint': {
+                  'fill-opacity': 1
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all'
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#597D58'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn',
+                    50
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#729D64'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn',
+                    30
+                  ],
+                  [
+                    '<',
+                    'protconn',
+                    50
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#9CBE6F'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn',
+                    17
+                  ],
+                  [
+                    '<',
+                    'protconn',
+                    30
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#C4DB70'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn',
+                    12
+                  ],
+                  [
+                    '<',
+                    'protconn',
+                    17
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#FAEE70'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn',
+                    8
+                  ],
+                  [
+                    '<',
+                    'protconn',
+                    12
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#F8D86A'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn',
+                    5
+                  ],
+                  [
+                    '<',
+                    'protconn',
+                    8
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#F9B361'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn',
+                    2
+                  ],
+                  [
+                    '<',
+                    'protconn',
+                    5
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#F19158'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '>=',
+                    'protconn',
+                    1
+                  ],
+                  [
+                    '<',
+                    'protconn',
+                    2
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'fill-color': '#F17651'
+                },
+                'source-layer': 'layer0',
+                'type': 'fill',
+                'filter': [
+                  'all',
+                  [
+                    '<',
+                    'protconn',
+                    1
+                  ]
+                ]
+              },
+              {
+                'paint': {
+                  'line-width': 0.5,
+                  'line-color': '#525252',
+                  'line-opacity': 0.3
+                },
+                'source-layer': 'layer0',
+                'type': 'line',
+                'filter': [
+                  'all'
+                ]
+              }
+            ],
+          },
+          'legendConfig': {
+            'type': 'choropleth',
+            'items': [
+              {
+                'name': '<1',
+                'color': '#F17651',
+                'id': 0
+              },
+              {
+                'name': '<2',
+                'color': '#F19158',
+                'id': 1
+              },
+              {
+                'name': '<5',
+                'color': '#F9B361',
+                'id': 2
+              },
+              {
+                'name': '<8',
+                'color': '#F8D86A',
+                'id': 3
+              },
+              {
+                'name': '<12',
+                'color': '#FAEE70',
+                'id': 4
+              },
+              {
+                'name': '<17',
+                'color': '#C4DB70',
+                'id': 5
+              },
+              {
+                'name': '<30',
+                'color': '#9CBE6F',
+                'id': 6
+              },
+              {
+                'name': '<50',
+                'color': '#729D64',
+                'id': 7
+              },
+              {
+                'name': '≥50',
+                'color': '#597D58',
+                'id': 8
+              }
+            ]
+          },
+          'interactionConfig': {
+            'output': [
+              {
+                'column': 'eco_name',
+                'format': null,
+                'prefix': '',
+                'property': 'Ecoregion',
+                'suffix': '',
+                'type': 'string'
+              },
+              {
+                'column': 'biome',
+                'format': null,
+                'prefix': '',
+                'property': 'Biome',
+                'suffix': '',
+                'type': 'string'
+              },
+              {
+                'column': 'protconn',
+                'format': null,
+                'prefix': '',
+                'property': 'ProtConn',
+                'suffix': ' %',
+                'type': 'number'
+              },
+              {
+                'column': 'cartodb_id',
+                'format': null,
+                'prefix': '',
+                'property': 'Area ID',
+                'suffix': '',
+                'type': 'number'
+              }
+            ]
+          },
+          'applicationConfig': {}
+        },
+        'organization': 'UNBL',
+        'createdAt': '2020-06-26T08:35:44.135Z',
+        'updatedAt': '2020-06-30T08:31:58.935Z',
+        'id': '53df0f51-2758-4c73-b48f-f3316102e59d'
+      }
+    ]
+  },
+  {
+
+    'id': 'a64f41f0-8798-4ed8-8376-2efa4ab70f63',
+    'slug': 'population-density-2015',
+    'name': 'Population Density 2015 (CIESIN, 2017)',
+    'type': 'raster',
+    'provider': 'gee',
+    'category': [
+      'Human Impact'
+    ],
+    'config': {
+      'source': {
+        'type': 'raster',
+        'paramsConfig': [],
+        'isImageCollection': false,
+
+        'styleType': 'sld',
+        'sldValue': '<RasterSymbolizer> + <ColorMap type="gradient" extended="false" > + <ColorMapEntry color="#912512" quantity="1" opacity="0"/> + <ColorMapEntry color="#ed602a" quantity="10" /> + <ColorMapEntry color="#ee702d" quantity="50"  /> + <ColorMapEntry color="#ef8528" quantity="75" /> + <ColorMapEntry color="#f19336" quantity="100" /> + <ColorMapEntry color="#f2a567" quantity="150" /> + <ColorMapEntry color="#f7ce9d" quantity="175" /> + <ColorMapEntry color="#fbe9d2" quantity="200" /> + </ColorMap> + </RasterSymbolizer>',
+        'minzoom': 2,
+        'minNativeZoom': 3,
+        'maxzoom': 19,
+        'maxNativeZoom': 13,
+
+        'assetId': 'CIESIN/GPWv4/population-density/2015',
+        'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/a64f41f0-8798-4ed8-8376-2efa4ab70f63/{z}/{x}/{y}']
+      },
+      'legendConfig': {
+        'type': 'gradient',
+        'items': [
+          {
+            'value': '1',
+            'color': '#912512'
+          },
+          {
+            'value': '',
+            'color': '#ed602a'
+          },
+          {
+            'value': '',
+            'color': '#ee702d'
+          },
+          {
+            'value': '',
+            'color': '#ef8528'
+          },
+          {
+            'value': '',
+            'color': '#f19336'
+          },
+          {
+            'value': '',
+            'color': '#f2a567'
+          },
+          {
+            'value': '',
+            'color': '#f7ce9d'
+          },
+          {
+            'value': '>200 persons/1km²',
+            'color': '#fbe9d2'
+          }
+        ]
+      },
+      'interactionConfig': {},
+      'applicationConfig': {
+        'metadata': 'global_population_jrc',
+        'global': true,
+        'default': true,
+        'analysisConfig': [
+          {
+            'version': 'v1',
+            'type': 'geostore',
+            'service': 'population',
+            'keys': [
+              {
+                'unit': 'people',
+                'title': 'Total population',
+                'key': 'totalPopulation'
+              },
+              {
+                'unit': 'people Ha⁻¹',
+                'title': 'Population density',
+                'key': 'populationDensity'
+              }
+            ]
+          },
+          {
+            'version': 'v1',
+            'type': 'admin',
+            'service': 'population',
+            'keys': [
+              {
+                'unit': 'people',
+                'title': 'Total population',
+                'key': 'totalPopulation'
+              },
+              {
+                'unit': 'people Ha⁻¹',
+                'title': 'Population density',
+                'key': 'populationDensity'
+              }
+            ]
+          }
+        ],
+        'active': true
+      },
+      'staticImageConfig': {}
+    },
+    'organization': 'UNBL',
+    'published': true,
+    'createdAt': '2020-06-26T22:28:15.312Z',
+    'updatedAt': '2020-06-26T22:29:57.189Z',
+    'version': 1,
+    'references': []
+
+  },
+  {
+
     'id': 'a23e8629-0c17-499e-9ae8-be618d9d79f7',
     'slug': 'modis-evi',
     'name': 'MODIS EVI',
