@@ -8,6 +8,7 @@ import DashboardsPage from 'pages-client/dashboards';
 import LayersPage from 'pages-client/layers';
 import WidgetsPage from 'pages-client/widgets';
 import UsersPage from 'pages-client/users';
+import OrganizationsPage from 'pages-client/organizations';
 import Organization from 'pages-client/organization';
 import Homepage from 'pages-client/homepage';
 import UnauthorizedPage from 'pages-client/unauthorized';
@@ -28,6 +29,7 @@ export default function IndexPage() {
         <LayersPage path="/layers/*" />
         <WidgetsPage path="/widgets/*" />
         <UsersPage path="/users/*" />
+        <OrganizationsPage path="/organizations/*" />
       </ProtectedRoute>
       <UnauthorizedPage path="/unauthorized" />
     </Router>
