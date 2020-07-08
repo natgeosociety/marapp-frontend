@@ -14,6 +14,11 @@ export interface ILayer {
   updatedAt: Date;
   version: number;
   references?: any;
+  source?: any;
+  paramsConfig?: any;
+  sqlConfig?: any;
+  decodeConfig?: any;
+  timelineConfig?: any;
 }
 
 interface ILayerConfig {

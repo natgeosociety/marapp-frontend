@@ -22,8 +22,8 @@ class LegendItemGroupComponent extends React.PureComponent<ILegendItemGroupCompo
   render() {
     const { activeLayer } = this.props;
 
-    const { id, current, layerConfig } = activeLayer;
-    const { type, layers } = layerConfig;
+    const { id, current, source } = activeLayer;
+    const { type, layers } = source;
 
     if (type !== 'group') {
       return null;

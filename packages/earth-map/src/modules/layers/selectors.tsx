@@ -38,12 +38,13 @@ export const getGroupedLayers = createSelector([layers], (_layers: ILayer[]) => 
 export const getLegendLayers = createSelector(
   [layers, settings, active],
   (_layers: ILayer[], _settings, _active) => {
+
+   // console.log('get legend layers');
     if (!_layers) {
       return [];
     }
 
     const legendLayers = _layers.filter((l: ILayer) => l.legendConfig && !isEmpty(l.legendConfig));
-
     const layerGroups = [];
 
     _active.forEach((slug) => {
@@ -51,13 +52,15 @@ export const getLegendLayers = createSelector(
       if (!layer) {
         return false;
       }
+     // console.log(layer, 'layer is');
 
-      const { name, description, layerConfig, legendConfig } = layer;
+      const { name, description, source, legendConfig, paramsConfig,
+        sqlConfig, decodeConfig, timelineConfig, type } = layer;
 
-      const { paramsConfig, sqlConfig, decodeConfig, timelineConfig, type } = layerConfig;
       const settings = _settings[layer.slug] || {};
 
       let params = !!paramsConfig && getParams(paramsConfig, settings.params);
+
       const sqlParams = !!sqlConfig && getParams(sqlConfig, settings.sqlParams);
       const decodeParams = !!decodeConfig && getParams(decodeConfig.values, settings.decodeParams);
 
@@ -70,18 +73,18 @@ export const getLegendLayers = createSelector(
       const { legendType } = legend;
 
       if (GROUP_LEGEND(type) || YEAR_PICKER_LEGEND(legendType)) {
-        const currentActive = settings.current || layerConfig.layers[0].id;
-        const { legendConfig } = layerConfig.layers.find((l) => l.id === currentActive);
+        const currentActive = settings.current || layer.references[0].id;
+        const { legendConfig } = layer.references.find((l) => l.id === currentActive);
 
         legend = legendConfig;
       }
 
       if (YEAR_DATE_PICKER_LEGEND(legendType)) {
-        const currentActive = settings.current || layerConfig.layers[0].id;
+        const currentActive = settings.current || layer.references[0].id;
 
-        const current = layerConfig.layers.find((l) => l.id === currentActive);
+        const current = layer.references.find((l) => l.id === currentActive);
 
-        const { decodeConfig, paramsConfig } = current.layerConfig;
+        const { decodeConfig, paramsConfig } = current;
         const { legendConfig } = current;
 
         legend = legendConfig;
@@ -137,6 +140,8 @@ export const getLegendLayers = createSelector(
       });
     });
 
+   // console.log(layerGroups);
+
     return layerGroups;
   }
 );
@@ -144,6 +149,7 @@ export const getLegendLayers = createSelector(
 export const getActiveLayers = createSelector(
   [layers, settings, active],
   (_layers: ILayer[], _settings, _active) => {
+   // console.log('get active layers');
     if (!_layers) {
       return [];
     }
@@ -156,16 +162,16 @@ export const getActiveLayers = createSelector(
           return null;
         }
 
-        const { layerConfig } = layer;
+        const { source } = layer;
         const { legendConfig } = layer;
         const {
           type,
-          layers: layerConfigLayers,
+          // layers: layerConfigLayers,
           paramsConfig,
           sqlConfig,
           decodeConfig,
           timelineConfig,
-        } = layerConfig;
+        } = layer;
         const settings = _settings[layer.slug] || {};
 
         // @ts-ignore
@@ -181,8 +187,8 @@ export const getActiveLayers = createSelector(
             YEAR_PICKER_LEGEND(legendType) ||
             // @ts-ignore
             YEAR_DATE_PICKER_LEGEND(legendType)) && {
-            ...layerConfigLayers.find((l) => {
-              const current = settings.current || layerConfig.layers[0].id;
+            ...layer.references.find((l) => {
+              const current = settings.current || layer.references[0].id;
 
               return l.id === current;
             }),
@@ -260,18 +266,20 @@ export const getActiveBoundsLayer = createSelector([place], (_place) => {
 export const getActiveInteractiveLayersIds = createSelector(
   [layers, settings, active],
   (_layers: ILayer[], _settings, _active) => {
+
+   // console.log('get active interactive layers ids');
     if (!_layers) {
       return [];
     }
 
     const getIds = (layer: ILayer) => {
-      const { id, layerConfig, interactionConfig } = layer;
-      if (isEmpty(layerConfig) || isEmpty(interactionConfig)) {
+      const { id, source, interactionConfig } = layer;
+
+      if (isEmpty(source) || isEmpty(interactionConfig)) {
         return null;
       }
 
-      const { body = {} } = layerConfig;
-      const { vectorLayers } = body;
+      const { vectorLayers } = source;
 
       if (!vectorLayers) {
         return null;
@@ -284,17 +292,17 @@ export const getActiveInteractiveLayersIds = createSelector(
       });
     };
 
-    return flatten(
+    const coco =  flatten(
       compact(
         _active.map((kActive, i) => {
-          const layer = _layers.find((l: ILayer) => l.slug === kActive);
+          const layer = _layers.find((l: any) => l.slug === kActive);
 
           if (!layer) {
             return null;
           }
 
-          const { slug, layerConfig, legendConfig } = layer;
-          const { type } = layerConfig;
+
+          const { slug, source, legendConfig, type } = layer;
           const { legendType } = legendConfig as any;
 
           if (
@@ -302,7 +310,11 @@ export const getActiveInteractiveLayersIds = createSelector(
             YEAR_PICKER_LEGEND(legendType) ||
             YEAR_DATE_PICKER_LEGEND(legendType)
           ) {
-            const { layers: layerConfigLayers } = layerConfig;
+
+           // console.log(layer, 'layer is');
+            const  layerConfigLayers  = layer.references;
+
+
             const current =
               _settings[slug] && _settings[slug].current
                 ? _settings[slug].current
@@ -317,12 +329,14 @@ export const getActiveInteractiveLayersIds = createSelector(
         })
       )
     );
+    return coco;
   }
 );
 
 export const getActiveInteractiveLayers = createSelector(
   [layers, interactions],
   (_layers: ILayer[], _interactions) => {
+   // console.log('get active interactive layers');
     if (!_layers || isEmpty(_interactions)) {
       return {};
     }
@@ -330,11 +344,11 @@ export const getActiveInteractiveLayers = createSelector(
     const allLayers = uniqBy(
       flatten(
         _layers.map((l: ILayer) => {
-          const { layerConfig, name } = l;
-          const { type } = layerConfig;
+          const {  name } = l;
+          const { type } = l;
 
           if (GROUP_LEGEND(type)) {
-            return layerConfig.layers.map((lc) => ({
+            return l.references.map((lc) => ({
               ...lc,
               name: `${name} - ${lc.name}`,
             }));

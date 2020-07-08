@@ -5,7 +5,7 @@ import { Select } from '@marapp/earth-components';
 import './styles.scss';
 
 interface ILegendEVI {
-  activeLayer?: { slug: string; params: any; layerConfig: any };
+  activeLayer?: { slug: string; params: any; paramsConfig: any, source: any };
   setLayerSettings?: (data: any) => void;
 }
 
@@ -30,8 +30,7 @@ class LegendEVIComponent extends React.PureComponent<ILegendEVI> {
 
   render() {
     const { activeLayer } = this.props;
-    const { params, layerConfig } = activeLayer;
-    const { paramsConfig } = layerConfig;
+    const { params, source, paramsConfig } = activeLayer;
     const years = paramsConfig.find(p => p.key === 'year').items;
     const { year } = params;
 

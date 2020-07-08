@@ -82,7 +82,7 @@ class LegendComponent extends React.PureComponent<ILegend> {
     const { setLayerSettings } = this.props;
     const {
       slug,
-      layerConfig: { decodeConfig },
+       decodeConfig ,
     } = layer;
 
     setLayerSettings({
