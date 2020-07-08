@@ -19,7 +19,7 @@ interface ISearchbox {
   showClose?: boolean;
 }
 
-const SearchBoxComponent = (props: ISearchbox) => {
+const SearchBox = (props: ISearchbox) => {
   const {
     setPlacesSearch,
     setSidebarLayers,
@@ -92,4 +92,4 @@ const SearchBoxComponent = (props: ISearchbox) => {
   );
 };
 
-export default SearchBoxComponent;
+export default SearchBox;

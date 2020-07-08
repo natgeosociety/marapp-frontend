@@ -3,7 +3,7 @@ import { Keyframes, animated } from 'react-spring';
 import { Spinner } from '@marapp/earth-components';
 
 import Layers from 'components/layers';
-import OrgSwitcher from 'components/org-switcher';
+import Header from 'components/header';
 
 import SearchBox from 'components/places/searchbox';
 import Filter from 'components/places/filter-by';
@@ -44,9 +44,9 @@ const SidebarLayoutSearch = (props: IProps) => {
   const state = layersPanel ? 'open' : 'close';
   const hasSearchTerm = !!search.search;
   const withFilters = hasFilters(search.filters);
-  const showFilter = !selected || open;
-  const showBack = selected && open;
   const showResults = hasSearchTerm || withFilters;
+  const showFilter = !selected || open;
+  const showBack = selected && open && showResults;
   const showX = selected || hasSearchTerm;
   const handleBack = () => {
     if (selected) {
@@ -72,7 +72,7 @@ const SidebarLayoutSearch = (props: IProps) => {
       </LayersDropdown>
       <div style={{ height: '100%', overflow: 'auto' }}>
         <div style={{ position: 'sticky', top: 0, zIndex: 1 }}>
-          <OrgSwitcher />
+          <Header />
           <SearchBox showClose={showX} />
           {showFilter && <Filter />}
           {showBack && (

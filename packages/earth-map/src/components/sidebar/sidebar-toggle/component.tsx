@@ -3,12 +3,12 @@ import classNames from 'classnames';
 
 import './styles.scss';
 
-interface ISidebarClose {
+interface ISidebarToggle {
   open?: boolean;
   setSidebarOpen?: (o: boolean) => void;
 }
 
-const SidebarClose = (props: ISidebarClose) => {
+const SidebarToggle = (props: ISidebarToggle) => {
   const { open, setSidebarOpen } = props;
 
   return (
@@ -26,4 +26,4 @@ const SidebarClose = (props: ISidebarClose) => {
   );
 }
 
-export default SidebarClose;
+export default SidebarToggle;

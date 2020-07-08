@@ -2,7 +2,7 @@ import React from 'react';
 import { Keyframes, animated } from 'react-spring';
 import classNames from 'classnames';
 
-import SidebarClose from './sidebar-close';
+import SidebarToggle from './sidebar-toggle';
 
 import './styles.scss';
 
@@ -93,7 +93,7 @@ class Sidebar extends React.Component<ISidebarPanel> {
               ...props,
             }}
           >
-            <SidebarClose
+            <SidebarToggle
               open={open}
               setSidebarOpen={setSidebarOpen} />
             {children}
