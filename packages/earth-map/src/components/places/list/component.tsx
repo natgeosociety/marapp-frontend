@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'redux-first-router-link';
 import List from '@researchgate/react-intersection-list';
 
