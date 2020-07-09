@@ -13,6 +13,7 @@ export interface IPlace {
   createdAt?: Date;
   updatedAt?: Date;
   version?: number;
+  organization?: string;
   metrics?: LocationMetricsProps[] | string[];
   intersections?: LocationIntersection[] | string[];
 }
