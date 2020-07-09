@@ -13,12 +13,14 @@ import { useRequest } from 'utils/hooks';
 import Layout from 'layouts';
 import { OrganizationList, OrganizationDetails } from 'components';
 import { useAuth0 } from '../auth/auth0';
+import { OrganizationEdit } from 'components/organizations/organization-edit';
 
 export default function OrganizationsPage(props) {
   return (
     <Router>
       <Page path={'/'} />
       <DetailsPage path={'/:page'} />
+      <EditPage path={'/:page/edit'} newOrg={false} />
     </Router>
   );
 }
@@ -82,13 +84,13 @@ function Page(path: any) {
       }}
     >
       <Layout permission={permissions}>
-        {writePermissions && (
+        {/* {writePermissions && (
           <div className="ng-flex ng-align-right">
             <LinkWithOrg className="ng-button ng-button-overlay" to="/organizations/new">
               add new organization
             </LinkWithOrg>
           </div>
-        )}
+        )} */}
         <OrganizationList />
       </Layout>
     </OrganizationContext.Provider>
@@ -107,6 +109,23 @@ function DetailsPage(path: any) {
   return (
     <Layout errors={errors} backTo="/organizations" isLoading={isLoading}>
       <OrganizationDetails data={data} />
+    </Layout>
+  );
+}
+
+function EditPage(path: any) {
+  const { selectedGroup } = useAuth0();
+  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, {
+    ...{ group: selectedGroup },
+  });
+  const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
+    permissions: AuthzGuards.writeUsersGuard,
+    skip: path.newUser,
+  });
+
+  return (
+    <Layout errors={errors} backTo="/organizations" isLoading={isLoading}>
+      <OrganizationEdit data={data} newOrg={path.newUser} />
     </Layout>
   );
 }
