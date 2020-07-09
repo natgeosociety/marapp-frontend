@@ -71,7 +71,7 @@ const SidebarLayoutSearch = (props: IProps) => {
         )}
       </LayersDropdown>
       <div style={{ height: '100%', overflow: 'auto' }}>
-        <div style={{ position: 'sticky', top: 0, zIndex: 1 }}>
+        <div className="ng-sticky-top ng-margin-bottom">
           <Header />
           <SearchBox showClose={showX} />
           {showFilter && <Filter />}

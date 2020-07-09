@@ -18,4 +18,11 @@
       border-color: $marapp-gray-0;
     }
   }
+
+  .ng-sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    box-shadow: $shadow-large;
+  }
 }
