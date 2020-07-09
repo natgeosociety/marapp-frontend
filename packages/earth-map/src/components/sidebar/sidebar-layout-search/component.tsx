@@ -95,8 +95,10 @@ const renderContent = (open, selected, loading, showResults) => {
   if (loading) {
     return <Spinner position="relative" />
   }
+
   const onLocationPage = selected && open && showResults;
   const onHomepage = !selected && showResults;
+
   return (onLocationPage || onHomepage)
     ? <PlacesResults />
     : selected

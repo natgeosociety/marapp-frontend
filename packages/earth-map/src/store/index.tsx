@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import createSagaMiddleware from 'redux-saga';
 import thunk from 'redux-thunk';
-import { setPlacesSearch, setPlacesSearchOpen } from 'modules/places/actions';
+import { setPlacesSearch } from 'modules/places/actions';
 import { setUserGroup } from 'modules/user/actions';
 import { setMapStyle } from 'modules/map/actions';
 
