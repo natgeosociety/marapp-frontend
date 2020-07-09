@@ -30,3 +30,10 @@ export const getAllOrganizations = async (organizationQuery: string) => {
     url: organizationQuery,
   });
 };
+
+export const getOrganization = (organizationQuery: string) => {
+  return OrganizationAPIService.request({
+    url: organizationQuery,
+    method: 'get',
+  });
+};
