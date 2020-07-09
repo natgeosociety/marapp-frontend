@@ -4,6 +4,6 @@
   display: block;
 
   &:hover {
-    background-color: rgba(248, 249, 250, .1); // $marapp-grey-1 10%
+    background-color: rgba($marapp-gray-1, .1);
   }
 }
