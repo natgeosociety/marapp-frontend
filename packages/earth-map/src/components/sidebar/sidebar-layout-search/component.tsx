@@ -60,7 +60,7 @@ const SidebarLayoutSearch = (props: IProps) => {
       <LayersDropdown native state={state}>
         {({ x, ...props }) => (
           <animated.div
-            className="c-layers ng-section-background -active"
+            className="c-layers ng-ep-background-dark"
             style={{
               transform: x.interpolate((x) => `translate3d(0,${x},0)`),
               ...props,
@@ -95,7 +95,9 @@ const renderContent = (open, selected, loading, showResults) => {
   if (loading) {
     return <Spinner position="relative" />
   }
-  return (open && showResults)
+  const onLocationPage = selected && open && showResults;
+  const onHomepage = !selected && showResults;
+  return (onLocationPage || onHomepage)
     ? <PlacesResults />
     : selected
       ? <IndexSidebar />
