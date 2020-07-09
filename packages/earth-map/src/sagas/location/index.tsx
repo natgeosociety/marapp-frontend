@@ -16,6 +16,7 @@ import {
   setPlacesLoading,
   setPlacesError,
   setPlacesSearch,
+  setPlacesSearchOpen,
 } from 'modules/places/actions';
 import { IPlace } from 'modules/places/model';
 import { preloadLayers } from 'sagas/layers';
@@ -43,6 +44,7 @@ function* toLocation({ payload, meta }) {
     return;
   }
 
+  yield put(setPlacesSearchOpen(false));
   yield put(setPlacesLoading(true));
   yield put(setPlaceSelectedOpen(false));
   yield put(setMetricsLoading(true));

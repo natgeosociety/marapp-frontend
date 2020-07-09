@@ -8,16 +8,6 @@
   box-sizing: border-box;
 }
 
-.l-sidebar {
-  position: fixed;
-  display: block;
-  width: $c-sidebar-width;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: $z-index-3;
-}
-
 .l-content {
   position: relative;
   width: 100%;

@@ -30,7 +30,7 @@ const FilterComponent = (props: any) => {
   };
 
   return (
-    <div className="ng-padding-medium ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
+    <div className="ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
       <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
         Search filters
         <i
