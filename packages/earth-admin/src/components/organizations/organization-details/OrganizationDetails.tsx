@@ -60,7 +60,7 @@ export default function OrganizationDetails(props: OrganizationProps) {
       {writePermissions && (
         <div className="ng-padding-medium ng-background-white ng-text-right">
           <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
-            Delete organizations
+            Delete organization
           </button>
         </div>
       )}
