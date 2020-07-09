@@ -1,7 +1,6 @@
 import React from 'react';
-import Link from 'redux-first-router-link';
 
-import PLACEHOLDER from '../../../images/placeholder.png';
+import ListItem from 'components/list-item';
 
 interface IFeaturedPlaces {
   featured?: {
@@ -24,25 +23,22 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
   };
 
   return (
-    <div className="ng-padding-medium ng-section-background ng-position-relative">
-      <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom">Featured places</h2>
+    <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
+      <h2 className="ng-padding-medium ng-text-display-s ng-body-color ng-margin-remove">Featured places</h2>
       <div>
         {!!featured.data &&
           featured.data.map((place: any) => {
-            const { slug, name, id, organization } = place;
+            const { slug, name, id, organization, type } = place;
+
             return (
-              <Link
-                key={slug}
-                to={{ type: 'LOCATION', payload: { slug, id, organization } }}
-                className="ng-c-panel-link ng-unstyled ng-flex ng-margin-bottom"
-              >
-                <span onClick={() => onClickIndex(name)}>
-                  {name}
-                  {group.length > 1 && (
-                    <span className="ng-margin-left ng-color-mdgray">{organization}</span>
-                  )}
-                </span>
-              </Link>
+              <ListItem
+                title={name} key={slug}
+                linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
+                onClick={() => onClickIndex(name)}
+                labels={[
+                  type,
+                  (group.length > 1) && organization
+                ]} />
             );
           })}
       </div>

@@ -1,0 +1,9 @@
+@import "~styles/config";
+
+.ng-c-list-item {
+  display: block;
+
+  &:hover {
+    background-color: rgba($marapp-gray-1, .1);
+  }
+}
