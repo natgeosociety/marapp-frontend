@@ -6,17 +6,19 @@ import { withPrefix } from 'gatsby';
 import { OrganizationContext } from 'utils/contexts';
 import { LinkWithOrg } from 'components/LinkWithOrg';
 import { encodeQueryToURL } from 'utils';
-import { getAllOrganizations } from 'services/organizations';
+import { getAllOrganizations, getOrganization } from 'services/organizations';
 import { AuthzGuards } from 'auth/permissions';
+import { useRequest } from 'utils/hooks';
 
 import Layout from 'layouts';
-import { OrganizationList } from 'components';
+import { OrganizationList, OrganizationDetails } from 'components';
 import { useAuth0 } from '../auth/auth0';
 
 export default function OrganizationsPage(props) {
   return (
     <Router>
       <Page path={'/'} />
+      <DetailsPage path={'/:page'} />
     </Router>
   );
 }
@@ -90,5 +92,21 @@ function Page(path: any) {
         <OrganizationList />
       </Layout>
     </OrganizationContext.Provider>
+  );
+}
+
+function DetailsPage(path: any) {
+  const { selectedGroup } = useAuth0();
+  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, {
+    group: selectedGroup,
+  });
+  const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
+    permissions: AuthzGuards.accessUsersGuard,
+  });
+
+  return (
+    <Layout errors={errors} backTo="/organizations" isLoading={isLoading}>
+      <OrganizationDetails data={data} />
+    </Layout>
   );
 }
