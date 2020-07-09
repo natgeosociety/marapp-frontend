@@ -26,93 +26,91 @@ const LAYERS = [
     ],
     'config': {
       'source': {
-        'type': 'tileLayer',
-
-          'format': 'image/png',
-          'options': {
-            'useCors': true
-          },
-          'minzoom': 2,
-          'maxzoom': 19
+        'type': 'raster',
+        'format': 'image/png',
+        'options': {
+          'useCors': true
         },
-        'timelineConfig': {
-          'railStyle': {
-            'background': '#333'
-          },
-          'trackStyle': [
-            {
-              'background': '#f79a28',
-              'top': '50%',
-              'transform': 'translate(0, -50%)',
-              'height': 12,
-              'borderRadius': 0,
-              'gradient': {
-                '{year}0101': '#5A0000',
-                '{year}0201': '#7F0101',
-                '{year}0301': '#9B0E01',
-                '{year}0401': '#BA1001',
-                '{year}0501': '#D51301',
-                '{year}0601': '#FA1500',
-                '{year}0701': '#FF5900',
-                '{year}0801': '#FF7E00',
-                '{year}0901': '#FFA300',
-                '{year}1001': '#FFC800',
-                '{year}1101': '#FFEB00',
-                '{year}1201': '#FFFF00'
-              }
-            },
-            {
-              'background': '#999',
-              'top': '50%',
-              'transform': 'translate(0, -50%)',
-              'borderRadius': 0
-            }
-          ],
-          'handleStyle': {
-            'opacity': 0
-          },
-          'step': 1,
-          'speed': 75,
-          'interval': 'days',
-          'dateFormat': 'YYYY-MM-DD',
-          'trimEndDate': '{year}-12-31',
-          'maxDate': '{year}-12-31',
-          'minDate': '{year}-01-01',
-          'canPlay': true
+        'minzoom': 2,
+        'maxzoom': 19,
+      },
+      'timelineConfig': {
+        'railStyle': {
+          'background': '#333'
         },
-        'paramsConfig': [
+        'trackStyle': [
           {
-            'required': true,
-            'key': 'year',
-            'default': '2019'
+            'background': '#f79a28',
+            'top': '50%',
+            'transform': 'translate(0, -50%)',
+            'height': 12,
+            'borderRadius': 0,
+            'gradient': {
+              '{year}0101': '#5A0000',
+              '{year}0201': '#7F0101',
+              '{year}0301': '#9B0E01',
+              '{year}0401': '#BA1001',
+              '{year}0501': '#D51301',
+              '{year}0601': '#FA1500',
+              '{year}0701': '#FF5900',
+              '{year}0801': '#FF7E00',
+              '{year}0901': '#FFA300',
+              '{year}1001': '#FFC800',
+              '{year}1101': '#FFEB00',
+              '{year}1201': '#FFFF00'
+            }
+          },
+          {
+            'background': '#999',
+            'top': '50%',
+            'transform': 'translate(0, -50%)',
+            'borderRadius': 0
           }
         ],
-        'decodeConfig': {
-          'type': 'fire',
-          'values': [
-            {
-              'required': true,
-              'key': 'startDate',
-              'default': '2019-01-01'
-            },
-            {
-              'required': true,
-              'key': 'endDate',
-              'default': '2019-12-31'
-            },
-            {
-              'required': true,
-              'key': 'maxAbsoluteDate',
-              'default': '2019-07-31'
-            },
-            {
-              'required': true,
-              'key': 'minAbsoluteDate',
-              'default': '2001-01-01'
-            }
-          ]
+        'handleStyle': {
+          'opacity': 0
         },
-
+        'step': 1,
+        'speed': 75,
+        'interval': 'days',
+        'dateFormat': 'YYYY-MM-DD',
+        'trimEndDate': '{year}-12-31',
+        'maxDate': '{year}-12-31',
+        'minDate': '{year}-01-01',
+        'canPlay': true
+      },
+      'paramsConfig': [
+        {
+          'required': true,
+          'key': 'year',
+          'default': '2019'
+        }
+      ],
+      'decodeConfig': {
+        'type': 'fire',
+        'values': [
+          {
+            'required': true,
+            'key': 'startDate',
+            'default': '2019-01-01'
+          },
+          {
+            'required': true,
+            'key': 'endDate',
+            'default': '2019-12-31'
+          },
+          {
+            'required': true,
+            'key': 'maxAbsoluteDate',
+            'default': '2019-07-31'
+          },
+          {
+            'required': true,
+            'key': 'minAbsoluteDate',
+            'default': '2001-01-01'
+          }
+        ]
+      },
       'legendConfig': {
         'enable': true,
         'legendType': 'yeardatepicker'
@@ -139,86 +137,84 @@ const LAYERS = [
         'type': 'raster',
         'provider': 'gee',
         'config': {
-          'layerConfig': {
-            'assetId': 'projects/earthpulse-sandbox/assets/layers/modis_fires_2018',
-            'type': 'tileLayer',
-            'timelineConfig': {
-              'railStyle': {
-                'background': '#333'
-              },
-              'trackStyle': [
-                {
-                  'background': '#f79a28',
-                  'top': '50%',
-                  'transform': 'translate(0, -50%)',
-                  'height': 12,
-                  'borderRadius': 0,
-                  'gradient': {
-                    '{year}0101': '#5A0000',
-                    '{year}0201': '#7F0101',
-                    '{year}0301': '#9B0E01',
-                    '{year}0401': '#BA1001',
-                    '{year}0501': '#D51301',
-                    '{year}0601': '#FA1500',
-                    '{year}0701': '#FF5900',
-                    '{year}0801': '#FF7E00',
-                    '{year}0901': '#FFA300',
-                    '{year}1001': '#FFC800',
-                    '{year}1101': '#FFEB00',
-                    '{year}1201': '#FFFF00'
-                  }
-                },
-                {
-                  'background': '#999',
-                  'top': '50%',
-                  'transform': 'translate(0, -50%)',
-                  'borderRadius': 0
-                }
-              ],
-              'handleStyle': {
-                'opacity': 0
-              },
-              'step': 1,
-              'speed': 75,
-              'interval': 'days',
-              'dateFormat': 'YYYY-MM-DD',
-              'trimEndDate': '{year}-12-31',
-              'maxDate': '{year}-12-31',
-              'minDate': '{year}-01-01',
-              'canPlay': true
+          source: {
+            'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/6f55f734-5789-4bd9-8037-449574d09e3c/{z}/{x}/{y}'],
+            'format': 'image/png',
+            'options': {
+              'useCors': true
             },
-            'paramsConfig': [
+            'minzoom': 2,
+            'maxzoom': 8,
+            'type': 'raster',
+          },
+          'assetId': 'projects/earthpulse-sandbox/assets/layers/modis_fires_2018',
+          'timelineConfig': {
+            'railStyle': {
+              'background': '#333'
+            },
+            'trackStyle': [
               {
-                'required': true,
-                'key': 'year',
-                'default': '2018',
-                'year': '2018'
+                'background': '#f79a28',
+                'top': '50%',
+                'transform': 'translate(0, -50%)',
+                'height': 12,
+                'borderRadius': 0,
+                'gradient': {
+                  '{year}0101': '#5A0000',
+                  '{year}0201': '#7F0101',
+                  '{year}0301': '#9B0E01',
+                  '{year}0401': '#BA1001',
+                  '{year}0501': '#D51301',
+                  '{year}0601': '#FA1500',
+                  '{year}0701': '#FF5900',
+                  '{year}0801': '#FF7E00',
+                  '{year}0901': '#FFA300',
+                  '{year}1001': '#FFC800',
+                  '{year}1101': '#FFEB00',
+                  '{year}1201': '#FFFF00'
+                }
+              },
+              {
+                'background': '#999',
+                'top': '50%',
+                'transform': 'translate(0, -50%)',
+                'borderRadius': 0
               }
             ],
-            'decodeConfig': {
-              'type': 'fire',
-              'values': [
-                {
-                  'required': true,
-                  'key': 'startDate',
-                  'default': '2018-01-01'
-                },
-                {
-                  'required': true,
-                  'key': 'endDate',
-                  'default': '2018-12-31'
-                }
-              ]
+            'handleStyle': {
+              'opacity': 0
             },
-            'source': {
-              'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/6f55f734-5789-4bd9-8037-449574d09e3c/{z}/{x}/{y}'],
-              'format': 'image/png',
-              'options': {
-                'useCors': true
-              },
-              'minzoom': 2,
-              'maxzoom': 8
+            'step': 1,
+            'speed': 75,
+            'interval': 'days',
+            'dateFormat': 'YYYY-MM-DD',
+            'trimEndDate': '{year}-12-31',
+            'maxDate': '{year}-12-31',
+            'minDate': '{year}-01-01',
+            'canPlay': true
+          },
+          'paramsConfig': [
+            {
+              'required': true,
+              'key': 'year',
+              'default': '2018',
+              'year': '2018'
             }
+          ],
+          'decodeConfig': {
+            'type': 'fire',
+            'values': [
+              {
+                'required': true,
+                'key': 'startDate',
+                'default': '2018-01-01'
+              },
+              {
+                'required': true,
+                'key': 'endDate',
+                'default': '2018-12-31'
+              }
+            ]
           },
           'legendConfig': {
             'legendType': 'yeardatepicker',
@@ -232,9 +228,112 @@ const LAYERS = [
         'createdAt': '2020-06-25T14:28:30.764Z',
         'updatedAt': '2020-06-30T20:09:38.835Z',
         'id': '6f55f734-5789-4bd9-8037-449574d09e3c'
+      },
+      {
+        'category': [
+          'Natural Hazards'
+        ],
+        'published': true,
+        'version': 9,
+        'references': [],
+        'name': 'MODIS fires 2017',
+        'slug': 'modis-fires-2017-unbl',
+        'type': 'raster',
+        'provider': 'gee',
+        'config': {
+          source: {
+            'tiles': ['https://d123t7ufog14bq.cloudfront.net/services/api/v1/tiles/6f55f734-5789-4bd9-8037-449574d09e3c/{z}/{x}/{y}'],
+            'format': 'image/png',
+            'options': {
+              'useCors': true
+            },
+            'minzoom': 2,
+            'maxzoom': 8,
+            'type': 'raster',
+          },
+          'assetId': 'projects/earthpulse-sandbox/assets/layers/modis_fires_2018',
+          'timelineConfig': {
+            'railStyle': {
+              'background': '#333'
+            },
+            'trackStyle': [
+              {
+                'background': '#f79a28',
+                'top': '50%',
+                'transform': 'translate(0, -50%)',
+                'height': 12,
+                'borderRadius': 0,
+                'gradient': {
+                  '{year}0101': '#5A0000',
+                  '{year}0201': '#7F0101',
+                  '{year}0301': '#9B0E01',
+                  '{year}0401': '#BA1001',
+                  '{year}0501': '#D51301',
+                  '{year}0601': '#FA1500',
+                  '{year}0701': '#FF5900',
+                  '{year}0801': '#FF7E00',
+                  '{year}0901': '#FFA300',
+                  '{year}1001': '#FFC800',
+                  '{year}1101': '#FFEB00',
+                  '{year}1201': '#FFFF00'
+                }
+              },
+              {
+                'background': '#999',
+                'top': '50%',
+                'transform': 'translate(0, -50%)',
+                'borderRadius': 0
+              }
+            ],
+            'handleStyle': {
+              'opacity': 0
+            },
+            'step': 1,
+            'speed': 75,
+            'interval': 'days',
+            'dateFormat': 'YYYY-MM-DD',
+            'trimEndDate': '{year}-12-31',
+            'maxDate': '{year}-12-31',
+            'minDate': '{year}-01-01',
+            'canPlay': true
+          },
+          'paramsConfig': [
+            {
+              'required': true,
+              'key': 'year',
+              'default': '2017',
+              'year': '2017'
+            }
+          ],
+          'decodeConfig': {
+            'type': 'fire',
+            'values': [
+              {
+                'required': true,
+                'key': 'startDate',
+                'default': '2017-01-01'
+              },
+              {
+                'required': true,
+                'key': 'endDate',
+                'default': '2017-12-31'
+              }
+            ]
+          },
+          'legendConfig': {
+            'legendType': 'yeardatepicker',
+            'enable': true
+          },
+          'interactionConfig': {},
+          'applicationConfig': {},
+          'staticImageConfig': {}
+        },
+        'organization': 'UNBL',
+        'createdAt': '2020-06-25T14:28:30.764Z',
+        'updatedAt': '2020-06-30T20:09:38.835Z',
+        'id': '6f55f734-5789-4bd9-80d7-449574d09e3c'
       }
     ]
-
   },
   {
 
@@ -4932,18 +5031,14 @@ function setLayer(layer) {
     });
 
 
-    console.log(adaptedReferences);
     const coco = {
       ...adaptedLayer,
       references: adaptedReferences
     };
-    console.log(coco, 'in ref');
     return coco;
 
   }
 
-
-  console.log(adaptedLayer, 'dupa');
 
   return {
     ...adaptedLayer,

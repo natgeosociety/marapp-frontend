@@ -39,7 +39,6 @@ export const getLegendLayers = createSelector(
   [layers, settings, active],
   (_layers: ILayer[], _settings, _active) => {
 
-   // console.log('get legend layers');
     if (!_layers) {
       return [];
     }
@@ -52,7 +51,6 @@ export const getLegendLayers = createSelector(
       if (!layer) {
         return false;
       }
-     // console.log(layer, 'layer is');
 
       const { name, description, source, legendConfig, paramsConfig,
         sqlConfig, decodeConfig, timelineConfig, type } = layer;
@@ -140,7 +138,6 @@ export const getLegendLayers = createSelector(
       });
     });
 
-   // console.log(layerGroups);
 
     return layerGroups;
   }
@@ -149,7 +146,6 @@ export const getLegendLayers = createSelector(
 export const getActiveLayers = createSelector(
   [layers, settings, active],
   (_layers: ILayer[], _settings, _active) => {
-   // console.log('get active layers');
     if (!_layers) {
       return [];
     }
@@ -176,7 +172,6 @@ export const getActiveLayers = createSelector(
 
         // @ts-ignore
         const { legendType } = legendConfig;
-
         return {
           // zIndex: 1000 - i,
           ...layer,
@@ -188,8 +183,8 @@ export const getActiveLayers = createSelector(
             // @ts-ignore
             YEAR_DATE_PICKER_LEGEND(legendType)) && {
             ...layer.references.find((l) => {
-              const current = settings.current || layer.references[0].id;
 
+              const current = settings.current || layer.references[0].id;
               return l.id === current;
             }),
           }),
@@ -266,19 +261,21 @@ export const getActiveBoundsLayer = createSelector([place], (_place) => {
 export const getActiveInteractiveLayersIds = createSelector(
   [layers, settings, active],
   (_layers: ILayer[], _settings, _active) => {
-
-   // console.log('get active interactive layers ids');
     if (!_layers) {
       return [];
     }
 
     const getIds = (layer: ILayer) => {
-      const { id, source, interactionConfig } = layer;
+
+      const { id, source, interactionConfig, render } = layer;
 
       if (isEmpty(source) || isEmpty(interactionConfig)) {
+
         return null;
       }
 
+     // console.log(render);
+      //todo what is?
       const { vectorLayers } = source;
 
       if (!vectorLayers) {
@@ -292,7 +289,7 @@ export const getActiveInteractiveLayersIds = createSelector(
       });
     };
 
-    const coco =  flatten(
+    return flatten(
       compact(
         _active.map((kActive, i) => {
           const layer = _layers.find((l: any) => l.slug === kActive);
@@ -311,7 +308,7 @@ export const getActiveInteractiveLayersIds = createSelector(
             YEAR_DATE_PICKER_LEGEND(legendType)
           ) {
 
-           // console.log(layer, 'layer is');
+
             const  layerConfigLayers  = layer.references;
 
 
@@ -329,14 +326,12 @@ export const getActiveInteractiveLayersIds = createSelector(
         })
       )
     );
-    return coco;
   }
 );
 
 export const getActiveInteractiveLayers = createSelector(
   [layers, interactions],
   (_layers: ILayer[], _interactions) => {
-   // console.log('get active interactive layers');
     if (!_layers || isEmpty(_interactions)) {
       return {};
     }

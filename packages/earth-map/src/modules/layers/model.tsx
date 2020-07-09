@@ -19,6 +19,7 @@ export interface ILayer {
   sqlConfig?: any;
   decodeConfig?: any;
   timelineConfig?: any;
+  render?: any;
 }
 
 interface ILayerConfig {
