@@ -67,7 +67,7 @@ const PlacesResultsComponent = (props: IPlacesList) => {
   };
 
   return (
-    <div className="ng-section-background ng-position-relative">
+    <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
       <h2 className="ng-padding-medium ng-text-display-s ng-body-color ng-margin-remove">Search results</h2>
       <List
         awaitMore={awaitMore}
