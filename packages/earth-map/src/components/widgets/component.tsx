@@ -52,7 +52,7 @@ class WidgetsComponent extends React.Component<IWidgets, IWidgetsState> {
         <div className="widgets--content">
           <div className="ng-widget-header ng-padding-medium">
             <h3 className="ng-text-display-s ng-margin-bottom">
-              {place.organization} | <span className="ng-c-text-regular">{place.type}</span>
+              {place.organization} | <span className="ng-text-weight-regular">{place.type}</span>
             </h3>
             <h2 className="ng-text-edit-m ng-body-color ng-margin-remove">{place.name}</h2>
           </div>
