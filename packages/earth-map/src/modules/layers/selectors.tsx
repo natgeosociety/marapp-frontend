@@ -162,7 +162,6 @@ export const getActiveLayers = createSelector(
         const { legendConfig } = layer;
         const {
           type,
-          // layers: layerConfigLayers,
           paramsConfig,
           sqlConfig,
           decodeConfig,
