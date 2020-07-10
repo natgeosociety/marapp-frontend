@@ -29,7 +29,11 @@ const ListItem = (props: IProps) => {
       onClick={onClick} key={key}
       className="ng-c-list-item ng-unstyled ng-padding-small-vertical ng-padding-medium-horizontal"
     >
-      {title}
+      {title.split(/({{.+}})/).map(term => (
+        term.startsWith('{{') && term.endsWith('}}') ?
+        <b style={{ fontWeight: 900 }}>{term.replace('{{', '').replace('}}', '')}</b> :
+        term
+      ))}
       {labels.map((label, i) => (
         <span className="ng-margin-left ng-color-mdgray" key={`${label}-${i}`}>{label}</span>
       ))}
