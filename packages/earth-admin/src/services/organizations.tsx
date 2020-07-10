@@ -37,3 +37,20 @@ export const getOrganization = (organizationQuery: string) => {
     method: 'get',
   });
 };
+
+export const updateOrganization = async (organizationID: string, organization, group: string) => {
+  return await OrganizationAPIService.request({
+    url: `/organizations/${organizationID}?group=${group}`,
+    method: 'put',
+    data: organization,
+  });
+};
+
+// export const handleOrganizationForm = async (
+//   newOrg: boolean,
+//   organization,
+//   organizationID: string,
+//   group: string
+// ) => {
+//   newOrg ? null : await updateOrganization(organizationID, organization, group);
+// };
