@@ -269,20 +269,19 @@ export const getActiveInteractiveLayersIds = createSelector(
 
       const { id, source, interactionConfig, render } = layer;
 
-      if (isEmpty(source) || isEmpty(interactionConfig)) {
+
+      if (isEmpty(render) || isEmpty(interactionConfig)) {
 
         return null;
       }
 
-     // console.log(render);
-      //todo what is?
-      const { vectorLayers } = source;
+      const { layers } =  render;
 
-      if (!vectorLayers) {
+      if (!layers) {
         return null;
       }
 
-      return vectorLayers.map((l, i) => {
+      return layers.map((l, i) => {
         const { id: vectorLayerId, type: vectorLayerType } = l;
 
         return vectorLayerId || `${id}-${vectorLayerType}-${i}`;
@@ -293,7 +292,6 @@ export const getActiveInteractiveLayersIds = createSelector(
       compact(
         _active.map((kActive, i) => {
           const layer = _layers.find((l: any) => l.slug === kActive);
-
           if (!layer) {
             return null;
           }
@@ -356,11 +354,12 @@ export const getActiveInteractiveLayers = createSelector(
     );
 
     const interactiveLayerKeys = Object.keys(_interactions);
-
     const interactiveLayers = [];
 
+
     allLayers.forEach((layer: ILayer) => {
-      if (layer.references.length > 0) {
+
+      if (!!layer.references && layer.references.length > 0) {
         layer.references.forEach((layerRef) => {
           if (interactiveLayerKeys.includes(layerRef.id)) {
             interactiveLayers.push(layerRef);
@@ -372,6 +371,7 @@ export const getActiveInteractiveLayers = createSelector(
         }
       }
     });
+
 
     return interactiveLayers.map((l: any) => ({
       ...l,
@@ -388,6 +388,7 @@ export const getActiveInteractiveLayer = createSelector(
     }
 
     const current = _layers.find((l: ILayer) => l.id === _interactionsSelected) || _layers[0];
+
     return current;
   }
 );
