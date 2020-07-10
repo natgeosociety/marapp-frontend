@@ -1,6 +1,5 @@
 import React from 'react';
 import { Keyframes, animated } from 'react-spring';
-import { Spinner } from '@marapp/earth-components';
 
 import Layers from 'components/layers';
 import Header from 'components/header';
@@ -85,17 +84,13 @@ const SidebarLayoutSearch = (props: IProps) => {
             </div>
           )}
         </div>
-        {renderContent(open, selected, search.loading, showResults)}
+        {renderContent(open, selected, showResults)}
       </div>
     </>
   )
 };
 
-const renderContent = (open, selected, loading, showResults) => {
-  if (loading) {
-    return <Spinner position="relative" />
-  }
-
+const renderContent = (open, selected, showResults) => {
   const onLocationPage = selected && open && showResults;
   const onHomepage = !selected && showResults;
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import List from '@researchgate/react-intersection-list';
+import { Spinner } from '@marapp/earth-components';
 
 import ListItem from 'components/list-item';
 
@@ -76,6 +77,7 @@ const PlacesResultsComponent = (props: IPlacesList) => {
         renderItem={renderItem}
         onIntersection={onIntersection}
       />
+      {loading && <Spinner position="relative" />}
     </div>
   );
 };
