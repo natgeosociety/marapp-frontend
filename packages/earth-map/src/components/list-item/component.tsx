@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'redux-first-router-link';
-import { parseHintBold } from '../../utils/index';
+import { parseHintBold } from 'utils';
 
 import './style.scss';
 
