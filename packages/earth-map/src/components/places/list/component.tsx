@@ -24,7 +24,7 @@ interface IPlacesListItem {
   name: string;
   organization: string;
   type: string;
-  $searchHint: string;
+  $searchHint?: string;
 }
 
 const PlacesResultsComponent = (props: IPlacesList) => {
