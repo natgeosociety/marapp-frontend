@@ -46,11 +46,11 @@ export const updateOrganization = async (organizationID: string, organization, g
   });
 };
 
-export const handleOrganizationForm = async (
-  newOrg: boolean,
-  organization,
-  organizationID: string,
-  group: string
-) => {
-  newOrg ? null : await updateOrganization(organizationID, organization, group);
-};
+// export const handleOrganizationForm = async (
+//   newOrg: boolean,
+//   organization,
+//   organizationID: string,
+//   group: string
+// ) => {
+//   newOrg ? null : await updateOrganization(organizationID, organization, group);
+// };

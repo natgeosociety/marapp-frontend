@@ -4,7 +4,7 @@ import { OrganizationEditProps } from '../model';
 import { useForm, Controller } from 'react-hook-form';
 import { LinkWithOrg } from 'components/LinkWithOrg';
 import { SearchInput } from 'components/search-input';
-import { handleOrganizationForm } from 'services/organizations';
+import { updateOrganization } from 'services/organizations';
 import { Auth0Context } from 'utils/contexts';
 import { navigate } from 'gatsby';
 import { ErrorMessages } from 'components/error-messages';
@@ -27,7 +27,7 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
     const formData = getValues();
 
     try {
-      await handleOrganizationForm(false, { description: formData.description }, id || formData.id, selectedGroup);
+      await updateOrganization(id || formData.id, { description: formData.description }, selectedGroup);
       await navigate(`/${selectedGroup}/organizations`);
     } catch (error) {
       setServerErrors(error.data.errors);
