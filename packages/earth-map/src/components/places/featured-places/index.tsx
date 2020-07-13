@@ -7,9 +7,8 @@ import FeaturedPlacesComponent from './component';
 
 export default connect(
   (state: any) => ({
-    list: state.indexes.list,
     featured: state.places.cache.featured,
     group: state.user.group,
   }),
-  { setSidebarPanel, setIndexesSelected, setIndexesList, setPlacesSearch }
+  { setSidebarPanel, setIndexesList }
 )(FeaturedPlacesComponent);

@@ -20,6 +20,7 @@ export const ignoreRedirectsTo = (actionName: string): Function => {
 };
 
 // Selectors
+export const getAll = (state) => state;
 export const getGroup = (state) => state.user.group;
 export const getPlaces = (state) => state.places;
 export const getUser = (state) => state.user;

@@ -1,16 +1,14 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, Store } from 'redux';
 import { connectRoutes } from 'redux-first-router';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import createSagaMiddleware from 'redux-saga';
 import thunk from 'redux-thunk';
-import { setPlacesSearch } from 'modules/places/actions';
-import { setUserGroup } from 'modules/user/actions';
-import { setMapStyle } from 'modules/map/actions';
 
 import sagas from 'sagas';
 
 import { ROUTES, CONFIG } from '../routes';
+import restoreState from 'store/ephemeral-state';
 
 // New modules
 import { handleModule } from 'vizzuality-redux-tools';
@@ -29,7 +27,6 @@ import * as widget from 'modules/widget';
 import * as metrics from 'modules/metrics';
 
 const sagaMiddleware = createSagaMiddleware();
-const ephemeralState = JSON.parse(sessionStorage.getItem('ephemeral'))
 
 const initStore = (initialState = {}) => {
   // Create router reducer, middleware and enhancer
@@ -59,7 +56,6 @@ const initStore = (initialState = {}) => {
     if (action.type === 'GLOBAL/resetStore') {
       state = initialState;
     }
-
     return reducers(state, action);
   }
 
@@ -67,24 +63,11 @@ const initStore = (initialState = {}) => {
   const enhancers = composeWithDevTools(routerEnhancer, middlewares);
 
   // create store
-  const store = createStore(rootReducer, initialState, enhancers);
+  const store: Store = createStore(rootReducer, initialState, enhancers);
 
-  // Put data from sessionStorage into redux store before triggering the sagas
-  if (ephemeralState) {
-    if (ephemeralState.sidebarState) {
-      const { search, filters } = ephemeralState.sidebarState;
-      const hasFilters = search.length || Object.keys(filters).length
-
-      store.dispatch(setPlacesSearch({
-        ...ephemeralState.sidebarState,
-        ...hasFilters && {
-          open: true
-        }
-      }));
-    }
-    ephemeralState.user && store.dispatch(setUserGroup(ephemeralState.user.group));
-    ephemeralState.map && store.dispatch(setMapStyle(ephemeralState.map.mapStyle));
-  }
+  // restore state from sessionStorage
+  const ephemeralState = JSON.parse(sessionStorage.getItem('ephemeral'));
+  restoreState(store, ephemeralState);
 
   // run the sagas && initialDispatch
   sagaMiddleware.run(sagas);

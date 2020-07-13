@@ -18,6 +18,8 @@ import {
   setPlacesSearch,
   setPlacesSearchOpen,
 } from 'modules/places/actions';
+import { setLastViewedPlace, persistData } from 'modules/global/actions';
+
 import { IPlace } from 'modules/places/model';
 import { preloadLayers } from 'sagas/layers';
 import { ignoreRedirectsTo } from 'sagas/saga-utils';
@@ -93,10 +95,18 @@ function* toLocation({ payload, meta }) {
     yield put(setPlaceSelectedFilter(''));
     yield put(setPlaceSelectedSearch(''));
     yield put(setPlaceData(formattedData));
+    yield put(setLastViewedPlace({
+      id: data.id,
+      name: data.name,
+      slug: data.slug,
+      organization: data.organization,
+      type: data.type,
+    }));
     yield put(setMetrics(formattedData.metrics));
     yield put(setPlacesLoading(false));
     yield put(setPlacesError(null));
     yield put(setMetricsLoading(false));
+    yield put(persistData()); // to keep last viewed place
   } catch (e) {
     // TODO better error handling for sagas
     if (e.response.status === 403) {

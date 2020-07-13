@@ -9,7 +9,9 @@ import Filter from 'components/places/filter-by';
 import FeaturedPlaces from 'components/places/featured-places';
 import PlacesResults from 'components/places/list';
 import IndexSidebar from 'components/index-sidebar';
+import LastViewedPlace from 'components/last-viewed-place';
 import { hasFilters } from 'utils/filters';
+import { IPlace } from 'modules/places/model';
 
 import './styles.scss';
 
@@ -20,11 +22,13 @@ const LayersDropdown: any = Keyframes.Spring({
 
 interface IProps {
   search?: any;
+  group?: string[];
   places?: any;
   layersPanel?: boolean;
   selected?: boolean;
   locationName?: string;
   locationOrganization?: string;
+  lastViewedPlace?: IPlace;
   setPlacesSearch?: Function;
   setPlacesSearchOpen?: Function;
 }
@@ -34,10 +38,12 @@ const SidebarLayoutSearch = (props: IProps) => {
     layersPanel,
     selected,
     search,
+    group,
     setPlacesSearchOpen,
     locationName,
     locationOrganization,
     setPlacesSearch,
+    lastViewedPlace,
   } = props;
   const { open } = search;
   const state = layersPanel ? 'open' : 'close';
@@ -53,6 +59,10 @@ const SidebarLayoutSearch = (props: IProps) => {
     }
     setPlacesSearchOpen(false);
   }
+
+  const onLocationPage = selected && open && showResults;
+  const onHomepage = !selected && showResults;
+  const showLastViewedPlace = lastViewedPlace && group.includes(lastViewedPlace.organization)
 
   return (
     <>
@@ -84,21 +94,21 @@ const SidebarLayoutSearch = (props: IProps) => {
             </div>
           )}
         </div>
-        {renderContent(open, selected, showResults)}
+        {(onLocationPage || onHomepage)
+          ? <PlacesResults />
+          : selected
+            ? <IndexSidebar />
+            : (
+              <>
+                {(showLastViewedPlace && <LastViewedPlace place={lastViewedPlace} />)}
+                <FeaturedPlaces />
+              </>
+            )}
       </div>
     </>
   )
 };
 
-const renderContent = (open, selected, showResults) => {
-  const onLocationPage = selected && open && showResults;
-  const onHomepage = !selected && showResults;
 
-  return (onLocationPage || onHomepage)
-    ? <PlacesResults />
-    : selected
-      ? <IndexSidebar />
-      : <FeaturedPlaces />
-}
 
 export default SidebarLayoutSearch;

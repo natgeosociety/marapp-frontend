@@ -1,6 +1,7 @@
 import React from 'react';
 import List from '@researchgate/react-intersection-list';
 import { Spinner } from '@marapp/earth-components';
+import { IPlace } from 'modules/places/model';
 
 import ListItem from 'components/list-item';
 
@@ -9,24 +10,10 @@ import './styles.scss';
 interface IPlacesList {
   loading?: boolean;
   nextPageCursor?: string;
-  setIndexesSelected?: (s: string) => any;
-  setPlacesSearch?: Function;
   nextPlacesPage?: Function;
   setPlacesSearchResults?: Function;
-  list?: [];
-  results?: IPlacesListItem[];
+  results?: IPlace[];
   group?: string;
-}
-
-interface IPlacesListItem {
-  slug: string;
-  id: string;
-  name: string;
-  organization: string;
-  type: string;
-  $searchHint?: {
-    [prop: string]: string
-  };
 }
 
 const PlacesResultsComponent = (props: IPlacesList) => {
@@ -34,22 +21,18 @@ const PlacesResultsComponent = (props: IPlacesList) => {
     nextPageCursor,
     loading,
     results,
-    setIndexesSelected,
-    setPlacesSearch,
     nextPlacesPage,
-    list,
     group,
   } = props;
   const PAGE_SIZE = 100;
   const hasNextPage = results.length >= PAGE_SIZE;
   const awaitMore = !loading && !!nextPageCursor && hasNextPage;
   const renderItem = (index) => {
-    const { slug, name, id, organization, type, $searchHint } = results[index];
+    const { slug, id, organization, type, $searchHint } = results[index];
     return (
       <ListItem
-        title={$searchHint.name} key={slug}
+        title={$searchHint.name} key={`${slug}-${organization}`}
         linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
-        onClick={() => onClickIndex(name)}
         labels={[
           type,
           (group.length > 1) && organization
@@ -61,13 +44,6 @@ const PlacesResultsComponent = (props: IPlacesList) => {
     nextPlacesPage({
       pageCursor: nextPageCursor,
     });
-  };
-
-  const onClickIndex = (name) => {
-    // @ts-ignore
-    setPlacesSearch({ search: name });
-    // @ts-ignore
-    !!list[0] && setIndexesSelected(list[0].slug);
   };
 
   return (
