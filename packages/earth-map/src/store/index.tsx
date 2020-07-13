@@ -71,7 +71,17 @@ const initStore = (initialState = {}) => {
 
   // Put data from sessionStorage into redux store before triggering the sagas
   if (ephemeralState) {
-    ephemeralState.sidebarState && store.dispatch(setPlacesSearch(ephemeralState.sidebarState));
+    if (ephemeralState.sidebarState) {
+      const { search, filters } = ephemeralState.sidebarState;
+      const hasFilters = search.length || Object.keys(filters).length
+
+      store.dispatch(setPlacesSearch({
+        ...ephemeralState.sidebarState,
+        ...hasFilters && {
+          open: true
+        }
+      }));
+    }
     ephemeralState.user && store.dispatch(setUserGroup(ephemeralState.user.group));
     ephemeralState.map && store.dispatch(setMapStyle(ephemeralState.map.mapStyle));
   }

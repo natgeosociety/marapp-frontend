@@ -1,21 +1,43 @@
 import React, { useContext, useState } from 'react';
-import { Auth0Context } from 'auth/auth0';
-
-import { checkRole } from 'utils';
-import DropdownComponent from 'components/dropdown';
-import './styles.scss';
 import { remove } from 'lodash';
 import classNames from 'classnames';
+import Link from 'redux-first-router-link';
+
+import { Auth0Context } from 'auth/auth0';
+import { checkRole } from 'utils';
+import DropdownComponent from 'components/dropdown';
+import { APP_NAME, APP_LOGO } from '../../theme';
+
+import './styles.scss';
 
 const ADMIN_PATH = process.env.REACT_APP_ADMIN_URL;
 
-const OrgSwitcher = (props) => {
+interface IProps {
+  group?: string[];
+  resetPlace?: Function;
+  setPlacesSearch?: Function;
+  resetPlacesFeatured?: Function
+  setIndexesSelected?: Function;
+  resetMap?: Function;
+  resetLayerCache?: Function;
+  setUserGroup?: Function;
+}
+
+const Header = (props: IProps) => {
   const {
     roles,
     userData: { allGroups },
   } = useContext(Auth0Context);
-  const { resetPlacesFeatured, resetLayerCache } = props;
-  const { group, setUserGroup, setPlacesSearch } = props;
+  const {
+    group,
+    resetPlacesFeatured,
+    resetLayerCache,
+    resetMap,
+    resetPlace,
+    setIndexesSelected,
+    setUserGroup,
+    setPlacesSearch,
+  } = props;
   const hasMultipleGroups = allGroups.length > 1;
   const allInitiallySelected = group.length === allGroups.length;
   const [selectedGroups, setSelectedGroups] = useState(allInitiallySelected ? [] : group);
@@ -23,6 +45,14 @@ const OrgSwitcher = (props) => {
 
   const handleDropdownToggle = () => {
     dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
+  };
+
+  // Same as the action from <SearchBox /> find a way to reuse bundled actions
+  const handleResetLocation = () => {
+    resetPlace();
+    setPlacesSearch({ search: '' });
+    setIndexesSelected('');
+    resetMap();
   };
 
   const onOrgChange = (e) => {
@@ -53,7 +83,23 @@ const OrgSwitcher = (props) => {
   };
 
   return (
-    <>
+
+    <div className="ng-padding-medium-horizontal ng-ep-background-dark ng-flex ng-flex-middle ng-position-relative ng-padding-bottom ng-padding-small-top">
+      <Link
+        className="ng-border-remove"
+        to={{
+          type: 'EARTH',
+        }}
+      >
+        <img
+          src={APP_LOGO}
+          alt={APP_NAME}
+          className="ng-margin-remove ng-display-block"
+          onClick={handleResetLocation}
+        />
+      </Link>
+      <span className="ng-ep-kicker"></span>
+
       <span className="ng-text-display-s ng-text-weight-regular ng-body-color ng-margin-remove ng-display-block ng-org-name">
         map view
       </span>
@@ -115,8 +161,8 @@ const OrgSwitcher = (props) => {
             )
         )}
       </DropdownComponent>
-    </>
+    </div>
   );
 };
 
-export default OrgSwitcher;
+export default Header;

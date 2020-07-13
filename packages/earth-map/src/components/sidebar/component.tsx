@@ -1,40 +1,72 @@
 import React from 'react';
-
-import './styles.scss';
-
 import { Keyframes, animated } from 'react-spring';
 import classNames from 'classnames';
 
-const Sidebar: any = Keyframes.Spring({
-  close: { x: 0, delay: 50 },
-  open: { x: 375, opacity: 1, from: { x: -100, opacity: 0 }, delay: 0 },
-  openW: { x: 500, opacity: 1 },
+import SidebarToggle from './sidebar-toggle';
+
+import './styles.scss';
+
+// Creates a spring with predefined animation slots
+const SidebarPanel: any = Keyframes.Spring({
+  open: { x: 0, width: 375, from: { x: -100 }, delay: 0 },
+  openW: { x: 0, width: 500, from: { x: 0 }, delay: 0 },
+  close: [
+    { x: -100, delay: 100 },
+  ],
 });
 
-interface ISidebar {
-  items?: Array<{}>;
-  open?: boolean;
+interface ISidebarPanel {
   panel?: string;
-  setSidebarPanel?: (selected: any) => void;
-  setSidebarOpen?: (o: boolean) => void;
+  children: any;
+  open?: boolean;
+  layersPanel?: boolean;
   selected?: string;
+  setSidebarPanel?: (s: string) => void;
+  setSidebarOpen?: (o: boolean) => void;
+  setPlacesSearch?: (p: { search: string }) => void;
+  setIndexesSelected?: (i: string) => void;
+  resetMap?: () => void;
+  resetPlace?: () => void;
+  resetLayers?: () => void;
 }
 
-class SidebarComponent extends React.Component<ISidebar> {
-  static defaultProps = {
-    panel: null,
-    items: [],
-  };
+class Sidebar extends React.Component<ISidebarPanel> {
   private sidebarPanel: any;
 
-  onClickItem = () => {
-    const { setSidebarOpen, open } = this.props;
-    setSidebarOpen(!open);
+  componentWillUnmount() {
+    const { setSidebarOpen } = this.props;
+    setSidebarOpen(false);
+  }
+
+  onClose = () => {
+    const { setSidebarOpen } = this.props;
+    setSidebarOpen(false);
+  };
+
+  resetMap = () => {
+    const {
+      setPlacesSearch,
+      setIndexesSelected,
+      resetMap,
+      resetPlace,
+      resetLayers,
+    } = this.props;
+
+    resetPlace();
+    setPlacesSearch({ search: '' });
+    setIndexesSelected('');
+    resetLayers();
+    resetMap();
   };
 
   render() {
-    const { open, selected } = this.props;
-
+    const {
+      children,
+      open,
+      selected,
+      layersPanel,
+      setSidebarOpen,
+    } = this.props;
     let state;
     if (open) {
       state = 'open';
@@ -44,32 +76,32 @@ class SidebarComponent extends React.Component<ISidebar> {
     }
 
     return (
-      <Sidebar native state={state}>
-        {({ x, opacity, ...props }) => (
+      <SidebarPanel native state={state}>
+        {({ x, ...props }) => (
           <animated.div
             ref={(r) => {
               this.sidebarPanel = r;
             }}
-            className="c-sidebar"
+            className={classNames({
+              'c-sidebar': true,
+              'ng-c-sidebar': true,
+              'ng-subsection-background': true,
+              'no-scroll': layersPanel,
+            })}
             style={{
-              transform: x.interpolate((x) => `translate3d(${x}px,0,0)`),
+              transform: x.interpolate((x) => `translate3d(${x}%,0,0)`),
               ...props,
             }}
           >
-            <button type="button" onClick={() => this.onClickItem()} className="sidebar--btn">
-              <i
-                className={classNames({
-                  'ng-body-color ng-text-bold ng-icon-small': true,
-                  'ng-icon-directionleft': open,
-                  'ng-icon-directionright': !open,
-                })}
-              />
-            </button>
+            <SidebarToggle
+              open={open}
+              setSidebarOpen={setSidebarOpen} />
+            {children}
           </animated.div>
         )}
-      </Sidebar>
+      </SidebarPanel>
     );
   }
 }
 
-export default SidebarComponent;
+export default Sidebar;

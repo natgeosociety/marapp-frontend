@@ -279,7 +279,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
           </div>
 
           {/* FOOTER */}
-          {footer && (
+          {!data.noData && footer && (
             <Footer
               collapsed={collapsed}
               active={active}

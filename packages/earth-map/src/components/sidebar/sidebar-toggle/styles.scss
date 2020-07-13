@@ -1,0 +1,19 @@
+@import '~styles/config';
+
+.c-sidebar-close {
+  position: absolute;
+  display: flex;
+  top: 59px;
+  right: 0px;
+  width: 40px;
+  transform: translateX(40px);
+  z-index: $z-index-3;
+  height: 50px;
+
+  .sidebar--btn {
+    width: 40px;
+    background-color: $marapp-gray-8;
+    box-shadow: 0 0 5px 0 rgba($marapp-gray-100, 0.5);
+    transition: all 0.3s ease;
+  }
+}

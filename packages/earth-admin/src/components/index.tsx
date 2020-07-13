@@ -9,3 +9,4 @@ export * from './json-editor';
 export * from './html-editor';
 export * from './error-messages';
 export * from './org-switcher';
+export * from './organizations';

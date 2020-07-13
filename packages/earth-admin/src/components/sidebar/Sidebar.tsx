@@ -22,6 +22,7 @@ const ADMIN_PAGES: AdminPage[] = [
   { key: 'Layers', url: '/layers/', guard: AuthzGuards.accessLayersGuard },
   { key: 'Dashboards', url: '/dashboards/', guard: AuthzGuards.accessDashboardsGuard },
   { key: 'Users', url: '/users/', guard: AuthzGuards.accessUsersGuard },
+  { key: 'Organizations', url: '/organizations/', guard: AuthzGuards.accessOrganizationsGuard },
 ];
 
 export default function Sidebar() {
