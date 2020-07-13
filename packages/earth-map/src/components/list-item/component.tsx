@@ -6,6 +6,7 @@ import './style.scss';
 
 interface IProps {
   title: string;
+  hint?: string;
   linkTo: {
     type: string;
     payload?: any;
@@ -21,6 +22,7 @@ interface IProps {
 const ListItem = (props: IProps) => {
   const {
     title,
+    hint,
     labels,
     linkTo,
     key,
@@ -45,7 +47,7 @@ const ListItem = (props: IProps) => {
       onClick={onClick || onClickIndex} key={key}
       className="ng-c-list-item ng-unstyled ng-padding-small-vertical ng-padding-medium-horizontal"
     >
-      { parseHintBold(title) }
+      { parseHintBold(hint || title) }
       {labels.map((label, i) => (
         <span className="ng-margin-left ng-color-mdgray" key={`${label}-${i}`}>{label}</span>
       ))}
