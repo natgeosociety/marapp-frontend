@@ -7,6 +7,7 @@ interface ILegendItemGroupComponent {
   activeLayer?: any;
   onChangeCurrent?: (activeLayer: any, value: any) => void;
 }
+
 class LegendItemGroupComponent extends React.PureComponent<ILegendItemGroupComponent> {
   static propTypes = {};
 
@@ -15,28 +16,28 @@ class LegendItemGroupComponent extends React.PureComponent<ILegendItemGroupCompo
   };
 
   onChangeCurrent = e => {
-    const { activeLayer, onChangeCurrent } = this.props;
+    const {activeLayer, onChangeCurrent} = this.props;
     onChangeCurrent(activeLayer, e.currentTarget.value);
   };
 
   render() {
-    const { activeLayer } = this.props;
+    const {activeLayer} = this.props;
 
-    const { id, current, layerConfig } = activeLayer;
-    const { type, layers } = layerConfig;
+    const {id, current, source, references} = activeLayer;
+    const {type} = source;
 
     if (type !== 'group') {
       return null;
     }
 
-    if (!layers) {
+    if (!references) {
       return null;
     }
 
     return (
       <div className="c-legend-item-group">
-        {layers.map(l => {
-          const currentActive = current || layers[0].id;
+        {references.map(l => {
+          const currentActive = current || references[0].id;
           const checked = currentActive === l.id;
 
           return (
@@ -51,7 +52,7 @@ class LegendItemGroupComponent extends React.PureComponent<ILegendItemGroupCompo
               />
 
               <label htmlFor={`layer-group-${l.id}`}>
-                <span className="legend-item-group--symbol" />
+                <span className="legend-item-group--symbol"/>
                 <span className="legend-item-group--name">{l.name}</span>
               </label>
             </div>

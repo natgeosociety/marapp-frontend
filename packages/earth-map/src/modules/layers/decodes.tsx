@@ -1,3 +1,5 @@
+//todo remove this, take from layer config
+
 const decodes = {
   treeCoverLoss: `
     // values for creating power scale, domain (input), and range (output)

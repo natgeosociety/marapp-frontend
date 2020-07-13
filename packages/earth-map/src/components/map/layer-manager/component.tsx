@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { LayerManager, Layer } from 'layer-manager/dist/components';
-import { PluginMapboxGl } from 'layer-manager';
+import {LayerManager, Layer} from 'layer-manager/dist/components';
+import {PluginMapboxGl} from 'layer-manager';
 
 interface ILayerManager {
   map?: {};
@@ -9,9 +9,10 @@ interface ILayerManager {
   bounds?: {};
 }
 
+
 class LayerManagerComponent extends React.PureComponent<ILayerManager> {
   render() {
-    const { map, layers, bounds } = this.props;
+    const {map, layers, bounds} = this.props;
 
     return (
       <LayerManager
@@ -20,9 +21,9 @@ class LayerManagerComponent extends React.PureComponent<ILayerManager> {
         // onLayerLoading={loading => setMapLoading(loading)}
       >
         {!!layers &&
-          layers.map((l: any, i) => {
-            return <Layer key={l.id} {...l} />;
-          })}
+        layers.map((l: any, i) => {
+          return <Layer key={l.id} {...l} />;
+        })}
 
         {bounds && <Layer {...bounds} />}
       </LayerManager>
