@@ -10,7 +10,10 @@ interface IProps {
     payload?: any;
   };
   key: string;
+  list?: [];
   labels?: string[];
+  setPlacesSearch?: () => void;
+  setIndexesSelected?: () => void;
   onClick?: () => void;
 }
 
@@ -20,13 +23,24 @@ const ListItem = (props: IProps) => {
     labels,
     linkTo,
     key,
-    onClick = () => { },
+    list,
+    setPlacesSearch,
+    setIndexesSelected,
+    onClick,
   } = props;
+
+  // Default click action. Can be overritten by passing onClick prop
+  const onClickIndex = () => {
+    // @ts-ignore
+    setPlacesSearch({ search: title });
+    // @ts-ignore
+    !!list[0] && setIndexesSelected(list[0].slug);
+  };
 
   return (
     <Link
       to={linkTo}
-      onClick={onClick} key={key}
+      onClick={onClick || onClickIndex} key={key}
       className="ng-c-list-item ng-unstyled ng-padding-small-vertical ng-padding-medium-horizontal"
     >
       {title}

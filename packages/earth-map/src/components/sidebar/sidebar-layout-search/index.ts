@@ -7,8 +7,10 @@ export default connect(
     ...state.indexes,
     ...state.sidebar,
     search: state.places.search,
+    group: state.user.group,
     locationName: state.places.data.name,
     locationOrganization: state.places.data.organization,
+    lastViewedPlace: state.global.lastViewedPlace,
   }), {
     setPlacesSearchOpen,
     setPlacesSearch,

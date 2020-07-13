@@ -9,11 +9,8 @@ import './styles.scss';
 interface IPlacesList {
   loading?: boolean;
   nextPageCursor?: string;
-  setIndexesSelected?: (s: string) => any;
-  setPlacesSearch?: Function;
   nextPlacesPage?: Function;
   setPlacesSearchResults?: Function;
-  list?: [];
   results?: IPlacesListItem[];
   group?: string;
 }
@@ -31,10 +28,7 @@ const PlacesResultsComponent = (props: IPlacesList) => {
     nextPageCursor,
     loading,
     results,
-    setIndexesSelected,
-    setPlacesSearch,
     nextPlacesPage,
-    list,
     group,
   } = props;
   const PAGE_SIZE = 100;
@@ -46,7 +40,6 @@ const PlacesResultsComponent = (props: IPlacesList) => {
       <ListItem
         title={name} key={slug}
         linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
-        onClick={() => onClickIndex(name)}
         labels={[
           type,
           (group.length > 1) && organization
@@ -58,13 +51,6 @@ const PlacesResultsComponent = (props: IPlacesList) => {
     nextPlacesPage({
       pageCursor: nextPageCursor,
     });
-  };
-
-  const onClickIndex = (name) => {
-    // @ts-ignore
-    setPlacesSearch({ search: name });
-    // @ts-ignore
-    !!list[0] && setIndexesSelected(list[0].slug);
   };
 
   return (

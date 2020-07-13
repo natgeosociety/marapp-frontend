@@ -6,6 +6,7 @@ import Header from 'components/header';
 
 import SearchBox from 'components/places/searchbox';
 import Filter from 'components/places/filter-by';
+import ListItem from 'components/list-item';
 import FeaturedPlaces from 'components/places/featured-places';
 import PlacesResults from 'components/places/list';
 import IndexSidebar from 'components/index-sidebar';
@@ -20,11 +21,13 @@ const LayersDropdown: any = Keyframes.Spring({
 
 interface IProps {
   search?: any;
+  group?: string[];
   places?: any;
   layersPanel?: boolean;
   selected?: boolean;
   locationName?: string;
   locationOrganization?: string;
+  lastViewedPlace?: any;
   setPlacesSearch?: Function;
   setPlacesSearchOpen?: Function;
 }
@@ -34,10 +37,12 @@ const SidebarLayoutSearch = (props: IProps) => {
     layersPanel,
     selected,
     search,
+    group,
     setPlacesSearchOpen,
     locationName,
     locationOrganization,
     setPlacesSearch,
+    lastViewedPlace,
   } = props;
   const { open } = search;
   const state = layersPanel ? 'open' : 'close';
@@ -53,6 +58,10 @@ const SidebarLayoutSearch = (props: IProps) => {
     }
     setPlacesSearchOpen(false);
   }
+
+  const onLocationPage = selected && open && showResults;
+  const onHomepage = !selected && showResults;
+  const showLastViewedPlace = lastViewedPlace && group.includes(lastViewedPlace.organization)
 
   return (
     <>
@@ -84,21 +93,32 @@ const SidebarLayoutSearch = (props: IProps) => {
             </div>
           )}
         </div>
-        {renderContent(open, selected, showResults)}
+        {(onLocationPage || onHomepage)
+          ? <PlacesResults />
+          : selected
+            ? <IndexSidebar />
+            : (
+              <>
+                {(showLastViewedPlace && <LastViewedPlace place={lastViewedPlace} />)}
+                <FeaturedPlaces />
+              </>
+            )}
       </div>
     </>
   )
 };
 
-const renderContent = (open, selected, showResults) => {
-  const onLocationPage = selected && open && showResults;
-  const onHomepage = !selected && showResults;
-
-  return (onLocationPage || onHomepage)
-    ? <PlacesResults />
-    : selected
-      ? <IndexSidebar />
-      : <FeaturedPlaces />
+const LastViewedPlace = ({ place }) => {
+  const { name, slug, id, organization, type } = place;
+  return (
+    <div className="ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
+      <h2 className="ng-padding-medium ng-text-display-s ng-body-color ng-margin-remove">Last viewed place</h2>
+      <ListItem
+        title={name} key={slug}
+        linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
+        labels={[ type, organization ]} />
+    </div>
+  )
 }
 
 export default SidebarLayoutSearch;

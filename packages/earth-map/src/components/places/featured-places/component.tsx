@@ -6,21 +6,11 @@ interface IFeaturedPlaces {
   featured?: {
     data: [];
   };
-  list?: [];
   group?: string;
-  setIndexesSelected?: (s: string) => any;
-  setPlacesSearch?: (s: string) => any;
 }
 
 const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
-  const { featured, setIndexesSelected, list, setPlacesSearch, group } = props;
-
-  const onClickIndex = (slug) => {
-    // @ts-ignore
-    setPlacesSearch({ search: slug });
-    // @ts-ignore
-    !!list[0] && setIndexesSelected(list[0].slug);
-  };
+  const { featured, group } = props;
 
   return (
     <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
@@ -34,7 +24,6 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
               <ListItem
                 title={name} key={slug}
                 linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
-                onClick={() => onClickIndex(name)}
                 labels={[
                   type,
                   (group.length > 1) && organization
