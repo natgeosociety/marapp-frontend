@@ -229,31 +229,36 @@ export const getActiveBoundsLayer = createSelector([place], (_place) => {
     name: 'Bounds',
     zIndex: 2000,
     provider: 'geojson',
-    layerConfig: {
+    type: 'geojson',
+    source: {
+      type: 'geojson',
       data: geojson,
-      body: {
-        vectorLayers: [
-          {
-            id: `${id}-fill`,
-            type: 'fill',
-            source: id,
-            paint: {
-              'fill-color': 'transparent',
-              'fill-opacity': 0.25,
-            },
-          },
-          {
-            id: `${id}-line`,
-            type: 'line',
-            source: id,
-            paint: {
-              'line-color': '#000000',
-              'line-width': 3,
-            },
-          },
-        ],
-      },
     },
+    render: {
+      metadata: {
+        position: 'top'
+      },
+      layers: [
+        {
+          id: `${id}-fill`,
+          type: 'fill',
+          source: id,
+          paint: {
+            'fill-color': 'transparent',
+            'fill-opacity': 0.25,
+          },
+        },
+        {
+          id: `${id}-line`,
+          type: 'line',
+          source: id,
+          paint: {
+            'line-color': '#000000',
+            'line-width': 3,
+          },
+        },
+      ],
+    }
   };
 });
 
