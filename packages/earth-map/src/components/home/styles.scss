@@ -38,7 +38,7 @@
 
   .landing-step--content {
     color: $marapp-gray-0;
-    font-weight: $font-weight-bold;
+    font-weight: $font-weight-medium;
     font-size: $font-size-default * 1.25;
     text-transform: uppercase;
     letter-spacing: 3px;
@@ -57,6 +57,6 @@
   }
 
   .-bold {
-    font-weight: $font-weight-bold;
+    font-weight: $font-weight-medium;
   }
 }
