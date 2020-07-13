@@ -22,7 +22,7 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
 
             return (
               <ListItem
-                title={name} key={slug}
+                title={name} key={`${slug}-${organization}`}
                 linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
                 labels={[
                   type,

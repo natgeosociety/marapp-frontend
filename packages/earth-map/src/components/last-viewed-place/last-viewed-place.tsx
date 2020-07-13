@@ -14,7 +14,7 @@ export const LastViewedPlace = ({ place }: IProps) => {
     <div className="ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
       <h2 className="ng-padding-medium ng-text-display-s ng-body-color ng-margin-remove">Last viewed place</h2>
       <ListItem
-        title={name} key={slug}
+        title={name} key={`${slug}-${organization}`}
         linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
         labels={[type, organization]} />
     </div>

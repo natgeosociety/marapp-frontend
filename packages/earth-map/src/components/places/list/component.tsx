@@ -31,7 +31,7 @@ const PlacesResultsComponent = (props: IPlacesList) => {
     const { slug, id, organization, type, $searchHint } = results[index];
     return (
       <ListItem
-        title={$searchHint.name} key={slug}
+        title={$searchHint.name} key={`${slug}-${organization}`}
         linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
         labels={[
           type,
