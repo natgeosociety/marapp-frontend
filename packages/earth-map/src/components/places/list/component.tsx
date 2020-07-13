@@ -24,7 +24,9 @@ interface IPlacesListItem {
   name: string;
   organization: string;
   type: string;
-  $searchHint?: string;
+  $searchHint?: {
+    [prop: string]: string
+  };
 }
 
 const PlacesResultsComponent = (props: IPlacesList) => {
@@ -45,7 +47,7 @@ const PlacesResultsComponent = (props: IPlacesList) => {
     const { slug, name, id, organization, type, $searchHint } = results[index];
     return (
       <ListItem
-        title={$searchHint} key={slug}
+        title={$searchHint.name} key={slug}
         linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
         onClick={() => onClickIndex(name)}
         labels={[
