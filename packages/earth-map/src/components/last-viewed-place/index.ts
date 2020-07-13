@@ -1,0 +1,1 @@
+export { LastViewedPlace as default } from './last-viewed-place';

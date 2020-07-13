@@ -10,10 +10,10 @@ interface IProps {
     payload?: any;
   };
   key: string;
-  list?: [];
+  list?: any[];
   labels?: string[];
-  setPlacesSearch?: () => void;
-  setIndexesSelected?: () => void;
+  setPlacesSearch?: (payload) => void;
+  setIndexesSelected?: (payload) => void;
   onClick?: () => void;
 }
 
@@ -31,10 +31,11 @@ const ListItem = (props: IProps) => {
 
   // Default click action. Can be overritten by passing onClick prop
   const onClickIndex = () => {
-    // @ts-ignore
     setPlacesSearch({ search: title });
-    // @ts-ignore
-    !!list[0] && setIndexesSelected(list[0].slug);
+    const [ first ] = list;
+    if (!!first) {
+      setIndexesSelected(first.slug);
+    }
   };
 
   return (

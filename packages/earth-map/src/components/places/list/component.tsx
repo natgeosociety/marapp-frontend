@@ -1,6 +1,7 @@
 import React from 'react';
 import List from '@researchgate/react-intersection-list';
 import { Spinner } from '@marapp/earth-components';
+import { IPlace } from 'modules/places/model';
 
 import ListItem from 'components/list-item';
 
@@ -11,16 +12,8 @@ interface IPlacesList {
   nextPageCursor?: string;
   nextPlacesPage?: Function;
   setPlacesSearchResults?: Function;
-  results?: IPlacesListItem[];
+  results?: IPlace[];
   group?: string;
-}
-
-interface IPlacesListItem {
-  slug: string;
-  id: string;
-  name: string;
-  organization: string;
-  type: string;
 }
 
 const PlacesResultsComponent = (props: IPlacesList) => {

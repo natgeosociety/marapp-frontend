@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import sagas from 'sagas';
 
 import { ROUTES, CONFIG } from '../routes';
-import restoreState from 'utils/store';
+import restoreState from 'store/ephemeral-state';
 
 // New modules
 import { handleModule } from 'vizzuality-redux-tools';

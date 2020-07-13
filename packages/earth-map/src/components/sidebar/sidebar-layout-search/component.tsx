@@ -6,11 +6,12 @@ import Header from 'components/header';
 
 import SearchBox from 'components/places/searchbox';
 import Filter from 'components/places/filter-by';
-import ListItem from 'components/list-item';
 import FeaturedPlaces from 'components/places/featured-places';
 import PlacesResults from 'components/places/list';
 import IndexSidebar from 'components/index-sidebar';
+import LastViewedPlace from 'components/last-viewed-place';
 import { hasFilters } from 'utils/filters';
+import { IPlace } from 'modules/places/model';
 
 import './styles.scss';
 
@@ -27,7 +28,7 @@ interface IProps {
   selected?: boolean;
   locationName?: string;
   locationOrganization?: string;
-  lastViewedPlace?: any;
+  lastViewedPlace?: IPlace;
   setPlacesSearch?: Function;
   setPlacesSearchOpen?: Function;
 }
@@ -108,17 +109,6 @@ const SidebarLayoutSearch = (props: IProps) => {
   )
 };
 
-const LastViewedPlace = ({ place }) => {
-  const { name, slug, id, organization, type } = place;
-  return (
-    <div className="ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
-      <h2 className="ng-padding-medium ng-text-display-s ng-body-color ng-margin-remove">Last viewed place</h2>
-      <ListItem
-        title={name} key={slug}
-        linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
-        labels={[ type, organization ]} />
-    </div>
-  )
-}
+
 
 export default SidebarLayoutSearch;
