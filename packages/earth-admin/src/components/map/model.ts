@@ -20,9 +20,10 @@ export const LAYER_DEFAULT = {
   name: 'admin layer',
   id: 'admin-layer',
   slug: 'admin-layer',
-  layerType: 'geojson',
+  type: 'geojson',
   provider: 'mapbox',
-  layerConfig: {
+  source: {
+    type: 'geojson',
     data: {
       type: 'FeatureCollection',
       features: [
@@ -36,24 +37,23 @@ export const LAYER_DEFAULT = {
         },
       ],
     },
-    body: {
-      type: 'geojson',
-      vectorLayers: [
-        {
-          type: 'fill',
-          paint: {
-            'fill-color': '#000',
-            'fill-opacity': 0.25,
-          },
+  },
+  render: {
+    layers: [
+      {
+        type: 'fill',
+        paint: {
+          'fill-color': '#000',
+          'fill-opacity': 0.25,
         },
-        {
-          type: 'line',
-          paint: {
-            'line-color': '#000',
-            'line-width': 2,
-          },
+      },
+      {
+        type: 'line',
+        paint: {
+          'line-color': '#000',
+          'line-width': 2,
         },
-      ],
-    },
+      },
+    ]
   },
 };

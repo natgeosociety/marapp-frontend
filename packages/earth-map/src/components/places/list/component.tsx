@@ -28,10 +28,10 @@ const PlacesResultsComponent = (props: IPlacesList) => {
   const hasNextPage = results.length >= PAGE_SIZE;
   const awaitMore = !loading && !!nextPageCursor && hasNextPage;
   const renderItem = (index) => {
-    const { slug, name, id, organization, type } = results[index];
+    const { slug, id, organization, type, $searchHint } = results[index];
     return (
       <ListItem
-        title={name} key={slug}
+        title={$searchHint.name} key={slug}
         linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
         labels={[
           type,

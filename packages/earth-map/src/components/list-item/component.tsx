@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'redux-first-router-link';
+import { parseHintBold } from 'utils';
 
 import './style.scss';
 
@@ -44,7 +45,7 @@ const ListItem = (props: IProps) => {
       onClick={onClick || onClickIndex} key={key}
       className="ng-c-list-item ng-unstyled ng-padding-small-vertical ng-padding-medium-horizontal"
     >
-      {title}
+      { parseHintBold(title) }
       {labels.map((label, i) => (
         <span className="ng-margin-left ng-color-mdgray" key={`${label}-${i}`}>{label}</span>
       ))}
