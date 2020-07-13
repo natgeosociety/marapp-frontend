@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { InView } from 'react-intersection-observer'
 
 // Components
 import Widget from 'components/widget';
@@ -65,47 +66,53 @@ class WidgetsComponent extends React.Component<IWidgets, IWidgetsState> {
 
             return (
               <div key={`${w.slug}-${i}`} className="widgets--list-item ng-position-relative">
-                <Widget
-                  {...w}
-                  {...(typeof collapsedState[widgetMetricName] !== 'undefined' && {
-                    collapsed: collapsedState[widgetMetricName],
-                  })}
-                  {...CONFIGS[widgetMetricName]}
-                  id={place.slug}
-                  place={place}
-                  widgetDescription={w.description}
-                  metric={!!filteredMetric ? filteredMetric : {}}
-                  showOrgLabel={groups.length > 1}
-                  embed={embed}
-                  toolbar={toolbar}
-                  activeDownload={false} // To be done, only if it's necessary
-                  onShare={() => this.setState({ share: true, widgetId: w.id })}
-                  onCollapse={(c) => {
-                    this.setState({
-                      collapsedState: { ...collapsedState, [widgetMetricName]: c },
-                    });
-                  }}
-                  onToggleLayer={(bool) => {
-                    const { layers } = w;
-
-                    if (layers[0]) {
-                      toggleLayer({
-                        slug: layers[0].slug,
-                      });
-                    }
-                  }}
-                >
-                  {({ slug, data, ...props }) => (
-                    <React.Fragment>
-                      {/* Template */}
-                      {!!TEMPLATES[widgetMetricName] &&
-                        React.createElement(TEMPLATES[widgetMetricName], {
-                          ...data,
-                          ...props,
+                <InView threshold={0.2} triggerOnce>
+                  {({ ref, inView }) => (
+                    <div style={{ minHeight: '40vh' }} ref={ref}>
+                      {inView && <Widget
+                        {...w}
+                        {...(typeof collapsedState[widgetMetricName] !== 'undefined' && {
+                          collapsed: collapsedState[widgetMetricName],
                         })}
-                    </React.Fragment>
+                        {...CONFIGS[widgetMetricName]}
+                        id={place.slug}
+                        place={place}
+                        widgetDescription={w.description}
+                        metric={!!filteredMetric ? filteredMetric : {}}
+                        showOrgLabel={groups.length > 1}
+                        embed={embed}
+                        toolbar={toolbar}
+                        activeDownload={false} // To be done, only if it's necessary
+                        onShare={() => this.setState({ share: true, widgetId: w.id })}
+                        onCollapse={(c) => {
+                          this.setState({
+                            collapsedState: { ...collapsedState, [widgetMetricName]: c },
+                          });
+                        }}
+                        onToggleLayer={(bool) => {
+                          const { layers } = w;
+
+                          if (layers[0]) {
+                            toggleLayer({
+                              slug: layers[0].slug,
+                            });
+                          }
+                        }}
+                      >
+                        {({ slug, data, ...props }) => (
+                          <React.Fragment>
+                            {/* Template */}
+                            {!!TEMPLATES[widgetMetricName] &&
+                              React.createElement(TEMPLATES[widgetMetricName], {
+                                ...data,
+                                ...props,
+                              })}
+                          </React.Fragment>
+                        )}
+                      </Widget>}
+                    </div>
                   )}
-                </Widget>
+                </InView>
               </div>
             );
           })}
