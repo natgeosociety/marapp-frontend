@@ -15,7 +15,7 @@ export default function MapComponent() {
   const bounds = { bbox: bbox };
   const LAYER = {
     ...LAYER_DEFAULT,
-    ...{ layerConfig: { ...LAYER_DEFAULT.layerConfig, ...{ data: geojson } } },
+    ...{ source: { ...LAYER_DEFAULT.source, ...{ data: geojson } } },
   };
 
   return (
