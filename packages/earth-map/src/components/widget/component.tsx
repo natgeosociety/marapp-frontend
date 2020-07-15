@@ -50,6 +50,7 @@ interface IWidgetTemplate {
   params?: {};
   parse?: (metric: any, params: any, widgetConfig: any, place: any) => void;
   metric?: {};
+  layers?: [];
   widgetConfig?: IWidgetConfig;
 
   // States
@@ -219,6 +220,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
       // DATA
       params,
       metric,
+      layers,
       // FUNCTIONS
       onCollapse,
       onToggleLayer,
@@ -298,7 +300,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
           </div>
 
           {/* FOOTER */}
-          {!data.noData && footer && (
+          {!!layers?.length && footer && (
             <Footer
               collapsed={collapsed}
               active={active}
