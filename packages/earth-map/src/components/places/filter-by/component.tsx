@@ -20,22 +20,29 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 
-import { cleanFilters } from 'utils/filters';
+import { cleanFilters, countFilters } from 'utils/filters';
 
 import './styles.scss';
 
-const FilterComponent = (props: any) => {
+interface IProps {
+  search?: any;
+  setPlacesSearch?: (payload?) => void;
+};
+
+const FilterBy = (props: IProps) => {
   const { search, setPlacesSearch } = props;
   const { filters, availableFilters } = search;
   const [dropdownState, setDropdownState] = useState('close');
+  const numberOfFilters = countFilters(filters);
 
   const toggleFilter = (key: string, value: string) => {
     const filterGroup = filters[key] || [];
     const exists = filterGroup.includes(value);
     const newFilters = {
-      [key]: exists ? filterGroup.filter((x) => x !== value) : [...filterGroup, value],
+      [key]: exists
+        ? filterGroup.filter((x) => x !== value)
+        : [...filterGroup, value],
     };
-
     setPlacesSearch({
       filters: cleanFilters({
         ...filters,
@@ -44,23 +51,35 @@ const FilterComponent = (props: any) => {
     });
   };
 
+  const clearCheckedFilters = () => setPlacesSearch({
+    filters: {}
+  });
+
   const handleDropdown = () => {
     setDropdownState(dropdownState === 'open' ? 'close' : 'open');
   };
 
   return (
     <div className="ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
-      <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
-        Search filters
+      <div className="ng-flex search-title">
+        <h2
+          className="ng-text-display-s ng-body-color ng-margin-bottom ng-margin-small-right ng-c-cursor-pointer"
+          onClick={handleDropdown}>
+          Search filters
+        </h2>
+        {numberOfFilters > 0 &&
+          <a className="ng-link ng-nohover ng-text-weight-regular ng-text-capital" onClick={clearCheckedFilters}>Clear {`(${numberOfFilters})`}</a>
+        }
         <i
           className={classnames({
+            'ng-c-cursor-pointer': true,
             'ng-margin-small-left': true,
             'ng-icon-directionup': dropdownState === 'open',
             'ng-icon-directiondown': dropdownState !== 'open',
           })}
           onClick={handleDropdown}
         />
-      </h2>
+      </div>
       {dropdownState === 'open' &&
         Object.keys(availableFilters).map((key) => (
           <>
@@ -105,4 +124,4 @@ const FilterComponent = (props: any) => {
   );
 };
 
-export default FilterComponent;
+export default FilterBy;

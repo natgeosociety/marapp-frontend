@@ -18,6 +18,7 @@
 */
 
 @import '~styles/config';
+@import '~styles/mixins';
 
 .with-count {
   display: flex;
@@ -44,4 +45,9 @@
   h6 {
     margin-bottom: 0;
   }
+}
+
+.search-title {
+  @include align-items(baseline);
+  transform: translateY(-5px);
 }

@@ -24,7 +24,7 @@ import Layers from 'components/layers';
 import Header from 'components/header';
 
 import SearchBox from 'components/places/searchbox';
-import Filter from 'components/places/filter-by';
+import FilterBy from 'components/places/filter-by';
 import FeaturedPlaces from 'components/places/featured-places';
 import PlacesResults from 'components/places/list';
 import IndexSidebar from 'components/index-sidebar';
@@ -102,7 +102,7 @@ const SidebarLayoutSearch = (props: IProps) => {
         <div className="ng-sticky-top ng-margin-bottom">
           <Header />
           <SearchBox showClose={showX} />
-          {showFilter && <Filter />}
+          {showFilter && <FilterBy />}
           {showBack && (
             <div
               onClick={handleBack}
