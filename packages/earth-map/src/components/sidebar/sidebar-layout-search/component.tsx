@@ -18,7 +18,7 @@
 */
 
 import React from 'react';
-import { Keyframes, animated } from 'react-spring';
+import {Keyframes, animated} from 'react-spring/renderprops';
 
 import Layers from 'components/layers';
 import Header from 'components/header';

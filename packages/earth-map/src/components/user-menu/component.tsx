@@ -22,12 +22,12 @@ import React, { useContext, useState, useEffect } from 'react';
 import './styles.scss';
 
 import { Auth0Context } from 'auth/auth0';
-import { animated, Keyframes } from 'react-spring';
+import {Keyframes, animated} from 'react-spring/renderprops';
 import useDomWatcher from 'utils/hooks';
 
-const Dropdown: any = Keyframes.Spring({
-  false: { x: 0, delay: 0 },
-  true: { x: 1, from: { x: 0 }, delay: 100 },
+const Dropdown: any =  Keyframes.Spring({
+  false: { x: `-100vh`},
+  true: { x: '0vh'},
 });
 
 export default function UserMenuComponent() {
@@ -64,7 +64,7 @@ export default function UserMenuComponent() {
         {({ x, ...props }) => (
           <animated.div
             style={{
-              opacity: x,
+              transform: x.interpolate((x) => `translate3d(0,${x},0)`),
               ...props,
             }}
           >

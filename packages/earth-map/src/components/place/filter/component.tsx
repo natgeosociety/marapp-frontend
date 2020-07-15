@@ -22,7 +22,7 @@ import upperFirst from 'lodash/upperFirst';
 import sortBy from 'lodash/sortBy';
 
 // Spring
-import { animated } from 'react-spring';
+import { animated } from 'react-spring/renderprops';
 
 // Components
 import Link from 'redux-first-router-link';

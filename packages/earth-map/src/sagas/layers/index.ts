@@ -31,6 +31,7 @@ import {setIndexesList} from 'modules/indexes/actions';
 import {setLayersList} from 'modules/layers/actions';
 import {getGroup} from 'sagas/saga-utils';
 
+
 export function* preloadLayers({payload}) {
   const group = yield select(getGroup);
 

@@ -323,4 +323,9 @@ body {
   .vizzuality__c-legend-handler > svg {
     fill: $marapp-gray-0;
   }
+
+  .select--input {
+    background: transparent;
+    color: $marapp-gray-8;
+  }
 }

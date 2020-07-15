@@ -20,7 +20,7 @@
 import React, { ReactNode, useContext, useState } from 'react';
 
 import './styles.scss';
-import { Keyframes, animated } from 'react-spring';
+import {Keyframes, animated} from 'react-spring/renderprops'
 
 interface IDropdownComponent {
   state?: string;

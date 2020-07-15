@@ -29,6 +29,9 @@ import { onRedirectCallback, onSuccessHook, onFailureHook } from './auth/hooks';
 
 import 'styles/index.scss';
 
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
+
 ReactDOM.render(
   // @ts-ignore
   <Auth0Provider

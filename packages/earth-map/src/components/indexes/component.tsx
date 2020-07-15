@@ -21,7 +21,7 @@ import React from 'react';
 import classnames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
-import { Keyframes, animated } from 'react-spring'
+import {Keyframes, animated} from 'react-spring/renderprops'
 
 // Components
 import { Icon } from '@marapp/earth-components';

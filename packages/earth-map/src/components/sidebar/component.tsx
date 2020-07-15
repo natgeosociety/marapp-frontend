@@ -18,7 +18,7 @@
 */
 
 import React from 'react';
-import { Keyframes, animated } from 'react-spring';
+import {Keyframes, animated} from 'react-spring/renderprops';
 import classNames from 'classnames';
 
 import SidebarToggle from './sidebar-toggle';
@@ -53,12 +53,12 @@ class Sidebar extends React.Component<ISidebarPanel> {
   private sidebarPanel: any;
 
   componentWillUnmount() {
-    const { setSidebarOpen } = this.props;
+    const {setSidebarOpen} = this.props;
     setSidebarOpen(false);
   }
 
   onClose = () => {
-    const { setSidebarOpen } = this.props;
+    const {setSidebarOpen} = this.props;
     setSidebarOpen(false);
   };
 
@@ -72,7 +72,7 @@ class Sidebar extends React.Component<ISidebarPanel> {
     } = this.props;
 
     resetPlace();
-    setPlacesSearch({ search: '' });
+    setPlacesSearch({search: ''});
     setIndexesSelected('');
     resetLayers();
     resetMap();
@@ -98,9 +98,6 @@ class Sidebar extends React.Component<ISidebarPanel> {
       <SidebarPanel native state={state}>
         {({ x, ...props }) => (
           <animated.div
-            ref={(r) => {
-              this.sidebarPanel = r;
-            }}
             className={classNames({
               'c-sidebar': true,
               'ng-c-sidebar': true,
