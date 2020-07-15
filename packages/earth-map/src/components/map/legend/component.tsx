@@ -2,7 +2,7 @@ import React from 'react';
 
 import debounce from 'lodash/debounce';
 
-import { Keyframes, animated } from 'react-spring'
+import {Keyframes, animated} from 'react-spring/renderprops';
 
 import Modal from 'components/modal';
 

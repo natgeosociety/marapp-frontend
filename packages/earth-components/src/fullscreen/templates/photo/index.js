@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 
 // Animations
-import { Transition } from "react-spring";
+import {Transition} from 'react-spring/renderprops'
 
 import {
   Spinner,

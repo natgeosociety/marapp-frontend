@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Transition, animated } from 'react-spring';
+import {Transition, animated} from 'react-spring/renderprops'
 import { Button } from '@marapp/earth-components';
 
 import './styles.scss';

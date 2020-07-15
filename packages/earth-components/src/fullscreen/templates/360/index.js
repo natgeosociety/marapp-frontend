@@ -2,7 +2,7 @@ import React, { Fragment, PureComponent } from "react";
 import PropTypes from "prop-types";
 
 // Animations
-import { Transition } from "react-spring";
+import {Transition} from 'react-spring/renderprops';
 
 import { Panorama } from "@marapp/earth-components";
 

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import ReactPlayer from "react-player";
 
 // Animations
-import { Spring, Transition } from "react-spring";
+import {Spring, Transition} from 'react-spring/renderprops'
 
 import { Spinner } from "@marapp/earth-components";
 

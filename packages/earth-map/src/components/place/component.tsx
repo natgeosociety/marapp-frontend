@@ -1,7 +1,7 @@
 import React from 'react';
 import isEmpty from 'lodash/isEmpty';
 
-import { Transition, Keyframes, animated } from 'react-spring'
+import {Keyframes, Transition, animated} from 'react-spring/renderprops';
 
 import PlaceSummary from './summary';
 import PlaceFilter from './filter';
