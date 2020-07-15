@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "dotenv -e .env react-app-rewired start",
+    "start": "dotenv -e .env.local react-app-rewired start",
     "build": "dotenv -e .env react-app-rewired build",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --runInBand --passWithNoTests",
@@ -13,7 +13,6 @@
     "@auth0/auth0-spa-js": "1.2.4",
     "@fullpage/react-fullpage": "^0.1.14",
     "@marapp/earth-components": "*",
-    "@natgeosociety/ngs-ui-packages": "^0.0.20",
     "@researchgate/react-intersection-list": "^3.0.10",
     "@types/classnames": "^2.2.9",
     "@types/node": "^13.7.1",
