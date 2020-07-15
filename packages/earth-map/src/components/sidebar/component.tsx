@@ -29,9 +29,8 @@ import './styles.scss';
 const SidebarPanel: any = Keyframes.Spring({
   open: { x: 0, width: 375, from: { x: -100 }, delay: 0 },
   openW: { x: 0, width: 500, from: { x: 0 }, delay: 0 },
-  close: [
-    { x: -100, delay: 100 },
-  ],
+  close:
+    { x: -100, delay: 100 }
 });
 
 interface ISidebarPanel {
