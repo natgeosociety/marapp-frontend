@@ -29,7 +29,17 @@ export const serializeFilters = (filters: IFilters): string => {
  * Check if filters contain any values
  */
 export const hasFilters = (filters: IFilters): boolean => {
-  return !!Object.keys(filters).find((key) => filters[key].length);
+  return countFilters(filters) !== 0;
+};
+
+/**
+ * Count the number of selected filters
+ */
+export const countFilters = (filters: IFilters): number => {
+  return Object.keys(filters).reduce((acc, current) => {
+    const val = filters[current];
+    return acc + val.length;
+  }, 0);
 };
 
 /**
