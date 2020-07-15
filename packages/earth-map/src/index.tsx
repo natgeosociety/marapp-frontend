@@ -30,7 +30,6 @@ import { onRedirectCallback, onSuccessHook, onFailureHook } from './auth/hooks';
 import 'styles/index.scss';
 
 import 'core-js/stable';
-import 'regenerator-runtime/runtime';
 
 ReactDOM.render(
   // @ts-ignore
