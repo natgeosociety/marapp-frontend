@@ -195,8 +195,7 @@ class LegendComponent extends React.PureComponent<ILegend> {
                     />
 
                     <LegendItemTypes />
-
-                    <LegendItemTimeStep
+                    {!!layerGroup.layers[0].decodeParams && <LegendItemTimeStep
                       defaultStyles={{
                         handleStyle: {
                           backgroundColor: 'white',
@@ -209,7 +208,7 @@ class LegendComponent extends React.PureComponent<ILegend> {
                         dotStyle: { visibility: 'hidden', border: '0px' },
                       }}
                       handleChange={this.onChangeLayerDate}
-                    />
+                    />}
 
                     <Modal
                       isOpen={!!layerGroup.info}
