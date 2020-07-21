@@ -73,6 +73,7 @@ function Page(path: any) {
 
   const handleCursorChange = () => {
     if (nextCursor) {
+      setPageSize(1)
       setPageCursor(nextCursor);
     }
   };
@@ -85,7 +86,7 @@ function Page(path: any) {
       const query = {
         search: searchValue,
         sort: 'name',
-        page: { size: pageSize, cursor: dataReset ? INIT_CURSOR_LOCATION : pageCursor },
+        page: { size: pageSize, cursor: pageCursor },
         select: EXCLUDED_FIELDS,
         group: selectedGroup,
       };

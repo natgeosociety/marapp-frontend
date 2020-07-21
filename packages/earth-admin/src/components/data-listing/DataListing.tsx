@@ -18,98 +18,101 @@
 */
 
 import * as React from 'react';
-import { useState } from 'react';
+import {useContext, useEffect, useState} from 'react';
 
-import { LinkWithOrg } from 'components/LinkWithOrg';
-import { Spinner } from '@marapp/earth-components';
+import {createRef, Fragment, PureComponent} from 'react';
+
+import {FixedSizeList as List} from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import InfiniteLoader from 'react-window-infinite-loader';
+
 import './styles.scss';
+import {LocationContext} from 'utils/contexts';
 
-interface DataListingProps {
-  data: any;
-  categoryUrl: string;
-  pageTitle?: string;
-  searchValueAction?: (val: string) => {};
-  cursorAction?: () => {};
-  isLoading: boolean;
-  isNoMore?: boolean;
-  searchValue?: string;
-}
+let items = {};
+let requestCache = {};
 
-const DataListing = (props: DataListingProps) => {
-  const dataContainer = React.createRef();
-
-  const {
-    data,
-    categoryUrl,
-    pageTitle,
-    searchValueAction,
-    cursorAction,
-    isLoading,
-    isNoMore,
-    searchValue
-  } = props;
-
-  const handleSearchChange = (newValue: string) => {
-    searchValueAction(newValue);
-  };
-
-  window.addEventListener(
-    'scroll',
-    (e) => {
-      if (!isLoading && dataContainer && dataContainer.current) {
-        const position = dataContainer.current.getBoundingClientRect();
-        if (position.bottom <= window.innerHeight) {
-          cursorAction();
-        }
-      }
-    },
-    true
-  );
+const Row = ({index, style}) => {
+  const item = items[index];
 
   return (
-    <div>
-      <h2 className="ng-text-display-m">{pageTitle}</h2>
-      {!!data && (
-        <div>
-          <div className="searchable-listing-container ng-width-1-1 ng-margin-small-bottom">
-            <input
-              type="text"
-              placeholder={`Search for ${pageTitle.toLowerCase()}...`}
-              className="ng-padding ng-width-1-1"
-              onChange={(e) => handleSearchChange(e.target.value)}
-              value={searchValue}
-              ref={input => input && input.getBoundingClientRect().top > 0 && input.focus()}
-            />
-          </div>
-          {data && (
-            <div ref={dataContainer}>
-              {data.map((item, index) => {
-                return (
-                  <LinkWithOrg
-                    to={`/${categoryUrl}/${item.id}`}
-                    className="ng-c-data-link ng-display-block ng-padding-medium-horizontal ng-padding-vertical"
-                    key={index}
-                  >
-                    <span className="ng-text-edit-s ng-margin-remove">{item.name}</span>
-                    <span className="ng-display-block">{item.slug}</span>
-                  </LinkWithOrg>
-                );
-              })}
-            </div>
-          )}
-          {isNoMore && (
-            <div className="ng-text-center">
-              <p className="ng-color-gray-3 ng-margin-medium-top ng-margin-bottom-remove">
-                - end -
-              </p>
-            </div>
-          )}
-          {isLoading && (
-            <Spinner position="relative" />
-          )}
-        </div>
-      )}
+    <div style={style}>
+      {item ? `${item.name}` : 'Loading...'}
     </div>
+  );
+};
+
+const isItemLoaded = ({index}) => !!items[index];
+
+
+const DataListing = () => {
+  const {handleCursorChange, locations} = useContext(LocationContext);
+
+  const [coco, setCoco] = useState([]);
+  const [index1, setIndex1] = useState(null);
+
+
+
+
+  const loadMoreItems = (visibleStartIndex, visibleStopIndex) => {
+
+    const key = [visibleStartIndex, visibleStopIndex].join(':'); // 0:10
+    if (requestCache[key]) {
+      return;
+    }
+
+    const length = visibleStopIndex - visibleStartIndex;
+    const visibleRange = [...Array(length).keys()].map(
+      x => x + visibleStartIndex
+    );
+
+    const itemsRetrieved = visibleRange.every(index => !!items[index]);
+
+    if (itemsRetrieved) {
+      requestCache[key] = key;
+      return;
+    }
+
+
+    console.log(locations);
+
+    return new Promise((resolve, reject) => {
+      console.log('dece ');
+      handleCursorChange();
+
+      locations.forEach((location, index) => {
+        items[index + visibleStartIndex] = location;
+      })
+      resolve();
+    })
+  };
+
+
+  return (
+    <div style={{height: '600px'}}>
+      <AutoSizer defaultHeight={500}>
+        {({height, width}) => (
+          <InfiniteLoader
+            isItemLoaded={isItemLoaded}
+            loadMoreItems={loadMoreItems}
+            itemCount={1000}
+          >
+            {({onItemsRendered, ref}) => (
+              <List
+                className="List"
+                height={height}
+                itemCount={1000}
+                itemSize={35}
+                width={width}
+                ref={ref}
+                onItemsRendered={onItemsRendered}
+              >
+                {Row}
+              </List>
+            )}
+          </InfiniteLoader>
+        )}
+      </AutoSizer></div>
   );
 };
 
