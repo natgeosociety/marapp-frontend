@@ -32,29 +32,34 @@ import {LocationContext} from 'utils/contexts';
 let items = {};
 let requestCache = {};
 
-const Row = ({index, style}) => {
-  const item = items[index];
-
-  return (
-    <div style={style}>
-      {item ? `${item.name}` : 'Loading...'}
-    </div>
-  );
-};
-
-const isItemLoaded = ({index}) => !!items[index];
-
 
 const DataListing = () => {
   const {handleCursorChange, locations} = useContext(LocationContext);
 
   const [coco, setCoco] = useState([]);
-  const [index1, setIndex1] = useState(null);
 
 
+  useEffect(() => {
+    setCoco(locations);
+  }, [locations]);
+
+  const isItemLoaded = ({index}) => !!locations[index];
+
+  const Row = ({index, style}) => {
+    const item = coco[index];
+
+    return (
+      <div style={style}>
+        {item ? `${item.name}` : 'Loading...'}
+      </div>
+    );
+  };
 
 
   const loadMoreItems = (visibleStartIndex, visibleStopIndex) => {
+
+    console.log('cat de des');
+    // handleCursorChange();
 
     const key = [visibleStartIndex, visibleStopIndex].join(':'); // 0:10
     if (requestCache[key]) {
@@ -66,25 +71,24 @@ const DataListing = () => {
       x => x + visibleStartIndex
     );
 
-    const itemsRetrieved = visibleRange.every(index => !!items[index]);
+    const itemsRetrieved = visibleRange.every(index => !!coco[index]);
 
     if (itemsRetrieved) {
       requestCache[key] = key;
       return;
     }
 
+    console.log(visibleRange.length, length, coco.length, itemsRetrieved);
 
-    console.log(locations);
+    // if (length > coco.length) {
+    //   handleCursorChange();
+    //   console.log(coco, locations);
+    //   setCoco([...coco, ...locations]);
+    // }
 
-    return new Promise((resolve, reject) => {
-      console.log('dece ');
-      handleCursorChange();
+    return Promise.resolve(coco);
 
-      locations.forEach((location, index) => {
-        items[index + visibleStartIndex] = location;
-      })
-      resolve();
-    })
+
   };
 
 
@@ -102,7 +106,7 @@ const DataListing = () => {
                 className="List"
                 height={height}
                 itemCount={1000}
-                itemSize={35}
+                itemSize={20}
                 width={width}
                 ref={ref}
                 onItemsRendered={onItemsRendered}
