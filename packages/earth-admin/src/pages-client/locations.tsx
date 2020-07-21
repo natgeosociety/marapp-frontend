@@ -18,19 +18,19 @@
 */
 
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { Router } from '@reach/router';
+import {useEffect, useState} from 'react';
+import {Router} from '@reach/router';
 
-import { LocationContext } from 'utils/contexts';
-import { LinkWithOrg } from 'components/LinkWithOrg';
-import { encodeQueryToURL } from 'utils';
-import { getAllLocations, getLocation } from 'services/locations';
-import { AuthzGuards } from 'auth/permissions';
-import { useRequest } from 'utils/hooks';
+import {LocationContext} from 'utils/contexts';
+import {LinkWithOrg} from 'components/LinkWithOrg';
+import {encodeQueryToURL} from 'utils';
+import {getAllLocations, getLocation} from 'services/locations';
+import {AuthzGuards} from 'auth/permissions';
+import {useRequest} from 'utils/hooks';
 
 import Layout from 'layouts';
-import { LocationList, LocationDetails, LocationEdit } from 'components';
-import { useAuth0 } from '../auth/auth0';
+import {LocationList, LocationDetails, LocationEdit} from 'components';
+import {useAuth0} from '../auth/auth0';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const LOCATION_DETAIL_QUERY = {
@@ -43,10 +43,10 @@ const INIT_CURSOR_LOCATION = '-1';
 export default function LocationsPage(props) {
   return (
     <Router>
-      <Page path="/" />
-      <DetailsPage path="/:page" />
-      <EditPage path="/:page/edit" newLocation={false} />
-      <EditPage path="/new" newLocation={true} />
+      <Page path="/"/>
+      <DetailsPage path="/:page"/>
+      <EditPage path="/:page/edit" newLocation={false}/>
+      <EditPage path="/new" newLocation={true}/>
     </Router>
   );
 }
@@ -60,7 +60,7 @@ function Page(path: any) {
   const [isLoading, setIsLoading] = useState(false);
   const [isNoMore, setIsNoMore] = useState(false);
 
-  const { selectedGroup, getPermissions } = useAuth0();
+  const {selectedGroup, getPermissions} = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessLocationsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeLocationsGuard);
@@ -72,10 +72,20 @@ function Page(path: any) {
   };
 
   const handleCursorChange = () => {
-    if (nextCursor) {
-      setPageSize(1)
-      setPageCursor(nextCursor);
-    }
+    const query = {
+      search: searchValue,
+      sort: 'name',
+      page: {size: 20, cursor: nextCursor},
+      select: EXCLUDED_FIELDS,
+      group: selectedGroup,
+    };
+    const encodedQuery = encodeQueryToURL('locations', query);
+    const res: any = getAllLocations(encodedQuery);
+    console.log(res);
+    // setLocations( [...locations, ...res.data]);
+    // setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
+
+    return res;
   };
 
   useEffect(() => {
@@ -86,12 +96,14 @@ function Page(path: any) {
       const query = {
         search: searchValue,
         sort: 'name',
-        page: { size: pageSize, cursor: pageCursor },
+        page: {size: 20, cursor: pageCursor},
         select: EXCLUDED_FIELDS,
         group: selectedGroup,
       };
       const encodedQuery = encodeQueryToURL('locations', query);
       const res: any = await getAllLocations(encodedQuery);
+
+      console.log(dataReset);
 
       if (dataReset) {
         path.location.state.refresh = false;
@@ -105,7 +117,7 @@ function Page(path: any) {
     }
 
     permissions && setupLocations();
-  }, [path.location, pageCursor, searchValue]);
+  }, [path.location, searchValue]);
 
   return (
     <LocationContext.Provider
@@ -113,7 +125,7 @@ function Page(path: any) {
         locations,
         handleSearchValueChange,
         handleCursorChange,
-        pagination: { pageCursor },
+        pagination: {pageCursor},
         isLoading,
         isNoMore,
         searchValue,
@@ -127,44 +139,44 @@ function Page(path: any) {
             </LinkWithOrg>
           </div>
         )}
-        <LocationList />
+        <LocationList/>
       </Layout>
     </LocationContext.Provider>
   );
 }
 
 function DetailsPage(path: any) {
-  const { selectedGroup } = useAuth0();
+  const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`locations/${path.page}`, {
     ...LOCATION_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const { isLoading, errors, data } = useRequest(() => getLocation(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getLocation(encodedQuery), {
     permissions: AuthzGuards.accessLocationsGuard,
     query: encodedQuery,
   });
 
   return (
     <Layout errors={errors} backTo="/locations" isLoading={isLoading}>
-      <LocationDetails data={data} />
+      <LocationDetails data={data}/>
     </Layout>
   );
 }
 
 function EditPage(path: any) {
-  const { selectedGroup } = useAuth0();
+  const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`locations/${path.page}`, {
     ...LOCATION_DETAIL_QUERY,
-    ...{ group: selectedGroup },
+    ...{group: selectedGroup},
   });
-  const { isLoading, errors, data } = useRequest(() => getLocation(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getLocation(encodedQuery), {
     permissions: AuthzGuards.writeLocationsGuard,
     skip: path.newLocation,
   });
 
   return (
     <Layout errors={errors} backTo="/locations" isLoading={isLoading}>
-      <LocationEdit data={data} newLocation={path.newLocation} />
+      <LocationEdit data={data} newLocation={path.newLocation}/>
     </Layout>
   );
 }

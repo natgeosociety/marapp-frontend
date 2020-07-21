@@ -23,7 +23,6 @@ import {useContext, useEffect, useState} from 'react';
 import {createRef, Fragment, PureComponent} from 'react';
 
 import {FixedSizeList as List} from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer';
 import InfiniteLoader from 'react-window-infinite-loader';
 
 import './styles.scss';
@@ -33,90 +32,78 @@ let items = {};
 let requestCache = {};
 
 
-const DataListing = () => {
+const LOADING = 1;
+const LOADED = 2;
+let itemStatusMap = {};
+
+const isItemLoaded = index => !!itemStatusMap[index];
+
+
+// class Row extends PureComponent {
+//   render() {
+//     // @ts-ignore
+//     const {index, style} = this.props;
+//
+//
+//     return (
+//       <div className="ListItem" style={style}>
+//         {`Row ${index}`}
+//       </div>
+//     );
+//   }
+// }
+
+
+function DataListing() {
   const {handleCursorChange, locations} = useContext(LocationContext);
 
-  const [coco, setCoco] = useState([]);
+  const [coco, setCoco] = useState(locations);
 
+  const row = ({index}) => {
+    return <div className="ListItem">
+      {coco[index]? coco[index].name : 'loading'}
+    </div>
+  }
 
-  useEffect(() => {
-    setCoco(locations);
-  }, [locations]);
-
-  const isItemLoaded = ({index}) => !!locations[index];
-
-  const Row = ({index, style}) => {
-    const item = coco[index];
-
-    return (
-      <div style={style}>
-        {item ? `${item.name}` : 'Loading...'}
-      </div>
-    );
-  };
-
-
-  const loadMoreItems = (visibleStartIndex, visibleStopIndex) => {
-
-    console.log('cat de des');
-    // handleCursorChange();
-
-    const key = [visibleStartIndex, visibleStopIndex].join(':'); // 0:10
-    if (requestCache[key]) {
-      return;
+  const loadMoreItems = (startIndex, stopIndex) => {
+    for (let index = startIndex; index <= stopIndex; index++) {
+      itemStatusMap[index] = LOADING;
     }
 
-    const length = visibleStopIndex - visibleStartIndex;
-    const visibleRange = [...Array(length).keys()].map(
-      x => x + visibleStartIndex
-    );
+    return handleCursorChange().then(res => {
+      for (let index = startIndex; index <= stopIndex; index++) {
+        itemStatusMap[index] = LOADED;
+      }
 
-    const itemsRetrieved = visibleRange.every(index => !!coco[index]);
-
-    if (itemsRetrieved) {
-      requestCache[key] = key;
-      return;
-    }
-
-    console.log(visibleRange.length, length, coco.length, itemsRetrieved);
-
-    // if (length > coco.length) {
-    //   handleCursorChange();
-    //   console.log(coco, locations);
-    //   setCoco([...coco, ...locations]);
-    // }
-
-    return Promise.resolve(coco);
-
-
+      setCoco([...coco, ...res.data]);
+      return coco;
+    });
   };
-
 
   return (
     <div style={{height: '600px'}}>
-      <AutoSizer defaultHeight={500}>
-        {({height, width}) => (
-          <InfiniteLoader
-            isItemLoaded={isItemLoaded}
-            loadMoreItems={loadMoreItems}
+      {!!coco && <InfiniteLoader
+        isItemLoaded={isItemLoaded}
+        itemCount={1000}
+        loadMoreItems={loadMoreItems}
+      >
+        {({onItemsRendered, ref}) => (
+          <List
+            className="List"
+            height={500}
+            minimumBatchSize={20}
             itemCount={1000}
+            itemSize={20}
+            threshold={15}
+            onItemsRendered={onItemsRendered}
+            ref={ref}
+            width={300}
           >
-            {({onItemsRendered, ref}) => (
-              <List
-                className="List"
-                height={height}
-                itemCount={1000}
-                itemSize={20}
-                width={width}
-                ref={ref}
-                onItemsRendered={onItemsRendered}
-              >
-                {Row}
-              </List>
-            )}
-          </InfiniteLoader>
+            {row}
+          </List>
         )}
-      </AutoSizer></div>
+      </InfiniteLoader>}
+    </div>
   );
 };
 

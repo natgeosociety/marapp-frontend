@@ -61,6 +61,7 @@ export default function MainLayout(props: ILayoutProps) {
   } = props;
 
   const Content = () => {
+    console.log('render');
     if (isLoading) {
       return <Spinner size="medium" />;
     }
