@@ -53,6 +53,7 @@ const Unauthorized = (props: IUnauthorizedProps) => {
 };
 
 export default function MainLayout(props: ILayoutProps) {
+  console.log(props);
   const {
     permission = true, // backwards compatibility, permission moves to errors array
     errors = [],

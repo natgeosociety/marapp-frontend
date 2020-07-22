@@ -31,6 +31,7 @@ import {useRequest} from 'utils/hooks';
 import Layout from 'layouts';
 import {LocationList, LocationDetails, LocationEdit} from 'components';
 import {useAuth0} from '../auth/auth0';
+import {setup} from 'axios-cache-adapter';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const LOCATION_DETAIL_QUERY = {
@@ -57,7 +58,7 @@ function Page(path: any) {
   const [pageSize, setPageSize] = useState(20);
   const [pageCursor, setPageCursor] = useState(INIT_CURSOR_LOCATION);
   const [nextCursor, setNextCursor] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(null);
   const [isNoMore, setIsNoMore] = useState(false);
 
   const {selectedGroup, getPermissions} = useAuth0();
@@ -71,49 +72,54 @@ function Page(path: any) {
     setSearchValue(newValue);
   };
 
-  const handleCursorChange = () => {
+  const handleCursorChange = async () => {
+    console.log('cursor change');
     const query = {
       search: searchValue,
       sort: 'name',
-      page: {size: 20, cursor: nextCursor},
+      page: {size: 20, cursor: pageCursor},
       select: EXCLUDED_FIELDS,
       group: selectedGroup,
     };
     const encodedQuery = encodeQueryToURL('locations', query);
-    const res: any = getAllLocations(encodedQuery);
-    console.log(res);
-    // setLocations( [...locations, ...res.data]);
-    // setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-
-    return res;
+    setIsLoading(true);
+    const res = await getAllLocations(encodedQuery);
+    setLocations(res.data);
+    // setTimeout(() => {
+    //   console.log('timeout');
+    //
+    // }, 1000)
+    setIsLoading(false);
+    setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
+     setPageCursor(nextCursor);
   };
+
 
   useEffect(() => {
     async function setupLocations() {
-      setIsLoading(true);
+      //setIsLoading(true);
 
-      const dataReset = !!path.location.state && !!path.location.state.refresh;
-      const query = {
-        search: searchValue,
-        sort: 'name',
-        page: {size: 20, cursor: pageCursor},
-        select: EXCLUDED_FIELDS,
-        group: selectedGroup,
-      };
-      const encodedQuery = encodeQueryToURL('locations', query);
-      const res: any = await getAllLocations(encodedQuery);
+      // const dataReset = !!path.location.state && !!path.location.state.refresh;
+      // const query = {
+      //   search: searchValue,
+      //   sort: 'name',
+      //   page: {size: 20, cursor: pageCursor},
+      //   select: EXCLUDED_FIELDS,
+      //   group: selectedGroup,
+      // };
+      // const encodedQuery = encodeQueryToURL('locations', query);
+      // const res: any = await getAllLocations(encodedQuery);
+      //
+      //
+      // if (dataReset) {
+      //   path.location.state.refresh = false;
+      // }
+      //
+      // setLocations(!nextCursor || dataReset ? res.data : [...locations, ...res.data]);
+      // setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
+      // setIsNoMore(!res.pagination.nextCursor);
 
-      console.log(dataReset);
-
-      if (dataReset) {
-        path.location.state.refresh = false;
-      }
-
-      setLocations(!nextCursor || dataReset ? res.data : [...locations, ...res.data]);
-      setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-      setIsNoMore(!res.pagination.nextCursor);
-
-      setIsLoading(false);
+      // setIsLoading(false);
     }
 
     permissions && setupLocations();
@@ -122,28 +128,27 @@ function Page(path: any) {
   return (
     <LocationContext.Provider
       value={{
-        locations,
-        handleSearchValueChange,
+        // handleSearchValueChange,
         handleCursorChange,
-        pagination: {pageCursor},
         isLoading,
-        isNoMore,
-        searchValue,
+        locations,
+        // pagination: {pageCursor},
+        // searchValue,
       }}
     >
-      <Layout permission={permissions}>
-        {writePermissions && (
-          <div className="ng-flex ng-align-right">
-            <LinkWithOrg className="ng-button ng-button-overlay" to="/locations/new">
-              add new location
-            </LinkWithOrg>
-          </div>
-        )}
-        <LocationList/>
-      </Layout>
+      {/*<Layout permission={permissions}>*/}
+      {/*{writePermissions && (*/}
+      {/*  <div className="ng-flex ng-align-right">*/}
+      {/*    <LinkWithOrg className="ng-button ng-button-overlay" to="/locations/new">*/}
+      {/*      add new location*/}
+      {/*    </LinkWithOrg>*/}
+      {/*  </div>*/}
+      {/*)}*/}
+      <LocationList/>
+      {/*</Layout>*/}
     </LocationContext.Provider>
   );
-}
+};
 
 function DetailsPage(path: any) {
   const {selectedGroup} = useAuth0();

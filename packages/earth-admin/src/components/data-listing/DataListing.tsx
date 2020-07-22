@@ -18,7 +18,7 @@
 */
 
 import * as React from 'react';
-import {useContext, useEffect, useState} from 'react';
+import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
 
 import {createRef, Fragment, PureComponent} from 'react';
 
@@ -27,84 +27,136 @@ import InfiniteLoader from 'react-window-infinite-loader';
 
 import './styles.scss';
 import {LocationContext} from 'utils/contexts';
-
-let items = {};
-let requestCache = {};
+import {childOfKind} from 'tslint';
 
 
-const LOADING = 1;
-const LOADED = 2;
-let itemStatusMap = {};
+const DataListing = () => {
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [isNextPageLoading, setIsNextPageLoading] = useState();
 
-const isItemLoaded = index => !!itemStatusMap[index];
-
-
-// class Row extends PureComponent {
-//   render() {
-//     // @ts-ignore
-//     const {index, style} = this.props;
-//
-//
-//     return (
-//       <div className="ListItem" style={style}>
-//         {`Row ${index}`}
-//       </div>
-//     );
-//   }
-// }
+  const {handleCursorChange, isLoading, locations} = useContext(LocationContext);
+  const [items, setItems] = useState([]);
+  // const dsada = React.useMemo(() => !isLoading ? items : [], [isLoading]);
 
 
-function DataListing() {
-  const {handleCursorChange, locations} = useContext(LocationContext);
+  useEffect(() => {
 
-  const [coco, setCoco] = useState(locations);
+    setItems([...locations, ...items]);
+  }, [isLoading]);
 
-  const row = ({index}) => {
-    return <div className="ListItem">
-      {coco[index]? coco[index].name : 'loading'}
-    </div>
-  }
 
-  const loadMoreItems = (startIndex, stopIndex) => {
-    for (let index = startIndex; index <= stopIndex; index++) {
-      itemStatusMap[index] = LOADING;
-    }
+  const _loadNextPage = (...args) => {
+    handleCursorChange();
+    console.log(locations, 'load');
 
-    return handleCursorChange().then(res => {
-      for (let index = startIndex; index <= stopIndex; index++) {
-        itemStatusMap[index] = LOADED;
-      }
-
-      setCoco([...coco, ...res.data]);
-      return coco;
-    });
   };
 
-  return (
-    <div style={{height: '600px'}}>
-      {!!coco && <InfiniteLoader
-        isItemLoaded={isItemLoaded}
-        itemCount={1000}
-        loadMoreItems={loadMoreItems}
-      >
-        {({onItemsRendered, ref}) => (
-          <List
-            className="List"
-            height={500}
-            minimumBatchSize={20}
-            itemCount={1000}
-            itemSize={20}
-            threshold={15}
-            onItemsRendered={onItemsRendered}
-            ref={ref}
-            width={300}
-          >
-            {row}
-          </List>
-        )}
-      </InfiniteLoader>}
-    </div>
-  );
+  return !!items && <ExampleWrapper
+    hasNextPage={hasNextPage}
+    items={items}
+    loading={isLoading}
+    loadNextPage={_loadNextPage}
+  />;
 };
+
+// const ExampleWrapper = (props: { loading: boolean, hasNextPage: boolean, items: any[], loadNextPage: any }) => {
+//
+//   // @ts-ignore
+//   console.log(props.items, props.loading, 'why rerender');
+//   // @ts-ignore
+//   const {hasNextPage, items, loadNextPage, loading} = props;
+//   const itemCount = hasNextPage ? items.length + 1 : items.length;
+//
+//   const loadMoreItems = loading ? () => {
+//   } : loadNextPage;
+//
+//   const isItemLoaded = index => !hasNextPage || index < items.length;
+//
+//   // Render an item or a loading indicator.
+//   const Item = ({index, style}) => {
+//     let content;
+//     if (!isItemLoaded(index)) {
+//       content = 'Loading...';
+//     } else {
+//       content = items[index].name;
+//     }
+//
+//     return <div style={style}>{content}</div>;
+//   };
+//
+//   return !!items && <InfiniteLoader
+//     isItemLoaded={isItemLoaded}
+//     itemCount={itemCount}
+//     loadMoreItems={loadMoreItems}
+//   >
+//     {({onItemsRendered, ref}) => (
+//       <List
+//         className="List"
+//         height={200}
+//         itemCount={itemCount}
+//         itemSize={20}
+//         treshold={10}
+//         onItemsRendered={onItemsRendered}
+//         ref={ref}
+//         width={300}
+//       >
+//         {Item}
+//       </List>
+//     )}
+//   </InfiniteLoader>;
+// };
+
+//
+const ExampleWrapper = React.memo(function ExampleWrapper(props: { loading: boolean, hasNextPage: boolean, items: any[], loadNextPage: any }) {
+
+  // @ts-ignore
+  console.log(props.items, props.loading, 'why rerender');
+  // @ts-ignore
+  const {hasNextPage, items, loadNextPage, loading} = props;
+  const itemCount = hasNextPage ? items.length + 1 : items.length;
+
+  const loadMoreItems = loading ? () => {
+  } : loadNextPage;
+
+  const isItemLoaded = index => !hasNextPage || index < items.length;
+
+  // Render an item or a loading indicator.
+  const Item = ({index, style}) => {
+    let content;
+    if (!isItemLoaded(index)) {
+      content = 'Loading...';
+    } else {
+      content = items[index].name;
+    }
+
+    return <div style={style}>{content}</div>;
+  };
+
+  return  <InfiniteLoader
+    isItemLoaded={isItemLoaded}
+    itemCount={itemCount}
+    loadMoreItems={loadMoreItems}
+  >
+    {({onItemsRendered, ref}) => (
+      <List
+        className="List"
+        height={200}
+        itemCount={itemCount}
+        itemSize={20}
+        treshold={10}
+        onItemsRendered={onItemsRendered}
+        ref={ref}
+        width={300}
+      >
+        {Item}
+      </List>
+    )}
+  </InfiniteLoader>;
+});
+
+function arePropsEqual(prevProps, nextProps) {
+  console.log(prevProps, nextProps, prevProps.items === nextProps.items);
+  return prevProps.loading === nextProps.loading;
+}
 
 export default DataListing;
