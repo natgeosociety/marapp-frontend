@@ -20,6 +20,7 @@
 export interface Organization {
     id: string;
     name: string;
+    owners: string[];
     description: string;
   }
   
