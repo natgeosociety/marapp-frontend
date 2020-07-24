@@ -18,155 +18,69 @@
 */
 
 import * as React from 'react';
-import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
-
-import {createRef, Fragment, PureComponent} from 'react';
-
-// import {FixedSizeList as List} from 'react-window';
-import InfiniteLoader from 'react-window-infinite-loader';
+import {useContext, useEffect, useState} from 'react';
 
 import List from '@researchgate/react-intersection-list';
 
 import './styles.scss';
 import {LocationContext} from 'utils/contexts';
+import {Spinner} from '@marapp/earth-components';
+import {LinkWithOrg} from 'components/LinkWithOrg';
 
-// const ExampleWrapper = React.memo(function ExampleWrapper(props: { loading: boolean, hasNextPage: boolean, items: any[], loadNextPage: any }) {
 const DataListing = (props) => {
-  const {handleCursorChange, locations, isLoading, isNoMore} = useContext(LocationContext);
+  const {cursorAction, data, isLoading, isNoMore, searchValue, searchValueAction, categoryUrl, pageTitle} = props;
 
   const PAGE_SIZE = 20;
-  const hasNextPage = locations.length >= PAGE_SIZE;
+  const hasNextPage = data.length >= PAGE_SIZE;
 
-  let awaitMore = !isLoading && hasNextPage;
+  let awaitMore = !isLoading && hasNextPage && !isNoMore;
 
-
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    setItems([...items, ...locations]);
-  }, [locations]);
-
-
-  useEffect(() => {
-
-  }, [items]);
+  const handleSearchChange = (newValue: string) => {
+    searchValueAction(newValue);
+  };
 
   const renderItem = (index) => {
-    const {slug, id, type, name,} = items[index];
+    const {slug, id, type, name} = data[index];
     return (
-      <div key={index}>{name}</div>
+      <LinkWithOrg
+        to={`/${categoryUrl}/${id}`}
+        className="ng-c-data-link ng-display-block ng-padding-medium-horizontal ng-padding-vertical"
+        key={index}
+      >
+        <span className="ng-text-edit-s ng-margin-remove">{name}</span>
+        <span className="ng-display-block">{slug}</span>
+      </LinkWithOrg>
     );
-  };
 
+
+  };
 
   const onIntersection = (size, pageSize) => {
-    handleCursorChange();
+    cursorAction();
   };
 
-  return <div style={{height: '400px', overflow: 'scroll'}}>
-    <List
-      awaitMore={awaitMore}
-      pageSize={PAGE_SIZE}
-      itemCount={items.length}
-      renderItem={renderItem}
-      onIntersection={onIntersection}
-    /></div>;
-};
-
-// const ExampleWrapper = (props: { loading: boolean, hasNextPage: boolean, items: any[], loadNextPage: any }) => {
-//
-//   // @ts-ignore
-//   console.log(props.items, props.loading, 'why rerender');
-//   // @ts-ignore
-//   const {hasNextPage, items, loadNextPage, loading} = props;
-//   const itemCount = hasNextPage ? items.length + 1 : items.length;
-//
-//   const loadMoreItems = loading ? () => {
-//   } : loadNextPage;
-//
-//   const isItemLoaded = index => !hasNextPage || index < items.length;
-//
-//   // Render an item or a loading indicator.
-//   const Item = ({index, style}) => {
-//     let content;
-//     if (!isItemLoaded(index)) {
-//       content = 'Loading...';
-//     } else {
-//       content = items[index].name;
-//     }
-//
-//     return <div style={style}>{content}</div>;
-//   };
-//
-//   return !!items && <InfiniteLoader
-//     isItemLoaded={isItemLoaded}
-//     itemCount={itemCount}
-//     loadMoreItems={loadMoreItems}
-//   >
-//     {({onItemsRendered, ref}) => (
-//       <List
-//         className="List"
-//         height={200}
-//         itemCount={itemCount}
-//         itemSize={20}
-//         treshold={10}
-//         onItemsRendered={onItemsRendered}
-//         ref={ref}
-//         width={300}
-//       >
-//         {Item}
-//       </List>
-//     )}
-//   </InfiniteLoader>;
-// };
-
-//
-const ExampleWrapper = React.memo(function ExampleWrapper(props: { loading: boolean, hasNextPage: boolean, items: any[], loadNextPage: any }) {
-
-  // @ts-ignore
-  console.log(props.items, props.loading, 'why rerender');
-  // @ts-ignore
-  const {hasNextPage, items, loadNextPage, loading} = props;
-  const itemCount = hasNextPage ? items.length + 1 : items.length;
-
-  const loadMoreItems = loading ? () => {
-  } : loadNextPage;
-
-  const isItemLoaded = index => !hasNextPage || index < items.length;
-
-  // Render an item or a loading indicator.
-  const Item = ({index, style}) => {
-    let content;
-    if (!isItemLoaded(index)) {
-      content = 'Loading...';
-    } else {
-      content = items[index].name;
-    }
-
-    return <div style={style}>{content}</div>;
-  };
-
-  return <InfiniteLoader
-    isItemLoaded={isItemLoaded}
-    itemCount={itemCount}
-    loadMoreItems={loadMoreItems}
-  >
-    {({onItemsRendered, ref}) => (
+  return (<>
+    <div className="searchable-listing-container ng-width-1-1 ng-margin-small-bottom">
+      <input
+        type="text"
+        placeholder={`Search for ${pageTitle.toLowerCase()}...`}
+        className="ng-padding ng-width-1-1"
+        onChange={(e) => handleSearchChange(e.target.value)}
+        value={searchValue}
+        ref={input => input && input.getBoundingClientRect().top > 0 && input.focus()}
+      />
+    </div>
+    <div style={{height: '600px', 'overflowY': 'scroll'}}>
       <List
-        className="List"
-        height={200}
-        itemCount={itemCount}
-        itemSize={20}
-        treshold={10}
-        onItemsRendered={onItemsRendered}
-        ref={ref}
-        width={300}
-      >
-        {Item}
-      </List>
-    )}
-  </InfiniteLoader>;
-});
-
+        awaitMore={awaitMore}
+        pageSize={PAGE_SIZE}
+        itemCount={data.length}
+        renderItem={renderItem}
+        onIntersection={onIntersection}
+      />
+      {isLoading && <Spinner position="relative"/>}
+    </div>
+  </>);
+};
 
 export default DataListing;

@@ -57,13 +57,9 @@ export default function MainLayout(props: ILayoutProps) {
     permission = true, // backwards compatibility, permission moves to errors array
     errors = [],
     backTo = '/',
-    isLoading,
   } = props;
 
   const Content = () => {
-    if (isLoading) {
-      return <Spinner size="medium" />;
-    }
     if (!permission) {
       return <Unauthorized message="You are not authorized to view this page" />;
     }
@@ -88,11 +84,6 @@ export default function MainLayout(props: ILayoutProps) {
         <title>{ APP_NAME }</title>
       </Helmet>
       <Sidebar />
-      <div className="ng-page-container">
-        <div className="ng-padding-large">
-          <Content />
-        </div>
-      </div>
     </div>
   );
 }

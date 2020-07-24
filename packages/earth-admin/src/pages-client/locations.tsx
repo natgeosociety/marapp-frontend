@@ -98,7 +98,7 @@ function Page(path: any) {
         path.location.state.refresh = false;
       }
 
-      setLocations(res.data);
+      setLocations(!nextCursor || dataReset ? res.data : [...locations, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
       setIsNoMore(!res.pagination.nextCursor);
 
@@ -115,6 +115,7 @@ function Page(path: any) {
         handleCursorChange,
         isLoading,
         locations,
+        nextCursor,
         pagination: {pageCursor},
         searchValue,
       }}
@@ -126,9 +127,15 @@ function Page(path: any) {
               add new location
             </LinkWithOrg>
           </div>
+
         )}
-        <LocationList />
+
       </Layout>
+      <div className="ng-page-container">
+        <div className="ng-padding-large">
+          <LocationList/>
+        </div>
+      </div>
     </LocationContext.Provider>
   );
 };
