@@ -21,9 +21,8 @@ import * as React from 'react';
 import { DataListing } from 'components/data-listing';
 import { LocationContext } from 'utils/contexts';
 
-export default function LocationList() {
-  return (
-    <DataListing
+export default function LocationList(props) {
+  return  <DataListing
       // data={locations}
       // categoryUrl={'locations'}
       // pageTitle="LOCATIONS"
@@ -33,5 +32,4 @@ export default function LocationList() {
       //  isNoMore={isNoMore}
       // searchValue={searchValue}
     />
-  );
 }

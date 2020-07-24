@@ -53,7 +53,6 @@ const Unauthorized = (props: IUnauthorizedProps) => {
 };
 
 export default function MainLayout(props: ILayoutProps) {
-  console.log(props);
   const {
     permission = true, // backwards compatibility, permission moves to errors array
     errors = [],
@@ -62,7 +61,6 @@ export default function MainLayout(props: ILayoutProps) {
   } = props;
 
   const Content = () => {
-    console.log('render');
     if (isLoading) {
       return <Spinner size="medium" />;
     }

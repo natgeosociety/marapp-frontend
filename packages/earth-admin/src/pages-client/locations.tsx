@@ -72,80 +72,63 @@ function Page(path: any) {
     setSearchValue(newValue);
   };
 
-  const handleCursorChange = async () => {
-    console.log('cursor change');
-    const query = {
-      search: searchValue,
-      sort: 'name',
-      page: {size: 20, cursor: pageCursor},
-      select: EXCLUDED_FIELDS,
-      group: selectedGroup,
-    };
-    const encodedQuery = encodeQueryToURL('locations', query);
-    setIsLoading(true);
-    const res = await getAllLocations(encodedQuery);
-    setLocations(res.data);
-    // setTimeout(() => {
-    //   console.log('timeout');
-    //
-    // }, 1000)
-    setIsLoading(false);
-    setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-     setPageCursor(nextCursor);
+  const handleCursorChange = () => {
+    if (nextCursor) {
+      setPageCursor(nextCursor);
+    }
   };
-
 
   useEffect(() => {
     async function setupLocations() {
-      //setIsLoading(true);
+      setIsLoading(true);
 
-      // const dataReset = !!path.location.state && !!path.location.state.refresh;
-      // const query = {
-      //   search: searchValue,
-      //   sort: 'name',
-      //   page: {size: 20, cursor: pageCursor},
-      //   select: EXCLUDED_FIELDS,
-      //   group: selectedGroup,
-      // };
-      // const encodedQuery = encodeQueryToURL('locations', query);
-      // const res: any = await getAllLocations(encodedQuery);
-      //
-      //
-      // if (dataReset) {
-      //   path.location.state.refresh = false;
-      // }
-      //
-      // setLocations(!nextCursor || dataReset ? res.data : [...locations, ...res.data]);
-      // setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-      // setIsNoMore(!res.pagination.nextCursor);
+      const dataReset = !!path.location.state && !!path.location.state.refresh;
+      const query = {
+        search: searchValue,
+        sort: 'name',
+        page: {size: 20, cursor: pageCursor},
+        select: EXCLUDED_FIELDS,
+        group: selectedGroup,
+      };
+      const encodedQuery = encodeQueryToURL('locations', query);
+      const res: any = await getAllLocations(encodedQuery);
 
-      // setIsLoading(false);
+
+      if (dataReset) {
+        path.location.state.refresh = false;
+      }
+
+      setLocations(res.data);
+      setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
+      setIsNoMore(!res.pagination.nextCursor);
+
+      setIsLoading(false);
     }
 
     permissions && setupLocations();
-  }, [path.location, searchValue]);
+  }, [path.location, searchValue, pageCursor]);
 
   return (
     <LocationContext.Provider
       value={{
-        // handleSearchValueChange,
+        handleSearchValueChange,
         handleCursorChange,
         isLoading,
         locations,
-        // pagination: {pageCursor},
-        // searchValue,
+        pagination: {pageCursor},
+        searchValue,
       }}
     >
-      {/*<Layout permission={permissions}>*/}
-      {/*{writePermissions && (*/}
-      {/*  <div className="ng-flex ng-align-right">*/}
-      {/*    <LinkWithOrg className="ng-button ng-button-overlay" to="/locations/new">*/}
-      {/*      add new location*/}
-      {/*    </LinkWithOrg>*/}
-      {/*  </div>*/}
-      {/*)}*/}
-      <LocationList/>
-      {/*</Layout>*/}
+      <Layout permission={permissions}>
+        {writePermissions && (
+          <div className="ng-flex ng-align-right">
+            <LinkWithOrg className="ng-button ng-button-overlay" to="/locations/new">
+              add new location
+            </LinkWithOrg>
+          </div>
+        )}
+        <LocationList />
+      </Layout>
     </LocationContext.Provider>
   );
 };

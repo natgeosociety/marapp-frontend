@@ -22,41 +22,55 @@ import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
 
 import {createRef, Fragment, PureComponent} from 'react';
 
-import {FixedSizeList as List} from 'react-window';
+// import {FixedSizeList as List} from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
+
+import List from '@researchgate/react-intersection-list';
 
 import './styles.scss';
 import {LocationContext} from 'utils/contexts';
-import {childOfKind} from 'tslint';
+
+// const ExampleWrapper = React.memo(function ExampleWrapper(props: { loading: boolean, hasNextPage: boolean, items: any[], loadNextPage: any }) {
+const DataListing = (props) => {
+  const {handleCursorChange, locations, isLoading, isNoMore} = useContext(LocationContext);
+
+  const PAGE_SIZE = 20;
+  const hasNextPage = locations.length >= PAGE_SIZE;
+
+  let awaitMore = !isLoading && hasNextPage;
 
 
-const DataListing = () => {
-  const [hasNextPage, setHasNextPage] = useState(true);
-  const [isNextPageLoading, setIsNextPageLoading] = useState();
-
-  const {handleCursorChange, isLoading, locations} = useContext(LocationContext);
   const [items, setItems] = useState([]);
-  // const dsada = React.useMemo(() => !isLoading ? items : [], [isLoading]);
+
+  useEffect(() => {
+    setItems([...items, ...locations]);
+  }, [locations]);
 
 
   useEffect(() => {
 
-    setItems([...locations, ...items]);
-  }, [isLoading]);
+  }, [items]);
 
-
-  const _loadNextPage = (...args) => {
-    handleCursorChange();
-    console.log(locations, 'load');
-
+  const renderItem = (index) => {
+    const {slug, id, type, name,} = items[index];
+    return (
+      <div key={index}>{name}</div>
+    );
   };
 
-  return !!items && <ExampleWrapper
-    hasNextPage={hasNextPage}
-    items={items}
-    loading={isLoading}
-    loadNextPage={_loadNextPage}
-  />;
+
+  const onIntersection = (size, pageSize) => {
+    handleCursorChange();
+  };
+
+  return <div style={{height: '400px', overflow: 'scroll'}}>
+    <List
+      awaitMore={awaitMore}
+      pageSize={PAGE_SIZE}
+      itemCount={items.length}
+      renderItem={renderItem}
+      onIntersection={onIntersection}
+    /></div>;
 };
 
 // const ExampleWrapper = (props: { loading: boolean, hasNextPage: boolean, items: any[], loadNextPage: any }) => {
@@ -132,7 +146,7 @@ const ExampleWrapper = React.memo(function ExampleWrapper(props: { loading: bool
     return <div style={style}>{content}</div>;
   };
 
-  return  <InfiniteLoader
+  return <InfiniteLoader
     isItemLoaded={isItemLoaded}
     itemCount={itemCount}
     loadMoreItems={loadMoreItems}
@@ -154,9 +168,5 @@ const ExampleWrapper = React.memo(function ExampleWrapper(props: { loading: bool
   </InfiniteLoader>;
 });
 
-function arePropsEqual(prevProps, nextProps) {
-  console.log(prevProps, nextProps, prevProps.items === nextProps.items);
-  return prevProps.loading === nextProps.loading;
-}
 
 export default DataListing;
