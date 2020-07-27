@@ -21,7 +21,7 @@ import * as React from 'react';
 import { useState, useContext } from 'react';
 import { UserEditProps } from '../model';
 import { useForm, Controller } from 'react-hook-form';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { LinkWithOrg } from 'components/link-with-org';
 import { SearchInput } from 'components/search-input';
 import { handleUserForm } from 'services/users';
 import { Auth0Context } from 'utils/contexts';

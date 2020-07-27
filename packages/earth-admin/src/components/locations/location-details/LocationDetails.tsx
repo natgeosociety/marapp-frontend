@@ -28,7 +28,7 @@ import { ErrorMessages } from 'components/error-messages';
 import { formatDate } from 'utils';
 import { ActionModal } from 'components/action-modal';
 import { MapComponent } from 'components/map';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { LinkWithOrg } from 'components/link-with-org';
 import { MapComponentContext } from 'utils/contexts';
 import { stripNumbers } from 'utils';
 import { calculateAllForLocation } from 'services';

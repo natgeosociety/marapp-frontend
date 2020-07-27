@@ -18,19 +18,19 @@
 */
 
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { Router } from '@reach/router';
+import {useEffect, useState} from 'react';
+import {Router} from '@reach/router';
 
-import { DashboardContext } from 'utils/contexts';
-import { encodeQueryToURL } from 'utils';
-import { getAllDashboards, getDashboard } from 'services/dashboards';
-import { useRequest } from 'utils/hooks';
+import {DashboardContext} from 'utils/contexts';
+import {encodeQueryToURL} from 'utils';
+import {getAllDashboards, getDashboard} from 'services/dashboards';
+import {useRequest} from 'utils/hooks';
 
 import Layout from 'layouts';
-import { DashboardList, DashboardDetails, DashboardEdit } from 'components';
-import { LinkWithOrg } from 'components/LinkWithOrg';
-import { AuthzGuards } from '../auth/permissions';
-import { useAuth0 } from '../auth/auth0';
+import {DashboardList, DashboardDetails, DashboardEdit, LocationList} from 'components';
+import {LinkWithOrg} from 'components/link-with-org';
+import {AuthzGuards} from '../auth/permissions';
+import {useAuth0} from '../auth/auth0';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 
@@ -44,10 +44,10 @@ const INIT_CURSOR_LOCATION = '-1';
 export default function DashboardsPage(props) {
   return (
     <Router>
-      <Page path="/" />
-      <DetailsPage path="/:page" />
-      <EditPage path="/:page/edit" newDashboard={false} />
-      <EditPage path="/new" newDashboard={true} />
+      <Page path="/"/>
+      <DetailsPage path="/:page"/>
+      <EditPage path="/:page/edit" newDashboard={false}/>
+      <EditPage path="/new" newDashboard={true}/>
     </Router>
   );
 }
@@ -61,7 +61,7 @@ function Page(path: any) {
   const [isLoading, setIsLoading] = useState(false);
   const [isNoMore, setIsNoMore] = useState(false);
 
-  const { selectedGroup, getPermissions } = useAuth0();
+  const {selectedGroup, getPermissions} = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
@@ -86,7 +86,7 @@ function Page(path: any) {
       const query = {
         search: searchValue,
         sort: 'name',
-        page: { size: pageSize, cursor: dataReset ? INIT_CURSOR_LOCATION : pageCursor },
+        page: {size: pageSize, cursor: dataReset ? INIT_CURSOR_LOCATION : pageCursor},
         select: EXCLUDED_FIELDS,
         group: selectedGroup,
       };
@@ -113,7 +113,7 @@ function Page(path: any) {
         dashboards,
         handleSearchValueChange,
         handleCursorChange,
-        pagination: { pageCursor },
+        pagination: {pageCursor},
         isLoading,
         isNoMore,
         searchValue,
@@ -127,44 +127,48 @@ function Page(path: any) {
             </LinkWithOrg>
           </div>
         )}
-        <DashboardList />
       </Layout>
+      <div className="ng-page-container">
+        <div className="ng-padding-large">
+          <DashboardList/>
+        </div>
+      </div>
     </DashboardContext.Provider>
   );
 }
 
 function DetailsPage(path: any) {
-  const { selectedGroup } = useAuth0();
+  const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
     ...DASHBOARD_DETAIL_QUERY,
-    ...{ group: selectedGroup },
+    ...{group: selectedGroup},
   });
-  const { isLoading, errors, data } = useRequest(() => getDashboard(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getDashboard(encodedQuery), {
     permissions: AuthzGuards.accessDashboardsGuard,
     query: encodedQuery,
   });
 
   return (
     <Layout errors={errors} backTo="/dashboards" isLoading={isLoading}>
-      <DashboardDetails data={data} />
+      <DashboardDetails data={data}/>
     </Layout>
   );
 }
 
 function EditPage(path: any) {
-  const { selectedGroup } = useAuth0();
+  const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
     ...DASHBOARD_DETAIL_QUERY,
-    ...{ group: selectedGroup },
+    ...{group: selectedGroup},
   });
-  const { isLoading, errors, data } = useRequest(() => getDashboard(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getDashboard(encodedQuery), {
     permissions: AuthzGuards.writeDashboardsGuard,
     skip: path.newDashboard,
   });
 
   return (
     <Layout errors={errors} backTo="/dashboards" isLoading={isLoading}>
-      <DashboardEdit data={data} newDashboard={path.newDashboard} />
+      <DashboardEdit data={data} newDashboard={path.newDashboard}/>
     </Layout>
   );
 }

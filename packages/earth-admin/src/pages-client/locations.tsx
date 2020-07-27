@@ -22,16 +22,16 @@ import {useEffect, useState} from 'react';
 import {Router} from '@reach/router';
 
 import {LocationContext} from 'utils/contexts';
-import {LinkWithOrg} from 'components/LinkWithOrg';
+import {LinkWithOrg} from 'components/link-with-org';
 import {encodeQueryToURL} from 'utils';
 import {getAllLocations, getLocation} from 'services/locations';
 import {AuthzGuards} from 'auth/permissions';
 import {useRequest} from 'utils/hooks';
 
-import Layout from 'layouts';
 import {LocationList, LocationDetails, LocationEdit} from 'components';
 import {useAuth0} from '../auth/auth0';
-import {setup} from 'axios-cache-adapter';
+import SidebarLayout from 'layouts/Sidebar';
+import ContentLayout from 'layouts/Content';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const LOCATION_DETAIL_QUERY = {
@@ -52,7 +52,7 @@ export default function LocationsPage(props) {
   );
 }
 
-function Page(path: any) {
+function LocationSidebar(props: any) {
   const [locations, setLocations] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -60,11 +60,9 @@ function Page(path: any) {
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [isNoMore, setIsNoMore] = useState(false);
-
   const {selectedGroup, getPermissions} = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessLocationsGuard);
-  const writePermissions = getPermissions(AuthzGuards.writeLocationsGuard);
 
   const handleSearchValueChange = (newValue: string) => {
     setPageCursor(INIT_CURSOR_LOCATION);
@@ -82,11 +80,11 @@ function Page(path: any) {
     async function setupLocations() {
       setIsLoading(true);
 
-      const dataReset = !!path.location.state && !!path.location.state.refresh;
+      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh;
       const query = {
         search: searchValue,
         sort: 'name',
-        page: {size: 20, cursor: pageCursor},
+        page: {size: pageSize, cursor: pageCursor},
         select: EXCLUDED_FIELDS,
         group: selectedGroup,
       };
@@ -95,7 +93,7 @@ function Page(path: any) {
 
 
       if (dataReset) {
-        path.location.state.refresh = false;
+        props.path.location.state.refresh = false;
       }
 
       setLocations(!nextCursor || dataReset ? res.data : [...locations, ...res.data]);
@@ -106,7 +104,7 @@ function Page(path: any) {
     }
 
     permissions && setupLocations();
-  }, [path.location, searchValue, pageCursor]);
+  }, [props.path.location, searchValue, pageCursor]);
 
   return (
     <LocationContext.Provider
@@ -117,26 +115,34 @@ function Page(path: any) {
         locations,
         nextCursor,
         pagination: {pageCursor},
-        searchValue,
+        searchValue
       }}
     >
-      <Layout permission={permissions}>
+      <SidebarLayout>
+        <LocationList/>
+      </SidebarLayout>
+      {props.children}
+    </LocationContext.Provider>
+  );
+}
+
+function Page(path: any) {
+  const {selectedGroup, getPermissions} = useAuth0();
+  const permissions = getPermissions(AuthzGuards.accessLocationsGuard);
+  const writePermissions = getPermissions(AuthzGuards.writeLocationsGuard);
+  return (
+    <LocationSidebar path={path}>
+      <ContentLayout permission={permissions}>
         {writePermissions && (
           <div className="ng-flex ng-align-right">
             <LinkWithOrg className="ng-button ng-button-overlay" to="/locations/new">
               add new location
             </LinkWithOrg>
           </div>
-
         )}
 
-      </Layout>
-      <div className="ng-page-container">
-        <div className="ng-padding-large">
-          <LocationList/>
-        </div>
-      </div>
-    </LocationContext.Provider>
+      </ContentLayout>
+    </LocationSidebar>
   );
 };
 
@@ -152,9 +158,11 @@ function DetailsPage(path: any) {
   });
 
   return (
-    <Layout errors={errors} backTo="/locations" isLoading={isLoading}>
-      <LocationDetails data={data}/>
-    </Layout>
+    <LocationSidebar path={path}>
+      <ContentLayout errors={errors} backTo="/locations" isLoading={isLoading}>
+        <LocationDetails data={data}/>
+      </ContentLayout>
+    </LocationSidebar>
   );
 }
 
@@ -170,8 +178,10 @@ function EditPage(path: any) {
   });
 
   return (
-    <Layout errors={errors} backTo="/locations" isLoading={isLoading}>
-      <LocationEdit data={data} newLocation={path.newLocation}/>
-    </Layout>
+    <LocationSidebar path={path}>
+      <ContentLayout errors={errors} backTo="/locations" isLoading={isLoading}>
+        <LocationEdit data={data} newLocation={path.newLocation}/>
+      </ContentLayout>
+    </LocationSidebar>
   );
 }

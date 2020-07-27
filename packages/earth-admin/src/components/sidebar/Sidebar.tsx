@@ -22,32 +22,37 @@ import { Auth0Context } from 'utils/contexts';
 import './styles.scss';
 
 import { OrgSwitcher } from 'components/org-switcher';
+import {Select} from '@marapp/earth-components';
 
 import { APP_LOGO, APP_NAME } from '../../theme';
 
 interface AdminPage {
-  key: string;
+  value: string;
   url: string;
   guard?: any;
 }
 
 import { AuthzGuards } from 'auth/permissions';
 import { SidebarItem } from './sidebar-item';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { LinkWithOrg } from 'components/link-with-org';
 
 const ADMIN_PAGES: AdminPage[] = [
-  { key: 'Locations', url: '/locations/', guard: AuthzGuards.accessLocationsGuard },
-  { key: 'Widgets', url: '/widgets/', guard: AuthzGuards.accessWidgetsGuard },
-  { key: 'Layers', url: '/layers/', guard: AuthzGuards.accessLayersGuard },
-  { key: 'Dashboards', url: '/dashboards/', guard: AuthzGuards.accessDashboardsGuard },
-  { key: 'Users', url: '/users/', guard: AuthzGuards.accessUsersGuard },
-  { key: 'Organizations', url: '/organizations/', guard: AuthzGuards.accessOrganizationsGuard },
+  { value: 'Locations', url: '/locations/', guard: AuthzGuards.accessLocationsGuard },
+  { value: 'Widgets', url: '/widgets/', guard: AuthzGuards.accessWidgetsGuard },
+  { value: 'Layers', url: '/layers/', guard: AuthzGuards.accessLayersGuard },
+  { value: 'Dashboards', url: '/dashboards/', guard: AuthzGuards.accessDashboardsGuard },
+  { value: 'Users', url: '/users/', guard: AuthzGuards.accessUsersGuard },
+  { value: 'Organizations', url: '/organizations/', guard: AuthzGuards.accessOrganizationsGuard },
 ];
 
-export default function Sidebar() {
+export default function Sidebar(props:any) {
+  const handlePageChange = (e) => {
+    console.log('clckci', e);
+
+  }
   return (
-    <div className="ng-sidebar ng-flex ng-flex-column ng-flex-space-between ng-flex-top">
-      <nav className="ng-padding-medium-vertical">
+    <div className="ng-sidebar ng-flex ng-flex-column ng-flex-space-between">
+      <nav className="ng-padding-medium-vertical ng-background-dkgray ">
         <div
           className="ng-padding-medium-horizontal ng-ep-background-dark
         ng-margin-bottom
@@ -57,22 +62,14 @@ export default function Sidebar() {
           <span className="ng-margin-small-horizontal ng-color-white">|</span>
           <OrgSwitcher />
         </div>
-        <LinkWithOrg
-          to="/"
-          state={{ refresh: true }}
-          className="ng-side-menu-item ng-text-display-s ng-padding-vertical ng-padding-medium-horizontal"
-        >
-          Home
-        </LinkWithOrg>
-        {ADMIN_PAGES.map((page, i) => (
-          <SidebarItem item={page} key={i} />
-        ))}
+        <Select options={ADMIN_PAGES} onChange={handlePageChange}/>
       </nav>
+      {props.children}
       <Auth0Context.Consumer>
         {({ logout }) => (
           <div className="ng-padding-medium">
             <button className="ng-button ng-button-blank" onClick={() => logout()}>
-              <i className="ng-icon-user ng-icon-large ng-color-ltgray ng-display-block"></i>
+              <i className="ng-icon-user ng-icon-large ng-color-ltgray ng-display-block"/>
               <span className="ng-color-ltgray ng-display-block">LOG OUT</span>
             </button>
           </div>

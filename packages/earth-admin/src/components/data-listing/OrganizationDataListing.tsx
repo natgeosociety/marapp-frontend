@@ -19,7 +19,7 @@
 
 import * as React from 'react';
 
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { LinkWithOrg } from 'components/link-with-org';
 import { Spinner } from '@marapp/earth-components';
 import './styles.scss';
 

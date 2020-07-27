@@ -24,7 +24,7 @@ import { getAllLayers, getAllWidgets, getAvailableGroups } from 'services';
 
 import { remove } from 'lodash';
 import { Auth0Context } from 'utils/contexts';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { LinkWithOrg } from 'components/link-with-org';
 
 interface SearchInputProps {
   options: any[];

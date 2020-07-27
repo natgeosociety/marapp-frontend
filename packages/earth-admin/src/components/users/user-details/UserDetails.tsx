@@ -23,7 +23,7 @@ import { UserProps } from '../model';
 import { useAuth0 } from '../../../auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { ActionModal } from 'components/action-modal';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { LinkWithOrg } from 'components/link-with-org';
 
 export default function UserDetails(props: UserProps) {
   const {

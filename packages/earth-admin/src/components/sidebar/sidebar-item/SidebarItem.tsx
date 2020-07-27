@@ -19,7 +19,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { Auth0Context } from 'utils/contexts';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { LinkWithOrg } from 'components/link-with-org';
 
 export default function SidebarItem(props) {
   const [itemPermission, setItemPermission] = useState(false);

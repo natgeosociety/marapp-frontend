@@ -19,7 +19,7 @@
 
 import * as React from 'react';
 
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { LinkWithOrg } from 'components/link-with-org';
 import { LocationIntersectionProps } from '../model';
 
 export default function LocationIntersections(props: LocationIntersectionProps) {

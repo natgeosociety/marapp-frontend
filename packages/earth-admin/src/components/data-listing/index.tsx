@@ -18,7 +18,7 @@
 */
 
 import DataListing from './DataListing';
-import UserDataListing from './UserDataListing';
-import OrganizationDataListing from './OrganizationDataListing';
 
-export { DataListing, UserDataListing, OrganizationDataListing };
+export * from './default-list-item';
+export * from './user-list-item';
+export { DataListing };

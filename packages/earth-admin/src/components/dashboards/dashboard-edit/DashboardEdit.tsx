@@ -28,7 +28,7 @@ import { DashboardProps } from 'components/dashboards/model';
 import { HtmlEditor } from 'components/html-editor';
 import { ErrorMessages } from 'components/error-messages';
 import { SearchInput } from 'components/search-input';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { LinkWithOrg } from 'components/link-with-org';
 import { Auth0Context } from 'utils/contexts';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';

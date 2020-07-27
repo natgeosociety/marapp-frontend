@@ -18,7 +18,7 @@
 */
 
 import * as React from 'react';
-import { UserDataListing } from 'components/data-listing';
+import {DataListing, DefaultListItem, UserListItem} from 'components/data-listing';
 import { UserContext } from 'utils/contexts';
 
 export default function UserList() {
@@ -26,7 +26,8 @@ export default function UserList() {
     <UserContext.Consumer>
       {({ users, handleCursorChange, isLoading, isNoMore }) =>
         users && (
-          <UserDataListing
+          <DataListing
+            childComponent={UserListItem}
             data={users}
             categoryUrl={'users'}
             pageTitle="USERS"

@@ -18,28 +18,28 @@
 */
 
 import * as React from 'react';
-import { useContext, useEffect, useState } from 'react';
-import { Router, Location } from '@reach/router';
-import { withPrefix } from 'gatsby';
+import {useContext, useEffect, useState} from 'react';
+import {Router, Location} from '@reach/router';
+import {withPrefix} from 'gatsby';
 
-import { OrganizationContext } from 'utils/contexts';
-import { LinkWithOrg } from 'components/LinkWithOrg';
-import { encodeQueryToURL } from 'utils';
-import { getAllOrganizations, getOrganization } from 'services/organizations';
-import { AuthzGuards } from 'auth/permissions';
-import { useRequest } from 'utils/hooks';
+import {OrganizationContext} from 'utils/contexts';
+import {LinkWithOrg} from 'components/link-with-org';
+import {encodeQueryToURL} from 'utils';
+import {getAllOrganizations, getOrganization} from 'services/organizations';
+import {AuthzGuards} from 'auth/permissions';
+import {useRequest} from 'utils/hooks';
 
 import Layout from 'layouts';
-import { OrganizationList, OrganizationDetails } from 'components';
-import { useAuth0 } from '../auth/auth0';
-import { OrganizationEdit } from 'components/organizations/organization-edit';
+import {OrganizationList, OrganizationDetails, LocationList} from 'components';
+import {useAuth0} from '../auth/auth0';
+import {OrganizationEdit} from 'components/organizations/organization-edit';
 
 export default function OrganizationsPage(props) {
   return (
     <Router>
-      <Page path={'/'} />
-      <DetailsPage path={'/:page'} />
-      <EditPage path={'/:page/edit'} newOrg={false} />
+      <Page path={'/'}/>
+      <DetailsPage path={'/:page'}/>
+      <EditPage path={'/:page/edit'} newOrg={false}/>
     </Router>
   );
 }
@@ -51,7 +51,7 @@ function Page(path: any) {
   const [isLoading, setIsLoading] = useState(false);
   const [isNoMore, setIsNoMore] = useState(false);
 
-  const { selectedGroup, getPermissions } = useAuth0();
+  const {selectedGroup, getPermissions} = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessUsersGuard);
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
@@ -70,7 +70,7 @@ function Page(path: any) {
         path.location.state.refresh = false;
       } else {
         const query = {
-          page: { size: pageSize, number: pageNumber },
+          page: {size: pageSize, number: pageNumber},
           group: selectedGroup
         };
         const encodedQuery = encodeQueryToURL('organizations', query);
@@ -97,7 +97,7 @@ function Page(path: any) {
       value={{
         organizations,
         handleCursorChange,
-        pagination: { pageNumber },
+        pagination: {pageNumber},
         isLoading,
         isNoMore,
       }}
@@ -110,41 +110,45 @@ function Page(path: any) {
             </LinkWithOrg>
           </div>
         )} */}
-        <OrganizationList />
       </Layout>
+      <div className="ng-page-container">
+        <div className="ng-padding-large">
+          <OrganizationList/>
+        </div>
+      </div>
     </OrganizationContext.Provider>
   );
 }
 
 function DetailsPage(path: any) {
-  const { selectedGroup } = useAuth0();
+  const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, {
     group: selectedGroup,
   });
-  const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessUsersGuard,
   });
 
   return (
     <Layout errors={errors} backTo="/organizations" isLoading={isLoading}>
-      <OrganizationDetails data={data} />
+      <OrganizationDetails data={data}/>
     </Layout>
   );
 }
 
 function EditPage(path: any) {
-  const { selectedGroup } = useAuth0();
+  const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, {
-    ...{ group: selectedGroup },
+    ...{group: selectedGroup},
   });
-  const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getOrganization(encodedQuery), {
     permissions: AuthzGuards.writeUsersGuard,
     skip: path.newUser,
   });
 
   return (
     <Layout errors={errors} backTo="/organizations" isLoading={isLoading}>
-      <OrganizationEdit data={data} newOrg={path.newUser} />
+      <OrganizationEdit data={data} newOrg={path.newUser}/>
     </Layout>
   );
 }

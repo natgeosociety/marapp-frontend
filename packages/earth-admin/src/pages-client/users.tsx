@@ -18,20 +18,20 @@
 */
 
 import * as React from 'react';
-import { useContext, useEffect, useState } from 'react';
-import { Router, Location } from '@reach/router';
-import { withPrefix } from 'gatsby';
+import {useContext, useEffect, useState} from 'react';
+import {Router, Location} from '@reach/router';
+import {withPrefix} from 'gatsby';
 
-import { UserContext } from 'utils/contexts';
-import { LinkWithOrg } from 'components/LinkWithOrg';
-import { encodeQueryToURL } from 'utils';
-import { getAllUsers, getUser, getAvailableGroups } from 'services/users';
-import { AuthzGuards } from 'auth/permissions';
-import { useRequest } from 'utils/hooks';
+import {UserContext} from 'utils/contexts';
+import {LinkWithOrg} from 'components/link-with-org';
+import {encodeQueryToURL} from 'utils';
+import {getAllUsers, getUser, getAvailableGroups} from 'services/users';
+import {AuthzGuards} from 'auth/permissions';
+import {useRequest} from 'utils/hooks';
 
 import Layout from 'layouts';
-import { UserList, UserEdit, UserDetails } from 'components';
-import { useAuth0 } from '../auth/auth0';
+import {UserList, UserEdit, UserDetails, LocationList} from 'components';
+import {useAuth0} from '../auth/auth0';
 
 const USER_DETAIL_QUERY = {
   include: 'groups',
@@ -40,10 +40,10 @@ const USER_DETAIL_QUERY = {
 export default function UsersPage(props) {
   return (
     <Router>
-      <Page path={'/'} />
-      <DetailsPage path={'/:page'} />
-      <EditPage path={'/:page/edit'} newUser={false} />
-      <EditPage path={'/new'} newUser={true} />
+      <Page path={'/'}/>
+      <DetailsPage path={'/:page'}/>
+      <EditPage path={'/:page/edit'} newUser={false}/>
+      <EditPage path={'/new'} newUser={true}/>
     </Router>
   );
 }
@@ -55,7 +55,7 @@ function Page(path: any) {
   const [isLoading, setIsLoading] = useState(false);
   const [isNoMore, setIsNoMore] = useState(false);
 
-  const { selectedGroup, getPermissions } = useAuth0();
+  const {selectedGroup, getPermissions} = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessUsersGuard);
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
@@ -74,7 +74,7 @@ function Page(path: any) {
         path.location.state.refresh = false;
       } else {
         const query = {
-          page: { size: pageSize, number: pageNumber },
+          page: {size: pageSize, number: pageNumber},
           group: selectedGroup,
           include: 'groups',
         };
@@ -102,7 +102,7 @@ function Page(path: any) {
       value={{
         users,
         handleCursorChange,
-        pagination: { pageNumber },
+        pagination: {pageNumber},
         isLoading,
         isNoMore,
       }}
@@ -115,43 +115,47 @@ function Page(path: any) {
             </LinkWithOrg>
           </div>
         )}
-        <UserList />
       </Layout>
+      <div className="ng-page-container">
+        <div className="ng-padding-large">
+          <UserList/>
+        </div>
+      </div>
     </UserContext.Provider>
   );
 }
 
 function DetailsPage(path: any) {
-  const { selectedGroup } = useAuth0();
+  const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`users/${path.page}`, {
     ...USER_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const { isLoading, errors, data } = useRequest(() => getUser(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getUser(encodedQuery), {
     permissions: AuthzGuards.accessUsersGuard,
   });
 
   return (
     <Layout errors={errors} backTo="/users" isLoading={isLoading}>
-      <UserDetails data={data} />
+      <UserDetails data={data}/>
     </Layout>
   );
 }
 
 function EditPage(path: any) {
-  const { selectedGroup } = useAuth0();
+  const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`users/${path.page}`, {
     ...USER_DETAIL_QUERY,
-    ...{ group: selectedGroup },
+    ...{group: selectedGroup},
   });
-  const { isLoading, errors, data } = useRequest(() => getUser(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getUser(encodedQuery), {
     permissions: AuthzGuards.writeUsersGuard,
     skip: path.newUser,
   });
 
   return (
     <Layout errors={errors} backTo="/users" isLoading={isLoading}>
-      <UserEdit data={data} newUser={path.newUser} />
+      <UserEdit data={data} newUser={path.newUser}/>
     </Layout>
   );
 }

@@ -23,7 +23,7 @@ import classnames from 'classnames';
 
 import DropdownComponent from 'components/dropdown';
 import { Tooltip } from '@marapp/earth-components';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { LinkWithOrg } from 'components/link-with-org';
 
 import { MAP_PATH } from 'config';
 import './styles.scss';

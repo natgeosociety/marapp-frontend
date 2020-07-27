@@ -50,7 +50,7 @@ const Unauthorized = (props: IUnauthorizedProps) => {
   );
 };
 
-export default function MainLayout(props: ILayoutProps) {
+export default function ContentLayout(props: ILayoutProps) {
   console.log(props);
   const {
     permission = true, // backwards compatibility, permission moves to errors array
@@ -87,12 +87,11 @@ export default function MainLayout(props: ILayoutProps) {
         <link rel="icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" />
         <title>{ APP_NAME }</title>
       </Helmet>
-      <Content/>
-      {/*<div className="ng-page-container">*/}
-      {/*  <div className="ng-padding-large">*/}
-      {/*    <Content />*/}
-      {/*  </div>*/}
-      {/*</div>*/}
+      <div className="ng-page-container">
+        <div className="ng-padding-large">
+          <Content />
+        </div>
+      </div>
     </div>
   );
 }

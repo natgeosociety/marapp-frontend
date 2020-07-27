@@ -18,7 +18,7 @@
 */
 
 import * as React from 'react';
-import { DataListing } from 'components/data-listing';
+import { DataListing, DefaultListItem } from 'components/data-listing';
 import {LayerContext, LocationContext} from 'utils/contexts';
 
 export default function LocationList() {
@@ -27,6 +27,7 @@ export default function LocationList() {
       {({ locations, handleSearchValueChange, handleCursorChange, isLoading, isNoMore, searchValue }) =>
         (
           <DataListing
+            childComponent={DefaultListItem}
             data={locations}
             categoryUrl={'locations'}
             pageTitle="LOCATIONS"

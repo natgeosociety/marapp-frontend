@@ -46,6 +46,7 @@ export interface LocationContextProps {
   isLoading: boolean;
   isNoMore: boolean;
   searchValue?: string;
+  permissions?: any;
 }
 
 export enum LocationTypeEnum {

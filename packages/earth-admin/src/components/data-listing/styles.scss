@@ -19,40 +19,31 @@
 
 @import '~styles/config';
 
-.ng-c-data-link {
-  background-color: $marapp-gray-7;
- // color: $marapp-gray-0;
-  color: white;
-  border-bottom: 1px solid $marapp-gray-8;
-  border-left: 4px solid $marapp-gray-7;
+.ng-data-link {
+  background-color: $marapp-gray-8;
+  border-bottom: 1px solid $marapp-gray-7;
+  border-left: 4px solid transparent;
 
-  &:hover {
-    background-color: #444;
-    color: $marapp-gray-0;
-    border-bottom: 1px solid $marapp-gray-8;
-    border-left: 4px solid $marapp-primary-color;
+  &:hover, &.ng-data-link-selected {
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid $marapp-gray-7;
+    border-left-color: $marapp-primary-color;
   }
 }
 
-
-html,
-body,
-#root {
-  height: 100%;
-  overflow-x: hidden;
-}
-
-.List {
-  border: 1px solid #d9dddd;
-}
-
-.ListItemEven,
-.ListItemOdd {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ListItemEven, ul:nth-child(2) {
-  background-color: #f8f8f0;
+.ng-input-container {
+  border: 1px solid $marapp-gray-5;
+  &.is-focused {
+    border-color: $marapp-gray-0;
+  }
+  input {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
+  }
 }

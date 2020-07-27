@@ -28,7 +28,7 @@ import { LayerProps } from '../model';
 
 import { JsonEditor } from 'components/json-editor';
 import { ActionModal } from 'components/action-modal';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { LinkWithOrg } from 'components/link-with-org';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 

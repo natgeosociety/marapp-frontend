@@ -31,7 +31,7 @@ import OrganizationsPage from 'pages-client/organizations';
 import Organization from 'pages-client/organization';
 import Homepage from 'pages-client/homepage';
 import UnauthorizedPage from 'pages-client/unauthorized';
-import { ProtectedRoute } from 'components/ProtectedRoute';
+import { ProtectedRoute } from 'components/protected-route';
 import { APP_NAME } from '../theme';
 
 /**

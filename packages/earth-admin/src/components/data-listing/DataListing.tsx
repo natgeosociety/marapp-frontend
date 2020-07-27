@@ -18,17 +18,17 @@
 */
 
 import * as React from 'react';
-import {useContext, useEffect, useState} from 'react';
+import classnames from 'classnames';
 
 import List from '@researchgate/react-intersection-list';
+import {Spinner} from '@marapp/earth-components';
 
 import './styles.scss';
-import {LocationContext} from 'utils/contexts';
-import {Spinner} from '@marapp/earth-components';
-import {LinkWithOrg} from 'components/LinkWithOrg';
+import {useState} from 'react';
 
 const DataListing = (props) => {
-  const {cursorAction, data, isLoading, isNoMore, searchValue, searchValueAction, categoryUrl, pageTitle} = props;
+  const {cursorAction, data, isLoading, isNoMore, searchValue, searchValueAction, categoryUrl, pageTitle, childComponent} = props;
+  const [focus, setFocus] = useState(false);
 
   const PAGE_SIZE = 20;
   const hasNextPage = data.length >= PAGE_SIZE;
@@ -40,19 +40,15 @@ const DataListing = (props) => {
   };
 
   const renderItem = (index) => {
-    const {slug, id, type, name} = data[index];
+    const item = data[index];
     return (
-      <LinkWithOrg
-        to={`/${categoryUrl}/${id}`}
-        className="ng-c-data-link ng-display-block ng-padding-medium-horizontal ng-padding-vertical"
-        key={index}
-      >
-        <span className="ng-text-edit-s ng-margin-remove">{name}</span>
-        <span className="ng-display-block">{slug}</span>
-      </LinkWithOrg>
+      <div key={index}>
+        {React.createElement(childComponent, {
+          item: item,
+          categoryUrl: categoryUrl,
+        })}
+      </div>
     );
-
-
   };
 
   const onIntersection = (size, pageSize) => {
@@ -60,17 +56,27 @@ const DataListing = (props) => {
   };
 
   return (<>
-    <div className="searchable-listing-container ng-width-1-1 ng-margin-small-bottom">
-      <input
-        type="text"
-        placeholder={`Search for ${pageTitle.toLowerCase()}...`}
-        className="ng-padding ng-width-1-1"
-        onChange={(e) => handleSearchChange(e.target.value)}
-        value={searchValue}
-        ref={input => input && input.getBoundingClientRect().top > 0 && input.focus()}
-      />
+    <div className="searchable-listing-container ng-margin-bottom ng-background-dkgray
+      ng-padding-medium">
+      <div
+        className={classnames({
+          'ng-input-container ng-c-flex-grow-1 ng-flex ng-flex-middle': true,
+          'is-focused': focus
+        })}>
+        <i className=" ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal"/>
+        <input
+          type=" text"
+          placeholder={`search ${pageTitle.toLowerCase()}...`}
+          className=" ng-width-1-1 ng-search-box"
+          onFocus={() => setFocus(!focus)}
+          onChange={(e) => handleSearchChange(e.target.value)}
+          value={searchValue}
+          ref={input => input && input.getBoundingClientRect().top > 0 && input.focus()}
+        />
+      </div>
+
     </div>
-    <div style={{height: '600px', 'overflowY': 'scroll'}}>
+    <div style={{height: '600px', 'overflowY': 'scroll'}} className=" ng-c-width-100">
       <List
         awaitMore={awaitMore}
         pageSize={PAGE_SIZE}
@@ -78,7 +84,14 @@ const DataListing = (props) => {
         renderItem={renderItem}
         onIntersection={onIntersection}
       />
-      {isLoading && <Spinner position="relative"/>}
+      {isNoMore && (
+        <div className=" ng-text-center">
+          <p className=" ng-color-gray-3 ng-margin-medium-top ng-margin-bottom-remove">
+            - end -
+          </p>
+        </div>
+      )}
+      {isLoading && <Spinner position=" relative"/>}
     </div>
   </>);
 };

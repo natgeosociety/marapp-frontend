@@ -18,19 +18,19 @@
 */
 
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { Router } from '@reach/router';
+import {useEffect, useState} from 'react';
+import {Router} from '@reach/router';
 
-import { WidgetContext } from 'utils/contexts';
-import { encodeQueryToURL } from 'utils';
-import { getAllWidgets, getWidget } from 'services/widgets';
-import { useRequest } from 'utils/hooks';
+import {WidgetContext} from 'utils/contexts';
+import {encodeQueryToURL} from 'utils';
+import {getAllWidgets, getWidget} from 'services/widgets';
+import {useRequest} from 'utils/hooks';
 
 import Layout from 'layouts';
-import { LinkWithOrg } from 'components/LinkWithOrg';
-import { WidgetList, WidgetDetails, WidgetEdit } from 'components';
-import { useAuth0 } from 'auth/auth0';
-import { AuthzGuards } from 'auth/permissions';
+import {LinkWithOrg} from 'components/link-with-org';
+import {WidgetList, WidgetDetails, WidgetEdit, LocationList} from 'components';
+import {useAuth0} from 'auth/auth0';
+import {AuthzGuards} from 'auth/permissions';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const WIDGET_DETAIL_QUERY = {
@@ -43,10 +43,10 @@ const INIT_CURSOR_LOCATION = '-1';
 export default function WidgetsPage(props) {
   return (
     <Router>
-      <Page path="/" />
-      <DetailsPage path="/:page" />
-      <EditPage path="/:page/edit" newWidget={false} />
-      <EditPage path="/new" newWidget={true} />
+      <Page path="/"/>
+      <DetailsPage path="/:page"/>
+      <EditPage path="/:page/edit" newWidget={false}/>
+      <EditPage path="/new" newWidget={true}/>
     </Router>
   );
 }
@@ -60,7 +60,7 @@ function Page(path: any) {
   const [isLoading, setIsLoading] = useState(false);
   const [isNoMore, setIsNoMore] = useState(false);
 
-  const { selectedGroup, getPermissions } = useAuth0();
+  const {selectedGroup, getPermissions} = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessWidgetsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeWidgetsGuard);
@@ -85,7 +85,7 @@ function Page(path: any) {
       const query = {
         search: searchValue,
         sort: 'name',
-        page: { size: pageSize, cursor: dataReset ? INIT_CURSOR_LOCATION : pageCursor },
+        page: {size: pageSize, cursor: dataReset ? INIT_CURSOR_LOCATION : pageCursor},
         select: EXCLUDED_FIELDS,
         group: selectedGroup,
       };
@@ -112,7 +112,7 @@ function Page(path: any) {
         widgets,
         handleSearchValueChange,
         handleCursorChange,
-        pagination: { pageCursor },
+        pagination: {pageCursor},
         isLoading,
         isNoMore,
         searchValue,
@@ -126,44 +126,48 @@ function Page(path: any) {
             </LinkWithOrg>
           </div>
         )}
-        <WidgetList />
       </Layout>
+      <div className="ng-page-container">
+        <div className="ng-padding-large">
+          <WidgetList/>
+        </div>
+      </div>
     </WidgetContext.Provider>
   );
 }
 
 function DetailsPage(path: any) {
-  const { selectedGroup } = useAuth0();
+  const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`widgets/${path.page}`, {
     ...WIDGET_DETAIL_QUERY,
-    ...{ group: selectedGroup },
+    ...{group: selectedGroup},
   });
-  const { isLoading, errors, data } = useRequest(() => getWidget(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getWidget(encodedQuery), {
     permissions: AuthzGuards.accessWidgetsGuard,
     query: encodedQuery,
   });
 
   return (
     <Layout errors={errors} backTo="/widgets" isLoading={isLoading}>
-      <WidgetDetails data={data} />
+      <WidgetDetails data={data}/>
     </Layout>
   );
 }
 
 function EditPage(path: any) {
-  const { selectedGroup } = useAuth0();
+  const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`widgets/${path.page}`, {
     ...WIDGET_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const { isLoading, errors, data } = useRequest(() => getWidget(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getWidget(encodedQuery), {
     permissions: AuthzGuards.writeWidgetsGuard,
     skip: path.newWidget,
   });
 
   return (
     <Layout errors={errors} backTo="/widgets" isLoading={isLoading}>
-      <WidgetEdit data={data} newWidget={path.newWidget} />
+      <WidgetEdit data={data} newWidget={path.newWidget}/>
     </Layout>
   );
 }
