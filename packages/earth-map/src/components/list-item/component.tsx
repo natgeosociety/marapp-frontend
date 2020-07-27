@@ -25,12 +25,13 @@ import './style.scss';
 
 interface IProps {
   title: string;
-  hint?: string;
   linkTo: {
     type: string;
     payload?: any;
   };
   key: string;
+  organization?: string;
+  hint?: string;
   list?: any[];
   labels?: string[];
   setPlacesSearch?: (payload) => void;
@@ -43,6 +44,7 @@ const ListItem = (props: IProps) => {
     title,
     hint,
     labels,
+    organization,
     linkTo,
     key,
     list,
@@ -54,7 +56,7 @@ const ListItem = (props: IProps) => {
   // Default click action. Can be overritten by passing onClick prop
   const onClickIndex = () => {
     setPlacesSearch({ search: title });
-    const [ first ] = list;
+    const [first] = list;
     if (!!first) {
       setIndexesSelected(first.slug);
     }
@@ -64,12 +66,23 @@ const ListItem = (props: IProps) => {
     <Link
       to={linkTo}
       onClick={onClick || onClickIndex} key={key}
-      className="ng-c-list-item ng-unstyled ng-padding-small-vertical ng-padding-medium-horizontal"
+      className="ng-list-item ng-padding-small-vertical ng-padding-medium-horizontal"
     >
-      { parseHintBold(hint || title) }
-      {labels.map((label, i) => (
-        <span className="ng-margin-left ng-color-mdgray" key={`${label}-${i}`}>{label}</span>
-      ))}
+      <span className="ng-display-block ng-list-item-title">{parseHintBold(hint || title)}</span>
+      {organization && (
+        <span className="ng-color-mdgray" key={`${organization}`}>
+          {organization}<strong className="ng-icon-bullet" />
+        </span>
+      )}
+      {labels.map((label, i, all) => {
+        const last = i === all.length - 1;
+        return (
+          <span className="ng-color-mdgray" key={`${label}`}>
+            {label}
+            {!last && ', '}
+          </span>
+        )
+      })}
     </Link>
   )
 };

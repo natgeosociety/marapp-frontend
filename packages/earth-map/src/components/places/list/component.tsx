@@ -53,10 +53,8 @@ const PlacesResultsComponent = (props: IPlacesList) => {
         hint={$searchHint.name}
         title={name} key={`${slug}-${organization}`}
         linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
-        labels={[
-          type,
-          (group.length > 1) && organization
-        ]} />
+        organization={(group.length > 1) && organization}
+        labels={[type]} />
     );
   };
   const onIntersection = (size, pageSize) => {
@@ -68,7 +66,7 @@ const PlacesResultsComponent = (props: IPlacesList) => {
 
   return (
     <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
-      <h2 className="ng-padding-medium ng-text-display-s ng-body-color ng-margin-remove">Search results</h2>
+      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Search results</h2>
       <List
         awaitMore={awaitMore}
         pageSize={PAGE_SIZE}
