@@ -19,21 +19,21 @@
 
 @import "~styles/config";
 
-.ng-c-list-item {
+.ng-list-item {
   display: block;
   line-height: 27px;
-  border-bottom: 1px solid $dkgray;
+  border-bottom: 1px solid $marapp-gray-7;
 
   &:hover {
     background-color: rgba($marapp-gray-1, .1);
-    border-bottom-color: $dkgray;
+    border-bottom-color: $marapp-gray-7;
   }
 
   &:last-child {
     border-bottom: none;
   }
 
-  .ng-c-list-item-title {
+  .ng-list-item-title {
     white-space: nowrap;
     width: 100%;
     overflow: hidden;

@@ -66,9 +66,9 @@ const ListItem = (props: IProps) => {
     <Link
       to={linkTo}
       onClick={onClick || onClickIndex} key={key}
-      className="ng-c-list-item ng-padding-small-vertical ng-padding-medium-horizontal"
+      className="ng-list-item ng-padding-small-vertical ng-padding-medium-horizontal"
     >
-      <span className="ng-display-block ng-c-list-item-title">{parseHintBold(hint || title)}</span>
+      <span className="ng-display-block ng-list-item-title">{parseHintBold(hint || title)}</span>
       {organization && (
         <span className="ng-color-mdgray" key={`${organization}`}>
           {organization}<strong className="ng-icon-bullet" />
