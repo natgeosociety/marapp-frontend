@@ -21,8 +21,22 @@
 
 .ng-c-list-item {
   display: block;
+  line-height: 27px;
+  border-bottom: 1px solid $dkgray;
 
   &:hover {
     background-color: rgba($marapp-gray-1, .1);
+    border-bottom-color: $dkgray;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .ng-c-list-item-title {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
