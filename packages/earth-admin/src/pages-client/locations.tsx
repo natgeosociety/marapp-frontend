@@ -59,6 +59,7 @@ function LocationsWrapper( props: any ) {
   const [pageCursor, setPageCursor] = useState(INIT_CURSOR_LOCATION);
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
+  const [isNoMore, setIsNoMore] = useState(null);
   const [totalResults, setTotalResults] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -102,6 +103,7 @@ function LocationsWrapper( props: any ) {
 
       setLocations(!nextCursor || dataReset ? res.data : [...locations, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
+      setIsNoMore(!res.pagination.nextCursor);
 
       setIsLoading(false);
       setSelectedItem(props.path.page);
@@ -116,6 +118,7 @@ function LocationsWrapper( props: any ) {
         handleSearchValueChange,
         handleCursorChange,
         isLoading,
+        isNoMore,
         locations,
         nextCursor,
         totalResults,

@@ -59,11 +59,11 @@ const DataListing = ( props ) => {
     {searchValueAction &&
     <SearchBox searchValue={searchValue} pageTitle={pageTitle} searchValueAction={searchValueAction}/>}
     <div style={{ 'overflowY': 'scroll' }}>
-      <div
-        className="ng-padding-medium-horizontal ng-padding-medium-top ng-padding-small-bottom ng-background-ultradkgray">
+      {!!totalResults && <div
+        className="ng-padding-medium-horizontal ng-padding-medium-top ng-padding-bottom ng-background-ultradkgray">
         <h4 className="ng-text-display-s ng-color-ultraltgray ng-margin-remove">{selectedGroup} {pageTitle} &nbsp;
           <span className="ng-color-mdgray">({totalResults})</span></h4>
-      </div>
+      </div>}
 
       <div>
         <List

@@ -25,7 +25,7 @@ import './styles.scss';
 const SidebarLayout = ( props: any ) => {
   return (
     <div className="ng-sidebar ng-flex ng-flex-column ng-flex-top">
-      <nav className="ng-padding-medium-vertical ng-background-dkgray ">
+      <nav className="ng-padding-medium-top ng-padding-bottom ng-background-dkgray ">
         <div
           className="ng-padding-medium-horizontal ng-ep-background-dark ng-margin-bottom ng-flex ng-flex-middle ng-position-relative">
           <LinkWithOrg to='/' className="ng-border-remove">

@@ -48,6 +48,7 @@ function OrganizationsWrapper(props:any) {
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isNoMore, setIsNoMore] = useState(null);
   const [totalResults, setTotalResults] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -84,6 +85,7 @@ function OrganizationsWrapper(props:any) {
         setTotalResults(res.total)
         setSelectedItem(props.path.page);
         setOrganizations(dataReset ? validOrganizations : [...organizations, ...validOrganizations]);
+        setIsNoMore(pageNumber === res.pagination.total);
       }
 
       setIsLoading(false);
@@ -97,6 +99,7 @@ function OrganizationsWrapper(props:any) {
       value={{
         handleCursorChange,
         isLoading,
+        isNoMore,
         organizations,
         totalResults,
         pageSize,

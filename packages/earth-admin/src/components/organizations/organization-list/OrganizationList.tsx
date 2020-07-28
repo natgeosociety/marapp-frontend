@@ -26,7 +26,7 @@ export default function OrganizationList() {
     <OrganizationContext.Consumer>
       {( {
            organizations, handleSearchValueChange, handleCursorChange,
-           isLoading, searchValue, pageSize, totalResults, selectedItem,
+           isLoading, isNoMore, searchValue, pageSize, totalResults, selectedItem,
          } ) =>
         (
           <DataListing
@@ -37,6 +37,7 @@ export default function OrganizationList() {
             searchValueAction={handleSearchValueChange}
             cursorAction={handleCursorChange}
             isLoading={isLoading}
+            isNoMore={isNoMore}
             totalResults={totalResults}
             pageSize={pageSize}
             searchValue={searchValue}

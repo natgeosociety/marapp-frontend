@@ -22,6 +22,9 @@ import React, { useState } from 'react';
 import { SidebarItem, DropdownComponent } from 'components/index';
 import { ADMIN_PAGES } from 'components/sidebar-select/model';
 import { useDomWatcher } from 'utils/hooks';
+import classnames from 'classnames';
+
+import './styles.scss';
 
 const SidebarSelect = ( props: any ) => {
   const selectRef = React.useRef(null);
@@ -45,7 +48,11 @@ const SidebarSelect = ( props: any ) => {
         <div onClick={handleDropdownToggle}
              className="ng-padding ng-c-cursor-pointer ng-flex ng-select-display-values">
           {currentPage || 'Choose a page'}
-          <i className="ng-icon-directiondown"/>
+          <i
+            className={classnames({
+              'ng-icon-directiondown': dropdownState === 'close',
+              'ng-icon-directionup': dropdownState === 'open',
+            })}/>
         </div>
         <DropdownComponent state={dropdownState} className="ng-select-list">
           {ADMIN_PAGES.map(( page, i ) => (

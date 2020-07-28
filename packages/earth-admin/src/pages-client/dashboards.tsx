@@ -40,7 +40,7 @@ const DASHBOARD_DETAIL_QUERY = {
 };
 const INIT_CURSOR_LOCATION = '-1';
 
-const PAGE_TYPE = setPage('Dashboards');
+const PAGE_TYPE = setPage('Data Indexes');
 
 export default function DashboardsPage( props ) {
   return (
@@ -60,6 +60,7 @@ function DashboardsWrapper( props: any ) {
   const [pageCursor, setPageCursor] = useState('-1');
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isNoMore, setIsNoMore] = useState(null);
   const [totalResults, setTotalResults] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -103,6 +104,7 @@ function DashboardsWrapper( props: any ) {
       setDashboards(!nextCursor || dataReset ? res.data : [...dashboards, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
       setSelectedItem(props.path.page);
+      setIsNoMore(!res.pagination.nextCursor);
 
       setIsLoading(false);
     }
@@ -116,6 +118,7 @@ function DashboardsWrapper( props: any ) {
         handleSearchValueChange,
         handleCursorChange,
         isLoading,
+        isNoMore,
         dashboards,
         nextCursor,
         totalResults,

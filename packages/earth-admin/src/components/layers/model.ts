@@ -54,6 +54,7 @@ export interface LayerContextProps {
   handleCursorChange: Function;
   pageSize: number;
   isLoading: boolean;
+  isNoMore: boolean;
   searchValue?: string;
   permissions?: any;
   totalResults?: number;

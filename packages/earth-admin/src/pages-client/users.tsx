@@ -55,6 +55,7 @@ function UsersWrapper( props: any ) {
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isNoMore, setIsNoMore] = useState(null);
   const [totalResults, setTotalResults] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -91,7 +92,7 @@ function UsersWrapper( props: any ) {
         setSelectedItem(props.path.page);
         setTotalResults(res.total);
         setUsers(dataReset ? validUsers : [...users, ...validUsers]);
-
+        setIsNoMore(pageNumber === res.pagination.total);
       }
 
       setIsLoading(false);
@@ -105,6 +106,7 @@ function UsersWrapper( props: any ) {
       value={{
         handleCursorChange,
         isLoading,
+        isNoMore,
         users,
         totalResults,
         pageSize,

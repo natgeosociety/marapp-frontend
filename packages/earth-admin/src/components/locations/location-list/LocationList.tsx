@@ -26,7 +26,7 @@ export default function LocationList() {
     <LocationContext.Consumer>
       {( {
            locations, handleSearchValueChange, handleCursorChange,
-           isLoading, searchValue, pageSize, totalResults, selectedItem,
+           isLoading, isNoMore, searchValue, pageSize, totalResults, selectedItem,
          } ) =>
         (
           <DataListing
@@ -37,6 +37,7 @@ export default function LocationList() {
             searchValueAction={handleSearchValueChange}
             cursorAction={handleCursorChange}
             isLoading={isLoading}
+            isNoMore={isNoMore}
             totalResults={totalResults}
             pageSize={pageSize}
             searchValue={searchValue}

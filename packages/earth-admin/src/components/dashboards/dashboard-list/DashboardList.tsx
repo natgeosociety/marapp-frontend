@@ -26,7 +26,7 @@ export default function DashboardList() {
     <DashboardContext.Consumer>
       {( {
            dashboards, handleSearchValueChange, handleCursorChange,
-           isLoading, searchValue, pageSize, totalResults, selectedItem,
+           isLoading, isNoMore, searchValue, pageSize, totalResults, selectedItem,
          } ) =>
         (
           <DataListing
@@ -37,6 +37,7 @@ export default function DashboardList() {
             searchValueAction={handleSearchValueChange}
             cursorAction={handleCursorChange}
             isLoading={isLoading}
+            isNoMore={isNoMore}
             totalResults={totalResults}
             pageSize={pageSize}
             searchValue={searchValue}

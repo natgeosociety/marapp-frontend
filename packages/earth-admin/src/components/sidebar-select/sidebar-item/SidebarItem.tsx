@@ -45,7 +45,7 @@ export default function SidebarItem( props ) {
           key={item.key}
         >
           <span
-            className="ng-text-display-s ng-display-block ng-dropdown-item">
+            className="ng-display-block ng-dropdown-item">
           {item.key}
           </span>
         </LinkWithOrg>

@@ -61,6 +61,7 @@ function WidgetsWrapper( props: any ) {
   const [pageCursor, setPageCursor] = useState('-1');
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isNoMore, setIsNoMore] = useState(null);
   const [totalResults, setTotalResults] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -105,6 +106,7 @@ function WidgetsWrapper( props: any ) {
       setWidgets(!nextCursor || dataReset ? res.data : [...widgets, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
       setSelectedItem(props.path.page);
+      setIsNoMore(!res.pagination.nextCursor);
       setIsLoading(false);
     }
 
@@ -117,6 +119,7 @@ function WidgetsWrapper( props: any ) {
         handleSearchValueChange,
         handleCursorChange,
         isLoading,
+        isNoMore,
         widgets,
         nextCursor,
         totalResults,
