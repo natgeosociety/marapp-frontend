@@ -22,15 +22,15 @@ import {useEffect, useState} from 'react';
 import {Router} from '@reach/router';
 
 import {DashboardContext} from 'utils/contexts';
-import {encodeQueryToURL} from 'utils';
+import {encodeQueryToURL, setPage} from 'utils';
 import {getAllDashboards, getDashboard} from 'services/dashboards';
 import {useRequest} from 'utils/hooks';
 
 import {ContentLayout, SidebarLayout} from 'layouts';
-import {DashboardList, DashboardDetails, DashboardEdit, LocationList} from 'components';
+import {DashboardList, DashboardDetails, DashboardEdit} from 'components';
 import {LinkWithOrg} from 'components/link-with-org';
-import {AuthzGuards} from '../auth/permissions';
-import {useAuth0} from '../auth/auth0';
+import {AuthzGuards} from 'auth/permissions';
+import {useAuth0} from 'auth/auth0';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 
@@ -40,6 +40,8 @@ const DASHBOARD_DETAIL_QUERY = {
   sort: 'layers.name,widgets.name',
 };
 const INIT_CURSOR_LOCATION = '-1';
+
+const PAGE_TYPE = setPage('Dashboards');
 
 export default function DashboardsPage(props) {
   return (
@@ -123,7 +125,7 @@ function DashboardsWrapper(props: any) {
         selectedItem
       }}
     >
-      <SidebarLayout>
+      <SidebarLayout page={PAGE_TYPE}>
         <DashboardList/>
       </SidebarLayout>
       {props.children}

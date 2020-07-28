@@ -52,7 +52,7 @@ const Unauthorized = (props: IUnauthorizedProps) => {
 };
 
 export default function ContentLayout(props: ILayoutProps) {
-  console.log(props);
+
   const {
     permission = true, // backwards compatibility, permission moves to errors array
     errors = [],

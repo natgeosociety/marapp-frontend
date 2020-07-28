@@ -22,7 +22,7 @@ import {useEffect, useState} from 'react';
 import {Router} from '@reach/router';
 
 import {WidgetContext} from 'utils/contexts';
-import {encodeQueryToURL} from 'utils';
+import {encodeQueryToURL, setPage} from 'utils';
 import {getAllWidgets, getWidget} from 'services/widgets';
 import {useRequest} from 'utils/hooks';
 
@@ -40,6 +40,8 @@ const WIDGET_DETAIL_QUERY = {
   sort: 'layers.name',
 };
 const INIT_CURSOR_LOCATION = '-1';
+
+const PAGE_TYPE = setPage('Widgets');
 
 export default function WidgetsPage(props) {
   return (
@@ -124,7 +126,7 @@ function WidgetsWrapper(props: any) {
         selectedItem
       }}
     >
-      <SidebarLayout>
+      <SidebarLayout page={PAGE_TYPE}>
         <WidgetList/>
       </SidebarLayout>
     </WidgetContext.Provider>

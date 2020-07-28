@@ -24,7 +24,7 @@ import {withPrefix} from 'gatsby';
 
 import {UserContext} from 'utils/contexts';
 import {LinkWithOrg} from 'components/link-with-org';
-import {encodeQueryToURL} from 'utils';
+import {encodeQueryToURL, setPage} from 'utils';
 import {getAllUsers, getUser, getAvailableGroups} from 'services/users';
 import {AuthzGuards} from 'auth/permissions';
 import {useRequest} from 'utils/hooks';
@@ -37,6 +37,8 @@ import ContentLayout from 'layouts/Content';
 const USER_DETAIL_QUERY = {
   include: 'groups',
 };
+
+const PAGE_TYPE = setPage('Users');
 
 export default function UsersPage(props) {
   return (
@@ -110,7 +112,7 @@ function UsersWrapper(props: any) {
         selectedItem
       }}
     >
-      <SidebarLayout>
+      <SidebarLayout page={PAGE_TYPE}>
         <UserList/>
       </SidebarLayout>
       {props.children}

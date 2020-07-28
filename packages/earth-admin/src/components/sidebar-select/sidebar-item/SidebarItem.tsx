@@ -20,10 +20,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Auth0Context } from 'utils/contexts';
 import { LinkWithOrg } from 'components/link-with-org';
+import classnames from 'classnames';
 
 export default function SidebarItem(props) {
   const [itemPermission, setItemPermission] = useState(false);
-  const { item } = props;
+  const { item, selected } = props;
   const { getPermissions, selectedGroup } = useContext(Auth0Context);
 
   useEffect(() => {
@@ -32,7 +33,11 @@ export default function SidebarItem(props) {
 
   return (
     itemPermission && (
-      <li  className="ng-ep-dropdown-category">
+      <li
+        className={classnames({
+          'ng-ep-dropdown-category': true,
+          'ng-ep-dropdown-selected': selected,
+        })}>
         <LinkWithOrg
           className="ng-display-block ng-border-remove"
           to={item.url}

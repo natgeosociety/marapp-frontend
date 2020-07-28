@@ -23,7 +23,7 @@ import {Router} from '@reach/router';
 
 import {LocationContext} from 'utils/contexts';
 import {LinkWithOrg} from 'components/link-with-org';
-import {encodeQueryToURL} from 'utils';
+import {encodeQueryToURL, setPage} from 'utils';
 import {getAllLocations, getLocation} from 'services/locations';
 import {AuthzGuards} from 'auth/permissions';
 import {useRequest} from 'utils/hooks';
@@ -40,6 +40,8 @@ const LOCATION_DETAIL_QUERY = {
   sort: 'intersections.name,metrics.slug,-metrics.version',
 };
 const INIT_CURSOR_LOCATION = '-1';
+
+const PAGE_TYPE = setPage('Locations');
 
 export default function LocationsPage(props) {
   return (
@@ -125,7 +127,7 @@ function LocationsWrapper(props: any) {
         selectedItem
       }}
     >
-      <SidebarLayout>
+      <SidebarLayout page={PAGE_TYPE}>
         <LocationList/>
       </SidebarLayout>
       {props.children}

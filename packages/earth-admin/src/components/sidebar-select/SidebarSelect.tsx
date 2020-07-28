@@ -17,45 +17,31 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, {useContext, useEffect, useState} from 'react';
-import {Auth0Context} from 'utils/contexts';
-import {LinkWithOrg} from 'components/link-with-org';
+import React, { useState} from 'react';
+
 import DropdownComponent from 'components/dropdown/Dropdown';
 import {SidebarItem} from 'components/sidebar-select/sidebar-item';
-import {AuthzGuards} from 'auth/permissions';
+import {ADMIN_PAGES} from 'components/sidebar-select/model';
 
-interface AdminPage {
-  key: string;
-  url: string;
-  guard?: any;
-}
-
-const ADMIN_PAGES: AdminPage[] = [
-  {key: 'Locations', url: '/locations/', guard: AuthzGuards.accessLocationsGuard},
-  {key: 'Widgets', url: '/widgets/', guard: AuthzGuards.accessWidgetsGuard},
-  {key: 'Layers', url: '/layers/', guard: AuthzGuards.accessLayersGuard},
-  {key: 'Dashboards', url: '/dashboards/', guard: AuthzGuards.accessDashboardsGuard},
-  {key: 'Users', url: '/users/', guard: AuthzGuards.accessUsersGuard},
-  {key: 'Organizations', url: '/organizations/', guard: AuthzGuards.accessOrganizationsGuard},
-];
-
-export default function SidebarSelect() {
+export default function SidebarSelect(props) {
   const [dropdownState, setDropdownState] = useState('close');
+  const [currentPage] = props.path;
 
   const handleDropdownToggle = () => {
     dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
   };
+
   return (
     <div className="ng-padding-medium-horizontal ng-form ng-form-dark">
       <div className="ng-position-relative ng-select">
         <div onClick={handleDropdownToggle}
              className="ng-padding ng-c-cursor-pointer ng-flex ng-select-display-values">
-          click here
+          {currentPage.key}
           <i className="ng-icon-directiondown"/>
         </div>
         <DropdownComponent state={dropdownState} className="ng-select-list">
           {ADMIN_PAGES.map((page, i) => (
-            <SidebarItem item={page} key={i}/>
+            <SidebarItem item={page} key={i} selected={currentPage.key === page.key}/>
           ))}
         </DropdownComponent>
       </div>

@@ -24,7 +24,7 @@ import {withPrefix} from 'gatsby';
 
 import {OrganizationContext} from 'utils/contexts';
 import {LinkWithOrg} from 'components/link-with-org';
-import {encodeQueryToURL} from 'utils';
+import {encodeQueryToURL, setPage} from 'utils';
 import {getAllOrganizations, getOrganization} from 'services/organizations';
 import {AuthzGuards} from 'auth/permissions';
 import {useRequest} from 'utils/hooks';
@@ -33,6 +33,8 @@ import {ContentLayout, SidebarLayout} from 'layouts';
 import {OrganizationList, OrganizationDetails, LocationList} from 'components';
 import {useAuth0} from '../auth/auth0';
 import {OrganizationEdit} from 'components/organizations/organization-edit';
+
+const PAGE_TYPE = setPage('Organizations');
 
 export default function OrganizationsPage(props) {
   return (
@@ -104,7 +106,7 @@ function OrganizationsWrapper(props:any) {
         selectedItem
       }}
     >
-      <SidebarLayout>
+      <SidebarLayout page={PAGE_TYPE}>
         <OrganizationList/>
       </SidebarLayout>
       {props.children}

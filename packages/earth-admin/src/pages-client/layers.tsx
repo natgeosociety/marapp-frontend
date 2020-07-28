@@ -22,7 +22,7 @@ import {useEffect, useState} from 'react';
 import {Router} from '@reach/router';
 
 import {LayerContext, LocationContext} from 'utils/contexts';
-import {encodeQueryToURL} from 'utils';
+import {encodeQueryToURL, setPage} from 'utils';
 import {getAllLayers, getLayer} from 'services/layers';
 import {useRequest} from 'utils/hooks';
 
@@ -35,6 +35,8 @@ import {ContentLayout} from 'layouts';
 
 const LAYER_DETAIL_QUERY = {include: 'references', select: 'references.name,references.id'};
 const INIT_CURSOR_LOCATION = '-1';
+
+const PAGE_TYPE = setPage('Layers');
 
 export default function LocationsPage(props) {
   return (
@@ -118,7 +120,7 @@ function LayersWrapper(props: any) {
         selectedItem
       }}
     >
-      <SidebarLayout>
+      <SidebarLayout page={PAGE_TYPE}>
         <LayerList/>
       </SidebarLayout>
       {props.children}

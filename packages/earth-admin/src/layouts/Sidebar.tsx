@@ -29,6 +29,7 @@ import {SidebarSelect} from 'components/sidebar-select';
 import {LinkWithOrg} from 'components/link-with-org';
 
 const SidebarLayout = (props: any) => {
+
   return (
     <div className="ng-sidebar ng-flex ng-flex-column ng-flex-top">
       <nav className="ng-padding-medium-vertical ng-background-dkgray ">
@@ -40,7 +41,7 @@ const SidebarLayout = (props: any) => {
           <span className="ng-margin-small-horizontal ng-color-white">|</span>
           <OrgSwitcher/>
         </div>
-        <SidebarSelect/>
+        <SidebarSelect path={props.page}/>
       </nav>
       {props.children}
     </div>

@@ -35,8 +35,6 @@ export default function UserMenuComponent() {
 
   const { userData, logout } = useContext(Auth0Context);
 
-  console.log(userData);
-
   const menuRef = React.useRef(null);
 
   const handleClickOutside = () => {
