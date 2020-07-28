@@ -28,12 +28,5 @@ import indexes from 'sagas/indexes';
 import location from 'sagas/location';
 
 export default function* root() {
-  yield all([
-    fork(home),
-    fork(earth),
-    fork(global),
-    fork(places),
-    fork(indexes),
-    fork(location)
-  ]);
+  yield all([fork(home), fork(earth), fork(global), fork(places), fork(indexes), fork(location)]);
 }

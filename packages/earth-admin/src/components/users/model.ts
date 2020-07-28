@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import {Location} from 'components/locations/model';
+import { Location } from 'components/locations/model';
 
 export interface User {
   id: string;
@@ -35,12 +35,11 @@ export interface UserEditProps {
   newUser: boolean;
 }
 
-
 export interface UserContextProps {
   users: User[];
   handleSearchValueChange?: (newValue: string) => void;
   handleCursorChange?: Function;
-  pageSize?: number,
+  pageSize?: number;
   isLoading?: boolean;
   isNoMore?: boolean;
   searchValue?: string;

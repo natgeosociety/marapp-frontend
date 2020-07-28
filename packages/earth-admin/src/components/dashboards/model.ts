@@ -20,11 +20,10 @@
 import { Layer } from '../layers/model';
 import { Widget } from '../widgets/model';
 
-
 export interface DashboardContextProps {
   handleSearchValueChange: (newValue: string) => void;
   handleCursorChange: Function;
-  pageSize: number,
+  pageSize: number;
   isLoading: boolean;
   searchValue?: string;
   permissions?: any;

@@ -40,7 +40,7 @@ export interface LocationContextProps {
   locations: Location[];
   handleSearchValueChange: (newValue: string) => void;
   handleCursorChange: Function;
-  pageSize: number,
+  pageSize: number;
   isLoading: boolean;
   searchValue?: string;
   permissions?: any;

@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import {Location} from 'components/locations/model';
+import { Location } from 'components/locations/model';
 
 export enum LayerType {
   raster = 'raster',
@@ -54,7 +54,7 @@ export interface LayerContextProps {
   layers: Layer[];
   handleSearchValueChange: (v: string) => void;
   handleCursorChange: Function;
-  pageSize: number,
+  pageSize: number;
   isLoading: boolean;
   searchValue?: string;
   permissions?: any;

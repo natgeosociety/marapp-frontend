@@ -17,28 +17,27 @@
   specific language governing permissions and limitations under the License.
 */
 
-import {all, put, call, select} from 'redux-saga/effects';
-import {replace} from 'redux-first-router';
+import { all, put, call, select } from 'redux-saga/effects';
+import { replace } from 'redux-first-router';
 import sortBy from 'lodash/sortBy';
 
-import {fetchDataIndexes} from 'services/data-indexes';
-import {DATA_INDEX_QUERY} from '../model';
-import {IIndex} from 'modules/indexes/model';
-import {ILayer} from 'modules/layers/model';
-import {IWidget} from 'modules/widget/model';
-import {setWidgets, setWidgetsLoading, setWidgetsError} from 'modules/widgets/actions';
-import {setIndexesList} from 'modules/indexes/actions';
-import {setLayersList} from 'modules/layers/actions';
-import {getGroup} from 'sagas/saga-utils';
+import { fetchDataIndexes } from 'services/data-indexes';
+import { DATA_INDEX_QUERY } from '../model';
+import { IIndex } from 'modules/indexes/model';
+import { ILayer } from 'modules/layers/model';
+import { IWidget } from 'modules/widget/model';
+import { setWidgets, setWidgetsLoading, setWidgetsError } from 'modules/widgets/actions';
+import { setIndexesList } from 'modules/indexes/actions';
+import { setLayersList } from 'modules/layers/actions';
+import { getGroup } from 'sagas/saga-utils';
 
-
-export function* preloadLayers({payload}) {
+export function* preloadLayers({ payload }) {
   const group = yield select(getGroup);
 
   try {
     const indexes: IIndex[] = yield call(fetchDataIndexes, {
       ...DATA_INDEX_QUERY,
-      ...{group: group.toString()},
+      ...{ group: group.toString() },
     });
     const widgets = indexes.reduce((acc, index) => {
       return [...acc, ...index.widgets];
@@ -48,7 +47,7 @@ export function* preloadLayers({payload}) {
     yield put(
       setIndexesList(
         sortBy(indexes, (dil) => {
-          const {name} = dil;
+          const { name } = dil;
           return name;
         })
       )
@@ -82,32 +81,29 @@ function* fetchLayerGroups(layers: any) {
 }
 
 function setWidget(widget: IWidget) {
-  const adaptedWidget = {...widget, ...widget.config};
+  const adaptedWidget = { ...widget, ...widget.config };
   delete adaptedWidget.config;
 
   return adaptedWidget;
 }
 
 function setLayer(layer) {
-  const adaptedLayer = {...layer, ...layer.config};
+  const adaptedLayer = { ...layer, ...layer.config };
 
   delete adaptedLayer.config;
 
   if (!!adaptedLayer.references && adaptedLayer.references.length) {
     const adaptedReferences = layer.references.map((layer) => {
-      const tempLayer = {...layer, ...layer.config};
+      const tempLayer = { ...layer, ...layer.config };
       delete layer.config;
       return tempLayer;
     });
 
-
     return {
       ...adaptedLayer,
-      references: adaptedReferences
+      references: adaptedReferences,
     };
-
   }
-
 
   return {
     ...adaptedLayer,

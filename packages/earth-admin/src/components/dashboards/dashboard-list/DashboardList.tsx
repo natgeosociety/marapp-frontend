@@ -18,14 +18,16 @@
 */
 
 import * as React from 'react';
-import { DataListing, DefaultListItem } from 'components/data-listing';
+import {DataListing, DefaultListItem} from 'components/data-listing';
 import {DashboardContext} from 'utils/contexts';
 
 export default function DashboardList() {
   return (
     <DashboardContext.Consumer>
-      {({ dashboards, handleSearchValueChange, handleCursorChange,
-          isLoading, searchValue, pageSize, totalResults, selectedItem }) =>
+      {({
+          dashboards, handleSearchValueChange, handleCursorChange,
+          isLoading, searchValue, pageSize, totalResults, selectedItem
+        }) =>
         (
           <DataListing
             childComponent={DefaultListItem}

@@ -19,7 +19,7 @@
 
 import { navigate } from 'gatsby';
 import { BASE_URL } from 'config';
-import {ADMIN_PAGES} from 'components/sidebar-select/model';
+import { ADMIN_PAGES } from 'components/sidebar-select/model';
 import get from 'lodash/get';
 import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
@@ -34,7 +34,7 @@ const DeserializerService = new JSONAPIDeserializer({
 });
 
 import queryStringEncode from 'query-string-encode';
-import {childOfKind} from 'tslint';
+import { childOfKind } from 'tslint';
 
 /**
  * Wrapper over navigate that takes into account baseURL.
@@ -124,7 +124,6 @@ export const removeNestedGroups = (groups: string[]): string[] => {
 export const isValidOrg = (orgsFromToken: string[], org: string): boolean =>
   orgsFromToken.includes(org);
 
-
 export const setPage = (pageType: string) => {
-  return ADMIN_PAGES.filter(page => page.key === pageType);
-}
+  return ADMIN_PAGES.filter((page) => page.key === pageType);
+};

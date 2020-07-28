@@ -114,13 +114,15 @@ function* toLocation({ payload, meta }) {
     yield put(setPlaceSelectedFilter(''));
     yield put(setPlaceSelectedSearch(''));
     yield put(setPlaceData(formattedData));
-    yield put(setLastViewedPlace({
-      id: data.id,
-      name: data.name,
-      slug: data.slug,
-      organization: data.organization,
-      type: data.type,
-    }));
+    yield put(
+      setLastViewedPlace({
+        id: data.id,
+        name: data.name,
+        slug: data.slug,
+        organization: data.organization,
+        type: data.type,
+      })
+    );
     yield put(setMetrics(formattedData.metrics));
     yield put(setPlacesLoading(false));
     yield put(setPlacesError(null));
