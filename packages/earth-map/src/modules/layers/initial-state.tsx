@@ -26,4 +26,13 @@ export default {
   list: [],
   active: [],
   settings: {},
+
+  // Search
+  search: {
+    index: 0,
+    loading: false,
+    availableFilters: {},
+    filters: {},
+    search: '',
+  },
 };

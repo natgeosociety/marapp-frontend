@@ -39,7 +39,6 @@ interface ISidebarPanel {
   open?: boolean;
   layersPanel?: boolean;
   selected?: string;
-  setSidebarPanel?: (s: string) => void;
   setSidebarOpen?: (o: boolean) => void;
   setPlacesSearch?: (p: { search: string }) => void;
   setIndexesSelected?: (i: string) => void;

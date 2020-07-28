@@ -36,6 +36,14 @@ export const setLayerSettings = createAction('LAYERS/setLayerSettings');
 export const resetLayers = createAction('LAYERS/resetLayers');
 export const resetLayerCache = createAction('LAYERS/resetLayerCache');
 
+// Search
+export const setLayersSearch = createAction('LAYERS/setLayersSearch');
+export const setLayersSearchLoading = createAction('LAYERS/setLayersSearchLoading');
+export const setLayersSearchFilters = createAction('LAYERS/setLayersSearchFilters');
+export const setLayersSearchAvailableFilters = createAction('LAYERS/setLayersSearchAvailableFilters');
+export const setLayersSearchResults = createAction('LAYERS/setLayersSearchResults');
+export const nextLayersPage = createAction('LAYERS/nextLayersPage');
+
 export default {
   setLayersLoading,
   setLayersError,

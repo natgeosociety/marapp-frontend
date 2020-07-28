@@ -20,7 +20,8 @@
 import { connect } from 'react-redux';
 
 // Actions
-import { setMapStyle, setMapLabels, setMapRoads } from 'modules/map/actions';
+import { setMapStyle, setMapLabels, setMapRoads, resetMap } from 'modules/map/actions';
+import { setSidebarPanel, setSidebarPanelExpanded } from 'modules/sidebar/actions';
 
 // Components
 import LayersComponent from './component';
@@ -28,20 +29,30 @@ import LayersComponent from './component';
 import { getGroupedLayers } from 'modules/layers/selectors';
 
 import { toggleLayer } from 'modules/layers/actions';
-import { setSidebarLayers } from 'modules/sidebar/actions';
 
 export default connect(
   (state: any) => ({
     ...state.sidebar,
     group: state.user.group,
     layers: state.layers,
+    search: state.layers.search,
 
     mapStyle: state.map.mapStyle,
     mapLabels: state.map.mapLabels,
     mapRoads: state.map.mapRoads,
+    locationName: state.places.data.name,
+    locationOrganization: state.places.data.organization,
 
     // Layers
     groups: getGroupedLayers(state),
   }),
-  { toggleLayer, setMapStyle, setMapLabels, setMapRoads, setSidebarLayers }
+  {
+    toggleLayer,
+    setMapStyle,
+    setMapLabels,
+    setMapRoads,
+    resetMap,
+    setSidebarPanel,
+    setSidebarPanelExpanded,
+  }
 )(LayersComponent);

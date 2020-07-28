@@ -19,6 +19,6 @@
 
 export default {
   open: true,
-  panel: undefined,
-  layersPanel: false,
+  panel: 'places', // selected panel
+  panelExpanded: false, // indicates that user has expanded search ui (places and layers)
 };

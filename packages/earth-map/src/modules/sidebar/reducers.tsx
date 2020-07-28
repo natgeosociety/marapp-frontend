@@ -29,5 +29,8 @@ export default {
     ...state,
     panel: payload,
   }),
-  [actions.setSidebarLayers]: (state, { payload }) => ({ ...state, layersPanel: payload }),
+  [actions.setSidebarPanelExpanded]: (state, { payload }) => ({
+    ...state,
+    panelExpanded: payload,
+  }),
 };

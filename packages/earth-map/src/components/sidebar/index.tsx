@@ -18,8 +18,7 @@
 */
 
 import { connect } from 'react-redux';
-import { setSidebarPanel, setSidebarOpen } from 'modules/sidebar/actions';
-import { setUser } from 'modules/user/actions';
+import { setSidebarOpen } from 'modules/sidebar/actions';
 import { resetPlace, setPlacesSearch } from 'modules/places/actions';
 import { setIndexesSelected } from 'modules/indexes/actions';
 import { resetMap } from 'modules/map/actions';
@@ -34,9 +33,7 @@ export default connect(
     ...state.indexes,
   }),
   {
-    setSidebarPanel,
     setSidebarOpen,
-    setUser,
     setPlacesSearch,
     setIndexesSelected,
     resetMap,

@@ -27,6 +27,7 @@ import { fetchPlace } from 'services/places';
 // Actions
 import { setMap } from 'modules/map/actions';
 import { setMetrics, setMetricsLoading } from 'modules/metrics/actions';
+import { setSidebarPanelExpanded } from 'modules/sidebar/actions'
 import {
   setPlaceData,
   setPlaceSelectedOpen,
@@ -35,7 +36,6 @@ import {
   setPlacesLoading,
   setPlacesError,
   setPlacesSearch,
-  setPlacesSearchOpen,
 } from 'modules/places/actions';
 import { setLastViewedPlace, persistData } from 'modules/global/actions';
 
@@ -65,7 +65,7 @@ function* toLocation({ payload, meta }) {
     return;
   }
 
-  yield put(setPlacesSearchOpen(false));
+  yield put(setSidebarPanelExpanded(false));
   yield put(setPlacesLoading(true));
   yield put(setPlaceSelectedOpen(false));
   yield put(setMetricsLoading(true));
