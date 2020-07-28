@@ -109,7 +109,7 @@ function WidgetsWrapper( props: any ) {
     }
 
     permissions && setupWidgets();
-  }, [path.location, pageCursor, searchValue]);
+  }, [props.path.location, pageCursor, searchValue]);
 
   return (
     <WidgetContext.Provider

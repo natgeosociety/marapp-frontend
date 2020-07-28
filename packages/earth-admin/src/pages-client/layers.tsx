@@ -179,7 +179,7 @@ function EditPage(path: any) {
   });
 
   return (
-    <LayersWrapper>
+    <LayersWrapper path={path}>
       <ContentLayout errors={errors} backTo="/layers" isLoading={isLoading}>
         <LayerEdit data={data} newLayer={path.newLayer}/>
       </ContentLayout>

@@ -62,9 +62,7 @@ function LocationsWrapper( props: any ) {
   const [totalResults, setTotalResults] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
-
   const { selectedGroup, getPermissions } = useAuth0();
-
 
   const permissions = getPermissions(AuthzGuards.accessLocationsGuard);
 
@@ -85,6 +83,7 @@ function LocationsWrapper( props: any ) {
       setIsLoading(true);
 
       const dataReset = !!props.path.location.state && !!props.path.location.state.refresh;
+
       const query = {
         search: searchValue,
         sort: 'name',
@@ -109,7 +108,7 @@ function LocationsWrapper( props: any ) {
     }
 
     permissions && setupLocations();
-  }, [searchValue, pageCursor]);
+  }, [props.path.location, pageCursor, searchValue]);
 
   return (
     <LocationContext.Provider
