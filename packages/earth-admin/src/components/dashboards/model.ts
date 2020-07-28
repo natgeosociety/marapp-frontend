@@ -31,6 +31,7 @@ export interface DashboardContextProps {
   totalResults?: number;
   nextCursor?: string;
   dashboards: Dashboard[];
+  selectedItem?: string;
 }
 
 export interface Dashboard {

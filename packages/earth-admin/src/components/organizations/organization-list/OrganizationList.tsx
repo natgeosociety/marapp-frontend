@@ -25,7 +25,7 @@ export default function OrganizationList() {
   return (
     <OrganizationContext.Consumer>
       {({ organizations, handleSearchValueChange, handleCursorChange,
-          isLoading, searchValue, pageSize, totalResults }) =>
+          isLoading, searchValue, pageSize, totalResults, selectedItem }) =>
         (
           <DataListing
             childComponent={Auth0ListItem}
@@ -38,6 +38,7 @@ export default function OrganizationList() {
             totalResults={totalResults}
             pageSize={pageSize}
             searchValue={searchValue}
+            selectedItem={selectedItem}
           />
         )
       }

@@ -17,27 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import '~styles/config';
+import UserMenuComponent from './component';
 
-.ng-data-link {
-  background-color: $marapp-gray-8;
-  border-bottom: 1px solid $marapp-gray-7;
-
-  &:hover, &.ng-data-link-selected {
-    background: rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid $marapp-gray-7;
-    border-left-color: $marapp-primary-color;
-    position: relative;
-    &:before {
-      background: $marapp-primary-color;
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: 4px;
-    }
-  }
-}
-
+export { UserMenuComponent };

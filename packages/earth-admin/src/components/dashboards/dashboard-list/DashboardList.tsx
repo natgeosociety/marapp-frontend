@@ -25,7 +25,7 @@ export default function DashboardList() {
   return (
     <DashboardContext.Consumer>
       {({ dashboards, handleSearchValueChange, handleCursorChange,
-          isLoading, searchValue, pageSize, totalResults }) =>
+          isLoading, searchValue, pageSize, totalResults, selectedItem }) =>
         (
           <DataListing
             childComponent={DefaultListItem}
@@ -38,6 +38,7 @@ export default function DashboardList() {
             totalResults={totalResults}
             pageSize={pageSize}
             searchValue={searchValue}
+            selectedItem={selectedItem}
           />
         )
       }

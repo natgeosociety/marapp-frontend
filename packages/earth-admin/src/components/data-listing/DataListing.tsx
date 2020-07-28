@@ -28,7 +28,7 @@ import {useAuth0} from 'auth/auth0';
 
 const DataListing = (props) => {
   const {cursorAction, data, isLoading, isNoMore,
-    searchValue, searchValueAction, categoryUrl, pageTitle, childComponent, pageSize, totalResults} = props;
+    searchValue, searchValueAction, categoryUrl, pageTitle, childComponent, pageSize, totalResults, selectedItem} = props;
   const {selectedGroup} = useAuth0();
 
   const PAGE_SIZE = pageSize;
@@ -42,6 +42,7 @@ const DataListing = (props) => {
         {React.createElement(childComponent, {
           item: item,
           categoryUrl: categoryUrl,
+          selectedItem: selectedItem
         })}
       </div>
     );
@@ -74,8 +75,8 @@ const DataListing = (props) => {
             </p>
           </div>
         )}
-        {isLoading && <Spinner position=" relative"/>}
       </div>
+      {isLoading && <Spinner position="relative"/>}
     </div>
 
   </>);

@@ -25,7 +25,7 @@ export default function WidgetList() {
   return (
     <WidgetContext.Consumer>
       {({ widgets, handleSearchValueChange, handleCursorChange,
-          isLoading, searchValue, pageSize, totalResults }) =>
+          isLoading, searchValue, pageSize, totalResults, selectedItem }) =>
         (
           <DataListing
             childComponent={DefaultListItem}
@@ -38,6 +38,7 @@ export default function WidgetList() {
             totalResults={totalResults}
             pageSize={pageSize}
             searchValue={searchValue}
+            selectedItem={selectedItem}
           />
         )
       }

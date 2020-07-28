@@ -60,6 +60,7 @@ export interface LayerContextProps {
   permissions?: any;
   totalResults?: number;
   nextCursor?: string;
+  selectedItem?: string;
 }
 
 export interface LayerProps {

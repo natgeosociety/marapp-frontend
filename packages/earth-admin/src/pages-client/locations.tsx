@@ -60,6 +60,8 @@ function LocationsWrapper(props: any) {
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [totalResults, setTotalResults] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+
 
   const {selectedGroup, getPermissions} = useAuth0();
 
@@ -97,16 +99,17 @@ function LocationsWrapper(props: any) {
         props.path.location.state.refresh = false;
       }
 
-      setTotalResults(res.total)
+      setTotalResults(res.total);
 
       setLocations(!nextCursor || dataReset ? res.data : [...locations, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
 
       setIsLoading(false);
+      setSelectedItem(props.path.page);
     }
 
     permissions && setupLocations();
-  }, [props.path.location, searchValue, pageCursor]);
+  }, [searchValue, pageCursor]);
 
   return (
     <LocationContext.Provider
@@ -118,7 +121,8 @@ function LocationsWrapper(props: any) {
         nextCursor,
         totalResults,
         pageSize,
-        searchValue
+        searchValue,
+        selectedItem
       }}
     >
       <SidebarLayout>

@@ -60,6 +60,7 @@ function DashboardsWrapper(props: any) {
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [totalResults, setTotalResults] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const {selectedGroup, getPermissions} = useAuth0();
 
@@ -100,7 +101,7 @@ function DashboardsWrapper(props: any) {
 
       setDashboards(!nextCursor || dataReset ? res.data : [...dashboards, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-
+      setSelectedItem(props.path.page);
 
       setIsLoading(false);
     }
@@ -119,6 +120,7 @@ function DashboardsWrapper(props: any) {
         totalResults,
         pageSize,
         searchValue,
+        selectedItem
       }}
     >
       <SidebarLayout>

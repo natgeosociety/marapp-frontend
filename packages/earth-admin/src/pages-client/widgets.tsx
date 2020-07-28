@@ -61,6 +61,7 @@ function WidgetsWrapper(props: any) {
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [totalResults, setTotalResults] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const {selectedGroup, getPermissions} = useAuth0();
 
@@ -102,7 +103,7 @@ function WidgetsWrapper(props: any) {
 
       setWidgets(!nextCursor || dataReset ? res.data : [...widgets, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-
+      setSelectedItem(props.path.page);
       setIsLoading(false);
     }
 
@@ -120,6 +121,7 @@ function WidgetsWrapper(props: any) {
         totalResults,
         pageSize,
         searchValue,
+        selectedItem
       }}
     >
       <SidebarLayout>

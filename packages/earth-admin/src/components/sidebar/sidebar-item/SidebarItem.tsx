@@ -32,14 +32,20 @@ export default function SidebarItem(props) {
 
   return (
     itemPermission && (
-      <LinkWithOrg
-        to={item.url}
-        state={{ refresh: true }}
-        key={item.key}
-        className="ng-side-menu-item ng-text-display-s ng-padding-vertical ng-padding-medium-horizontal"
-      >
-        {item.key}
-      </LinkWithOrg>
+      <li  className="ng-ep-dropdown-category">
+        <LinkWithOrg
+          className="ng-display-block ng-border-remove"
+          to={item.url}
+          state={{ refresh: true }}
+          key={item.key}
+        >
+          <span
+            className="ng-text-display-s ng-display-block ng-dropdown-item">
+          {item.key}
+          </span>
+        </LinkWithOrg>
+      </li>
+
     )
   );
 }

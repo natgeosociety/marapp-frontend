@@ -51,4 +51,5 @@ export interface WidgetContextProps {
   permissions?: any;
   totalResults?: number;
   nextCursor?: string;
+  selectedItem?: string;
 }

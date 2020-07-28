@@ -17,64 +17,67 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import { Auth0Context } from 'utils/contexts';
+import React, {useState} from 'react';
+
+
+import {OrgSwitcher} from 'components/org-switcher';
+
+import {APP_LOGO, APP_NAME} from '../theme';
 import './styles.scss';
 
-import { OrgSwitcher } from 'components/org-switcher';
-import {Select} from '@marapp/earth-components';
-
-import { APP_LOGO, APP_NAME } from '../theme';
-
 interface AdminPage {
-  value: string;
+  key: string;
   url: string;
   guard?: any;
 }
 
-import { AuthzGuards } from 'auth/permissions';
+import {AuthzGuards} from 'auth/permissions';
+import DropdownComponent from 'components/dropdown';
+import {SidebarItem} from 'components/sidebar/sidebar-item';
 
 const ADMIN_PAGES: AdminPage[] = [
-  { value: 'Locations', url: '/locations/', guard: AuthzGuards.accessLocationsGuard },
-  { value: 'Widgets', url: '/widgets/', guard: AuthzGuards.accessWidgetsGuard },
-  { value: 'Layers', url: '/layers/', guard: AuthzGuards.accessLayersGuard },
-  { value: 'Dashboards', url: '/dashboards/', guard: AuthzGuards.accessDashboardsGuard },
-  { value: 'Users', url: '/users/', guard: AuthzGuards.accessUsersGuard },
-  { value: 'Organizations', url: '/organizations/', guard: AuthzGuards.accessOrganizationsGuard },
+  {key: 'Locations', url: '/locations/', guard: AuthzGuards.accessLocationsGuard},
+  {key: 'Widgets', url: '/widgets/', guard: AuthzGuards.accessWidgetsGuard},
+  {key: 'Layers', url: '/layers/', guard: AuthzGuards.accessLayersGuard},
+  {key: 'Dashboards', url: '/dashboards/', guard: AuthzGuards.accessDashboardsGuard},
+  {key: 'Users', url: '/users/', guard: AuthzGuards.accessUsersGuard},
+  {key: 'Organizations', url: '/organizations/', guard: AuthzGuards.accessOrganizationsGuard},
 ];
 
-const SidebarLayout = (props:any) =>{
-  const handlePageChange = (e) => {
-    console.log('clckci', e);
-  }
+const SidebarLayout = (props: any) => {
+  const [dropdownState, setDropdownState] = useState('open');
+
+  const handleDropdownToggle = () => {
+    dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
+  };
 
   return (
     <div className="ng-sidebar ng-flex ng-flex-column ng-flex-top">
       <nav className="ng-padding-medium-vertical ng-background-dkgray ">
         <div
-          className="ng-padding-medium-horizontal ng-ep-background-dark
-        ng-margin-bottom
-        ng-flex ng-flex-middle ng-position-relative"
-        >
-          <img src={APP_LOGO} alt={APP_NAME} className="ng-margin-remove ng-display-block" />
+          className="ng-padding-medium-horizontal ng-ep-background-dark ng-margin-bottom ng-flex ng-flex-middle ng-position-relative">
+          <img src={APP_LOGO} alt={APP_NAME} className="ng-margin-remove ng-display-block"/>
           <span className="ng-margin-small-horizontal ng-color-white">|</span>
-          <OrgSwitcher />
+          <OrgSwitcher/>
         </div>
-        <Select options={ADMIN_PAGES} onChange={handlePageChange}/>
+        <div className="ng-padding-medium ng-form ng-form-dark">
+          <div className="ng-position-relative ng-select">
+            <div onClick={handleDropdownToggle}
+                 className="ng-padding ng-c-cursor-pointer ng-flex ng-select-display-values">
+              click here
+              <i className="ng-icon-directiondown"/>
+            </div>
+            <DropdownComponent state={dropdownState} className="ng-select-list">
+                {ADMIN_PAGES.map((page, i) => (
+                  <SidebarItem item={page} key={i}/>
+                ))}
+            </DropdownComponent>
+          </div>
+        </div>
       </nav>
       {props.children}
-      <Auth0Context.Consumer>
-        {({ logout }) => (
-          <div className="ng-padding-medium">
-            <button className="ng-button ng-button-blank" onClick={() => logout()}>
-              <i className="ng-icon-user ng-icon-large ng-color-ltgray ng-display-block"/>
-              <span className="ng-color-ltgray ng-display-block">LOG OUT</span>
-            </button>
-          </div>
-        )}
-      </Auth0Context.Consumer>
     </div>
   );
-}
+};
 
 export default SidebarLayout;

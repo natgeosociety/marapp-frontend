@@ -45,4 +45,5 @@ export interface OrganizationContextProps {
   permissions?: any;
   totalResults?: number;
   nextCursor?: string;
+  selectedItem?: string;
 }

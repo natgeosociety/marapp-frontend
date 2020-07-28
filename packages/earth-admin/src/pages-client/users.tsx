@@ -55,6 +55,7 @@ function UsersWrapper(props: any) {
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [totalResults, setTotalResults] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const {selectedGroup, getPermissions} = useAuth0();
 
@@ -86,7 +87,7 @@ function UsersWrapper(props: any) {
         }
 
         const validUsers = res.data.filter((item) => item.id !== '|' && item.groups.length > 0);
-
+        setSelectedItem(props.path.page);
         setTotalResults(res.total);
         setUsers(dataReset ? validUsers : [...users, ...validUsers]);
 
@@ -105,7 +106,8 @@ function UsersWrapper(props: any) {
         isLoading,
         users,
         totalResults,
-        pageSize
+        pageSize,
+        selectedItem
       }}
     >
       <SidebarLayout>

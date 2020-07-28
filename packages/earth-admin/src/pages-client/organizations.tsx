@@ -50,6 +50,7 @@ function OrganizationsWrapper(props:any) {
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [totalResults, setTotalResults] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const {selectedGroup, getPermissions} = useAuth0();
 
@@ -82,7 +83,7 @@ function OrganizationsWrapper(props:any) {
         const validOrganizations = res.data;
 
         setTotalResults(res.total)
-
+        setSelectedItem(props.path.page);
         setOrganizations(dataReset ? validOrganizations : [...organizations, ...validOrganizations]);
       }
 
@@ -99,7 +100,8 @@ function OrganizationsWrapper(props:any) {
         isLoading,
         organizations,
         totalResults,
-        pageSize
+        pageSize,
+        selectedItem
       }}
     >
       <SidebarLayout>
@@ -119,14 +121,15 @@ function Page(path: any) {
   return (
     <OrganizationsWrapper path={path}>
       <ContentLayout permission={permissions}>
-        das
-        {/* {writePermissions && (
+        <div>
+          {/* {writePermissions && (
           <div className="ng-flex ng-align-right">
             <LinkWithOrg className="ng-button ng-button-overlay" to="/organizations/new">
               add new organization
             </LinkWithOrg>
           </div>
         )} */}
+        </div>
       </ContentLayout>
     </OrganizationsWrapper>
   );

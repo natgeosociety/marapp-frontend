@@ -46,6 +46,7 @@ export interface LocationContextProps {
   permissions?: any;
   totalResults?: number;
   nextCursor?: string;
+  selectedItem?: string;
 }
 
 export enum LocationTypeEnum {

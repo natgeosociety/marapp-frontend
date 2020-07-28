@@ -25,7 +25,7 @@ export default function LayerList() {
   return (
     <LayerContext.Consumer>
       {({ layers, handleSearchValueChange, handleCursorChange,
-          isLoading, searchValue, pageSize, totalResults }) =>
+          isLoading, searchValue, pageSize, totalResults, selectedItem }) =>
         (
           <DataListing
             childComponent={DefaultListItem}
@@ -38,6 +38,7 @@ export default function LayerList() {
             totalResults={totalResults}
             pageSize={pageSize}
             searchValue={searchValue}
+            selectedItem={selectedItem}
           />
         )
       }

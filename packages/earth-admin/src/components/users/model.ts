@@ -47,4 +47,5 @@ export interface UserContextProps {
   permissions?: any;
   totalResults?: number;
   nextCursor?: string;
+  selectedItem?: string;
 }

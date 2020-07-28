@@ -55,6 +55,7 @@ function LayersWrapper(props: any) {
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [totalResults, setTotalResults] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const {selectedGroup, getPermissions} = useAuth0();
 
@@ -95,6 +96,7 @@ function LayersWrapper(props: any) {
 
       setLayer(!nextCursor || dataReset ? res.data : [...layers, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
+      setSelectedItem(props.path.page);
 
       setIsLoading(false);
     }
@@ -112,7 +114,8 @@ function LayersWrapper(props: any) {
         nextCursor,
         totalResults,
         pageSize,
-        searchValue
+        searchValue,
+        selectedItem
       }}
     >
       <SidebarLayout>

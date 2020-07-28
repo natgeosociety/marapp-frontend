@@ -22,6 +22,7 @@ import { ErrorMessages } from 'components/error-messages';
 import { LinkWithOrg } from 'components/link-with-org';
 import { Spinner } from '@marapp/earth-components';
 import Helmet from 'react-helmet'
+import { UserMenuComponent } from 'components/user-menu';
 
 import '../styles/app.scss';
 import { APP_NAME } from '../theme';
@@ -87,6 +88,7 @@ export default function ContentLayout(props: ILayoutProps) {
         <title>{ APP_NAME }</title>
       </Helmet>
       <div className="ng-page-container">
+        <UserMenuComponent />
         <div className="ng-padding-large">
           <Content />
         </div>
