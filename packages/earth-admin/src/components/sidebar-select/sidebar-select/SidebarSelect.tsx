@@ -21,18 +21,27 @@ import React, { useState } from 'react';
 
 import { SidebarItem, DropdownComponent } from 'components/index';
 import { ADMIN_PAGES } from 'components/sidebar-select/model';
+import { useDomWatcher } from 'utils/hooks';
 
-const SidebarSelect = (props:any) => {
+const SidebarSelect = ( props: any ) => {
+  const selectRef = React.useRef(null);
+
   const [dropdownState, setDropdownState] = useState('close');
-  const currentPage = !!props.path ? props.path[0].key : 'Choose a page';
+  const currentPage = !!props.path ? props.path[ 0 ].key : 'Choose a page';
 
   const handleDropdownToggle = () => {
     dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
   };
 
+  const handleClickOutside = () => {
+    setDropdownState('close');
+  };
+
+  useDomWatcher(selectRef, handleClickOutside, dropdownState === 'close');
+
   return (
     <div className="ng-padding-medium-horizontal ng-form ng-form-dark">
-      <div className="ng-position-relative ng-select">
+      <div className="ng-position-relative ng-select" ref={selectRef}>
         <div onClick={handleDropdownToggle}
              className="ng-padding ng-c-cursor-pointer ng-flex ng-select-display-values">
           {currentPage || 'Choose a page'}
@@ -46,6 +55,6 @@ const SidebarSelect = (props:any) => {
       </div>
     </div>
   );
-}
+};
 
 export default SidebarSelect;

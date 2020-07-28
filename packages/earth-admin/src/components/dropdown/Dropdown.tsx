@@ -35,6 +35,7 @@ const DropdownPanel: any = Keyframes.Spring({
 });
 
 export const DropdownComponent = ( props: IDropdownComponent ) => {
+
   const { state, children, className } = props;
 
   return (
