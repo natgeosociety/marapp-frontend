@@ -115,6 +115,7 @@ export const Auth0Provider = ({
         setRoles(mapAuthzScopes(roles));
 
         const permissions = get(idToken, `${NAMESPACE}/permissions`, []);
+
         setPermissions(mapAuthzScopes(permissions));
 
         const email = get(idToken, 'email', '');
