@@ -23,8 +23,7 @@ import renderHTML from 'react-render-html';
 
 import { DashboardProps } from '../model';
 import { useState } from 'react';
-import { ActionModal } from 'components/action-modal';
-import { LinkWithOrg } from 'components/link-with-org';
+import { ActionModal, LinkWithOrg } from 'components';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 

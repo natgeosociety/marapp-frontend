@@ -17,17 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
+
+import { Auth0Context } from 'utils/contexts';
+import { useDomWatcher } from 'utils/hooks';
+import { Keyframes, animated } from 'react-spring/renderprops';
 
 import './styles.scss';
 
-import { Auth0Context } from 'utils/contexts';
-import {Keyframes, animated} from 'react-spring/renderprops';
-import {useDomWatcher} from 'utils/hooks';
-
-const Dropdown: any =  Keyframes.Spring({
-  false: { x: `-100vh`},
-  true: { x: '0vh'},
+const Dropdown: any = Keyframes.Spring({
+  false: { x: `-100vh` },
+  true: { x: '0vh' },
 });
 
 export default function UserMenuComponent() {
@@ -43,7 +43,7 @@ export default function UserMenuComponent() {
 
   useDomWatcher(menuRef, handleClickOutside, !showDrop);
 
-  const toggleDrop = (e) => {
+  const toggleDrop = ( e ) => {
     e.preventDefault();
     setShowDrop(!showDrop);
   };
@@ -54,17 +54,17 @@ export default function UserMenuComponent() {
 
   return (
     <div className="ng-user-account" ref={menuRef}>
-      <button className="ng-unstyled" onClick={(e) => toggleDrop(e)}>
+      <button className="ng-unstyled" onClick={( e ) => toggleDrop(e)}>
         {userData.picture && (
-          <img className="ng-user-profile" src={userData.picture} alt={userData.name} />
+          <img className="ng-user-profile" src={userData.picture} alt={userData.name}/>
         )}
-        {!userData.picture && <i className="ng-icon ng-icon-user" />}
+        {!userData.picture && <i className="ng-icon ng-icon-user"/>}
       </button>
       <Dropdown native state={`${showDrop}`}>
-        {({ x, ...props }) => (
+        {( { x, ...props } ) => (
           <animated.div
             style={{
-              transform: x.interpolate((x) => `translate3d(0,${x},0)`),
+              transform: x.interpolate(( x ) => `translate3d(0,${x},0)`),
               ...props,
             }}
           >

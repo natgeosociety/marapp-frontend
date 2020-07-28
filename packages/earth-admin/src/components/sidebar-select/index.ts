@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import SidebarSelect from './SidebarSelect';
+import { SidebarSelect } from './sidebar-select';
+import { SidebarItem } from './sidebar-item';
 
-export { SidebarSelect };
+export { SidebarSelect, SidebarItem };

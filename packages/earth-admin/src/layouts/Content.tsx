@@ -18,14 +18,13 @@
 */
 
 import React from 'react';
-import { ErrorMessages } from 'components/error-messages';
-import { LinkWithOrg } from 'components/link-with-org';
+import Helmet from 'react-helmet';
+import { LinkWithOrg, UserMenuComponent, ErrorMessages } from 'components';
 import { Spinner } from '@marapp/earth-components';
-import Helmet from 'react-helmet'
-import { UserMenuComponent } from 'components/user-menu';
+
+import { APP_NAME } from '../theme';
 
 import '../styles/app.scss';
-import { APP_NAME } from '../theme';
 
 interface ILayoutProps {
   children: any;
@@ -39,7 +38,7 @@ interface IUnauthorizedProps {
   message: string;
 }
 
-const Unauthorized = (props: IUnauthorizedProps) => {
+const Unauthorized = ( props: IUnauthorizedProps ) => {
   const { message } = props;
 
   return (
@@ -51,7 +50,7 @@ const Unauthorized = (props: IUnauthorizedProps) => {
   );
 };
 
-export default function ContentLayout(props: ILayoutProps) {
+export default function ContentLayout( props: ILayoutProps ) {
 
   const {
     permission = true, // backwards compatibility, permission moves to errors array
@@ -62,15 +61,15 @@ export default function ContentLayout(props: ILayoutProps) {
 
   const Content = () => {
     if (isLoading) {
-      return <Spinner size="medium" />;
+      return <Spinner size="medium"/>;
     }
     if (!permission) {
-      return <Unauthorized message="You are not authorized to view this page" />;
+      return <Unauthorized message="You are not authorized to view this page"/>;
     }
     if (errors.length) {
       return (
         <div>
-          <ErrorMessages errors={errors} />
+          <ErrorMessages errors={errors}/>
           <LinkWithOrg className="ng-button" to={backTo}>
             Back
           </LinkWithOrg>
@@ -84,13 +83,14 @@ export default function ContentLayout(props: ILayoutProps) {
   return (
     <div className="ng-flex">
       <Helmet>
-        <link rel="icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" />
-        <title>{ APP_NAME }</title>
+        <link rel="icon"
+              href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="/>
+        <title>{APP_NAME}</title>
       </Helmet>
       <div className="ng-page-container">
-        <UserMenuComponent />
+        <UserMenuComponent/>
         <div className="ng-padding-large">
-          <Content />
+          <Content/>
         </div>
       </div>
     </div>

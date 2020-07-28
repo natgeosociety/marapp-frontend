@@ -20,13 +20,11 @@
 import * as React from 'react';
 import { useState, useContext } from 'react';
 import { OrganizationEditProps } from '../model';
-import { useForm, Controller } from 'react-hook-form';
-import { LinkWithOrg } from 'components/link-with-org';
-import { SearchInput } from 'components/search-input';
+import { useForm } from 'react-hook-form';
+import { LinkWithOrg, ErrorMessages } from 'components';
 import { updateOrganization } from 'services/organizations';
 import { Auth0Context } from 'utils/contexts';
 import { navigate } from 'gatsby';
-import { ErrorMessages } from 'components/error-messages';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 

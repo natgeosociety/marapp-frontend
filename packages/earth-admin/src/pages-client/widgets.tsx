@@ -18,20 +18,19 @@
 */
 
 import * as React from 'react';
-import {useEffect, useState} from 'react';
-import {Router} from '@reach/router';
+import { useEffect, useState } from 'react';
+import { Router } from '@reach/router';
 
-import {WidgetContext} from 'utils/contexts';
-import {encodeQueryToURL, setPage} from 'utils';
-import {getAllWidgets, getWidget} from 'services/widgets';
-import {useRequest} from 'utils/hooks';
+import { WidgetContext } from 'utils/contexts';
+import { encodeQueryToURL, setPage } from 'utils';
+import { getAllWidgets, getWidget } from 'services/widgets';
+import { useRequest } from 'utils/hooks';
 
-import {LinkWithOrg} from 'components/link-with-org';
-import {WidgetList, WidgetDetails, WidgetEdit, LocationList} from 'components';
-import {useAuth0} from 'auth/auth0';
-import {AuthzGuards} from 'auth/permissions';
-import SidebarLayout from 'layouts/Sidebar';
-import ContentLayout from 'layouts/Content';
+import { WidgetList, WidgetDetails, WidgetEdit, LinkWithOrg } from 'components';
+import { useAuth0 } from 'auth/auth0';
+import { AuthzGuards } from 'auth/permissions';
+import { SidebarLayout, ContentLayout } from 'layouts';
+
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const WIDGET_DETAIL_QUERY = {
@@ -43,7 +42,7 @@ const INIT_CURSOR_LOCATION = '-1';
 
 const PAGE_TYPE = setPage('Widgets');
 
-export default function WidgetsPage(props) {
+export default function WidgetsPage( props ) {
   return (
     <Router>
       <Page path="/"/>
@@ -54,8 +53,8 @@ export default function WidgetsPage(props) {
   );
 }
 
-function WidgetsWrapper(props: any) {
-  const {path} = props;
+function WidgetsWrapper( props: any ) {
+  const { path } = props;
   const [widgets, setWidgets] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -65,12 +64,12 @@ function WidgetsWrapper(props: any) {
   const [totalResults, setTotalResults] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const {selectedGroup, getPermissions} = useAuth0();
+  const { selectedGroup, getPermissions } = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessWidgetsGuard);
 
 
-  const handleSearchValueChange = (newValue: string) => {
+  const handleSearchValueChange = ( newValue: string ) => {
     setPageCursor('-1');
     setNextCursor(null);
     setSearchValue(newValue);
@@ -90,7 +89,7 @@ function WidgetsWrapper(props: any) {
       const query = {
         search: searchValue,
         sort: 'name',
-        page: {size: pageSize, cursor: dataReset ? INIT_CURSOR_LOCATION : pageCursor},
+        page: { size: pageSize, cursor: dataReset ? INIT_CURSOR_LOCATION : pageCursor },
         select: EXCLUDED_FIELDS,
         group: selectedGroup,
       };
@@ -123,7 +122,7 @@ function WidgetsWrapper(props: any) {
         totalResults,
         pageSize,
         searchValue,
-        selectedItem
+        selectedItem,
       }}
     >
       <SidebarLayout page={PAGE_TYPE}>
@@ -133,9 +132,9 @@ function WidgetsWrapper(props: any) {
   );
 }
 
-function Page(path: any) {
+function Page( path: any ) {
 
-  const {selectedGroup, getPermissions} = useAuth0();
+  const { selectedGroup, getPermissions } = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessWidgetsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeWidgetsGuard);
@@ -155,13 +154,13 @@ function Page(path: any) {
   );
 }
 
-function DetailsPage(path: any) {
-  const {selectedGroup} = useAuth0();
+function DetailsPage( path: any ) {
+  const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`widgets/${path.page}`, {
     ...WIDGET_DETAIL_QUERY,
-    ...{group: selectedGroup},
+    ...{ group: selectedGroup },
   });
-  const {isLoading, errors, data} = useRequest(() => getWidget(encodedQuery), {
+  const { isLoading, errors, data } = useRequest(() => getWidget(encodedQuery), {
     permissions: AuthzGuards.accessWidgetsGuard,
     query: encodedQuery,
   });
@@ -175,13 +174,13 @@ function DetailsPage(path: any) {
   );
 }
 
-function EditPage(path: any) {
-  const {selectedGroup} = useAuth0();
+function EditPage( path: any ) {
+  const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`widgets/${path.page}`, {
     ...WIDGET_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const {isLoading, errors, data} = useRequest(() => getWidget(encodedQuery), {
+  const { isLoading, errors, data } = useRequest(() => getWidget(encodedQuery), {
     permissions: AuthzGuards.writeWidgetsGuard,
     skip: path.newWidget,
   });

@@ -21,7 +21,7 @@ import * as React from 'react';
 import { Router } from '@reach/router';
 
 import { GATSBY_APP_BASE_URL } from 'config';
-import Layout, {ContentLayout, SidebarLayout} from 'layouts';
+import { ContentLayout, SidebarLayout } from 'layouts';
 import LocationsPage from 'pages-client/locations';
 import DashboardsPage from 'pages-client/dashboards';
 import LayersPage from 'pages-client/layers';
@@ -31,7 +31,7 @@ import OrganizationsPage from 'pages-client/organizations';
 import Organization from 'pages-client/organization';
 import Homepage from 'pages-client/homepage';
 import UnauthorizedPage from 'pages-client/unauthorized';
-import { ProtectedRoute } from 'components/protected-route';
+import { ProtectedRoute } from 'components';
 import { APP_NAME } from '../theme';
 
 /**
@@ -40,17 +40,17 @@ import { APP_NAME } from '../theme';
 export default function IndexPage() {
   return (
     <Router basepath={GATSBY_APP_BASE_URL}>
-      <ProtectedRoute path="/" component={Homepage} />
+      <ProtectedRoute path="/" component={Homepage}/>
       <ProtectedRoute path="/:org" component={Organization}>
-        <OrgIndex path="/" />
-        <LocationsPage path="/locations/*" />
-        <DashboardsPage path="/dashboards/*" />
-        <LayersPage path="/layers/*" />
-        <WidgetsPage path="/widgets/*" />
-        <UsersPage path="/users/*" />
-        <OrganizationsPage path="/organizations/*" />
+        <OrgIndex path="/"/>
+        <LocationsPage path="/locations/*"/>
+        <DashboardsPage path="/dashboards/*"/>
+        <LayersPage path="/layers/*"/>
+        <WidgetsPage path="/widgets/*"/>
+        <UsersPage path="/users/*"/>
+        <OrganizationsPage path="/organizations/*"/>
       </ProtectedRoute>
-      <UnauthorizedPage path="/unauthorized" />
+      <UnauthorizedPage path="/unauthorized"/>
     </Router>
   );
 }
@@ -58,7 +58,7 @@ export default function IndexPage() {
 /**
  * Renders no children
  */
-const OrgIndex = (props) => (
+const OrgIndex = ( props ) => (
   <div>
     <SidebarLayout/>
     <ContentLayout permission={true}>

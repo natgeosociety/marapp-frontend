@@ -16,9 +16,6 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-
-import { Organization } from 'components/organizations/model';
-
 export interface Widget {
   id: string;
   slug: string;

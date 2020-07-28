@@ -17,15 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 
-import DropdownComponent from 'components/dropdown/Dropdown';
-import {SidebarItem} from 'components/sidebar-select/sidebar-item';
-import {ADMIN_PAGES} from 'components/sidebar-select/model';
+import { SidebarItem, DropdownComponent } from 'components/index';
+import { ADMIN_PAGES } from 'components/sidebar-select/model';
 
-export default function SidebarSelect(props) {
+const SidebarSelect = (props:any) => {
   const [dropdownState, setDropdownState] = useState('close');
-  const [currentPage] = props.path;
+  const currentPage = !!props.path ? props.path[0].key : 'Choose a page';
 
   const handleDropdownToggle = () => {
     dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
@@ -36,16 +35,17 @@ export default function SidebarSelect(props) {
       <div className="ng-position-relative ng-select">
         <div onClick={handleDropdownToggle}
              className="ng-padding ng-c-cursor-pointer ng-flex ng-select-display-values">
-          {currentPage.key}
+          {currentPage || 'Choose a page'}
           <i className="ng-icon-directiondown"/>
         </div>
         <DropdownComponent state={dropdownState} className="ng-select-list">
-          {ADMIN_PAGES.map((page, i) => (
-            <SidebarItem item={page} key={i} selected={currentPage.key === page.key}/>
+          {ADMIN_PAGES.map(( page, i ) => (
+            <SidebarItem item={page} key={i} selected={currentPage === page.key}/>
           ))}
         </DropdownComponent>
       </div>
     </div>
   );
-
 }
+
+export default SidebarSelect;

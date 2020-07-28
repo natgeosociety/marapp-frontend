@@ -18,20 +18,18 @@
 */
 
 import * as React from 'react';
-import {useEffect, useState} from 'react';
-import {Router} from '@reach/router';
+import { useEffect, useState } from 'react';
+import { Router } from '@reach/router';
 
-import {LocationContext} from 'utils/contexts';
-import {LinkWithOrg} from 'components/link-with-org';
-import {encodeQueryToURL, setPage} from 'utils';
-import {getAllLocations, getLocation} from 'services/locations';
-import {AuthzGuards} from 'auth/permissions';
-import {useRequest} from 'utils/hooks';
+import { LocationContext } from 'utils/contexts';
+import { encodeQueryToURL, setPage } from 'utils';
+import { getAllLocations, getLocation } from 'services/locations';
+import { AuthzGuards } from 'auth/permissions';
+import { useRequest } from 'utils/hooks';
 
-import {LocationList, LocationDetails, LocationEdit} from 'components';
-import {useAuth0} from 'auth/auth0';
-import SidebarLayout from 'layouts/Sidebar';
-import ContentLayout from 'layouts/Content';
+import { LocationList, LocationDetails, LocationEdit, LinkWithOrg } from 'components';
+import { useAuth0 } from 'auth/auth0';
+import { SidebarLayout, ContentLayout } from 'layouts';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const LOCATION_DETAIL_QUERY = {
@@ -43,7 +41,7 @@ const INIT_CURSOR_LOCATION = '-1';
 
 const PAGE_TYPE = setPage('Locations');
 
-export default function LocationsPage(props) {
+export default function LocationsPage( props ) {
   return (
     <Router>
       <Page path="/"/>
@@ -54,7 +52,7 @@ export default function LocationsPage(props) {
   );
 }
 
-function LocationsWrapper(props: any) {
+function LocationsWrapper( props: any ) {
   const [locations, setLocations] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -65,12 +63,12 @@ function LocationsWrapper(props: any) {
   const [selectedItem, setSelectedItem] = useState(null);
 
 
-  const {selectedGroup, getPermissions} = useAuth0();
+  const { selectedGroup, getPermissions } = useAuth0();
 
 
   const permissions = getPermissions(AuthzGuards.accessLocationsGuard);
 
-  const handleSearchValueChange = (newValue: string) => {
+  const handleSearchValueChange = ( newValue: string ) => {
     setPageCursor(INIT_CURSOR_LOCATION);
     setNextCursor(null);
     setSearchValue(newValue);
@@ -90,7 +88,7 @@ function LocationsWrapper(props: any) {
       const query = {
         search: searchValue,
         sort: 'name',
-        page: {size: pageSize, cursor: pageCursor},
+        page: { size: pageSize, cursor: pageCursor },
         select: EXCLUDED_FIELDS,
         group: selectedGroup,
       };
@@ -124,7 +122,7 @@ function LocationsWrapper(props: any) {
         totalResults,
         pageSize,
         searchValue,
-        selectedItem
+        selectedItem,
       }}
     >
       <SidebarLayout page={PAGE_TYPE}>
@@ -135,8 +133,8 @@ function LocationsWrapper(props: any) {
   );
 }
 
-function Page(path: any) {
-  const {getPermissions} = useAuth0();
+function Page( path: any ) {
+  const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessLocationsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeLocationsGuard);
 
@@ -155,13 +153,13 @@ function Page(path: any) {
   );
 };
 
-function DetailsPage(path: any) {
-  const {selectedGroup} = useAuth0();
+function DetailsPage( path: any ) {
+  const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`locations/${path.page}`, {
     ...LOCATION_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const {isLoading, errors, data} = useRequest(() => getLocation(encodedQuery), {
+  const { isLoading, errors, data } = useRequest(() => getLocation(encodedQuery), {
     permissions: AuthzGuards.accessLocationsGuard,
     query: encodedQuery,
   });
@@ -175,13 +173,13 @@ function DetailsPage(path: any) {
   );
 }
 
-function EditPage(path: any) {
-  const {selectedGroup} = useAuth0();
+function EditPage( path: any ) {
+  const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`locations/${path.page}`, {
     ...LOCATION_DETAIL_QUERY,
-    ...{group: selectedGroup},
+    ...{ group: selectedGroup },
   });
-  const {isLoading, errors, data} = useRequest(() => getLocation(encodedQuery), {
+  const { isLoading, errors, data } = useRequest(() => getLocation(encodedQuery), {
     permissions: AuthzGuards.writeLocationsGuard,
     skip: path.newLocation,
   });

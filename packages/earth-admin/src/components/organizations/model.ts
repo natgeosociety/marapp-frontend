@@ -17,8 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Location } from 'components/locations/model';
-
 export interface Organization {
   id: string;
   name: string;

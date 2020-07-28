@@ -18,14 +18,16 @@
 */
 
 import * as React from 'react';
-import {DataListing, Auth0ListItem} from 'components/data-listing';
-import {OrganizationContext} from 'utils/contexts';
+import { DataListing, Auth0ListItem } from 'components';
+import { OrganizationContext } from 'utils/contexts';
 
 export default function OrganizationList() {
   return (
     <OrganizationContext.Consumer>
-      {({ organizations, handleSearchValueChange, handleCursorChange,
-          isLoading, searchValue, pageSize, totalResults, selectedItem }) =>
+      {( {
+           organizations, handleSearchValueChange, handleCursorChange,
+           isLoading, searchValue, pageSize, totalResults, selectedItem,
+         } ) =>
         (
           <DataListing
             childComponent={Auth0ListItem}

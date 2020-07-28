@@ -18,14 +18,16 @@
 */
 
 import * as React from 'react';
-import {DataListing, Auth0ListItem} from 'components/data-listing';
-import {UserContext} from 'utils/contexts';
+import { DataListing, Auth0ListItem } from 'components';
+import { UserContext } from 'utils/contexts';
 
 export default function UserList() {
   return (
     <UserContext.Consumer>
-      {({ users, handleSearchValueChange, handleCursorChange,
-          isLoading, searchValue, pageSize, totalResults, selectedItem }) =>
+      {( {
+           users, handleSearchValueChange, handleCursorChange,
+           isLoading, searchValue, pageSize, totalResults, selectedItem,
+         } ) =>
         (
           <DataListing
             childComponent={Auth0ListItem}

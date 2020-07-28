@@ -18,14 +18,16 @@
 */
 
 import * as React from 'react';
-import { DataListing, DefaultListItem } from 'components/data-listing';
-import {LocationContext} from 'utils/contexts';
+import { DataListing, DefaultListItem } from 'components';
+import { LocationContext } from 'utils/contexts';
 
 export default function LocationList() {
   return (
     <LocationContext.Consumer>
-      {({ locations, handleSearchValueChange, handleCursorChange,
-          isLoading, searchValue, pageSize, totalResults, selectedItem }) =>
+      {( {
+           locations, handleSearchValueChange, handleCursorChange,
+           isLoading, searchValue, pageSize, totalResults, selectedItem,
+         } ) =>
         (
           <DataListing
             childComponent={DefaultListItem}

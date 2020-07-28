@@ -18,14 +18,16 @@
 */
 
 import * as React from 'react';
-import {DataListing, DefaultListItem} from 'components/data-listing';
-import {LocationContext, WidgetContext} from 'utils/contexts';
+import { DataListing, DefaultListItem } from 'components';
+import { WidgetContext } from 'utils/contexts';
 
 export default function WidgetList() {
   return (
     <WidgetContext.Consumer>
-      {({ widgets, handleSearchValueChange, handleCursorChange,
-          isLoading, searchValue, pageSize, totalResults, selectedItem }) =>
+      {( {
+           widgets, handleSearchValueChange, handleCursorChange,
+           isLoading, searchValue, pageSize, totalResults, selectedItem,
+         } ) =>
         (
           <DataListing
             childComponent={DefaultListItem}

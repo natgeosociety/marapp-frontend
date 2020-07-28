@@ -18,20 +18,19 @@
 */
 
 import * as React from 'react';
-import {useContext, useEffect, useState} from 'react';
-import {Router, Location} from '@reach/router';
-import {withPrefix} from 'gatsby';
+import { useEffect, useState } from 'react';
+import { Router } from '@reach/router';
 
-import {UserContext} from 'utils/contexts';
-import {LinkWithOrg} from 'components/link-with-org';
-import {encodeQueryToURL, setPage} from 'utils';
-import {getAllUsers, getUser, getAvailableGroups} from 'services/users';
-import {AuthzGuards} from 'auth/permissions';
-import {useRequest} from 'utils/hooks';
+import { UserContext } from 'utils/contexts';
+import { LinkWithOrg } from 'components';
+import { encodeQueryToURL, setPage } from 'utils';
+import { getAllUsers, getUser } from 'services/users';
+import { AuthzGuards } from 'auth/permissions';
+import { useRequest } from 'utils/hooks';
 
-import {UserList, UserEdit, UserDetails, LocationList} from 'components';
-import {useAuth0} from '../auth/auth0';
-import {SidebarLayout} from 'layouts';
+import { UserList, UserEdit, UserDetails } from 'components';
+import { useAuth0 } from 'auth/auth0';
+import { SidebarLayout } from 'layouts';
 import ContentLayout from 'layouts/Content';
 
 const USER_DETAIL_QUERY = {
@@ -40,7 +39,7 @@ const USER_DETAIL_QUERY = {
 
 const PAGE_TYPE = setPage('Users');
 
-export default function UsersPage(props) {
+export default function UsersPage( props ) {
   return (
     <Router>
       <Page path={'/'}/>
@@ -51,7 +50,7 @@ export default function UsersPage(props) {
   );
 }
 
-function UsersWrapper(props: any) {
+function UsersWrapper( props: any ) {
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
@@ -59,7 +58,7 @@ function UsersWrapper(props: any) {
   const [totalResults, setTotalResults] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const {selectedGroup, getPermissions} = useAuth0();
+  const { selectedGroup, getPermissions } = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessUsersGuard);
 
@@ -77,7 +76,7 @@ function UsersWrapper(props: any) {
         props.path.location.state.refresh = false;
       } else {
         const query = {
-          page: {size: pageSize, number: pageNumber},
+          page: { size: pageSize, number: pageNumber },
           group: selectedGroup,
           include: 'groups',
         };
@@ -88,7 +87,7 @@ function UsersWrapper(props: any) {
           props.path.location.state.refresh = false;
         }
 
-        const validUsers = res.data.filter((item) => item.id !== '|' && item.groups.length > 0);
+        const validUsers = res.data.filter(( item ) => item.id !== '|' && item.groups.length > 0);
         setSelectedItem(props.path.page);
         setTotalResults(res.total);
         setUsers(dataReset ? validUsers : [...users, ...validUsers]);
@@ -109,7 +108,7 @@ function UsersWrapper(props: any) {
         users,
         totalResults,
         pageSize,
-        selectedItem
+        selectedItem,
       }}
     >
       <SidebarLayout page={PAGE_TYPE}>
@@ -120,8 +119,8 @@ function UsersWrapper(props: any) {
   );
 }
 
-function Page(path: any) {
-  const {getPermissions} = useAuth0();
+function Page( path: any ) {
+  const { getPermissions } = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessUsersGuard);
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
@@ -141,13 +140,13 @@ function Page(path: any) {
   );
 }
 
-function DetailsPage(path: any) {
-  const {selectedGroup} = useAuth0();
+function DetailsPage( path: any ) {
+  const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`users/${path.page}`, {
     ...USER_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const {isLoading, errors, data} = useRequest(() => getUser(encodedQuery), {
+  const { isLoading, errors, data } = useRequest(() => getUser(encodedQuery), {
     permissions: AuthzGuards.accessUsersGuard,
   });
 
@@ -160,13 +159,13 @@ function DetailsPage(path: any) {
   );
 }
 
-function EditPage(path: any) {
-  const {selectedGroup} = useAuth0();
+function EditPage( path: any ) {
+  const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`users/${path.page}`, {
     ...USER_DETAIL_QUERY,
-    ...{group: selectedGroup},
+    ...{ group: selectedGroup },
   });
-  const {isLoading, errors, data} = useRequest(() => getUser(encodedQuery), {
+  const { isLoading, errors, data } = useRequest(() => getUser(encodedQuery), {
     permissions: AuthzGuards.writeUsersGuard,
     skip: path.newUser,
   });

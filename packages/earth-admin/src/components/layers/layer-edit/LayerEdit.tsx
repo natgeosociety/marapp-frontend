@@ -28,12 +28,8 @@ import { JSHINT } from 'jshint';
 
 import { LayerProps, LayerType, LayerProvider, LayerCategory } from '../model';
 
-import { JsonEditor } from 'components/json-editor';
-import { HtmlEditor } from 'components/html-editor';
-import { ErrorMessages } from 'components/error-messages';
-import { LinkWithOrg } from 'components/link-with-org';
+import { JsonEditor, HtmlEditor, ErrorMessages, LinkWithOrg, SearchInput} from 'components';
 import { handleLayerForm } from 'services/layers';
-import { SearchInput } from 'components/search-input';
 import { Auth0Context } from 'utils/contexts';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';

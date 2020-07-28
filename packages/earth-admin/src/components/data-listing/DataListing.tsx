@@ -20,42 +20,47 @@
 import * as React from 'react';
 
 import List from '@researchgate/react-intersection-list';
-import {Spinner} from '@marapp/earth-components';
-import {SearchBox} from 'components/data-listing/search-box';
+import { Spinner } from '@marapp/earth-components';
+import { SearchBox } from './search-box';
+import { useAuth0 } from 'auth/auth0';
 
 import './styles.scss';
-import {useAuth0} from 'auth/auth0';
 
-const DataListing = (props) => {
-  const {cursorAction, data, isLoading, isNoMore,
-    searchValue, searchValueAction, categoryUrl, pageTitle, childComponent, pageSize, totalResults, selectedItem} = props;
-  const {selectedGroup} = useAuth0();
+
+const DataListing = ( props ) => {
+  const {
+    cursorAction, data, isLoading, isNoMore,
+    searchValue, searchValueAction, categoryUrl, pageTitle, childComponent, pageSize, totalResults, selectedItem,
+  } = props;
+  const { selectedGroup } = useAuth0();
 
   const PAGE_SIZE = pageSize;
   const hasNextPage = data.length >= PAGE_SIZE;
   let awaitMore = !isLoading && hasNextPage && !isNoMore;
 
-  const renderItem = (index) => {
-    const item = data[index];
+  const renderItem = ( index ) => {
+    const item = data[ index ];
     return (
       <div key={index}>
         {React.createElement(childComponent, {
           item: item,
           categoryUrl: categoryUrl,
-          selectedItem: selectedItem
+          selectedItem: selectedItem,
         })}
       </div>
     );
   };
 
-  const onIntersection = (size, pageSize) => {
+  const onIntersection = ( size, pageSize ) => {
     cursorAction();
   };
 
   return (<>
-    {searchValueAction && <SearchBox searchValue={searchValue} pageTitle={pageTitle} searchValueAction={searchValueAction}/>}
-    <div style={{'overflowY': 'scroll'}}>
-      <div className="ng-padding-medium-horizontal ng-padding-medium-top ng-padding-small-bottom ng-background-ultradkgray">
+    {searchValueAction &&
+    <SearchBox searchValue={searchValue} pageTitle={pageTitle} searchValueAction={searchValueAction}/>}
+    <div style={{ 'overflowY': 'scroll' }}>
+      <div
+        className="ng-padding-medium-horizontal ng-padding-medium-top ng-padding-small-bottom ng-background-ultradkgray">
         <h4 className="ng-text-display-s ng-color-ultraltgray ng-margin-remove">{selectedGroup} {pageTitle} &nbsp;
           <span className="ng-color-mdgray">({totalResults})</span></h4>
       </div>
@@ -78,7 +83,6 @@ const DataListing = (props) => {
       </div>
       {isLoading && <Spinner position="relative"/>}
     </div>
-
   </>);
 };
 

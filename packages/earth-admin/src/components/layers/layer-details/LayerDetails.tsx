@@ -26,9 +26,7 @@ import renderHTML from 'react-render-html';
 
 import { LayerProps } from '../model';
 
-import { JsonEditor } from 'components/json-editor';
-import { ActionModal } from 'components/action-modal';
-import { LinkWithOrg } from 'components/link-with-org';
+import { JsonEditor, ActionModal, LinkWithOrg } from 'components';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 

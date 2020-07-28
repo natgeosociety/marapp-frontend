@@ -18,19 +18,18 @@
 */
 
 import * as React from 'react';
-import {useEffect, useState} from 'react';
-import {Router} from '@reach/router';
+import { useEffect, useState } from 'react';
+import { Router } from '@reach/router';
 
-import {DashboardContext} from 'utils/contexts';
-import {encodeQueryToURL, setPage} from 'utils';
-import {getAllDashboards, getDashboard} from 'services/dashboards';
-import {useRequest} from 'utils/hooks';
+import { DashboardContext } from 'utils/contexts';
+import { encodeQueryToURL, setPage } from 'utils';
+import { useRequest } from 'utils/hooks';
 
-import {ContentLayout, SidebarLayout} from 'layouts';
-import {DashboardList, DashboardDetails, DashboardEdit} from 'components';
-import {LinkWithOrg} from 'components/link-with-org';
-import {AuthzGuards} from 'auth/permissions';
-import {useAuth0} from 'auth/auth0';
+import { getAllDashboards, getDashboard } from 'services/dashboards';
+import { ContentLayout, SidebarLayout } from 'layouts';
+import { DashboardList, DashboardDetails, DashboardEdit, LinkWithOrg } from 'components';
+import { AuthzGuards } from 'auth/permissions';
+import { useAuth0 } from 'auth/auth0';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 
@@ -43,7 +42,7 @@ const INIT_CURSOR_LOCATION = '-1';
 
 const PAGE_TYPE = setPage('Dashboards');
 
-export default function DashboardsPage(props) {
+export default function DashboardsPage( props ) {
   return (
     <Router>
       <Page path="/"/>
@@ -54,7 +53,7 @@ export default function DashboardsPage(props) {
   );
 }
 
-function DashboardsWrapper(props: any) {
+function DashboardsWrapper( props: any ) {
   const [dashboards, setDashboards] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -64,11 +63,11 @@ function DashboardsWrapper(props: any) {
   const [totalResults, setTotalResults] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const {selectedGroup, getPermissions} = useAuth0();
+  const { selectedGroup, getPermissions } = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
 
-  const handleSearchValueChange = (newValue: string) => {
+  const handleSearchValueChange = ( newValue: string ) => {
     setPageCursor('-1');
     setNextCursor(null);
     setSearchValue(newValue);
@@ -88,7 +87,7 @@ function DashboardsWrapper(props: any) {
       const query = {
         search: searchValue,
         sort: 'name',
-        page: {size: pageSize, cursor: dataReset ? INIT_CURSOR_LOCATION : pageCursor},
+        page: { size: pageSize, cursor: dataReset ? INIT_CURSOR_LOCATION : pageCursor },
         select: EXCLUDED_FIELDS,
         group: selectedGroup,
       };
@@ -122,7 +121,7 @@ function DashboardsWrapper(props: any) {
         totalResults,
         pageSize,
         searchValue,
-        selectedItem
+        selectedItem,
       }}
     >
       <SidebarLayout page={PAGE_TYPE}>
@@ -133,8 +132,8 @@ function DashboardsWrapper(props: any) {
   );
 }
 
-function Page(path: any) {
-  const {getPermissions} = useAuth0();
+function Page( path: any ) {
+  const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
@@ -153,13 +152,13 @@ function Page(path: any) {
   );
 }
 
-function DetailsPage(path: any) {
-  const {selectedGroup} = useAuth0();
+function DetailsPage( path: any ) {
+  const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
     ...DASHBOARD_DETAIL_QUERY,
-    ...{group: selectedGroup},
+    ...{ group: selectedGroup },
   });
-  const {isLoading, errors, data} = useRequest(() => getDashboard(encodedQuery), {
+  const { isLoading, errors, data } = useRequest(() => getDashboard(encodedQuery), {
     permissions: AuthzGuards.accessDashboardsGuard,
     query: encodedQuery,
   });
@@ -174,13 +173,13 @@ function DetailsPage(path: any) {
   );
 }
 
-function EditPage(path: any) {
-  const {selectedGroup} = useAuth0();
+function EditPage( path: any ) {
+  const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
     ...DASHBOARD_DETAIL_QUERY,
-    ...{group: selectedGroup},
+    ...{ group: selectedGroup },
   });
-  const {isLoading, errors, data} = useRequest(() => getDashboard(encodedQuery), {
+  const { isLoading, errors, data } = useRequest(() => getDashboard(encodedQuery), {
     permissions: AuthzGuards.writeDashboardsGuard,
     skip: path.newDashboard,
   });

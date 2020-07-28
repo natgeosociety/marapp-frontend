@@ -17,19 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, {useState} from 'react';
-
-
-import {OrgSwitcher} from 'components/org-switcher';
-
-import {APP_LOGO, APP_NAME} from '../theme';
+import React from 'react';
+import { SidebarSelect, LinkWithOrg, OrgSwitcher } from 'components';
+import { APP_LOGO, APP_NAME } from '../theme';
 import './styles.scss';
 
-import {SidebarSelect} from 'components/sidebar-select';
-import {LinkWithOrg} from 'components/link-with-org';
-
-const SidebarLayout = (props: any) => {
-
+const SidebarLayout = ( props: any ) => {
   return (
     <div className="ng-sidebar ng-flex ng-flex-column ng-flex-top">
       <nav className="ng-padding-medium-vertical ng-background-dkgray ">

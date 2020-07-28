@@ -21,17 +21,14 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {Router} from '@reach/router';
 
-import {LayerContext, LocationContext} from 'utils/contexts';
+import {LayerContext} from 'utils/contexts';
 import {encodeQueryToURL, setPage} from 'utils';
 import {getAllLayers, getLayer} from 'services/layers';
 import {useRequest} from 'utils/hooks';
-
-import {LinkWithOrg} from 'components/link-with-org';
-import {LayerList, LayerDetails, LayerEdit, LocationList} from 'components';
+import {LayerList, LayerDetails, LayerEdit, LinkWithOrg} from 'components';
 import {useAuth0} from 'auth/auth0';
 import {AuthzGuards} from 'auth/permissions';
-import SidebarLayout from 'layouts/Sidebar';
-import {ContentLayout} from 'layouts';
+import {ContentLayout, SidebarLayout} from 'layouts';
 
 const LAYER_DETAIL_QUERY = {include: 'references', select: 'references.name,references.id'};
 const INIT_CURSOR_LOCATION = '-1';

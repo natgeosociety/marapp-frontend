@@ -18,7 +18,7 @@
 */
 
 import * as React from 'react';
-import {DataListing, DefaultListItem} from 'components/data-listing';
+import {DataListing, DefaultListItem} from 'components';
 import {LayerContext} from 'utils/contexts';
 
 export default function LayerList() {

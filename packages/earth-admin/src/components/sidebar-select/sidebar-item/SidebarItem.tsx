@@ -18,11 +18,11 @@
 */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Auth0Context } from 'utils/contexts';
-import { LinkWithOrg } from 'components/link-with-org';
 import classnames from 'classnames';
+import { Auth0Context } from 'utils/contexts';
+import { LinkWithOrg } from 'components';
 
-export default function SidebarItem(props) {
+export default function SidebarItem( props ) {
   const [itemPermission, setItemPermission] = useState(false);
   const { item, selected } = props;
   const { getPermissions, selectedGroup } = useContext(Auth0Context);
@@ -50,7 +50,6 @@ export default function SidebarItem(props) {
           </span>
         </LinkWithOrg>
       </li>
-
     )
   );
 }

@@ -27,16 +27,12 @@ import { formatDate } from 'utils';
 import { handleWidgetForm } from 'services';
 
 import { WidgetProps } from 'components/widgets/model';
-import { JsonEditor } from 'components/json-editor';
-import { HtmlEditor } from 'components/html-editor';
-import { ErrorMessages } from 'components/error-messages';
-import { SearchInput } from 'components/search-input';
-import { LinkWithOrg } from 'components/link-with-org';
+import { JsonEditor, HtmlEditor, ErrorMessages, SearchInput, LinkWithOrg } from 'components';
 import { Auth0Context } from 'utils/contexts';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
-export default function WidgetEdit(props: WidgetProps) {
+export default function WidgetEdit( props: WidgetProps ) {
   const {
     data: {
       id,
@@ -72,7 +68,7 @@ export default function WidgetEdit(props: WidgetProps) {
     triggerValidation();
   }, [config]);
 
-  async function onSubmit(e) {
+  async function onSubmit( e ) {
     e.preventDefault();
 
     const formData = getValues();
@@ -85,7 +81,7 @@ export default function WidgetEdit(props: WidgetProps) {
     }
   }
 
-  const handleJsonChange = (json) => {
+  const handleJsonChange = ( json ) => {
     try {
       JSON.parse(json);
     } catch (err) {
@@ -153,7 +149,7 @@ export default function WidgetEdit(props: WidgetProps) {
                 name="description"
                 control={control}
                 defaultValue={description}
-                as={<HtmlEditor html={description} />}
+                as={<HtmlEditor html={description}/>}
               />
             </div>
           </div>
@@ -168,8 +164,8 @@ export default function WidgetEdit(props: WidgetProps) {
                 name="config"
                 control={control}
                 defaultValue={widgetConfig}
-                onChange={(widgetConfig) => handleJsonChange(widgetConfig)}
-                as={<JsonEditor json={widgetConfig} />}
+                onChange={( widgetConfig ) => handleJsonChange(widgetConfig)}
+                as={<JsonEditor json={widgetConfig}/>}
               />
             </div>
           )}
@@ -194,7 +190,7 @@ export default function WidgetEdit(props: WidgetProps) {
               name="layers"
               control={control}
               valueName={id}
-              as={<SearchInput options={layers} optionType="layers" />}
+              as={<SearchInput options={layers} optionType="layers"/>}
             />
           </div>
 
@@ -210,7 +206,7 @@ export default function WidgetEdit(props: WidgetProps) {
             <label htmlFor="published">Published?</label>
           </div>
 
-          {serverErrors && <ErrorMessages errors={serverErrors} />}
+          {serverErrors && <ErrorMessages errors={serverErrors}/>}
           <div className="ng-flex">
             <button
               className="ng-button ng-button-primary ng-margin-medium-right"

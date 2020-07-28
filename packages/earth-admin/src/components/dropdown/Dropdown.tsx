@@ -17,12 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, {ReactNode, useContext, useState} from 'react';
+import React, { ReactNode } from 'react';
+import { animated, Keyframes } from 'react-spring/renderprops';
+import classnames from 'classnames';
 
 import './styles.scss';
-import {animated, Keyframes} from 'react-spring/renderprops';
-import classnames from 'classnames';
-import {LinkWithOrg} from 'components/link-with-org';
 
 interface IDropdownComponent {
   state?: string;
@@ -31,23 +30,23 @@ interface IDropdownComponent {
 }
 
 const DropdownPanel: any = Keyframes.Spring({
-  close: {x: -1000, delay: 0},
-  open: {x: 0, from: {x: 0}},
+  close: { x: -1000, delay: 0 },
+  open: { x: 0, from: { x: 0 } },
 });
 
-export default function DropdownComponent(props: IDropdownComponent) {
-  const {state, children, className} = props;
+export const DropdownComponent = ( props: IDropdownComponent ) => {
+  const { state, children, className } = props;
 
   return (
     <DropdownPanel native state={state}>
-      {({x, ...props}) => (
+      {( { x, ...props } ) => (
         <animated.ul
           className={classnames(
             'ng-ep-dropdown ng-background-dkgray',
             className,
           )}
           style={{
-            transform: x.interpolate((x) => `translate3d(0,${x}px,0)`),
+            transform: x.interpolate(( x ) => `translate3d(0,${x}px,0)`),
             ...props,
           }}
         >

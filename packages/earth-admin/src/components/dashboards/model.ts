@@ -21,7 +21,7 @@ import { Layer } from '../layers/model';
 import { Widget } from '../widgets/model';
 
 export interface DashboardContextProps {
-  handleSearchValueChange: (newValue: string) => void;
+  handleSearchValueChange: ( newValue: string ) => void;
   handleCursorChange: Function;
   pageSize: number;
   isLoading: boolean;

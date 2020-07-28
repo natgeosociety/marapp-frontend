@@ -21,9 +21,7 @@ import React, { useContext, useState } from 'react';
 import { Auth0Context } from 'utils/contexts';
 import classnames from 'classnames';
 
-import DropdownComponent from 'components/dropdown';
-import { Tooltip } from '@marapp/earth-components';
-import { LinkWithOrg } from 'components/link-with-org';
+import { LinkWithOrg, DropdownComponent } from 'components';
 
 import { MAP_PATH } from 'config';
 import './styles.scss';

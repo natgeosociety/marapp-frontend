@@ -17,4 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { DropdownComponent } from './Dropdown';
+import SidebarSelect from './SidebarSelect';
+
+export { SidebarSelect };

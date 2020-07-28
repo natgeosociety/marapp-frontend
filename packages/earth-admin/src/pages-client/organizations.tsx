@@ -18,21 +18,18 @@
 */
 
 import * as React from 'react';
-import {useContext, useEffect, useState} from 'react';
-import {Router, Location} from '@reach/router';
-import {withPrefix} from 'gatsby';
+import { useEffect, useState} from 'react';
+import {Router} from '@reach/router';
 
 import {OrganizationContext} from 'utils/contexts';
-import {LinkWithOrg} from 'components/link-with-org';
 import {encodeQueryToURL, setPage} from 'utils';
 import {getAllOrganizations, getOrganization} from 'services/organizations';
 import {AuthzGuards} from 'auth/permissions';
 import {useRequest} from 'utils/hooks';
 
 import {ContentLayout, SidebarLayout} from 'layouts';
-import {OrganizationList, OrganizationDetails, LocationList} from 'components';
-import {useAuth0} from '../auth/auth0';
-import {OrganizationEdit} from 'components/organizations/organization-edit';
+import {OrganizationList, OrganizationDetails, OrganizationEdit} from 'components';
+import {useAuth0} from 'auth/auth0';
 
 const PAGE_TYPE = setPage('Organizations');
 

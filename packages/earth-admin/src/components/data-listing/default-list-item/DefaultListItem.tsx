@@ -1,12 +1,12 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import { LinkWithOrg } from 'components/link-with-org';
+import { LinkWithOrg } from 'components';
 
 interface DataListProps {
   categoryUrl?: string;
   item?: { name: string; id: string; slug: string };
-  selectedItem: string;
+  selectedItem?: string;
 }
 
 const DefaultListItem = (props: DataListProps) => {

@@ -62,13 +62,14 @@
       padding: 10px;
     }
   }
-}
-
-.ng-select-list {
-  display: block;
-  height: auto;
-  overflow: auto;
-  .ng-nav-item {
+  &.ng-select-list {
     display: block;
+    height: auto;
+    overflow: auto;
+    .ng-nav-item {
+      display: block;
+    }
   }
 }
+
+

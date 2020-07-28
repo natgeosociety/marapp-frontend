@@ -20,10 +20,9 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { UserProps } from '../model';
-import { useAuth0 } from '../../../auth/auth0';
+import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
-import { ActionModal } from 'components/action-modal';
-import { LinkWithOrg } from 'components/link-with-org';
+import { ActionModal, LinkWithOrg } from 'components';
 
 export default function UserDetails(props: UserProps) {
   const {
