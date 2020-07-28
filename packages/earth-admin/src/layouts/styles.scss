@@ -17,9 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import '../../styles/config';
+@import '../styles/config';
 
 .ng-sidebar {
+  align-items: stretch;
   background: $marapp-gray-9;
   min-width: $sidebar-width;
   max-width: $sidebar-width;

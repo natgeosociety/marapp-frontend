@@ -1,0 +1,21 @@
+@import '~styles/config';
+
+.ng-input-container {
+  border: 1px solid $marapp-gray-5;
+  &.is-focused {
+    border-color: $marapp-gray-0;
+  }
+  input {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
+  }
+  .ng-icon {
+    line-height: 1;
+  }
+}

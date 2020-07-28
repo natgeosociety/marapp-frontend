@@ -17,6 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
+import {Location} from 'components/locations/model';
+
 export enum LayerType {
   raster = 'raster',
   vector = 'vector',
@@ -46,6 +48,18 @@ export interface Layer {
   updatedAt: Date;
   version: number;
   references?: Layer[];
+}
+
+export interface LayerContextProps {
+  layers: Layer[];
+  handleSearchValueChange: (v: string) => void;
+  handleCursorChange: Function;
+  pageSize: number,
+  isLoading: boolean;
+  searchValue?: string;
+  permissions?: any;
+  totalResults?: number;
+  nextCursor?: string;
 }
 
 export interface LayerProps {

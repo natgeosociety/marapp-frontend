@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './sidebar';
 export * from './data-listing';
 export * from './locations';
 export * from './layers';

@@ -19,22 +19,24 @@
 
 import * as React from 'react';
 import { DataListing, DefaultListItem } from 'components/data-listing';
-import { DashboardContext } from 'utils/contexts';
+import {DashboardContext} from 'utils/contexts';
 
 export default function DashboardList() {
   return (
     <DashboardContext.Consumer>
-      {({ dashboards, handleSearchValueChange, handleCursorChange, isLoading, isNoMore, searchValue }) =>
-        dashboards && (
+      {({ dashboards, handleSearchValueChange, handleCursorChange,
+          isLoading, searchValue, pageSize, totalResults }) =>
+        (
           <DataListing
             childComponent={DefaultListItem}
             data={dashboards}
             categoryUrl={'dashboards'}
-            pageTitle="DASHBOARDS"
+            pageTitle="data indexes"
             searchValueAction={handleSearchValueChange}
             cursorAction={handleCursorChange}
             isLoading={isLoading}
-            isNoMore={isNoMore}
+            totalResults={totalResults}
+            pageSize={pageSize}
             searchValue={searchValue}
           />
         )

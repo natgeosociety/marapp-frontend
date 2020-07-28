@@ -17,18 +17,32 @@
   specific language governing permissions and limitations under the License.
 */
 
+import {Location} from 'components/locations/model';
+
 export interface Organization {
-    id: string;
-    name: string;
-    description: string;
-  }
-  
-  export interface OrganizationProps {
-    data: Organization;
-  }
-  
-  export interface OrganizationEditProps {
-    data: Organization;
-    newOrg: boolean;
-  }
-  
+  id: string;
+  name: string;
+  description: string;
+}
+
+export interface OrganizationProps {
+  data: Organization;
+}
+
+export interface OrganizationEditProps {
+  data: Organization;
+  newOrg: boolean;
+}
+
+export interface OrganizationContextProps {
+  organizations: Organization[];
+  handleSearchValueChange?: (newValue: string) => void;
+  handleCursorChange?: Function;
+  pageSize?: number,
+  isLoading?: boolean;
+  isNoMore?: boolean;
+  searchValue?: string;
+  permissions?: any;
+  totalResults?: number;
+  nextCursor?: string;
+}

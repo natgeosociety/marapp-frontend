@@ -18,22 +18,25 @@
 */
 
 import * as React from 'react';
-import { DataListing } from 'components/data-listing';
-import { LayerContext } from 'utils/contexts';
+import {DataListing, DefaultListItem} from 'components/data-listing';
+import {LayerContext} from 'utils/contexts';
 
 export default function LayerList() {
   return (
     <LayerContext.Consumer>
-      {({ layers, handleSearchValueChange, handleCursorChange, isLoading, isNoMore, searchValue }) =>
-        layers && (
+      {({ layers, handleSearchValueChange, handleCursorChange,
+          isLoading, searchValue, pageSize, totalResults }) =>
+        (
           <DataListing
+            childComponent={DefaultListItem}
             data={layers}
             categoryUrl={'layers'}
-            pageTitle="LAYERS"
+            pageTitle="layers"
             searchValueAction={handleSearchValueChange}
             cursorAction={handleCursorChange}
             isLoading={isLoading}
-            isNoMore={isNoMore}
+            totalResults={totalResults}
+            pageSize={pageSize}
             searchValue={searchValue}
           />
         )

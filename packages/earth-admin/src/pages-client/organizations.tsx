@@ -29,7 +29,7 @@ import {getAllOrganizations, getOrganization} from 'services/organizations';
 import {AuthzGuards} from 'auth/permissions';
 import {useRequest} from 'utils/hooks';
 
-import Layout from 'layouts';
+import {ContentLayout, SidebarLayout} from 'layouts';
 import {OrganizationList, OrganizationDetails, LocationList} from 'components';
 import {useAuth0} from '../auth/auth0';
 import {OrganizationEdit} from 'components/organizations/organization-edit';
@@ -44,17 +44,16 @@ export default function OrganizationsPage(props) {
   );
 }
 
-function Page(path: any) {
+function OrganizationsWrapper(props:any) {
   const [organizations, setOrganizations] = useState([]);
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [isNoMore, setIsNoMore] = useState(false);
+  const [totalResults, setTotalResults] = useState(null);
 
   const {selectedGroup, getPermissions} = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessUsersGuard);
-  const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
 
   const handleCursorChange = () => {
     setPageNumber(pageNumber + 1);
@@ -64,10 +63,10 @@ function Page(path: any) {
     async function setupOrganizations() {
       setIsLoading(true);
 
-      const dataReset = !!path.location.state && !!path.location.state.refresh;
+      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh;
 
       if (dataReset && pageNumber !== 1) {
-        path.location.state.refresh = false;
+        props.path.location.state.refresh = false;
       } else {
         const query = {
           page: {size: pageSize, number: pageNumber},
@@ -77,32 +76,50 @@ function Page(path: any) {
         const res: any = await getAllOrganizations(encodedQuery);
 
         if (dataReset) {
-          path.location.state.refresh = false;
+          props.path.location.state.refresh = false;
         }
 
         const validOrganizations = res.data;
 
+        setTotalResults(res.total)
+
         setOrganizations(dataReset ? validOrganizations : [...organizations, ...validOrganizations]);
-        setIsNoMore(pageNumber === res.pagination.total);
       }
 
       setIsLoading(false);
     }
 
     permissions && setupOrganizations();
-  }, [path.location, pageNumber]);
+  }, [props.path.location, pageNumber]);
 
   return (
     <OrganizationContext.Provider
       value={{
-        organizations,
         handleCursorChange,
-        pagination: {pageNumber},
         isLoading,
-        isNoMore,
+        organizations,
+        totalResults,
+        pageSize
       }}
     >
-      <Layout permission={permissions}>
+      <SidebarLayout>
+        <OrganizationList/>
+      </SidebarLayout>
+      {props.children}
+    </OrganizationContext.Provider>
+  );
+}
+
+function Page(path: any) {
+  const {selectedGroup, getPermissions} = useAuth0();
+
+  const permissions = getPermissions(AuthzGuards.accessUsersGuard);
+  const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
+
+  return (
+    <OrganizationsWrapper path={path}>
+      <ContentLayout permission={permissions}>
+        das
         {/* {writePermissions && (
           <div className="ng-flex ng-align-right">
             <LinkWithOrg className="ng-button ng-button-overlay" to="/organizations/new">
@@ -110,13 +127,8 @@ function Page(path: any) {
             </LinkWithOrg>
           </div>
         )} */}
-      </Layout>
-      <div className="ng-page-container">
-        <div className="ng-padding-large">
-          <OrganizationList/>
-        </div>
-      </div>
-    </OrganizationContext.Provider>
+      </ContentLayout>
+    </OrganizationsWrapper>
   );
 }
 
@@ -130,9 +142,11 @@ function DetailsPage(path: any) {
   });
 
   return (
-    <Layout errors={errors} backTo="/organizations" isLoading={isLoading}>
-      <OrganizationDetails data={data}/>
-    </Layout>
+    <OrganizationsWrapper path={path}>
+      <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading}>
+        <OrganizationDetails data={data}/>
+      </ContentLayout>
+    </OrganizationsWrapper>
   );
 }
 
@@ -147,8 +161,10 @@ function EditPage(path: any) {
   });
 
   return (
-    <Layout errors={errors} backTo="/organizations" isLoading={isLoading}>
-      <OrganizationEdit data={data} newOrg={path.newUser}/>
-    </Layout>
+    <OrganizationsWrapper path={path}>
+      <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading}>
+        <OrganizationEdit data={data} newOrg={path.newUser}/>
+      </ContentLayout>
+    </OrganizationsWrapper>
   );
 }

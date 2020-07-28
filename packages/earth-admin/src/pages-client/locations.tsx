@@ -29,7 +29,7 @@ import {AuthzGuards} from 'auth/permissions';
 import {useRequest} from 'utils/hooks';
 
 import {LocationList, LocationDetails, LocationEdit} from 'components';
-import {useAuth0} from '../auth/auth0';
+import {useAuth0} from 'auth/auth0';
 import SidebarLayout from 'layouts/Sidebar';
 import ContentLayout from 'layouts/Content';
 
@@ -52,15 +52,17 @@ export default function LocationsPage(props) {
   );
 }
 
-function LocationSidebar(props: any) {
+function LocationsWrapper(props: any) {
   const [locations, setLocations] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
   const [pageCursor, setPageCursor] = useState(INIT_CURSOR_LOCATION);
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
-  const [isNoMore, setIsNoMore] = useState(false);
+  const [totalResults, setTotalResults] = useState(null);
+
   const {selectedGroup, getPermissions} = useAuth0();
+
 
   const permissions = getPermissions(AuthzGuards.accessLocationsGuard);
 
@@ -91,14 +93,14 @@ function LocationSidebar(props: any) {
       const encodedQuery = encodeQueryToURL('locations', query);
       const res: any = await getAllLocations(encodedQuery);
 
-
       if (dataReset) {
         props.path.location.state.refresh = false;
       }
 
+      setTotalResults(res.total)
+
       setLocations(!nextCursor || dataReset ? res.data : [...locations, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-      setIsNoMore(!res.pagination.nextCursor);
 
       setIsLoading(false);
     }
@@ -114,7 +116,8 @@ function LocationSidebar(props: any) {
         isLoading,
         locations,
         nextCursor,
-        pagination: {pageCursor},
+        totalResults,
+        pageSize,
         searchValue
       }}
     >
@@ -127,11 +130,12 @@ function LocationSidebar(props: any) {
 }
 
 function Page(path: any) {
-  const {selectedGroup, getPermissions} = useAuth0();
+  const {getPermissions} = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessLocationsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeLocationsGuard);
+
   return (
-    <LocationSidebar path={path}>
+    <LocationsWrapper path={path}>
       <ContentLayout permission={permissions}>
         {writePermissions && (
           <div className="ng-flex ng-align-right">
@@ -140,9 +144,8 @@ function Page(path: any) {
             </LinkWithOrg>
           </div>
         )}
-
       </ContentLayout>
-    </LocationSidebar>
+    </LocationsWrapper>
   );
 };
 
@@ -158,11 +161,11 @@ function DetailsPage(path: any) {
   });
 
   return (
-    <LocationSidebar path={path}>
+    <LocationsWrapper path={path}>
       <ContentLayout errors={errors} backTo="/locations" isLoading={isLoading}>
         <LocationDetails data={data}/>
       </ContentLayout>
-    </LocationSidebar>
+    </LocationsWrapper>
   );
 }
 
@@ -178,10 +181,10 @@ function EditPage(path: any) {
   });
 
   return (
-    <LocationSidebar path={path}>
+    <LocationsWrapper path={path}>
       <ContentLayout errors={errors} backTo="/locations" isLoading={isLoading}>
         <LocationEdit data={data} newLocation={path.newLocation}/>
       </ContentLayout>
-    </LocationSidebar>
+    </LocationsWrapper>
   );
 }

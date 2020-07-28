@@ -20,5 +20,5 @@
 import DataListing from './DataListing';
 
 export * from './default-list-item';
-export * from './user-list-item';
+export * from './auth0-list-item';
 export { DataListing };

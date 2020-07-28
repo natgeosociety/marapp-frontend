@@ -26,11 +26,12 @@ import {encodeQueryToURL} from 'utils';
 import {getAllWidgets, getWidget} from 'services/widgets';
 import {useRequest} from 'utils/hooks';
 
-import Layout from 'layouts';
 import {LinkWithOrg} from 'components/link-with-org';
 import {WidgetList, WidgetDetails, WidgetEdit, LocationList} from 'components';
 import {useAuth0} from 'auth/auth0';
 import {AuthzGuards} from 'auth/permissions';
+import SidebarLayout from 'layouts/Sidebar';
+import ContentLayout from 'layouts/Content';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const WIDGET_DETAIL_QUERY = {
@@ -51,19 +52,20 @@ export default function WidgetsPage(props) {
   );
 }
 
-function Page(path: any) {
+function WidgetsWrapper(props: any) {
+  const {path} = props;
   const [widgets, setWidgets] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
   const [pageCursor, setPageCursor] = useState('-1');
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isNoMore, setIsNoMore] = useState(false);
+  const [totalResults, setTotalResults] = useState(null);
 
   const {selectedGroup, getPermissions} = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessWidgetsGuard);
-  const writePermissions = getPermissions(AuthzGuards.writeWidgetsGuard);
+
 
   const handleSearchValueChange = (newValue: string) => {
     setPageCursor('-1');
@@ -96,9 +98,10 @@ function Page(path: any) {
         path.location.state.refresh = false;
       }
 
+      setTotalResults(res.total);
+
       setWidgets(!nextCursor || dataReset ? res.data : [...widgets, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-      setIsNoMore(!res.pagination.nextCursor);
 
       setIsLoading(false);
     }
@@ -109,16 +112,33 @@ function Page(path: any) {
   return (
     <WidgetContext.Provider
       value={{
-        widgets,
         handleSearchValueChange,
         handleCursorChange,
-        pagination: {pageCursor},
         isLoading,
-        isNoMore,
+        widgets,
+        nextCursor,
+        totalResults,
+        pageSize,
         searchValue,
       }}
     >
-      <Layout permission={permissions}>
+      <SidebarLayout>
+        <WidgetList/>
+      </SidebarLayout>
+    </WidgetContext.Provider>
+  );
+}
+
+function Page(path: any) {
+
+  const {selectedGroup, getPermissions} = useAuth0();
+
+  const permissions = getPermissions(AuthzGuards.accessWidgetsGuard);
+  const writePermissions = getPermissions(AuthzGuards.writeWidgetsGuard);
+
+  return (
+    <WidgetsWrapper path={path}>
+      <ContentLayout permission={permissions}>
         {writePermissions && (
           <div className="ng-flex ng-align-right">
             <LinkWithOrg className="ng-button ng-button-overlay" to={`/widgets/new`}>
@@ -126,13 +146,8 @@ function Page(path: any) {
             </LinkWithOrg>
           </div>
         )}
-      </Layout>
-      <div className="ng-page-container">
-        <div className="ng-padding-large">
-          <WidgetList/>
-        </div>
-      </div>
-    </WidgetContext.Provider>
+      </ContentLayout>
+    </WidgetsWrapper>
   );
 }
 
@@ -148,9 +163,11 @@ function DetailsPage(path: any) {
   });
 
   return (
-    <Layout errors={errors} backTo="/widgets" isLoading={isLoading}>
-      <WidgetDetails data={data}/>
-    </Layout>
+    <WidgetsWrapper path={path}>
+      <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
+        <WidgetDetails data={data}/>
+      </ContentLayout>
+    </WidgetsWrapper>
   );
 }
 
@@ -166,8 +183,11 @@ function EditPage(path: any) {
   });
 
   return (
-    <Layout errors={errors} backTo="/widgets" isLoading={isLoading}>
-      <WidgetEdit data={data} newWidget={path.newWidget}/>
-    </Layout>
+    <WidgetsWrapper path={path}>
+      <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
+        <WidgetEdit data={data} newWidget={path.newWidget}/>
+      </ContentLayout>
+    </WidgetsWrapper>
+
   );
 }

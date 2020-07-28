@@ -18,26 +18,22 @@
 */
 
 import * as React from 'react';
-import classnames from 'classnames';
 
 import List from '@researchgate/react-intersection-list';
 import {Spinner} from '@marapp/earth-components';
+import {SearchBox} from 'components/data-listing/search-box';
 
 import './styles.scss';
-import {useState} from 'react';
+import {useAuth0} from 'auth/auth0';
 
 const DataListing = (props) => {
-  const {cursorAction, data, isLoading, isNoMore, searchValue, searchValueAction, categoryUrl, pageTitle, childComponent} = props;
-  const [focus, setFocus] = useState(false);
+  const {cursorAction, data, isLoading, isNoMore,
+    searchValue, searchValueAction, categoryUrl, pageTitle, childComponent, pageSize, totalResults} = props;
+  const {selectedGroup} = useAuth0();
 
-  const PAGE_SIZE = 20;
+  const PAGE_SIZE = pageSize;
   const hasNextPage = data.length >= PAGE_SIZE;
-
   let awaitMore = !isLoading && hasNextPage && !isNoMore;
-
-  const handleSearchChange = (newValue: string) => {
-    searchValueAction(newValue);
-  };
 
   const renderItem = (index) => {
     const item = data[index];
@@ -56,43 +52,32 @@ const DataListing = (props) => {
   };
 
   return (<>
-    <div className="searchable-listing-container ng-margin-bottom ng-background-dkgray
-      ng-padding-medium">
-      <div
-        className={classnames({
-          'ng-input-container ng-c-flex-grow-1 ng-flex ng-flex-middle': true,
-          'is-focused': focus
-        })}>
-        <i className=" ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal"/>
-        <input
-          type=" text"
-          placeholder={`search ${pageTitle.toLowerCase()}...`}
-          className=" ng-width-1-1 ng-search-box"
-          onFocus={() => setFocus(!focus)}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          value={searchValue}
-          ref={input => input && input.getBoundingClientRect().top > 0 && input.focus()}
-        />
+    {searchValueAction && <SearchBox searchValue={searchValue} pageTitle={pageTitle} searchValueAction={searchValueAction}/>}
+    <div style={{'overflowY': 'scroll'}}>
+      <div className="ng-padding-medium-horizontal ng-padding-medium-top ng-padding-small-bottom ng-background-ultradkgray">
+        <h4 className="ng-text-display-s ng-color-ultraltgray ng-margin-remove">{selectedGroup} {pageTitle} &nbsp;
+          <span className="ng-color-mdgray">({totalResults})</span></h4>
       </div>
 
+      <div>
+        <List
+          awaitMore={awaitMore}
+          pageSize={PAGE_SIZE}
+          itemCount={data.length}
+          renderItem={renderItem}
+          onIntersection={onIntersection}
+        />
+        {isNoMore && (
+          <div className=" ng-text-center">
+            <p className=" ng-color-gray-3 ng-margin-medium-top ng-margin-bottom-remove">
+              - end -
+            </p>
+          </div>
+        )}
+        {isLoading && <Spinner position=" relative"/>}
+      </div>
     </div>
-    <div style={{height: '600px', 'overflowY': 'scroll'}} className=" ng-c-width-100">
-      <List
-        awaitMore={awaitMore}
-        pageSize={PAGE_SIZE}
-        itemCount={data.length}
-        renderItem={renderItem}
-        onIntersection={onIntersection}
-      />
-      {isNoMore && (
-        <div className=" ng-text-center">
-          <p className=" ng-color-gray-3 ng-margin-medium-top ng-margin-bottom-remove">
-            - end -
-          </p>
-        </div>
-      )}
-      {isLoading && <Spinner position=" relative"/>}
-    </div>
+
   </>);
 };
 

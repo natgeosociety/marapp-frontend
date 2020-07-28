@@ -26,7 +26,7 @@ import {encodeQueryToURL} from 'utils';
 import {getAllDashboards, getDashboard} from 'services/dashboards';
 import {useRequest} from 'utils/hooks';
 
-import Layout from 'layouts';
+import {ContentLayout, SidebarLayout} from 'layouts';
 import {DashboardList, DashboardDetails, DashboardEdit, LocationList} from 'components';
 import {LinkWithOrg} from 'components/link-with-org';
 import {AuthzGuards} from '../auth/permissions';
@@ -52,19 +52,18 @@ export default function DashboardsPage(props) {
   );
 }
 
-function Page(path: any) {
+function DashboardsWrapper(props: any) {
   const [dashboards, setDashboards] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
   const [pageCursor, setPageCursor] = useState('-1');
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isNoMore, setIsNoMore] = useState(false);
+  const [totalResults, setTotalResults] = useState(null);
 
   const {selectedGroup, getPermissions} = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
-  const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
   const handleSearchValueChange = (newValue: string) => {
     setPageCursor('-1');
@@ -82,7 +81,7 @@ function Page(path: any) {
     async function setupDashboards() {
       setIsLoading(true);
 
-      const dataReset = !!path.location.state && !!path.location.state.refresh;
+      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh;
       const query = {
         search: searchValue,
         sort: 'name',
@@ -94,32 +93,50 @@ function Page(path: any) {
       const res: any = await getAllDashboards(encodedQuery);
 
       if (dataReset) {
-        path.location.state.refresh = false;
+        props.path.location.state.refresh = false;
       }
+
+      setTotalResults(res.total);
 
       setDashboards(!nextCursor || dataReset ? res.data : [...dashboards, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-      setIsNoMore(!res.pagination.nextCursor);
+
 
       setIsLoading(false);
     }
 
     permissions && setupDashboards();
-  }, [path.location, pageCursor, searchValue]);
+  }, [props.path.location, pageCursor, searchValue]);
 
   return (
     <DashboardContext.Provider
       value={{
-        dashboards,
         handleSearchValueChange,
         handleCursorChange,
-        pagination: {pageCursor},
         isLoading,
-        isNoMore,
+        dashboards,
+        nextCursor,
+        totalResults,
+        pageSize,
         searchValue,
       }}
     >
-      <Layout permission={permissions}>
+      <SidebarLayout>
+        <DashboardList/>
+      </SidebarLayout>
+      {props.children}
+    </DashboardContext.Provider>
+  );
+}
+
+function Page(path: any) {
+  const {getPermissions} = useAuth0();
+  const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
+  const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
+
+  return (
+    <DashboardsWrapper path={path}>
+      <ContentLayout permission={permissions}>
         {writePermissions && (
           <div className="ng-flex ng-align-right">
             <LinkWithOrg className="ng-button ng-button-overlay" to={`/dashboards/new`}>
@@ -127,13 +144,8 @@ function Page(path: any) {
             </LinkWithOrg>
           </div>
         )}
-      </Layout>
-      <div className="ng-page-container">
-        <div className="ng-padding-large">
-          <DashboardList/>
-        </div>
-      </div>
-    </DashboardContext.Provider>
+      </ContentLayout>
+    </DashboardsWrapper>
   );
 }
 
@@ -149,9 +161,12 @@ function DetailsPage(path: any) {
   });
 
   return (
-    <Layout errors={errors} backTo="/dashboards" isLoading={isLoading}>
-      <DashboardDetails data={data}/>
-    </Layout>
+    <DashboardsWrapper path={path}>
+      <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
+        <DashboardDetails data={data}/>
+      </ContentLayout>
+    </DashboardsWrapper>
+
   );
 }
 
@@ -167,8 +182,11 @@ function EditPage(path: any) {
   });
 
   return (
-    <Layout errors={errors} backTo="/dashboards" isLoading={isLoading}>
-      <DashboardEdit data={data} newDashboard={path.newDashboard}/>
-    </Layout>
+    <DashboardsWrapper path={path}>
+      <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
+        <DashboardEdit data={data} newDashboard={path.newDashboard}/>
+      </ContentLayout>
+    </DashboardsWrapper>
+
   );
 }

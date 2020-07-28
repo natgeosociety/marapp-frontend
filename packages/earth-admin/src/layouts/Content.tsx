@@ -60,7 +60,6 @@ export default function ContentLayout(props: ILayoutProps) {
   } = props;
 
   const Content = () => {
-    console.log('render');
     if (isLoading) {
       return <Spinner size="medium" />;
     }

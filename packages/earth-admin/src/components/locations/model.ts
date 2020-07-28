@@ -40,13 +40,12 @@ export interface LocationContextProps {
   locations: Location[];
   handleSearchValueChange: (newValue: string) => void;
   handleCursorChange: Function;
-  pagination: {
-    pageCursor: string;
-  };
+  pageSize: number,
   isLoading: boolean;
-  isNoMore: boolean;
   searchValue?: string;
   permissions?: any;
+  totalResults?: number;
+  nextCursor?: string;
 }
 
 export enum LocationTypeEnum {
