@@ -22,7 +22,7 @@ import { connect } from 'react-redux';
 // Actions
 import { setMapStyle, setMapLabels, setMapRoads } from 'modules/map/actions';
 import { setSidebarPanel, setSidebarPanelExpanded } from 'modules/sidebar/actions';
-import { setLayersSearch } from 'modules/layers/actions';
+import { setLayersSearch, setLayersActive } from 'modules/layers/actions';
 import { setPlacesSearch } from 'modules/places/actions';
 
 // Components
@@ -57,5 +57,6 @@ export default connect(
     setSidebarPanelExpanded,
     setLayersSearch,
     setPlacesSearch,
+    setLayersActive,
   }
 )(LayersComponent);

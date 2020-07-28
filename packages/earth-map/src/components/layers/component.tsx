@@ -64,6 +64,7 @@ interface IProps {
   setSidebarPanelExpanded?: (value: boolean) => void;
   setLayersSearch?: (value: any) => void;
   setPlacesSearch?: (value: any) => void;
+  setLayersActive?: (value: any) => void;
 }
 
 interface IState {
@@ -75,7 +76,6 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
     basemap: 'default',
     basemaps: APP_BASEMAPS,
   };
-  private layers: any;
 
   constructor(props) {
     super(props);
@@ -117,6 +117,7 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
       locationOrganization,
       setLayersSearch,
       setPlacesSearch,
+      setLayersActive,
     } = this.props;
 
     const PAGE_SIZE = 100;
@@ -126,6 +127,12 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
     const withFilters = hasFilters(search.filters);
     const showResults = hasSearchTerm || withFilters;
     const showBack = selected && panelExpanded;
+    const activeLayers = layers.active.map(slug =>
+      layers.list.find(x => x.slug === slug)
+    )
+    const inactiveLayers = layers.list.filter(layer =>
+      !activeLayers.includes(layer)
+    )
 
     const handleChange = (e) => {
       const newValue = e.target.value;
@@ -167,14 +174,33 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
         }>
         {(!selected || panelExpanded) && (
           <>
+            {activeLayers.length > 0 && (
+              <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
+                <div className="ng-space-between ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top">
+                  <h2 className="ng-text-display-s ng-body-color ng-margin-remove">Selected Layers</h2>
+                  <a onClick={() => setLayersActive([])}>deselect all</a>
+                </div>
+                {activeLayers.map((layer) => {
+                  return (
+                    <ListItem
+                      active
+                      title={layer.name}
+                      key={`${layer.slug}-${layer.organization}`}
+                      onClick={debounce(() => this.onToggleLayer(layer), 200)}
+                      organization={(group.length > 1) && layer.organization}
+                      labels={[layer.category]} />
+                  )
+                })}
+              </div>
+            )}
             <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
               <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Widget layers</h2>
               <List
                 awaitMore={false}
                 pageSize={PAGE_SIZE}
-                itemCount={layers.list.length}
+                itemCount={inactiveLayers.length}
                 renderItem={(index) => {
-                  const layer = layers.list[index];
+                  const layer = inactiveLayers[index];
                   return (
                     <ListItem
                       title={layer.name}

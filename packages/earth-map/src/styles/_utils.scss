@@ -32,3 +32,9 @@
 .ng-cursor-pointer {
   cursor: pointer;
 }
+
+.ng-space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
