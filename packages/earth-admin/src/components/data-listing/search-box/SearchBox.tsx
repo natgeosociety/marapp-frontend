@@ -18,14 +18,14 @@ const SearchBox = (props: SearchBoxProps) => {
     searchValueAction(newValue);
   };
 
-  return  <div className="searchable-listing-container ng-margin-bottom ng-background-dkgray
-      ng-padding-medium">
+  return <div className="searchable-listing-container ng-margin-bottom ng-background-dkgray
+      ng-padding-medium-horizontal ng-padding-medium-bottom">
     <div
       className={classnames({
         'ng-input-container ng-c-flex-grow-1 ng-flex ng-flex-middle ng-padding-vertical': true,
         'is-focused': focus
       })}>
-      <i className=" ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal"/>
+      <i className="ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal"/>
       <input
         type=" text"
         placeholder={`search ${pageTitle.toLowerCase()}...`}
@@ -37,7 +37,7 @@ const SearchBox = (props: SearchBoxProps) => {
       />
     </div>
 
-  </div>
-}
+  </div>;
+};
 
 export default SearchBox;

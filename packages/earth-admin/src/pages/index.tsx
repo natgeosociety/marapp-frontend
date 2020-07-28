@@ -21,7 +21,7 @@ import * as React from 'react';
 import { Router } from '@reach/router';
 
 import { GATSBY_APP_BASE_URL } from 'config';
-import Layout from 'layouts';
+import Layout, {ContentLayout, SidebarLayout} from 'layouts';
 import LocationsPage from 'pages-client/locations';
 import DashboardsPage from 'pages-client/dashboards';
 import LayersPage from 'pages-client/layers';
@@ -59,10 +59,14 @@ export default function IndexPage() {
  * Renders no children
  */
 const OrgIndex = (props) => (
-  <Layout permission={true}>
-    <div className="ng-background-white ng-padding-large">
-      <h2 className="ng-text-edit-m">Welcome to the {APP_NAME} Admin!</h2>
-      <h6>{props.org}</h6>
-    </div>
-  </Layout>
+  <div>
+    <SidebarLayout/>
+    <ContentLayout permission={true}>
+      <div className="ng-background-white ng-padding-large">
+        <h2 className="ng-text-edit-m">Welcome to the {APP_NAME} Admin!</h2>
+        <h6>{props.org}</h6>
+      </div>
+    </ContentLayout>
+  </div>
+
 );
