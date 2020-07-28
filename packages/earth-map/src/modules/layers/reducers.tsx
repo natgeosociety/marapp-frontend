@@ -146,6 +146,14 @@ export default {
     return { ...state, settings };
   },
 
+  // Search
+  [actions.setLayersSearch]: (state, { payload }) => {
+    return {
+      ...state,
+      search: { ...state.search, ...payload },
+    };
+  },
+
   [actions.resetLayers]: () => {
     return initialState;
   },

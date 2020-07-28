@@ -20,8 +20,10 @@
 import { connect } from 'react-redux';
 
 // Actions
-import { setMapStyle, setMapLabels, setMapRoads, resetMap } from 'modules/map/actions';
+import { setMapStyle, setMapLabels, setMapRoads } from 'modules/map/actions';
 import { setSidebarPanel, setSidebarPanelExpanded } from 'modules/sidebar/actions';
+import { setLayersSearch } from 'modules/layers/actions';
+import { setPlacesSearch } from 'modules/places/actions';
 
 // Components
 import LayersComponent from './component';
@@ -51,8 +53,9 @@ export default connect(
     setMapStyle,
     setMapLabels,
     setMapRoads,
-    resetMap,
     setSidebarPanel,
     setSidebarPanelExpanded,
+    setLayersSearch,
+    setPlacesSearch,
   }
 )(LayersComponent);

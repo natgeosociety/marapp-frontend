@@ -65,7 +65,7 @@ const FilterBy = (props: IProps) => {
         <h2
           className="ng-text-display-s ng-body-color ng-margin-bottom ng-margin-small-right ng-c-cursor-pointer"
           onClick={handleDropdown}>
-          Search filters
+          Filters
         </h2>
         {numberOfFilters > 0 &&
           <a className="ng-link ng-nohover ng-text-weight-regular ng-text-capital" onClick={clearCheckedFilters}>Clear {`(${numberOfFilters})`}</a>

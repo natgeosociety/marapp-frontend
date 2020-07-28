@@ -77,11 +77,9 @@ const SearchBox = (props: ISearchbox) => {
           onFocus={onFocus}
         />
         {showClose && (
-          <Link to={{ type: 'EARTH' }} className="ng-c-panel-link ng-unstyled ng-flex">
-            <div onClick={onReset}>
-              <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close ng-display-block"></i>
-            </div>
-          </Link>
+          <div className="ng-close-button" onClick={onReset}>
+            <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close ng-display-block"></i>
+          </div>
         )}
       </div>
     </div>

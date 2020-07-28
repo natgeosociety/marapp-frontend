@@ -1,4 +1,5 @@
 import React from 'react';
+import { push } from 'redux-first-router';
 
 import FeaturedPlaces from 'components/places/featured-places';
 import PlacesResults from 'components/places/list';
@@ -69,6 +70,7 @@ const Places = (props: IProps) => {
     setPlacesSearch({ search: '' });
     setIndexesSelected('');
     resetMap();
+    push('/earth');
   };
 
   return (
@@ -78,7 +80,7 @@ const Places = (props: IProps) => {
         <div>
           <SearchBox
             value={search.search}
-            placeholder="search a place"
+            placeholder="search places"
             onChange={handleChange}
             onReset={handleResetLocation}
             onFocus={() => setSidebarPanelExpanded(true)}

@@ -18,16 +18,18 @@
 */
 
 import React from 'react';
-import { groupBy, debounce } from 'lodash';
+import { debounce } from 'lodash';
 import { Spinner } from '@marapp/earth-components';
+import List from '@researchgate/react-intersection-list';
 
 import { APP_BASEMAPS } from '../../theme';
 
 import SearchBox from 'components/searchbox';
 import FilterBy from 'components/filter-by';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
-import { LayerComponent } from './layer';
+import ListItem from 'components/list-item';
 import { hasFilters } from 'utils/filters';
+import { EPanels } from 'modules/sidebar/model';
 
 import './styles.scss';
 
@@ -58,14 +60,14 @@ interface IProps {
   locationName?: string;
   locationOrganization?: string;
 
-  resetMap?: () => {};
   setSidebarPanel?: (value: any) => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
+  setLayersSearch?: (value: any) => void;
+  setPlacesSearch?: (value: any) => void;
 }
 
 interface IState {
   toggles?: { settings?: any };
-  groupedLayers?: any;
 }
 
 class LayersComponent extends React.PureComponent<IProps, IState> {
@@ -79,27 +81,9 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
     super(props);
     this.state = {
       toggles: {},
-      groupedLayers: {},
     };
   }
 
-  componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any) {
-    const {
-      layers: { list },
-    } = nextProps;
-
-    this.setState({ groupedLayers: groupBy(list, 'organization') });
-  }
-
-  // componentDidUpdate(prevProps) {
-  //   const { panel } = this.props;
-
-  //   const { panel: prevPanel } = prevProps;
-
-  //   if (panel !== prevPanel && panel === 'layers') {
-  //     this.layers.scrollTop = 0;
-  //   }
-  // }
 
   onLabels = () => {
     const { mapLabels, setMapLabels } = this.props;
@@ -127,21 +111,35 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
 
       search,
       panelExpanded,
-      resetMap,
       setSidebarPanel,
       setSidebarPanelExpanded,
       locationName,
       locationOrganization,
+      setLayersSearch,
+      setPlacesSearch,
     } = this.props;
+
+    const PAGE_SIZE = 100;
     const hasSearchTerm = !!search.search;
     const showX = selected || hasSearchTerm;
     const showFilter = !selected || panelExpanded;
     const withFilters = hasFilters(search.filters);
     const showResults = hasSearchTerm || withFilters;
-    const showBack = selected && panelExpanded && showResults;
-    const onLocationPage = selected && panelExpanded && showResults;
-    const onHomepage = !selected && showResults;
-    const { groupedLayers } = this.state;
+    const showBack = selected && panelExpanded;
+
+    const handleChange = (e) => {
+      const newValue = e.target.value;
+      setLayersSearch({ search: newValue });
+    };
+
+    const handleReset = () => {
+      if (selected) {
+        setPlacesSearch({ search: locationName });
+      }
+      setLayersSearch({ search: '' });
+      setSidebarPanel(EPanels.PLACES);
+      setSidebarPanelExpanded(false);
+    };
 
     return (
       <SidebarLayoutSearch
@@ -149,16 +147,16 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
         fixedContent={
           <div>
             <SearchBox
-              value="test"
-              placeholder="search a place"
-              onChange={() => { }}
-              onReset={() => { }}
+              value={search.search}
+              placeholder="search layers"
+              onChange={handleChange}
+              onReset={handleReset}
               onFocus={() => setSidebarPanelExpanded(true)}
               showClose={showX} />
             {showFilter && <FilterBy />}
             {showBack && (
               <div
-                onClick={() => { }}
+                onClick={handleReset}
                 className="ng-c-cursor-pointer ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-ep-border-top">
                 <em className="ng-color-white">
                   Return to {locationName}<span className="ng-icon-bullet ng-margin-small-horizontal" /><span className="ng-color-mdgray">{locationOrganization}</span>
@@ -167,7 +165,45 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
             )}
           </div>
         }>
-        <div>This are the layers</div>
+        {(!selected || panelExpanded) && (
+          <>
+            <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
+              <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Widget layers</h2>
+              <List
+                awaitMore={false}
+                pageSize={PAGE_SIZE}
+                itemCount={layers.list.length}
+                renderItem={(index) => {
+                  const layer = layers.list[index];
+                  return (
+                    <ListItem
+                      title={layer.name}
+                      active={!!layers.active.find((slug) => slug === layer.slug)}
+                      key={`${layer.slug}-${layer.organization}`}
+                      onClick={debounce(() => this.onToggleLayer(layer), 200)}
+                      organization={(group.length > 1) && layer.organization}
+                      labels={[layer.category]} />
+                  )
+                }}
+                onIntersection={() => console.log('hit')}
+              />
+              <div className="ng-ep-border-top ng-margin-top ng-padding-medium-top">
+                <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Other</h2>
+                <ListItem
+                  title="Labels"
+                  active={mapLabels}
+                  key="labels"
+                  onClick={debounce(() => this.onLabels(), 200)} />
+                <ListItem
+                  title="Roads"
+                  active={mapRoads}
+                  key="roads"
+                  onClick={debounce(() => this.onRoads(), 200)} />
+              </div>
+              {loading && <Spinner position="relative" />}
+            </div>
+          </>
+        )}
       </SidebarLayoutSearch>
     );
   }
