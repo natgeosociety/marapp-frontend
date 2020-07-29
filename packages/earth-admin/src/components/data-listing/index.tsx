@@ -17,8 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import DataListing from './DataListing';
-
-export * from './default-list-item';
-export * from './auth0-list-item';
-export { DataListing };
+export { DefaultListItem } from './default-list-item';
+export { Auth0ListItem } from './auth0-list-item';
+export { default as DataListing } from './DataListing'

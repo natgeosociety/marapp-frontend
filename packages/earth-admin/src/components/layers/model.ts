@@ -34,17 +34,17 @@ export enum LayerProvider {
 
 export interface Layer {
   id: string;
-  slug?: string;
-  name?: string;
   description: string;
-  type?: LayerType;
-  provider?: LayerProvider;
   category: LayerCategory[];
   config: object;
   published: boolean;
   createdAt: Date;
   updatedAt: Date;
   version: number;
+  slug?: string;
+  name?: string;
+  type?: LayerType;
+  provider?: LayerProvider;
   references?: Layer[];
 }
 

@@ -24,8 +24,8 @@ import classnames from 'classnames';
 import './styles.scss';
 
 interface IDropdownComponent {
-  state?: string;
   children: ReactNode;
+  state?: string;
   className?: string;
 }
 

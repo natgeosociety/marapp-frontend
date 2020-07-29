@@ -56,6 +56,8 @@ class LayersService {
    * @param {string} path - The path of the request.
    * @param {object} options - The request options, these are forwarded to axios.
    */
+
+
   request(path) {
     return new Promise((resolve, reject) => {
       this.api
