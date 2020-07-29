@@ -198,9 +198,9 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
               <List
                 awaitMore={false}
                 pageSize={PAGE_SIZE}
-                itemCount={inactiveLayers.length}
+                itemCount={layers.list.length}
                 renderItem={(index) => {
-                  const layer = inactiveLayers[index];
+                  const layer = layers.list[index];
                   return (
                     <ListItem
                       title={layer.name}

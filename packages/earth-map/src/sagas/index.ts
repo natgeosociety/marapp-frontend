@@ -24,6 +24,7 @@ import home from 'sagas/home';
 import earth from 'sagas/earth';
 import global from 'sagas/global';
 import places from 'sagas/places';
+import layers from 'sagas/layers';
 import indexes from 'sagas/indexes';
 import location from 'sagas/location';
 
@@ -33,6 +34,7 @@ export default function* root() {
     fork(earth),
     fork(global),
     fork(places),
+    fork(layers),
     fork(indexes),
     fork(location)
   ]);

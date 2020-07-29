@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import {all, put, call, select} from 'redux-saga/effects';
+import {all, put, call, select, takeLatest} from 'redux-saga/effects';
 import {replace} from 'redux-first-router';
 import sortBy from 'lodash/sortBy';
 
@@ -26,10 +26,70 @@ import {DATA_INDEX_QUERY} from '../model';
 import {IIndex} from 'modules/indexes/model';
 import {ILayer} from 'modules/layers/model';
 import {IWidget} from 'modules/widget/model';
+import { setSidebarPanel } from 'modules/sidebar/actions';
+import { EPanels } from 'modules/sidebar/model';
 import {setWidgets, setWidgetsLoading, setWidgetsError} from 'modules/widgets/actions';
 import {setIndexesList} from 'modules/indexes/actions';
-import {setLayersList} from 'modules/layers/actions';
-import {getGroup} from 'sagas/saga-utils';
+import {
+  setLayersList,
+  setLayersSearch,
+  setLayersLoading,
+  setLayersSearchResults,
+  setLayersSearchAvailableFilters,
+} from 'modules/layers/actions';
+import {getGroup, getLayers, onlyMatch} from 'sagas/saga-utils';
+import { serializeFilters } from 'utils/filters';
+import { fetchLayers } from 'services/layers';
+import { LAYER_QUERY } from '../model';
+
+export default function* layers() {
+  // @ts-ignore
+  yield takeLatest(onlyMatch(setSidebarPanel, EPanels.LAYERS), () => {
+    console.log('MATHC');
+  });
+  yield takeLatest(setLayersSearch, searchLayers);
+}
+
+function* searchLayers(params) {
+  console.log(params);
+  const { meta } = yield nextPage(params)
+  yield put(setLayersSearchAvailableFilters(meta.filters))
+}
+
+/**
+ * Used to retrieve a page of results
+ */
+export function* nextPage({ payload }) {
+  const group = yield select(getGroup);
+  const { search } = yield select(getLayers);
+  const { filters, search: userInput } = search;
+  const { pageCursor, pageSize } = payload;
+
+  const filterQuery = serializeFilters(filters);
+
+  yield put(setLayersLoading(true));
+  const options = {
+    ...LAYER_QUERY,
+    ...(!!userInput && { search: userInput }),
+    ...(!!filterQuery && { filter: filterQuery }),
+    'page[cursor]': pageCursor ? pageCursor : -1,
+    ...(pageSize && { 'page[size]': pageSize }),
+    ...{ group: group.toString() },
+  }
+  const page = yield call(fetchLayers, options);
+  const { data: results, meta } = page;
+
+  yield put(
+    setLayersSearchResults({
+      results,
+      nextPageCursor: meta.pagination.nextCursor,
+    })
+  );
+  yield put(setLayersLoading(false));
+
+  return page;
+}
+
 
 export function* preloadLayers({payload}) {
   const group = yield select(getGroup);
