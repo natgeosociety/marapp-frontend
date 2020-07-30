@@ -51,6 +51,7 @@ export default function UsersPage( props ) {
 }
 
 function UsersWrapper( props: any ) {
+  const {detail} = props;
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
@@ -71,7 +72,7 @@ function UsersWrapper( props: any ) {
     async function setupUsers() {
       setIsLoading(true);
 
-      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || !props.path.location.state.key;
+      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || detail;
 
       if (dataReset && pageNumber !== 1) {
         props.path.location.state.refresh = false;
@@ -153,7 +154,7 @@ function DetailsPage( path: any ) {
   });
 
   return (
-    <UsersWrapper path={path}>
+    <UsersWrapper path={path} detail={true}>
       <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
         <UserDetails data={data}/>
       </ContentLayout>
@@ -173,7 +174,7 @@ function EditPage( path: any ) {
   });
 
   return (
-    <UsersWrapper path={path}>
+    <UsersWrapper path={path} detail={true}>
       <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
         <UserEdit data={data} newUser={path.newUser}/>
       </ContentLayout>
