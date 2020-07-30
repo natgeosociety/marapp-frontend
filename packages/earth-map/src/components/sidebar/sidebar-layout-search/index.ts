@@ -30,7 +30,8 @@ export default connect(
     locationName: state.places.data.name,
     locationOrganization: state.places.data.organization,
     lastViewedPlace: state.global.lastViewedPlace,
-  }), {
+  }),
+  {
     setPlacesSearchOpen,
     setPlacesSearch,
   }

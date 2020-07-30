@@ -18,26 +18,35 @@
 */
 
 import * as React from 'react';
-import { DataListing } from 'components/data-listing';
+import { DataListing, DefaultListItem } from 'components';
 import { LocationContext } from 'utils/contexts';
 
 export default function LocationList() {
   return (
     <LocationContext.Consumer>
-      {({ locations, handleSearchValueChange, handleCursorChange, isLoading, isNoMore, searchValue }) =>
-        locations && (
+      {( {
+           locations, handleSearchValueChange, handleCursorChange,
+           isLoading, isNoMore, searchValue, pageSize, totalResults, selectedItem,
+         } ) =>
+        (
           <DataListing
+            childComponent={DefaultListItem}
             data={locations}
             categoryUrl={'locations'}
-            pageTitle="LOCATIONS"
+            pageTitle="places"
             searchValueAction={handleSearchValueChange}
             cursorAction={handleCursorChange}
             isLoading={isLoading}
             isNoMore={isNoMore}
+            totalResults={totalResults}
+            pageSize={pageSize}
             searchValue={searchValue}
+            selectedItem={selectedItem}
           />
         )
       }
     </LocationContext.Consumer>
   );
 }
+
+

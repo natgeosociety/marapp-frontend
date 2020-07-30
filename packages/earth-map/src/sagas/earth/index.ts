@@ -22,9 +22,13 @@ import { all, select, takeLatest, put, call } from 'redux-saga/effects';
 import { fetchPlaces } from 'services/places';
 import { LOCATION_QUERY } from 'sagas/model';
 import { preloadLayers } from 'sagas/layers';
-import { nextPage } from 'sagas/places'
+import { nextPage } from 'sagas/places';
 import { IPlace } from 'modules/places/model';
-import { setPlacesSearchAvailableFilters, setPlacesCache, resetPlacesFeatured } from 'modules/places/actions';
+import {
+  setPlacesSearchAvailableFilters,
+  setPlacesCache,
+  resetPlacesFeatured,
+} from 'modules/places/actions';
 import { resetLayerCache } from 'modules/layers/actions';
 import { ignoreRedirectsTo, getGroup } from 'sagas/saga-utils';
 
@@ -45,7 +49,7 @@ export default function* earth() {
 
 function* preloadFilters() {
   const { meta } = yield nextPage({
-    payload: {}
+    payload: {},
   });
   yield put(setPlacesSearchAvailableFilters(meta.filters));
 }
