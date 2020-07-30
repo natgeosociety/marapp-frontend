@@ -64,7 +64,7 @@ function OrganizationsWrapper(props:any) {
     async function setupOrganizations() {
       setIsLoading(true);
 
-      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh;
+      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || !props.path.location.state.key;
 
       if (dataReset && pageNumber !== 1) {
         props.path.location.state.refresh = false;

@@ -86,7 +86,8 @@ function WidgetsWrapper( props: any ) {
     async function setupWidgets() {
       setIsLoading(true);
 
-      const dataReset = !!path.location.state && !!path.location.state.refresh;
+      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || !props.path.location.state.key;
+
       const query = {
         search: searchValue,
         sort: 'name',
@@ -131,6 +132,7 @@ function WidgetsWrapper( props: any ) {
       <SidebarLayout page={PAGE_TYPE}>
         <WidgetList/>
       </SidebarLayout>
+      {props.children}
     </WidgetContext.Provider>
   );
 }

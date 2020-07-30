@@ -78,7 +78,8 @@ function LayersWrapper(props: any) {
     async function setupLayers() {
       setIsLoading(true);
 
-      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh;
+      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || !props.path.location.state.key;
+
       const query = {
         search: searchValue,
         sort: 'name',
