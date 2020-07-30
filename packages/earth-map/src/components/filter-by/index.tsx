@@ -17,14 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-
-import FilterBy from './component';
-import { setPlacesSearch } from 'modules/places/actions';
-
-export default connect(
-  (state: any) => ({
-    search: state.places.search,
-  }),
-  { setPlacesSearch }
-)(FilterBy);
+export { default } from './component';

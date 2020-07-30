@@ -50,13 +50,17 @@ interface IProps {
   mapRoads?: any;
   setMapRoads?: (any) => void;
   toggleLayer?: (any) => void;
-  loading?: boolean;
-  layers?: any;
+  layers?: {
+    loading?: boolean;
+    search?: any;
+    active?: string[];
+    activeLayers?: any[];
+    results?: any[];
+  };
   open?: boolean;
   layersPanel?: boolean;
   group?: string;
   panelExpanded?: boolean;
-  search?: any;
   locationName?: string;
   locationOrganization?: string;
 
@@ -84,7 +88,6 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
     };
   }
 
-
   onLabels = () => {
     const { mapLabels, setMapLabels } = this.props;
     setMapLabels(!mapLabels);
@@ -103,13 +106,9 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
   render() {
     const {
       selected,
-      loading,
-      mapLabels,
-      mapRoads,
       layers,
       group,
 
-      search,
       panelExpanded,
       setSidebarPanel,
       setSidebarPanelExpanded,
@@ -119,6 +118,7 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
       setPlacesSearch,
       setLayersActive,
     } = this.props;
+    const { loading, search, activeLayers } = layers;
 
     const PAGE_SIZE = 100;
     const hasSearchTerm = !!search.search;
@@ -127,26 +127,23 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
     const withFilters = hasFilters(search.filters);
     const showResults = hasSearchTerm || withFilters;
     const showBack = selected && panelExpanded;
-    const activeLayers = layers.active.map(slug =>
-      layers.list.find(x => x.slug === slug)
-    )
-    const inactiveLayers = layers.list.filter(layer =>
-      !activeLayers.includes(layer)
-    )
 
     const handleChange = (e) => {
       const newValue = e.target.value;
       setLayersSearch({ search: newValue });
     };
 
-    const handleReset = () => {
+    const handleBack = () => {
       if (selected) {
         setPlacesSearch({ search: locationName });
+        setSidebarPanel(EPanels.PLACES);
       }
-      setLayersSearch({ search: '' });
-      setSidebarPanel(EPanels.PLACES);
       setSidebarPanelExpanded(false);
     };
+
+    const handleReset = () => {
+      setLayersSearch({ search: '' });
+    }
 
     return (
       <SidebarLayoutSearch
@@ -160,10 +157,10 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
               onReset={handleReset}
               onFocus={() => setSidebarPanelExpanded(true)}
               showClose={showX} />
-            {showFilter && <FilterBy />}
+            {showFilter && <FilterBy onChange={setLayersSearch} data={search} />}
             {showBack && (
               <div
-                onClick={handleReset}
+                onClick={handleBack}
                 className="ng-c-cursor-pointer ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-ep-border-top">
                 <em className="ng-color-white">
                   Return to {locationName}<span className="ng-icon-bullet ng-margin-small-horizontal" /><span className="ng-color-mdgray">{locationOrganization}</span>
@@ -188,7 +185,7 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
                       key={`${layer.slug}-${layer.organization}`}
                       onClick={debounce(() => this.onToggleLayer(layer), 200)}
                       organization={(group.length > 1) && layer.organization}
-                      labels={[layer.category]} />
+                      labels={layer.category} />
                   )
                 })}
               </div>
@@ -198,34 +195,21 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
               <List
                 awaitMore={false}
                 pageSize={PAGE_SIZE}
-                itemCount={layers.list.length}
+                itemCount={layers.results.length}
                 renderItem={(index) => {
-                  const layer = layers.list[index];
+                  const layer = layers.results[index];
                   return (
                     <ListItem
                       title={layer.name}
-                      active={!!layers.active.find((slug) => slug === layer.slug)}
+                      active={!!activeLayers.find((x) => x.slug === layer.slug)}
                       key={`${layer.slug}-${layer.organization}`}
                       onClick={debounce(() => this.onToggleLayer(layer), 200)}
                       organization={(group.length > 1) && layer.organization}
-                      labels={[layer.category]} />
+                      labels={layer.category} />
                   )
                 }}
                 onIntersection={() => console.log('hit')}
               />
-              <div className="ng-ep-border-top ng-margin-top ng-padding-medium-top">
-                <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Other</h2>
-                <ListItem
-                  title="Labels"
-                  active={mapLabels}
-                  key="labels"
-                  onClick={debounce(() => this.onLabels(), 200)} />
-                <ListItem
-                  title="Roads"
-                  active={mapRoads}
-                  key="roads"
-                  onClick={debounce(() => this.onRoads(), 200)} />
-              </div>
               {loading && <Spinner position="relative" />}
             </div>
           </>

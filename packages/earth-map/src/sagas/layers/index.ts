@@ -36,6 +36,7 @@ import {
   setLayersLoading,
   setLayersSearchResults,
   setLayersSearchAvailableFilters,
+  resetLayersResults,
 } from 'modules/layers/actions';
 import {getGroup, getLayers, onlyMatch} from 'sagas/saga-utils';
 import { serializeFilters } from 'utils/filters';
@@ -44,14 +45,12 @@ import { LAYER_QUERY } from '../model';
 
 export default function* layers() {
   // @ts-ignore
-  yield takeLatest(onlyMatch(setSidebarPanel, EPanels.LAYERS), () => {
-    console.log('MATHC');
-  });
+  yield takeLatest(onlyMatch(setSidebarPanel, EPanels.LAYERS), searchLayers);
   yield takeLatest(setLayersSearch, searchLayers);
 }
 
 function* searchLayers(params) {
-  console.log(params);
+  yield put(resetLayersResults());
   const { meta } = yield nextPage(params)
   yield put(setLayersSearchAvailableFilters(meta.filters))
 }

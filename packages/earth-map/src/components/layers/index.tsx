@@ -37,7 +37,6 @@ export default connect(
     ...state.sidebar,
     group: state.user.group,
     layers: state.layers,
-    search: state.layers.search,
 
     mapStyle: state.map.mapStyle,
     mapLabels: state.map.mapLabels,

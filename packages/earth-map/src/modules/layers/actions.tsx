@@ -44,6 +44,8 @@ export const setLayersSearchAvailableFilters = createAction('LAYERS/setLayersSea
 export const setLayersSearchResults = createAction('LAYERS/setLayersSearchResults');
 export const nextLayersPage = createAction('LAYERS/nextLayersPage');
 
+export const resetLayersResults = createAction('LAYERS/resetLayersResults');
+
 export default {
   setLayersLoading,
   setLayersError,

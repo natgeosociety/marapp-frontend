@@ -16,6 +16,7 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
+import { groupBy, sortBy } from 'lodash';
 
 import * as actions from './actions';
 import initialState from './initial-state';
@@ -32,6 +33,8 @@ export default {
   [actions.setLayersActive]: (state, { payload }) => ({
     ...state,
     active: payload,
+    // keep activeLayers in sync with active array
+    activeLayers: payload.map((slug) => state.activeLayers.find(x => x.slug === slug)),
   }),
   [actions.setLayersList]: (state, { payload }) => {
     return {
@@ -41,11 +44,16 @@ export default {
   },
 
   [actions.toggleLayer]: (state, { payload }) => {
-    const active = [...state.active];
-    const slug = payload.slug || payload.layer.slug;
+    const { activeLayers } = state;
+    const layer = payload;
+    const newActiveLayers = (activeLayers.find(x => x.slug === layer.slug))
+      ? activeLayers.filter(x => x.slug !== layer.slug)
+      : [layer, ...activeLayers];
+
     return {
       ...state,
-      active: active.indexOf(slug) > -1 ? active.filter((e) => e !== slug) : [slug, ...active],
+      active: newActiveLayers.map(x => x.slug),
+      activeLayers: newActiveLayers ,
     };
   },
   [actions.setLayerOrder]: (state, { payload }) => {
@@ -153,6 +161,45 @@ export default {
       search: { ...state.search, ...payload },
     };
   },
+
+  // exactly the same code from actions.setPlacesSearchAvailableFilters
+  [actions.setLayersSearchAvailableFilters]: (state, { payload }) => {
+    // Add label and parse boolean values to strings 'true'/'false'
+    const filtersWithLabels = payload.map(filter => ({
+      ...filter,
+      label: filter.value,
+      ...typeof filter.value === 'boolean' && {
+        label: filter.value
+          ? 'Yes'
+          : 'No',
+        value: filter.value
+          ? 'true'
+          : 'false'
+      }
+    }))
+    const availableFilters = groupBy(sortBy(filtersWithLabels, 'value'), 'key');
+    return {
+      ...state,
+      search: {
+        ...state.search,
+        availableFilters,
+      }
+    }
+  },
+  [actions.setLayersSearchResults]: (state, { payload }) => {
+    const { results, nextPageCursor } = payload;
+    return {
+      ...state,
+      results: [...state.results, ...results],
+      nextPageCursor,
+    };
+  },
+  [actions.resetLayersResults]: (state) => ({
+    ...state,
+    results: [],
+    nextPageCursor: null,
+  }),
+  // Search end
 
   [actions.resetLayers]: () => {
     return initialState;

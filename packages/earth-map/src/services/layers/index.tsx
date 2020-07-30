@@ -55,8 +55,11 @@ class LayersService {
       this.api
         .get(path)
         .then(response => {
-          resolve(this.dataFormatter.deserialize(response.data));
-          resolve(response.data);
+          const result = this.dataFormatter.deserialize(response.data);
+          resolve({
+            data: result,
+            meta: response.data.meta,
+          });
         })
         .catch(err => {
           reject(err);

@@ -25,13 +25,13 @@ import { cleanFilters, countFilters } from 'utils/filters';
 import './styles.scss';
 
 interface IProps {
-  search?: any;
-  setPlacesSearch?: (payload?) => void;
+  data: any;
+  onChange: (payload?) => void;
 };
 
 const FilterBy = (props: IProps) => {
-  const { search, setPlacesSearch } = props;
-  const { filters, availableFilters } = search;
+  const { data, onChange } = props;
+  const { filters, availableFilters } = data;
   const [dropdownState, setDropdownState] = useState('close');
   const numberOfFilters = countFilters(filters);
 
@@ -43,7 +43,7 @@ const FilterBy = (props: IProps) => {
         ? filterGroup.filter((x) => x !== value)
         : [...filterGroup, value],
     };
-    setPlacesSearch({
+    onChange({
       filters: cleanFilters({
         ...filters,
         ...newFilters,
@@ -51,7 +51,7 @@ const FilterBy = (props: IProps) => {
     });
   };
 
-  const clearCheckedFilters = () => setPlacesSearch({
+  const clearCheckedFilters = () => onChange({
     filters: {}
   });
 

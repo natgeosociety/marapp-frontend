@@ -85,7 +85,7 @@ const Places = (props: IProps) => {
             onReset={handleResetLocation}
             onFocus={() => setSidebarPanelExpanded(true)}
             showClose={showX} />
-          {showFilter && <FilterBy />}
+          {showFilter && <FilterBy onChange={setPlacesSearch} data={search} />}
           {showBack && (
             <div
               onClick={handleBack}
