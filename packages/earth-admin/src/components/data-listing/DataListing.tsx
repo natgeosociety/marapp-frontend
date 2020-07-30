@@ -87,7 +87,7 @@ const DataListing = ( props:DataListingProps ) => {
           renderItem={renderItem}
           onIntersection={onIntersection}
         />
-        {isNoMore && (
+        {!searchValue && isNoMore && (
           <div className=" ng-text-center">
             <p className=" ng-color-gray-3 ng-margin-medium-top ng-margin-bottom-remove">
               - end -
