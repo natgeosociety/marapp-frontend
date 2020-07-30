@@ -49,3 +49,8 @@
     color: $marapp-gray-1;
   }
 }
+
+.ng-sidebar-header {
+  position: relative;
+  z-index: 101;
+}
