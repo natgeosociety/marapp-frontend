@@ -30,6 +30,7 @@ const UserAPIService = {
       transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
         data: data.data ? deserializeData(data) : data,
         pagination: data.meta ? data.meta.pagination : null,
+        total: data.meta ? data.meta.results : null
       })),
     });
 

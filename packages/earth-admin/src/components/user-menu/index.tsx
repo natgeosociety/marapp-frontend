@@ -17,34 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import '../../styles/config';
+import UserMenuComponent from './component';
 
-.ng-sidebar {
-  background:$marapp-gray-8;
-  min-width: $sidebar-width;
-  max-width: $sidebar-width;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  > nav {
-    width: 100%;
-  }
-}
-
-.ng-admin-logo {
-  height: 40px;
-}
-
-.ng-side-menu-item {
-  border: 0;
-  color: $marapp-gray-1;
-  display: block;
-  transition: all 0.3s ease-in;
-
-  &:hover {
-    background: $marapp-gray-8;
-    border: 0;
-    color: $marapp-gray-1;
-  }
-}
+export { UserMenuComponent };

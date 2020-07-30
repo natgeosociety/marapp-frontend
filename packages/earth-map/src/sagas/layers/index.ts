@@ -96,7 +96,7 @@ export function* preloadLayers({payload}) {
   try {
     const indexes: IIndex[] = yield call(fetchDataIndexes, {
       ...DATA_INDEX_QUERY,
-      ...{group: group.toString()},
+      ...{ group: group.toString() },
     });
     const widgets = indexes.reduce((acc, index) => {
       return [...acc, ...index.widgets];
@@ -106,7 +106,7 @@ export function* preloadLayers({payload}) {
     yield put(
       setIndexesList(
         sortBy(indexes, (dil) => {
-          const {name} = dil;
+          const { name } = dil;
           return name;
         })
       )
@@ -140,29 +140,28 @@ function* fetchLayerGroups(layers: any) {
 }
 
 function setWidget(widget: IWidget) {
-  const adaptedWidget = {...widget, ...widget.config};
+  const adaptedWidget = { ...widget, ...widget.config };
   delete adaptedWidget.config;
 
   return adaptedWidget;
 }
 
 function setLayer(layer) {
-  const adaptedLayer = {...layer, ...layer.config};
+  const adaptedLayer = { ...layer, ...layer.config };
 
   delete adaptedLayer.config;
 
   if (!!adaptedLayer.references && adaptedLayer.references.length) {
     const adaptedReferences = layer.references.map((layer) => {
-      const tempLayer = {...layer, ...layer.config};
+      const tempLayer = { ...layer, ...layer.config };
       delete layer.config;
       return tempLayer;
     });
 
     return {
       ...adaptedLayer,
-      references: adaptedReferences
+      references: adaptedReferences,
     };
-
   }
 
   return {

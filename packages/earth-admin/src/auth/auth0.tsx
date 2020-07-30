@@ -69,7 +69,7 @@ export const Auth0Provider = ({
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isAppBootstrapped, setIsAppBootstrapped] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [userData, setUserData] = useState({});
 
   const [groups, setGroups] = useState([]);
   const [roles, setRoles] = useState({});
@@ -115,7 +115,14 @@ export const Auth0Provider = ({
         setRoles(mapAuthzScopes(roles));
 
         const permissions = get(idToken, `${NAMESPACE}/permissions`, []);
+
         setPermissions(mapAuthzScopes(permissions));
+
+        const email = get(idToken, 'email', '');
+        const userName = get(idToken, 'name', '');
+        const userPicture = get(idToken, 'picture', '');
+
+        setUserData({ name: userName, picture: userPicture, allGroups: nonNestedGroups });
 
         const authorized = !!roles.length;
         setIsAuthorized(authorized);
@@ -167,6 +174,7 @@ export const Auth0Provider = ({
         selectedGroup,
         login,
         logout,
+        userData,
         getUser,
         getToken,
         setIsLoading,

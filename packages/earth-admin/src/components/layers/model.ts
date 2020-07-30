@@ -34,18 +34,32 @@ export enum LayerProvider {
 
 export interface Layer {
   id: string;
-  slug?: string;
-  name?: string;
   description: string;
-  type?: LayerType;
-  provider?: LayerProvider;
   category: LayerCategory[];
   config: object;
   published: boolean;
   createdAt: Date;
   updatedAt: Date;
   version: number;
+  slug?: string;
+  name?: string;
+  type?: LayerType;
+  provider?: LayerProvider;
   references?: Layer[];
+}
+
+export interface LayerContextProps {
+  layers: Layer[];
+  handleSearchValueChange: (v: string) => void;
+  handleCursorChange: Function;
+  pageSize: number;
+  isLoading: boolean;
+  isNoMore: boolean;
+  searchValue?: string;
+  permissions?: any;
+  totalResults?: number;
+  nextCursor?: string;
+  selectedItem?: string;
 }
 
 export interface LayerProps {

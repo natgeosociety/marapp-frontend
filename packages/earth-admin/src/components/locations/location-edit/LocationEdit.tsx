@@ -28,9 +28,7 @@ import { JSHINT } from 'jshint';
 
 import { LocationProps, LocationTypeEnum } from '../model';
 import { handleLocationForm } from 'services/locations';
-import { JsonEditor } from 'components/json-editor';
-import { ErrorMessages } from 'components/error-messages';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { JsonEditor, ErrorMessages, LinkWithOrg } from 'components';
 import { Auth0Context } from 'utils/contexts';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';

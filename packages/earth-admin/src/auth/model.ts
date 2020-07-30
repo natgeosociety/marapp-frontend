@@ -25,6 +25,7 @@ export interface Auth0 {
   roles?: { [key: string]: any };
   permissions?: { [key: string]: any };
   selectedGroup?: string;
+  userData?: User;
   logout?(o?: LogoutOptions): void;
   login?(o?: BaseLoginOptions): void;
   getUser?(o?: GetUserOptions): void;
@@ -32,4 +33,10 @@ export interface Auth0 {
   setupUserOrg?(o?: string): void;
   setIsLoading(boolean): void;
   getPermissions?(type: string[]): boolean;
+}
+
+export interface User {
+  name?: string;
+  picture?: string;
+  allGroups?: string[];
 }

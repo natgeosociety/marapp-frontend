@@ -73,6 +73,6 @@ export const LAYER_DEFAULT = {
           'line-width': 2,
         },
       },
-    ]
+    ],
   },
 };

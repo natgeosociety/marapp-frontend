@@ -18,21 +18,30 @@
 */
 
 import * as React from 'react';
-import { OrganizationDataListing } from 'components/data-listing';
+import { DataListing, Auth0ListItem } from 'components';
 import { OrganizationContext } from 'utils/contexts';
 
 export default function OrganizationList() {
   return (
     <OrganizationContext.Consumer>
-      {({ organizations, handleCursorChange, isLoading, isNoMore }) =>
-        organizations && (
-          <OrganizationDataListing
+      {( {
+           organizations, handleSearchValueChange, handleCursorChange,
+           isLoading, isNoMore, searchValue, pageSize, totalResults, selectedItem,
+         } ) =>
+        (
+          <DataListing
+            childComponent={Auth0ListItem}
             data={organizations}
             categoryUrl={'organizations'}
             pageTitle="ORGANIZATIONS"
+            searchValueAction={handleSearchValueChange}
             cursorAction={handleCursorChange}
             isLoading={isLoading}
             isNoMore={isNoMore}
+            totalResults={totalResults}
+            pageSize={pageSize}
+            searchValue={searchValue}
+            selectedItem={selectedItem}
           />
         )
       }

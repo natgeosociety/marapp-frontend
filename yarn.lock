@@ -22366,9 +22366,9 @@ viewport-mercator-project@^6.1.0, viewport-mercator-project@^6.1.1:
     gl-matrix "^3.0.0"
 
 vizzuality-components@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/vizzuality-components/-/vizzuality-components-3.0.1.tgz#e6ec4476d35bdc399df3b0021e3fc2627b0e2670"
-  integrity sha512-UveRrNy/LoDBSdbM9by3ToJWQopXaAzLt3/GnyKDX5eS/BodOVrKT5RMANl1R0q8rmetfxKhZRXkIltsiQtWjg==
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/vizzuality-components/-/vizzuality-components-3.0.3.tgz#ca93c266a3f8548edeef3c1060ea78232760b798"
+  integrity sha512-0Ee1p9nnX8MpH4GXpbkMba7RUZ7bs1C+B7yvipUf2a1WiyhmjHzEipBjphdRmirA6+ShFxIyR5017F0zwYm2WA==
   dependencies:
     array-move "^2.1.0"
     axios "^0.19.0"

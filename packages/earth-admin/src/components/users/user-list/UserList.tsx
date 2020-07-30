@@ -18,21 +18,30 @@
 */
 
 import * as React from 'react';
-import { UserDataListing } from 'components/data-listing';
+import { DataListing, Auth0ListItem } from 'components';
 import { UserContext } from 'utils/contexts';
 
 export default function UserList() {
   return (
     <UserContext.Consumer>
-      {({ users, handleCursorChange, isLoading, isNoMore }) =>
-        users && (
-          <UserDataListing
+      {( {
+           users, handleSearchValueChange, handleCursorChange,
+           isLoading, isNoMore, searchValue, pageSize, totalResults, selectedItem,
+         } ) =>
+        (
+          <DataListing
+            childComponent={Auth0ListItem}
             data={users}
             categoryUrl={'users'}
-            pageTitle="USERS"
+            pageTitle="users"
+            searchValueAction={handleSearchValueChange}
             cursorAction={handleCursorChange}
             isLoading={isLoading}
             isNoMore={isNoMore}
+            totalResults={totalResults}
+            pageSize={pageSize}
+            searchValue={searchValue}
+            selectedItem={selectedItem}
           />
         )
       }

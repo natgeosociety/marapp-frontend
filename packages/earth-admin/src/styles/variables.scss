@@ -64,7 +64,7 @@ $flexboxgrid-breakpoints: (
   xlg: $xlg,
 );
 
-$sidebar-width: 300px;
+$sidebar-width: 375px;
 
 //overwrites for FE framework
 $ultraltgray: $marapp-gray-1;
@@ -84,3 +84,5 @@ $base-heading-font-family: $marapp-primary-font;
 $base-body-font-family: $marapp-secondary-font;
 $theme-color: $marapp-gray-100;
 $theme-primary-color: $marapp-primary-color;
+
+$form-focus-border--dark: $marapp-primary-color;

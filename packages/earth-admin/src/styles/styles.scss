@@ -28,6 +28,23 @@ body {
   overflow: hidden;
 }
 
+body {
+  scrollbar-width: thin;
+  scrollbar-color: $marapp-gray-7 $marapp-gray-8;
+}
+::-webkit-scrollbar-track {
+  background: $marapp-gray-8;
+}
+::-webkit-scrollbar-thumb {
+  background-color: $marapp-gray-7;
+  border-radius: 6px;
+  border: 3px solid $marapp-gray-8;
+}
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+
 .ng-page-container {
   height: 100vh;
   overflow-y: auto;

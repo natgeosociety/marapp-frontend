@@ -50,6 +50,8 @@ class LayersService {
    * Creates an axios request based on type an options.
    * @param {string} path - The path of the request.
    */
+
+
   request(path) {
     return new Promise((resolve, reject) => {
       this.api

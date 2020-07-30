@@ -19,10 +19,10 @@
 
 export interface Location {
   id: string;
-  slug?: string;
-  name?: string;
   description: string;
   type: LocationTypeEnum;
+  slug?: string;
+  name?: string;
   geojson?: {};
   published?: boolean;
   featured?: boolean;
@@ -40,12 +40,14 @@ export interface LocationContextProps {
   locations: Location[];
   handleSearchValueChange: (newValue: string) => void;
   handleCursorChange: Function;
-  pagination: {
-    pageCursor: string;
-  };
+  pageSize: number;
   isLoading: boolean;
   isNoMore: boolean;
   searchValue?: string;
+  permissions?: any;
+  totalResults?: number;
+  nextCursor?: string;
+  selectedItem?: string;
 }
 
 export enum LocationTypeEnum {

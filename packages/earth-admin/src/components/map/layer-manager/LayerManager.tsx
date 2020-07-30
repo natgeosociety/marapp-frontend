@@ -26,8 +26,8 @@ import { MapComponentContext } from 'utils/contexts';
 import { PluginMapboxGl } from 'layer-manager';
 
 interface ManagerProps {
-  map?: any;
   layer: any;
+  map?: any;
 }
 
 export default function LayerManagerComponent(props: ManagerProps) {
