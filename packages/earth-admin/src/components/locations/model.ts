@@ -19,10 +19,10 @@
 
 export interface Location {
   id: string;
-  slug?: string;
-  name?: string;
   description: string;
   type: LocationTypeEnum;
+  slug?: string;
+  name?: string;
   geojson?: {};
   published?: boolean;
   featured?: boolean;

@@ -23,9 +23,9 @@ import classnames from 'classnames';
 import { LinkWithOrg } from 'components';
 
 interface DataListProps {
-  categoryUrl?: string;
-  item?: { name: string; id: string; slug: string };
-  selectedItem?: string;
+  categoryUrl: string;
+  item: { name: string; id: string; slug: string };
+  selectedItem: string;
 }
 
 const DefaultListItem = (props: DataListProps) => {

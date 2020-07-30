@@ -26,8 +26,22 @@ import { useAuth0 } from 'auth/auth0';
 
 import './styles.scss';
 
+interface DataListingProps {
+  data: any;
+  categoryUrl: string;
+  childComponent: React.ElementType
+  pageSize: number;
+  totalResults: number;
+  selectedItem?: string;
+  pageTitle?: string;
+  searchValueAction?: (val: string) => {};
+  cursorAction?: () => {};
+  isLoading: boolean;
+  isNoMore?: boolean;
+  searchValue?: string;
+}
 
-const DataListing = ( props ) => {
+const DataListing = ( props:DataListingProps ) => {
   const {
     cursorAction, data, isLoading, isNoMore,
     searchValue, searchValueAction, categoryUrl, pageTitle, childComponent, pageSize, totalResults, selectedItem,
@@ -41,7 +55,7 @@ const DataListing = ( props ) => {
   const renderItem = ( index ) => {
     const item = data[ index ];
     return (
-      <div key={index}>
+      <div key={item.slug}>
         {React.createElement(childComponent, {
           item: item,
           categoryUrl: categoryUrl,

@@ -21,8 +21,8 @@ import * as React from 'react';
 import { LinkWithOrg } from '../../link-with-org';
 
 interface Auth0ListProps {
-  categoryUrl?: string;
-  item?: { id: string; name: string; email: string; groups: { name: string }[] };
+  categoryUrl: string;
+  item: { id: string; name: string; email: string; groups: { name: string }[] };
 }
 
 const Auth0ListItem = ( props: Auth0ListProps ) => {

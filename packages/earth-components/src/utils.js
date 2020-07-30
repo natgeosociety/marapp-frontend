@@ -17,6 +17,22 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { DefaultListItem } from './default-list-item';
-export { Auth0ListItem } from './auth0-list-item';
-export { default as DataListing } from './DataListing'
+
+import { useEffect } from 'react';
+
+export function useDomWatcher(ref, callback, skip) {
+  useEffect(() => {
+    if (skip) return;
+
+    const handleClickOutside = event => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        callback && callback();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [ref, skip]);
+}
