@@ -38,21 +38,17 @@ export const ignoreRedirectsTo = (actionName: string): Function => {
   };
 };
 
-export const onlyMatch = (
-  actionToMatch: string | Function,
-  payload: any
-): Function => {
+export const onlyMatch = (actionToMatch: string | Function, payload: any): Function => {
   return (action): boolean => {
-    const actionName = typeof actionToMatch === 'function'
-      ? actionToMatch.toString()
-      : actionToMatch;
+    const actionName =
+      typeof actionToMatch === 'function' ? actionToMatch.toString() : actionToMatch;
     const actionWeCareAbout = action.type === actionName;
     if (!actionWeCareAbout) {
       return false;
     }
     return action.payload === payload;
-  }
-}
+  };
+};
 
 // Selectors
 export const getAll = (state) => state;

@@ -17,19 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
-import {all, put, call, select, takeLatest} from 'redux-saga/effects';
-import {replace} from 'redux-first-router';
+import { all, put, call, select, takeLatest } from 'redux-saga/effects';
+import { replace } from 'redux-first-router';
 import sortBy from 'lodash/sortBy';
 
-import {fetchDataIndexes} from 'services/data-indexes';
-import {DATA_INDEX_QUERY} from '../model';
-import {IIndex} from 'modules/indexes/model';
-import {ILayer} from 'modules/layers/model';
-import {IWidget} from 'modules/widget/model';
+import { fetchDataIndexes } from 'services/data-indexes';
+import { DATA_INDEX_QUERY } from '../model';
+import { IIndex } from 'modules/indexes/model';
+import { ILayer } from 'modules/layers/model';
+import { IWidget } from 'modules/widget/model';
 import { setSidebarPanel } from 'modules/sidebar/actions';
 import { EPanels } from 'modules/sidebar/model';
-import {setWidgets, setWidgetsLoading, setWidgetsError} from 'modules/widgets/actions';
-import {setIndexesList} from 'modules/indexes/actions';
+import { setWidgets, setWidgetsLoading, setWidgetsError } from 'modules/widgets/actions';
+import { setIndexesList } from 'modules/indexes/actions';
 import {
   setLayersList,
   setLayersSearch,
@@ -38,7 +38,7 @@ import {
   setLayersSearchAvailableFilters,
   resetLayersResults,
 } from 'modules/layers/actions';
-import {getGroup, getLayers, onlyMatch} from 'sagas/saga-utils';
+import { getGroup, getLayers, onlyMatch } from 'sagas/saga-utils';
 import { serializeFilters } from 'utils/filters';
 import { fetchLayers } from 'services/layers';
 import { LAYER_QUERY } from '../model';
@@ -51,8 +51,8 @@ export default function* layers() {
 
 function* searchLayers(params) {
   yield put(resetLayersResults());
-  const { meta } = yield nextPage(params)
-  yield put(setLayersSearchAvailableFilters(meta.filters))
+  const { meta } = yield nextPage(params);
+  yield put(setLayersSearchAvailableFilters(meta.filters));
 }
 
 /**
@@ -74,7 +74,7 @@ export function* nextPage({ payload }) {
     'page[cursor]': pageCursor ? pageCursor : -1,
     ...(pageSize && { 'page[size]': pageSize }),
     ...{ group: group.toString() },
-  }
+  };
   const page = yield call(fetchLayers, options);
   const { data: results, meta } = page;
 
@@ -89,8 +89,7 @@ export function* nextPage({ payload }) {
   return page;
 }
 
-
-export function* preloadLayers({payload}) {
+export function* preloadLayers({ payload }) {
   const group = yield select(getGroup);
 
   try {

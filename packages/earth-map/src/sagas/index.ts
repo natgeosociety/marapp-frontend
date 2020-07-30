@@ -36,6 +36,6 @@ export default function* root() {
     fork(places),
     fork(layers),
     fork(indexes),
-    fork(location)
+    fork(location),
   ]);
 }

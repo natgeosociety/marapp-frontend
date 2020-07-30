@@ -27,7 +27,7 @@ import { fetchPlace } from 'services/places';
 // Actions
 import { setMap } from 'modules/map/actions';
 import { setMetrics, setMetricsLoading } from 'modules/metrics/actions';
-import { setSidebarPanelExpanded } from 'modules/sidebar/actions'
+import { setSidebarPanelExpanded } from 'modules/sidebar/actions';
 import {
   setPlaceData,
   setPlaceSelectedOpen,
