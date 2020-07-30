@@ -55,7 +55,7 @@ const DataListing = ( props:DataListingProps ) => {
   const renderItem = ( index ) => {
     const item = data[ index ];
     return (
-      <div key={item.slug}>
+      <div key={item.id}>
         {React.createElement(childComponent, {
           item: item,
           categoryUrl: categoryUrl,
