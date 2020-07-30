@@ -27,7 +27,7 @@ import { APP_NAME } from '../theme';
 import '../styles/app.scss';
 
 interface ILayoutProps {
-  children: any;
+  children?: any;
   permission?: boolean;
   errors?: Object[];
   backTo?: string;
@@ -51,35 +51,6 @@ const Unauthorized = ( props: IUnauthorizedProps ) => {
 };
 
 export default function ContentLayout( props: ILayoutProps ) {
-
-  const {
-    permission = true, // backwards compatibility, permission moves to errors array
-    errors = [],
-    backTo = '/',
-    isLoading,
-  } = props;
-
-  const Content = () => {
-    if (isLoading) {
-      return <Spinner size="medium"/>;
-    }
-    if (!permission) {
-      return <Unauthorized message="You are not authorized to view this page"/>;
-    }
-    if (errors.length) {
-      return (
-        <div>
-          <ErrorMessages errors={errors}/>
-          <LinkWithOrg className="ng-button" to={backTo}>
-            Back
-          </LinkWithOrg>
-        </div>
-      );
-    }
-
-    return props.children;
-  };
-
   return (
     <div className="ng-flex">
       <Helmet>
@@ -90,9 +61,37 @@ export default function ContentLayout( props: ILayoutProps ) {
       <div className="ng-page-container">
         <UserMenuComponent/>
         <div className="ng-padding-large">
-          <Content/>
+          <Content {...props}/>
         </div>
       </div>
     </div>
   );
 }
+
+const Content = (props: ILayoutProps) => {
+  const {
+    permission = true, // backwards compatibility, permission moves to errors array
+    errors = [],
+    backTo = '/',
+    isLoading,
+  } = props;
+
+  if (isLoading) {
+    return <Spinner size="medium"/>;
+  }
+  if (!permission) {
+    return <Unauthorized message="You are not authorized to view this page"/>;
+  }
+  if (errors.length) {
+    return (
+      <div>
+        <ErrorMessages errors={errors}/>
+        <LinkWithOrg className="ng-button" to={backTo}>
+          Back
+        </LinkWithOrg>
+      </div>
+    );
+  }
+
+  return props.children;
+};
