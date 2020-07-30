@@ -89,3 +89,8 @@ export const parseHintBold = (text: string = '') => {
       : term
   ))
 };
+
+/**
+ * No operation function. Does nothing, but still useful
+ */
+export const noop = (): void => {};

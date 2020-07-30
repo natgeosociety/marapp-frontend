@@ -20,6 +20,8 @@
 import React from 'react';
 import classnames from 'classnames';
 
+import { noop } from 'utils';
+
 import './styles.scss';
 
 interface ISearchbox {
@@ -44,9 +46,9 @@ const SearchBox = (props: ISearchbox) => {
   const {
     value,
     placeholder,
-    onChange = () => {},
-    onReset = () => {},
-    onFocus = () => {},
+    onChange = noop,
+    onReset = noop,
+    onFocus = noop,
     showClose,
   } = props;
 

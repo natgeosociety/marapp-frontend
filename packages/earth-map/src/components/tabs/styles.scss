@@ -2,6 +2,7 @@
 
 .ng-ep-tabs {
   display: flex;
+  user-select: none;
 
   .ng-ep-tab {
     font-size: 16px;
