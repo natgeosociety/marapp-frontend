@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
+import React, { useState } from 'react';
 import classnames from 'classnames';
-import {useState} from 'react';
+
 
 import './styles.scss';
 
