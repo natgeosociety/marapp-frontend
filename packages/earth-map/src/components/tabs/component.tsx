@@ -11,7 +11,7 @@ interface IProps {
 
 const Tabs = (props: IProps) => {
   const { children, value, onChange, className } = props;
-  const tabs = Children.map(children, (child, i) => cloneElement(child, {
+  const tabs = Children.map(children, (child) => cloneElement(child, {
     selected: value === child.props.value,
     onClick: onChange,
   }));
