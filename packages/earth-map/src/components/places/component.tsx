@@ -13,6 +13,7 @@ import { hasFilters } from 'utils/filters';
 
 interface IProps {
   selected: boolean;
+  panel?: string;
   panelExpanded?: boolean;
   search?: any;
   group?: any;
@@ -30,6 +31,7 @@ interface IProps {
 const Places = (props: IProps) => {
   const {
     selected,
+    panel,
     panelExpanded,
     search,
     group,
@@ -75,9 +77,10 @@ const Places = (props: IProps) => {
 
   return (
     <SidebarLayoutSearch
+      panel={panel}
       setSidebarPanel={setSidebarPanel}
       fixedContent={
-        <div>
+        <>
           <SearchBox
             value={search.search}
             placeholder="search places"
@@ -95,7 +98,7 @@ const Places = (props: IProps) => {
               </em>
             </div>
           )}
-        </div>
+        </>
       }>
       {(onLocationPage || onHomepage)
         ? <PlacesResults />

@@ -17,10 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 
-import Link from 'redux-first-router-link';
 import './styles.scss';
 
 interface ISearchbox {

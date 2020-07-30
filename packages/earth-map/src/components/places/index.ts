@@ -7,7 +7,7 @@ import { setIndexesSelected } from 'modules/indexes/actions';
 import { resetMap } from 'modules/map/actions';
 
 export default connect((state: any) => ({
-  panelExpanded: state.sidebar.panelExpanded,
+  ...state.sidebar,
   search: state.places.search,
   group: state.user.group,
   locationName: state.places.data.name,

@@ -60,6 +60,7 @@ interface IProps {
   open?: boolean;
   layersPanel?: boolean;
   group?: string;
+  panel?: string;
   panelExpanded?: boolean;
   locationName?: string;
   locationOrganization?: string;
@@ -109,6 +110,7 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
       layers,
       group,
 
+      panel,
       panelExpanded,
       setSidebarPanel,
       setSidebarPanelExpanded,
@@ -147,9 +149,10 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
 
     return (
       <SidebarLayoutSearch
+        panel={panel}
         setSidebarPanel={setSidebarPanel}
         fixedContent={
-          <div>
+          <>
             <SearchBox
               value={search.search}
               placeholder="search layers"
@@ -167,7 +170,7 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
                 </em>
               </div>
             )}
-          </div>
+          </>
         }>
         {(!selected || panelExpanded) && (
           <>
