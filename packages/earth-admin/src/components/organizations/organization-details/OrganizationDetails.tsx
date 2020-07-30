@@ -26,8 +26,9 @@ import { ActionModal, LinkWithOrg } from 'components';
 
 export default function OrganizationDetails( props: OrganizationProps ) {
   const {
-    data: { name, description, id },
+    data: { name, owners, description, id },
   } = props;
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { getPermissions } = useAuth0();
@@ -57,6 +58,9 @@ export default function OrganizationDetails( props: OrganizationProps ) {
 
         <p>
           <span className="ng-text-weight-medium">Name:</span> {name || '-'}
+        </p>
+        <p>
+          <span className="ng-text-weight-medium">Owners:</span> {owners.join(', ')}
         </p>
         <p>
           <span className="ng-text-weight-medium">Description: </span> {description || '-'}

@@ -30,7 +30,7 @@ const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
 export default function OrganizationEdit(props: OrganizationEditProps) {
   const {
-    data: { name, description, id },
+    data: { name, owners, description, id },
     newOrg,
   } = props;
 
@@ -70,6 +70,20 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
                 type="text"
                 defaultValue={name}
                 placeholder="Organization name"
+                className={INPUT_SIZE_CLASSNAME}
+                disabled
+              />
+            </div>
+            <div className="ng-width-large-1-2 ng-width-1-1">
+              <label className="ng-form-label" htmlFor="owners">
+                Organization owners
+              </label>
+              <input
+                ref={register}
+                name="owners"
+                type="text"
+                defaultValue={owners[0]}
+                placeholder="Organization owners"
                 className={INPUT_SIZE_CLASSNAME}
                 disabled
               />

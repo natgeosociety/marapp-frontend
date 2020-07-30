@@ -18,6 +18,7 @@
 */
 
 import React from 'react';
+import { Spinner } from '@marapp/earth-components';
 
 import ListItem from 'components/list-item';
 
@@ -33,9 +34,14 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
 
   return (
     <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
-      <h2 className="ng-padding-medium ng-text-display-s ng-body-color ng-margin-remove">Featured places</h2>
+      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Featured places</h2>
       <div>
-        {!!featured.data &&
+        {!featured?.data.length && (
+          <div className="ng-padding-large ng-position-relative">
+            <Spinner />
+          </div>
+        )}
+        {!!featured.data.length &&
           featured.data.map((place: any) => {
             const { slug, name, id, organization, type } = place;
 
@@ -43,10 +49,8 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
               <ListItem
                 title={name} key={`${slug}-${organization}`}
                 linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
-                labels={[
-                  type,
-                  (group.length > 1) && organization
-                ]} />
+                organization={(group.length > 1) && organization}
+                labels={[type]} />
             );
           })}
       </div>

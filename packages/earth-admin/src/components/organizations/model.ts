@@ -18,19 +18,20 @@
 */
 
 export interface Organization {
-  id: string;
-  name: string;
-  description: string;
-}
+    id: string;
+    name: string;
+    owners: string[];
+    description: string;
+  }
 
-export interface OrganizationProps {
-  data: Organization;
-}
+  export interface OrganizationProps {
+    data: Organization;
+  }
 
-export interface OrganizationEditProps {
-  data: Organization;
-  newOrg: boolean;
-}
+  export interface OrganizationEditProps {
+    data: Organization;
+    newOrg: boolean;
+  }
 
 export interface OrganizationContextProps {
   organizations: Organization[];
