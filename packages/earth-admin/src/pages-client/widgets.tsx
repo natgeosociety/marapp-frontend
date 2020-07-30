@@ -54,7 +54,7 @@ export default function WidgetsPage( props ) {
 }
 
 function WidgetsWrapper( props: any ) {
-  const { path } = props;
+  const { path, detail } = props;
   const [widgets, setWidgets] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -86,7 +86,7 @@ function WidgetsWrapper( props: any ) {
     async function setupWidgets() {
       setIsLoading(true);
 
-      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || !props.path.location.state.key;
+      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || detail;
 
       const query = {
         search: searchValue,
@@ -171,7 +171,7 @@ function DetailsPage( path: any ) {
   });
 
   return (
-    <WidgetsWrapper path={path}>
+    <WidgetsWrapper path={path} detail={true}>
       <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
         <WidgetDetails data={data}/>
       </ContentLayout>
@@ -191,7 +191,7 @@ function EditPage( path: any ) {
   });
 
   return (
-    <WidgetsWrapper path={path}>
+    <WidgetsWrapper path={path} detail={true}>
       <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
         <WidgetEdit data={data} newWidget={path.newWidget}/>
       </ContentLayout>

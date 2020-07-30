@@ -53,6 +53,7 @@ export default function LocationsPage( props ) {
 }
 
 function LocationsWrapper( props: any ) {
+  const {detail} = props;
   const [locations, setLocations] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -83,7 +84,7 @@ function LocationsWrapper( props: any ) {
     async function setupLocations() {
       setIsLoading(true);
 
-      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || !props.path.location.state.key;
+      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || detail;
 
       const query = {
         search: searchValue,
@@ -167,7 +168,7 @@ function DetailsPage( path: any ) {
   });
 
   return (
-    <LocationsWrapper path={path}>
+    <LocationsWrapper path={path} detail={true}>
       <ContentLayout errors={errors} backTo="/locations" isLoading={isLoading}>
         <LocationDetails data={data}/>
       </ContentLayout>
@@ -187,7 +188,7 @@ function EditPage( path: any ) {
   });
 
   return (
-    <LocationsWrapper path={path}>
+    <LocationsWrapper path={path} detail={true}>
       <ContentLayout errors={errors} backTo="/locations" isLoading={isLoading}>
         <LocationEdit data={data} newLocation={path.newLocation}/>
       </ContentLayout>

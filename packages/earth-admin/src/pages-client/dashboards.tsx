@@ -54,6 +54,7 @@ export default function DashboardsPage( props ) {
 }
 
 function DashboardsWrapper( props: any ) {
+  const {detail} = props;
   const [dashboards, setDashboards] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -84,7 +85,7 @@ function DashboardsWrapper( props: any ) {
     async function setupDashboards() {
       setIsLoading(true);
 
-      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || !props.path.location.state.key;
+      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || detail;
 
       const query = {
         search: searchValue,
@@ -168,7 +169,7 @@ function DetailsPage( path: any ) {
   });
 
   return (
-    <DashboardsWrapper path={path}>
+    <DashboardsWrapper path={path} detail={true}>
       <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
         <DashboardDetails data={data}/>
       </ContentLayout>
@@ -189,7 +190,7 @@ function EditPage( path: any ) {
   });
 
   return (
-    <DashboardsWrapper path={path}>
+    <DashboardsWrapper path={path} detail={true}>
       <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
         <DashboardEdit data={data} newDashboard={path.newDashboard}/>
       </ContentLayout>

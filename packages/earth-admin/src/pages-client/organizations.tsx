@@ -44,6 +44,7 @@ export default function OrganizationsPage(props) {
 }
 
 function OrganizationsWrapper(props:any) {
+  const {detail} = props;
   const [organizations, setOrganizations] = useState([]);
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
@@ -64,7 +65,7 @@ function OrganizationsWrapper(props:any) {
     async function setupOrganizations() {
       setIsLoading(true);
 
-      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || !props.path.location.state.key;
+      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || detail;
 
       if (dataReset && pageNumber !== 1) {
         props.path.location.state.refresh = false;
@@ -147,7 +148,7 @@ function DetailsPage(path: any) {
   });
 
   return (
-    <OrganizationsWrapper path={path}>
+    <OrganizationsWrapper path={path} detail={true}>
       <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading}>
         <OrganizationDetails data={data}/>
       </ContentLayout>
@@ -166,7 +167,7 @@ function EditPage(path: any) {
   });
 
   return (
-    <OrganizationsWrapper path={path}>
+    <OrganizationsWrapper path={path} detail={true}>
       <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading}>
         <OrganizationEdit data={data} newOrg={path.newUser}/>
       </ContentLayout>
