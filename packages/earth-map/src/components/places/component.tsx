@@ -9,6 +9,7 @@ import { IPlace } from 'modules/places/model';
 import SearchBox from 'components/searchbox';
 import FilterBy from 'components/filter-by';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
+import BackToLocation from 'components/back-to-location';
 import { hasFilters } from 'utils/filters';
 
 interface IProps {
@@ -67,7 +68,7 @@ const Places = (props: IProps) => {
     setSidebarPanelExpanded(false);
   }
 
-  const handleResetLocation = () => {
+  const handleReset = () => {
     resetPlace();
     setPlacesSearch({ search: '' });
     setIndexesSelected('');
@@ -85,18 +86,15 @@ const Places = (props: IProps) => {
             value={search.search}
             placeholder="search places"
             onChange={handleChange}
-            onReset={handleResetLocation}
+            onReset={handleReset}
             onFocus={() => setSidebarPanelExpanded(true)}
             showClose={showX} />
           {showFilter && <FilterBy onChange={setPlacesSearch} data={search} />}
           {showBack && (
-            <div
+            <BackToLocation
               onClick={handleBack}
-              className="ng-c-cursor-pointer ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-ep-border-top">
-              <em className="ng-color-white">
-                Return to {locationName}<span className="ng-icon-bullet ng-margin-small-horizontal" /><span className="ng-color-mdgray">{locationOrganization}</span>
-              </em>
-            </div>
+              location={locationName}
+              organization={locationOrganization} />
           )}
         </>
       }>

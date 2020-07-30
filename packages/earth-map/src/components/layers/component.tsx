@@ -28,6 +28,7 @@ import SearchBox from 'components/searchbox';
 import FilterBy from 'components/filter-by';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
 import ListItem from 'components/list-item';
+import BackToLocation from 'components/back-to-location';
 import { hasFilters } from 'utils/filters';
 import { EPanels } from 'modules/sidebar/model';
 
@@ -109,7 +110,8 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
       selected,
       layers,
       group,
-
+      mapLabels,
+      mapRoads,
       panel,
       panelExpanded,
       setSidebarPanel,
@@ -162,20 +164,17 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
               showClose={showX} />
             {showFilter && <FilterBy onChange={setLayersSearch} data={search} />}
             {showBack && (
-              <div
+              <BackToLocation
                 onClick={handleBack}
-                className="ng-c-cursor-pointer ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-ep-border-top">
-                <em className="ng-color-white">
-                  Return to {locationName}<span className="ng-icon-bullet ng-margin-small-horizontal" /><span className="ng-color-mdgray">{locationOrganization}</span>
-                </em>
-              </div>
+                location={locationName}
+                organization={locationOrganization} />
             )}
           </>
         }>
         {(!selected || panelExpanded) && (
           <>
             {activeLayers.length > 0 && (
-              <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
+              <div className="ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
                 <div className="ng-space-between ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top">
                   <h2 className="ng-text-display-s ng-body-color ng-margin-remove">Selected Layers</h2>
                   <a onClick={() => setLayersActive([])}>deselect all</a>
@@ -194,6 +193,19 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
               </div>
             )}
             <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
+              <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Other</h2>
+              <ListItem
+                title="Labels"
+                active={mapLabels}
+                key="labels"
+                onClick={debounce(() => this.onLabels(), 200)} />
+              <ListItem
+                title="Roads"
+                active={mapRoads}
+                key="roads"
+                onClick={debounce(() => this.onRoads(), 200)} />
+            </div>
+            <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
               <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Widget layers</h2>
               <List
                 awaitMore={false}
@@ -203,6 +215,7 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
                   const layer = layers.results[index];
                   return (
                     <ListItem
+                      hint={layer.$searchHint.name}
                       title={layer.name}
                       active={!!activeLayers.find((x) => x.slug === layer.slug)}
                       key={`${layer.slug}-${layer.organization}`}
