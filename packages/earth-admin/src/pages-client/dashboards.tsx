@@ -1,17 +1,35 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Router } from '@reach/router';
 
 import { DashboardContext } from 'utils/contexts';
-import { encodeQueryToURL } from 'utils';
-import { getAllDashboards, getDashboard } from 'services/dashboards';
+import { encodeQueryToURL, setPage } from 'utils';
 import { useRequest } from 'utils/hooks';
 
-import Layout from 'layouts';
-import { DashboardList, DashboardDetails, DashboardEdit } from 'components';
-import { LinkWithOrg } from 'components/LinkWithOrg';
-import { AuthzGuards } from '../auth/permissions';
-import { useAuth0 } from '../auth/auth0';
+import { getAllDashboards, getDashboard } from 'services/dashboards';
+import { ContentLayout, SidebarLayout } from 'layouts';
+import { DashboardList, DashboardDetails, DashboardEdit, LinkWithOrg } from 'components';
+import { AuthzGuards } from 'auth/permissions';
+import { useAuth0 } from 'auth/auth0';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 
@@ -22,32 +40,36 @@ const DASHBOARD_DETAIL_QUERY = {
 };
 const INIT_CURSOR_LOCATION = '-1';
 
-export default function DashboardsPage(props) {
+const PAGE_TYPE = setPage('Data Indexes');
+
+export default function DashboardsPage( props ) {
   return (
     <Router>
-      <Page path="/" />
-      <DetailsPage path="/:page" />
-      <EditPage path="/:page/edit" newDashboard={false} />
-      <EditPage path="/new" newDashboard={true} />
+      <Page path="/"/>
+      <DetailsPage path="/:page"/>
+      <EditPage path="/:page/edit" newDashboard={false}/>
+      <EditPage path="/new" newDashboard={true}/>
     </Router>
   );
 }
 
-function Page(path: any) {
+function DashboardsWrapper( props: any ) {
+  const {detail} = props;
   const [dashboards, setDashboards] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
   const [pageCursor, setPageCursor] = useState('-1');
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isNoMore, setIsNoMore] = useState(false);
+  const [isNoMore, setIsNoMore] = useState(null);
+  const [totalResults, setTotalResults] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const { selectedGroup, getPermissions } = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
-  const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
-  const handleSearchValueChange = (newValue: string) => {
+  const handleSearchValueChange = ( newValue: string ) => {
     setPageCursor('-1');
     setNextCursor(null);
     setSearchValue(newValue);
@@ -63,7 +85,8 @@ function Page(path: any) {
     async function setupDashboards() {
       setIsLoading(true);
 
-      const dataReset = !!path.location.state && !!path.location.state.refresh;
+      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || detail;
+
       const query = {
         search: searchValue,
         sort: 'name',
@@ -75,32 +98,53 @@ function Page(path: any) {
       const res: any = await getAllDashboards(encodedQuery);
 
       if (dataReset) {
-        path.location.state.refresh = false;
+        props.path.location.state.refresh = false;
       }
+
+      setTotalResults(res.total);
 
       setDashboards(!nextCursor || dataReset ? res.data : [...dashboards, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
+      setSelectedItem(props.path.page);
       setIsNoMore(!res.pagination.nextCursor);
 
       setIsLoading(false);
     }
 
     permissions && setupDashboards();
-  }, [path.location, pageCursor, searchValue]);
+  }, [props.path.location, pageCursor, searchValue]);
 
   return (
     <DashboardContext.Provider
       value={{
-        dashboards,
         handleSearchValueChange,
         handleCursorChange,
-        pagination: { pageCursor },
         isLoading,
         isNoMore,
+        dashboards,
+        nextCursor,
+        totalResults,
+        pageSize,
         searchValue,
+        selectedItem,
       }}
     >
-      <Layout permission={permissions}>
+      <SidebarLayout page={PAGE_TYPE}>
+        <DashboardList/>
+      </SidebarLayout>
+      {props.children}
+    </DashboardContext.Provider>
+  );
+}
+
+function Page( path: any ) {
+  const { getPermissions } = useAuth0();
+  const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
+  const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
+
+  return (
+    <DashboardsWrapper path={path}>
+      <ContentLayout permission={permissions}>
         {writePermissions && (
           <div className="ng-flex ng-align-right">
             <LinkWithOrg className="ng-button ng-button-overlay" to={`/dashboards/new`}>
@@ -108,13 +152,12 @@ function Page(path: any) {
             </LinkWithOrg>
           </div>
         )}
-        <DashboardList />
-      </Layout>
-    </DashboardContext.Provider>
+      </ContentLayout>
+    </DashboardsWrapper>
   );
 }
 
-function DetailsPage(path: any) {
+function DetailsPage( path: any ) {
   const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
     ...DASHBOARD_DETAIL_QUERY,
@@ -126,13 +169,16 @@ function DetailsPage(path: any) {
   });
 
   return (
-    <Layout errors={errors} backTo="/dashboards" isLoading={isLoading}>
-      <DashboardDetails data={data} />
-    </Layout>
+    <DashboardsWrapper path={path} detail={true}>
+      <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
+        <DashboardDetails data={data}/>
+      </ContentLayout>
+    </DashboardsWrapper>
+
   );
 }
 
-function EditPage(path: any) {
+function EditPage( path: any ) {
   const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
     ...DASHBOARD_DETAIL_QUERY,
@@ -144,8 +190,11 @@ function EditPage(path: any) {
   });
 
   return (
-    <Layout errors={errors} backTo="/dashboards" isLoading={isLoading}>
-      <DashboardEdit data={data} newDashboard={path.newDashboard} />
-    </Layout>
+    <DashboardsWrapper path={path} detail={true}>
+      <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
+        <DashboardEdit data={data} newDashboard={path.newDashboard}/>
+      </ContentLayout>
+    </DashboardsWrapper>
+
   );
 }

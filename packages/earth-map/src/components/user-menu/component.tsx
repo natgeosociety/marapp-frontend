@@ -1,14 +1,33 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import React, { useContext, useState, useEffect } from 'react';
 
 import './styles.scss';
 
 import { Auth0Context } from 'auth/auth0';
-import { animated, Keyframes } from 'react-spring';
+import {Keyframes, animated} from 'react-spring/renderprops';
 import useDomWatcher from 'utils/hooks';
 
-const Dropdown: any = Keyframes.Spring({
-  false: { x: 0, delay: 0 },
-  true: { x: 1, from: { x: 0 }, delay: 100 },
+const Dropdown: any =  Keyframes.Spring({
+  false: { x: `-100vh`},
+  true: { x: '0vh'},
 });
 
 export default function UserMenuComponent() {
@@ -45,7 +64,7 @@ export default function UserMenuComponent() {
         {({ x, ...props }) => (
           <animated.div
             style={{
-              opacity: x,
+              transform: x.interpolate((x) => `translate3d(0,${x},0)`),
               ...props,
             }}
           >

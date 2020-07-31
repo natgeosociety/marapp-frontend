@@ -1,3 +1,22 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 // Typography
 $font-size-extra-small: 9px;
 $font-size-small: 12px;
@@ -7,7 +26,8 @@ $font-size-medium: 18px;
 $font-size-h2: 32px;
 
 // Weights
-$font-weight-bold: 500;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
 
 // Space
 $space-1: 8px;
@@ -44,7 +64,7 @@ $flexboxgrid-breakpoints: (
   xlg: $xlg,
 );
 
-$sidebar-width: 300px;
+$sidebar-width: 375px;
 
 //overwrites for FE framework
 $ultraltgray: $marapp-gray-1;
@@ -64,3 +84,5 @@ $base-heading-font-family: $marapp-primary-font;
 $base-body-font-family: $marapp-secondary-font;
 $theme-color: $marapp-gray-100;
 $theme-primary-color: $marapp-primary-color;
+
+$form-focus-border--dark: $marapp-primary-color;

@@ -1,3 +1,22 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { navigate } from 'gatsby';
@@ -9,12 +28,8 @@ import { JSHINT } from 'jshint';
 
 import { LayerProps, LayerType, LayerProvider, LayerCategory } from '../model';
 
-import { JsonEditor } from 'components/json-editor';
-import { HtmlEditor } from 'components/html-editor';
-import { ErrorMessages } from 'components/error-messages';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { JsonEditor, HtmlEditor, ErrorMessages, LinkWithOrg, SearchInput} from 'components';
 import { handleLayerForm } from 'services/layers';
-import { SearchInput } from 'components/search-input';
 import { Auth0Context } from 'utils/contexts';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
@@ -88,7 +103,7 @@ export default function LayerEdit(props: LayerProps) {
   return (
     <div>
       <div className="ng-flex ng-flex-space-between">
-        <h2 className="ng-text-display-m">{ newLayer ? 'Add Layer' : `Edit Layer - ${name}` }</h2>
+        <h2 className="ng-text-display-m ng-c-flex-grow-1">{ newLayer ? 'Add Layer' : `Edit Layer - ${name}` }</h2>
 
         <span>
           Last updated at: {formatDate(updatedAt)}; Created at: {formatDate(createdAt)}

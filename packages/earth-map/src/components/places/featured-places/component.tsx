@@ -1,48 +1,56 @@
-import React from 'react';
-import Link from 'redux-first-router-link';
+/*
+  Copyright 2018-2020 National Geographic Society
 
-import PLACEHOLDER from '../../../images/placeholder.png';
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
+import React from 'react';
+import { Spinner } from '@marapp/earth-components';
+
+import ListItem from 'components/list-item';
 
 interface IFeaturedPlaces {
   featured?: {
     data: [];
   };
-  list?: [];
   group?: string;
-  setIndexesSelected?: (s: string) => any;
-  setPlacesSearch?: (s: string) => any;
 }
 
 const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
-  const { featured, setIndexesSelected, list, setPlacesSearch, group } = props;
-
-  const onClickIndex = (slug) => {
-    // @ts-ignore
-    setPlacesSearch({ search: slug });
-    // @ts-ignore
-    !!list[0] && setIndexesSelected(list[0].slug);
-  };
+  const { featured, group } = props;
 
   return (
-    <div className="ng-padding-medium ng-section-background ng-position-relative">
-      <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom">Featured places</h2>
+    <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
+      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Featured places</h2>
       <div>
-        {!!featured.data &&
+        {!featured?.data.length && (
+          <div className="ng-padding-large ng-position-relative">
+            <Spinner />
+          </div>
+        )}
+        {!!featured.data.length &&
           featured.data.map((place: any) => {
-            const { slug, name, id, organization } = place;
+            const { slug, name, id, organization, type } = place;
+
             return (
-              <Link
-                key={slug}
-                to={{ type: 'LOCATION', payload: { slug, id, organization } }}
-                className="ng-c-panel-link ng-unstyled ng-flex ng-margin-bottom"
-              >
-                <span onClick={() => onClickIndex(name)}>
-                  {name}
-                  {group.length > 1 && (
-                    <span className="ng-margin-left ng-color-mdgray">{organization}</span>
-                  )}
-                </span>
-              </Link>
+              <ListItem
+                title={name} key={`${slug}-${organization}`}
+                linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
+                organization={(group.length > 1) && organization}
+                labels={[type]} />
             );
           })}
       </div>

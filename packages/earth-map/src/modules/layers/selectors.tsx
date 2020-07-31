@@ -1,3 +1,22 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 
@@ -38,12 +57,12 @@ export const getGroupedLayers = createSelector([layers], (_layers: ILayer[]) => 
 export const getLegendLayers = createSelector(
   [layers, settings, active],
   (_layers: ILayer[], _settings, _active) => {
+
     if (!_layers) {
       return [];
     }
 
     const legendLayers = _layers.filter((l: ILayer) => l.legendConfig && !isEmpty(l.legendConfig));
-
     const layerGroups = [];
 
     _active.forEach((slug) => {
@@ -52,12 +71,13 @@ export const getLegendLayers = createSelector(
         return false;
       }
 
-      const { name, description, layerConfig, legendConfig } = layer;
+      const { name, description, source, legendConfig, paramsConfig,
+        sqlConfig, decodeConfig, timelineConfig, type } = layer;
 
-      const { paramsConfig, sqlConfig, decodeConfig, timelineConfig, type } = layerConfig;
       const settings = _settings[layer.slug] || {};
 
       let params = !!paramsConfig && getParams(paramsConfig, settings.params);
+
       const sqlParams = !!sqlConfig && getParams(sqlConfig, settings.sqlParams);
       const decodeParams = !!decodeConfig && getParams(decodeConfig.values, settings.decodeParams);
 
@@ -70,18 +90,18 @@ export const getLegendLayers = createSelector(
       const { legendType } = legend;
 
       if (GROUP_LEGEND(type) || YEAR_PICKER_LEGEND(legendType)) {
-        const currentActive = settings.current || layerConfig.layers[0].id;
-        const { legendConfig } = layerConfig.layers.find((l) => l.id === currentActive);
+        const currentActive = settings.current || layer.references[0].id;
+        const { legendConfig } = layer.references.find((l) => l.id === currentActive);
 
         legend = legendConfig;
       }
 
       if (YEAR_DATE_PICKER_LEGEND(legendType)) {
-        const currentActive = settings.current || layerConfig.layers[0].id;
+        const currentActive = settings.current || layer.references[0].id;
 
-        const current = layerConfig.layers.find((l) => l.id === currentActive);
+        const current = layer.references.find((l) => l.id === currentActive);
 
-        const { decodeConfig, paramsConfig } = current.layerConfig;
+        const { decodeConfig, paramsConfig } = current;
         const { legendConfig } = current;
 
         legend = legendConfig;
@@ -137,6 +157,7 @@ export const getLegendLayers = createSelector(
       });
     });
 
+
     return layerGroups;
   }
 );
@@ -156,21 +177,19 @@ export const getActiveLayers = createSelector(
           return null;
         }
 
-        const { layerConfig } = layer;
+        const { source } = layer;
         const { legendConfig } = layer;
         const {
           type,
-          layers: layerConfigLayers,
           paramsConfig,
           sqlConfig,
           decodeConfig,
           timelineConfig,
-        } = layerConfig;
+        } = layer;
         const settings = _settings[layer.slug] || {};
 
         // @ts-ignore
         const { legendType } = legendConfig;
-
         return {
           // zIndex: 1000 - i,
           ...layer,
@@ -181,9 +200,9 @@ export const getActiveLayers = createSelector(
             YEAR_PICKER_LEGEND(legendType) ||
             // @ts-ignore
             YEAR_DATE_PICKER_LEGEND(legendType)) && {
-            ...layerConfigLayers.find((l) => {
-              const current = settings.current || layerConfig.layers[0].id;
+            ...layer.references.find((l) => {
 
+              const current = settings.current || layer.references[0].id;
               return l.id === current;
             }),
           }),
@@ -229,31 +248,36 @@ export const getActiveBoundsLayer = createSelector([place], (_place) => {
     name: 'Bounds',
     zIndex: 2000,
     provider: 'geojson',
-    layerConfig: {
+    type: 'geojson',
+    source: {
+      type: 'geojson',
       data: geojson,
-      body: {
-        vectorLayers: [
-          {
-            id: `${id}-fill`,
-            type: 'fill',
-            source: id,
-            paint: {
-              'fill-color': 'transparent',
-              'fill-opacity': 0.25,
-            },
-          },
-          {
-            id: `${id}-line`,
-            type: 'line',
-            source: id,
-            paint: {
-              'line-color': '#000000',
-              'line-width': 3,
-            },
-          },
-        ],
-      },
     },
+    render: {
+      metadata: {
+        position: 'top'
+      },
+      layers: [
+        {
+          id: `${id}-fill`,
+          type: 'fill',
+          source: id,
+          paint: {
+            'fill-color': 'transparent',
+            'fill-opacity': 0.25,
+          },
+        },
+        {
+          id: `${id}-line`,
+          type: 'line',
+          source: id,
+          paint: {
+            'line-color': '#000000',
+            'line-width': 3,
+          },
+        },
+      ],
+    }
   };
 });
 
@@ -265,19 +289,22 @@ export const getActiveInteractiveLayersIds = createSelector(
     }
 
     const getIds = (layer: ILayer) => {
-      const { id, layerConfig, interactionConfig } = layer;
-      if (isEmpty(layerConfig) || isEmpty(interactionConfig)) {
+
+      const { id, source, interactionConfig, render } = layer;
+
+
+      if (isEmpty(render) || isEmpty(interactionConfig)) {
+
         return null;
       }
 
-      const { body = {} } = layerConfig;
-      const { vectorLayers } = body;
+      const { layers } =  render;
 
-      if (!vectorLayers) {
+      if (!layers) {
         return null;
       }
 
-      return vectorLayers.map((l, i) => {
+      return layers.map((l, i) => {
         const { id: vectorLayerId, type: vectorLayerType } = l;
 
         return vectorLayerId || `${id}-${vectorLayerType}-${i}`;
@@ -287,14 +314,13 @@ export const getActiveInteractiveLayersIds = createSelector(
     return flatten(
       compact(
         _active.map((kActive, i) => {
-          const layer = _layers.find((l: ILayer) => l.slug === kActive);
-
+          const layer = _layers.find((l: any) => l.slug === kActive);
           if (!layer) {
             return null;
           }
 
-          const { slug, layerConfig, legendConfig } = layer;
-          const { type } = layerConfig;
+
+          const { slug, source, legendConfig, type } = layer;
           const { legendType } = legendConfig as any;
 
           if (
@@ -302,7 +328,11 @@ export const getActiveInteractiveLayersIds = createSelector(
             YEAR_PICKER_LEGEND(legendType) ||
             YEAR_DATE_PICKER_LEGEND(legendType)
           ) {
-            const { layers: layerConfigLayers } = layerConfig;
+
+
+            const  layerConfigLayers  = layer.references;
+
+
             const current =
               _settings[slug] && _settings[slug].current
                 ? _settings[slug].current
@@ -330,11 +360,11 @@ export const getActiveInteractiveLayers = createSelector(
     const allLayers = uniqBy(
       flatten(
         _layers.map((l: ILayer) => {
-          const { layerConfig, name } = l;
-          const { type } = layerConfig;
+          const {  name } = l;
+          const { type } = l;
 
           if (GROUP_LEGEND(type)) {
-            return layerConfig.layers.map((lc) => ({
+            return l.references.map((lc) => ({
               ...lc,
               name: `${name} - ${lc.name}`,
             }));
@@ -347,11 +377,12 @@ export const getActiveInteractiveLayers = createSelector(
     );
 
     const interactiveLayerKeys = Object.keys(_interactions);
-
     const interactiveLayers = [];
 
+
     allLayers.forEach((layer: ILayer) => {
-      if (layer.references.length > 0) {
+
+      if (!!layer.references && layer.references.length > 0) {
         layer.references.forEach((layerRef) => {
           if (interactiveLayerKeys.includes(layerRef.id)) {
             interactiveLayers.push(layerRef);
@@ -363,6 +394,7 @@ export const getActiveInteractiveLayers = createSelector(
         }
       }
     });
+
 
     return interactiveLayers.map((l: any) => ({
       ...l,
@@ -379,6 +411,7 @@ export const getActiveInteractiveLayer = createSelector(
     }
 
     const current = _layers.find((l: ILayer) => l.id === _interactionsSelected) || _layers[0];
+
     return current;
   }
 );

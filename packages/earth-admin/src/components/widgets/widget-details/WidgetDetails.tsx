@@ -1,17 +1,34 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import * as React from 'react';
 import { useState } from 'react';
 import renderHTML from 'react-render-html';
 
-import { formatDate, hasAccess } from 'utils';
+import { formatDate } from 'utils';
 
 import { WidgetProps } from '../model';
-import { JsonEditor } from 'components/json-editor';
-import { ActionModal } from 'components/action-modal';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { ActionModal, JsonEditor, LinkWithOrg } from 'components';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 
-export default function WidgetDetails(props: WidgetProps) {
+export default function WidgetDetails( props: WidgetProps ) {
   const {
     data: { id, name, createdAt, updatedAt, published, description, slug, config, metrics, layers },
   } = props;
@@ -43,7 +60,7 @@ export default function WidgetDetails(props: WidgetProps) {
         <div className="ng-flex ng-align-center ng-flex-center ng-text-center ng-center">
           <span className="ng-padding-horizontal">
             Published
-            <br />
+            <br/>
             <i className={`ng-icon-${publishIcon}`}></i>
           </span>
         </div>
@@ -72,11 +89,11 @@ export default function WidgetDetails(props: WidgetProps) {
           {slug || '-'}
         </p>
 
-        {!!config && <JsonEditor json={config} readOnly={true} />}
+        {!!config && <JsonEditor json={config} readOnly={true}/>}
 
         <p>
           <span className="ng-text-weight-medium">Metric slug: </span>
-          {(!!metrics && metrics.length > 0 && metrics[0]) || '-'}
+          {(!!metrics && metrics.length > 0 && metrics[ 0 ]) || '-'}
         </p>
       </div>
 
@@ -84,7 +101,7 @@ export default function WidgetDetails(props: WidgetProps) {
         <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
           <span className="ng-text-weight-medium">Layers: </span>
           <div className="ng-flex ng-flex-wrap">
-            {layers.map((layer, index) => (
+            {layers.map(( layer, index ) => (
               <LinkWithOrg
                 to={`/layers/${layer.id}`}
                 key={layer.id}

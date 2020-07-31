@@ -1,22 +1,48 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import React, { useState } from 'react';
 import classnames from 'classnames';
 
-import { cleanFilters } from 'utils/filters';
+import { cleanFilters, countFilters } from 'utils/filters';
 
 import './styles.scss';
 
-const FilterComponent = (props: any) => {
+interface IProps {
+  search?: any;
+  setPlacesSearch?: (payload?) => void;
+};
+
+const FilterBy = (props: IProps) => {
   const { search, setPlacesSearch } = props;
   const { filters, availableFilters } = search;
   const [dropdownState, setDropdownState] = useState('close');
+  const numberOfFilters = countFilters(filters);
 
   const toggleFilter = (key: string, value: string) => {
     const filterGroup = filters[key] || [];
     const exists = filterGroup.includes(value);
     const newFilters = {
-      [key]: exists ? filterGroup.filter((x) => x !== value) : [...filterGroup, value],
+      [key]: exists
+        ? filterGroup.filter((x) => x !== value)
+        : [...filterGroup, value],
     };
-
     setPlacesSearch({
       filters: cleanFilters({
         ...filters,
@@ -25,23 +51,35 @@ const FilterComponent = (props: any) => {
     });
   };
 
+  const clearCheckedFilters = () => setPlacesSearch({
+    filters: {}
+  });
+
   const handleDropdown = () => {
     setDropdownState(dropdownState === 'open' ? 'close' : 'open');
   };
 
   return (
-    <div className="ng-padding-medium ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
-      <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
-        Search filters
+    <div className="ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
+      <div className="ng-flex search-title">
+        <h2
+          className="ng-text-display-s ng-body-color ng-margin-bottom ng-margin-small-right ng-c-cursor-pointer"
+          onClick={handleDropdown}>
+          Search filters
+        </h2>
+        {numberOfFilters > 0 &&
+          <a className="ng-link ng-nohover ng-text-weight-regular ng-text-capital" onClick={clearCheckedFilters}>Clear {`(${numberOfFilters})`}</a>
+        }
         <i
           className={classnames({
+            'ng-c-cursor-pointer': true,
             'ng-margin-small-left': true,
             'ng-icon-directionup': dropdownState === 'open',
             'ng-icon-directiondown': dropdownState !== 'open',
           })}
           onClick={handleDropdown}
         />
-      </h2>
+      </div>
       {dropdownState === 'open' &&
         Object.keys(availableFilters).map((key) => (
           <>
@@ -86,4 +124,4 @@ const FilterComponent = (props: any) => {
   );
 };
 
-export default FilterComponent;
+export default FilterBy;

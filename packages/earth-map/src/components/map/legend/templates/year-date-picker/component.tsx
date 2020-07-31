@@ -1,10 +1,29 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import moment from 'moment';
 
-import { Select, Datepicker } from '@marapp/earth-components';
+import {Select, Datepicker} from '@marapp/earth-components';
 
-import { getParams } from 'modules/layers/utils';
+import {getParams} from 'modules/layers/utils';
 
 import './styles.scss';
 
@@ -14,27 +33,30 @@ interface ILegendYearDatePicker {
     params: any;
     decodeParams: any;
     timelineParams: any;
+    source: any;
   };
   setLayerSettings: (values: any) => void;
   setLayerTimelineCurrent: (values: any) => void;
   layers: any;
+  references: any;
 }
 
 interface ISelectedLayer {
   id?: string;
-  config?: {
-    layerConfig?: { paramsConfig?: { year?: string }; decodeConfig: { values: any } };
-  };
+  paramsConfig?: { year?: string };
+  decodeConfig?: { values: any }
+  source?: any;
 }
 
 const YearDatePickerLegendComponent = (props: ILegendYearDatePicker) => {
-  const [selectedLayer, setSelectedLayer] = useState<ISelectedLayer>({});
+  const [selectedLayer, setSelectedLayer] = useState<ISelectedLayer>();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [decodeValues, setDecodeValues] = useState({} as any);
 
-  const { layers, activeLayer } = props;
-  const { references = [] } = layers[0];
+  const {layers, activeLayer} = props;
+
+  const {references} = layers[0];
 
   const options = references.map(y => {
     return {
@@ -45,39 +67,42 @@ const YearDatePickerLegendComponent = (props: ILegendYearDatePicker) => {
 
   useEffect(() => {
     setSelectedLayer(references[0]);
-  }, []);
+  }, [references]);
 
   useEffect(() => {
-    const { decodeParams } = activeLayer;
+    const {decodeParams} = activeLayer;
 
     decodeParams &&
-      decodeParams.startDate &&
-      decodeParams.startDate !== startDate &&
-      setStartDate(decodeParams.startDate);
+    decodeParams.startDate &&
+    decodeParams.startDate !== startDate &&
+    setStartDate(decodeParams.startDate);
 
     decodeParams &&
-      decodeParams.trimEndDate &&
-      decodeParams.trimEndDate !== endDate &&
-      setEndDate(decodeParams.trimEndDate);
+    decodeParams.trimEndDate &&
+    decodeParams.trimEndDate !== endDate &&
+    setEndDate(decodeParams.trimEndDate);
   }, [activeLayer.decodeParams]);
 
   useEffect(() => {
-    const { activeLayer, setLayerTimelineCurrent } = props;
+    const {activeLayer, setLayerTimelineCurrent} = props;
 
-    if (!!selectedLayer.config) {
-      const { slug } = activeLayer;
+    if (!!selectedLayer) {
+      const {slug} = activeLayer;
+
       const {
-        config: { layerConfig },
+        paramsConfig,
+        decodeConfig
       } = selectedLayer;
+
 
       setLayerTimelineCurrent({
         slug,
         current: selectedLayer.id,
-        year: parseInt(layerConfig.paramsConfig[0].year),
-        settings: layerConfig,
+        year: parseInt(paramsConfig[0].year),
+        settings: selectedLayer
       });
 
-      const decodedValues = getParams(layerConfig.decodeConfig.values, {});
+      const decodedValues = getParams(decodeConfig.values, {});
 
       setDecodeValues(decodedValues);
       setStartDate(decodedValues.startDate);
@@ -90,12 +115,13 @@ const YearDatePickerLegendComponent = (props: ILegendYearDatePicker) => {
   };
 
   const onDateChange = (value, who) => {
-    const { activeLayer, setLayerTimelineCurrent } = props;
+    const {activeLayer, setLayerTimelineCurrent} = props;
 
-    const { slug, decodeParams } = activeLayer;
+    const {slug, decodeParams} = activeLayer;
 
     const {
-      config: { layerConfig },
+      paramsConfig,
+      source
     } = selectedLayer;
 
     setLayerTimelineCurrent({
@@ -103,9 +129,9 @@ const YearDatePickerLegendComponent = (props: ILegendYearDatePicker) => {
 
       current: selectedLayer.id,
 
-      year: parseInt(layerConfig.paramsConfig[0].year),
+      year: parseInt(paramsConfig[0].year),
       settings: {
-        ...layerConfig,
+        ...source,
         ...{
           decodeConfig: {
             ...decodeParams,
@@ -122,8 +148,8 @@ const YearDatePickerLegendComponent = (props: ILegendYearDatePicker) => {
   return (
     !!startDate && (
       <div className="c-legend-year-date">
-        <Select onChange={e => onChange(e)} options={options} />
-        <br />
+        <Select onChange={e => onChange(e)} options={options}/>
+        <br/>
 
         {!!startDate && (
           <Datepicker

@@ -1,3 +1,22 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
@@ -8,16 +27,12 @@ import { formatDate } from 'utils';
 import { handleWidgetForm } from 'services';
 
 import { WidgetProps } from 'components/widgets/model';
-import { JsonEditor } from 'components/json-editor';
-import { HtmlEditor } from 'components/html-editor';
-import { ErrorMessages } from 'components/error-messages';
-import { SearchInput } from 'components/search-input';
-import { LinkWithOrg } from 'components/LinkWithOrg';
+import { JsonEditor, HtmlEditor, ErrorMessages, SearchInput, LinkWithOrg } from 'components';
 import { Auth0Context } from 'utils/contexts';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
-export default function WidgetEdit(props: WidgetProps) {
+export default function WidgetEdit( props: WidgetProps ) {
   const {
     data: {
       id,
@@ -53,7 +68,7 @@ export default function WidgetEdit(props: WidgetProps) {
     triggerValidation();
   }, [config]);
 
-  async function onSubmit(e) {
+  async function onSubmit( e ) {
     e.preventDefault();
 
     const formData = getValues();
@@ -66,7 +81,7 @@ export default function WidgetEdit(props: WidgetProps) {
     }
   }
 
-  const handleJsonChange = (json) => {
+  const handleJsonChange = ( json ) => {
     try {
       JSON.parse(json);
     } catch (err) {
@@ -84,7 +99,7 @@ export default function WidgetEdit(props: WidgetProps) {
   return (
     <div>
       <div className="ng-flex ng-flex-space-between">
-        <h2 className="ng-text-display-m">{newWidget ? 'Add Widget' : `Edit Widget - ${name}`}</h2>
+        <h2 className="ng-text-display-m ng-c-flex-grow-1">{newWidget ? 'Add Widget' : `Edit Widget - ${name}`}</h2>
 
         <span>
           Last updated at: {formatDate(updatedAt)}; Created at: {formatDate(createdAt)}
@@ -134,7 +149,7 @@ export default function WidgetEdit(props: WidgetProps) {
                 name="description"
                 control={control}
                 defaultValue={description}
-                as={<HtmlEditor html={description} />}
+                as={<HtmlEditor html={description}/>}
               />
             </div>
           </div>
@@ -149,8 +164,8 @@ export default function WidgetEdit(props: WidgetProps) {
                 name="config"
                 control={control}
                 defaultValue={widgetConfig}
-                onChange={(widgetConfig) => handleJsonChange(widgetConfig)}
-                as={<JsonEditor json={widgetConfig} />}
+                onChange={( widgetConfig ) => handleJsonChange(widgetConfig)}
+                as={<JsonEditor json={widgetConfig}/>}
               />
             </div>
           )}
@@ -175,7 +190,7 @@ export default function WidgetEdit(props: WidgetProps) {
               name="layers"
               control={control}
               valueName={id}
-              as={<SearchInput options={layers} optionType="layers" />}
+              as={<SearchInput options={layers} optionType="layers"/>}
             />
           </div>
 
@@ -191,7 +206,7 @@ export default function WidgetEdit(props: WidgetProps) {
             <label htmlFor="published">Published?</label>
           </div>
 
-          {serverErrors && <ErrorMessages errors={serverErrors} />}
+          {serverErrors && <ErrorMessages errors={serverErrors}/>}
           <div className="ng-flex">
             <button
               className="ng-button ng-button-primary ng-margin-medium-right"

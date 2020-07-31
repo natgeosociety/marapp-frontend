@@ -1,3 +1,22 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
 
@@ -8,24 +27,29 @@ interface ISearchbox {
   setPlacesSearch?: (value: any) => {};
   setSidebarLayers?: (value: any) => {};
   setIndexesSelected?: (value: any) => {};
+  setPlacesSearchOpen?: (value: any) => {};
   setPlace?: (value: any) => {};
   setMapBounds?: (value: any) => {};
   resetMap?: () => {};
   resetLayers?: () => {};
   resetPlace?: () => {};
   search?: any;
+  open?: boolean;
+  showClose?: boolean;
 }
 
-const SearchBoxComponent = (props: ISearchbox) => {
+const SearchBox = (props: ISearchbox) => {
   const {
     setPlacesSearch,
     setSidebarLayers,
     setIndexesSelected,
+    setPlacesSearchOpen,
     resetMap,
     resetPlace,
     search,
+    open,
+    showClose,
   } = props;
-  const [isSearchBoxFocused, setIsSearchBoxFocused] = useState(false);
 
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -52,7 +76,7 @@ const SearchBoxComponent = (props: ISearchbox) => {
     'ng-flex',
     'ng-flex-middle',
     {
-      'is-focused': isSearchBoxFocused,
+      'is-focused': open,
     }
   );
 
@@ -66,13 +90,12 @@ const SearchBoxComponent = (props: ISearchbox) => {
           className="ng-width-1-1 ng-search-box"
           value={search}
           onChange={(e) => handleChange(e)}
-          onFocus={() => setIsSearchBoxFocused(true)}
-          onBlur={() => setIsSearchBoxFocused(false)}
+          onFocus={() => setPlacesSearchOpen(true)}
         />
-        {!!search && (
+        {showClose && (
           <Link to={{ type: 'EARTH' }} className="ng-c-panel-link ng-unstyled ng-flex">
             <div onClick={() => handleResetLocation()}>
-              <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close"></i>
+              <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close ng-display-block"></i>
             </div>
           </Link>
         )}
@@ -88,4 +111,4 @@ const SearchBoxComponent = (props: ISearchbox) => {
   );
 };
 
-export default SearchBoxComponent;
+export default SearchBox;
