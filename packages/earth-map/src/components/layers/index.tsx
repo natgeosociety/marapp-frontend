@@ -30,7 +30,7 @@ import LayersComponent from './component';
 
 import { getGroupedLayers } from 'modules/layers/selectors';
 
-import { toggleLayer } from 'modules/layers/actions';
+import { toggleLayer, nextLayersPage } from 'modules/layers/actions';
 
 export default connect(
   (state: any) => ({
@@ -57,5 +57,6 @@ export default connect(
     setLayersSearch,
     setPlacesSearch,
     setLayersActive,
+    nextLayersPage,
   }
 )(LayersComponent);

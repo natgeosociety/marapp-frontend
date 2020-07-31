@@ -37,6 +37,7 @@ import {
   setLayersSearchResults,
   setLayersSearchAvailableFilters,
   resetLayersResults,
+  nextLayersPage,
 } from 'modules/layers/actions';
 import { getGroup, getLayers, onlyMatch } from 'sagas/saga-utils';
 import { serializeFilters } from 'utils/filters';
@@ -47,6 +48,7 @@ export default function* layers() {
   // @ts-ignore
   yield takeLatest(onlyMatch(setSidebarPanel, EPanels.LAYERS), searchLayers);
   yield takeLatest(setLayersSearch, searchLayers);
+  yield takeLatest(nextLayersPage, nextPage)
 }
 
 function* searchLayers(params) {
@@ -72,7 +74,7 @@ export function* nextPage({ payload }) {
     ...(!!userInput && { search: userInput }),
     ...(!!filterQuery && { filter: filterQuery }),
     'page[cursor]': pageCursor ? pageCursor : -1,
-    ...(pageSize && { 'page[size]': pageSize }),
+    ...(pageSize && { page: { size: pageSize } }),
     ...{ group: group.toString() },
   };
   const page = yield call(fetchLayers, options);

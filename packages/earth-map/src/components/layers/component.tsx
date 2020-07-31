@@ -29,7 +29,7 @@ import FilterBy from 'components/filter-by';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
 import ListItem from 'components/list-item';
 import BackToLocation from 'components/back-to-location';
-import { hasFilters } from 'utils/filters';
+import InfiniteList from 'components/infinite-list';
 import { EPanels } from 'modules/sidebar/model';
 
 import './styles.scss';
@@ -43,6 +43,7 @@ interface IProps {
     background: string;
     id: string;
   }>;
+  nextPageCursor?: string;
   groups?: {};
   setMapStyle?: (id: any) => void;
   mapStyle?: any;
@@ -57,6 +58,7 @@ interface IProps {
     active?: string[];
     activeLayers?: any[];
     results?: any[];
+    nextPageCursor?: string;
   };
   open?: boolean;
   layersPanel?: boolean;
@@ -71,6 +73,7 @@ interface IProps {
   setLayersSearch?: (value: any) => void;
   setPlacesSearch?: (value: any) => void;
   setLayersActive?: (value: any) => void;
+  nextLayersPage?: (value: any) => void;
 }
 
 interface IState {
@@ -121,15 +124,13 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
       setLayersSearch,
       setPlacesSearch,
       setLayersActive,
+      nextLayersPage,
     } = this.props;
-    const { loading, search, activeLayers } = layers;
 
-    const PAGE_SIZE = 100;
+    const { loading, search, activeLayers, nextPageCursor } = layers;
     const hasSearchTerm = !!search.search;
     const showX = selected || hasSearchTerm;
     const showFilter = !selected || panelExpanded;
-    const withFilters = hasFilters(search.filters);
-    const showResults = hasSearchTerm || withFilters;
     const showBack = selected && panelExpanded;
 
     const handleChange = (e) => {
@@ -205,29 +206,24 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
                 key="roads"
                 onClick={debounce(() => this.onRoads(), 200)} />
             </div>
-            <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
-              <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Widget layers</h2>
-              <List
-                awaitMore={false}
-                pageSize={PAGE_SIZE}
-                itemCount={layers.results.length}
-                renderItem={(index) => {
-                  const layer = layers.results[index];
-                  return (
-                    <ListItem
-                      hint={layer.$searchHint.name}
-                      title={layer.name}
-                      active={!!activeLayers.find((x) => x.slug === layer.slug)}
-                      key={`${layer.slug}-${layer.organization}`}
-                      onClick={debounce(() => this.onToggleLayer(layer), 200)}
-                      organization={(group.length > 1) && layer.organization}
-                      labels={layer.category} />
-                  )
-                }}
-                onIntersection={() => console.log('hit')}
-              />
-              {loading && <Spinner position="relative" />}
-            </div>
+            <InfiniteList
+              title= "Widget layers"
+              data={layers.results}
+              loading={loading}
+              nextPageCursor={nextPageCursor}
+              onNextPage={nextLayersPage}
+              pageSize={30}>
+              {(layer) => (
+                <ListItem
+                  hint={layer.$searchHint.name}
+                  title={layer.name}
+                  active={!!activeLayers.find((x) => x.slug === layer.slug)}
+                  key={`${layer.slug}-${layer.organization}`}
+                  onClick={debounce(() => this.onToggleLayer(layer), 200)}
+                  organization={(group.length > 1) && layer.organization}
+                  labels={layer.category} />
+              )}
+            </InfiniteList>
           </>
         )}
       </SidebarLayoutSearch>

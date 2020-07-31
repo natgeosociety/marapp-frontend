@@ -2,14 +2,15 @@ import React from 'react';
 import { push } from 'redux-first-router';
 
 import FeaturedPlaces from 'components/places/featured-places';
-import PlacesResults from 'components/places/list';
 import IndexSidebar from 'components/index-sidebar';
 import LastViewedPlace from 'components/last-viewed-place';
+import ListItem from 'components/list-item';
 import { IPlace } from 'modules/places/model';
 import SearchBox from 'components/searchbox';
 import FilterBy from 'components/filter-by';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
 import BackToLocation from 'components/back-to-location';
+import InfiniteList from 'components/infinite-list';
 import { hasFilters } from 'utils/filters';
 
 interface IProps {
@@ -17,10 +18,13 @@ interface IProps {
   panel?: string;
   panelExpanded?: boolean;
   search?: any;
+  results?: any;
+  nextPageCursor?: string;
   group?: any;
   locationName?: string;
   locationOrganization?: string;
   lastViewedPlace?: IPlace;
+  nextPlacesPage?: () => void;
   setSidebarPanel?: (value: any) => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
@@ -35,10 +39,13 @@ const Places = (props: IProps) => {
     panel,
     panelExpanded,
     search,
+    results,
+    nextPageCursor,
     group,
     locationName,
     locationOrganization,
     lastViewedPlace,
+    nextPlacesPage,
     resetPlace,
     resetMap,
     setIndexesSelected,
@@ -99,7 +106,21 @@ const Places = (props: IProps) => {
         </>
       }>
       {(onLocationPage || onHomepage)
-        ? <PlacesResults />
+        ? <InfiniteList
+          title="Search results"
+          data={results}
+          loading={search.loading}
+          nextPageCursor={nextPageCursor}
+          onNextPage={nextPlacesPage}>
+          {({ id, $searchHint, name, slug, organization, type }) => (
+            <ListItem
+              hint={$searchHint.name}
+              title={name} key={`${slug}-${organization}`}
+              linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
+              organization={(group.length > 1) && organization}
+              labels={[type]} />
+          )}
+        </InfiniteList>
         : selected
           ? <IndexSidebar />
           : (

@@ -19,7 +19,7 @@
 
 export const LOCATION_QUERY = {
   select: '-geojson',
-  page: { size: 300 },
+  page: { size: 30 },
   sort: 'name',
 };
 
@@ -29,7 +29,7 @@ export const DATA_INDEX_QUERY = {
 };
 
 export const LAYER_QUERY = {
-  page: { size: 50 },
+  page: { size: 30 },
 };
 
 export const METRICS_QUERY = {};
