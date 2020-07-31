@@ -151,6 +151,7 @@ function DetailsPage( path: any ) {
   });
   const { isLoading, errors, data } = useRequest(() => getUser(encodedQuery), {
     permissions: AuthzGuards.accessUsersGuard,
+    query: encodedQuery
   });
 
   return (

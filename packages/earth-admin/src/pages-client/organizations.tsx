@@ -145,6 +145,7 @@ function DetailsPage(path: any) {
   });
   const {isLoading, errors, data} = useRequest(() => getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessUsersGuard,
+    query: encodedQuery
   });
 
   return (
