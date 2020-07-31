@@ -22,11 +22,13 @@ import { WebGLRenderer, Scene, PerspectiveCamera, TextureLoader } from 'three';
 import { CSS2DRenderer } from 'three-css2drender';
 import OrbitControls from 'orbit-controls-es6';
 
+import SCENE_BACKGROUND from 'images/spinny-globe/background-min.png';
+
 export default (rendererMount, renderer2dMount, props) => {
   const scene = new Scene();
 
   scene.background = new TextureLoader().load(
-    `${process.env.REACT_APP_ASSETS_URL}/media/image/globe/background-min.png`
+    SCENE_BACKGROUND
   );
 
   const camera = new PerspectiveCamera(50, 4 / 3, 0.5, 100);
