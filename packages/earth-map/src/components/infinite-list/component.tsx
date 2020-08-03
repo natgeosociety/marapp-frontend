@@ -1,6 +1,7 @@
 import React from 'react';
 import List from '@researchgate/react-intersection-list';
 
+import { PAGE_SIZE } from 'theme';
 import { Spinner } from '@marapp/earth-components';
 
 interface IProps {
@@ -17,7 +18,7 @@ const InfiniteList = (props: IProps) => {
   const {
     data,
     loading,
-    pageSize = 30,
+    pageSize = PAGE_SIZE,
     nextPageCursor,
     children,
     onNextPage,

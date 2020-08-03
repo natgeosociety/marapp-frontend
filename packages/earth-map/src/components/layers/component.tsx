@@ -19,10 +19,8 @@
 
 import React from 'react';
 import { debounce } from 'lodash';
-import { Spinner } from '@marapp/earth-components';
-import List from '@researchgate/react-intersection-list';
 
-import { APP_BASEMAPS } from '../../theme';
+import { APP_BASEMAPS, PAGE_SIZE } from 'theme';
 
 import SearchBox from 'components/searchbox';
 import FilterBy from 'components/filter-by';
@@ -176,7 +174,7 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
           <>
             {activeLayers.length > 0 && (
               <div className="ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
-                <div className="ng-space-between ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top">
+                <div className="ng-flex ng-flex-space-between ng-flex-align-items-baseline ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top">
                   <h2 className="ng-text-display-s ng-body-color ng-margin-remove">Selected Layers</h2>
                   <a onClick={() => setLayersActive([])}>deselect all</a>
                 </div>
@@ -211,8 +209,7 @@ class LayersComponent extends React.PureComponent<IProps, IState> {
               data={layers.results}
               loading={loading}
               nextPageCursor={nextPageCursor}
-              onNextPage={nextLayersPage}
-              pageSize={30}>
+              onNextPage={nextLayersPage}>
               {(layer) => (
                 <ListItem
                   hint={layer.$searchHint.name}

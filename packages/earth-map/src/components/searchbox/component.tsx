@@ -78,7 +78,7 @@ const SearchBox = (props: ISearchbox) => {
           onFocus={onFocus}
         />
         {showClose && (
-          <div className="ng-close-button" onClick={onReset}>
+          <div className="ng-c-cursor-pointer" onClick={onReset}>
             <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close ng-display-block"></i>
           </div>
         )}

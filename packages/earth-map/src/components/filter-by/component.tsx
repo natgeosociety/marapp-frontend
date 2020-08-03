@@ -82,7 +82,7 @@ const FilterBy = (props: IProps) => {
       </div>
       {dropdownState === 'open' &&
         Object.keys(availableFilters).map((key) => (
-          <>
+          <React.Fragment key={key}>
             {/* {<h2 className="ng-color-ltgray ng-text-display-s ng-margin-bottom">{key}</h2>} */}
             <div className="ng-grid ng-form-dark ng-form" key={`${key}-form`}>
               {availableFilters[key].map((filter, i) => {
@@ -91,7 +91,7 @@ const FilterBy = (props: IProps) => {
                 const disabled = filter.count === 0;
 
                 return (
-                  <div className="ng-width-1-2 ng-margin-bottom" key={`${key}-${i}`}>
+                  <div className="ng-width-1-2 ng-margin-bottom" key={`${filter.key}-${filter.value}`}>
                     <label
                       htmlFor={domId}
                       className={classnames({
@@ -118,7 +118,7 @@ const FilterBy = (props: IProps) => {
                 );
               })}
             </div>
-          </>
+          </React.Fragment>
         ))}
     </div>
   );
