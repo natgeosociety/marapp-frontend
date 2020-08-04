@@ -26,7 +26,7 @@ import { setLayersSearch, setLayersActive } from 'modules/layers/actions';
 import { setPlacesSearch } from 'modules/places/actions';
 
 // Components
-import LayersComponent from './component';
+import Layers from './Layers';
 
 import { getGroupedLayers } from 'modules/layers/selectors';
 
@@ -59,4 +59,4 @@ export default connect(
     setLayersActive,
     nextLayersPage,
   }
-)(LayersComponent);
+)(Layers);

@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 
 import { setPlacesSearch } from 'modules/places/actions';
 import { setRouter } from 'modules/router/actions';
-import SearchBoxComponent from './component';
+import SearchBoxComponent from './Searchbox';
 import { setIndexesSelected } from 'modules/indexes/actions';
 
 export default connect(

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import Places from './component';
+import Places from './Places';
 import { setSidebarPanel, setSidebarPanelExpanded } from 'modules/sidebar/actions';
 import { resetPlace, setPlacesSearch, nextPlacesPage } from 'modules/places/actions';
 import { setIndexesSelected } from 'modules/indexes/actions';
