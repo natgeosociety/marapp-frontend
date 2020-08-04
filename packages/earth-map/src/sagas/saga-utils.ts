@@ -17,6 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { ILayerRaw, ILayer } from "modules/layers/model";
+
 /**
  * https://redux-saga.js.org/docs/api/#takepattern
  * A pattern function passed to saga effects to ignore action routes that are just redirects. Eg: when a layer is toggled
@@ -49,6 +51,38 @@ export const onlyMatch = (actionToMatch: string | Function, payload: any): Funct
     return action.payload === payload;
   };
 };
+
+/**
+ * Put layer.config props directly on the layer - include layer reference
+ */
+export const flattenLayerConfig = (layer: ILayerRaw) => {
+  const adaptedLayer = flattenEachLayerConfig(layer);
+
+  if (!!adaptedLayer?.references.length) {
+    const adaptedReferences = layer.references.map(flattenEachLayerConfig);
+
+    return {
+      ...adaptedLayer,
+      references: adaptedReferences,
+    };
+  }
+
+  return {
+    ...adaptedLayer,
+  };
+};
+
+/**
+ * Put layer.config props directly on the layer
+ */
+const flattenEachLayerConfig = (layer: ILayerRaw): ILayer => {
+  const { config, ...rest } = layer;
+  return {
+    ...rest,
+    ...config,
+  };
+}
+
 
 // Selectors
 export const getAll = (state) => state;

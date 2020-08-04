@@ -20,6 +20,7 @@ import { groupBy, sortBy } from 'lodash';
 
 import * as actions from './actions';
 import initialState from './initial-state';
+import { flattenLayerConfig } from 'sagas/saga-utils';
 
 export default {
   [actions.setLayersLoading]: (state, { payload }) => ({
@@ -34,7 +35,9 @@ export default {
     ...state,
     active: payload,
     // keep activeLayers in sync with active array
-    activeLayers: payload.map((slug) => state.activeLayers.find(x => x.slug === slug)),
+    activeLayers: payload
+      .map((slug) => state.activeLayers.find(x => x.slug === slug))
+      .map(flattenLayerConfig),
   }),
   [actions.setLayersList]: (state, { payload }) => {
     return {
@@ -190,7 +193,7 @@ export default {
     const { results, nextPageCursor } = payload;
     return {
       ...state,
-      results: [...state.results, ...results],
+      results: [...state.results, ...results.map(flattenLayerConfig)],
       nextPageCursor,
     };
   },

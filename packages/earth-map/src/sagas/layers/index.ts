@@ -24,7 +24,6 @@ import sortBy from 'lodash/sortBy';
 import { fetchDataIndexes } from 'services/data-indexes';
 import { DATA_INDEX_QUERY } from '../model';
 import { IIndex } from 'modules/indexes/model';
-import { ILayer } from 'modules/layers/model';
 import { IWidget } from 'modules/widget/model';
 import { setSidebarPanel } from 'modules/sidebar/actions';
 import { EPanels } from 'modules/sidebar/model';
@@ -39,7 +38,7 @@ import {
   resetLayersResults,
   nextLayersPage,
 } from 'modules/layers/actions';
-import { getGroup, getLayers, onlyMatch } from 'sagas/saga-utils';
+import { getGroup, getLayers, onlyMatch, flattenLayerConfig } from 'sagas/saga-utils';
 import { serializeFilters } from 'utils/filters';
 import { fetchLayers } from 'services/layers';
 import { LAYER_QUERY } from '../model';
@@ -91,7 +90,7 @@ export function* nextPage({ payload }) {
   return page;
 }
 
-export function* preloadLayers({ payload }) {
+export function* loadDataIndexes({ payload }) {
   const group = yield select(getGroup);
 
   try {
@@ -114,15 +113,14 @@ export function* preloadLayers({ payload }) {
     );
 
     // get layers from all dashboards; cannot use the layer api because that contains sublayers too
+    // TODO - find out why removing the layers code below breaks layer toggle
     let layers = [];
     indexes.forEach((index) => {
       layers = [...layers, ...index.layers];
     });
 
     if (!!layers) {
-      const layerListGroups = yield fetchLayerGroups(layers);
-
-      yield put(setLayersList(layerListGroups));
+      yield put(setLayersList(layers.map(flattenLayerConfig)));
     }
   } catch (e) {
     // TODO better error handling for sagas
@@ -136,36 +134,9 @@ export function* preloadLayers({ payload }) {
   }
 }
 
-function* fetchLayerGroups(layers: any) {
-  return yield all(layers.map((layer: ILayer) => setLayer(layer)));
-}
-
 function setWidget(widget: IWidget) {
   const adaptedWidget = { ...widget, ...widget.config };
   delete adaptedWidget.config;
 
   return adaptedWidget;
-}
-
-function setLayer(layer) {
-  const adaptedLayer = { ...layer, ...layer.config };
-
-  delete adaptedLayer.config;
-
-  if (!!adaptedLayer.references && adaptedLayer.references.length) {
-    const adaptedReferences = layer.references.map((layer) => {
-      const tempLayer = { ...layer, ...layer.config };
-      delete layer.config;
-      return tempLayer;
-    });
-
-    return {
-      ...adaptedLayer,
-      references: adaptedReferences,
-    };
-  }
-
-  return {
-    ...adaptedLayer,
-  };
 }
