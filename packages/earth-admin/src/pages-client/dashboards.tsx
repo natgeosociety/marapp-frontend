@@ -49,7 +49,7 @@ export default function DashboardsPage( props ) {
         <HomePage path="/"/>
         <DetailsPage path="/:page"/>
         <EditPage path="/:page/edit" newDashboard={false}/>
-        <EditPage path="/new" newLocation={true}/>
+        <EditPage path="/new" newDashboard={true}/>
       </Page>
     </Router>
   );
