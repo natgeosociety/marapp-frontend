@@ -40,7 +40,7 @@ export default function OrganizationsPage( props ) {
         <HomePage path="/"/>
         <DetailsPage path="/:page"/>
         <EditPage path="/:page/edit" newOrg={false}/>
-        {/*<EditPage path="/new" newLocation={true}/>*/}
+        <EditPage path="/new" newOrg={true}/>
       </Page>
     </Router>
   );
@@ -120,11 +120,10 @@ function HomePage( props: any ) {
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   return (writePermissions && (
     <ContentLayout>
-
       <div className="ng-flex ng-align-right">
-        {/*<LinkWithOrg className="ng-button ng-button-overlay" to="/organizations/new">*/}
-        {/*  add new organization*/}
-        {/*</LinkWithOrg>*/}
+        <LinkWithOrg className="ng-button ng-button-overlay" to="/organizations/new">
+         add new organization
+        </LinkWithOrg>
       </div>
     </ContentLayout>
   ));
@@ -154,12 +153,12 @@ function EditPage( path: any ) {
   });
   const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessOrganizationsGuard,
-    skip: path.newUser,
+    skip: path.newOrg,
   });
 
   return (
-      <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading}>
-        <OrganizationEdit data={data} newOrg={path.newUser}/>
-      </ContentLayout>
+    <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading}>
+      <OrganizationEdit data={data} newOrg={path.newOrg}/>
+    </ContentLayout>
   );
 }

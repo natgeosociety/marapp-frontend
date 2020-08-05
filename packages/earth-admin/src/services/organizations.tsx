@@ -66,6 +66,14 @@ export const updateOrganization = async (organizationID: string, organization, g
   });
 };
 
+export const addOrganization = async (request, group: string) => {
+  return await OrganizationAPIService.request({
+    url: `/organizations?group=${group}`,
+    method: 'post',
+    data: request,
+  });
+};
+
 // export const handleOrganizationForm = async (
 //   newOrg: boolean,
 //   organization,
