@@ -29,6 +29,8 @@ import './styles.scss';
 const OrgSwitcher = (props) => {
   const { permissions, selectedGroup, setupUserOrg } = useContext(Auth0Context);
 
+  console.log('####', permissions);
+
   const [dropdownState, setDropdownState] = useState('close');
 
   const handleOrgSwitch = (group) => {
@@ -62,7 +64,7 @@ const OrgSwitcher = (props) => {
           </a>
         </li>
         {!!permissions &&
-          Object.keys(permissions).map((g, i) => (
+          Object.keys(permissions).filter(k => k !== '*').map((g, i) => (
             <React.Fragment key={i}>
               <li
                 className={classnames({

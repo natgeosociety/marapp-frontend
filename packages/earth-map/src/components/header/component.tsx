@@ -143,7 +143,7 @@ const Header = (props: IProps) => {
         </li>
         <li className="ng-form ng-form-dark">
           <div className="ng-padding-medium-horizontal ng-padding-top">
-            {Object.keys(roles).map((g, i) => (
+            {Object.keys(roles).filter(k => k !== '*').map((g, i) => (
               <label
                 htmlFor={g}
                 className={classNames({

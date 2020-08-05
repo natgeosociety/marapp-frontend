@@ -55,7 +55,7 @@ function OrganizationsWrapper(props:any) {
 
   const {selectedGroup, getPermissions} = useAuth0();
 
-  const permissions = getPermissions(AuthzGuards.accessUsersGuard);
+  const permissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
   const handleCursorChange = () => {
     setPageNumber(pageNumber + 1);
@@ -118,8 +118,8 @@ function OrganizationsWrapper(props:any) {
 function Page(path: any) {
   const {selectedGroup, getPermissions} = useAuth0();
 
-  const permissions = getPermissions(AuthzGuards.accessUsersGuard);
-  const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
+  const permissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
+  const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
   return (
     <OrganizationsWrapper path={path}>
@@ -144,7 +144,7 @@ function DetailsPage(path: any) {
     group: selectedGroup,
   });
   const {isLoading, errors, data} = useRequest(() => getOrganization(encodedQuery), {
-    permissions: AuthzGuards.accessUsersGuard,
+    permissions: AuthzGuards.accessOrganizationsGuard,
     query: encodedQuery
   });
 
@@ -163,7 +163,7 @@ function EditPage(path: any) {
     ...{group: selectedGroup},
   });
   const {isLoading, errors, data} = useRequest(() => getOrganization(encodedQuery), {
-    permissions: AuthzGuards.writeUsersGuard,
+    permissions: AuthzGuards.accessOrganizationsGuard,
     skip: path.newUser,
   });
 

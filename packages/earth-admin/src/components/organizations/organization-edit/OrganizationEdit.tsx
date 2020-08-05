@@ -42,9 +42,12 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
 
   const onSubmit = async (values: any) => {
     const formData = getValues();
-
+    console.log('@@@@@', formData);
     try {
-      await updateOrganization(id || formData.id, { description: formData.description }, selectedGroup);
+      await updateOrganization(id || formData.id, {
+        description: formData.description,
+        owners: [].concat(formData.owners)
+      }, selectedGroup);
       await navigate(`/${selectedGroup}/organizations`);
     } catch (error) {
       setServerErrors(error.data.errors);
@@ -76,16 +79,17 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
             </div>
             <div className="ng-width-large-1-2 ng-width-1-1">
               <label className="ng-form-label" htmlFor="owners">
-                Organization owners
+                Organization owner
               </label>
               <input
-                ref={register}
+                ref={register({
+                  required: true,
+                })}
                 name="owners"
                 type="text"
                 defaultValue={owners[0]}
-                placeholder="Organization owners"
+                placeholder="Organization owner"
                 className={INPUT_SIZE_CLASSNAME}
-                disabled
               />
             </div>
             <div className="ng-width-large-1-2 ng-width-1-1">
