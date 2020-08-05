@@ -45,16 +45,17 @@ const PAGE_TYPE = setPage('Data Indexes');
 export default function DashboardsPage( props ) {
   return (
     <Router>
-      <Page path="/"/>
-      <DetailsPage path="/:page"/>
-      <EditPage path="/:page/edit" newDashboard={false}/>
-      <EditPage path="/new" newDashboard={true}/>
+      <Page path="/">
+        <HomePage path="/"/>
+        <DetailsPage path="/:page"/>
+        <EditPage path="/:page/edit" newDashboard={false}/>
+        <EditPage path="/new" newDashboard={true}/>
+      </Page>
     </Router>
   );
 }
 
-function DashboardsWrapper( props: any ) {
-  const {detail} = props;
+function Sidebar( props: any ) {
   const [dashboards, setDashboards] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -85,34 +86,28 @@ function DashboardsWrapper( props: any ) {
     async function setupDashboards() {
       setIsLoading(true);
 
-      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh || detail;
-
       const query = {
         search: searchValue,
         sort: 'name',
-        page: { size: pageSize, cursor: dataReset ? INIT_CURSOR_LOCATION : pageCursor },
+        page: { size: pageSize, cursor: pageCursor },
         select: EXCLUDED_FIELDS,
         group: selectedGroup,
       };
       const encodedQuery = encodeQueryToURL('dashboards', query);
       const res: any = await getAllDashboards(encodedQuery);
 
-      if (dataReset) {
-        props.path.location.state.refresh = false;
-      }
 
       setTotalResults(res.total);
 
-      setDashboards(!nextCursor || dataReset ? res.data : [...dashboards, ...res.data]);
+      setDashboards(!nextCursor ? res.data : [...dashboards, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-      setSelectedItem(props.path.page);
       setIsNoMore(!res.pagination.nextCursor);
 
       setIsLoading(false);
     }
 
     permissions && setupDashboards();
-  }, [props.path.location, pageCursor, searchValue]);
+  }, [pageCursor, searchValue]);
 
   return (
     <DashboardContext.Provider
@@ -132,29 +127,32 @@ function DashboardsWrapper( props: any ) {
       <SidebarLayout page={PAGE_TYPE}>
         <DashboardList/>
       </SidebarLayout>
-      {props.children}
     </DashboardContext.Provider>
   );
 }
 
-function Page( path: any ) {
+function Page( props: any ) {
+  return (
+    <>
+      <Sidebar/>
+      {props.children}
+    </>);
+}
+
+
+function HomePage( props: any ) {
   const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
-
-  return (
-    <DashboardsWrapper path={path}>
-      <ContentLayout permission={permissions}>
-        {writePermissions && (
-          <div className="ng-flex ng-align-right">
-            <LinkWithOrg className="ng-button ng-button-overlay" to={`/dashboards/new`}>
-              Add new dashboard
-            </LinkWithOrg>
-          </div>
-        )}
-      </ContentLayout>
-    </DashboardsWrapper>
-  );
+  return (writePermissions && (
+    <ContentLayout>
+      <div className="ng-flex ng-align-right">
+        <LinkWithOrg className="ng-button ng-button-overlay" to="/dashboards/new">
+          add new dashboard
+        </LinkWithOrg>
+      </div>
+    </ContentLayout>
+  ));
 }
 
 function DetailsPage( path: any ) {
@@ -169,12 +167,9 @@ function DetailsPage( path: any ) {
   });
 
   return (
-    <DashboardsWrapper path={path} detail={true}>
-      <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
-        <DashboardDetails data={data}/>
-      </ContentLayout>
-    </DashboardsWrapper>
-
+    <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
+      <DashboardDetails data={data}/>
+    </ContentLayout>
   );
 }
 
@@ -190,11 +185,8 @@ function EditPage( path: any ) {
   });
 
   return (
-    <DashboardsWrapper path={path} detail={true}>
-      <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
-        <DashboardEdit data={data} newDashboard={path.newDashboard}/>
-      </ContentLayout>
-    </DashboardsWrapper>
-
+    <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
+      <DashboardEdit data={data} newDashboard={path.newDashboard}/>
+    </ContentLayout>
   );
 }
