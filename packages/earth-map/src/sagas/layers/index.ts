@@ -39,7 +39,7 @@ import {
   setLayersSearchAvailableFilters,
   resetLayersResults,
   nextLayersPage,
-  toggleLayer,
+  setListActiveLayers,
 } from 'modules/layers/actions';
 import { getGroup, getLayers, onlyMatch, flattenLayerConfig } from 'sagas/saga-utils';
 import { fetchLayers } from 'services/layers';
@@ -59,6 +59,9 @@ export default function* layers() {
  * Load active layer objects on refresh
  */
 function* loadActiveLayers({ payload }) {
+  if (!payload.length) {
+    return
+  }
   const group = yield select(getGroup);
   const options = {
     filter: serializeFilters({
@@ -68,9 +71,7 @@ function* loadActiveLayers({ payload }) {
   }
   const { data: layers } = yield call(fetchLayers, options);
 
-  yield all(layers.map(function* (layer) {
-    yield put(toggleLayer(layer));
-  }));
+  yield put(setListActiveLayers(layers.map(flattenLayerConfig)));
 }
 
 function* searchLayers(params) {

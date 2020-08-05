@@ -54,7 +54,7 @@ interface IProps {
     loading?: boolean;
     search?: any;
     active?: string[];
-    activeLayers?: any[];
+    listActive?: any[];
     results?: any[];
     nextPageCursor?: string;
   };
@@ -93,7 +93,7 @@ const Layers = (props: IProps) => {
     nextLayersPage,
   } = props;
 
-  const { loading, search, activeLayers, nextPageCursor } = layers;
+  const { loading, search, listActive, nextPageCursor } = layers;
   const hasSearchTerm = !!search.search;
   const showX = selected || hasSearchTerm;
   const showFilter = !selected || panelExpanded;
@@ -155,13 +155,13 @@ const Layers = (props: IProps) => {
       }>
       {(!selected || panelExpanded) && (
         <>
-          {activeLayers.length > 0 && (
+          {listActive.length > 0 && (
             <div className="ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
               <div className="ng-flex ng-flex-space-between ng-flex-align-items-baseline ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top">
                 <h2 className="ng-text-display-s ng-body-color ng-margin-remove">Selected Layers</h2>
                 <a onClick={() => resetLayersActive()}>deselect all</a>
               </div>
-              {activeLayers.map((layer) => {
+              {listActive.map((layer) => {
                 return (
                   <ListItem
                     active
@@ -197,7 +197,7 @@ const Layers = (props: IProps) => {
               <ListItem
                 hint={layer.$searchHint.name}
                 title={layer.name}
-                active={!!activeLayers.find((x) => x.slug === layer.slug)}
+                active={!!listActive.find((x) => x.slug === layer.slug)}
                 key={`${layer.slug}-${layer.organization}`}
                 onClick={debounce(() => onToggleLayer(layer), 200)}
                 organization={(group.length > 1) && layer.organization}

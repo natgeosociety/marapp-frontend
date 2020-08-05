@@ -38,7 +38,11 @@ export default {
   [actions.resetLayersActive]: (state) => ({
     ...state,
     active: [],
-    activeLayers: [],
+    listActive: [],
+  }),
+  [actions.setListActiveLayers]: (state, { payload }) => ({
+    ...state,
+    listActive: payload,
   }),
   [actions.setLayersList]: (state, { payload }) => {
     return {
@@ -48,16 +52,16 @@ export default {
   },
 
   [actions.toggleLayer]: (state, { payload }) => {
-    const { activeLayers } = state;
+    const { listActive } = state;
     const layer = payload;
-    const newActiveLayers = (activeLayers.find(x => x.slug === layer.slug))
-      ? activeLayers.filter(x => x.slug !== layer.slug)
-      : [...activeLayers, layer];
+    const newActiveLayers = (listActive.find(x => x.slug === layer.slug))
+      ? listActive.filter(x => x.slug !== layer.slug)
+      : [...listActive, layer];
 
     return {
       ...state,
       active: newActiveLayers.map(x => x.slug),
-      activeLayers: newActiveLayers ,
+      listActive: newActiveLayers ,
     };
   },
   [actions.setLayerOrder]: (state, { payload }) => {
