@@ -24,7 +24,7 @@ import { isEmpty, groupBy, map } from 'lodash';
 import { LocationProps } from '../model';
 import { LocationMetrics } from '../location-metrics';
 import { LocationIntersections } from '../location-intersections';
-import { ErrorMessages, ActionModal, MapComponent, LinkWithOrg } from 'components';
+import { ErrorMessages, ActionModal, MapComponent, LinkWithOrg, InlineCard, LocationTitle } from 'components';
 import { formatDate } from 'utils';
 import { MapComponentContext } from 'utils/contexts';
 import { stripNumbers } from 'utils';
@@ -32,7 +32,7 @@ import { calculateAllForLocation } from 'services';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 
-export default function LocationDetails(props: LocationProps) {
+export default function LocationDetails( props: LocationProps ) {
   const {
     data: {
       id,
@@ -72,7 +72,7 @@ export default function LocationDetails(props: LocationProps) {
     setMappedIntersections(groupBy(intersections, 'type'));
   }, [geojson, bbox2d, intersections]);
 
-  async function handleCalculateAll(e: MouseEvent, locationId: string) {
+  async function handleCalculateAll( e: MouseEvent, locationId: string ) {
     e.preventDefault();
     e.stopPropagation();
     try {
@@ -83,7 +83,7 @@ export default function LocationDetails(props: LocationProps) {
     }
   }
 
-  function handleServerErrors(errors) {
+  function handleServerErrors( errors ) {
     setServerErrors(errors);
   }
 
@@ -102,17 +102,21 @@ export default function LocationDetails(props: LocationProps) {
           visibility={showDeleteModal}
         />
       )}
+
+      <div className="ng-grid ng-form-dark ng-form">
+        <LocationTitle name={name}/>
+      </div>
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
         <div className="ng-flex ng-align-center ng-flex-center ng-text-center ng-center">
           <span className="ng-padding-horizontal">
             Published
-            <br />
+            <br/>
             <i className={`ng-icon-${publishIcon}`}></i>
           </span>
           <span className="ng-padding-horizontal">
             Featured
-            <br />
+            <br/>
             <i className={`ng-icon-${featuredIcon}`}></i>
           </span>
         </div>
@@ -141,7 +145,7 @@ export default function LocationDetails(props: LocationProps) {
         {!isEmpty(geojson) && (
           <div className="ng-margin-medium-bottom">
             <MapComponentContext.Provider value={mapData}>
-              <MapComponent />
+              <MapComponent/>
             </MapComponentContext.Provider>
           </div>
         )}
@@ -160,13 +164,13 @@ export default function LocationDetails(props: LocationProps) {
       </div>
       <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
         {mappedIntersections &&
-          map(mappedIntersections, (intersections, idx) => (
-            <LocationIntersections
-              key={idx}
-              name={intersections[0].type}
-              intersections={intersections}
-            />
-          ))}
+        map(mappedIntersections, ( intersections, idx ) => (
+          <LocationIntersections
+            key={idx}
+            name={intersections[ 0 ].type}
+            intersections={intersections}
+          />
+        ))}
       </div>
       {metricsPermission && (
         <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
@@ -174,7 +178,7 @@ export default function LocationDetails(props: LocationProps) {
             <div>
               <h5 className="ng-text-display-s">Location Metrics</h5>
               <div className="ng-flex ng-flex-wrap">
-                {metrics.map((metric) => (
+                {metrics.map(( metric ) => (
                   <LocationMetrics
                     key={metric.id}
                     data={metric}
@@ -187,13 +191,13 @@ export default function LocationDetails(props: LocationProps) {
           {writeMetricsPermission && (
             <button
               className="ng-button ng-button-primary"
-              onClick={(e) => handleCalculateAll(e, id)}
+              onClick={( e ) => handleCalculateAll(e, id)}
             >
               Recalculate all
             </button>
           )}
 
-          {serverErrors && <ErrorMessages key={id} errors={serverErrors} />}
+          {serverErrors && <ErrorMessages key={id} errors={serverErrors}/>}
         </div>
       )}
       {writePermissions && (

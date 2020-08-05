@@ -27,7 +27,7 @@ import { getAllLocations, getLocation } from 'services/locations';
 import { AuthzGuards } from 'auth/permissions';
 import { useRequest } from 'utils/hooks';
 
-import { LocationList, LocationDetails, LocationEdit, LinkWithOrg } from 'components';
+import { LocationList, LocationDetails, LocationEdit, LinkWithOrg, LocationHome } from 'components';
 import { useAuth0 } from 'auth/auth0';
 import { SidebarLayout, ContentLayout } from 'layouts';
 
@@ -143,11 +143,12 @@ function HomePage( props: any ) {
   const writePermissions = getPermissions(AuthzGuards.writeLocationsGuard);
   return (writePermissions && (
     <ContentLayout>
-      <div className="ng-flex ng-align-right">
-        <LinkWithOrg className="ng-button ng-button-overlay" to="/locations/new">
-          add new location
-        </LinkWithOrg>
-      </div>
+      <LocationHome/>
+      {/*<div className="ng-flex ng-align-right">*/}
+      {/*  <LinkWithOrg className="ng-button ng-button-overlay" to="/locations/new">*/}
+      {/*    add new location*/}
+      {/*  </LinkWithOrg>*/}
+      {/*</div>*/}
     </ContentLayout>
   ));
 }

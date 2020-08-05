@@ -22,3 +22,5 @@ export * from './location-edit';
 export * from './location-list';
 export * from './location-metrics';
 export * from './location-intersections';
+export * from './location-home';
+export * from './location-title';

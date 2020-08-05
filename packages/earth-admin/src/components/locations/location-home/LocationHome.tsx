@@ -17,30 +17,24 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './action-modal';
-export * from './dashboards';
-export * from './data-listing';
-export * from './dropdown';
-export * from './error-messages';
-export * from './html-editor';
-export * from './json-editor';
-export * from './layers';
-export * from './link-with-org';
-export * from './locations';
-export * from './map';
-export * from './not-found';
-export * from './org-switcher';
-export * from './organizations';
-export * from './protected-route';
-export * from './search-input';
-export * from './users';
-export * from './user-menu';
-export * from './sidebar-select';
-export * from './users';
-export * from './widgets';
-export * from './inline-card';
+import * as React from 'react';
+import { useContext, useEffect, useState } from 'react';
+import {InlineCard} from 'components';
 
+interface LocationHomeProps {
+}
 
+export default function LocationHome(props: LocationHomeProps) {
 
-
-
+  return (
+    <div className="ng-grid">
+      <div className="ng-width-1-2">
+        <InlineCard editable={false}>
+          Search a place to view and edit details, or start creating a new place.
+          <br/>
+          <button className="ng-button ng-button-overlay">Create new place</button>
+        </InlineCard>
+      </div>
+    </div>
+  );
+}
