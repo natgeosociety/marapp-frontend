@@ -17,10 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-// Serialize in the format filter=type==Continent;Jurisdiction,featured==true
-export const serializeFilters = (filters, valueSeparator = ';', keySeparator = ',') => {
-  return Object.keys(filters).reduce((acc, key) => {
+/**
+ * Serialize filters in the format
+ *   filter=type==Continent;Jurisdiction,featured==true
+ * @param filters
+ * @param filterSep
+ * @param valueSep
+ */
+export const serializeFilters = (filters, filterSep = ',', valueSep = ';') => {
+  return Object.keys(filters).reduce((acc: string, key: string) => {
     const filterGroup = filters[key];
-    return `${key}==${filterGroup.join(valueSeparator)}${keySeparator}${acc}`;
-  }, ``);
+    return [`${key}==${filterGroup.join(valueSep)}`, acc].filter(e => !!e).join(filterSep)
+  }, '');
 };
