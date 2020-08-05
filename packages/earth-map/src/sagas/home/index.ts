@@ -44,7 +44,7 @@ function* toHome() {
     const places = yield all({
       featured: call(fetchPlaces, {
         ...LOCATION_QUERY,
-        ...{ filter: 'featured==true', group: group.toString() },
+        ...{ filter: 'featured==true', group: group.join('|') },
       }),
     });
     // set

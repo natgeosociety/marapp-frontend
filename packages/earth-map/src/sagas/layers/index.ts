@@ -37,7 +37,7 @@ export function* preloadLayers({ payload }) {
   try {
     const indexes: IIndex[] = yield call(fetchDataIndexes, {
       ...DATA_INDEX_QUERY,
-      ...{ group: group.toString() },
+      ...{ group: group.join('|') },
     });
     const widgets = indexes.reduce((acc, index) => {
       return [...acc, ...index.widgets];

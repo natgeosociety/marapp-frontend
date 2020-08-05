@@ -69,7 +69,7 @@ export function* nextPage({ payload }) {
     ...(!!filters && { filter: filterQuery }),
     'page[cursor]': pageCursor ? pageCursor : -1,
     ...(pageSize && { 'page[size]': pageSize }),
-    ...{ group: group.toString() },
+    ...{ group: group.join('|') },
   });
   const { data: results, meta } = page;
 
