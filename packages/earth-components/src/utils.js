@@ -17,35 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-/**
- * Check if filters contain any values
- */
-export const hasFilters = (filters: IFilters): boolean => {
-  return countFilters(filters) !== 0;
+// Serialize in the format filter=type==Continent;Jurisdiction,featured==true
+export const serializeFilters = (filters, valueSeparator = ';', keySeparator = ',') => {
+  return Object.keys(filters).reduce((acc, key) => {
+    const filterGroup = filters[key];
+    return `${key}==${filterGroup.join(valueSeparator)}${keySeparator}${acc}`;
+  }, ``);
 };
-
-/**
- * Count the number of selected filters
- */
-export const countFilters = (filters: IFilters): number => {
-  return Object.keys(filters).reduce((acc, current) => {
-    const val = filters[current];
-    return acc + val.length;
-  }, 0);
-};
-
-/**
- * Strips keys that have empty arrays
- */
-export const cleanFilters = (filters: IFilters): IFilters => {
-  return Object.keys(filters)
-    .filter((key) => filters[key].length)
-    .reduce((acc, key) => {
-      acc[key] = filters[key];
-      return acc;
-    }, {});
-};
-
-export interface IFilters {
-  [key: string]: string[] | boolean[];
-}
