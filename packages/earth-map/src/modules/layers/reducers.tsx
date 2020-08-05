@@ -34,10 +34,11 @@ export default {
   [actions.setLayersActive]: (state, { payload }) => ({
     ...state,
     active: payload,
-    // keep activeLayers in sync with active array
-    activeLayers: payload
-      .map((slug) => state.activeLayers.find(x => x.slug === slug))
-      .map(flattenLayerConfig),
+  }),
+  [actions.resetLayersActive]: (state) => ({
+    ...state,
+    active: [],
+    activeLayers: [],
   }),
   [actions.setLayersList]: (state, { payload }) => {
     return {
@@ -51,7 +52,7 @@ export default {
     const layer = payload;
     const newActiveLayers = (activeLayers.find(x => x.slug === layer.slug))
       ? activeLayers.filter(x => x.slug !== layer.slug)
-      : [layer, ...activeLayers];
+      : [...activeLayers, layer];
 
     return {
       ...state,

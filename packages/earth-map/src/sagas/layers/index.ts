@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { all, put, call, select, takeLatest } from 'redux-saga/effects';
+import { put, call, select, takeLatest, all } from 'redux-saga/effects';
 import { replace } from 'redux-first-router';
 import sortBy from 'lodash/sortBy';
 import { serializeFilters } from '@marapp/earth-components';
@@ -32,12 +32,14 @@ import { setWidgets, setWidgetsLoading, setWidgetsError } from 'modules/widgets/
 import { setIndexesList } from 'modules/indexes/actions';
 import {
   setLayersList,
+  setLayersActive,
   setLayersSearch,
   setLayersLoading,
   setLayersSearchResults,
   setLayersSearchAvailableFilters,
   resetLayersResults,
   nextLayersPage,
+  toggleLayer,
 } from 'modules/layers/actions';
 import { getGroup, getLayers, onlyMatch, flattenLayerConfig } from 'sagas/saga-utils';
 import { fetchLayers } from 'services/layers';
@@ -48,6 +50,27 @@ export default function* layers() {
   yield takeLatest(onlyMatch(setSidebarPanel, EPanels.LAYERS), searchLayers);
   yield takeLatest(setLayersSearch, searchLayers);
   yield takeLatest(nextLayersPage, nextPage)
+
+  // Queries the api and loads the active layers objects. Does nothing to display the layer on the map. That is handled in the <Url /> component that reacts to query param changes
+  yield takeLatest(setLayersActive, loadActiveLayers)
+}
+
+/**
+ * Load active layer objects on refresh
+ */
+function* loadActiveLayers({ payload }) {
+  const group = yield select(getGroup);
+  const options = {
+    filter: serializeFilters({
+      slug: payload
+    }),
+    group: group.join(','),
+  }
+  const { data: layers } = yield call(fetchLayers, options);
+
+  yield all(layers.map(function* (layer) {
+    yield put(toggleLayer(layer));
+  }));
 }
 
 function* searchLayers(params) {

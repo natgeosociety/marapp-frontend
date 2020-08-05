@@ -40,6 +40,10 @@ export const ignoreRedirectsTo = (actionName: string): Function => {
   };
 };
 
+/**
+ * https://redux-saga.js.org/docs/api/#takepattern
+ * A pattern function that matches a redux action and it's payload
+ */
 export const onlyMatch = (actionToMatch: string | Function, payload: any): Function => {
   return (action): boolean => {
     const actionName =

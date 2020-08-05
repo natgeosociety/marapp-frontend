@@ -23,6 +23,7 @@ export const setLayersList = createAction('LAYERS/setLayersList');
 export const setLayersLoading = createAction('LAYERS/loading');
 export const setLayersError = createAction('LAYERS/setLayersError');
 export const setLayersActive = createAction('LAYERS/setLayersActive');
+export const resetLayersActive = createAction('LAYERS/resetLayersActive');
 
 export const toggleLayer = createAction('LAYERS/toggleLayer');
 export const setLayerInfo = createAction('LAYERS/setLayerInfo');

@@ -70,7 +70,7 @@ interface IProps {
   setSidebarPanelExpanded?: (value: boolean) => void;
   setLayersSearch?: (value: any) => void;
   setPlacesSearch?: (value: any) => void;
-  setLayersActive?: (value: any) => void;
+  resetLayersActive?: () => void;
   nextLayersPage?: (value: any) => void;
 }
 
@@ -89,7 +89,7 @@ const Layers = (props: IProps) => {
     locationOrganization,
     setLayersSearch,
     setPlacesSearch,
-    setLayersActive,
+    resetLayersActive,
     nextLayersPage,
   } = props;
 
@@ -159,7 +159,7 @@ const Layers = (props: IProps) => {
             <div className="ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
               <div className="ng-flex ng-flex-space-between ng-flex-align-items-baseline ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top">
                 <h2 className="ng-text-display-s ng-body-color ng-margin-remove">Selected Layers</h2>
-                <a onClick={() => setLayersActive([])}>deselect all</a>
+                <a onClick={() => resetLayersActive()}>deselect all</a>
               </div>
               {activeLayers.map((layer) => {
                 return (
