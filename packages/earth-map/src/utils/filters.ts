@@ -19,7 +19,7 @@
 
 /**
  * Serialize filters in the format
- *   filter=type==Continent|Jurisdiction,featured==true
+ *   filter=type==Continent;Jurisdiction,featured==true
  * @param filters
  * @param filterSep
  * @param valueSep
@@ -29,10 +29,10 @@ export const serializeFilters = (
   filterSep: string = ',',
   valueSep: string = ';'
 ): string => {
-  return Object.keys(filters).reduce((acc, key) => {
+  return Object.keys(filters).reduce((acc: string, key: string) => {
     const filterGroup = filters[key];
-    return `${key}==${filterGroup.join(valueSep)}${filterSep}${acc}`;
-  }, ``);
+    return [`${key}==${filterGroup.join(valueSep)}`, acc].filter(e => !!e).join(filterSep)
+  }, '');
 };
 
 /**
