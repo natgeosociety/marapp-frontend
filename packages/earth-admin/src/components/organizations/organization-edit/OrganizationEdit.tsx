@@ -42,7 +42,7 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
 
   const onSubmit = async (values: any) => {
     const formData = getValues();
-    console.log('@@@@@', formData);
+
     try {
       await updateOrganization(id || formData.id, {
         description: formData.description,

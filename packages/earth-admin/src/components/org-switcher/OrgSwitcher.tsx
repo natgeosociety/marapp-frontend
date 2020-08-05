@@ -29,8 +29,6 @@ import './styles.scss';
 const OrgSwitcher = (props) => {
   const { permissions, selectedGroup, setupUserOrg } = useContext(Auth0Context);
 
-  console.log('####', permissions);
-
   const [dropdownState, setDropdownState] = useState('close');
 
   const handleOrgSwitch = (group) => {
