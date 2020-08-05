@@ -27,7 +27,7 @@
 export const serializeFilters = (
   filters: IFilters,
   filterSep: string = ',',
-  valueSep: string = '|'
+  valueSep: string = ';'
 ): string => {
   return Object.keys(filters).reduce((acc, key) => {
     const filterGroup = filters[key];
