@@ -20,6 +20,7 @@
 import { all, put, call, select, takeLatest } from 'redux-saga/effects';
 import { replace } from 'redux-first-router';
 import sortBy from 'lodash/sortBy';
+import { serializeFilters } from '@marapp/earth-components';
 
 import { fetchDataIndexes } from 'services/data-indexes';
 import { DATA_INDEX_QUERY } from '../model';
@@ -39,7 +40,6 @@ import {
   nextLayersPage,
 } from 'modules/layers/actions';
 import { getGroup, getLayers, onlyMatch, flattenLayerConfig } from 'sagas/saga-utils';
-import { serializeFilters } from 'utils/filters';
 import { fetchLayers } from 'services/layers';
 import { LAYER_QUERY } from '../model';
 
