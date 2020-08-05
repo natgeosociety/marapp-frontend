@@ -18,7 +18,7 @@
 */
 
 // Serialize in the format filter=type==Continent,Jurisdiction,featured==true
-export const serializeFilters = (filters: IFilters, sep: string = '|'): string => {
+export const serializeFilters = (filters: IFilters, sep: string = ';'): string => {
   return Object.keys(filters).reduce((acc, key) => {
     const filterGroup = filters[key];
     return `${key}==${filterGroup.join(sep)},${acc}`;
