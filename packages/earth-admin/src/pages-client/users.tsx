@@ -41,16 +41,19 @@ const PAGE_TYPE = setPage('Users');
 
 export default function UsersPage( props ) {
   return (
+
     <Router>
-      <Page path={'/'}/>
-      <DetailsPage path={'/:page'}/>
-      <EditPage path={'/:page/edit'} newUser={false}/>
-      <EditPage path={'/new'} newUser={true}/>
+      <Page path="/">
+        <HomePage path="/"/>
+        <DetailsPage path="/:page"/>
+        <EditPage path="/:page/edit" newUser={false}/>
+        <EditPage path="/new" newUser={true}/>
+      </Page>
     </Router>
   );
 }
 
-function UsersWrapper( props: any ) {
+function Sidebar( props: any ) {
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
@@ -71,35 +74,26 @@ function UsersWrapper( props: any ) {
     async function setupUsers() {
       setIsLoading(true);
 
-      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh;
 
-      if (dataReset && pageNumber !== 1) {
-        props.path.location.state.refresh = false;
-      } else {
-        const query = {
-          page: { size: pageSize, number: pageNumber },
-          group: selectedGroup,
-          include: 'groups',
-        };
-        const encodedQuery = encodeQueryToURL('users', query);
-        const res: any = await getAllUsers(encodedQuery);
+      const query = {
+        page: { size: pageSize, number: pageNumber },
+        group: selectedGroup,
+        include: 'groups',
+      };
+      const encodedQuery = encodeQueryToURL('users', query);
+      const res: any = await getAllUsers(encodedQuery);
 
-        if (dataReset) {
-          props.path.location.state.refresh = false;
-        }
 
-        const validUsers = res.data.filter(( item ) => item.id !== '|' && item.groups.length > 0);
-        setSelectedItem(props.path.page);
-        setTotalResults(res.total);
-        setUsers(dataReset ? validUsers : [...users, ...validUsers]);
-        setIsNoMore(pageNumber === res.pagination.total);
-      }
+      const validUsers = res.data.filter(( item ) => item.id !== '|' && item.groups.length > 0);
+      setTotalResults(res.total);
+      setUsers([...users, ...validUsers]);
+      setIsNoMore(pageNumber === res.pagination.total);
 
       setIsLoading(false);
     }
 
     permissions && setupUsers();
-  }, [props.path.location, pageNumber]);
+  }, [pageNumber]);
 
   return (
     <UserContext.Provider
@@ -116,31 +110,33 @@ function UsersWrapper( props: any ) {
       <SidebarLayout page={PAGE_TYPE}>
         <UserList/>
       </SidebarLayout>
-      {props.children}
     </UserContext.Provider>
   );
 }
 
-function Page( path: any ) {
-  const { getPermissions } = useAuth0();
+function Page( props: any ) {
+  return (
+    <>
+      <Sidebar/>
+      {props.children}
+    </>);
+}
 
+function HomePage( props: any ) {
+  const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessUsersGuard);
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
-
-  return (
-    <UsersWrapper path={path}>
-      <ContentLayout permission={permissions}>
-        {writePermissions && (
-          <div className="ng-flex ng-align-right">
-            <LinkWithOrg className="ng-button ng-button-overlay" to="/users/new">
-              add new user
-            </LinkWithOrg>
-          </div>
-        )}
-      </ContentLayout>
-    </UsersWrapper>
-  );
+  return (writePermissions && (
+    <ContentLayout>
+      <div className="ng-flex ng-align-right">
+        <LinkWithOrg className="ng-button ng-button-overlay" to="/users/new">
+          add new user
+        </LinkWithOrg>
+      </div>
+    </ContentLayout>
+  ));
 }
+
 
 function DetailsPage( path: any ) {
   const { selectedGroup } = useAuth0();
@@ -150,14 +146,13 @@ function DetailsPage( path: any ) {
   });
   const { isLoading, errors, data } = useRequest(() => getUser(encodedQuery), {
     permissions: AuthzGuards.accessUsersGuard,
+    query: encodedQuery,
   });
 
   return (
-    <UsersWrapper path={path}>
-      <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
-        <UserDetails data={data}/>
-      </ContentLayout>
-    </UsersWrapper>
+    <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
+      <UserDetails data={data}/>
+    </ContentLayout>
   );
 }
 
@@ -173,10 +168,8 @@ function EditPage( path: any ) {
   });
 
   return (
-    <UsersWrapper path={path}>
-      <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
-        <UserEdit data={data} newUser={path.newUser}/>
-      </ContentLayout>
-    </UsersWrapper>
+    <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
+      <UserEdit data={data} newUser={path.newUser}/>
+    </ContentLayout>
   );
 }

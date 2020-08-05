@@ -45,16 +45,17 @@ const PAGE_TYPE = setPage('Widgets');
 export default function WidgetsPage( props ) {
   return (
     <Router>
-      <Page path="/"/>
-      <DetailsPage path="/:page"/>
-      <EditPage path="/:page/edit" newWidget={false}/>
-      <EditPage path="/new" newWidget={true}/>
+      <Page path="/">
+        <HomePage path="/"/>
+        <DetailsPage path="/:page"/>
+        <EditPage path="/:page/edit" newWidget={false}/>
+        <EditPage path="/new" newWidget={true}/>
+      </Page>
     </Router>
   );
 }
 
-function WidgetsWrapper( props: any ) {
-  const { path } = props;
+function Sidebar( props: any ) {
   const [widgets, setWidgets] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -86,32 +87,26 @@ function WidgetsWrapper( props: any ) {
     async function setupWidgets() {
       setIsLoading(true);
 
-      const dataReset = !!path.location.state && !!path.location.state.refresh;
       const query = {
         search: searchValue,
         sort: 'name',
-        page: { size: pageSize, cursor: dataReset ? INIT_CURSOR_LOCATION : pageCursor },
+        page: { size: pageSize, cursor: pageCursor },
         select: EXCLUDED_FIELDS,
         group: selectedGroup,
       };
       const encodedQuery = encodeQueryToURL('widgets', query);
       const res: any = await getAllWidgets(encodedQuery);
 
-      if (dataReset) {
-        path.location.state.refresh = false;
-      }
-
       setTotalResults(res.total);
 
-      setWidgets(!nextCursor || dataReset ? res.data : [...widgets, ...res.data]);
+      setWidgets(!nextCursor ? res.data : [...widgets, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-      setSelectedItem(props.path.page);
       setIsNoMore(!res.pagination.nextCursor);
       setIsLoading(false);
     }
 
     permissions && setupWidgets();
-  }, [props.path.location, pageCursor, searchValue]);
+  }, [pageCursor, searchValue]);
 
   return (
     <WidgetContext.Provider
@@ -135,26 +130,27 @@ function WidgetsWrapper( props: any ) {
   );
 }
 
-function Page( path: any ) {
+function Page( props: any ) {
+  return (
+    <>
+      <Sidebar/>
+      {props.children}
+    </>);
+}
 
-  const { selectedGroup, getPermissions } = useAuth0();
-
+function HomePage( props: any ) {
+  const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessWidgetsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeWidgetsGuard);
-
-  return (
-    <WidgetsWrapper path={path}>
-      <ContentLayout permission={permissions}>
-        {writePermissions && (
-          <div className="ng-flex ng-align-right">
-            <LinkWithOrg className="ng-button ng-button-overlay" to={`/widgets/new`}>
-              Add new widget
-            </LinkWithOrg>
-          </div>
-        )}
-      </ContentLayout>
-    </WidgetsWrapper>
-  );
+  return (writePermissions && (
+    <ContentLayout>
+      <div className="ng-flex ng-align-right">
+        <LinkWithOrg className="ng-button ng-button-overlay" to="/widgets/new">
+          add new widget
+        </LinkWithOrg>
+      </div>
+    </ContentLayout>
+  ));
 }
 
 function DetailsPage( path: any ) {
@@ -169,11 +165,11 @@ function DetailsPage( path: any ) {
   });
 
   return (
-    <WidgetsWrapper path={path}>
-      <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
-        <WidgetDetails data={data}/>
-      </ContentLayout>
-    </WidgetsWrapper>
+
+    <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
+      <WidgetDetails data={data}/>
+    </ContentLayout>
+
   );
 }
 
@@ -189,11 +185,11 @@ function EditPage( path: any ) {
   });
 
   return (
-    <WidgetsWrapper path={path}>
-      <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
-        <WidgetEdit data={data} newWidget={path.newWidget}/>
-      </ContentLayout>
-    </WidgetsWrapper>
+
+    <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
+      <WidgetEdit data={data} newWidget={path.newWidget}/>
+    </ContentLayout>
+
 
   );
 }

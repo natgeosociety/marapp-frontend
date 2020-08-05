@@ -25,7 +25,7 @@ import './styles.scss';
 const SidebarLayout = ( props: any ) => {
   return (
     <div className="ng-sidebar ng-flex ng-flex-column ng-flex-top">
-      <nav className="ng-padding-medium-top ng-padding-bottom ng-background-dkgray ">
+      <nav className="ng-padding-medium-top ng-background-dkgray ng-sidebar-header">
         <div
           className="ng-padding-medium-horizontal ng-ep-background-dark ng-margin-bottom ng-flex ng-flex-middle ng-position-relative">
           <LinkWithOrg to='/' className="ng-border-remove">
@@ -34,8 +34,10 @@ const SidebarLayout = ( props: any ) => {
           <span className="ng-margin-small-horizontal ng-color-white">|</span>
           <OrgSwitcher/>
         </div>
-        <SidebarSelect path={props.page}/>
       </nav>
+      <div className="ng-padding-bottom ng-background-dkgray">
+        <SidebarSelect path={props.page}/>
+      </div>
       {props.children}
     </div>
   );

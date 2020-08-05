@@ -44,15 +44,17 @@ const PAGE_TYPE = setPage('Locations');
 export default function LocationsPage( props ) {
   return (
     <Router>
-      <Page path="/"/>
-      <DetailsPage path="/:page"/>
-      <EditPage path="/:page/edit" newLocation={false}/>
-      <EditPage path="/new" newLocation={true}/>
+      <Page path="/">
+        <HomePage path="/"/>
+        <DetailsPage path="/:page"/>
+        <EditPage path="/:page/edit" newLocation={false}/>
+        <EditPage path="/new" newLocation={true}/>
+      </Page>
     </Router>
   );
 }
 
-function LocationsWrapper( props: any ) {
+function Sidebar( props: any ) {
   const [locations, setLocations] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -83,8 +85,6 @@ function LocationsWrapper( props: any ) {
     async function setupLocations() {
       setIsLoading(true);
 
-      const dataReset = !!props.path.location.state && !!props.path.location.state.refresh;
-
       const query = {
         search: searchValue,
         sort: 'name',
@@ -95,22 +95,17 @@ function LocationsWrapper( props: any ) {
       const encodedQuery = encodeQueryToURL('locations', query);
       const res: any = await getAllLocations(encodedQuery);
 
-      if (dataReset) {
-        props.path.location.state.refresh = false;
-      }
-
       setTotalResults(res.total);
-
-      setLocations(!nextCursor || dataReset ? res.data : [...locations, ...res.data]);
+      setLocations(!nextCursor ? res.data : [...locations, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
       setIsNoMore(!res.pagination.nextCursor);
 
       setIsLoading(false);
-      setSelectedItem(props.path.page);
     }
 
     permissions && setupLocations();
-  }, [props.path.location, pageCursor, searchValue]);
+  }, [pageCursor, searchValue]);
+
 
   return (
     <LocationContext.Provider
@@ -130,30 +125,32 @@ function LocationsWrapper( props: any ) {
       <SidebarLayout page={PAGE_TYPE}>
         <LocationList/>
       </SidebarLayout>
-      {props.children}
     </LocationContext.Provider>
   );
 }
 
-function Page( path: any ) {
+function Page( props: any ) {
+  return (
+    <>
+      <Sidebar/>
+      {props.children}
+    </>);
+}
+
+function HomePage( props: any ) {
   const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessLocationsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeLocationsGuard);
-
-  return (
-    <LocationsWrapper path={path}>
-      <ContentLayout permission={permissions}>
-        {writePermissions && (
-          <div className="ng-flex ng-align-right">
-            <LinkWithOrg className="ng-button ng-button-overlay" to="/locations/new">
-              add new location
-            </LinkWithOrg>
-          </div>
-        )}
-      </ContentLayout>
-    </LocationsWrapper>
-  );
-};
+  return (writePermissions && (
+    <ContentLayout>
+      <div className="ng-flex ng-align-right">
+        <LinkWithOrg className="ng-button ng-button-overlay" to="/locations/new">
+          add new location
+        </LinkWithOrg>
+      </div>
+    </ContentLayout>
+  ));
+}
 
 function DetailsPage( path: any ) {
   const { selectedGroup } = useAuth0();
@@ -167,11 +164,9 @@ function DetailsPage( path: any ) {
   });
 
   return (
-    <LocationsWrapper path={path}>
-      <ContentLayout errors={errors} backTo="/locations" isLoading={isLoading}>
-        <LocationDetails data={data}/>
-      </ContentLayout>
-    </LocationsWrapper>
+    <ContentLayout errors={errors} backTo="/locations" isLoading={isLoading}>
+      <LocationDetails data={data}/>
+    </ContentLayout>
   );
 }
 
@@ -187,10 +182,9 @@ function EditPage( path: any ) {
   });
 
   return (
-    <LocationsWrapper path={path}>
-      <ContentLayout errors={errors} backTo="/locations" isLoading={isLoading}>
-        <LocationEdit data={data} newLocation={path.newLocation}/>
-      </ContentLayout>
-    </LocationsWrapper>
+
+    <ContentLayout errors={errors} backTo="/locations" isLoading={isLoading}>
+      <LocationEdit data={data} newLocation={path.newLocation}/>
+    </ContentLayout>
   );
 }
