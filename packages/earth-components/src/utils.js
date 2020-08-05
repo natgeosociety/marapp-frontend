@@ -18,34 +18,15 @@
 */
 
 /**
- * Check if filters contain any values
+ * Serialize filters in the format
+ *   filter=type==Continent;Jurisdiction,featured==true
+ * @param filters
+ * @param filterSep
+ * @param valueSep
  */
-export const hasFilters = (filters: IFilters): boolean => {
-  return countFilters(filters) !== 0;
+export const serializeFilters = (filters, filterSep = ',', valueSep = ';') => {
+  return Object.keys(filters).reduce((acc: string, key: string) => {
+    const filterGroup = filters[key];
+    return [`${key}==${filterGroup.join(valueSep)}`, acc].filter(e => !!e).join(filterSep)
+  }, '');
 };
-
-/**
- * Count the number of selected filters
- */
-export const countFilters = (filters: IFilters): number => {
-  return Object.keys(filters).reduce((acc, current) => {
-    const val = filters[current];
-    return acc + val.length;
-  }, 0);
-};
-
-/**
- * Strips keys that have empty arrays
- */
-export const cleanFilters = (filters: IFilters): IFilters => {
-  return Object.keys(filters)
-    .filter((key) => filters[key].length)
-    .reduce((acc, key) => {
-      acc[key] = filters[key];
-      return acc;
-    }, {});
-};
-
-export interface IFilters {
-  [key: string]: string[] | boolean[];
-}

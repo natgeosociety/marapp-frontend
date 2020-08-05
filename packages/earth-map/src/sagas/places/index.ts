@@ -21,7 +21,7 @@ import { all, put, call, takeLatest, select } from 'redux-saga/effects';
 
 // Services
 import { fetchPlaces } from 'services/places';
-import { serializeFilters } from 'utils/filters';
+import { serializeFilters } from '@marapp/earth-components';
 
 // Actions
 import {
