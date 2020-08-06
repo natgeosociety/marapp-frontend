@@ -80,6 +80,10 @@ export const formatDate = (date: Date): string => {
  * @param required: array of scopes to check
  */
 export const hasAccess = (permissions: string[], required: string[] | string[][]) => {
+  if (!Array.isArray(permissions)) {
+    return false;
+  }
+
   let scopes: string[][];
 
   if (isArray(required) && required.every(isString)) {
