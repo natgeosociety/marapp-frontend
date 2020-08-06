@@ -89,7 +89,10 @@ export function* nextPage({ payload }) {
   const { filters, search: userInput } = search;
   const { pageCursor, pageSize } = payload;
 
-  const filterQuery = serializeFilters(filters);
+  const filterQuery = serializeFilters({
+    ...filters,
+    primary: true,
+  });
 
   yield put(setLayersLoading(true));
   const options = {
@@ -98,7 +101,7 @@ export function* nextPage({ payload }) {
     ...(!!filterQuery && { filter: filterQuery }),
     'page[cursor]': pageCursor ? pageCursor : -1,
     ...(pageSize && { page: { size: pageSize } }),
-    ...{ group: group.toString() },
+    group: group.toString(),
   };
   const page = yield call(fetchLayers, options);
   const { data: results, meta } = page;
