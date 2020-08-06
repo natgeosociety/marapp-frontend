@@ -80,8 +80,17 @@ export const isValidOrg = (orgsFromToken: string[], org: string): boolean =>
 
 export const parseHintBold = (text: string = '') => {
   return text.split(/({{.+?}})/).map(term => (
-    term.startsWith('{{') && term.endsWith('}}') ?
-    <b className="ng-text-weight-bold">{term.replace('{{', '').replace('}}', '')}</b> :
-    term
+    term.startsWith('{{') && term.endsWith('}}')
+      ? (
+        <b className="ng-text-weight-bold">
+          {term.replace('{{', '').replace('}}', '')}
+        </b>
+      )
+      : term
   ))
 };
+
+/**
+ * No operation function. Does nothing, but still useful
+ */
+export const noop = (): void => {};

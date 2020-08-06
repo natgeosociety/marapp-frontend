@@ -17,6 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { ILayerRaw, ILayer } from "modules/layers/model";
+
 /**
  * https://redux-saga.js.org/docs/api/#takepattern
  * A pattern function passed to saga effects to ignore action routes that are just redirects. Eg: when a layer is toggled
@@ -38,9 +40,58 @@ export const ignoreRedirectsTo = (actionName: string): Function => {
   };
 };
 
+/**
+ * https://redux-saga.js.org/docs/api/#takepattern
+ * A pattern function that matches a redux action and it's payload
+ */
+export const onlyMatch = (actionToMatch: string | Function, payload: any): Function => {
+  return (action): boolean => {
+    const actionName =
+      typeof actionToMatch === 'function' ? actionToMatch.toString() : actionToMatch;
+    const actionWeCareAbout = action.type === actionName;
+    if (!actionWeCareAbout) {
+      return false;
+    }
+    return action.payload === payload;
+  };
+};
+
+/**
+ * Put layer.config props directly on the layer - include layer reference
+ */
+export const flattenLayerConfig = (layer: ILayerRaw) => {
+  const adaptedLayer = flattenEachLayerConfig(layer);
+
+  if (!!adaptedLayer?.references.length) {
+    const adaptedReferences = layer.references.map(flattenEachLayerConfig);
+
+    return {
+      ...adaptedLayer,
+      references: adaptedReferences,
+    };
+  }
+
+  return {
+    ...adaptedLayer,
+  };
+};
+
+/**
+ * Put layer.config props directly on the layer
+ */
+const flattenEachLayerConfig = (layer: ILayerRaw): ILayer => {
+  const { config, ...rest } = layer;
+  return {
+    ...rest,
+    ...config,
+  };
+}
+
+
 // Selectors
 export const getAll = (state) => state;
 export const getGroup = (state) => state.user.group;
 export const getPlaces = (state) => state.places;
+export const getLayers = (state) => state.layers;
 export const getUser = (state) => state.user;
 export const getMap = (state) => state.map;

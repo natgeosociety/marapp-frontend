@@ -40,10 +40,9 @@ export default {
   search: {
     index: 0,
     loading: false,
-    term: '',
+    term: '', // probably deprecated
     availableFilters: {},
     filters: {},
-    open: false,
     search: '',
   },
 

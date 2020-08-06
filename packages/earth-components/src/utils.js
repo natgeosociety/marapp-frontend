@@ -25,8 +25,12 @@
  * @param valueSep
  */
 export const serializeFilters = (filters, filterSep = ',', valueSep = ';') => {
-  return Object.keys(filters).reduce((acc: string, key: string) => {
+  return Object.keys(filters).reduce((acc, key) => {
     const filterGroup = filters[key];
-    return [`${key}==${filterGroup.join(valueSep)}`, acc].filter(e => !!e).join(filterSep)
+    const value = Array.isArray(filterGroup)
+      ? filterGroup.join(encodeURIComponent(valueSep))
+      : filterGroup;
+
+    return [`${key}==${value}`, acc].filter(e => !!e).join(filterSep)
   }, '');
 };

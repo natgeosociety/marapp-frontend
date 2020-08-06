@@ -52,8 +52,7 @@ class PlacesService {
   /**
    * request
    * Creates an axios request based on type an options.
-   * @param {string} type - The type of the request.
-   * @param {object} options - The request options, these are forwarded to axios.
+   * @param {string} path - The path of the request.
    */
   request(path) {
     return new Promise((resolve, reject) => {

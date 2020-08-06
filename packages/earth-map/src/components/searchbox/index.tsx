@@ -17,39 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import '~styles/config';
+import { connect } from 'react-redux';
 
-.c-places-list {
-  position: relative;
-  margin-bottom: $space-1 * 6;
+import { setPlacesSearch } from 'modules/places/actions';
+import { setRouter } from 'modules/router/actions';
+import SearchBoxComponent from './Searchbox';
+import { setIndexesSelected } from 'modules/indexes/actions';
 
-  .places-list--title {
-    display: flex;
-    flex-flow: row;
-    align-items: center;
-    font-size: $font-size-medium;
-    height: $space-1 * 7.5;
-    padding: 0 $space-1 * 3;
-    cursor: pointer;
-
-    &:hover {
-      background-color: darken($marapp-gray-0, 2%);
-    }
-
-    svg {
-      display: block;
-      margin-right: $space-1;
-    }
+export default connect(
+  (state: any) => ({
+    ...state.places.search,
+  }),
+  {
+    setRouter,
+    setPlacesSearch,
+    setIndexesSelected,
   }
-
-  .places-list--item {
-    display: flex;
-    font-size: $font-size-default;
-    cursor: pointer;
-    padding: $space-1 * 0.75 $space-1 * 3;
-
-    &:hover {
-      background-color: darken($marapp-gray-0, 2%);
-    }
-  }
-}
+)(SearchBoxComponent);

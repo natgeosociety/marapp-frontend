@@ -25,13 +25,13 @@ import { cleanFilters, countFilters } from 'utils/filters';
 import './styles.scss';
 
 interface IProps {
-  search?: any;
-  setPlacesSearch?: (payload?) => void;
+  data: any;
+  onChange: (payload?) => void;
 };
 
 const FilterBy = (props: IProps) => {
-  const { search, setPlacesSearch } = props;
-  const { filters, availableFilters } = search;
+  const { data, onChange } = props;
+  const { filters, availableFilters } = data;
   const [dropdownState, setDropdownState] = useState('close');
   const numberOfFilters = countFilters(filters);
 
@@ -43,7 +43,7 @@ const FilterBy = (props: IProps) => {
         ? filterGroup.filter((x) => x !== value)
         : [...filterGroup, value],
     };
-    setPlacesSearch({
+    onChange({
       filters: cleanFilters({
         ...filters,
         ...newFilters,
@@ -51,7 +51,7 @@ const FilterBy = (props: IProps) => {
     });
   };
 
-  const clearCheckedFilters = () => setPlacesSearch({
+  const clearCheckedFilters = () => onChange({
     filters: {}
   });
 
@@ -65,7 +65,7 @@ const FilterBy = (props: IProps) => {
         <h2
           className="ng-text-display-s ng-body-color ng-margin-bottom ng-margin-small-right ng-c-cursor-pointer"
           onClick={handleDropdown}>
-          Search filters
+          Filters
         </h2>
         {numberOfFilters > 0 &&
           <a className="ng-link ng-nohover ng-text-weight-regular ng-text-capital" onClick={clearCheckedFilters}>Clear {`(${numberOfFilters})`}</a>
@@ -82,7 +82,7 @@ const FilterBy = (props: IProps) => {
       </div>
       {dropdownState === 'open' &&
         Object.keys(availableFilters).map((key) => (
-          <>
+          <React.Fragment key={key}>
             {/* {<h2 className="ng-color-ltgray ng-text-display-s ng-margin-bottom">{key}</h2>} */}
             <div className="ng-grid ng-form-dark ng-form" key={`${key}-form`}>
               {availableFilters[key].map((filter, i) => {
@@ -91,7 +91,7 @@ const FilterBy = (props: IProps) => {
                 const disabled = filter.count === 0;
 
                 return (
-                  <div className="ng-width-1-2 ng-margin-bottom" key={`${key}-${i}`}>
+                  <div className="ng-width-1-2 ng-margin-bottom" key={`${filter.key}-${filter.value}`}>
                     <label
                       htmlFor={domId}
                       className={classnames({
@@ -118,7 +118,7 @@ const FilterBy = (props: IProps) => {
                 );
               })}
             </div>
-          </>
+          </React.Fragment>
         ))}
     </div>
   );

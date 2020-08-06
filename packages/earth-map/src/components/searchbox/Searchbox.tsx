@@ -17,17 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 
-import Link from 'redux-first-router-link';
+import { noop } from 'utils';
+
 import './styles.scss';
 
 interface ISearchbox {
-  setPlacesSearch?: (value: any) => {};
-  setSidebarLayers?: (value: any) => {};
+  value: string;
+  placeholder: string;
+  onChange: (e: any) => void;
+  onReset: () => void;
+  onFocus?: () => void;
+
   setIndexesSelected?: (value: any) => {};
-  setPlacesSearchOpen?: (value: any) => {};
   setPlace?: (value: any) => {};
   setMapBounds?: (value: any) => {};
   resetMap?: () => {};
@@ -40,32 +44,13 @@ interface ISearchbox {
 
 const SearchBox = (props: ISearchbox) => {
   const {
-    setPlacesSearch,
-    setSidebarLayers,
-    setIndexesSelected,
-    setPlacesSearchOpen,
-    resetMap,
-    resetPlace,
-    search,
-    open,
+    value,
+    placeholder,
+    onChange = noop,
+    onReset = noop,
+    onFocus = noop,
     showClose,
   } = props;
-
-  const handleChange = (e) => {
-    const newValue = e.target.value;
-    setPlacesSearch({ search: newValue });
-  };
-
-  const handleToggleClick = () => {
-    setSidebarLayers(true);
-  };
-
-  const handleResetLocation = () => {
-    resetPlace();
-    setPlacesSearch({ search: '' });
-    setIndexesSelected('');
-    resetMap();
-  };
 
   const searchBoxClasses = classnames(
     'ng-c-input-container',
@@ -76,7 +61,7 @@ const SearchBox = (props: ISearchbox) => {
     'ng-flex',
     'ng-flex-middle',
     {
-      'is-focused': open,
+      'is-focused': true, // make this conditional
     }
   );
 
@@ -86,26 +71,17 @@ const SearchBox = (props: ISearchbox) => {
         <i className="ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal" />
         <input
           type="text"
-          placeholder="search a place"
+          placeholder={placeholder}
           className="ng-width-1-1 ng-search-box"
-          value={search}
-          onChange={(e) => handleChange(e)}
-          onFocus={() => setPlacesSearchOpen(true)}
+          value={value}
+          onChange={onChange}
+          onFocus={onFocus}
         />
         {showClose && (
-          <Link to={{ type: 'EARTH' }} className="ng-c-panel-link ng-unstyled ng-flex">
-            <div onClick={() => handleResetLocation()}>
-              <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close ng-display-block"></i>
-            </div>
-          </Link>
+          <div className="ng-c-cursor-pointer" onClick={onReset}>
+            <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close ng-display-block"></i>
+          </div>
         )}
-      </div>
-      <div
-        className="ng-icon-toggle-layer ng-labeled-icon ng-flex-column ng-flex-center ng-flex ng-margin-medium-left"
-        onClick={() => handleToggleClick()}
-      >
-        <i className="ng-icon ng-icon-small ng-icon-layers ng-width-1-1 ng-text-center ng-margin-small-bottom" />
-        <label className="ng-icon-label ng-width-1-1 ng-text-center">Layers</label>
       </div>
     </div>
   );
