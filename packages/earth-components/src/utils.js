@@ -24,7 +24,7 @@
  * @param filterSep
  * @param valueSep
  */
-export const serializeFilters = (filters, filterSep = ',', valueSep = ';') => {
+export const serializeFilters = (filters, filterSep = ',', valueSep = '|') => {
   return Object.keys(filters).reduce((acc, key) => {
     const filterGroup = filters[key];
     const value = Array.isArray(filterGroup)
