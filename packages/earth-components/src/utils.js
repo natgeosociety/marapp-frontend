@@ -30,7 +30,10 @@ export const serializeFilters = (filters, filterSep = ',', valueSep = ';') => {
     const value = Array.isArray(filterGroup)
       ? filterGroup.join(valueSep)
       : filterGroup;
+    const encodedResult = encodeURIComponent(
+      [`${key}==${value}`, acc].filter(e => !!e).join(filterSep)
+    );
 
-    return [`${key}==${value}`, acc].filter(e => !!e).join(filterSep)
+    return encodedResult
   }, '');
 };
