@@ -23,7 +23,7 @@ import classNames from 'classnames';
 import Link from 'redux-first-router-link';
 
 import { Auth0Context } from 'auth/auth0';
-import { checkRole } from 'utils';
+import { checkRole, getAvailableOrgs } from 'utils';
 import DropdownComponent from 'components/dropdown';
 import { APP_NAME, APP_LOGO } from '../../theme';
 
@@ -101,16 +101,6 @@ const Header = (props: IProps) => {
     });
   };
 
-  const getAvailableOrgs = () => {
-    const specialPermissions = [
-      '*' // super-admin
-    ];
-
-    return Object
-      .keys(roles)
-      .filter(permission => !specialPermissions.includes(permission));
-  };
-
   return (
 
     <div className="ng-padding-medium-horizontal ng-ep-background-dark ng-flex ng-flex-middle ng-position-relative ng-padding-bottom ng-padding-small-top">
@@ -153,7 +143,7 @@ const Header = (props: IProps) => {
         </li>
         <li className="ng-form ng-form-dark">
           <div className="ng-padding-medium-horizontal ng-padding-top">
-            {getAvailableOrgs().map((g, i) => (
+            {getAvailableOrgs(roles).map((g, i) => (
               <label
                 htmlFor={g}
                 className={classNames({

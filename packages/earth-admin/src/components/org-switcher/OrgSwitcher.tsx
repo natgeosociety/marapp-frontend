@@ -19,6 +19,8 @@
 
 import React, { useContext, useState } from 'react';
 import { Auth0Context } from 'utils/contexts';
+import { getAvailableOrgs } from 'utils';
+
 import classnames from 'classnames';
 
 import { LinkWithOrg, DropdownComponent } from 'components';
@@ -38,16 +40,6 @@ const OrgSwitcher = (props) => {
 
   const handleDropdownToggle = () => {
     dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
-  };
-
-  const getAvailableOrgs = () => {
-    const specialPermissions = [
-      '*' // super-admin
-    ];
-
-    return Object
-      .keys(permissions)
-      .filter(permission => !specialPermissions.includes(permission));
   };
 
   return (
@@ -72,7 +64,7 @@ const OrgSwitcher = (props) => {
           </a>
         </li>
         {!!permissions &&
-          getAvailableOrgs().map((g, i) => (
+          getAvailableOrgs(permissions).map((g, i) => (
             <React.Fragment key={i}>
               <li
                 className={classnames({

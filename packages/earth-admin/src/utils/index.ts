@@ -131,3 +131,17 @@ export const isValidOrg = (orgsFromToken: string[], org: string): boolean =>
 export const setPage = (pageType: string) => {
   return ADMIN_PAGES.filter((page) => page.key === pageType);
 };
+
+/**
+ * Get available organizations based on permissions
+ * @param permissions 
+ */
+export const getAvailableOrgs = (permissions: { [key: string]: string[] }): string[] => {
+  const specialPermissions = [
+    '*' // super-admin
+  ];
+
+  return Object
+    .keys(permissions)
+    .filter(permission => !specialPermissions.includes(permission));
+};

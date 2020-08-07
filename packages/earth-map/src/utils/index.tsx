@@ -85,3 +85,17 @@ export const parseHintBold = (text: string = '') => {
     term
   ))
 };
+
+/**
+ * Get available organizations based on permissions
+ * @param permissions 
+ */
+export const getAvailableOrgs = (permissions: { [key: string]: string[] }): string[] => {
+  const specialPermissions = [
+    '*' // super-admin
+  ];
+
+  return Object
+    .keys(permissions)
+    .filter(permission => !specialPermissions.includes(permission));
+};
