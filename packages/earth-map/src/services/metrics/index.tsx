@@ -42,11 +42,6 @@ class MetricsService {
   configure = () => {
     this.api = setup({
       baseURL: `${process.env.REACT_APP_API_URL}`,
-
-      // This prevents RW cache
-      headers: {
-        'Upgrade-Insecure-Requests': 1,
-      },
     });
   };
 
@@ -54,7 +49,6 @@ class MetricsService {
    * request
    * Creates an axios request based on type an options.
    * @param {string} path - The path of the request.
-   * @param {object} options - The request options, these are forwarded to axios.
    */
   request(path) {
     return new Promise((resolve, reject) => {

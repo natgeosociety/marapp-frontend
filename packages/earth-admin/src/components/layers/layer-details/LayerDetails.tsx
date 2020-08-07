@@ -36,6 +36,7 @@ export default function LayerDetails(props: LayerProps) {
       id,
       name,
       description,
+      primary,
       published,
       version,
       createdAt,
@@ -60,6 +61,7 @@ export default function LayerDetails(props: LayerProps) {
   }, [config]);
 
   const publishIcon = published ? 'check' : 'close';
+  const primaryIcon = primary ? 'check' : 'close';
 
   function handleDeleteToggle() {
     setShowDeleteModal(!showDeleteModal);
@@ -83,6 +85,11 @@ export default function LayerDetails(props: LayerProps) {
             Published
             <br />
             <i className={`ng-icon-${publishIcon}`}></i>
+          </span>
+          <span className="ng-padding-horizontal">
+            Primary
+            <br />
+            <i className={`ng-icon-${primaryIcon}`}></i>
           </span>
         </div>
       </div>

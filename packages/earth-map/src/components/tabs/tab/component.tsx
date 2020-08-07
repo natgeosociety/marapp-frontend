@@ -1,0 +1,24 @@
+import React from 'react';
+import classNames from 'classnames';
+
+interface IProps {
+  label: string;
+  value: any;
+  selected?: boolean;
+  onClick?: (value: any) => void;
+}
+
+const Tabs = (props: IProps) => {
+  const { label, selected, onClick, value } = props;
+
+  return (
+    <div onClick={() => onClick(value)} className={classNames({
+      'ng-ep-tab': true,
+      'ng-ep-tab-selected': selected,
+    })}>
+      {label}
+    </div>
+  )
+}
+
+export default Tabs;

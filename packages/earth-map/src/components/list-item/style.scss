@@ -20,7 +20,7 @@
 @import "~styles/config";
 
 .ng-list-item {
-  display: block;
+  display: flex;
   line-height: 27px;
   border-bottom: 1px solid $marapp-gray-7;
 
@@ -33,9 +33,14 @@
     border-bottom: none;
   }
 
+  .ng-list-item-content {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .ng-list-item-title {
     white-space: nowrap;
-    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
   }

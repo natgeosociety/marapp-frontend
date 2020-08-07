@@ -23,6 +23,12 @@ export const setSidebar = createAction('SIDEBAR/setSidebar');
 export const setSidebarOpen = createAction('SIDEBAR/setSidebarOpen');
 export const setSidebarPanel = createAction('SIDEBAR/setSidebarPanel');
 export const setSidebarInfo = createAction('SIDEBAR/setSidebarInfo');
-export const setSidebarLayers = createAction('SIDEBAR/setSidebarLayers');
+export const setSidebarPanelExpanded = createAction('SIDEBAR/setSidebarPanelExpanded');
 
-export default { setSidebar, setSidebarOpen, setSidebarPanel, setSidebarInfo, setSidebarLayers };
+export default {
+  setSidebar,
+  setSidebarOpen,
+  setSidebarPanel,
+  setSidebarInfo,
+  setSidebarPanelExpanded,
+};

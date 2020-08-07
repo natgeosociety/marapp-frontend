@@ -27,6 +27,7 @@ import { fetchPlace } from 'services/places';
 // Actions
 import { setMap } from 'modules/map/actions';
 import { setMetrics, setMetricsLoading } from 'modules/metrics/actions';
+import { setSidebarPanelExpanded } from 'modules/sidebar/actions';
 import {
   setPlaceData,
   setPlaceSelectedOpen,
@@ -35,12 +36,11 @@ import {
   setPlacesLoading,
   setPlacesError,
   setPlacesSearch,
-  setPlacesSearchOpen,
 } from 'modules/places/actions';
 import { setLastViewedPlace, persistData } from 'modules/global/actions';
 
 import { IPlace } from 'modules/places/model';
-import { preloadLayers } from 'sagas/layers';
+import { loadDataIndexes } from 'sagas/layers';
 import { ignoreRedirectsTo } from 'sagas/saga-utils';
 
 // TODO : EP-1817 refactoring
@@ -49,7 +49,7 @@ const ignoreRedirectsToLocation = ignoreRedirectsTo('LOCATION');
 
 export default function* location() {
   // @ts-ignore
-  yield takeLatest(ignoreRedirectsToLocation, preloadLayers);
+  yield takeLatest(ignoreRedirectsToLocation, loadDataIndexes);
   // @ts-ignore
   yield takeLatest(ignoreRedirectsToLocation, toLocation);
 }
@@ -65,7 +65,7 @@ function* toLocation({ payload, meta }) {
     return;
   }
 
-  yield put(setPlacesSearchOpen(false));
+  yield put(setSidebarPanelExpanded(false));
   yield put(setPlacesLoading(true));
   yield put(setPlaceSelectedOpen(false));
   yield put(setMetricsLoading(true));

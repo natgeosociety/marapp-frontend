@@ -28,6 +28,10 @@ export default {
   [actions.setSidebarPanel]: (state, { payload }) => ({
     ...state,
     panel: payload,
+    panelExpanded: true, // also expand the panel on selection
   }),
-  [actions.setSidebarLayers]: (state, { payload }) => ({ ...state, layersPanel: payload }),
+  [actions.setSidebarPanelExpanded]: (state, { payload }) => ({
+    ...state,
+    panelExpanded: payload,
+  }),
 };

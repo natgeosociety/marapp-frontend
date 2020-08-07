@@ -23,8 +23,9 @@ import classNames from 'classnames';
 import Link from 'redux-first-router-link';
 
 import { Auth0Context } from 'auth/auth0';
-import { checkRole, getAvailableOrgs } from 'utils';
 import DropdownComponent from 'components/dropdown';
+import { EPanels } from 'modules/sidebar/model';
+import { checkRole, getAvailableOrgs } from 'utils';
 import { APP_NAME, APP_LOGO } from '../../theme';
 
 import './styles.scss';
@@ -40,6 +41,8 @@ interface IProps {
   resetMap?: Function;
   resetLayerCache?: Function;
   setUserGroup?: Function;
+  setLayersSearch?: Function;
+  setSidebarPanel?: Function;
 }
 
 const Header = (props: IProps) => {
@@ -56,6 +59,8 @@ const Header = (props: IProps) => {
     setIndexesSelected,
     setUserGroup,
     setPlacesSearch,
+    setLayersSearch,
+    setSidebarPanel,
   } = props;
   const hasMultipleGroups = allGroups.length > 1;
   const allInitiallySelected = group.length === allGroups.length;
@@ -70,6 +75,8 @@ const Header = (props: IProps) => {
   const handleResetLocation = () => {
     resetPlace();
     setPlacesSearch({ search: '' });
+    setLayersSearch({ search: '' });
+    setSidebarPanel(EPanels.PLACES);
     setIndexesSelected('');
     resetMap();
   };
@@ -97,6 +104,9 @@ const Header = (props: IProps) => {
     resetPlacesFeatured();
     resetLayerCache();
     setPlacesSearch({
+      filters: {},
+    });
+    setLayersSearch({
       filters: {},
     });
   };

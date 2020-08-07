@@ -40,6 +40,7 @@ export default function LayerEdit(props: LayerProps) {
       id,
       name,
       description,
+      primary,
       published,
       version,
       createdAt,
@@ -227,6 +228,18 @@ export default function LayerEdit(props: LayerProps) {
               className="ng-margin-right"
             />
             <label htmlFor="published">Published?</label>
+          </div>
+
+          <div className="ng-margin-medium-bottom">
+            <input
+              ref={register}
+              name="primary"
+              id="primary"
+              type="checkbox"
+              defaultChecked={primary}
+              className="ng-margin-right"
+            />
+            <label htmlFor="primary">Primary?</label>
           </div>
 
           <div className="ng-width-1-1 ng-margin-large-vertical">

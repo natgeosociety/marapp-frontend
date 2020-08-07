@@ -41,10 +41,6 @@ export default {
     ...state,
     filters: { ...state.filters, filters: payload },
   }),
-  [actions.setPlacesSearchOpen]: (state, { payload }) => ({
-    ...state,
-    search: { ...state.search, open: payload },
-  }),
   [actions.setPlacesSearchResults]: (state, { payload }) => {
     const { results, nextPageCursor } = payload;
     return {

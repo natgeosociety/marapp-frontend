@@ -17,20 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import "~styles/config";
+/**
+ * Serialize filters in the format
+ *   filter=type==Continent;Jurisdiction,featured==true
+ * @param filters
+ * @param filterSep
+ * @param valueSep
+ */
+export const serializeFilters = (filters, filterSep = ',', valueSep = ';') => {
+  return Object.keys(filters).reduce((acc, key) => {
+    const filterGroup = filters[key];
+    const value = Array.isArray(filterGroup)
+      ? filterGroup.join(encodeURIComponent(valueSep))
+      : filterGroup;
 
-.ng-icon-toggle-layer {
-  min-width: 50px;
-  .ng-icon-label {
-    font-family: $marapp-primary-font;
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 1.5px;
-    line-height: 11px;
-    text-align: center;
-  }
-}
-
-.ng-search-box {
-  min-height: 36px;
-}
+    return [`${key}==${value}`, acc].filter(e => !!e).join(filterSep)
+  }, '');
+};

@@ -21,7 +21,7 @@ import { all, put, call, takeLatest, select } from 'redux-saga/effects';
 
 // Services
 import { fetchPlaces } from 'services/places';
-import { serializeFilters } from 'utils/filters';
+import { serializeFilters } from '@marapp/earth-components';
 
 // Actions
 import {
@@ -37,7 +37,10 @@ import { LOCATION_QUERY } from '../model';
 import { getGroup, getPlaces } from 'sagas/saga-utils';
 
 export default function* places() {
-  yield all([takeLatest(setPlacesSearch, searchPlaces), takeLatest(nextPlacesPage, nextPage)]);
+  yield all([
+    takeLatest(setPlacesSearch, searchPlaces),
+    takeLatest(nextPlacesPage, nextPage)
+  ]);
 }
 
 /**
@@ -68,7 +71,7 @@ export function* nextPage({ payload }) {
     ...(!!userInput && { search: userInput }),
     ...(!!filters && { filter: filterQuery }),
     'page[cursor]': pageCursor ? pageCursor : -1,
-    ...(pageSize && { 'page[size]': pageSize }),
+    ...(pageSize && { page: { size: pageSize } }),
     ...{ group: group.toString() },
   });
   const { data: results, meta } = page;

@@ -42,11 +42,6 @@ class LayersService {
   configure = () => {
     this.api = setup({
       baseURL: `${process.env.REACT_APP_API_URL}`,
-
-      // This prevents RW cache
-      headers: {
-        'Upgrade-Insecure-Requests': 1,
-      },
     });
   };
 
@@ -54,7 +49,6 @@ class LayersService {
    * request
    * Creates an axios request based on type an options.
    * @param {string} path - The path of the request.
-   * @param {object} options - The request options, these are forwarded to axios.
    */
 
 
@@ -63,8 +57,11 @@ class LayersService {
       this.api
         .get(path)
         .then(response => {
-          resolve(this.dataFormatter.deserialize(response.data));
-          resolve(response.data);
+          const result = this.dataFormatter.deserialize(response.data);
+          resolve({
+            data: result,
+            meta: response.data.meta,
+          });
         })
         .catch(err => {
           reject(err);
