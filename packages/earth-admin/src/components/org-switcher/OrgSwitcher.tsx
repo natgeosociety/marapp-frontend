@@ -40,6 +40,16 @@ const OrgSwitcher = (props) => {
     dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
   };
 
+  const getAvailableOrgs = () => {
+    const specialPermissions = [
+      '*' // super-admin
+    ];
+
+    return Object
+      .keys(permissions)
+      .filter(permission => !specialPermissions.includes(permission));
+  };
+
   return (
     <>
       <span className="ng-text-display-s ng-text-weight-regular ng-color-white ng-margin-remove ng-display-block ng-org-name">
@@ -62,7 +72,7 @@ const OrgSwitcher = (props) => {
           </a>
         </li>
         {!!permissions &&
-          Object.keys(permissions).filter(k => k !== '*').map((g, i) => (
+          getAvailableOrgs().map((g, i) => (
             <React.Fragment key={i}>
               <li
                 className={classnames({

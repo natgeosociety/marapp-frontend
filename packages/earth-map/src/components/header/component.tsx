@@ -101,6 +101,16 @@ const Header = (props: IProps) => {
     });
   };
 
+  const getAvailableOrgs = () => {
+    const specialPermissions = [
+      '*' // super-admin
+    ];
+
+    return Object
+      .keys(roles)
+      .filter(permission => !specialPermissions.includes(permission));
+  };
+
   return (
 
     <div className="ng-padding-medium-horizontal ng-ep-background-dark ng-flex ng-flex-middle ng-position-relative ng-padding-bottom ng-padding-small-top">
@@ -143,7 +153,7 @@ const Header = (props: IProps) => {
         </li>
         <li className="ng-form ng-form-dark">
           <div className="ng-padding-medium-horizontal ng-padding-top">
-            {Object.keys(roles).filter(k => k !== '*').map((g, i) => (
+            {getAvailableOrgs().map((g, i) => (
               <label
                 htmlFor={g}
                 className={classNames({
