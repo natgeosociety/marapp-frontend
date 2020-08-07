@@ -136,7 +136,7 @@ export const setPage = (pageType: string) => {
  * Get available organizations based on permissions
  * @param permissions 
  */
-export const getAvailableOrgs = (permissions: { [key: string]: string[] }): string[] => {
+export const getAvailableOrgs = (permissions: { [key: string]: string }): string[] => {
   const specialPermissions = [
     '*' // super-admin
   ];
