@@ -60,7 +60,7 @@ export default function OrganizationDetails( props: OrganizationProps ) {
           <span className="ng-text-weight-medium">Name:</span> {name || '-'}
         </p>
         <p>
-          <span className="ng-text-weight-medium">Owners:</span> {owners.join(', ')}
+          <span className="ng-text-weight-medium">Owner:</span> {owners[0] || '-'}
         </p>
         <p>
           <span className="ng-text-weight-medium">Description: </span> {description || '-'}

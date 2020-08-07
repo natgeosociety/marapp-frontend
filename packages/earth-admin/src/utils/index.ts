@@ -80,6 +80,10 @@ export const formatDate = (date: Date): string => {
  * @param required: array of scopes to check
  */
 export const hasAccess = (permissions: string[], required: string[] | string[][]) => {
+  if (!Array.isArray(permissions)) {
+    return false;
+  }
+
   let scopes: string[][];
 
   if (isArray(required) && required.every(isString)) {
@@ -126,4 +130,18 @@ export const isValidOrg = (orgsFromToken: string[], org: string): boolean =>
 
 export const setPage = (pageType: string) => {
   return ADMIN_PAGES.filter((page) => page.key === pageType);
+};
+
+/**
+ * Get available organizations based on permissions
+ * @param permissions 
+ */
+export const getAvailableOrgs = (permissions: { [key: string]: string }): string[] => {
+  const specialPermissions = [
+    '*' // super-admin
+  ];
+
+  return Object
+    .keys(permissions)
+    .filter(permission => !specialPermissions.includes(permission));
 };

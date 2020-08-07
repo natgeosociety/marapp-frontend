@@ -25,7 +25,7 @@ import Link from 'redux-first-router-link';
 import { Auth0Context } from 'auth/auth0';
 import DropdownComponent from 'components/dropdown';
 import { EPanels } from 'modules/sidebar/model';
-import { checkRole } from 'utils';
+import { checkRole, getAvailableOrgs } from 'utils';
 import { APP_NAME, APP_LOGO } from '../../theme';
 
 import './styles.scss';
@@ -153,7 +153,7 @@ const Header = (props: IProps) => {
         </li>
         <li className="ng-form ng-form-dark">
           <div className="ng-padding-medium-horizontal ng-padding-top">
-            {Object.keys(roles).map((g, i) => (
+            {getAvailableOrgs(roles).map((g, i) => (
               <label
                 htmlFor={g}
                 className={classNames({

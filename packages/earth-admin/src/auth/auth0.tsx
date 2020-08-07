@@ -158,7 +158,7 @@ export const Auth0Provider = ({
   }, [client]);
 
   const getPermissions = (type: string[]) => {
-    return hasAccess(permissions[selectedGroup], type);
+    return hasAccess(permissions[selectedGroup], type) || hasAccess(permissions['*'], type);
   };
 
   return (

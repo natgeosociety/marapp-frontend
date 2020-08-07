@@ -22,7 +22,7 @@ import { useState, useContext } from 'react';
 import { OrganizationEditProps } from '../model';
 import { useForm } from 'react-hook-form';
 import { LinkWithOrg, ErrorMessages } from 'components';
-import { updateOrganization } from 'services/organizations';
+import { addOrganization, updateOrganization } from 'services/organizations';
 import { Auth0Context } from 'utils/contexts';
 import { navigate } from 'gatsby';
 
@@ -44,7 +44,19 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
     const formData = getValues();
 
     try {
-      await updateOrganization(id || formData.id, { description: formData.description }, selectedGroup);
+      if (newOrg) {
+        await addOrganization({
+          name: formData.name,
+          description: formData.description,
+          owners: [].concat(formData.owners)
+        }, selectedGroup);
+      }
+      else {
+        await updateOrganization(id || formData.id, {
+          description: formData.description,
+          owners: [].concat(formData.owners)
+        }, selectedGroup);
+      }
       await navigate(`/${selectedGroup}/organizations`);
     } catch (error) {
       setServerErrors(error.data.errors);
@@ -65,27 +77,30 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
                 Organization name
               </label>
               <input
-                ref={register}
+                ref={register({
+                  required: true,
+                })}
                 name="name"
                 type="text"
                 defaultValue={name}
                 placeholder="Organization name"
                 className={INPUT_SIZE_CLASSNAME}
-                disabled
+                disabled={!newOrg}
               />
             </div>
             <div className="ng-width-large-1-2 ng-width-1-1">
               <label className="ng-form-label" htmlFor="owners">
-                Organization owners
+                Organization owner
               </label>
               <input
-                ref={register}
+                ref={register({
+                  required: true,
+                })}
                 name="owners"
                 type="text"
-                defaultValue={owners[0]}
-                placeholder="Organization owners"
+                defaultValue={owners ? owners[0] : ''}
+                placeholder="Organization owner"
                 className={INPUT_SIZE_CLASSNAME}
-                disabled
               />
             </div>
             <div className="ng-width-large-1-2 ng-width-1-1">
