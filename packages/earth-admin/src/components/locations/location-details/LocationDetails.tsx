@@ -122,7 +122,7 @@ export default function LocationDetails( props: LocationProps ) {
         </div>
       </div>
 
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         <h3 className="ng-text-display-s">
           Location details for {name} version{version}
         </h3>
@@ -162,7 +162,7 @@ export default function LocationDetails( props: LocationProps ) {
           Go back to location list
         </LinkWithOrg>
       </div>
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         {mappedIntersections &&
         map(mappedIntersections, ( intersections, idx ) => (
           <LocationIntersections
@@ -173,7 +173,7 @@ export default function LocationDetails( props: LocationProps ) {
         ))}
       </div>
       {metricsPermission && (
-        <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+        <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
           {metrics && (
             <div>
               <h5 className="ng-text-display-s">Location Metrics</h5>
@@ -201,7 +201,7 @@ export default function LocationDetails( props: LocationProps ) {
         </div>
       )}
       {writePermissions && (
-        <div className="ng-padding-medium ng-background-white ng-text-right">
+        <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
           <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete location
           </button>

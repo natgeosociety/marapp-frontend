@@ -18,7 +18,6 @@
 */
 
 import * as React from 'react';
-import { useContext, useEffect, useState } from 'react';
 import {InlineCard} from 'components';
 
 interface LocationHomeProps {
@@ -29,7 +28,7 @@ export default function LocationHome(props: LocationHomeProps) {
   return (
     <div className="ng-grid">
       <div className="ng-width-1-2">
-        <InlineCard editable={false}>
+        <InlineCard editable={false} hasButtons={false}>
           Search a place to view and edit details, or start creating a new place.
           <br/>
           <button className="ng-button ng-button-overlay">Create new place</button>

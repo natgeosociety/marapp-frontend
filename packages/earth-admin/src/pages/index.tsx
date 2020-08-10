@@ -62,7 +62,7 @@ const OrgIndex = ( props ) => (
   <div>
     <SidebarLayout/>
     <ContentLayout permission={true}>
-      <div className="ng-background-white ng-padding-large">
+      <div className="ng-background-ultradkgray ng-padding-large">
         <h2 className="ng-text-edit-m">Welcome to the {APP_NAME} Admin!</h2>
         <h6>{props.org}</h6>
       </div>

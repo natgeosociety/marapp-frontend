@@ -17,10 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import InlineCard from './InlineCard';
-import { InlineCardDisplay } from './inline-card-display';
-import { InlineCardEditable } from './inline-card-editable';
-import { InlineCardButtons } from './inline-card-buttons';
-import { InlineCardOverlay } from './inline-card-overlay';
+import InlineCardOverlay from './InlineCardOverlay';
 
-export { InlineCard, InlineCardDisplay, InlineCardEditable, InlineCardButtons, InlineCardOverlay };
+export { InlineCardOverlay };

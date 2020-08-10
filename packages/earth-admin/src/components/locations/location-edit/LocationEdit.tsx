@@ -105,7 +105,7 @@ export default function LocationEdit(props: LocationProps) {
         </span>
       </div>
 
-      <div className="ng-padding-medium ng-background-white">
+      <div className="ng-padding-medium ng-background-ultradkgray">
         <form className="ng-form ng-flex-column ng-width-4-5">
           <div className="ng-margin-medium-bottom ng-grid">
             <div className="ng-width-large-1-2 ng-width-1-1">

@@ -57,7 +57,7 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
         <h2 className="ng-text-display-m">{newOrg ? 'Add organization' : `Edit Organization - ${name}`}</h2>
       </div>
 
-      <div className="ng-padding-medium ng-background-white">
+      <div className="ng-padding-medium ng-background-ultradkgray">
         <form className="ng-form ng-flex-column ng-width-4-5" onSubmit={handleSubmit(onSubmit)}>
           <div className="ng-margin-medium-bottom ng-grid">
             <div className="ng-width-large-1-2 ng-width-1-1">

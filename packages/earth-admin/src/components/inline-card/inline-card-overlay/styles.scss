@@ -1,0 +1,14 @@
+.ng-inline-card-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1010;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: rgba(#000, .7);
+  //transition: opacity 0.15s linear;
+  //touch-action: cross-slide-y pinch-zoom double-tap-zoom;
+  //transform: translateZ(0);
+}

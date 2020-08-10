@@ -52,7 +52,7 @@ export default function UserDetails(props: UserProps) {
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
       </div>
 
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         <h3 className="ng-text-display-s">User details</h3>
 
         <p>
@@ -66,7 +66,7 @@ export default function UserDetails(props: UserProps) {
           {groups.map((group) => group.name).join(', ') || '-'}
         </p>
       </div>
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         {writePermissions && (
           <LinkWithOrg
             to={`/users/${id}/edit`}
@@ -80,7 +80,7 @@ export default function UserDetails(props: UserProps) {
         </LinkWithOrg>
       </div>
       {writePermissions && (
-        <div className="ng-padding-medium ng-background-white ng-text-right">
+        <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
           <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete user
           </button>

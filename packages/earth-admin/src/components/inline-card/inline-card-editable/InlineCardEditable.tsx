@@ -18,34 +18,20 @@
 */
 
 import * as React from 'react';
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import {InlineCardOverlay} from './index';
 
-export interface InlineCardProps {
-  editable?: boolean;
-  primaryButtonText?: string;
-  secondaryButtonText?: string;
-  editAction?: (v:boolean) => void;
-  saveAction?: (v: boolean) => void;
-  children?: ReactNode
-}
+import { InlineCardProps } from '../InlineCard';
 
-import './styles.scss';
+type InlineCardEditableProps = Partial<InlineCardProps>;
 
-export default function InlineCard( props: InlineCardProps ) {
-  const { children, editAction, editable } = props;
 
-  const editCard = () => {
-    editAction(true);
-  };
+const InlineCardEditable = ( props: InlineCardEditableProps ) => {
+  const { children } = props;
 
   return (
-    <div className="ng-background-ultradkgray ng-padding-medium ng-inline-card">
-      {!editable && <button className="ng-button ng-button-link" onClick={editCard}>edit</button>}
+    <div>
       {children}
-      {editable && <InlineCardOverlay/>}
     </div>
   );
-}
+};
 
-
+export default InlineCardEditable;

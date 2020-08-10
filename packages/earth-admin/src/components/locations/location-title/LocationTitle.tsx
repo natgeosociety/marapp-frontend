@@ -19,43 +19,46 @@
 
 import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
-import {InlineCard} from 'components';
+import { InlineCard, InlineCardDisplay, InlineCardEditable, InlineCardButtons } from 'components';
 
 interface LocationTitleProps {
   name?: string;
 }
 
-export default function LocationTitle(props: LocationTitleProps) {
-  const {name} = props;
+export default function LocationTitle( props: LocationTitleProps ) {
+  const { name } = props;
   const [edit, setEdit] = useState(false);
 
-  const editCard = () => {
-    console.log('edit card');
-    setEdit(!edit);
-  }
+  const editCard = ( editing ) => {
+    setEdit(editing);
+  };
 
-  const saveCard = () => {
-    console.log('save card');
-  }
+  const saveCard = ( editing ) => {
+    setEdit(editing);
+  };
 
   return (
     <div className="ng-width-1-2">
-      <InlineCard editable={edit} hasButtons={true} primaryButtonText="Save" secondaryButtonText="cancel" editAction={editCard} saveAction={saveCard}>
-        <h1 className="ng-text-display-m">{name}</h1>
-
-        <label className="ng-form-label" htmlFor="name">
-          Location name*
-        </label>
-        <input
-          // ref={register({
-          //   required: true,
-          // })}
-          name="name"
-          type="text"
-          defaultValue={name}
-          placeholder="Location name"
-          className="ng-width-1-1 ng-form-large"
-        />
+      <InlineCard editAction={editCard} editable={edit}>
+        {!edit && <InlineCardDisplay>
+          <h1 className="ng-text-display-m">{name}</h1>
+        </InlineCardDisplay>}
+        {edit && <><InlineCardEditable>
+          <label className="ng-form-label" htmlFor="name">
+            Location name*
+          </label>
+          <input
+            name="name"
+            type="text"
+            defaultValue={name}
+            placeholder="Location name"
+            className="ng-width-1-1 ng-form-large"
+          />
+        </InlineCardEditable>
+          <InlineCardButtons primaryButtonText="Save" secondaryButtonText="cancel" editAction={editCard}
+                             saveAction={saveCard}/>
+        </>
+        }
       </InlineCard>
     </div>
   );
