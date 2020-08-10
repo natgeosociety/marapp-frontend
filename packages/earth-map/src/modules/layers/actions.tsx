@@ -19,7 +19,6 @@
 
 import { createAction } from 'vizzuality-redux-tools';
 
-export const setLayersList = createAction('LAYERS/setLayersList');
 export const setLayersLoading = createAction('LAYERS/loading');
 export const setLayersError = createAction('LAYERS/setLayersError');
 export const setLayersActive = createAction('LAYERS/setLayersActive');
@@ -52,7 +51,6 @@ export const resetLayersResults = createAction('LAYERS/resetLayersResults');
 export default {
   setLayersLoading,
   setLayersError,
-  setLayersList,
   setLayersActive,
 
   toggleLayer,

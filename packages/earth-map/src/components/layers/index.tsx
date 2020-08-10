@@ -28,8 +28,6 @@ import { setPlacesSearch } from 'modules/places/actions';
 // Components
 import Layers from './Layers';
 
-import { getGroupedLayers } from 'modules/layers/selectors';
-
 import { toggleLayer, nextLayersPage } from 'modules/layers/actions';
 
 export default connect(
@@ -43,9 +41,6 @@ export default connect(
     mapRoads: state.map.mapRoads,
     locationName: state.places.data.name,
     locationOrganization: state.places.data.organization,
-
-    // Layers
-    groups: getGroupedLayers(state),
   }),
   {
     toggleLayer,

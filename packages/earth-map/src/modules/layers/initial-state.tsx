@@ -23,7 +23,6 @@ export default {
   contextual: [],
   media: [],
   data: [],
-  list: [],
   active: [], // keep active layers slugs - for URL management - should be in sync with listActive
   listActive: [], // keep active layers object
   settings: {},

@@ -44,13 +44,6 @@ export default {
     ...state,
     listActive: payload,
   }),
-  [actions.setLayersList]: (state, { payload }) => {
-    return {
-      ...state,
-      list: payload,
-    };
-  },
-
   [actions.toggleLayer]: (state, { payload }) => {
     const { listActive } = state;
     const layer = payload;
