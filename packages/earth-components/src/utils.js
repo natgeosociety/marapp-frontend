@@ -20,17 +20,18 @@
 /**
  * Serialize filters in the format
  *   filter=type==Continent;Jurisdiction,featured==true
- * @param filters
- * @param filterSep
- * @param valueSep
+ *   note: each group of values is encoded, including valueSeparator
  */
 export const serializeFilters = (filters, filterSep = ',', valueSep = ';') => {
   return Object.keys(filters).reduce((acc, key) => {
     const filterGroup = filters[key];
     const value = Array.isArray(filterGroup)
-      ? filterGroup.join(encodeURIComponent(valueSep))
+      ? filterGroup.join(valueSep)
       : filterGroup;
+    const encodedFilters = (
+      [`${key}==${encodeURIComponent(value)}`, acc].filter(e => !!e).join(filterSep)
+    );
 
-    return [`${key}==${value}`, acc].filter(e => !!e).join(filterSep)
+    return encodedFilters;
   }, '');
 };
