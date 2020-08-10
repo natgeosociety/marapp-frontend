@@ -31,42 +31,48 @@ interface IModalProps {
   name: string;
   toggleModal: any;
   visibility?: boolean;
+  error?(err: Error): void;
 }
 
 const ActionModal = (props: IModalProps) => {
-  const { id, navigateRoute, name, toggleModal, visibility } = props;
+  const { id, navigateRoute, name, toggleModal, visibility, error } = props;
   const { selectedGroup } = useAuth0();
 
   async function handleDelete(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    switch (navigateRoute) {
-      case 'dashboards': {
-        await deleteDashboards(id, selectedGroup);
-        break;
+    try {
+      switch (navigateRoute) {
+        case 'dashboards': {
+          await deleteDashboards(id, selectedGroup);
+          break;
+        }
+        case 'layers': {
+          await deleteLayer(id, selectedGroup);
+          break;
+        }
+        case 'locations': {
+          await deleteLocation(id, selectedGroup);
+          break;
+        }
+        case 'widgets': {
+          await deleteWidgets(id, selectedGroup);
+          break;
+        }
+        case 'users': {
+          await deleteUser(id, selectedGroup);
+          break;
+        }
       }
-      case 'layers': {
-        await deleteLayer(id, selectedGroup);
-        break;
-      }
-      case 'locations': {
-        await deleteLocation(id, selectedGroup);
-        break;
-      }
-      case 'widgets': {
-        await deleteWidgets(id, selectedGroup);
-        break;
-      }
-      case 'users': {
-        await deleteUser(id, selectedGroup);
-        break;
-      }
-    }
 
-    await navigate(`${selectedGroup}/${navigateRoute}`, {
-      state: { refresh: true },
-    });
+      await navigate(`${selectedGroup}/${navigateRoute}`, {
+        state: { refresh: true },
+      });
+    }
+    catch (err) {
+      error && error(err);
+    }
 
     toggleModal();
   }
