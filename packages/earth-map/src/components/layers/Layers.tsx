@@ -96,7 +96,7 @@ const Layers = (props: IProps) => {
 
   const { loading, search, listActive, nextPageCursor } = layers;
   const hasSearchTerm = !!search.search;
-  const showX = selected || hasSearchTerm;
+  const showX = hasSearchTerm;
   const showFilter = !selected || panelExpanded;
   const showBack = selected && panelExpanded;
 
@@ -114,7 +114,11 @@ const Layers = (props: IProps) => {
   };
 
   const handleReset = () => {
-    setLayersSearch({ search: '' });
+    setLayersSearch({
+      search: '',
+      filters: {},
+      open: false,
+    });
   }
 
   const onLabels = () => {
