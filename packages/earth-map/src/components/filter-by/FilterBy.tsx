@@ -26,13 +26,19 @@ import './styles.scss';
 
 interface IProps {
   data: any;
+  open: boolean;
+  onOpenToggle: (payload?) => void;
   onChange: (payload?) => void;
 };
 
 const FilterBy = (props: IProps) => {
-  const { data, onChange } = props;
+  const {
+    data,
+    open,
+    onOpenToggle,
+    onChange,
+  } = props;
   const { filters, availableFilters } = data;
-  const [dropdownState, setDropdownState] = useState('close');
   const numberOfFilters = countFilters(filters);
 
   const toggleFilter = (key: string, value: string) => {
@@ -54,17 +60,14 @@ const FilterBy = (props: IProps) => {
   const clearCheckedFilters = () => onChange({
     filters: {}
   });
-
-  const handleDropdown = () => {
-    setDropdownState(dropdownState === 'open' ? 'close' : 'open');
-  };
+  const openToggle = () => onOpenToggle(!open)
 
   return (
     <div className="ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
       <div className="ng-flex search-title">
         <h2
           className="ng-text-display-s ng-body-color ng-margin-bottom ng-margin-small-right ng-c-cursor-pointer"
-          onClick={handleDropdown}>
+          onClick={openToggle}>
           Filters
         </h2>
         {numberOfFilters > 0 &&
@@ -74,13 +77,13 @@ const FilterBy = (props: IProps) => {
           className={classnames({
             'ng-c-cursor-pointer': true,
             'ng-margin-small-left': true,
-            'ng-icon-directionup': dropdownState === 'open',
-            'ng-icon-directiondown': dropdownState !== 'open',
+            'ng-icon-directionup': open,
+            'ng-icon-directiondown': !open,
           })}
-          onClick={handleDropdown}
+          onClick={openToggle}
         />
       </div>
-      {dropdownState === 'open' &&
+      {open &&
         Object.keys(availableFilters).map((key) => (
           <React.Fragment key={key}>
             {/* {<h2 className="ng-color-ltgray ng-text-display-s ng-margin-bottom">{key}</h2>} */}

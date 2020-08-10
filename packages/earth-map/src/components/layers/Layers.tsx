@@ -72,6 +72,7 @@ interface IProps {
   setPlacesSearch?: (value: any) => void;
   resetLayersActive?: () => void;
   nextLayersPage?: (value: any) => void;
+  setLayersSearchOpen?: (value: boolean) => void;
 }
 
 const Layers = (props: IProps) => {
@@ -91,6 +92,7 @@ const Layers = (props: IProps) => {
     setPlacesSearch,
     resetLayersActive,
     nextLayersPage,
+    setLayersSearchOpen,
   } = props;
 
   const { loading, search, listActive, nextPageCursor } = layers;
@@ -144,7 +146,13 @@ const Layers = (props: IProps) => {
             onReset={handleReset}
             onFocus={() => setSidebarPanelExpanded(true)}
             showClose={showX} />
-          {showFilter && <FilterBy onChange={setLayersSearch} data={search} />}
+          {showFilter && (
+            <FilterBy
+              open={search.open}
+              onOpenToggle={setLayersSearchOpen}
+              onChange={setLayersSearch}
+              data={search} />
+          )}
           {showBack && (
             <BackToLocation
               onClick={handleBack}

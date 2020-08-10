@@ -40,6 +40,7 @@ export const resetLayerCache = createAction('LAYERS/resetLayerCache');
 
 // Search
 export const setLayersSearch = createAction('LAYERS/setLayersSearch');
+export const setLayersSearchOpen = createAction('LAYERS/setLayersSearchOpen');
 export const setLayersSearchLoading = createAction('LAYERS/setLayersSearchLoading');
 export const setLayersSearchFilters = createAction('LAYERS/setLayersSearchFilters');
 export const setLayersSearchAvailableFilters = createAction('LAYERS/setLayersSearchAvailableFilters');

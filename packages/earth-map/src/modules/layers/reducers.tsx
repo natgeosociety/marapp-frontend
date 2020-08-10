@@ -170,6 +170,16 @@ export default {
     };
   },
 
+  [actions.setLayersSearchOpen]: (state, { payload }) => {
+    return {
+      ...state,
+      search: {
+        ...state.search,
+        open: payload,
+      },
+    };
+  },
+
   // exactly the same code from actions.setPlacesSearchAvailableFilters
   [actions.setLayersSearchAvailableFilters]: (state, { payload }) => {
     // Add label and parse boolean values to strings 'true'/'false'

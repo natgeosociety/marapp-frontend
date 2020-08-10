@@ -36,6 +36,15 @@ export default {
       search: { ...state.search, ...payload },
     };
   },
+  [actions.setPlacesSearchOpen]: ((state, { payload }) => {
+    return {
+      ...state,
+      search: {
+        ...state.search,
+        open: payload,
+      }
+    }
+  }),
   // deprecated?
   [actions.setPlacesSearchFilters]: (state, { payload }) => ({
     ...state,

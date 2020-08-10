@@ -31,6 +31,7 @@ interface IProps {
   resetPlace?: () => {};
   setIndexesSelected?: (value: any) => {};
   setPlacesSearch?: (value: any) => {};
+  setPlacesSearchOpen?: (value: boolean) => {};
 }
 
 const Places = (props: IProps) => {
@@ -52,6 +53,7 @@ const Places = (props: IProps) => {
     setPlacesSearch,
     setSidebarPanel,
     setSidebarPanelExpanded,
+    setPlacesSearchOpen,
   } = props;
   const hasSearchTerm = !!search.search;
   const showX = selected || hasSearchTerm;
@@ -96,7 +98,13 @@ const Places = (props: IProps) => {
             onReset={handleReset}
             onFocus={() => setSidebarPanelExpanded(true)}
             showClose={showX} />
-          {showFilter && <FilterBy onChange={setPlacesSearch} data={search} />}
+          {showFilter && (
+            <FilterBy
+              open={search.open}
+              onOpenToggle={setPlacesSearchOpen}
+              onChange={setPlacesSearch}
+              data={search} />
+          )}
           {showBack && (
             <BackToLocation
               onClick={handleBack}
