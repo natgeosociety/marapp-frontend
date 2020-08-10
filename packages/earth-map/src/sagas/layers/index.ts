@@ -31,7 +31,6 @@ import { EPanels } from 'modules/sidebar/model';
 import { setWidgets, setWidgetsLoading, setWidgetsError } from 'modules/widgets/actions';
 import { setIndexesList } from 'modules/indexes/actions';
 import {
-  setLayersList,
   setLayersActive,
   setLayersSearch,
   setLayersLoading,
@@ -45,6 +44,7 @@ import { persistData } from 'modules/global/actions';
 import { getGroup, getLayers, onlyMatch, flattenLayerConfig } from 'sagas/saga-utils';
 import { fetchLayers } from 'services/layers';
 import { LAYER_QUERY } from '../model';
+import { ILayer } from 'modules/layers/model';
 
 export default function* layers() {
   // @ts-ignore
@@ -71,8 +71,14 @@ function* loadActiveLayers({ payload }) {
     group: group.join(','),
   }
   const { data: layers } = yield call(fetchLayers, options);
+  const decoratedLayers: ILayer[] = layers.map(flattenLayerConfig);
 
-  yield put(setListActiveLayers(layers.map(flattenLayerConfig)));
+  yield put(setListActiveLayers(decoratedLayers));
+
+  // to activate a selected layer on reload, it needs to be in layers.results
+  yield put(setLayersSearchResults({
+    results: layers,
+  }));
 }
 
 function* searchLayers(params) {
@@ -140,17 +146,6 @@ export function* loadDataIndexes({ payload }) {
         })
       )
     );
-
-    // get layers from all dashboards; cannot use the layer api because that contains sublayers too
-    // TODO - find out why removing the layers code below breaks layer toggle
-    let layers = [];
-    indexes.forEach((index) => {
-      layers = [...layers, ...index.layers];
-    });
-
-    if (!!layers) {
-      yield put(setLayersList(layers.map(flattenLayerConfig)));
-    }
   } catch (e) {
     // TODO better error handling for sagas
     if (e.response.status === 403) {

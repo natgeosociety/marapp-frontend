@@ -42,7 +42,6 @@ interface IProps {
     id: string;
   }>;
   nextPageCursor?: string;
-  groups?: {};
   setMapStyle?: (id: any) => void;
   mapStyle?: any;
   mapLabels?: any;
