@@ -32,7 +32,7 @@ export default function OrganizationDetails( props: OrganizationProps ) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { getPermissions } = useAuth0();
-  const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
+  const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
   function handleDeleteToggle() {
     setShowDeleteModal(!showDeleteModal);
