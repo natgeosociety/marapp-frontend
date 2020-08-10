@@ -41,6 +41,7 @@ import {
   nextLayersPage,
   setListActiveLayers,
 } from 'modules/layers/actions';
+import { persistData } from 'modules/global/actions';
 import { getGroup, getLayers, onlyMatch, flattenLayerConfig } from 'sagas/saga-utils';
 import { fetchLayers } from 'services/layers';
 import { LAYER_QUERY } from '../model';
@@ -78,6 +79,7 @@ function* searchLayers(params) {
   yield put(resetLayersResults());
   const { meta } = yield nextPage(params);
   yield put(setLayersSearchAvailableFilters(meta.filters));
+  yield put(persistData());
 }
 
 /**

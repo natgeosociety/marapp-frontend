@@ -20,6 +20,7 @@
 import { Store } from 'redux';
 
 import { setPlacesSearch } from 'modules/places/actions';
+import { setLayersSearch } from 'modules/layers/actions';
 import { setUserGroup } from 'modules/user/actions';
 import { setMapStyle } from 'modules/map/actions';
 import { setLastViewedPlace } from 'modules/global/actions';
@@ -28,6 +29,10 @@ import { IPlace } from 'modules/places/model';
 
 export interface IEphemeralState {
   places?: {
+    search?: any;
+    filters?: any;
+  };
+  layers?: {
     search?: any;
     filters?: any;
   };
@@ -53,6 +58,19 @@ export default (store: Store, ephemeralState: IEphemeralState): void => {
       store.dispatch(
         setPlacesSearch({
           ...ephemeralState.places,
+          ...(hasFilters && {
+            open: true,
+          }),
+        })
+      );
+    }
+    if (ephemeralState.layers) {
+      const { search, filters } = ephemeralState.layers;
+      const hasFilters = search.length || Object.keys(filters).length;
+
+      store.dispatch(
+        setLayersSearch({
+          ...ephemeralState.layers,
           ...(hasFilters && {
             open: true,
           }),
