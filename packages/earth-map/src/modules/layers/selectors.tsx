@@ -30,7 +30,7 @@ import decodes from './decodes';
 import { getParams } from './utils';
 import { ILayer } from './model';
 
-const layers = (state) => state.layers.results;
+const layers = (state) => state.layers.listActive;
 const active = (state) => state.layers.active;
 const settings = (state) => state.layers.settings;
 
