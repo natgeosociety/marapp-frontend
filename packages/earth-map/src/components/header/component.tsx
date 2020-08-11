@@ -29,6 +29,7 @@ import { checkRole, getAvailableOrgs } from 'utils';
 import { APP_NAME, APP_LOGO } from '../../theme';
 
 import './styles.scss';
+import { userInfo } from 'os';
 
 const ADMIN_PATH = process.env.REACT_APP_ADMIN_URL;
 
@@ -127,6 +128,7 @@ const Header = (props: IProps) => {
           onClick={handleResetLocation}
         />
       </Link>
+      {allGroups.length > 0 && <div style={{ display: 'contents' }}>
       <span className="ng-ep-kicker"></span>
 
       <span className="ng-text-display-s ng-text-weight-regular ng-body-color ng-margin-remove ng-display-block ng-org-name">
@@ -190,6 +192,7 @@ const Header = (props: IProps) => {
             )
         )}
       </DropdownComponent>
+      </div> }
     </div>
   );
 };

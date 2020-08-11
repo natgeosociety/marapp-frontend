@@ -33,7 +33,7 @@ const Dropdown: any =  Keyframes.Spring({
 export default function UserMenuComponent() {
   const [showDrop, setShowDrop] = useState(false);
 
-  const { userData, logout } = useContext(Auth0Context);
+  const { userData, logout, login } = useContext(Auth0Context);
 
   const menuRef = React.useRef(null);
 
@@ -52,13 +52,17 @@ export default function UserMenuComponent() {
     logout();
   };
 
+  const handleLogin = () => {
+    login();
+  };
+
   return (
     <div className="ng-user-account" ref={menuRef}>
       <button className="ng-unstyled" onClick={(e) => toggleDrop(e)}>
         {userData.picture && (
           <img className="ng-user-profile" src={userData.picture} alt={userData.name} />
         )}
-        {!userData.picture && <i className="ng-icon ng-icon-user" />}
+        {!userData.picture && <i className="ng-icon-menu" />}
       </button>
       <Dropdown native state={`${showDrop}`}>
         {({ x, ...props }) => (
@@ -70,9 +74,14 @@ export default function UserMenuComponent() {
           >
             <ul className="ng-user-profile-dropdown">
               <li>ACCOUNT</li>
+              { userData.allGroups.length === 0 ? 
+              <li className="ng-user-profile-signin">
+                <a onClick={handleLogin}>Sign in</a>
+              </li> :
               <li className="ng-user-profile-signout">
                 <a onClick={handleLogout}>Sign Out</a>
               </li>
+              }
             </ul>
           </animated.div>
         )}
