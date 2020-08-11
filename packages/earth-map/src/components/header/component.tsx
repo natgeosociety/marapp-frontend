@@ -29,7 +29,6 @@ import { checkRole, getAvailableOrgs } from 'utils';
 import { APP_NAME, APP_LOGO } from '../../theme';
 
 import './styles.scss';
-import { userInfo } from 'os';
 
 const ADMIN_PATH = process.env.REACT_APP_ADMIN_URL;
 
