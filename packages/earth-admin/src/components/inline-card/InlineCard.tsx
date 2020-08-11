@@ -43,7 +43,7 @@ export default function InlineCard( props: InlineCardProps ) {
     <div className="ng-background-ultradkgray ng-padding-medium ng-inline-card">
       {!editable && <button className="ng-button ng-button-link" onClick={editCard}>edit</button>}
       {children}
-      {editable && <InlineCardOverlay/>}
+      <InlineCardOverlay show={editable}/>
     </div>
   );
 }
