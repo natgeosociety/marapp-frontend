@@ -65,6 +65,7 @@ function* loadActiveLayers({ payload }) {
   }
   const group = yield select(getGroup);
   const options = {
+    ...LAYER_QUERY,
     filter: serializeFilters({
       slug: payload
     }),
