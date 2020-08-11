@@ -33,6 +33,7 @@ export const DATA_INDEX_QUERY = {
 export const LAYER_QUERY = {
   page: { size: PAGE_SIZE },
   sort: 'name',
+  include: 'references'
 };
 
 export const METRICS_QUERY = {};
