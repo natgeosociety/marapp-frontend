@@ -102,39 +102,38 @@ export const Auth0Provider = ({
       const isAuthenticated = await auth0FromHook.isAuthenticated();
       setIsAuthenticated(isAuthenticated);
 
-      if (isAuthenticated) {
-        const accessToken = await auth0FromHook.getTokenSilently();
-        onSuccessHook({ token: accessToken });
+      const accessToken = isAuthenticated ? await auth0FromHook.getTokenSilently() : null;
 
-        const idToken = await auth0FromHook.getUser();
+      onSuccessHook({ token: accessToken });
 
-        const email = get(idToken, 'email', '');
-        const userName = get(idToken, 'name', '');
-        const userPicture = get(idToken, 'picture', '');
+      const idToken = accessToken ? await auth0FromHook.getUser() : {};
 
-        const groups = get(idToken, `${NAMESPACE}/groups`, []);
+      const email = get(idToken, 'email', '');
+      const userName = get(idToken, 'name', '');
+      const userPicture = get(idToken, 'picture', '');
 
-        const nonNestedGroups = removeNestedGroups(groups);
-        setGroups(nonNestedGroups);
+      const groups = get(idToken, `${NAMESPACE}/groups`, []);
 
-        const roles = get(idToken, `${NAMESPACE}/roles`, []);
-        setRoles(mapAuthzScopes(roles));
+      const nonNestedGroups = removeNestedGroups(groups);
+      setGroups(nonNestedGroups);
 
-        const permissions = get(idToken, `${NAMESPACE}/permissions`, []);
-        setPermissions(mapAuthzScopes(permissions));
+      const roles = get(idToken, `${NAMESPACE}/roles`, []);
+      setRoles(mapAuthzScopes(roles));
 
-        const authorized = !!roles && roles.length > 0;
-        setIsAuthorized(authorized);
+      const permissions = get(idToken, `${NAMESPACE}/permissions`, []);
+      setPermissions(mapAuthzScopes(permissions));
 
-        setEmail(email);
-        setUserData({ name: userName, picture: userPicture, allGroups: nonNestedGroups });
+      const authorized = !!roles && roles.length > 0;
+      setIsAuthorized(authorized);
 
-        const { user } = JSON.parse(sessionStorage.getItem('ephemeral')) || {};
-        if (user) {
-          setSelectedGroup(user.group);
-        } else if (!selectedGroup) {
-          setSelectedGroup(nonNestedGroups);
-        }
+      setEmail(email);
+      setUserData({ name: userName, picture: userPicture, allGroups: nonNestedGroups });
+
+      const { user } = JSON.parse(sessionStorage.getItem('ephemeral')) || {};
+      if (user) {
+        setSelectedGroup(user.group);
+      } else if (!selectedGroup) {
+        setSelectedGroup(nonNestedGroups);
       }
 
       setIsLoading(false);
@@ -143,10 +142,12 @@ export const Auth0Provider = ({
   }, []); // eslint-disable-line
 
   const login = (options = {}) => {
+    sessionStorage.removeItem('ephemeral');
     return client.loginWithRedirect(options);
   };
 
   const logout = (options = {}) => {
+    sessionStorage.removeItem('ephemeral');
     // force the user to log out of their identity provider;
     return client.logout({ ...options, federated: true });
   };

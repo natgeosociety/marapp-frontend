@@ -49,7 +49,7 @@
     letter-spacing: 2.6px;
     line-height: 25px;
     padding-bottom: 10px;
-    &.ng-user-profile-signout {
+    &.ng-user-profile-signout, &.ng-user-profile-signin {
       border-top: 1px solid $marapp-gray-8;
       padding-top: 20px;
       padding-bottom: 0;
