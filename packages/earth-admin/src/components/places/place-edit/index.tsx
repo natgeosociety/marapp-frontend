@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import LocationList from './LocationList';
+import PlaceEdit from './PlaceEdit';
 
-export { LocationList };
+export { PlaceEdit };

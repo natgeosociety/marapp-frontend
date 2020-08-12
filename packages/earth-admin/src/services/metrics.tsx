@@ -56,12 +56,12 @@ const MetricAPIService = {
   },
 };
 
-export const calculateAllForLocation = async (
-  locationId: string,
+export const calculateAllForPlace = async (
+  placeId: string,
   selectedGroup: string
 ): Promise<ResponseSuccess | ResponseError> => {
   return MetricAPIService.request({
-    url: `/metrics/${locationId}/action?group=${selectedGroup}`,
+    url: `/metrics/${placeId}/action?group=${selectedGroup}`,
     method: 'post',
     params: {
       operationType: 'calculate',
@@ -69,13 +69,13 @@ export const calculateAllForLocation = async (
   });
 };
 
-export const calculateForLocation = async (
-  locationId: string,
+export const calculateForPlace = async (
+  placeID: string,
   metricId: string,
   selectedGroup: string
 ): Promise<ResponseSuccess | ResponseError> => {
   return MetricAPIService.request({
-    url: `/metrics/${locationId}/${metricId}/action?group=${selectedGroup}`,
+    url: `/metrics/${placeID}/${metricId}/action?group=${selectedGroup}`,
     method: 'post',
     params: {
       operationType: 'calculate',

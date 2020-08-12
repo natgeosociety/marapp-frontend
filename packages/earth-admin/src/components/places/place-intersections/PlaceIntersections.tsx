@@ -17,19 +17,24 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from 'auth/permissions';
+import * as React from 'react';
 
-export const ADMIN_PAGES: AdminPage[] = [
-  { key: 'Places', url: 'places', guard: AuthzGuards.accessPlacesGuard },
-  { key: 'Widgets', url: 'widgets', guard: AuthzGuards.accessWidgetsGuard },
-  { key: 'Layers', url: 'layers', guard: AuthzGuards.accessLayersGuard },
-  { key: 'Data Indexes', url: 'dashboards', guard: AuthzGuards.accessDashboardsGuard },
-  { key: 'Users', url: 'users', guard: AuthzGuards.accessUsersGuard },
-  { key: 'Organizations', url: 'organizations', guard: AuthzGuards.accessOrganizationsGuard },
-];
+import { LinkWithOrg } from 'components';
+import { PlaceIntersectionProps } from '../model';
 
-interface AdminPage {
-  key: string;
-  url: string;
-  guard?: any;
+export default function PlaceIntersections( props: PlaceIntersectionProps) {
+  const { intersections, name } = props;
+
+  return (
+    <div className="ng-flex ng-flex-column ng-margin-medium-bottom">
+      <h5 className="ng-text-display-s ng-margin-small-bottom">{name} Intersections</h5>
+      <div className="ng-flex ng-flex-wrap">
+        {intersections.map((int) => (
+          <LinkWithOrg to={`/places/${int.id}`} key={int.id} className="ng-margin-medium-right">
+            {int.name}
+          </LinkWithOrg>
+        ))}
+      </div>
+    </div>
+  );
 }

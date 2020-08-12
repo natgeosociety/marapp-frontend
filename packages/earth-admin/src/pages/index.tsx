@@ -22,7 +22,7 @@ import { Router } from '@reach/router';
 
 import { GATSBY_APP_BASE_URL } from 'config';
 import { ContentLayout, SidebarLayout } from 'layouts';
-import LocationsPage from 'pages-client/locations';
+import PlacesPage from 'pages-client/places';
 import DashboardsPage from 'pages-client/dashboards';
 import LayersPage from 'pages-client/layers';
 import WidgetsPage from 'pages-client/widgets';
@@ -43,7 +43,7 @@ export default function IndexPage() {
       <ProtectedRoute path="/" component={Homepage}/>
       <ProtectedRoute path="/:org" component={Organization}>
         <OrgIndex path="/"/>
-        <LocationsPage path="/locations/*"/>
+        <PlacesPage path="/places/*"/>
         <DashboardsPage path="/dashboards/*"/>
         <LayersPage path="/layers/*"/>
         <WidgetsPage path="/widgets/*"/>
@@ -62,7 +62,7 @@ const OrgIndex = ( props ) => (
   <div>
     <SidebarLayout/>
     <ContentLayout permission={true}>
-      <div className="ng-background-white ng-padding-large">
+      <div className="ng-background-ultradkgray ng-padding-large">
         <h2 className="ng-text-edit-m">Welcome to the {APP_NAME} Admin!</h2>
         <h6>{props.org}</h6>
       </div>

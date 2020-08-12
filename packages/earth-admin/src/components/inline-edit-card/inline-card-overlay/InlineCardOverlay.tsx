@@ -17,6 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import LocationDetails from './LocationDetails';
 
-export { LocationDetails };
+import React from 'react';
+import { createPortal } from 'react-dom';
+
+import './styles.scss';
+
+const InlineCardOverlay = () => {
+  const mount = document.getElementById('page-wrapper');
+
+  return createPortal(<div className="ng-inline-card-overlay"/>, mount);
+};
+
+export default InlineCardOverlay;

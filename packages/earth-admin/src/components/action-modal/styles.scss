@@ -17,8 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './location-details';
-export * from './location-edit';
-export * from './location-list';
-export * from './location-metrics';
-export * from './location-intersections';
+@import '~styles/config';
+
+.c-modal {
+  .modal-content {
+    background: $marapp-gray-7;
+  }
+}
+

@@ -53,7 +53,7 @@ export default function OrganizationDetails( props: OrganizationProps ) {
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
       </div>
 
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         <h3 className="ng-text-display-s">Organization details</h3>
 
         <p>
@@ -66,7 +66,7 @@ export default function OrganizationDetails( props: OrganizationProps ) {
           <span className="ng-text-weight-medium">Description: </span> {description || '-'}
         </p>
       </div>
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         {writePermissions && (
           <LinkWithOrg
             to={`/organizations/${id}/edit`}
@@ -75,12 +75,12 @@ export default function OrganizationDetails( props: OrganizationProps ) {
             Edit organization
           </LinkWithOrg>
         )}
-        <LinkWithOrg className="ng-button" to="/organizations">
+        <LinkWithOrg className="ng-button ng-button-secondary" to="/organizations">
           Go back to organizations list
         </LinkWithOrg>
       </div>
       {writePermissions && (
-        <div className="ng-padding-medium ng-background-white ng-text-right">
+        <div className="ng-padding-medium ultradkgray ng-text-right">
           <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete organization
           </button>

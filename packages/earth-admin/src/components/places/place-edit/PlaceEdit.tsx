@@ -26,14 +26,14 @@ import { formatDate } from 'utils';
 import { useForm, Controller } from 'react-hook-form';
 import { JSHINT } from 'jshint';
 
-import { LocationProps, LocationTypeEnum } from '../model';
-import { handleLocationForm } from 'services/locations';
-import { JsonEditor, ErrorMessages, LinkWithOrg } from 'components';
+import { PlaceProps, PlaceTypeEnum } from '../model';
+import { handlePlaceForm } from 'services/places';
+import { JsonEditor, ErrorMessages, LinkWithOrg, InlineEditCard } from 'components';
 import { Auth0Context } from 'utils/contexts';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
-export default function LocationEdit(props: LocationProps) {
+export default function PlaceEdit( props: PlaceProps ) {
   const {
     data: {
       id,
@@ -50,7 +50,7 @@ export default function LocationEdit(props: LocationProps) {
       createdAt,
       updatedAt,
     },
-    newLocation,
+    newPlace,
   } = props;
 
   const { getValues, register, formState, triggerValidation, control } = useForm({
@@ -64,7 +64,7 @@ export default function LocationEdit(props: LocationProps) {
   const { selectedGroup } = useContext(Auth0Context);
 
   useEffect(() => {
-    setGeojson(newLocation ? {} : geojson);
+    setGeojson(newPlace ? {} : geojson);
     triggerValidation();
   }, [geojson]);
 
@@ -73,8 +73,8 @@ export default function LocationEdit(props: LocationProps) {
 
     const formData = getValues();
     try {
-      await handleLocationForm(props.newLocation, formData, id, selectedGroup);
-      await navigate(`${selectedGroup}/locations`);
+      await handlePlaceForm(props.newPlace, formData, id, selectedGroup);
+      await navigate(`${selectedGroup}/places`);
     } catch (error) {
       setServerErrors(error.data.errors);
     }
@@ -98,19 +98,64 @@ export default function LocationEdit(props: LocationProps) {
   return (
     <div>
       <div className="ng-flex ng-flex-space-between">
-        <h2 className="ng-text-display-m ng-c-flex-grow-1">{ newLocation ? 'Add Location' : `Edit Location - ${name}` }</h2>
+        <h2 className="ng-text-display-m ng-c-flex-grow-1">{newPlace ? 'Add Place' : `Edit Place - ${name}`}</h2>
 
         <span>
           Last updated at: {formatDate(updatedAt)}; Created at: {formatDate(createdAt)}
         </span>
       </div>
 
-      <div className="ng-padding-medium ng-background-white">
-        <form className="ng-form ng-flex-column ng-width-4-5">
+      <div className="ng-padding-medium ng-background-ultradkgray">
+        <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5">
+          {/*<div className="ng-grid">*/}
+          {/*  <div className="ng-width-1-2">*/}
+          {/*    <InlineEditCard*/}
+          {/*      hasButtons={true}*/}
+          {/*      saveAction={onSubmit}*/}
+          {/*      validForm={formState.isValid || jsonError}*/}
+          {/*      serverErrors={['cave', 'dsad']}*/}
+          {/*      editForm={( setIsEditing ) => (*/}
+          {/*        <>*/}
+          {/*          <input*/}
+          {/*            ref={register({*/}
+          {/*              required: true,*/}
+          {/*            })}*/}
+          {/*            name="name"*/}
+          {/*            type="text"*/}
+          {/*            defaultValue={name}*/}
+          {/*            placeholder="Place name"*/}
+          {/*            className={INPUT_SIZE_CLASSNAME}*/}
+          {/*          />*/}
+          {/*        </>*/}
+          {/*      )}>*/}
+          {/*      <p>{name}</p>*/}
+          {/*    </InlineEditCard>*/}
+          {/*  </div>*/}
+          {/*  <div className="ng-width-1-2">*/}
+          {/*    <InlineEditCard hasButtons={true} validForm={true}*/}
+          {/*                    editForm={( setIsEditing ) => (*/}
+          {/*                      <>*/}
+          {/*                        <input*/}
+          {/*                          ref={register({*/}
+          {/*                            required: true,*/}
+          {/*                          })}*/}
+          {/*                          name="slug"*/}
+          {/*                          type="text"*/}
+          {/*                          defaultValue={slug}*/}
+          {/*                          placeholder="Place slug"*/}
+
+          {/*                          className={INPUT_SIZE_CLASSNAME}*/}
+          {/*                        />*/}
+          {/*                      </>*/}
+          {/*                    )}>*/}
+          {/*      <p>{slug}</p>*/}
+          {/*    </InlineEditCard>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
           <div className="ng-margin-medium-bottom ng-grid">
             <div className="ng-width-large-1-2 ng-width-1-1">
               <label className="ng-form-label" htmlFor="name">
-                Location name*
+                Place name*
               </label>
               <input
                 ref={register({
@@ -119,12 +164,12 @@ export default function LocationEdit(props: LocationProps) {
                 name="name"
                 type="text"
                 defaultValue={name}
-                placeholder="Location name"
+                placeholder="Place name"
                 className={INPUT_SIZE_CLASSNAME}
               />
             </div>
             <div className="ng-width-large-1-2 ng-width-1-1">
-              <label htmlFor="slug">Location slug*</label>
+              <label htmlFor="slug">Place slug*</label>
               <input
                 ref={register({
                   required: true,
@@ -132,7 +177,7 @@ export default function LocationEdit(props: LocationProps) {
                 name="slug"
                 type="text"
                 defaultValue={slug}
-                placeholder="Location slug"
+                placeholder="Place slug"
                 className={INPUT_SIZE_CLASSNAME}
               />
             </div>
@@ -140,13 +185,13 @@ export default function LocationEdit(props: LocationProps) {
           <div className="ng-margin-medium-bottom ng-grid">
             <div className="ng-width-large-1-1 ng-width-1-1">
               <label className="ng-form-label" htmlFor="description">
-                Location description
+                Place description
               </label>
               <textarea
                 ref={register}
                 name="description"
                 defaultValue={description}
-                placeholder="Location description"
+                placeholder="Place description"
                 className={INPUT_SIZE_CLASSNAME}
               />
             </div>
@@ -154,7 +199,7 @@ export default function LocationEdit(props: LocationProps) {
 
           <div className="ng-margin-medium-bottom ng-grid">
             <div className="ng-width-large-1-2 ng-width-1-1">
-              <label htmlFor="type">Location type</label>
+              <label htmlFor="type">Place type</label>
               <select
                 className="ng-width-1-1 ng-form-large"
                 id="type"
@@ -164,13 +209,13 @@ export default function LocationEdit(props: LocationProps) {
                 name="type"
                 defaultValue={type}
               >
-                {Object.keys(LocationTypeEnum).map((t, idx) => (
+                {Object.keys(PlaceTypeEnum).map((t, idx) => (
                   <option
                     key={idx}
-                    value={LocationTypeEnum[t]}
-                    selected={type === LocationTypeEnum[t]}
+                    value={PlaceTypeEnum[t]}
+                    selected={type === PlaceTypeEnum[t]}
                   >
-                    {LocationTypeEnum[t]}
+                    {PlaceTypeEnum[t]}
                   </option>
                 ))}
               </select>
@@ -237,7 +282,7 @@ export default function LocationEdit(props: LocationProps) {
               Save
             </button>
 
-            <LinkWithOrg className="ng-button" to="/locations">
+            <LinkWithOrg className="ng-button ng-button-secondary" to="/places">
               Cancel
             </LinkWithOrg>
           </div>

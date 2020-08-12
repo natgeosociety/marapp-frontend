@@ -21,7 +21,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { deserializeData } from '../utils';
 import { GATSBY_API_URL } from 'config';
 
-const LocationAPIService = {
+const PlacesAPIService = {
   request: (options: AxiosRequestConfig) => {
     const instance = axios.create({
       baseURL: GATSBY_API_URL,
@@ -45,49 +45,49 @@ const LocationAPIService = {
   },
 };
 
-export const getAllLocations = async (locationQuery: string) => {
-  return await LocationAPIService.request({
-    url: locationQuery,
+export const getAllPlaces = async (placeQuery: string) => {
+  return await PlacesAPIService.request({
+    url: placeQuery,
   });
 };
 
-export const addLocation = async (request, group: string) => {
-  return await LocationAPIService.request({
+export const addPlace = async (request, group: string) => {
+  return await PlacesAPIService.request({
     url: `/locations?group=${group}`,
     method: 'post',
     data: request,
   });
 };
 
-export const getLocation = (locationQuery: string) => {
-  return LocationAPIService.request({
-    url: locationQuery,
+export const getPlace = (placeQuery: string) => {
+  return PlacesAPIService.request({
+    url: placeQuery,
     method: 'get',
   });
 };
 
-export const updateLocation = async (locationID: string, location, group: string) => {
-  return await LocationAPIService.request({
-    url: `/locations/${locationID}?group=${group}`,
+export const updatePlace = async (placeID: string, place, group: string) => {
+  return await PlacesAPIService.request({
+    url: `/locations/${placeID}?group=${group}`,
     method: 'put',
-    data: location,
+    data: place,
   });
 };
 
-export const deleteLocation = async (locationID: string, group: string) => {
-  return await LocationAPIService.request({
-    url: `/locations/${locationID}?group=${group}`,
+export const deletePlace = async (placeID: string, group: string) => {
+  return await PlacesAPIService.request({
+    url: `/locations/${placeID}?group=${group}`,
     method: 'delete',
   });
 };
 
-export const handleLocationForm = async (
-  newLocation: boolean,
-  location,
-  locationID: string,
+export const handlePlaceForm = async (
+  newPlace: boolean,
+  place,
+  placeID: string,
   group: string
 ) => {
-  newLocation
-    ? await addLocation(location, group)
-    : await updateLocation(locationID, location, group);
+  newPlace
+    ? await addPlace(place, group)
+    : await updatePlace(placeID, place, group);
 };

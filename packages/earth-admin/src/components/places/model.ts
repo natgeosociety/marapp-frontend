@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-export interface Location {
+export interface Place {
   id: string;
   description: string;
-  type: LocationTypeEnum;
+  type: PlaceTypeEnum;
   slug?: string;
   name?: string;
   geojson?: {};
@@ -32,14 +32,14 @@ export interface Location {
   createdAt?: Date;
   updatedAt?: Date;
   version?: number;
-  metrics?: LocationMetricsProps[] | string[];
-  intersections?: LocationIntersection[] | string[];
+  metrics?: PlaceMetricsProps[] | string[];
+  intersections?: PlaceIntersection[] | string[];
 }
 
-export interface LocationContextProps {
-  locations: Location[];
-  handleSearchValueChange: (newValue: string) => void;
-  handleCursorChange: Function;
+export interface PlaceContextProps {
+  places: Place[];
+  handleSearchValueChange: (newValue: string) => {};
+  handleCursorChange: () => {};
   pageSize: number;
   isLoading: boolean;
   isNoMore: boolean;
@@ -50,7 +50,7 @@ export interface LocationContextProps {
   selectedItem?: string;
 }
 
-export enum LocationTypeEnum {
+export enum PlaceTypeEnum {
   CONTINENT = 'Continent',
   COUNTRY = 'Country',
   JURISDICTION = 'Jurisdiction',
@@ -66,33 +66,33 @@ export interface MetricProps {
   createdAt?: Date;
   updatedAt?: Date;
   version?: number;
-  location?: string | Location;
+  place?: string | Place;
 }
 
-export interface LocationMetricsProps {
+export interface PlaceMetricsProps {
   data: MetricProps;
   handlers: {
     handleServerErrors: Function;
   };
 }
 
-export interface LocationProps {
-  data?: Location;
-  newLocation?: boolean;
+export interface PlaceProps {
+  data?: Place;
+  newPlace?: boolean;
 }
 
-export interface LocationIntersectionProps {
-  intersections?: LocationIntersection[];
+export interface PlaceIntersectionProps {
+  intersections?: PlaceIntersection[];
   name?: string;
 }
 
-export interface LocationIntersection {
+export interface PlaceIntersection {
   name?: string;
   id?: string;
   type?: 'country' | 'jurisdiction' | 'continent';
 }
 
-export const LOCATION_METRICS_VISUAL_MAPPING = {
+export const PLACE_METRICS_VISUAL_MAPPING = {
   default: {
     icon: 'warning',
     color: '#FFD500',

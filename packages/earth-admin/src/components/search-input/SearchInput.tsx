@@ -164,7 +164,7 @@ export default function SearchInput(props: SearchInputProps) {
         <div className="ng-position-relative">
           {isFocused && availableOptions && (
             <ul
-              className="ng-position-absolute ng-c-position-z-index-10 ng-list ng-background-white
+              className="ng-position-absolute ng-c-position-z-index-10 ng-list ng-background-ultradkgray
                          ng-box-shadow ng-padding-remove ng-width-1-1"
             >
               {availableOptions.map((option) => (

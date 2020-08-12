@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import LocationIntersections from './LocationIntersections';
+import PlaceHome from './PlaceHome';
 
-export { LocationIntersections };
+export { PlaceHome };

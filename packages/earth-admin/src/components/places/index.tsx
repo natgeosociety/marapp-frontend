@@ -17,19 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from 'auth/permissions';
-
-export const ADMIN_PAGES: AdminPage[] = [
-  { key: 'Places', url: 'places', guard: AuthzGuards.accessPlacesGuard },
-  { key: 'Widgets', url: 'widgets', guard: AuthzGuards.accessWidgetsGuard },
-  { key: 'Layers', url: 'layers', guard: AuthzGuards.accessLayersGuard },
-  { key: 'Data Indexes', url: 'dashboards', guard: AuthzGuards.accessDashboardsGuard },
-  { key: 'Users', url: 'users', guard: AuthzGuards.accessUsersGuard },
-  { key: 'Organizations', url: 'organizations', guard: AuthzGuards.accessOrganizationsGuard },
-];
-
-interface AdminPage {
-  key: string;
-  url: string;
-  guard?: any;
-}
+export * from './place-details';
+export * from './place-edit';
+export * from './place-list';
+export * from './place-metrics';
+export * from './place-intersections';
+export * from './place-home';

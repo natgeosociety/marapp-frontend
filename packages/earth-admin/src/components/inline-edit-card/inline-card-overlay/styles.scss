@@ -17,19 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from 'auth/permissions';
-
-export const ADMIN_PAGES: AdminPage[] = [
-  { key: 'Places', url: 'places', guard: AuthzGuards.accessPlacesGuard },
-  { key: 'Widgets', url: 'widgets', guard: AuthzGuards.accessWidgetsGuard },
-  { key: 'Layers', url: 'layers', guard: AuthzGuards.accessLayersGuard },
-  { key: 'Data Indexes', url: 'dashboards', guard: AuthzGuards.accessDashboardsGuard },
-  { key: 'Users', url: 'users', guard: AuthzGuards.accessUsersGuard },
-  { key: 'Organizations', url: 'organizations', guard: AuthzGuards.accessOrganizationsGuard },
-];
-
-interface AdminPage {
-  key: string;
-  url: string;
-  guard?: any;
+.ng-inline-card-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1010;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: rgba(#000, .7);
 }

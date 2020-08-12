@@ -21,44 +21,44 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Router } from '@reach/router';
 
-import { LocationContext } from 'utils/contexts';
+import { PlaceContext } from 'utils/contexts';
 import { encodeQueryToURL, setPage } from 'utils';
-import { getAllLocations, getLocation } from 'services/locations';
+import { getAllPlaces, getPlace } from 'services/places';
 import { AuthzGuards } from 'auth/permissions';
 import { useRequest } from 'utils/hooks';
 
-import { LocationList, LocationDetails, LocationEdit, LinkWithOrg } from 'components';
+import { PlaceList, PlaceDetails, PlaceEdit, LinkWithOrg, PlaceHome } from 'components';
 import { useAuth0 } from 'auth/auth0';
 import { SidebarLayout, ContentLayout } from 'layouts';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
-const LOCATION_DETAIL_QUERY = {
+const PLACE_DETAIL_QUERY = {
   include: 'metrics,intersections',
   select: 'intersections.id,intersections.name,intersections.type,-metrics.metric',
   sort: 'intersections.name,metrics.slug,-metrics.version',
 };
-const INIT_CURSOR_LOCATION = '-1';
+const INIT_CURSOR_PLACE = '-1';
 
-const PAGE_TYPE = setPage('Locations');
+const PAGE_TYPE = setPage('Places');
 
-export default function LocationsPage( props ) {
+export default function PlacesPage( props ) {
   return (
     <Router>
       <Page path="/">
         <HomePage path="/"/>
         <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newLocation={false}/>
-        <EditPage path="/new" newLocation={true}/>
+        <EditPage path="/:page/edit" newPlace={false}/>
+        <EditPage path="/new" newPlace={true}/>
       </Page>
     </Router>
   );
 }
 
 function Sidebar( props: any ) {
-  const [locations, setLocations] = useState([]);
+  const [places, setPlaces] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
-  const [pageCursor, setPageCursor] = useState(INIT_CURSOR_LOCATION);
+  const [pageCursor, setPageCursor] = useState(INIT_CURSOR_PLACE);
   const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [isNoMore, setIsNoMore] = useState(null);
@@ -67,10 +67,10 @@ function Sidebar( props: any ) {
 
   const { selectedGroup, getPermissions } = useAuth0();
 
-  const permissions = getPermissions(AuthzGuards.accessLocationsGuard);
+  const permissions = getPermissions(AuthzGuards.accessPlacesGuard);
 
   const handleSearchValueChange = ( newValue: string ) => {
-    setPageCursor(INIT_CURSOR_LOCATION);
+    setPageCursor(INIT_CURSOR_PLACE);
     setNextCursor(null);
     setSearchValue(newValue);
   };
@@ -82,7 +82,7 @@ function Sidebar( props: any ) {
   };
 
   useEffect(() => {
-    async function setupLocations() {
+    async function setupPlaces() {
       setIsLoading(true);
 
       const query = {
@@ -93,28 +93,28 @@ function Sidebar( props: any ) {
         group: selectedGroup,
       };
       const encodedQuery = encodeQueryToURL('locations', query);
-      const res: any = await getAllLocations(encodedQuery);
+      const res: any = await getAllPlaces(encodedQuery);
 
       setTotalResults(res.total);
-      setLocations(!nextCursor ? res.data : [...locations, ...res.data]);
+      setPlaces(!nextCursor ? res.data : [...places, ...res.data]);
       setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
       setIsNoMore(!res.pagination.nextCursor);
 
       setIsLoading(false);
     }
 
-    permissions && setupLocations();
+    permissions && setupPlaces();
   }, [pageCursor, searchValue]);
 
 
   return (
-    <LocationContext.Provider
+    <PlaceContext.Provider
       value={{
         handleSearchValueChange,
         handleCursorChange,
         isLoading,
         isNoMore,
-        locations,
+        places,
         nextCursor,
         totalResults,
         pageSize,
@@ -123,9 +123,9 @@ function Sidebar( props: any ) {
       }}
     >
       <SidebarLayout page={PAGE_TYPE}>
-        <LocationList/>
+        <PlaceList/>
       </SidebarLayout>
-    </LocationContext.Provider>
+    </PlaceContext.Provider>
   );
 }
 
@@ -139,15 +139,11 @@ function Page( props: any ) {
 
 function HomePage( props: any ) {
   const { getPermissions } = useAuth0();
-  const permissions = getPermissions(AuthzGuards.accessLocationsGuard);
-  const writePermissions = getPermissions(AuthzGuards.writeLocationsGuard);
+  const permissions = getPermissions(AuthzGuards.accessPlacesGuard);
+  const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
   return (writePermissions && (
     <ContentLayout>
-      <div className="ng-flex ng-align-right">
-        <LinkWithOrg className="ng-button ng-button-overlay" to="/locations/new">
-          add new location
-        </LinkWithOrg>
-      </div>
+      {writePermissions && <PlaceHome/>}
     </ContentLayout>
   ));
 }
@@ -155,17 +151,17 @@ function HomePage( props: any ) {
 function DetailsPage( path: any ) {
   const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`locations/${path.page}`, {
-    ...LOCATION_DETAIL_QUERY,
+    ...PLACE_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const { isLoading, errors, data } = useRequest(() => getLocation(encodedQuery), {
-    permissions: AuthzGuards.accessLocationsGuard,
+  const { isLoading, errors, data } = useRequest(() => getPlace(encodedQuery), {
+    permissions: AuthzGuards.accessPlacesGuard,
     query: encodedQuery,
   });
 
   return (
-    <ContentLayout errors={errors} backTo="/locations" isLoading={isLoading}>
-      <LocationDetails data={data}/>
+    <ContentLayout errors={errors} backTo="/places" isLoading={isLoading}>
+      <PlaceDetails data={data}/>
     </ContentLayout>
   );
 }
@@ -173,18 +169,18 @@ function DetailsPage( path: any ) {
 function EditPage( path: any ) {
   const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`locations/${path.page}`, {
-    ...LOCATION_DETAIL_QUERY,
+    ...PLACE_DETAIL_QUERY,
     ...{ group: selectedGroup },
   });
-  const { isLoading, errors, data } = useRequest(() => getLocation(encodedQuery), {
-    permissions: AuthzGuards.writeLocationsGuard,
-    skip: path.newLocation,
+  const { isLoading, errors, data } = useRequest(() => getPlace(encodedQuery), {
+    permissions: AuthzGuards.writePlacesGuard,
+    skip: path.newPlace,
   });
 
   return (
 
-    <ContentLayout errors={errors} backTo="/locations" isLoading={isLoading}>
-      <LocationEdit data={data} newLocation={path.newLocation}/>
+    <ContentLayout errors={errors} backTo="/places" isLoading={isLoading}>
+      <PlaceEdit data={data} newPlace={path.newPlace}/>
     </ContentLayout>
   );
 }

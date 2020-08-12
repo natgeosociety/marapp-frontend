@@ -17,19 +17,28 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from 'auth/permissions';
+import * as React from 'react';
+import { InlineEditCard, LinkWithOrg } from 'components';
 
-export const ADMIN_PAGES: AdminPage[] = [
-  { key: 'Places', url: 'places', guard: AuthzGuards.accessPlacesGuard },
-  { key: 'Widgets', url: 'widgets', guard: AuthzGuards.accessWidgetsGuard },
-  { key: 'Layers', url: 'layers', guard: AuthzGuards.accessLayersGuard },
-  { key: 'Data Indexes', url: 'dashboards', guard: AuthzGuards.accessDashboardsGuard },
-  { key: 'Users', url: 'users', guard: AuthzGuards.accessUsersGuard },
-  { key: 'Organizations', url: 'organizations', guard: AuthzGuards.accessOrganizationsGuard },
-];
+interface PlaceHomeProps {
+}
 
-interface AdminPage {
-  key: string;
-  url: string;
-  guard?: any;
+export default function PlaceHome( props: PlaceHomeProps ) {
+  return (
+    <>
+      <h1 className="ng-text-display-m ng-margin-medium-bottom">PLACES</h1>
+      <div className="ng-grid">
+        <div className="ng-width-1-2">
+          <InlineEditCard>
+            <p>Search a place to view and edit details, or start creating a new place.</p>
+            <div className="ng-flex ng-flex-center">
+              <LinkWithOrg className="ng-button ng-button-secondary" to="/places/new">
+                Create new place
+              </LinkWithOrg>
+            </div>
+          </InlineEditCard>
+        </div>
+      </div>
+    </>
+  );
 }

@@ -20,10 +20,12 @@
 import * as React from 'react';
 
 import { navigate } from 'gatsby';
-import { deleteDashboards, deleteLayer, deleteLocation, deleteWidgets, deleteUser, deleteOrganization } from 'services';
+import { deleteDashboards, deleteLayer, deletePlace, deleteWidgets, deleteUser, deleteOrganization } from 'services';
 import { useAuth0 } from 'auth/auth0';
 
 import { Modal } from '@marapp/earth-components';
+
+import './styles.scss';
 
 interface IModalProps {
   id: string;
@@ -52,8 +54,8 @@ const ActionModal = (props: IModalProps) => {
           await deleteLayer(id, selectedGroup);
           break;
         }
-        case 'locations': {
-          await deleteLocation(id, selectedGroup);
+        case 'places': {
+          await deletePlace(id, selectedGroup);
           break;
         }
         case 'widgets': {
@@ -95,7 +97,7 @@ const ActionModal = (props: IModalProps) => {
         >
           No
         </button>
-        <button className="ng-button" onClick={(e) => handleDelete(e)}>
+        <button className="ng-button ng-button-secondary" onClick={(e) => handleDelete(e)}>
           Yes
         </button>
       </div>{' '}

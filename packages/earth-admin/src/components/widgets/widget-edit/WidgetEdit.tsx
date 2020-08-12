@@ -106,8 +106,8 @@ export default function WidgetEdit( props: WidgetProps ) {
         </span>
       </div>
 
-      <div className="ng-padding-medium ng-background-white">
-        <form className="ng-form ng-flex-column ng-width-4-5">
+      <div className="ng-padding-medium ng-background-ultradkgray">
+        <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5">
           <div className="ng-margin-medium-bottom ng-grid">
             <div className="ng-width-large-1-2 ng-width-1-1">
               <label className="ng-form-label" htmlFor="name">
@@ -216,7 +216,7 @@ export default function WidgetEdit( props: WidgetProps ) {
               Save
             </button>
 
-            <LinkWithOrg className="ng-button" to="/widgets">
+            <LinkWithOrg className="ng-button ng-button-secondary" to="/widgets">
               Cancel
             </LinkWithOrg>
           </div>

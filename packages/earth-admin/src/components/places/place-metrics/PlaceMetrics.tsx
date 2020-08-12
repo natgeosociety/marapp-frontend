@@ -20,17 +20,17 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 
-import { LocationMetricsProps, LOCATION_METRICS_VISUAL_MAPPING } from '../model';
-import { calculateForLocation } from 'services';
+import { PlaceMetricsProps, PLACE_METRICS_VISUAL_MAPPING } from '../model';
+import { calculateForPlace } from 'services';
 import { AuthzGuards } from 'auth/permissions';
 import { useAuth0 } from 'auth/auth0';
 
 import './styles.scss';
 import { Auth0Context } from 'utils/contexts';
 
-export default function LocationMetrics(props: LocationMetricsProps) {
+export default function PlaceMetrics( props: PlaceMetricsProps) {
   const {
-    data: { slug, version, location },
+    data: { slug, version, place },
     handlers: { handleServerErrors },
   } = props;
 
@@ -42,16 +42,16 @@ export default function LocationMetrics(props: LocationMetricsProps) {
   const writePermission = getPermissions(AuthzGuards.writeMetricsGuard);
 
   useEffect(() => {
-    const style = LOCATION_METRICS_VISUAL_MAPPING[slug] || LOCATION_METRICS_VISUAL_MAPPING.default;
+    const style = PLACE_METRICS_VISUAL_MAPPING[slug] || PLACE_METRICS_VISUAL_MAPPING.default;
     setMetricStyle(style);
   });
 
-  async function handleCalculateSingle(e: MouseEvent, locationId: string, metricId: string) {
+  async function handleCalculateSingle(e: MouseEvent, placeID: string, metricId: string) {
     e.preventDefault();
     e.stopPropagation();
     try {
       handleServerErrors(false);
-      await calculateForLocation(locationId, metricId, selectedGroup);
+      await calculateForPlace(placeID, metricId, selectedGroup);
     } catch (error) {
       handleServerErrors(error.data.errors);
     }
@@ -68,7 +68,7 @@ export default function LocationMetrics(props: LocationMetricsProps) {
             {writePermission && (
               <button
                 className="ng-icon-button ng-recalculate-metrics"
-                onClick={(e) => handleCalculateSingle(e, location, slug)}
+                onClick={(e) => handleCalculateSingle(e, place, slug)}
               >
                 <span className="ng-icon ng-icon-spinner" />
               </button>
