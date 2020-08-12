@@ -25,6 +25,8 @@ import { useAuth0 } from 'auth/auth0';
 
 import { Modal } from '@marapp/earth-components';
 
+import './styles.scss';
+
 interface IModalProps {
   id: string;
   navigateRoute: string;
@@ -53,7 +55,7 @@ const ActionModal = (props: IModalProps) => {
           break;
         }
         case 'places': {
-          await deleteLocation(id, selectedGroup);
+          await deletePlace(id, selectedGroup);
           break;
         }
         case 'widgets': {
@@ -95,7 +97,7 @@ const ActionModal = (props: IModalProps) => {
         >
           No
         </button>
-        <button className="ng-button" onClick={(e) => handleDelete(e)}>
+        <button className="ng-button ng-button-secondary" onClick={(e) => handleDelete(e)}>
           Yes
         </button>
       </div>{' '}
