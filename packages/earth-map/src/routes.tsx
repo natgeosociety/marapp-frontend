@@ -22,27 +22,28 @@ import { NOT_FOUND } from 'redux-first-router';
 import restoreScroll from 'redux-first-router-restore-scroll';
 
 const UNAUTHORIZED = 'UNAUTHORIZED';
+const isPublicAccessDisabled = process.env.REACT_APP_DISABLE_PUBLIC_ACCESS === 'true';
 
 export const ROUTES = {
   HOME: {
     path: '/',
     page: 'home',
-    authenticated: false,
-    authorized: false,
+    authenticated: isPublicAccessDisabled,
+    authorized: isPublicAccessDisabled,
     fallbackRoute: null,
   },
   EARTH: {
     path: '/earth',
     page: 'earth',
-    authenticated: false,
-    authorized: false,
+    authenticated: isPublicAccessDisabled,
+    authorized: isPublicAccessDisabled,
     fallbackRoute: null,
   },
   LOCATION: {
     path: '/earth/:organization/:slug',
     page: 'earth',
-    authenticated: false,
-    authorized: false,
+    authenticated: isPublicAccessDisabled,
+    authorized: isPublicAccessDisabled,
     fallbackRoute: null,
   },
   ERROR: {

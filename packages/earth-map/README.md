@@ -35,6 +35,7 @@ The following environment variables are required by the application.
 | `REACT_APP_AUTH0_AUDIENCE` | https://auth0.com/docs/tokens/guides/get-access-tokens - Auth0 audience |
 | `REACT_APP_AUTH0_NAMESPACE` | https://auth0.com/docs/tokens/guides/create-namespaced-custom-claims - Auth0 namespace |
 | `REACT_APP_ADMIN_URL` | The URL for admin component (e.g. `/admin/`) |
+| `REACT_APP_DISABLE_PUBLIC_ACCESS` | Disable access to the public organization |
 
 ## Getting started
 
