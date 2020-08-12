@@ -25,6 +25,7 @@ import isEqual from 'react-fast-compare';
 
 import { Map } from '@marapp/earth-components';
 import { APP_ABOUT } from 'theme';
+import { API_URL, MAPBOX_TOKEN } from 'config';
 
 // Components
 import LayerManager from './layer-manager';
@@ -171,7 +172,7 @@ class MapComponent extends React.Component<IMap> {
   };
 
   onTransformRequest = (url, resourceType) => {
-    if (resourceType === 'Source' && url.includes(process.env.REACT_APP_API_URL)) {
+    if (resourceType === 'Source' && url.includes(API_URL)) {
       return {
         url,
         headers: { Authorization: axios.defaults.headers.common.Authorization },
@@ -271,7 +272,7 @@ class MapComponent extends React.Component<IMap> {
       >
         <UserMenuComponent />
         <Map
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+          mapboxApiAccessToken={MAPBOX_TOKEN}
           // Attributtes
           mapStyle={mapStyle}
           viewport={viewport}

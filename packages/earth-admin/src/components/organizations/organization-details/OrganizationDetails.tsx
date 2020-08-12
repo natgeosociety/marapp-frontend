@@ -32,7 +32,7 @@ export default function OrganizationDetails( props: OrganizationProps ) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { getPermissions } = useAuth0();
-  const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
+  const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
   function handleDeleteToggle() {
     setShowDeleteModal(!showDeleteModal);
@@ -60,7 +60,7 @@ export default function OrganizationDetails( props: OrganizationProps ) {
           <span className="ng-text-weight-medium">Name:</span> {name || '-'}
         </p>
         <p>
-          <span className="ng-text-weight-medium">Owners:</span> {owners.join(', ')}
+          <span className="ng-text-weight-medium">Owner:</span> {owners[0] || '-'}
         </p>
         <p>
           <span className="ng-text-weight-medium">Description: </span> {description || '-'}
@@ -79,13 +79,13 @@ export default function OrganizationDetails( props: OrganizationProps ) {
           Go back to organizations list
         </LinkWithOrg>
       </div>
-      {/* {writePermissions && (
-        <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
+      {writePermissions && (
+        <div className="ng-padding-medium ultradkgray ng-text-right">
           <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete organization
           </button>
         </div>
-      )} */}
+      )}
     </div>
   );
 }

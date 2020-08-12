@@ -20,24 +20,27 @@
 import React from 'react';
 import { Icons as VizzIcons } from 'vizzuality-components';
 
+import Layers from 'components/layers';
+import Places from 'components/places';
 import Url from 'components/url';
 import Map from 'components/map';
 import Sidebar from 'components/sidebar';
 import Place from 'components/place';
 import Fullscreen from 'components/fullscreen';
 import { URL_PROPS } from './url';
-import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
+import { EPanels } from 'modules/sidebar/model';
 
 interface IEarth {
   setFullscreen?: (p: { data: {}; open: boolean }) => void;
   setMapInteractions?: (p: {}) => void;
+  panel?: EPanels;
   layersPanel?: boolean;
   selected?: string;
 }
 
 class EarthPage extends React.Component<IEarth> {
   render() {
-    const { setFullscreen, setMapInteractions, selected } = this.props;
+    const { setFullscreen, setMapInteractions, selected, panel } = this.props;
 
     return (
       <main className="l-page" role="main">
@@ -53,7 +56,12 @@ class EarthPage extends React.Component<IEarth> {
         />
 
         <Sidebar>
-          <SidebarLayoutSearch selected={!!selected} />
+          {panel === EPanels.PLACES && (
+            <Places selected={!!selected} />
+          )}
+          {panel === EPanels.LAYERS && (
+            <Layers selected={!!selected} />
+          )}
         </Sidebar>
 
         <div className="l-content">

@@ -17,34 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setIndexesSelected } from 'modules/indexes/actions';
-import { setLayersActive } from 'modules/layers/actions';
-import { setUserGroup } from 'modules/user/actions';
+@import "~styles/config";
 
-export const URL_PROPS = [
-  {
-    type: 'string',
-    value: 'dashboards',
-    redux: 'indexes.selected',
-    action: setIndexesSelected,
-    required: false,
-  },
-  {
-    type: 'array',
-    value: 'layers',
-    redux: 'layers.active',
-    action: setLayersActive,
-    required: false,
-  },
-  {
-    type: 'string',
-    value: 'org',
-    redux: 'user.group',
-    action: setUserGroup,
-    required: false,
+.ng-icon-toggle-layer {
+  min-width: 50px;
+  .ng-icon-label {
+    font-family: $marapp-primary-font;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    line-height: 11px;
+    text-align: center;
   }
-];
+}
 
-export default {
-  URL_PROPS,
-};
+.ng-search-box {
+  min-height: 36px;
+}

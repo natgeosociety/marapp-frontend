@@ -17,39 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import '~styles/config';
+import yn from 'yn';
 
-.c-places-list {
-  position: relative;
-  margin-bottom: $space-1 * 6;
+export const NODE_ENV = process.env.NODE_ENV;
+export const PUBLIC_URL = process.env.PUBLIC_URL;
 
-  .places-list--title {
-    display: flex;
-    flex-flow: row;
-    align-items: center;
-    font-size: $font-size-medium;
-    height: $space-1 * 7.5;
-    padding: 0 $space-1 * 3;
-    cursor: pointer;
+export const BASE_URL = process.env.REACT_APP_BASE_URL || '/';
+export const API_URL = process.env.REACT_APP_API_URL;
+export const FULLPAGE_LICENSE = process.env.REACT_APP_FULLPAGE_LICENSE;
+export const ADMIN_URL = process.env.REACT_APP_ADMIN_URL;
+export const APP_NAME = process.env.REACT_APP_NAME;
+export const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
-    &:hover {
-      background-color: darken($marapp-gray-0, 2%);
-    }
+export const GTM_TAG = process.env.REACT_APP_GTM_TAG;
 
-    svg {
-      display: block;
-      margin-right: $space-1;
-    }
-  }
-
-  .places-list--item {
-    display: flex;
-    font-size: $font-size-default;
-    cursor: pointer;
-    padding: $space-1 * 0.75 $space-1 * 3;
-
-    &:hover {
-      background-color: darken($marapp-gray-0, 2%);
-    }
-  }
-}
+export const DISABLE_PUBLIC_ACCESS = yn(process.env.REACT_APP_DISABLE_PUBLIC_ACCESS); 

@@ -36,14 +36,19 @@ export default {
       search: { ...state.search, ...payload },
     };
   },
+  [actions.setPlacesSearchOpen]: ((state, { payload }) => {
+    return {
+      ...state,
+      search: {
+        ...state.search,
+        open: payload,
+      }
+    }
+  }),
   // deprecated?
   [actions.setPlacesSearchFilters]: (state, { payload }) => ({
     ...state,
     filters: { ...state.filters, filters: payload },
-  }),
-  [actions.setPlacesSearchOpen]: (state, { payload }) => ({
-    ...state,
-    search: { ...state.search, open: payload },
   }),
   [actions.setPlacesSearchResults]: (state, { payload }) => {
     const { results, nextPageCursor } = payload;

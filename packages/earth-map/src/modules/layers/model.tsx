@@ -41,6 +41,10 @@ export interface ILayer {
   render?: any;
 }
 
+export interface ILayerRaw extends ILayer {
+  config: any;
+}
+
 interface ILayerConfig {
   paramsConfig: any;
   sqlConfig: any;

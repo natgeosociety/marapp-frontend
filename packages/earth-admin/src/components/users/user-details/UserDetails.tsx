@@ -22,19 +22,24 @@ import { useState } from 'react';
 import { UserProps } from '../model';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
-import { ActionModal, LinkWithOrg } from 'components';
+import { ActionModal, LinkWithOrg, ErrorMessages } from 'components';
 
 export default function UserDetails(props: UserProps) {
   const {
     data: { name, email, groups, id },
   } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [serverErrors, setServerErrors] = useState(null);
 
   const { getPermissions } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
 
   function handleDeleteToggle() {
     setShowDeleteModal(!showDeleteModal);
+  }
+
+  function handleDeleteError(error) {
+    setServerErrors(error.data.errors);
   }
 
   return (
@@ -46,6 +51,7 @@ export default function UserDetails(props: UserProps) {
           name={name}
           toggleModal={handleDeleteToggle}
           visibility={showDeleteModal}
+          error={handleDeleteError}
         />
       )}
       <div className="ng-flex ng-flex-space-between">
@@ -79,6 +85,7 @@ export default function UserDetails(props: UserProps) {
           Go back to users list
         </LinkWithOrg>
       </div>
+      {serverErrors && <ErrorMessages errors={serverErrors} />}
       {writePermissions && (
         <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
           <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>

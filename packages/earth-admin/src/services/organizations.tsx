@@ -66,11 +66,17 @@ export const updateOrganization = async (organizationID: string, organization, g
   });
 };
 
-// export const handleOrganizationForm = async (
-//   newOrg: boolean,
-//   organization,
-//   organizationID: string,
-//   group: string
-// ) => {
-//   newOrg ? null : await updateOrganization(organizationID, organization, group);
-// };
+export const addOrganization = async (request, group: string) => {
+  return await OrganizationAPIService.request({
+    url: `/organizations?group=${group}`,
+    method: 'post',
+    data: request,
+  });
+};
+
+export const deleteOrganization = async (organizationId) => {
+  return await OrganizationAPIService.request({
+    url: `/organizations/${organizationId}`,
+    method: 'delete',
+  });
+};

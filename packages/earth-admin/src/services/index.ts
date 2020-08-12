@@ -23,3 +23,4 @@ export * from './layers';
 export * from './dashboards';
 export * from './metrics';
 export * from './users';
+export * from './organizations';

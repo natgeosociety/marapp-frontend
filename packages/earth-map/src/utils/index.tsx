@@ -22,7 +22,7 @@ import React from 'react';
 import urljoin from 'url-join';
 import get from 'lodash/get';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || '/';
+import { BASE_URL } from 'config';
 
 /**
  * Route to target URL in case of success/failure.
@@ -59,7 +59,7 @@ export const removeNestedGroups = (groups: string[]): string[] => {
  *  Returns true if user has permission to
  *  view admin link
  */
-const ADMIN_ROLE_TYPES = ['Admin', 'Editor'];
+const ADMIN_ROLE_TYPES = ['Owner', 'Admin', 'Editor'];
 
 export const checkRole = (roles: string[]) => roles.some((role) => ADMIN_ROLE_TYPES.includes(role));
 
@@ -80,8 +80,31 @@ export const isValidOrg = (orgsFromToken: string[], org: string): boolean =>
 
 export const parseHintBold = (text: string = '') => {
   return text.split(/({{.+?}})/).map(term => (
-    term.startsWith('{{') && term.endsWith('}}') ?
-    <b className="ng-text-weight-bold">{term.replace('{{', '').replace('}}', '')}</b> :
-    term
+    term.startsWith('{{') && term.endsWith('}}')
+      ? (
+        <b className="ng-text-weight-bold">
+          {term.replace('{{', '').replace('}}', '')}
+        </b>
+      )
+      : term
   ))
 };
+
+/**
+ * Get available organizations based on permissions
+ * @param permissions
+ */
+export const getAvailableOrgs = (permissions: { [key: string]: string }): string[] => {
+  const specialPermissions = [
+    '*' // super-admin
+  ];
+
+  return Object
+    .keys(permissions)
+    .filter(permission => !specialPermissions.includes(permission));
+};
+
+/**
+ * No operation function. Does nothing, but still useful
+ */
+export const noop = (): void => {};

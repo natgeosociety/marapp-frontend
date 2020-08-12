@@ -40,7 +40,7 @@ export default function OrganizationsPage( props ) {
         <HomePage path="/"/>
         <DetailsPage path="/:page"/>
         <EditPage path="/:page/edit" newOrg={false}/>
-        {/*<EditPage path="/new" newLocation={true}/>*/}
+        <EditPage path="/new" newOrg={true}/>
       </Page>
     </Router>
   );
@@ -57,7 +57,7 @@ function Sidebar( props: any ) {
 
   const { selectedGroup, getPermissions } = useAuth0();
 
-  const permissions = getPermissions(AuthzGuards.accessUsersGuard);
+  const permissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
   const handleCursorChange = () => {
     setPageNumber(pageNumber + 1);
@@ -116,27 +116,23 @@ function Page( props: any ) {
 
 function HomePage( props: any ) {
   const { getPermissions } = useAuth0();
-  const permissions = getPermissions(AuthzGuards.accessUsersGuard);
-  const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
+  const permissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
+  const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   return (writePermissions && (
     <ContentLayout>
-
       <div className="ng-flex ng-align-right">
-        {/*<LinkWithOrg className="ng-button ng-button-overlay" to="/organizations/new">*/}
-        {/*  add new organization*/}
-        {/*</LinkWithOrg>*/}
+        <LinkWithOrg className="ng-button ng-button-overlay" to="/organizations/new">
+         add new organization
+        </LinkWithOrg>
       </div>
     </ContentLayout>
   ));
 }
 
 function DetailsPage( path: any ) {
-  const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, {
-    group: selectedGroup,
-  });
+  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`);
   const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
-    permissions: AuthzGuards.accessUsersGuard,
+    permissions: AuthzGuards.accessOrganizationsGuard,
     query: encodedQuery,
   });
 
@@ -148,18 +144,15 @@ function DetailsPage( path: any ) {
 }
 
 function EditPage( path: any ) {
-  const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, {
-    ...{ group: selectedGroup },
-  });
+  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`);
   const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
-    permissions: AuthzGuards.writeUsersGuard,
-    skip: path.newUser,
+    permissions: AuthzGuards.accessOrganizationsGuard,
+    skip: path.newOrg,
   });
 
   return (
-      <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading}>
-        <OrganizationEdit data={data} newOrg={path.newUser}/>
-      </ContentLayout>
+    <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading}>
+      <OrganizationEdit data={data} newOrg={path.newOrg}/>
+    </ContentLayout>
   );
 }

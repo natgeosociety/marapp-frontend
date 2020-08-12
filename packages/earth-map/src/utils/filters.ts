@@ -17,14 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-// Serialize in the format filter=type==Continent,Jurisdiction,featured==true
-export const serializeFilters = (filters: IFilters): string => {
-  return Object.keys(filters).reduce((acc, key) => {
-    const filterGroup = filters[key];
-    return `${key}==${filterGroup.join(',')},${acc}`;
-  }, ``);
-};
-
 /**
  * Check if filters contain any values
  */

@@ -19,17 +19,20 @@
 
 import React from 'react';
 import Link from 'redux-first-router-link';
+
 import { parseHintBold } from 'utils';
+import Toggle from 'components/toggle';
 
 import './style.scss';
 
 interface IProps {
   title: string;
-  linkTo: {
+  key: string;
+  active?: boolean;
+  linkTo?: {
     type: string;
     payload?: any;
   };
-  key: string;
   organization?: string;
   hint?: string;
   list?: any[];
@@ -51,7 +54,14 @@ const ListItem = (props: IProps) => {
     setPlacesSearch,
     setIndexesSelected,
     onClick,
+    active,
   } = props;
+
+  const showToggle = typeof active !== 'undefined';
+
+  const Wrapper = linkTo
+    ? Link
+    : 'div'
 
   // Default click action. Can be overritten by passing onClick prop
   const onClickIndex = () => {
@@ -63,27 +73,30 @@ const ListItem = (props: IProps) => {
   };
 
   return (
-    <Link
+    <Wrapper
       to={linkTo}
       onClick={onClick || onClickIndex} key={key}
-      className="ng-list-item ng-padding-small-vertical ng-padding-medium-horizontal"
+      className="ng-list-item ng-padding-small-vertical ng-padding-medium-horizontal ng-cursor-pointer"
     >
-      <span className="ng-display-block ng-list-item-title">{parseHintBold(hint || title)}</span>
-      {organization && (
-        <span className="ng-color-mdgray" key={`${organization}`}>
-          {organization}<strong className="ng-icon-bullet" />
-        </span>
-      )}
-      {labels.map((label, i, all) => {
-        const last = i === all.length - 1;
-        return (
-          <span className="ng-color-mdgray" key={`${label}`}>
-            {label}
-            {!last && ', '}
+      {showToggle && <Toggle className="ng-margin-right" active={active} />}
+      <div className="ng-list-item-content">
+        <span className="ng-display-block ng-list-item-title">{parseHintBold(hint || title)}</span>
+        {organization && (
+          <span className="ng-color-mdgray" key={`${organization}`}>
+            {organization}<strong className="ng-icon-bullet" />
           </span>
-        )
-      })}
-    </Link>
+        )}
+        {labels?.map((label, i, all) => {
+          const last = i === all.length - 1;
+          return (
+            <span className="ng-color-mdgray" key={`${label}`}>
+              {label}
+              {!last && ', '}
+            </span>
+          )
+        })}
+      </div>
+    </Wrapper>
   )
 };
 

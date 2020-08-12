@@ -16,9 +16,10 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
+import { EPanels } from './model';
 
 export default {
   open: true,
-  panel: undefined,
-  layersPanel: false,
+  panel: EPanels.PLACES, // selected panel
+  panelExpanded: false, // indicates that user has expanded search ui (places and layers)
 };

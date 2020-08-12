@@ -17,15 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-// @ts-ignore
-import * as urljoin from 'url-join';
+/**
+ * Serialize filters in the format
+ *   filter=type==Continent;Jurisdiction,featured==true
+ *   note: each group of values is encoded, including valueSeparator
+ */
+export const serializeFilters = (filters, filterSep = ',', valueSep = ';') => {
+  return Object.keys(filters).reduce((acc, key) => {
+    const filterGroup = filters[key];
+    const value = Array.isArray(filterGroup)
+      ? filterGroup.join(valueSep)
+      : filterGroup;
+    const encodedFilters = (
+      [`${key}==${encodeURIComponent(value)}`, acc].filter(e => !!e).join(filterSep)
+    );
 
-const auth0 = {
-  domain: process.env.REACT_APP_AUTH0_DOMAIN,
-  clientId: process.env.REACT_APP_AUTH0_CLIENT_ID,
-  redirectUri: urljoin(window.location.origin, process.env.REACT_APP_BASE_URL || ''),
-  audience: process.env.REACT_APP_AUTH0_AUDIENCE,
-  namespace: process.env.REACT_APP_AUTH0_NAMESPACE
+    return encodedFilters;
+  }, '');
 };
-
-export default { auth0 };

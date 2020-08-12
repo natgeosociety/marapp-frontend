@@ -21,7 +21,7 @@ import { all, put, call, takeLatest, select } from 'redux-saga/effects';
 
 // Services
 import { fetchPlaces } from 'services/places';
-import { serializeFilters } from 'utils/filters';
+import { serializeFilters } from '@marapp/earth-components';
 
 // Actions
 import {
@@ -68,8 +68,8 @@ export function* nextPage({ payload }) {
     ...(!!userInput && { search: userInput }),
     ...(!!filters && { filter: filterQuery }),
     'page[cursor]': pageCursor ? pageCursor : -1,
-    ...(pageSize && { 'page[size]': pageSize }),
-    ...{ group: group.toString() },
+    ...(pageSize && { page: { size: pageSize } }),
+    group: group.toString(),
   });
   const { data: results, meta } = page;
 

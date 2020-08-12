@@ -25,14 +25,20 @@ import { cleanFilters, countFilters } from 'utils/filters';
 import './styles.scss';
 
 interface IProps {
-  search?: any;
-  setPlacesSearch?: (payload?) => void;
+  data: any;
+  open: boolean;
+  onOpenToggle: (payload?) => void;
+  onChange: (payload?) => void;
 };
 
 const FilterBy = (props: IProps) => {
-  const { search, setPlacesSearch } = props;
-  const { filters, availableFilters } = search;
-  const [dropdownState, setDropdownState] = useState('close');
+  const {
+    data,
+    open,
+    onOpenToggle,
+    onChange,
+  } = props;
+  const { filters, availableFilters } = data;
   const numberOfFilters = countFilters(filters);
 
   const toggleFilter = (key: string, value: string) => {
@@ -43,7 +49,7 @@ const FilterBy = (props: IProps) => {
         ? filterGroup.filter((x) => x !== value)
         : [...filterGroup, value],
     };
-    setPlacesSearch({
+    onChange({
       filters: cleanFilters({
         ...filters,
         ...newFilters,
@@ -51,21 +57,18 @@ const FilterBy = (props: IProps) => {
     });
   };
 
-  const clearCheckedFilters = () => setPlacesSearch({
+  const clearCheckedFilters = () => onChange({
     filters: {}
   });
-
-  const handleDropdown = () => {
-    setDropdownState(dropdownState === 'open' ? 'close' : 'open');
-  };
+  const openToggle = () => onOpenToggle(!open)
 
   return (
     <div className="ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
       <div className="ng-flex search-title">
         <h2
           className="ng-text-display-s ng-body-color ng-margin-bottom ng-margin-small-right ng-c-cursor-pointer"
-          onClick={handleDropdown}>
-          Search filters
+          onClick={openToggle}>
+          Filters
         </h2>
         {numberOfFilters > 0 &&
           <a className="ng-link ng-nohover ng-text-weight-regular ng-text-capital" onClick={clearCheckedFilters}>Clear {`(${numberOfFilters})`}</a>
@@ -74,15 +77,15 @@ const FilterBy = (props: IProps) => {
           className={classnames({
             'ng-c-cursor-pointer': true,
             'ng-margin-small-left': true,
-            'ng-icon-directionup': dropdownState === 'open',
-            'ng-icon-directiondown': dropdownState !== 'open',
+            'ng-icon-directionup': open,
+            'ng-icon-directiondown': !open,
           })}
-          onClick={handleDropdown}
+          onClick={openToggle}
         />
       </div>
-      {dropdownState === 'open' &&
+      {open &&
         Object.keys(availableFilters).map((key) => (
-          <>
+          <React.Fragment key={key}>
             {/* {<h2 className="ng-color-ltgray ng-text-display-s ng-margin-bottom">{key}</h2>} */}
             <div className="ng-grid ng-form-dark ng-form" key={`${key}-form`}>
               {availableFilters[key].map((filter, i) => {
@@ -91,7 +94,7 @@ const FilterBy = (props: IProps) => {
                 const disabled = filter.count === 0;
 
                 return (
-                  <div className="ng-width-1-2 ng-margin-bottom" key={`${key}-${i}`}>
+                  <div className="ng-width-1-2 ng-margin-bottom" key={`${filter.key}-${filter.value}`}>
                     <label
                       htmlFor={domId}
                       className={classnames({
@@ -118,7 +121,7 @@ const FilterBy = (props: IProps) => {
                 );
               })}
             </div>
-          </>
+          </React.Fragment>
         ))}
     </div>
   );

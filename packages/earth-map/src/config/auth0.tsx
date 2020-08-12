@@ -17,23 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-import { setSidebarPanel } from 'modules/sidebar/actions';
-import { setPlacesSearchResults, nextPlacesPage } from 'modules/places/actions';
+import urljoin from 'url-join';
 
-import PlacesResultsComponent from './component';
+const config = {
+  domain: process.env.REACT_APP_AUTH0_DOMAIN,
+  clientId: process.env.REACT_APP_AUTH0_CLIENT_ID,
+  redirectUri: urljoin(window.location.origin, process.env.REACT_APP_BASE_URL || ''),
+  audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+  namespace: process.env.REACT_APP_AUTH0_NAMESPACE
+};
 
-export default connect(
-  (state: any) => ({
-    ...state.sidebar,
-    loading: state.places.search.loading,
-    results: state.places.results,
-    nextPageCursor: state.places.nextPageCursor,
-    group: state.user.group,
-  }),
-  {
-    setSidebarPanel,
-    setPlacesSearchResults,
-    nextPlacesPage,
-  }
-)(PlacesResultsComponent);
+export default { config };

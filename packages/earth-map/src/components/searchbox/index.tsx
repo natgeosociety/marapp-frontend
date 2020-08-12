@@ -17,6 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-import LayerComponent from './component';
+import { connect } from 'react-redux';
 
-export { LayerComponent };
+import { setPlacesSearch } from 'modules/places/actions';
+import { setRouter } from 'modules/router/actions';
+import SearchBoxComponent from './Searchbox';
+import { setIndexesSelected } from 'modules/indexes/actions';
+
+export default connect(
+  (state: any) => ({
+    ...state.places.search,
+  }),
+  {
+    setRouter,
+    setPlacesSearch,
+    setIndexesSelected,
+  }
+)(SearchBoxComponent);

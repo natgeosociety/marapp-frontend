@@ -35,6 +35,7 @@ export enum LayerProvider {
 export interface Layer {
   id: string;
   description: string;
+  primary: boolean;
   category: LayerCategory[];
   config: object;
   published: boolean;

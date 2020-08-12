@@ -17,21 +17,118 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { all, put, call, select } from 'redux-saga/effects';
+import { put, call, select, takeLatest, all } from 'redux-saga/effects';
 import { replace } from 'redux-first-router';
 import sortBy from 'lodash/sortBy';
+import { serializeFilters } from '@marapp/earth-components';
 
 import { fetchDataIndexes } from 'services/data-indexes';
 import { DATA_INDEX_QUERY } from '../model';
 import { IIndex } from 'modules/indexes/model';
-import { ILayer } from 'modules/layers/model';
 import { IWidget } from 'modules/widget/model';
+import { setSidebarPanel } from 'modules/sidebar/actions';
+import { EPanels } from 'modules/sidebar/model';
 import { setWidgets, setWidgetsLoading, setWidgetsError } from 'modules/widgets/actions';
 import { setIndexesList } from 'modules/indexes/actions';
-import { setLayersList } from 'modules/layers/actions';
-import { getGroup } from 'sagas/saga-utils';
+import {
+  setLayersActive,
+  setLayersSearch,
+  setLayersLoading,
+  setLayersSearchResults,
+  setLayersSearchAvailableFilters,
+  resetLayersResults,
+  nextLayersPage,
+  setListActiveLayers,
+} from 'modules/layers/actions';
+import { persistData } from 'modules/global/actions';
+import { getGroup, getLayers, onlyMatch, flattenLayerConfig } from 'sagas/saga-utils';
+import { fetchLayers } from 'services/layers';
+import { LAYER_QUERY } from '../model';
+import { ILayer } from 'modules/layers/model';
 
-export function* preloadLayers({ payload }) {
+export default function* layers() {
+  // @ts-ignore
+  yield takeLatest(onlyMatch(setSidebarPanel, EPanels.LAYERS), searchLayers);
+  yield takeLatest(setLayersSearch, searchLayers);
+  yield takeLatest(nextLayersPage, nextPage);
+
+  // Queries the api and loads the active layers objects. Does nothing to display the layer on the map. That is handled in the <Url /> component that reacts to query param changes
+  yield takeLatest(setLayersActive, loadActiveLayers);
+}
+
+/**
+ * Load active layer objects on refresh
+ */
+function* loadActiveLayers({ payload }) {
+  if (!payload.length) {
+    return;
+  }
+  const group = yield select(getGroup);
+  const options = {
+    ...LAYER_QUERY,
+    filter: serializeFilters({
+      slug: payload,
+    }),
+    group: group.join(','),
+  };
+  const { data: layers } = yield call(fetchLayers, options);
+  const decoratedLayers: ILayer[] = layers.map(flattenLayerConfig);
+
+  yield put(setListActiveLayers(decoratedLayers));
+
+  // to activate a selected layer on reload, it needs to be in layers.results
+  yield put(
+    setLayersSearchResults({
+      results: layers,
+    })
+  );
+}
+
+function* searchLayers(params) {
+  yield put(resetLayersResults());
+  const { meta } = yield nextPage(params);
+  yield put(setLayersSearchAvailableFilters(meta.filters));
+  yield put(persistData());
+}
+
+/**
+ * Used to retrieve a page of results
+ */
+export function* nextPage({ payload }) {
+  const group = yield select(getGroup);
+  const { search } = yield select(getLayers);
+  const { filters, search: userInput } = search;
+  const { pageCursor, pageSize } = payload;
+
+  const filterQuery = serializeFilters({
+    ...filters,
+    primary: true,
+  });
+
+  yield put(setLayersLoading(true));
+  const options = {
+    ...LAYER_QUERY,
+    ...(!!userInput && { search: userInput }),
+    ...(!!filterQuery && { filter: filterQuery }),
+    'page[cursor]': pageCursor ? pageCursor : -1,
+    ...(pageSize && { page: { size: pageSize } }),
+    group: group.toString(),
+  };
+  const page = yield call(fetchLayers, options);
+  const { data: results, meta } = page;
+
+  yield put(
+    setLayersSearchResults({
+      results,
+      nextPageCursor: meta.pagination.nextCursor,
+    })
+  );
+  yield put(setLayersLoading(false));
+
+  return page;
+}
+
+export function* loadDataIndexes({ payload }) {
   const group = yield select(getGroup);
 
   try {
@@ -52,18 +149,6 @@ export function* preloadLayers({ payload }) {
         })
       )
     );
-
-    // get layers from all dashboards; cannot use the layer api because that contains sublayers too
-    let layers = [];
-    indexes.forEach((index) => {
-      layers = [...layers, ...index.layers];
-    });
-
-    if (!!layers) {
-      const layerListGroups = yield fetchLayerGroups(layers);
-
-      yield put(setLayersList(layerListGroups));
-    }
   } catch (e) {
     // TODO better error handling for sagas
     if (e.response.status === 403) {
@@ -76,36 +161,10 @@ export function* preloadLayers({ payload }) {
   }
 }
 
-function* fetchLayerGroups(layers: any) {
-  return yield all(layers.map((layer: ILayer) => setLayer(layer)));
-}
-
 function setWidget(widget: IWidget) {
-  const adaptedWidget = { ...widget, ...widget.config };
-  delete adaptedWidget.config;
+  const decoratedLayers: ILayer[] = widget.layers.map(flattenLayerConfig);
+
+  const adaptedWidget = { ...widget, ...widget.config, ...{layers: decoratedLayers} };
 
   return adaptedWidget;
-}
-
-function setLayer(layer) {
-  const adaptedLayer = { ...layer, ...layer.config };
-
-  delete adaptedLayer.config;
-
-  if (!!adaptedLayer.references && adaptedLayer.references.length) {
-    const adaptedReferences = layer.references.map((layer) => {
-      const tempLayer = { ...layer, ...layer.config };
-      delete layer.config;
-      return tempLayer;
-    });
-
-    return {
-      ...adaptedLayer,
-      references: adaptedReferences,
-    };
-  }
-
-  return {
-    ...adaptedLayer,
-  };
 }
