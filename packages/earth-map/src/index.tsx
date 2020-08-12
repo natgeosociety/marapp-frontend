@@ -19,25 +19,35 @@
 
 import React from 'react';
 import * as ReactDOM from 'react-dom';
+import TagManager from 'react-gtm-module'
+
+import 'styles/index.scss';
+import 'core-js/stable';
 
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
 import { Auth0Provider } from './auth/auth0';
-import config from './auth/config';
+import auth0 from './config/auth0';
+import { GTM_TAG } from './config';
 import { onRedirectCallback, onSuccessHook, onFailureHook } from './auth/hooks';
 
-import 'styles/index.scss';
-
-import 'core-js/stable';
+if (GTM_TAG) {
+  const tagManagerArgs = {
+    gtmId: GTM_TAG,
+    dataLayer: {
+      platform: 'react'
+    }
+  };
+  TagManager.initialize(tagManagerArgs);
+}
 
 ReactDOM.render(
   // @ts-ignore
   <Auth0Provider
-    domain={config.auth0.domain}
-    client_id={config.auth0.clientId}
-    redirect_uri={config.auth0.redirectUri}
-    audience={config.auth0.audience}
+    domain={auth0.config.domain}
+    client_id={auth0.config.clientId}
+    redirect_uri={auth0.config.redirectUri}
+    audience={auth0.config.audience}
     onRedirectCallback={onRedirectCallback}
     onSuccessHook={onSuccessHook}
     onFailureHook={onFailureHook}

@@ -17,25 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import grayscale from './images/layers/grayscale.png';
-import satellite from './images/layers/satellite.png';
+import yn from 'yn';
 
-export const APP_LOGO = require('images/unbl_logo.svg');
-export const PAGE_SIZE = 30;
+export const NODE_ENV = process.env.NODE_ENV;
+export const PUBLIC_URL = process.env.PUBLIC_URL;
 
-export const APP_BASEMAPS = [
-  {
-    slug: 'grayscale',
-    name: 'Grayscale',
-    background: grayscale,
-    id: 'mapbox://styles/ngsmapbox-gf/ckbwix5xv165q1htdbvkrmxug',
-  },
-  {
-    slug: 'satellite',
-    name: 'Satellite',
-    background: satellite,
-    id: 'mapbox://styles/mapbox/satellite-streets-v11',
-  },
-];
+export const BASE_URL = process.env.REACT_APP_BASE_URL || '/';
+export const API_URL = process.env.REACT_APP_API_URL;
+export const FULLPAGE_LICENSE = process.env.REACT_APP_FULLPAGE_LICENSE;
+export const ADMIN_URL = process.env.REACT_APP_ADMIN_URL;
+export const APP_NAME = process.env.REACT_APP_NAME;
+export const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
-export const APP_ABOUT = 'https://github.com/natgeosociety/marapp-frontend/blob/master/ABOUT.md';
+export const GTM_TAG = process.env.REACT_APP_GTM_TAG;
+
+export const DISABLE_PUBLIC_ACCESS = yn(process.env.REACT_APP_DISABLE_PUBLIC_ACCESS); 
