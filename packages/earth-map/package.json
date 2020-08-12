@@ -30,7 +30,8 @@
     "three": "^0.103.0",
     "three-css2drender": "^1.0.0",
     "url-join": "^4.0.1",
-    "viewport-mercator-project": "^6.1.1"
+    "viewport-mercator-project": "^6.1.1",
+    "yn": "^4.0.0"
   },
   "devDependencies": {
     "babel-eslint": "10.1.0",
