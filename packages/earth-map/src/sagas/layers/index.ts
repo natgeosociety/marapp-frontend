@@ -159,8 +159,9 @@ export function* loadDataIndexes({ payload }) {
 }
 
 function setWidget(widget: IWidget) {
-  const adaptedWidget = { ...widget, ...widget.config };
-  delete adaptedWidget.config;
+  const decoratedLayers: ILayer[] = widget.layers.map(flattenLayerConfig);
+
+  const adaptedWidget = { ...widget, ...widget.config, ...{layers: decoratedLayers} };
 
   return adaptedWidget;
 }
