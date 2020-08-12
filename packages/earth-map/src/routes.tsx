@@ -21,6 +21,8 @@ import qs from 'query-string';
 import { NOT_FOUND } from 'redux-first-router';
 import restoreScroll from 'redux-first-router-restore-scroll';
 
+import { BASE_URL } from 'config';
+
 const UNAUTHORIZED = 'UNAUTHORIZED';
 const isPublicAccessDisabled = process.env.REACT_APP_DISABLE_PUBLIC_ACCESS === 'true';
 
@@ -68,8 +70,6 @@ export const ROUTES = {
     fallbackRoute: null,
   },
 };
-
-const BASE_URL = process.env.REACT_APP_BASE_URL || '/';
 
 export const CONFIG = {
   basename: BASE_URL,

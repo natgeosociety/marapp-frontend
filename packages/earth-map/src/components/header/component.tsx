@@ -26,11 +26,10 @@ import { Auth0Context } from 'auth/auth0';
 import DropdownComponent from 'components/dropdown';
 import { EPanels } from 'modules/sidebar/model';
 import { checkRole, getAvailableOrgs } from 'utils';
-import { APP_NAME, APP_LOGO } from '../../theme';
+import { APP_LOGO } from '../../theme';
+import { ADMIN_URL, APP_NAME } from 'config';
 
 import './styles.scss';
-
-const ADMIN_PATH = process.env.REACT_APP_ADMIN_URL;
 
 interface IProps {
   group?: string[];
@@ -184,7 +183,7 @@ const Header = (props: IProps) => {
           (g, i) =>
             checkRole(roles[g]) && (
               <li className="ng-ep-dropdown-category" key={i}>
-                <a href={`${ADMIN_PATH}${g}`} className="ng-c-cursor-pointer ng-dropdown-item">
+                <a href={`${ADMIN_URL}${g}`} className="ng-c-cursor-pointer ng-dropdown-item">
                   {g} - ADMIN
                 </a>
               </li>

@@ -22,7 +22,7 @@ import React from 'react';
 import urljoin from 'url-join';
 import get from 'lodash/get';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || '/';
+import { BASE_URL } from 'config';
 
 /**
  * Route to target URL in case of success/failure.
@@ -92,7 +92,7 @@ export const parseHintBold = (text: string = '') => {
 
 /**
  * Get available organizations based on permissions
- * @param permissions 
+ * @param permissions
  */
 export const getAvailableOrgs = (permissions: { [key: string]: string }): string[] => {
   const specialPermissions = [

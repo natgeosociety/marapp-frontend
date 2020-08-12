@@ -17,10 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-// @ts-ignore
-import * as urljoin from 'url-join';
+import urljoin from 'url-join';
 
-const auth0 = {
+const config = {
   domain: process.env.REACT_APP_AUTH0_DOMAIN,
   clientId: process.env.REACT_APP_AUTH0_CLIENT_ID,
   redirectUri: urljoin(window.location.origin, process.env.REACT_APP_BASE_URL || ''),
@@ -28,4 +27,4 @@ const auth0 = {
   namespace: process.env.REACT_APP_AUTH0_NAMESPACE
 };
 
-export default { auth0 };
+export default { config };

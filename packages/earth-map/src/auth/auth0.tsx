@@ -26,12 +26,12 @@ import get from 'lodash/get';
 
 import { routeToPage, removeNestedGroups, mapAuthzScopes } from 'utils';
 import { Auth0 } from './model';
-import config from './config';
+import auth0 from 'config/auth0';
 
 // Auth0 will enforce namespacing when performing OIDC-conformant
 // login flows, meaning that any custom claims without HTTP/HTTPS
 // namespaces will be silently excluded from tokens.
-const NAMESPACE = config.auth0.namespace;
+const NAMESPACE = auth0.config.namespace;
 
 export const Auth0Context = React.createContext<Auth0>(null);
 export const useAuth0 = () => useContext(Auth0Context);
