@@ -37,10 +37,7 @@ import { LOCATION_QUERY } from '../model';
 import { getGroup, getPlaces } from 'sagas/saga-utils';
 
 export default function* places() {
-  yield all([
-    takeLatest(setPlacesSearch, searchPlaces),
-    takeLatest(nextPlacesPage, nextPage)
-  ]);
+  yield all([takeLatest(setPlacesSearch, searchPlaces), takeLatest(nextPlacesPage, nextPage)]);
 }
 
 /**

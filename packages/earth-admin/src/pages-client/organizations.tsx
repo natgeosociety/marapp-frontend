@@ -130,10 +130,7 @@ function HomePage( props: any ) {
 }
 
 function DetailsPage( path: any ) {
-  const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, {
-    group: selectedGroup,
-  });
+  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`);
   const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessOrganizationsGuard,
     query: encodedQuery,
@@ -147,10 +144,7 @@ function DetailsPage( path: any ) {
 }
 
 function EditPage( path: any ) {
-  const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, {
-    ...{ group: selectedGroup },
-  });
+  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`);
   const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessOrganizationsGuard,
     skip: path.newOrg,

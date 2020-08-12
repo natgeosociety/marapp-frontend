@@ -52,10 +52,7 @@ export default (store: Store, ephemeralState: IEphemeralState): void => {
   /**
    * Utility function to restore search state for either Places or Layers
    */
-  const restoreSearchFor = (
-    panel: string,
-    setGenericSearch: (value: any) => any
-  ): void => {
+  const restoreSearchFor = (panel: string, setGenericSearch: (value: any) => any): void => {
     const scopedSearch = ephemeralState[panel];
     if (!scopedSearch) {
       return;
@@ -72,7 +69,7 @@ export default (store: Store, ephemeralState: IEphemeralState): void => {
         }),
       })
     );
-  }
+  };
   // Put data from sessionStorage into redux store before triggering the sagas
   if (ephemeralState) {
     restoreSearchFor('places', setPlacesSearch);

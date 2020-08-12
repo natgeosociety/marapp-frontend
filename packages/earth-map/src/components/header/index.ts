@@ -41,6 +41,6 @@ export default connect(
     resetMap,
     setIndexesSelected,
     setLayersSearch,
-    setSidebarPanel
+    setSidebarPanel,
   }
 )(OrgSwitcher);

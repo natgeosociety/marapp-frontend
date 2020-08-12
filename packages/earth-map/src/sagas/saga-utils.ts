@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { ILayerRaw, ILayer } from "modules/layers/model";
+import { ILayerRaw, ILayer } from 'modules/layers/model';
 
 /**
  * https://redux-saga.js.org/docs/api/#takepattern
@@ -85,8 +85,7 @@ const flattenEachLayerConfig = (layer: ILayerRaw): ILayer => {
     ...rest,
     ...config,
   };
-}
-
+};
 
 // Selectors
 export const getAll = (state) => state;

@@ -20,7 +20,7 @@
 import * as React from 'react';
 
 import { navigate } from 'gatsby';
-import { deleteDashboards, deleteLayer, deleteLocation, deleteWidgets, deleteUser } from 'services';
+import { deleteDashboards, deleteLayer, deleteLocation, deleteWidgets, deleteUser, deleteOrganization } from 'services';
 import { useAuth0 } from 'auth/auth0';
 
 import { Modal } from '@marapp/earth-components';
@@ -62,6 +62,10 @@ const ActionModal = (props: IModalProps) => {
         }
         case 'users': {
           await deleteUser(id, selectedGroup);
+          break;
+        }
+        case 'organizations': {
+          await deleteOrganization(id);
           break;
         }
       }
