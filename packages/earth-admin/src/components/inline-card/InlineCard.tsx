@@ -34,6 +34,7 @@ export interface InlineCardProps {
 import './styles.scss';
 import { animated, Keyframes } from 'react-spring/renderprops';
 import classnames from 'classnames';
+import { LinkWithOrg } from 'components/link-with-org';
 
 const Card: any = Keyframes.Spring({
   close: [{ x: 1 }],
@@ -54,9 +55,10 @@ export default function InlineCard( props: InlineCardProps ) {
     <Card native state={state}>
       {( { x, ...props } ) => (
         <animated.div
-          className={classnames(
-            'ng-padding-medium ng-inline-card ng-background-ultradkgray',
-          )}
+          className={classnames({
+            'ng-padding-medium ng-inline-card ng-background-ultradkgray': true,
+            'ng-inline-card-editing': isEditing
+          })}
           style={{
             transform: x
               .interpolate(x => `scale(${x})`),

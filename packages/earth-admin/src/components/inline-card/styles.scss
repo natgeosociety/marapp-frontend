@@ -1,10 +1,13 @@
-.ng-inline-card-editing {
-  background: rgba(255, 255, 255, 0.1);
-}
+@import '~styles/config';
 
 .ng-inline-card {
+  box-sizing: border-box;
+  height: 100%;
   position: relative;
-  z-index: 1011;
+  &.ng-inline-card-editing {
+    background: $marapp-gray-7;
+    z-index: 1011;
+  }
 }
 
 .ng-edit-card-button {

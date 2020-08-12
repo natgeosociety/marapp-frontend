@@ -31,6 +31,7 @@ import { stripNumbers } from 'utils';
 import { calculateAllForPlace } from 'services';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
+import { PlaceFlags } from 'components/places/place-flags';
 
 export default function PlaceDetails( props: PlaceProps ) {
   const {
@@ -105,6 +106,7 @@ export default function PlaceDetails( props: PlaceProps ) {
 
       <div className="ng-grid ng-form-dark ng-form">
         <PlaceTitle name={name}/>
+        <PlaceFlags published={published} featured={featured}/>
       </div>
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
