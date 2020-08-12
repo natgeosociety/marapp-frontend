@@ -143,7 +143,7 @@ function HomePage( props: any ) {
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
   return (writePermissions && (
     <ContentLayout>
-      <PlaceHome/>
+      {writePermissions && <PlaceHome/>}
     </ContentLayout>
   ));
 }

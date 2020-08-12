@@ -35,27 +35,33 @@ export default function PlaceTitle( props: PlaceTitleProps ) {
 
   const saveCard = ( editing ) => {
     setIsEditing(editing);
+    //todo add save
   };
 
   return (
     <div className="ng-width-1-2">
       <InlineCard editAction={editCard} isEditing={isEditing} editable={true} isLoading={true}>
-        {!isEditing && <InlineCardDisplay>
-          <h1 className="ng-text-display-m">{name}</h1>
-        </InlineCardDisplay>}
-        {isEditing && <><InlineCardEditable>
-          <label className="ng-form-label" htmlFor="name">
-            Place name*
-          </label>
-          <input
-            name="name"
-            type="text"
-            defaultValue={name}
-            placeholder="Place name"
-            className="ng-width-1-1 ng-form-large"
-          />
-        </InlineCardEditable>
-          <InlineCardButtons primaryButtonText="Save" secondaryButtonText="cancel" editAction={editCard}
+        {!isEditing &&
+          <InlineCardDisplay>
+            <h1 className="ng-text-display-m">{name}</h1>
+          </InlineCardDisplay>}
+        {isEditing &&
+        <>
+          <InlineCardEditable>
+            <label className="ng-form-label" htmlFor="name">
+              Place name*
+            </label>
+            <input
+              name="name"
+              type="text"
+              defaultValue={name}
+              placeholder="Place name"
+              className="ng-width-1-1 ng-form-large"
+            />
+          </InlineCardEditable>
+          <InlineCardButtons primaryButtonText="Save"
+                             secondaryButtonText="Cancel"
+                             editAction={editCard}
                              saveAction={saveCard}/>
         </>
         }

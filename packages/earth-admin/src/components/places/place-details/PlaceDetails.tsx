@@ -103,11 +103,10 @@ export default function PlaceDetails( props: PlaceProps ) {
           visibility={showDeleteModal}
         />
       )}
-
-      <div className="ng-grid ng-form-dark ng-form">
-        <PlaceTitle name={name}/>
-        <PlaceFlags published={published} featured={featured}/>
-      </div>
+      {/*<div className="ng-grid ng-form-dark ng-form">*/}
+      {/*  <PlaceTitle name={name}/>*/}
+      {/*  <PlaceFlags published={published} featured={featured}/>*/}
+      {/*</div>*/}
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
         <div className="ng-flex ng-align-center ng-flex-center ng-text-center ng-center">

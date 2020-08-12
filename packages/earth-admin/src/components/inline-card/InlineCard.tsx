@@ -17,9 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { ReactNode, useContext, useEffect, useState } from 'react';
+import  React, { ReactNode }  from 'react';
+import classnames from 'classnames';
+import { animated, Keyframes } from 'react-spring/renderprops';
 import { InlineCardOverlay } from './index';
+
+import './styles.scss';
 
 export interface InlineCardProps {
   editable?: boolean;
@@ -31,10 +34,6 @@ export interface InlineCardProps {
   saveAction?: ( v: boolean ) => void;
   children?: ReactNode
 }
-
-import './styles.scss';
-import { animated, Keyframes } from 'react-spring/renderprops';
-import classnames from 'classnames';
 
 const Card: any = Keyframes.Spring({
   close: [{ x: 1 }],
