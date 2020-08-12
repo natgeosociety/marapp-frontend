@@ -79,13 +79,13 @@ export default function OrganizationDetails( props: OrganizationProps ) {
           Go back to organizations list
         </LinkWithOrg>
       </div>
-      {/* {writePermissions && (
+      {writePermissions && (
         <div className="ng-padding-medium ng-background-white ng-text-right">
           <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete organization
           </button>
         </div>
-      )} */}
+      )}
     </div>
   );
 }

@@ -55,7 +55,7 @@ export const deserializeData = (data) => DeserializerService.deserialize(data);
 /**
  * Url encode
  */
-export const encodeQueryToURL = (baseUrl: string, query: { [key: string]: any }): string =>
+export const encodeQueryToURL = (baseUrl: string, query: { [key: string]: any } = {}): string =>
   [baseUrl, decodeURIComponent(queryStringEncode(query))].join('?');
 
 /**
@@ -134,14 +134,12 @@ export const setPage = (pageType: string) => {
 
 /**
  * Get available organizations based on permissions
- * @param permissions 
+ * @param permissions
  */
 export const getAvailableOrgs = (permissions: { [key: string]: string }): string[] => {
   const specialPermissions = [
-    '*' // super-admin
+    '*', // super-admin
   ];
 
-  return Object
-    .keys(permissions)
-    .filter(permission => !specialPermissions.includes(permission));
+  return Object.keys(permissions).filter((permission) => !specialPermissions.includes(permission));
 };

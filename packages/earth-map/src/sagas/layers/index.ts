@@ -50,10 +50,10 @@ export default function* layers() {
   // @ts-ignore
   yield takeLatest(onlyMatch(setSidebarPanel, EPanels.LAYERS), searchLayers);
   yield takeLatest(setLayersSearch, searchLayers);
-  yield takeLatest(nextLayersPage, nextPage)
+  yield takeLatest(nextLayersPage, nextPage);
 
   // Queries the api and loads the active layers objects. Does nothing to display the layer on the map. That is handled in the <Url /> component that reacts to query param changes
-  yield takeLatest(setLayersActive, loadActiveLayers)
+  yield takeLatest(setLayersActive, loadActiveLayers);
 }
 
 /**
@@ -61,25 +61,27 @@ export default function* layers() {
  */
 function* loadActiveLayers({ payload }) {
   if (!payload.length) {
-    return
+    return;
   }
   const group = yield select(getGroup);
   const options = {
     ...LAYER_QUERY,
     filter: serializeFilters({
-      slug: payload
+      slug: payload,
     }),
     group: group.join(','),
-  }
+  };
   const { data: layers } = yield call(fetchLayers, options);
   const decoratedLayers: ILayer[] = layers.map(flattenLayerConfig);
 
   yield put(setListActiveLayers(decoratedLayers));
 
   // to activate a selected layer on reload, it needs to be in layers.results
-  yield put(setLayersSearchResults({
-    results: layers,
-  }));
+  yield put(
+    setLayersSearchResults({
+      results: layers,
+    })
+  );
 }
 
 function* searchLayers(params) {
