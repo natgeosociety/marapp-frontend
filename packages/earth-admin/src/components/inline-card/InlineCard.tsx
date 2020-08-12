@@ -24,6 +24,7 @@ import { InlineCardOverlay } from './index';
 export interface InlineCardProps {
   editable?: boolean;
   isEditing?: boolean;
+  isLoading?: boolean;
   primaryButtonText?: string;
   secondaryButtonText?: string;
   editAction?: ( v: boolean ) => void;
@@ -34,7 +35,6 @@ export interface InlineCardProps {
 import './styles.scss';
 import { animated, Keyframes } from 'react-spring/renderprops';
 import classnames from 'classnames';
-import { LinkWithOrg } from 'components/link-with-org';
 
 const Card: any = Keyframes.Spring({
   close: [{ x: 1 }],
@@ -42,7 +42,7 @@ const Card: any = Keyframes.Spring({
 });
 
 export default function InlineCard( props: InlineCardProps ) {
-  const { children, editAction, editable, isEditing } = props;
+  const { children, editAction, editable, isEditing, isLoading } = props;
 
   const editCard = () => {
     editAction(true);
@@ -51,13 +51,13 @@ export default function InlineCard( props: InlineCardProps ) {
   const state = isEditing ? 'open' : 'close';
 
   return (
-
     <Card native state={state}>
       {( { x, ...props } ) => (
         <animated.div
           className={classnames({
             'ng-padding-medium ng-inline-card ng-background-ultradkgray': true,
-            'ng-inline-card-editing': isEditing
+            'ng-inline-card-editing': isEditing,
+            'ng-inline-card-loading': isLoading
           })}
           style={{
             transform: x
@@ -65,7 +65,9 @@ export default function InlineCard( props: InlineCardProps ) {
             ...props,
           }}
         >
-          {editable && !isEditing && <button className="ng-button ng-button-link ng-edit-card-button" onClick={editCard}>edit</button>}
+          {editable && !isEditing &&
+          <button className="ng-button ng-button-link ng-edit-card-button" onClick={editCard}>edit</button>}
+          {isLoading && <div className="ng-inline-card-spinner"><i className="ng-icon-spinner ng-icon-spin"/></div>}
           {children}
           {isEditing && <InlineCardOverlay show={isEditing}/>}
         </animated.div>

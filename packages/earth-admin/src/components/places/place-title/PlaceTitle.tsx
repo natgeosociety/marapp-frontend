@@ -39,7 +39,7 @@ export default function PlaceTitle( props: PlaceTitleProps ) {
 
   return (
     <div className="ng-width-1-2">
-      <InlineCard editAction={editCard} isEditing={isEditing} editable={true}>
+      <InlineCard editAction={editCard} isEditing={isEditing} editable={true} isLoading={true}>
         {!isEditing && <InlineCardDisplay>
           <h1 className="ng-text-display-m">{name}</h1>
         </InlineCardDisplay>}
