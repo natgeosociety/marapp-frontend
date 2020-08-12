@@ -110,7 +110,6 @@ export default function PlaceEdit( props: PlaceProps ) {
           {/*<div className="ng-grid">*/}
           {/*  <div className="ng-width-1-2">*/}
           {/*    <InlineEditCard*/}
-          {/*      editable={true}*/}
           {/*      hasButtons={true}*/}
           {/*      saveAction={onSubmit}*/}
           {/*      validForm={formState.isValid || jsonError}*/}
@@ -133,7 +132,7 @@ export default function PlaceEdit( props: PlaceProps ) {
           {/*    </InlineEditCard>*/}
           {/*  </div>*/}
           {/*  <div className="ng-width-1-2">*/}
-          {/*    <InlineEditCard editable={true} hasButtons={true} validForm={true}*/}
+          {/*    <InlineEditCard hasButtons={true} validForm={true}*/}
           {/*                    editForm={( setIsEditing ) => (*/}
           {/*                      <>*/}
           {/*                        <input*/}
@@ -144,6 +143,7 @@ export default function PlaceEdit( props: PlaceProps ) {
           {/*                          type="text"*/}
           {/*                          defaultValue={slug}*/}
           {/*                          placeholder="Place slug"*/}
+
           {/*                          className={INPUT_SIZE_CLASSNAME}*/}
           {/*                        />*/}
           {/*                      </>*/}

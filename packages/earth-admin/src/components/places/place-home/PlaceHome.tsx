@@ -29,7 +29,7 @@ export default function PlaceHome( props: PlaceHomeProps ) {
       <h1 className="ng-text-display-m ng-margin-medium-bottom">PLACES</h1>
       <div className="ng-grid">
         <div className="ng-width-1-2">
-          <InlineEditCard editable={false}>
+          <InlineEditCard>
             <p>Search a place to view and edit details, or start creating a new place.</p>
             <div className="ng-flex ng-flex-center">
               <LinkWithOrg className="ng-button ng-button-secondary" to="/places/new">

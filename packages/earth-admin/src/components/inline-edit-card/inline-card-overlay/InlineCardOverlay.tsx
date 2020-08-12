@@ -18,48 +18,15 @@
 */
 
 
-import React, { useEffect, useState } from 'react';
-import classnames from 'classnames';
+import React from 'react';
 import { createPortal } from 'react-dom';
-import { animated, Keyframes } from 'react-spring/renderprops';
 
 import './styles.scss';
 
-
-const Overlay: any = Keyframes.Spring({
-  close: { opacity: 0 },
-  open: { opacity: 1},
-});
-
-
-const InlineCardOverlay = ( { show } ) => {
-
-  const state = show ? 'open' : 'close';
-
+const InlineCardOverlay = () => {
   const mount = document.getElementById('page-wrapper');
-  const el = document.createElement('div');
 
-  useEffect(() => {
-    mount.appendChild(el);
-    return () => mount.removeChild(el);
-  }, [el, mount]);
-
-
-  return createPortal(<Overlay native state={state}>
-    {( { x, ...props } ) => (
-      <animated.div
-        className={classnames(
-          'ng-inline-card-overlay',
-        )}
-        style={{
-          ...props,
-        }}
-      >
-      </animated.div>
-    )}
-  </Overlay>, el);
-
-
+  return createPortal(<div className="ng-inline-card-overlay"/>, mount);
 };
 
 export default InlineCardOverlay;

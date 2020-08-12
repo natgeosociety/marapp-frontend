@@ -20,13 +20,12 @@
 import React, { ReactNode, useState } from 'react';
 import classnames from 'classnames';
 import { animated, Keyframes } from 'react-spring/renderprops';
-import { InlineCardButtons, InlineCardOverlay } from './index';
+import { InlineCardOverlay } from './index';
 
 import './styles.scss';
 import { ErrorMessages } from 'components/error-messages';
 
 export interface InlineCardProps {
-  editable?: boolean;
   isEditing?: boolean;
   isLoading?: boolean;
   hasButtons?: boolean;
@@ -46,49 +45,63 @@ const Card: any = Keyframes.Spring({
 });
 
 export default function InlineEditCard( props: InlineCardProps ) {
-  const { children, saveAction, editable, isLoading, editForm, hasButtons,
-    primaryButtonText = 'save', secondaryButtonText = 'cancel', serverErrors, validForm } = props;
+  const {
+    children, saveAction, isLoading, editForm, hasButtons,
+    primaryButtonText = 'save', secondaryButtonText = 'cancel', serverErrors, validForm,
+  } = props;
 
 
   const [isEditing, setIsEditing] = useState(false);
   const state = isEditing ? 'open' : 'close';
 
-  return (
-    <Card native state={state}>
-      {( { x, ...props } ) => (
-        <animated.div
-          className={classnames({
-            'ng-padding-medium ng-inline-card ng-background-ultradkgray': true,
-            'ng-inline-card-editing': isEditing,
-            'ng-inline-card-loading': isLoading,
-          })}
-          style={{
-            transform: x
-              .interpolate(x => `scale(${x})`),
-            ...props,
-          }}
-        >
-          {editable && !isEditing &&
-          <button className="ng-button ng-button-link ng-edit-card-button"
-                  onClick={( e ) => setIsEditing(true)}>edit</button>}
 
-          {isEditing && editForm(setIsEditing)}
-          {!isEditing && children}
-
-          {serverErrors && <ErrorMessages errors={serverErrors}/>}
-
-          {hasButtons && isEditing && <InlineCardButtons validForm={validForm}
-                                                         primaryButtonText={primaryButtonText}
-                                                         secondaryButtonText={secondaryButtonText}
-                                                         editAction={( e ) => setIsEditing(false)}
-                                                         saveAction={saveAction}/>}
-          {isLoading && <div className="ng-inline-card-spinner"><i className="ng-icon-spinner ng-icon-spin"/></div>}
-          {isEditing && <InlineCardOverlay show={isEditing}/>}
-        </animated.div>
-      )}
-    </Card>
-
+  const renderEditable = () => (
+    <>
+      {editForm(setIsEditing)}
+      {serverErrors && <ErrorMessages errors={serverErrors}/>}
+      {hasButtons && <div className="ng-margin-medium-top">
+        {primaryButtonText &&
+        <button className="ng-button ng-button-primary ng-margin-right" disabled={!validForm}
+                onClick={( e ) => saveAction}>{primaryButtonText}</button>}
+        {secondaryButtonText &&
+        <button className="ng-button ng-button-secondary"
+                onClick={( e ) => setIsEditing(false)}>{secondaryButtonText}</button>}
+      </div>}
+      <InlineCardOverlay/>
+    </>
   );
-}
+
+
+  const renderDefault = () => (<>
+      {editForm && (
+        <button className="ng-button ng-button-link ng-edit-card-button"
+                onClick={( e ) => setIsEditing(true)}>edit</button>
+      )}
+      {children}
+    </>);
+
+    return (
+      <Card native state={state}>
+        {( { x, ...props } ) => (
+          <animated.div
+            className={classnames({
+              'ng-padding-medium ng-inline-card ng-background-ultradkgray': true,
+              'ng-inline-card-editing': isEditing,
+              'ng-inline-card-loading': isLoading,
+            })}
+            style={{
+              transform: x
+                .interpolate(x => `scale(${x})`),
+              ...props,
+            }}
+          >
+            {isEditing ? renderEditable() : renderDefault()}
+            {isLoading && <div className="ng-inline-card-spinner"><i className="ng-icon-spinner ng-icon-spin"/></div>}
+          </animated.div>
+        )}
+      </Card>
+
+    );
+  };
 
 

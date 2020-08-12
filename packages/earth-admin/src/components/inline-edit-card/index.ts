@@ -18,7 +18,6 @@
 */
 
 import InlineEditCard from './InlineEditCard';
-import { InlineCardButtons } from './inline-card-buttons';
 import { InlineCardOverlay } from './inline-card-overlay';
 
-export { InlineEditCard, InlineCardButtons, InlineCardOverlay };
+export { InlineEditCard, InlineCardOverlay };
