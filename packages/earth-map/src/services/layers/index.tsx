@@ -22,6 +22,8 @@ import Jsona, { SwitchCaseJsonMapper, SwitchCaseModelMapper } from 'jsona';
 import { encodeQueryToURL } from 'utils/query';
 import { AxiosInstance } from 'axios';
 
+import { API_URL } from "config";
+
 /**
  * Layers service class
  * It is a singleton for not instanciate Jsona on each request.
@@ -40,9 +42,7 @@ class LayersService {
   }
 
   configure = () => {
-    this.api = setup({
-      baseURL: `${process.env.REACT_APP_API_URL}`,
-    });
+    this.api = setup({ baseURL: API_URL });
   };
 
   /**

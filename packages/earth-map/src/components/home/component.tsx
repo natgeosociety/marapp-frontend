@@ -22,6 +22,8 @@ import ReactFullpage from '@fullpage/react-fullpage';
 // Components
 import Globe from '../globe';
 
+import { FULLPAGE_LICENSE } from 'config';
+
 // Steps
 import OutroStep from './steps/outro';
 
@@ -34,7 +36,7 @@ class HomeComponent extends React.PureComponent {
       <React.Fragment>
         <div className="c-landing">
           <ReactFullpage
-            licenseKey={process.env.REACT_APP_FULLPAGE_LICENSE}
+            licenseKey={FULLPAGE_LICENSE}
             render={({ state, fullpageApi }) => {
               return (
                 <ReactFullpage.Wrapper>
