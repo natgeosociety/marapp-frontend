@@ -28,12 +28,12 @@ import { JSHINT } from 'jshint';
 
 import { PlaceProps, PlaceTypeEnum } from '../model';
 import { handlePlaceForm } from 'services/places';
-import { JsonEditor, ErrorMessages, LinkWithOrg } from 'components';
+import { JsonEditor, ErrorMessages, LinkWithOrg, InlineEditCard } from 'components';
 import { Auth0Context } from 'utils/contexts';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
-export default function PlaceEdit( props: PlaceProps) {
+export default function PlaceEdit( props: PlaceProps ) {
   const {
     data: {
       id,
@@ -98,7 +98,7 @@ export default function PlaceEdit( props: PlaceProps) {
   return (
     <div>
       <div className="ng-flex ng-flex-space-between">
-        <h2 className="ng-text-display-m ng-c-flex-grow-1">{ newPlace ? 'Add Place' : `Edit Place - ${name}` }</h2>
+        <h2 className="ng-text-display-m ng-c-flex-grow-1">{newPlace ? 'Add Place' : `Edit Place - ${name}`}</h2>
 
         <span>
           Last updated at: {formatDate(updatedAt)}; Created at: {formatDate(createdAt)}
@@ -107,6 +107,51 @@ export default function PlaceEdit( props: PlaceProps) {
 
       <div className="ng-padding-medium ng-background-ultradkgray">
         <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5">
+          {/*<div className="ng-grid">*/}
+          {/*  <div className="ng-width-1-2">*/}
+          {/*    <InlineEditCard*/}
+          {/*      editable={true}*/}
+          {/*      hasButtons={true}*/}
+          {/*      saveAction={onSubmit}*/}
+          {/*      validForm={formState.isValid || jsonError}*/}
+          {/*      serverErrors={['cave', 'dsad']}*/}
+          {/*      editForm={( setIsEditing ) => (*/}
+          {/*        <>*/}
+          {/*          <input*/}
+          {/*            ref={register({*/}
+          {/*              required: true,*/}
+          {/*            })}*/}
+          {/*            name="name"*/}
+          {/*            type="text"*/}
+          {/*            defaultValue={name}*/}
+          {/*            placeholder="Place name"*/}
+          {/*            className={INPUT_SIZE_CLASSNAME}*/}
+          {/*          />*/}
+          {/*        </>*/}
+          {/*      )}>*/}
+          {/*      <p>{name}</p>*/}
+          {/*    </InlineEditCard>*/}
+          {/*  </div>*/}
+          {/*  <div className="ng-width-1-2">*/}
+          {/*    <InlineEditCard editable={true} hasButtons={true} validForm={true}*/}
+          {/*                    editForm={( setIsEditing ) => (*/}
+          {/*                      <>*/}
+          {/*                        <input*/}
+          {/*                          ref={register({*/}
+          {/*                            required: true,*/}
+          {/*                          })}*/}
+          {/*                          name="slug"*/}
+          {/*                          type="text"*/}
+          {/*                          defaultValue={slug}*/}
+          {/*                          placeholder="Place slug"*/}
+          {/*                          className={INPUT_SIZE_CLASSNAME}*/}
+          {/*                        />*/}
+          {/*                      </>*/}
+          {/*                    )}>*/}
+          {/*      <p>{slug}</p>*/}
+          {/*    </InlineEditCard>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
           <div className="ng-margin-medium-bottom ng-grid">
             <div className="ng-width-large-1-2 ng-width-1-1">
               <label className="ng-form-label" htmlFor="name">

@@ -17,22 +17,27 @@
   specific language governing permissions and limitations under the License.
 */
 
-import  React, { ReactNode }  from 'react';
+import React, { ReactNode, useState } from 'react';
 import classnames from 'classnames';
 import { animated, Keyframes } from 'react-spring/renderprops';
-import { InlineCardOverlay } from './index';
+import { InlineCardButtons, InlineCardOverlay } from './index';
 
 import './styles.scss';
+import { ErrorMessages } from 'components/error-messages';
 
 export interface InlineCardProps {
   editable?: boolean;
   isEditing?: boolean;
   isLoading?: boolean;
+  hasButtons?: boolean;
   primaryButtonText?: string;
   secondaryButtonText?: string;
   editAction?: ( v: boolean ) => void;
   saveAction?: ( v: boolean ) => void;
-  children?: ReactNode
+  children?: ReactNode;
+  editForm?: ( setIsEditing: ( value: ((( prevState: boolean ) => boolean) | boolean) ) => void ) => {};
+  serverErrors?: any;
+  validForm?: boolean;
 }
 
 const Card: any = Keyframes.Spring({
@@ -40,13 +45,12 @@ const Card: any = Keyframes.Spring({
   open: [{ x: 1.01 }, { x: 1 }],
 });
 
-export default function InlineCard( props: InlineCardProps ) {
-  const { children, editAction, editable, isEditing, isLoading } = props;
+export default function InlineEditCard( props: InlineCardProps ) {
+  const { children, saveAction, editable, isLoading, editForm, hasButtons,
+    primaryButtonText = 'save', secondaryButtonText = 'cancel', serverErrors, validForm } = props;
 
-  const editCard = () => {
-    editAction(true);
-  };
 
+  const [isEditing, setIsEditing] = useState(false);
   const state = isEditing ? 'open' : 'close';
 
   return (
@@ -56,7 +60,7 @@ export default function InlineCard( props: InlineCardProps ) {
           className={classnames({
             'ng-padding-medium ng-inline-card ng-background-ultradkgray': true,
             'ng-inline-card-editing': isEditing,
-            'ng-inline-card-loading': isLoading
+            'ng-inline-card-loading': isLoading,
           })}
           style={{
             transform: x
@@ -65,9 +69,20 @@ export default function InlineCard( props: InlineCardProps ) {
           }}
         >
           {editable && !isEditing &&
-          <button className="ng-button ng-button-link ng-edit-card-button" onClick={editCard}>edit</button>}
+          <button className="ng-button ng-button-link ng-edit-card-button"
+                  onClick={( e ) => setIsEditing(true)}>edit</button>}
+
+          {isEditing && editForm(setIsEditing)}
+          {!isEditing && children}
+
+          {serverErrors && <ErrorMessages errors={serverErrors}/>}
+
+          {hasButtons && isEditing && <InlineCardButtons validForm={validForm}
+                                                         primaryButtonText={primaryButtonText}
+                                                         secondaryButtonText={secondaryButtonText}
+                                                         editAction={( e ) => setIsEditing(false)}
+                                                         saveAction={saveAction}/>}
           {isLoading && <div className="ng-inline-card-spinner"><i className="ng-icon-spinner ng-icon-spin"/></div>}
-          {children}
           {isEditing && <InlineCardOverlay show={isEditing}/>}
         </animated.div>
       )}

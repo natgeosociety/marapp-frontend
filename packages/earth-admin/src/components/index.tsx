@@ -38,7 +38,7 @@ export * from './user-menu';
 export * from './sidebar-select';
 export * from './users';
 export * from './widgets';
-export * from './inline-card';
+export * from './inline-edit-card';
 
 
 

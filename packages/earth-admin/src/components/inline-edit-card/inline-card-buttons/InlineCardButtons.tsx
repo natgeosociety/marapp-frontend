@@ -17,21 +17,31 @@
   specific language governing permissions and limitations under the License.
 */
 
+
 import * as React from 'react';
 
-import { InlineCardProps } from '../InlineCard';
+import { InlineCardProps } from '../InlineEditCard';
 
-type InlineCardEditableProps = Partial<InlineCardProps>;
+type InlineCardButtonsProps = Partial<InlineCardProps>;
 
 
-const InlineCardEditable = ( props: InlineCardEditableProps ) => {
-  const { children } = props;
+const InlineCardButtons = ( props: Partial<InlineCardButtonsProps> ) => {
+  const { primaryButtonText, secondaryButtonText, editAction, saveAction, validForm } = props;
 
-  return (
-    <div>
-      {children}
-    </div>
-  );
+  const handleEdit = () => {
+    editAction(false);
+  };
+
+  const handleSave = () => {
+    saveAction(false);
+  };
+
+  return (<div className="ng-margin-medium-top">
+    {primaryButtonText && <button className="ng-button ng-button-primary ng-margin-right" disabled={!validForm}
+                                  onClick={handleSave}>{primaryButtonText}</button>}
+    {secondaryButtonText &&
+    <button className="ng-button ng-button-secondary" onClick={handleEdit}>{secondaryButtonText}</button>}
+  </div>);
 };
 
-export default InlineCardEditable;
+export default InlineCardButtons;

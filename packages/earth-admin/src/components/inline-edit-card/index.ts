@@ -17,38 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
+import InlineEditCard from './InlineEditCard';
+import { InlineCardButtons } from './inline-card-buttons';
+import { InlineCardOverlay } from './inline-card-overlay';
 
-
-@import '~styles/config';
-
-.ng-inline-card {
-  box-sizing: border-box;
-  height: 100%;
-  position: relative;
-  &.ng-inline-card-editing {
-    background: $marapp-gray-7;
-    z-index: 1011;
-  }
-}
-
-.ng-edit-card-button {
-  position: absolute;
-  right: 20px;
-}
-
-.ng-inline-card-loading * {
-  pointer-events: none;
-}
-
-
-.ng-inline-card-spinner {
-  align-items: center;
-  background: rgba(#000, .3);
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
+export { InlineEditCard, InlineCardButtons, InlineCardOverlay };

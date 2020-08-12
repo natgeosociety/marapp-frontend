@@ -24,14 +24,14 @@ import { isEmpty, groupBy, map } from 'lodash';
 import { PlaceProps } from '../model';
 import { PlaceMetrics } from '../place-metrics';
 import { PlaceIntersections } from '../place-intersections';
-import { ErrorMessages, ActionModal, MapComponent, LinkWithOrg, InlineCard, PlaceTitle } from 'components';
+import { ErrorMessages, ActionModal, MapComponent, LinkWithOrg} from 'components';
 import { formatDate } from 'utils';
 import { MapComponentContext } from 'utils/contexts';
 import { stripNumbers } from 'utils';
 import { calculateAllForPlace } from 'services';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
-import { PlaceFlags } from 'components/places/place-flags';
+
 
 export default function PlaceDetails( props: PlaceProps ) {
   const {
@@ -103,10 +103,6 @@ export default function PlaceDetails( props: PlaceProps ) {
           visibility={showDeleteModal}
         />
       )}
-      {/*<div className="ng-grid ng-form-dark ng-form">*/}
-      {/*  <PlaceTitle name={name}/>*/}
-      {/*  <PlaceFlags published={published} featured={featured}/>*/}
-      {/*</div>*/}
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
         <div className="ng-flex ng-align-center ng-flex-center ng-text-center ng-center">

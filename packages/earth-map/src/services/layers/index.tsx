@@ -80,4 +80,9 @@ export function fetchLayers(options = {}) {
   return service.request(layerQuery);
 }
 
+export function fetchLayer(id, options = {}) {
+  const layerQuery = encodeQueryToURL(`/layers/${id}`, options);
+  return service.request(layerQuery);
+}
+
 export default service;
