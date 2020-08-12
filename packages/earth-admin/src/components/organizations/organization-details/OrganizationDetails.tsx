@@ -75,7 +75,7 @@ export default function OrganizationDetails( props: OrganizationProps ) {
             Edit organization
           </LinkWithOrg>
         )}
-        <LinkWithOrg className="ng-button" to="/organizations">
+        <LinkWithOrg className="ng-button ng-button-secondary" to="/organizations">
           Go back to organizations list
         </LinkWithOrg>
       </div>

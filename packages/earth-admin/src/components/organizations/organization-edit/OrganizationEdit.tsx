@@ -58,7 +58,7 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
       </div>
 
       <div className="ng-padding-medium ng-background-ultradkgray">
-        <form className="ng-form ng-flex-column ng-width-4-5" onSubmit={handleSubmit(onSubmit)}>
+        <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5" onSubmit={handleSubmit(onSubmit)}>
           <div className="ng-margin-medium-bottom ng-grid">
             <div className="ng-width-large-1-2 ng-width-1-1">
               <label className="ng-form-label" htmlFor="name">
@@ -112,7 +112,7 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
             >
               Save
             </button>
-            <LinkWithOrg className="ng-button" to="/organizations">
+            <LinkWithOrg className="ng-button ng-button-secondary" to="/organizations">
               Cancel
             </LinkWithOrg>
           </div>

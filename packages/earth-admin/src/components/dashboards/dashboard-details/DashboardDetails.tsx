@@ -121,7 +121,7 @@ export default function DashboardDetails(props: DashboardProps) {
             Edit dashboard
           </LinkWithOrg>
         )}
-        <LinkWithOrg to="/dashboards" className="ng-button">
+        <LinkWithOrg to="/dashboards" className="ng-button ng-button-secondary">
           Go back to dashboards list
         </LinkWithOrg>
       </div>

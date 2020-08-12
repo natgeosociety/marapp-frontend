@@ -163,7 +163,7 @@ export default function LayerDetails(props: LayerProps) {
             Edit Layer
           </LinkWithOrg>
         )}
-        <LinkWithOrg to="/layers" className="ng-button">
+        <LinkWithOrg to="/layers" className="ng-button ng-button-secondary">
           Go back to layers list
         </LinkWithOrg>
       </div>

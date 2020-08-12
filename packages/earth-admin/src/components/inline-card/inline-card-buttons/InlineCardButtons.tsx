@@ -16,12 +16,12 @@ const InlineCardButtons = ( props: Partial<InlineCardButtonsProps> ) => {
     saveAction(false);
   };
 
-  return (<>
+  return (<div className="ng-margin-medium-top">
     {primaryButtonText && <button className="ng-button ng-button-primary ng-margin-right"
                                   onClick={handleSave}>{primaryButtonText}</button>}
     {secondaryButtonText &&
     <button className="ng-button ng-button-secondary" onClick={handleEdit}>{secondaryButtonText}</button>}
-  </>);
+  </div>);
 };
 
 export default InlineCardButtons;

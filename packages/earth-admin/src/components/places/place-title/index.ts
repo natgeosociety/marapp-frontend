@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import LocationDetails from './LocationDetails';
+import PlaceTitle from './PlaceTitle';
 
-export { LocationDetails };
+export { PlaceTitle };

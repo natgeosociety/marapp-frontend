@@ -123,7 +123,7 @@ export default function WidgetDetails( props: WidgetProps ) {
             Edit widget
           </LinkWithOrg>
         )}
-        <LinkWithOrg className="ng-button" to="/widgets">
+        <LinkWithOrg className="ng-button ng-button-secondary" to="/widgets">
           Go back to widgets list
         </LinkWithOrg>
       </div>

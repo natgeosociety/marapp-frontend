@@ -19,32 +19,57 @@
 
 import * as React from 'react';
 import { ReactNode, useContext, useEffect, useState } from 'react';
-import {InlineCardOverlay} from './index';
+import { InlineCardOverlay } from './index';
 
 export interface InlineCardProps {
   editable?: boolean;
+  isEditing?: boolean;
   primaryButtonText?: string;
   secondaryButtonText?: string;
-  editAction?: (v:boolean) => void;
-  saveAction?: (v: boolean) => void;
+  editAction?: ( v: boolean ) => void;
+  saveAction?: ( v: boolean ) => void;
   children?: ReactNode
 }
 
 import './styles.scss';
+import { animated, Keyframes } from 'react-spring/renderprops';
+import classnames from 'classnames';
+
+const Card: any = Keyframes.Spring({
+  close: [{ x: 1 }],
+  open: [{ x: 1.01 }, { x: 1 }],
+});
 
 export default function InlineCard( props: InlineCardProps ) {
-  const { children, editAction, editable } = props;
+  const { children, editAction, editable, isEditing } = props;
 
   const editCard = () => {
     editAction(true);
   };
 
+  const state = isEditing ? 'open' : 'close';
+
   return (
-    <div className="ng-background-ultradkgray ng-padding-medium ng-inline-card">
-      {!editable && <button className="ng-button ng-button-link" onClick={editCard}>edit</button>}
-      {children}
-      <InlineCardOverlay show={editable}/>
-    </div>
+
+    <Card native state={state}>
+      {( { x, ...props } ) => (
+        <animated.div
+          className={classnames(
+            'ng-padding-medium ng-inline-card ng-background-ultradkgray',
+          )}
+          style={{
+            transform: x
+              .interpolate(x => `scale(${x})`),
+            ...props,
+          }}
+        >
+          {editable && !isEditing && <button className="ng-button ng-button-link ng-edit-card-button" onClick={editCard}>edit</button>}
+          {children}
+          {isEditing && <InlineCardOverlay show={isEditing}/>}
+        </animated.div>
+      )}
+    </Card>
+
   );
 }
 

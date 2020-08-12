@@ -26,7 +26,7 @@ export * from './html-editor';
 export * from './json-editor';
 export * from './layers';
 export * from './link-with-org';
-export * from './locations';
+export * from './places';
 export * from './map';
 export * from './not-found';
 export * from './org-switcher';

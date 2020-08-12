@@ -20,8 +20,8 @@
 export enum ScopesEnum {
   ReadAll = 'read:*',
   WriteAll = 'write:*',
-  ReadLocations = 'read:locations',
-  WriteLocations = 'write:locations',
+  ReadPlaces = 'read:locations',
+  WritePlaces = 'write:locations',
   ReadMetrics = 'read:metrics',
   WriteMetrics = 'write:metrics',
   ReadCollections = 'read:collections',
@@ -39,12 +39,12 @@ export enum ScopesEnum {
 export const AuthzGuards = {
   readAllGuard: [ScopesEnum.ReadAll],
   writeAllGuard: [ScopesEnum.WriteAll],
-  readLocationsGuard: [[ScopesEnum.ReadLocations], [ScopesEnum.ReadAll]],
-  writeLocationsGuard: [[ScopesEnum.WriteLocations], [ScopesEnum.WriteAll]],
-  accessLocationsGuard: [
-    [ScopesEnum.ReadLocations],
+  readPlacesGuard: [[ScopesEnum.ReadPlaces], [ScopesEnum.ReadAll]],
+  writePlacesGuard: [[ScopesEnum.WritePlaces], [ScopesEnum.WriteAll]],
+  accessPlacesGuard: [
+    [ScopesEnum.ReadPlaces],
     [ScopesEnum.ReadAll],
-    [ScopesEnum.WriteLocations],
+    [ScopesEnum.WritePlaces],
     [ScopesEnum.WriteAll],
   ],
   readMetricsGuard: [[ScopesEnum.ReadMetrics], [ScopesEnum.ReadAll]],

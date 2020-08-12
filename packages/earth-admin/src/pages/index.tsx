@@ -22,7 +22,7 @@ import { Router } from '@reach/router';
 
 import { GATSBY_APP_BASE_URL } from 'config';
 import { ContentLayout, SidebarLayout } from 'layouts';
-import LocationsPage from 'pages-client/locations';
+import PlacesPage from 'pages-client/places';
 import DashboardsPage from 'pages-client/dashboards';
 import LayersPage from 'pages-client/layers';
 import WidgetsPage from 'pages-client/widgets';
@@ -43,7 +43,7 @@ export default function IndexPage() {
       <ProtectedRoute path="/" component={Homepage}/>
       <ProtectedRoute path="/:org" component={Organization}>
         <OrgIndex path="/"/>
-        <LocationsPage path="/locations/*"/>
+        <PlacesPage path="/places/*"/>
         <DashboardsPage path="/dashboards/*"/>
         <LayersPage path="/layers/*"/>
         <WidgetsPage path="/widgets/*"/>

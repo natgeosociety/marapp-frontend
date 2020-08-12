@@ -75,7 +75,7 @@ export default function UserDetails(props: UserProps) {
             Edit user
           </LinkWithOrg>
         )}
-        <LinkWithOrg className="ng-button" to="/users">
+        <LinkWithOrg className="ng-button ng-button-secondary" to="/users">
           Go back to users list
         </LinkWithOrg>
       </div>

@@ -21,37 +21,37 @@ import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { InlineCard, InlineCardDisplay, InlineCardEditable, InlineCardButtons } from 'components';
 
-interface LocationTitleProps {
+interface PlaceTitleProps {
   name?: string;
 }
 
-export default function LocationTitle( props: LocationTitleProps ) {
+export default function PlaceTitle( props: PlaceTitleProps ) {
   const { name } = props;
-  const [edit, setEdit] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const editCard = ( editing ) => {
-    setEdit(editing);
+    setIsEditing(editing);
   };
 
   const saveCard = ( editing ) => {
-    setEdit(editing);
+    setIsEditing(editing);
   };
 
   return (
     <div className="ng-width-1-2">
-      <InlineCard editAction={editCard} editable={edit}>
-        {!edit && <InlineCardDisplay>
+      <InlineCard editAction={editCard} isEditing={isEditing} editable={true}>
+        {!isEditing && <InlineCardDisplay>
           <h1 className="ng-text-display-m">{name}</h1>
         </InlineCardDisplay>}
-        {edit && <><InlineCardEditable>
+        {isEditing && <><InlineCardEditable>
           <label className="ng-form-label" htmlFor="name">
-            Location name*
+            Place name*
           </label>
           <input
             name="name"
             type="text"
             defaultValue={name}
-            placeholder="Location name"
+            placeholder="Place name"
             className="ng-width-1-1 ng-form-large"
           />
         </InlineCardEditable>

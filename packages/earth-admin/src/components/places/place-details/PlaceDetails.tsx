@@ -21,18 +21,18 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { isEmpty, groupBy, map } from 'lodash';
 
-import { LocationProps } from '../model';
-import { LocationMetrics } from '../location-metrics';
-import { LocationIntersections } from '../location-intersections';
-import { ErrorMessages, ActionModal, MapComponent, LinkWithOrg, InlineCard, LocationTitle } from 'components';
+import { PlaceProps } from '../model';
+import { PlaceMetrics } from '../place-metrics';
+import { PlaceIntersections } from '../place-intersections';
+import { ErrorMessages, ActionModal, MapComponent, LinkWithOrg, InlineCard, PlaceTitle } from 'components';
 import { formatDate } from 'utils';
 import { MapComponentContext } from 'utils/contexts';
 import { stripNumbers } from 'utils';
-import { calculateAllForLocation } from 'services';
+import { calculateAllForPlace } from 'services';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 
-export default function LocationDetails( props: LocationProps ) {
+export default function PlaceDetails( props: PlaceProps ) {
   const {
     data: {
       id,
@@ -63,7 +63,7 @@ export default function LocationDetails( props: LocationProps ) {
 
   const { getPermissions, selectedGroup } = useAuth0();
 
-  const writePermissions = getPermissions(AuthzGuards.writeLocationsGuard);
+  const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
   const metricsPermission = getPermissions(AuthzGuards.accessMetricsGuard);
   const writeMetricsPermission = getPermissions(AuthzGuards.writeMetricsGuard);
 
@@ -72,12 +72,12 @@ export default function LocationDetails( props: LocationProps ) {
     setMappedIntersections(groupBy(intersections, 'type'));
   }, [geojson, bbox2d, intersections]);
 
-  async function handleCalculateAll( e: MouseEvent, locationId: string ) {
+  async function handleCalculateAll( e: MouseEvent, placeID: string ) {
     e.preventDefault();
     e.stopPropagation();
     try {
       setServerErrors(false);
-      await calculateAllForLocation(locationId, selectedGroup);
+      await calculateAllForPlace(placeID, selectedGroup);
     } catch (error) {
       setServerErrors(error.data.errors);
     }
@@ -96,7 +96,7 @@ export default function LocationDetails( props: LocationProps ) {
       {showDeleteModal && (
         <ActionModal
           id={id}
-          navigateRoute={'locations'}
+          navigateRoute={'places'}
           name={name}
           toggleModal={handleDeleteToggle}
           visibility={showDeleteModal}
@@ -104,7 +104,7 @@ export default function LocationDetails( props: LocationProps ) {
       )}
 
       <div className="ng-grid ng-form-dark ng-form">
-        <LocationTitle name={name}/>
+        <PlaceTitle name={name}/>
       </div>
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
@@ -124,7 +124,7 @@ export default function LocationDetails( props: LocationProps ) {
 
       <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         <h3 className="ng-text-display-s">
-          Location details for {name} version{version}
+          Place details for {name} version{version}
         </h3>
         <p>
           <span className="ng-text-weight-medium">Created at:</span> {formatDate(createdAt)}
@@ -152,20 +152,20 @@ export default function LocationDetails( props: LocationProps ) {
 
         {writePermissions && (
           <LinkWithOrg
-            to={`/locations/${id}/edit`}
+            to={`/places/${id}/edit`}
             className="ng-button ng-button-primary ng-margin-medium-right"
           >
-            Edit Location
+            Edit Place
           </LinkWithOrg>
         )}
-        <LinkWithOrg to="/locations" className="ng-button">
-          Go back to location list
+        <LinkWithOrg to="/places" className="ng-button ng-button-secondary">
+          Go back to places list
         </LinkWithOrg>
       </div>
       <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         {mappedIntersections &&
         map(mappedIntersections, ( intersections, idx ) => (
-          <LocationIntersections
+          <PlaceIntersections
             key={idx}
             name={intersections[ 0 ].type}
             intersections={intersections}
@@ -176,10 +176,10 @@ export default function LocationDetails( props: LocationProps ) {
         <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
           {metrics && (
             <div>
-              <h5 className="ng-text-display-s">Location Metrics</h5>
+              <h5 className="ng-text-display-s">Place Metrics</h5>
               <div className="ng-flex ng-flex-wrap">
                 {metrics.map(( metric ) => (
-                  <LocationMetrics
+                  <PlaceMetrics
                     key={metric.id}
                     data={metric}
                     handlers={{ handleServerErrors }}
@@ -203,7 +203,7 @@ export default function LocationDetails( props: LocationProps ) {
       {writePermissions && (
         <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
           <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
-            Delete location
+            Delete place
           </button>
         </div>
       )}

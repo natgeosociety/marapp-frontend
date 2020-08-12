@@ -19,20 +19,20 @@
 
 import * as React from 'react';
 import { DataListing, DefaultListItem } from 'components';
-import { LocationContext } from 'utils/contexts';
+import { PlaceContext } from 'utils/contexts';
 
-export default function LocationList() {
+export default function PlaceList() {
   return (
-    <LocationContext.Consumer>
+    <PlaceContext.Consumer>
       {( {
-           locations, handleSearchValueChange, handleCursorChange,
+           places, handleSearchValueChange, handleCursorChange,
            isLoading, isNoMore, searchValue, pageSize, totalResults, selectedItem,
          } ) =>
         (
           <DataListing
             childComponent={DefaultListItem}
-            data={locations}
-            categoryUrl={'locations'}
+            data={places}
+            categoryUrl={'places'}
             pageTitle="places"
             searchValueAction={handleSearchValueChange}
             cursorAction={handleCursorChange}
@@ -45,7 +45,7 @@ export default function LocationList() {
           />
         )
       }
-    </LocationContext.Consumer>
+    </PlaceContext.Consumer>
   );
 }
 

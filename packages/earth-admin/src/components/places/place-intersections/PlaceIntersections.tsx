@@ -20,9 +20,9 @@
 import * as React from 'react';
 
 import { LinkWithOrg } from 'components';
-import { LocationIntersectionProps } from '../model';
+import { PlaceIntersectionProps } from '../model';
 
-export default function LocationIntersections(props: LocationIntersectionProps) {
+export default function PlaceIntersections( props: PlaceIntersectionProps) {
   const { intersections, name } = props;
 
   return (
@@ -30,7 +30,7 @@ export default function LocationIntersections(props: LocationIntersectionProps) 
       <h5 className="ng-text-display-s ng-margin-small-bottom">{name} Intersections</h5>
       <div className="ng-flex ng-flex-wrap">
         {intersections.map((int) => (
-          <LinkWithOrg to={`/locations/${int.id}`} key={int.id} className="ng-margin-medium-right">
+          <LinkWithOrg to={`/places/${int.id}`} key={int.id} className="ng-margin-medium-right">
             {int.name}
           </LinkWithOrg>
         ))}

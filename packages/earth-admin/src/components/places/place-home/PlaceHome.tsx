@@ -17,6 +17,28 @@
   specific language governing permissions and limitations under the License.
 */
 
-import LocationTitle from './LocationTitle';
+import * as React from 'react';
+import { InlineCard, LinkWithOrg } from 'components';
 
-export { LocationTitle };
+interface PlaceHomeProps {
+}
+
+export default function PlaceHome( props: PlaceHomeProps ) {
+  return (
+    <>
+      <h1 className="ng-text-display-m ng-margin-medium-bottom">PLACES</h1>
+      <div className="ng-grid">
+        <div className="ng-width-1-2">
+          <InlineCard editable={false}>
+            <p>Search a place to view and edit details, or start creating a new place.</p>
+            <div className="ng-flex ng-flex-center">
+              <LinkWithOrg className="ng-button ng-button-secondary" to="/places/new">
+                Create new place
+              </LinkWithOrg>
+            </div>
+          </InlineCard>
+        </div>
+      </div>
+    </>
+  );
+}

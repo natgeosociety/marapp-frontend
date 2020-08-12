@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './location-details';
-export * from './location-edit';
-export * from './location-list';
-export * from './location-metrics';
-export * from './location-intersections';
-export * from './location-home';
-export * from './location-title';
+export * from './place-details';
+export * from './place-edit';
+export * from './place-list';
+export * from './place-metrics';
+export * from './place-intersections';
+export * from './place-home';
+export * from './place-title';

@@ -17,23 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import {InlineCard} from 'components';
+import PlaceEdit from './PlaceEdit';
 
-interface LocationHomeProps {
-}
-
-export default function LocationHome(props: LocationHomeProps) {
-
-  return (
-    <div className="ng-grid">
-      <div className="ng-width-1-2">
-        <InlineCard editable={false} hasButtons={false}>
-          Search a place to view and edit details, or start creating a new place.
-          <br/>
-          <button className="ng-button ng-button-overlay">Create new place</button>
-        </InlineCard>
-      </div>
-    </div>
-  );
-}
+export { PlaceEdit };

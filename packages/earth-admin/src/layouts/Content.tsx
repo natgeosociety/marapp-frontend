@@ -93,5 +93,5 @@ const Content = (props: ILayoutProps) => {
     );
   }
 
-  return props.children;
+  return <div className="ng-margin-medium-top">{props.children}</div>;
 };

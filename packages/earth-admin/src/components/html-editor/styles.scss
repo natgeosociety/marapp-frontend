@@ -21,8 +21,10 @@
 
 :root {
   --ck-color-focus-border: #{$marapp-primary-color};
+  --ck-color-base-background: $marapp-gray-9;
 }
 
 .ck-editor .ck-content {
   max-height: 400px;
 }
+
