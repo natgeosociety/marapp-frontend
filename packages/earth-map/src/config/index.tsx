@@ -17,6 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
+import yn from 'yn';
+
 export const NODE_ENV = process.env.NODE_ENV;
 export const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -28,3 +30,4 @@ export const APP_NAME = process.env.REACT_APP_NAME;
 export const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
 export const GTM_TAG = process.env.REACT_APP_GTM_TAG;
+export const DISABLE_PUBLIC_ACCESS = yn(process.env.REACT_APP_DISABLE_PUBLIC_ACCESS);

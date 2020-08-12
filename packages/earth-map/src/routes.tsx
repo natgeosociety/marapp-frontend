@@ -21,10 +21,10 @@ import qs from 'query-string';
 import { NOT_FOUND } from 'redux-first-router';
 import restoreScroll from 'redux-first-router-restore-scroll';
 
-import { BASE_URL } from 'config';
+import { BASE_URL, DISABLE_PUBLIC_ACCESS } from 'config';
 
 const UNAUTHORIZED = 'UNAUTHORIZED';
-const isPublicAccessDisabled = process.env.REACT_APP_DISABLE_PUBLIC_ACCESS === 'true';
+const isPublicAccessDisabled = DISABLE_PUBLIC_ACCESS;
 
 export const ROUTES = {
   HOME: {
