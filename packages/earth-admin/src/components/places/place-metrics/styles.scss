@@ -23,6 +23,9 @@
   position: absolute;
   right: -17px;
   top: 3px;
+  &:hover {
+    background: $marapp-gray-6;
+  }
 
   &.ng-icon-button {
     height: 20px;
