@@ -1,4 +1,4 @@
-# marapp-fe
+# marapp-frontend
 
 Marapp frontend applications.
 
