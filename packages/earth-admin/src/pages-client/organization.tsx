@@ -63,7 +63,7 @@ const Organization = (props: IProps) => {
 }
 
 const OrgSwitcherPage = ({ groups }) => (
-  <div className="ng-orgswitcher-page">
+  <div className="ng-orgswitcher-page ng-background-ultradkgray">
     <div>
       <h3>Invalid Organization</h3>
       <h6>Please select a valid one:</h6>
