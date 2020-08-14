@@ -22,6 +22,8 @@ import Jsona, { SwitchCaseJsonMapper, SwitchCaseModelMapper } from 'jsona';
 import { encodeQueryToURL } from 'utils/query';
 import { AxiosInstance } from 'axios';
 
+import { API_URL } from "config";
+
 /**
  * Layers service class
  * It is a singleton for not instanciate Jsona on each request.
@@ -40,21 +42,13 @@ class LayersService {
   }
 
   configure = () => {
-    this.api = setup({
-      baseURL: `${process.env.REACT_APP_API_URL}`,
-
-      // This prevents RW cache
-      headers: {
-        'Upgrade-Insecure-Requests': 1,
-      },
-    });
+    this.api = setup({ baseURL: API_URL });
   };
 
   /**
    * request
    * Creates an axios request based on type an options.
    * @param {string} path - The path of the request.
-   * @param {object} options - The request options, these are forwarded to axios.
    */
 
 
@@ -63,8 +57,11 @@ class LayersService {
       this.api
         .get(path)
         .then(response => {
-          resolve(this.dataFormatter.deserialize(response.data));
-          resolve(response.data);
+          const result = this.dataFormatter.deserialize(response.data);
+          resolve({
+            data: result,
+            meta: response.data.meta,
+          });
         })
         .catch(err => {
           reject(err);
@@ -77,6 +74,11 @@ export const service = new LayersService();
 
 export function fetchLayers(options = {}) {
   const layerQuery = encodeQueryToURL('/layers', options);
+  return service.request(layerQuery);
+}
+
+export function fetchLayer(id, options = {}) {
+  const layerQuery = encodeQueryToURL(`/layers/${id}`, options);
   return service.request(layerQuery);
 }
 

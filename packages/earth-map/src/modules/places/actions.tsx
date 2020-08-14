@@ -38,10 +38,10 @@ export const setPlaceSelectedId = createAction('PLACES/setPlaceSelectedId');
 
 // Search
 export const setPlacesSearch = createAction('PLACES/setPlacesSearch');
+export const setPlacesSearchOpen = createAction('PLACES/setPlacesSearchOpen');
 export const setPlacesSearchLoading = createAction('PLACES/setPlacesSearchLoading');
 export const setPlacesSearchFilters = createAction('PLACES/setPlacesSearchFilters');
 export const setPlacesSearchAvailableFilters = createAction('PLACES/setPlacesSearchAvailableFilters');
-export const setPlacesSearchOpen = createAction('PLACES/setPlacesSearchOpen');
 export const setPlacesSearchResults = createAction('PLACES/setPlacesSearchResults');
 export const nextPlacesPage = createAction('PLACES/nextPlacesPage');
 

@@ -19,6 +19,8 @@
 
 import React, { useContext, useState } from 'react';
 import { Auth0Context } from 'utils/contexts';
+import { getAvailableOrgs } from 'utils';
+
 import classnames from 'classnames';
 
 import { LinkWithOrg, DropdownComponent } from 'components';
@@ -62,7 +64,7 @@ const OrgSwitcher = (props) => {
           </a>
         </li>
         {!!permissions &&
-          Object.keys(permissions).map((g, i) => (
+          getAvailableOrgs(permissions).map((g, i) => (
             <React.Fragment key={i}>
               <li
                 className={classnames({

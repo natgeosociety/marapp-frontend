@@ -21,7 +21,6 @@ import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 
 import compact from 'lodash/compact';
-import groupBy from 'lodash/groupBy';
 import flatten from 'lodash/flatten';
 import uniqBy from 'lodash/uniqBy';
 
@@ -31,7 +30,7 @@ import decodes from './decodes';
 import { getParams } from './utils';
 import { ILayer } from './model';
 
-const layers = (state) => state.layers.list;
+const layers = (state) => state.layers.listActive;
 const active = (state) => state.layers.active;
 const settings = (state) => state.layers.settings;
 
@@ -43,16 +42,6 @@ const place = (state) => state.places.data;
 const GROUP_LEGEND = (type) => type === 'group';
 const YEAR_PICKER_LEGEND = (type) => type === 'yearpicker';
 const YEAR_DATE_PICKER_LEGEND = (type) => type === 'yeardatepicker';
-
-export const getGroupedLayers = createSelector([layers], (_layers: ILayer[]) => {
-  if (!_layers || !_layers.length) {
-    return {};
-  }
-
-  const groups = groupBy(_layers, 'category');
-
-  return groups;
-});
 
 export const getLegendLayers = createSelector(
   [layers, settings, active],
@@ -416,13 +405,9 @@ export const getActiveInteractiveLayer = createSelector(
   }
 );
 export default {
-  getGroupedLayers,
-
   getLegendLayers,
-
   getActiveLayers,
   getActiveBoundsLayer,
-
   getActiveInteractiveLayersIds,
   getActiveInteractiveLayer,
   getActiveInteractiveLayers,

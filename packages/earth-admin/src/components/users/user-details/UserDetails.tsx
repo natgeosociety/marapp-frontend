@@ -22,19 +22,24 @@ import { useState } from 'react';
 import { UserProps } from '../model';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
-import { ActionModal, LinkWithOrg } from 'components';
+import { ActionModal, LinkWithOrg, ErrorMessages } from 'components';
 
 export default function UserDetails(props: UserProps) {
   const {
     data: { name, email, groups, id },
   } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [serverErrors, setServerErrors] = useState(null);
 
   const { getPermissions } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
 
   function handleDeleteToggle() {
     setShowDeleteModal(!showDeleteModal);
+  }
+
+  function handleDeleteError(error) {
+    setServerErrors(error.data.errors);
   }
 
   return (
@@ -46,13 +51,14 @@ export default function UserDetails(props: UserProps) {
           name={name}
           toggleModal={handleDeleteToggle}
           visibility={showDeleteModal}
+          error={handleDeleteError}
         />
       )}
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
       </div>
 
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         <h3 className="ng-text-display-s">User details</h3>
 
         <p>
@@ -66,7 +72,7 @@ export default function UserDetails(props: UserProps) {
           {groups.map((group) => group.name).join(', ') || '-'}
         </p>
       </div>
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         {writePermissions && (
           <LinkWithOrg
             to={`/users/${id}/edit`}
@@ -75,12 +81,13 @@ export default function UserDetails(props: UserProps) {
             Edit user
           </LinkWithOrg>
         )}
-        <LinkWithOrg className="ng-button" to="/users">
+        <LinkWithOrg className="ng-button ng-button-secondary" to="/users">
           Go back to users list
         </LinkWithOrg>
       </div>
+      {serverErrors && <ErrorMessages errors={serverErrors} />}
       {writePermissions && (
-        <div className="ng-padding-medium ng-background-white ng-text-right">
+        <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
           <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete user
           </button>

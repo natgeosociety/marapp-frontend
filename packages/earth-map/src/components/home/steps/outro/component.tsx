@@ -21,8 +21,9 @@ import * as React from 'react';
 import {Transition, animated} from 'react-spring/renderprops'
 import { Button } from '@marapp/earth-components';
 
+import { APP_NAME } from 'config';
+
 import './styles.scss';
-import { APP_NAME } from 'theme';
 
 export interface IOutro {
   active?: boolean;

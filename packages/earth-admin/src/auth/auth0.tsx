@@ -106,13 +106,15 @@ export const Auth0Provider = ({
 
         const idToken = await auth0FromHook.getUser();
 
+        const roles = get(idToken, `${NAMESPACE}/roles`, []);
+        setRoles(mapAuthzScopes(roles));
+
+        const isSuperAdmin = roles.find(role => role === '*:Super Admin');
+
         const groups = get(idToken, `${NAMESPACE}/groups`, []);
         const [defaultGroup] = groups;
         const nonNestedGroups = removeNestedGroups(groups);
-        setGroups(nonNestedGroups);
-
-        const roles = get(idToken, `${NAMESPACE}/roles`, []);
-        setRoles(mapAuthzScopes(roles));
+        setGroups(isSuperAdmin ? ['*', ...nonNestedGroups] : nonNestedGroups);
 
         const permissions = get(idToken, `${NAMESPACE}/permissions`, []);
 
@@ -130,7 +132,7 @@ export const Auth0Provider = ({
         // Default group only used on <Homepage />
         // will be overwritten by <Org /> with org comming from URL
         if (!selectedGroup) {
-          setSelectedGroup(defaultGroup);
+          setSelectedGroup((isSuperAdmin && !defaultGroup) ? '*' : defaultGroup);
         }
       }
 
@@ -158,7 +160,7 @@ export const Auth0Provider = ({
   }, [client]);
 
   const getPermissions = (type: string[]) => {
-    return hasAccess(permissions[selectedGroup], type);
+    return hasAccess(permissions[selectedGroup], type) || hasAccess(permissions['*'], type);
   };
 
   return (

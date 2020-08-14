@@ -18,6 +18,7 @@
 */
 
 import * as actions from './actions';
+import { EPanels } from './model';
 
 export default {
   [actions.setSidebar]: (state, { payload }) => ({ ...state, ...payload }),
@@ -28,6 +29,10 @@ export default {
   [actions.setSidebarPanel]: (state, { payload }) => ({
     ...state,
     panel: payload,
+    panelExpanded: payload === EPanels.LAYERS, // only expand search ui on layers panel
   }),
-  [actions.setSidebarLayers]: (state, { payload }) => ({ ...state, layersPanel: payload }),
+  [actions.setSidebarPanelExpanded]: (state, { payload }) => ({
+    ...state,
+    panelExpanded: payload,
+  }),
 };

@@ -65,7 +65,7 @@ export default function DashboardDetails(props: DashboardProps) {
         </div>
       </div>
 
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         <h3 className="ng-text-display-s">Dashboard details</h3>
         <p>
           <span className="ng-text-weight-medium">Dashboard description:</span>
@@ -79,7 +79,7 @@ export default function DashboardDetails(props: DashboardProps) {
       </div>
 
       {layers && layers.length > 0 && (
-        <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+        <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
           <span className="ng-text-weight-medium">Dashboard layers: </span>
           <div className="ng-flex ng-flex-wrap">
             {layers.map((layer) => (
@@ -96,7 +96,7 @@ export default function DashboardDetails(props: DashboardProps) {
       )}
 
       {widgets && widgets.length > 0 && (
-        <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+        <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
           <span className="ng-text-weight-medium">Dashboard widgets: </span>
           <div className="ng-flex ng-flex-wrap">
             {widgets.map((widget) => (
@@ -112,7 +112,7 @@ export default function DashboardDetails(props: DashboardProps) {
         </div>
       )}
 
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         {writePermissions && (
           <LinkWithOrg
             className="ng-button ng-button-primary ng-margin-medium-right"
@@ -121,12 +121,12 @@ export default function DashboardDetails(props: DashboardProps) {
             Edit dashboard
           </LinkWithOrg>
         )}
-        <LinkWithOrg to="/dashboards" className="ng-button">
+        <LinkWithOrg to="/dashboards" className="ng-button ng-button-secondary">
           Go back to dashboards list
         </LinkWithOrg>
       </div>
       {writePermissions && (
-        <div className="ng-padding-medium ng-background-white ng-text-right">
+        <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
           <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete dashboard
           </button>

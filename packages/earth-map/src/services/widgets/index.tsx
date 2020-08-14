@@ -22,6 +22,8 @@ import { encodeQueryToURL } from 'utils/query';
 import Jsona, { SwitchCaseJsonMapper, SwitchCaseModelMapper } from 'jsona';
 import { AxiosInstance } from 'axios';
 
+import { API_URL } from "config";
+
 /**
  * Widgets service class
  * It is a singleton for not instanciate Jsona on each request.
@@ -40,22 +42,13 @@ class WidgetsService {
   }
 
   configure = () => {
-    this.api = setup({
-      // `axios` options
-      baseURL: `${process.env.REACT_APP_API_URL}`,
-
-      // This prevents RW cache
-      headers: {
-        'Upgrade-Insecure-Requests': 1,
-      },
-    });
+    this.api = setup({ baseURL: API_URL });
   };
 
   /**
    * request
    * Creates an axios request based on type an options.
    * @param {string} path - The path of the request.
-   * @param {object} options - The request options, these are forwarded to axios.
    */
   request(path) {
     return new Promise((resolve, reject) => {

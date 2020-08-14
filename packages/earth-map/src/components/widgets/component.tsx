@@ -112,9 +112,7 @@ class WidgetsComponent extends React.Component<IWidgets, IWidgetsState> {
                           const { layers } = w;
 
                           if (layers[0]) {
-                            toggleLayer({
-                              slug: layers[0].slug,
-                            });
+                            toggleLayer(layers[0]);
                           }
                         }}
                       >

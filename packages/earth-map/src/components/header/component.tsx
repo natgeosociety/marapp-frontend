@@ -23,13 +23,13 @@ import classNames from 'classnames';
 import Link from 'redux-first-router-link';
 
 import { Auth0Context } from 'auth/auth0';
-import { checkRole } from 'utils';
 import DropdownComponent from 'components/dropdown';
-import { APP_NAME, APP_LOGO } from '../../theme';
+import { EPanels } from 'modules/sidebar/model';
+import { checkRole, getAvailableOrgs } from 'utils';
+import { APP_LOGO } from '../../theme';
+import { ADMIN_URL, APP_NAME } from 'config';
 
 import './styles.scss';
-
-const ADMIN_PATH = process.env.REACT_APP_ADMIN_URL;
 
 interface IProps {
   group?: string[];
@@ -40,6 +40,8 @@ interface IProps {
   resetMap?: Function;
   resetLayerCache?: Function;
   setUserGroup?: Function;
+  setLayersSearch?: Function;
+  setSidebarPanel?: Function;
 }
 
 const Header = (props: IProps) => {
@@ -56,6 +58,8 @@ const Header = (props: IProps) => {
     setIndexesSelected,
     setUserGroup,
     setPlacesSearch,
+    setLayersSearch,
+    setSidebarPanel,
   } = props;
   const hasMultipleGroups = allGroups.length > 1;
   const allInitiallySelected = group.length === allGroups.length;
@@ -70,6 +74,8 @@ const Header = (props: IProps) => {
   const handleResetLocation = () => {
     resetPlace();
     setPlacesSearch({ search: '' });
+    setLayersSearch({ search: '' });
+    setSidebarPanel(EPanels.PLACES);
     setIndexesSelected('');
     resetMap();
   };
@@ -99,6 +105,9 @@ const Header = (props: IProps) => {
     setPlacesSearch({
       filters: {},
     });
+    setLayersSearch({
+      filters: {},
+    });
   };
 
   return (
@@ -117,6 +126,7 @@ const Header = (props: IProps) => {
           onClick={handleResetLocation}
         />
       </Link>
+      {allGroups.length > 0 && <>
       <span className="ng-ep-kicker"></span>
 
       <span className="ng-text-display-s ng-text-weight-regular ng-body-color ng-margin-remove ng-display-block ng-org-name">
@@ -143,7 +153,7 @@ const Header = (props: IProps) => {
         </li>
         <li className="ng-form ng-form-dark">
           <div className="ng-padding-medium-horizontal ng-padding-top">
-            {Object.keys(roles).map((g, i) => (
+            {getAvailableOrgs(roles).map((g, i) => (
               <label
                 htmlFor={g}
                 className={classNames({
@@ -173,13 +183,14 @@ const Header = (props: IProps) => {
           (g, i) =>
             checkRole(roles[g]) && (
               <li className="ng-ep-dropdown-category" key={i}>
-                <a href={`${ADMIN_PATH}${g}`} className="ng-c-cursor-pointer ng-dropdown-item">
+                <a href={`${ADMIN_URL}${g}`} className="ng-c-cursor-pointer ng-dropdown-item">
                   {g} - ADMIN
                 </a>
               </li>
             )
         )}
       </DropdownComponent>
+      </> }
     </div>
   );
 };

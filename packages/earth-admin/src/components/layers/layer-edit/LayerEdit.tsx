@@ -40,6 +40,7 @@ export default function LayerEdit(props: LayerProps) {
       id,
       name,
       description,
+      primary,
       published,
       version,
       createdAt,
@@ -110,8 +111,8 @@ export default function LayerEdit(props: LayerProps) {
         </span>
       </div>
 
-      <div className="ng-padding-medium ng-background-white">
-        <form className="ng-form ng-flex-column ng-width-4-5">
+      <div className="ng-padding-medium ng-background-ultradkgray">
+        <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5">
           <div className="ng-margin-medium-bottom ng-grid">
             <div className="ng-width-large-1-2 ng-width-1-1">
               <label className="ng-form-label" htmlFor="name">
@@ -229,6 +230,18 @@ export default function LayerEdit(props: LayerProps) {
             <label htmlFor="published">Published?</label>
           </div>
 
+          <div className="ng-margin-medium-bottom">
+            <input
+              ref={register}
+              name="primary"
+              id="primary"
+              type="checkbox"
+              defaultChecked={primary}
+              className="ng-margin-right"
+            />
+            <label htmlFor="primary">Primary?</label>
+          </div>
+
           <div className="ng-width-1-1 ng-margin-large-vertical">
             <label htmlFor="provider">Included layers:</label>
             <Controller
@@ -262,7 +275,7 @@ export default function LayerEdit(props: LayerProps) {
               Save
             </button>
 
-            <LinkWithOrg className="ng-button" to="/layers">
+            <LinkWithOrg className="ng-button ng-button-secondary" to="/layers">
               Cancel
             </LinkWithOrg>
           </div>

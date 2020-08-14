@@ -17,9 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './locations';
+export * from './places';
 export * from './widgets';
 export * from './layers';
 export * from './dashboards';
 export * from './metrics';
 export * from './users';
+export * from './organizations';

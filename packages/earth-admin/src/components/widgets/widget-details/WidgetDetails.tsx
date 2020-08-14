@@ -66,7 +66,7 @@ export default function WidgetDetails( props: WidgetProps ) {
         </div>
       </div>
 
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         <h3 className="ng-text-display-s">Widget details</h3>
 
         <p>
@@ -98,7 +98,7 @@ export default function WidgetDetails( props: WidgetProps ) {
       </div>
 
       {layers && layers.length > 0 && (
-        <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+        <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
           <span className="ng-text-weight-medium">Layers: </span>
           <div className="ng-flex ng-flex-wrap">
             {layers.map(( layer, index ) => (
@@ -114,7 +114,7 @@ export default function WidgetDetails( props: WidgetProps ) {
         </div>
       )}
 
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         {writePermissions && (
           <LinkWithOrg
             to={`/widgets/${id}/edit`}
@@ -123,12 +123,12 @@ export default function WidgetDetails( props: WidgetProps ) {
             Edit widget
           </LinkWithOrg>
         )}
-        <LinkWithOrg className="ng-button" to="/widgets">
+        <LinkWithOrg className="ng-button ng-button-secondary" to="/widgets">
           Go back to widgets list
         </LinkWithOrg>
       </div>
       {writePermissions && (
-        <div className="ng-padding-medium ng-background-white ng-text-right">
+        <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
           <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete widget
           </button>

@@ -35,7 +35,7 @@ const INIT_CURSOR_LOCATION = '-1';
 
 const PAGE_TYPE = setPage('Layers');
 
-export default function LocationsPage( props ) {
+export default function LayersPage( props ) {
   return (
     <Router>
       <Page path="/">

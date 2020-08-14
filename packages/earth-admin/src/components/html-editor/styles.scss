@@ -20,9 +20,11 @@
 @import "../../styles/config";
 
 :root {
-  --ck-color-focus-border: #{$marapp-primary-color};
+  --ck-color-focus-border: #{$marapp-primary-color}!important;
+  --ck-color-base-background: #{$marapp-gray-9} !important;
 }
 
 .ck-editor .ck-content {
   max-height: 400px;
 }
+

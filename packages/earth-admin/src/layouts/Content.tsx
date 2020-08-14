@@ -58,7 +58,7 @@ export default function ContentLayout( props: ILayoutProps ) {
               href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="/>
         <title>{APP_NAME}</title>
       </Helmet>
-      <div className="ng-page-container">
+      <div className="ng-page-container ng-background-gray-9">
         <UserMenuComponent/>
         <div className="ng-padding-large">
           <Content {...props}/>
@@ -93,5 +93,5 @@ const Content = (props: ILayoutProps) => {
     );
   }
 
-  return props.children;
+  return <div className="ng-margin-medium-top">{props.children}</div>;
 };

@@ -26,7 +26,7 @@ export * from './html-editor';
 export * from './json-editor';
 export * from './layers';
 export * from './link-with-org';
-export * from './locations';
+export * from './places';
 export * from './map';
 export * from './not-found';
 export * from './org-switcher';
@@ -38,6 +38,7 @@ export * from './user-menu';
 export * from './sidebar-select';
 export * from './users';
 export * from './widgets';
+export * from './inline-edit-card';
 
 
 

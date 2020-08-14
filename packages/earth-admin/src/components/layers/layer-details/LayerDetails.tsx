@@ -36,6 +36,7 @@ export default function LayerDetails(props: LayerProps) {
       id,
       name,
       description,
+      primary,
       published,
       version,
       createdAt,
@@ -60,6 +61,7 @@ export default function LayerDetails(props: LayerProps) {
   }, [config]);
 
   const publishIcon = published ? 'check' : 'close';
+  const primaryIcon = primary ? 'check' : 'close';
 
   function handleDeleteToggle() {
     setShowDeleteModal(!showDeleteModal);
@@ -84,10 +86,15 @@ export default function LayerDetails(props: LayerProps) {
             <br />
             <i className={`ng-icon-${publishIcon}`}></i>
           </span>
+          <span className="ng-padding-horizontal">
+            Primary
+            <br />
+            <i className={`ng-icon-${primaryIcon}`}></i>
+          </span>
         </div>
       </div>
 
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         <h3 className="ng-text-display-s">
           Layer details for {name} version{version}
         </h3>
@@ -138,7 +145,7 @@ export default function LayerDetails(props: LayerProps) {
       </div>
 
       {references && references.length > 0 && (
-        <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+        <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
           <span className="ng-text-weight-medium">Included layers: </span>
           <div className="ng-flex ng-flex-wrap">
             {references.map((layer, index) => (
@@ -154,7 +161,7 @@ export default function LayerDetails(props: LayerProps) {
         </div>
       )}
 
-      <div className="ng-padding-medium ng-background-white ng-margin-medium-bottom">
+      <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         {writePermissions && (
           <LinkWithOrg
             to={`/layers/${id}/edit`}
@@ -163,12 +170,12 @@ export default function LayerDetails(props: LayerProps) {
             Edit Layer
           </LinkWithOrg>
         )}
-        <LinkWithOrg to="/layers" className="ng-button">
+        <LinkWithOrg to="/layers" className="ng-button ng-button-secondary">
           Go back to layers list
         </LinkWithOrg>
       </div>
       {writePermissions && (
-        <div className="ng-padding-medium ng-background-white ng-text-right">
+        <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
           <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete layer
           </button>
