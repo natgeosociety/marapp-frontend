@@ -26,7 +26,7 @@ export const NotFound = (props) => {
   const { groups } = useAuth0();
 
   return (
-    <div className="ng-orgswitcher-page">
+    <div className="ng-orgswitcher-page ng-background-ultradkgray">
       <div>
         <h3>404 - Page not found</h3>
         {groups && (
