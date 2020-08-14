@@ -27,7 +27,7 @@ export const LOCATION_QUERY = {
 
 export const DATA_INDEX_QUERY = {
   page: { size: 10, number: 1 },
-  include: 'layers,widgets,layers.references,widgets.layers',
+  include: 'widgets,widgets.layers,widgets.layers.references',
 };
 
 export const LAYER_QUERY = {
