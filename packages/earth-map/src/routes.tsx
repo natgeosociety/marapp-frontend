@@ -21,32 +21,30 @@ import qs from 'query-string';
 import { NOT_FOUND } from 'redux-first-router';
 import restoreScroll from 'redux-first-router-restore-scroll';
 
-import { BASE_URL, DISABLE_PUBLIC_ACCESS } from 'config';
+import { BASE_URL, ENABLE_PUBLIC_ACCESS } from 'config';
 
 const UNAUTHORIZED = 'UNAUTHORIZED';
-
-const isPublicAccessDisabled = DISABLE_PUBLIC_ACCESS;
 
 export const ROUTES = {
   HOME: {
     path: '/',
     page: 'home',
-    authenticated: isPublicAccessDisabled,
-    authorized: isPublicAccessDisabled,
+    authenticated: !ENABLE_PUBLIC_ACCESS,
+    authorized: !ENABLE_PUBLIC_ACCESS,
     fallbackRoute: null,
   },
   EARTH: {
     path: '/earth',
     page: 'earth',
-    authenticated: isPublicAccessDisabled,
-    authorized: isPublicAccessDisabled,
+    authenticated: !ENABLE_PUBLIC_ACCESS,
+    authorized: !ENABLE_PUBLIC_ACCESS,
     fallbackRoute: null,
   },
   LOCATION: {
     path: '/earth/:organization/:slug',
     page: 'earth',
-    authenticated: isPublicAccessDisabled,
-    authorized: isPublicAccessDisabled,
+    authenticated: !ENABLE_PUBLIC_ACCESS,
+    authorized: !ENABLE_PUBLIC_ACCESS,
     fallbackRoute: null,
   },
   ERROR: {
