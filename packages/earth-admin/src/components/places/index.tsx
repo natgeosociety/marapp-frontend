@@ -22,4 +22,3 @@ export * from './place-edit';
 export * from './place-list';
 export * from './place-metrics';
 export * from './place-intersections';
-export * from './place-home';

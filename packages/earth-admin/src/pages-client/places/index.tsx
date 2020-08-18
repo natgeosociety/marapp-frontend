@@ -18,43 +18,39 @@
 */
 
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { Router } from '@reach/router';
+import { useState, useEffect } from 'react';
+import { Router, } from '@reach/router';
 
+import { useAuth0 } from 'auth/auth0';
+import { AuthzGuards } from 'auth/permissions';
 import { PlaceContext } from 'utils/contexts';
 import { encodeQueryToURL, setPage } from 'utils';
-import { getAllPlaces, getPlace } from 'services/places';
-import { AuthzGuards } from 'auth/permissions';
-import { useRequest } from 'utils/hooks';
+import { getAllPlaces } from 'services/places';
 
-import { PlaceList, PlaceDetails, PlaceEdit, LinkWithOrg, PlaceHome } from 'components';
-import { useAuth0 } from 'auth/auth0';
-import { SidebarLayout, ContentLayout } from 'layouts';
+import { SidebarLayout } from 'layouts';
+import { DataListing, DefaultListItem } from 'components';
+import Dashboard from './dashboard';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
-const PLACE_DETAIL_QUERY = {
-  include: 'metrics,intersections',
-  select: 'intersections.id,intersections.name,intersections.type,-metrics.metric',
-  sort: 'intersections.name,metrics.slug,-metrics.version',
-};
+const PAGE_TYPE = setPage('Places');
 const INIT_CURSOR_PLACE = '-1';
 
-const PAGE_TYPE = setPage('Places');
-
-export default function PlacesPage( props ) {
+export default function PlacesPage(props) {
   return (
-    <Router>
-      <Page path="/">
-        <HomePage path="/"/>
-        <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newPlace={false}/>
-        <EditPage path="/new" newPlace={true}/>
-      </Page>
-    </Router>
+    <>
+      <Sidebar />
+
+      <Router>
+        <Dashboard path="/" />
+        {/* <DetailsPage path="/:page" />
+        <EditPage path="/:page/edit" newPlace={false} />
+        <EditPage path="/new" newPlace={true} /> */}
+      </Router>
+    </>
   );
 }
 
-function Sidebar( props: any ) {
+function Sidebar(props: any) {
   const [places, setPlaces] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -69,13 +65,13 @@ function Sidebar( props: any ) {
 
   const permissions = getPermissions(AuthzGuards.accessPlacesGuard);
 
-  const handleSearchValueChange = ( newValue: string ) => {
+  const handleSearchValueChange = (newValue: string) => {
     setPageCursor(INIT_CURSOR_PLACE);
     setNextCursor(null);
     setSearchValue(newValue);
   };
 
-  const handleCursorChange = () => {
+  const handleCursorChange = (): void => {
     if (nextCursor) {
       setPageCursor(nextCursor);
     }
@@ -123,64 +119,21 @@ function Sidebar( props: any ) {
       }}
     >
       <SidebarLayout page={PAGE_TYPE}>
-        <PlaceList/>
+        <DataListing
+          childComponent={DefaultListItem}
+          data={places}
+          categoryUrl={'places'}
+          pageTitle="places"
+          searchValueAction={handleSearchValueChange}
+          cursorAction={handleCursorChange}
+          isLoading={isLoading}
+          isNoMore={isNoMore}
+          totalResults={totalResults}
+          pageSize={pageSize}
+          searchValue={searchValue}
+          selectedItem={selectedItem}
+        />
       </SidebarLayout>
     </PlaceContext.Provider>
-  );
-}
-
-function Page( props: any ) {
-  return (
-    <>
-      <Sidebar/>
-      {props.children}
-    </>);
-}
-
-function HomePage( props: any ) {
-  const { getPermissions } = useAuth0();
-  const permissions = getPermissions(AuthzGuards.accessPlacesGuard);
-  const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
-  return (writePermissions && (
-    <ContentLayout>
-      {writePermissions && <PlaceHome/>}
-    </ContentLayout>
-  ));
-}
-
-function DetailsPage( path: any ) {
-  const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`locations/${path.page}`, {
-    ...PLACE_DETAIL_QUERY,
-    group: selectedGroup,
-  });
-  const { isLoading, errors, data } = useRequest(() => getPlace(encodedQuery), {
-    permissions: AuthzGuards.accessPlacesGuard,
-    query: encodedQuery,
-  });
-
-  return (
-    <ContentLayout errors={errors} backTo="/places" isLoading={isLoading}>
-      <PlaceDetails data={data}/>
-    </ContentLayout>
-  );
-}
-
-function EditPage( path: any ) {
-  const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`locations/${path.page}`, {
-    ...PLACE_DETAIL_QUERY,
-    ...{ group: selectedGroup },
-  });
-  const { isLoading, errors, data } = useRequest(() => getPlace(encodedQuery), {
-    permissions: AuthzGuards.writePlacesGuard,
-    skip: path.newPlace,
-  });
-
-  return (
-
-    <ContentLayout errors={errors} backTo="/places" isLoading={isLoading}>
-      <PlaceEdit data={data} newPlace={path.newPlace}/>
-    </ContentLayout>
   );
 }
