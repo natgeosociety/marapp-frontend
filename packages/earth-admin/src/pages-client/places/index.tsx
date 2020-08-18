@@ -30,6 +30,7 @@ import { getAllPlaces } from 'services/places';
 import { SidebarLayout } from 'layouts';
 import { DataListing, DefaultListItem } from 'components';
 import Dashboard from './dashboard';
+import Details from './details';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const PAGE_TYPE = setPage('Places');
@@ -42,8 +43,8 @@ export default function PlacesPage(props) {
 
       <Router>
         <Dashboard path="/" />
-        {/* <DetailsPage path="/:page" />
-        <EditPage path="/:page/edit" newPlace={false} />
+        <Details path="/:page" />
+        {/* <EditPage path="/:page/edit" newPlace={false} />
         <EditPage path="/new" newPlace={true} /> */}
       </Router>
     </>
