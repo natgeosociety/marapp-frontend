@@ -26,7 +26,7 @@ import { formatDate } from 'utils';
 import { useForm, Controller } from 'react-hook-form';
 import { JSHINT } from 'jshint';
 
-import { PlaceProps, PlaceTypeEnum } from '../model';
+import { PlaceProps, PlaceTypeEnum } from '../../../pages-client/places/model';
 import { handlePlaceForm } from 'services/places';
 import { JsonEditor, ErrorMessages, LinkWithOrg, InlineEditCard } from 'components';
 import { Auth0Context } from 'utils/contexts';

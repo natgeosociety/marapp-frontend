@@ -20,7 +20,7 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 
-import { PlaceMetricsProps, PLACE_METRICS_VISUAL_MAPPING } from '../model';
+import { PlaceMetricsProps, PLACE_METRICS_VISUAL_MAPPING } from '../../model';
 import { calculateForPlace } from 'services';
 import { AuthzGuards } from 'auth/permissions';
 import { useAuth0 } from 'auth/auth0';
