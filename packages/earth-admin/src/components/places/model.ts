@@ -66,7 +66,7 @@ export interface MetricProps {
   createdAt?: Date;
   updatedAt?: Date;
   version?: number;
-  place?: string | Place;
+  location?: string | Place;
 }
 
 export interface PlaceMetricsProps {

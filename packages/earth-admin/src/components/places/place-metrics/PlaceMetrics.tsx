@@ -30,7 +30,7 @@ import { Auth0Context } from 'utils/contexts';
 
 export default function PlaceMetrics( props: PlaceMetricsProps) {
   const {
-    data: { slug, version, place },
+    data: { slug, version, location },
     handlers: { handleServerErrors },
   } = props;
 
@@ -68,7 +68,7 @@ export default function PlaceMetrics( props: PlaceMetricsProps) {
             {writePermission && (
               <button
                 className="ng-icon-button ng-recalculate-metrics"
-                onClick={(e) => handleCalculateSingle(e, place, slug)}
+                onClick={(e) => handleCalculateSingle(e, location, slug)}
               >
                 <span className="ng-icon ng-icon-spinner" />
               </button>
