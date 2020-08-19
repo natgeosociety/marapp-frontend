@@ -23,7 +23,8 @@ import restoreScroll from 'redux-first-router-restore-scroll';
 
 import { BASE_URL, ENABLE_PUBLIC_ACCESS } from 'config';
 
-const UNAUTHORIZED = 'UNAUTHORIZED';
+const UNAUTHORIZED_PAGE = 'UNAUTHORIZED';
+const fallbackRoute = ENABLE_PUBLIC_ACCESS ? null : UNAUTHORIZED_PAGE;
 
 export const ROUTES = {
   HOME: {
@@ -31,37 +32,37 @@ export const ROUTES = {
     page: 'home',
     authenticated: !ENABLE_PUBLIC_ACCESS,
     authorized: !ENABLE_PUBLIC_ACCESS,
-    fallbackRoute: null,
+    fallbackRoute,
   },
   EARTH: {
     path: '/earth',
     page: 'earth',
     authenticated: !ENABLE_PUBLIC_ACCESS,
     authorized: !ENABLE_PUBLIC_ACCESS,
-    fallbackRoute: null,
+    fallbackRoute,
   },
   LOCATION: {
     path: '/earth/:organization/:slug',
     page: 'earth',
     authenticated: !ENABLE_PUBLIC_ACCESS,
     authorized: !ENABLE_PUBLIC_ACCESS,
-    fallbackRoute: null,
+    fallbackRoute,
   },
   ERROR: {
     path: '/error',
     page: 'error',
     authenticated: false,
     authorized: false,
-    fallbackRoute: null,
+    fallbackRoute,
   },
   [NOT_FOUND]: {
     path: '/404',
     page: 'not-found',
     authenticated: false,
     authorized: false,
-    fallbackRoute: null,
+    fallbackRoute,
   },
-  [UNAUTHORIZED]: {
+  [UNAUTHORIZED_PAGE]: {
     path: '/unauthorized',
     page: 'unauthorized',
     authenticated: true,
