@@ -17,6 +17,25 @@
   specific language governing permissions and limitations under the License.
 */
 
-import PlaceList from './PlaceList';
+import * as React from 'react';
+import { Router, } from '@reach/router';
 
-export { PlaceList };
+import { Sidebar } from 'components/places';
+import Home from './home';
+import Details from './details';
+import Edit from './edit';
+
+export default function PlacesPage(props) {
+  return (
+    <>
+      <Sidebar />
+      <Router>
+        <Home path="/" />
+        <Details path="/:page" />
+        <Edit path="/:page/edit" newPlace={false} />
+        <Edit path="/new" newPlace={true} />
+      </Router>
+    </>
+  );
+}
+

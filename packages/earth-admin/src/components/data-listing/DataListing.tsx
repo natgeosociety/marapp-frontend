@@ -34,8 +34,8 @@ interface DataListingProps {
   totalResults: number;
   selectedItem?: string;
   pageTitle?: string;
-  searchValueAction?: (val: string) => {};
-  cursorAction?: () => {};
+  searchValueAction?: (val: string) => void;
+  cursorAction?: () => void;
   isLoading: boolean;
   isNoMore?: boolean;
   searchValue?: string;
