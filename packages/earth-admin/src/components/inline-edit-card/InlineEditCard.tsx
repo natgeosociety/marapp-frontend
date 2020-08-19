@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { animated, Keyframes } from 'react-spring/renderprops';
 import { InlineCardOverlay } from './index';
@@ -32,7 +32,7 @@ export interface InlineCardProps {
   primaryButtonText?: string;
   secondaryButtonText?: string;
   editAction?: ( v: boolean ) => void;
-  saveAction?: ( v: boolean ) => void;
+  saveAction?: ( s: any ) => void;
   children?: ReactNode;
   editForm?: ( setIsEditing: ( value: ((( prevState: boolean ) => boolean) | boolean) ) => void ) => {};
   serverErrors?: any;
@@ -55,6 +55,16 @@ export default function InlineEditCard( props: InlineCardProps ) {
   const state = isEditing ? 'open' : 'close';
 
 
+  useEffect(() => {
+
+  });
+
+  const handleSave = ( e ) => {
+    saveAction && saveAction(e);
+    !serverErrors && setIsEditing(false);
+  };
+
+
   const renderEditable = () => (
     <>
       {editForm(setIsEditing)}
@@ -62,7 +72,7 @@ export default function InlineEditCard( props: InlineCardProps ) {
       {hasButtons && <div className="ng-margin-medium-top">
         {primaryButtonText &&
         <button className="ng-button ng-button-primary ng-margin-right" disabled={!validForm}
-                onClick={( e ) => saveAction}>{primaryButtonText}</button>}
+                onClick={handleSave}>{primaryButtonText}</button>}
         {secondaryButtonText &&
         <button className="ng-button ng-button-secondary"
                 onClick={( e ) => setIsEditing(false)}>{secondaryButtonText}</button>}
@@ -73,35 +83,35 @@ export default function InlineEditCard( props: InlineCardProps ) {
 
 
   const renderDefault = () => (<>
-      {editForm && (
-        <button className="ng-button ng-button-link ng-edit-card-button"
-                onClick={( e ) => setIsEditing(true)}>edit</button>
+    {editForm && (
+      <button className="ng-button ng-button-link ng-edit-card-button"
+              onClick={( e ) => setIsEditing(true)}>edit</button>
+    )}
+    {children}
+  </>);
+
+  return (
+    <Card native state={state}>
+      {( { x, ...props } ) => (
+        <animated.div
+          className={classnames({
+            'ng-padding-medium ng-inline-card ng-background-ultradkgray': true,
+            'ng-inline-card-editing': isEditing,
+            'ng-inline-card-loading': isLoading,
+          })}
+          style={{
+            transform: x
+              .interpolate(x => `scale(${x})`),
+            ...props,
+          }}
+        >
+          {isEditing ? renderEditable() : renderDefault()}
+          {isLoading && <div className="ng-inline-card-spinner"><i className="ng-icon-spinner ng-icon-spin"/></div>}
+        </animated.div>
       )}
-      {children}
-    </>);
+    </Card>
 
-    return (
-      <Card native state={state}>
-        {( { x, ...props } ) => (
-          <animated.div
-            className={classnames({
-              'ng-padding-medium ng-inline-card ng-background-ultradkgray': true,
-              'ng-inline-card-editing': isEditing,
-              'ng-inline-card-loading': isLoading,
-            })}
-            style={{
-              transform: x
-                .interpolate(x => `scale(${x})`),
-              ...props,
-            }}
-          >
-            {isEditing ? renderEditable() : renderDefault()}
-            {isLoading && <div className="ng-inline-card-spinner"><i className="ng-icon-spinner ng-icon-spin"/></div>}
-          </animated.div>
-        )}
-      </Card>
-
-    );
-  };
+  );
+};
 
 
