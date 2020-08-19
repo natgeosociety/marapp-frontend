@@ -17,4 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './place-edit';
+export { default as Sidebar } from './PlaceSidebar';

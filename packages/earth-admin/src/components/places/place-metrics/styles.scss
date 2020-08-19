@@ -16,26 +16,22 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
+@import "../../../styles/config";
 
-import * as React from 'react';
-import { Router, } from '@reach/router';
+.ng-recalculate-metrics.ng-icon-button {
+  background: $marapp-gray-7;
+  position: absolute;
+  right: -17px;
+  top: 3px;
+  &:hover {
+    background: $marapp-gray-6;
+  }
 
-import { Sidebar } from 'components/places';
-import Dashboard from './dashboard';
-import Details from './details';
-import Edit from './edit';
-
-export default function PlacesPage(props) {
-  return (
-    <>
-      <Sidebar />
-      <Router>
-        <Dashboard path="/" />
-        <Details path="/:page" />
-        <Edit path="/:page/edit" newPlace={false} />
-        <Edit path="/new" newPlace={true} />
-      </Router>
-    </>
-  );
+  &.ng-icon-button {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    padding: 0;
+    width: 20px;
+  }
 }
-

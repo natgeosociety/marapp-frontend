@@ -16,22 +16,25 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-@import "../../../../styles/config";
 
-.ng-recalculate-metrics.ng-icon-button {
-  background: $marapp-gray-7;
-  position: absolute;
-  right: -17px;
-  top: 3px;
-  &:hover {
-    background: $marapp-gray-6;
-  }
+import * as React from 'react';
 
-  &.ng-icon-button {
-    height: 20px;
-    line-height: 20px;
-    font-size: 12px;
-    padding: 0;
-    width: 20px;
-  }
+import { LinkWithOrg } from 'components';
+import { PlaceIntersectionProps } from '../model';
+
+export default function PlaceIntersections( props: PlaceIntersectionProps) {
+  const { intersections, name } = props;
+
+  return (
+    <div className="ng-flex ng-flex-column ng-margin-medium-bottom">
+      <h5 className="ng-text-display-s ng-margin-small-bottom">{name} Intersections</h5>
+      <div className="ng-flex ng-flex-wrap">
+        {intersections.map((int) => (
+          <LinkWithOrg to={`/places/${int.id}`} key={int.id} className="ng-margin-medium-right">
+            {int.name}
+          </LinkWithOrg>
+        ))}
+      </div>
+    </div>
+  );
 }

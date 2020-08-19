@@ -19,7 +19,7 @@
 
 import * as React from 'react';
 import { LayerContextProps } from 'components/layers/model';
-import { PlaceContextProps } from 'pages-client/places/model';
+import { PlaceContextProps } from 'components/places/model';
 import { UserContextProps } from 'components/users/model';
 import { OrganizationContextProps } from 'components/organizations/model';
 import { WidgetContextProps } from 'components/widgets/model';

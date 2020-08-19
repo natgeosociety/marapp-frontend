@@ -9,8 +9,8 @@ import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace } from 'services';
 import { MapComponentContext } from 'utils/contexts';
 
-import { PlaceMetrics } from 'pages-client/places/components/place-metrics';
-import { PlaceIntersections } from 'pages-client/places/components/place-intersections';
+import { PlaceMetrics } from 'components/places/place-metrics';
+import { PlaceIntersections } from 'components/places/place-intersections';
 
 import { ContentLayout } from 'layouts';
 import { ErrorMessages, ActionModal, MapComponent, LinkWithOrg } from 'components';
