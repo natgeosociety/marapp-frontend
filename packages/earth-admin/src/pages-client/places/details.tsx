@@ -233,10 +233,21 @@ export default function DetailsPage( path: any ) {
               </InlineEditCard>
             </div>
             <div className="ng-width-1-2">
-              ID: {id}
-              Version: {version}
-              Last Updated: {formatDate(updatedAt)}
-              Created: {formatDate(createdAt)}
+              <InlineEditCard
+                hasButtons={false}>
+                <p className="ng-margin-bottom ng-margin-top-remove">
+                  <span className="ng-text-weight-bold ng-color-mdgray">ID:</span> {id}
+                </p>
+                <p className="ng-margin-bottom ng-margin-top-remove">
+                  <span className="ng-text-weight-bold ng-color-mdgray">Version:</span> {version}
+                </p>
+                <p className="ng-margin-bottom ng-margin-top-remove">
+                  <span className="ng-text-weight-bold ng-color-mdgray">Last Updated:</span> {formatDate(updatedAt)}
+                </p>
+                <p className="ng-margin-bottom ng-margin-top-remove">
+                  <span className="ng-text-weight-bold ng-color-mdgray">Created:</span> {formatDate(createdAt)}
+                </p>
+              </InlineEditCard>
             </div>
           </div>
           {/*</div>*/}
