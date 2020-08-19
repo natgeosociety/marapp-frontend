@@ -53,14 +53,14 @@ export const ROUTES = {
     page: 'error',
     authenticated: false,
     authorized: false,
-    fallbackRoute,
+    fallbackRoute: null,
   },
   [NOT_FOUND]: {
     path: '/404',
     page: 'not-found',
     authenticated: false,
     authorized: false,
-    fallbackRoute,
+    fallbackRoute: null,
   },
   [UNAUTHORIZED_PAGE]: {
     path: '/unauthorized',
