@@ -22,7 +22,7 @@ import { Router } from '@reach/router';
 
 import { GATSBY_APP_BASE_URL } from 'config';
 import { ContentLayout, SidebarLayout } from 'layouts';
-import PlacesPage from 'pages-client/places';
+import PlacesPage from 'pages-client/places/routes';
 import DashboardsPage from 'pages-client/dashboards';
 import LayersPage from 'pages-client/layers';
 import WidgetsPage from 'pages-client/widgets';

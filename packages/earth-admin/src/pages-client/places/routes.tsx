@@ -21,7 +21,7 @@ import * as React from 'react';
 import { Router, } from '@reach/router';
 
 import { Sidebar } from 'components/places';
-import Dashboard from './dashboard';
+import Home from './home';
 import Details from './details';
 import Edit from './edit';
 
@@ -30,7 +30,7 @@ export default function PlacesPage(props) {
     <>
       <Sidebar />
       <Router>
-        <Dashboard path="/" />
+        <Home path="/" />
         <Details path="/:page" />
         <Edit path="/:page/edit" newPlace={false} />
         <Edit path="/new" newPlace={true} />
