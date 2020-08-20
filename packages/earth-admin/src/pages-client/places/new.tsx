@@ -2,14 +2,13 @@ import * as React from 'react';
 import { useState } from 'react';
 import { navigate } from 'gatsby';
 import { useForm } from 'react-hook-form';
-import { JSHINT } from 'jshint';
 import { Spinner } from '@marapp/earth-components';
 
 import { useAuth0 } from 'auth/auth0';
 import { addPlace } from 'services/places';
 import { PlaceTypeEnum } from './model';
 
-import { LinkWithOrg, ErrorMessages, Card } from 'components';
+import { LinkWithOrg, ErrorMessages, Card, FakeJsonUpload } from 'components';
 import { ContentLayout } from 'layouts';
 
 export function NewPlace(path: any) {
@@ -17,7 +16,7 @@ export function NewPlace(path: any) {
     mode: 'onChange',
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [geojsonValue, setGeojson] = useState();
+  const [geojsonValue, setGeojson] = useState(null);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
   const { selectedGroup } = useAuth0();
@@ -39,31 +38,6 @@ export function NewPlace(path: any) {
       setIsLoading(false);
       setServerErrors(error.data.errors);
     }
-  }
-
-  const handleJsonChange = (json) => {
-    try {
-      JSON.parse(json);
-    } catch (err) {
-      setJsonError(true);
-    }
-    if (!JSHINT.errors) {
-      const parsedJson = JSON.parse(json);
-      setGeojson(parsedJson);
-      setJsonError(false);
-      return parsedJson;
-    }
-    setJsonError(true);
-  };
-
-  const filesToJson = async (files: FileList): Promise<string> => {
-    const file = files[0];
-    return await file.text();
-  }
-
-  const handleUpload = async (e) => {
-    const json = await filesToJson(e.target.files);
-    handleJsonChange(json)
   }
 
   return (
@@ -130,16 +104,14 @@ export function NewPlace(path: any) {
 
           <Card>
             <p>Choose a GeoJSON to calulate shape maths and geographic relationships.</p>
-            <label htmlFor="input-geojson" style={{ display: 'block' }}>Place shape*</label>
-            <input
-              type="file"
+            <FakeJsonUpload
               name="geojson"
-              id="input-geojson"
-              accept=".json"
+              label="Place shape*"
               ref={register({
                 required: true,
               })}
-              onChange={handleUpload} />
+              onChange={(json) => setGeojson(json)}
+              onError={(err) => setJsonError(err)} />
           </Card>
 
           {isLoading

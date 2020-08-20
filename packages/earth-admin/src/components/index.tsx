@@ -40,6 +40,7 @@ export * from './users';
 export * from './widgets';
 export * from './inline-edit-card';
 export * from './card';
+export * from './fake-json-upload';
 
 
 
