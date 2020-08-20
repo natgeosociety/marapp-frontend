@@ -59,7 +59,7 @@ export default function DashboardEdit(props: DashboardProps) {
 
     try {
       await handleDashboardForm(props.newDashboard, formData, id, selectedGroup);
-      await navigate(`${selectedGroup}/dashboards`);
+      await navigate(`/${selectedGroup}/dashboards`);
     } catch (error) {
       setServerErrors(error.data.errors);
     }

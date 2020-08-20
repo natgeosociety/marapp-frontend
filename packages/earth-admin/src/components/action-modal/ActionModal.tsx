@@ -72,7 +72,7 @@ const ActionModal = (props: IModalProps) => {
         }
       }
 
-      await navigate(`${selectedGroup}/${navigateRoute}`, {
+      await navigate(`/${selectedGroup}/${navigateRoute}`, {
         state: { refresh: true },
       });
     }
