@@ -27,10 +27,14 @@ export default function NewPlace(path: any) {
     e.preventDefault();
 
     const formData = getValues();
+    const parsed = {
+      ...formData,
+      geojson: geojsonValue,
+    }
     try {
       setIsLoading(true);
-      await addPlace(formData, selectedGroup);
-      await navigate(`${selectedGroup}/places`);
+      await addPlace(parsed, selectedGroup);
+      await navigate(`/${selectedGroup}/places`);
     } catch (error) {
       setServerErrors(error.data.errors);
     }
@@ -42,7 +46,7 @@ export default function NewPlace(path: any) {
     } catch (err) {
       setJsonError(true);
     }
-    if (!JSHINT.errors.length) {
+    if (!JSHINT.errors) {
       const parsedJson = JSON.parse(json);
       setGeojson(parsedJson);
       setJsonError(false);
@@ -51,9 +55,15 @@ export default function NewPlace(path: any) {
     setJsonError(true);
   };
 
-  const handleUpload = (e) => {
-    console.log(e);
-    debugger;
+  const filesToJson = async (files: FileList): Promise<string> => {
+    const file = files[0];
+    return await file.text();
+  }
+
+  const handleUpload = async (e) => {
+    const json = await filesToJson(e.target.files);
+
+    handleJsonChange(json)
   }
 
   return (
@@ -67,13 +77,14 @@ export default function NewPlace(path: any) {
 
           {/* need a card component here */}
           <Card>
-            <label className="ng-form-label" htmlFor="name">
+            <label className="ng-form-label" htmlFor="input-name">
               Title*
               </label>
             <input
               ref={register({
                 required: true,
               })}
+              id="input-name"
               name="name"
               type="text"
               placeholder="Place title"
@@ -83,10 +94,10 @@ export default function NewPlace(path: any) {
 
           <Card>
             <div className="ng-margin-medium-bottom">
-              <label htmlFor="type">Place type*</label>
+              <label htmlFor="input-type">Place type*</label>
               <select
                 className="ng-width-1-1 ng-form-large"
-                id="type"
+                id="input-type"
                 ref={register({
                   required: true,
                 })}
@@ -104,11 +115,12 @@ export default function NewPlace(path: any) {
             </div>
 
             <div className="ng-width-1-1">
-              <label htmlFor="slug">Slug*</label>
+              <label htmlFor="input-slug">Slug*</label>
               <input
                 ref={register({
                   required: true,
                 })}
+                id="input-slug"
                 name="slug"
                 type="text"
                 placeholder="Place slug"
@@ -116,27 +128,20 @@ export default function NewPlace(path: any) {
               />
             </div>
 
-            {/* {!!geojsonValue && (
-              <div className="ng-margin-medium-bottom">
-                <Controller
-                  name="geojson"
-                  control={control}
-                  defaultValue={geojsonValue}
-                  onChange={(layerConfig) => handleJsonChange(layerConfig)}
-                  as={<JsonEditor json={geojsonValue} />}
-                />
-              </div>
-            )} */}
-
             {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}
           </Card>
 
           <Card>
             <p>Choose a GeoJSON to calulate shape maths and geographic relationships.</p>
+            <label htmlFor="input-geojson" style={{ display: 'block' }}>Place shape*</label>
             <input
               type="file"
               name="geojson"
+              id="input-geojson"
               accept=".json"
+              ref={register({
+                required: true,
+              })}
               onChange={handleUpload} />
           </Card>
 
