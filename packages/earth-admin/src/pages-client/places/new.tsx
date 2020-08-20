@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { navigate } from 'gatsby';
 import { useForm } from 'react-hook-form';
 import { JSHINT } from 'jshint';
+import { Spinner } from '@marapp/earth-components';
 
 import { useAuth0 } from 'auth/auth0';
 import { addPlace } from 'services/places';
@@ -141,19 +142,23 @@ export function NewPlace(path: any) {
               onChange={handleUpload} />
           </Card>
 
-          <div className="ng-flex">
-            <button
-              className="ng-button ng-button-primary ng-margin-medium-right"
-              onClick={onSubmit}
-              disabled={!formState.isValid || jsonError || isLoading}
-            >
-              Save and view details
-            </button>
+          {isLoading
+            ? <div className="ng-padding-large ng-position-relative"><Spinner /></div>
+            : (
+              <div className="ng-flex">
+                <button
+                  className="ng-button ng-button-primary ng-margin-medium-right"
+                  onClick={onSubmit}
+                  disabled={!formState.isValid || jsonError}
+                >
+                  Save and view details
+                  </button>
 
-            <LinkWithOrg className="ng-button ng-button-secondary" to="/places">
-              Return to dashboard
-            </LinkWithOrg>
-          </div>
+                <LinkWithOrg className="ng-button ng-button-secondary" to="/places">
+                  Return to dashboard
+                  </LinkWithOrg>
+              </div>
+            )}
 
         </form>
       </div>
