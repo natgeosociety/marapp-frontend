@@ -23,7 +23,7 @@ import { Router, } from '@reach/router';
 import { Sidebar } from 'components/places';
 import Home from './home';
 import Details from './details';
-import Edit from './edit';
+import New from './new';
 
 export default function PlacesPage(props) {
   return (
@@ -31,11 +31,9 @@ export default function PlacesPage(props) {
       <Sidebar />
       <Router>
         <Home path="/" />
+        <New path="/new" />
         <Details path="/:page" />
-        <Edit path="/:page/edit" newPlace={false} />
-        <Edit path="/new" newPlace={true} />
       </Router>
     </>
   );
 }
-

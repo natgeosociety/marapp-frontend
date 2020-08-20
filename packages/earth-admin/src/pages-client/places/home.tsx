@@ -21,7 +21,7 @@ export default function Home(props: any) {
               <InlineEditCard>
                 <p>Search a place to view and edit details, or start creating a new place.</p>
                 <div className="ng-flex ng-flex-center">
-                  <LinkWithOrg className="ng-button ng-button-secondary" to="/places/new">
+                  <LinkWithOrg className="ng-button ng-button-secondary" to="places/new">
                     Create new place
               </LinkWithOrg>
                 </div>
