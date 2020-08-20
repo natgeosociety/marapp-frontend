@@ -6,7 +6,7 @@ import { AuthzGuards } from 'auth/permissions';
 import { ContentLayout } from 'layouts';
 import { InlineEditCard, LinkWithOrg } from 'components';
 
-export default function Home(props: any) {
+export function PlacesHome(props: any) {
   const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessPlacesGuard);
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);

@@ -1,19 +1,18 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { navigate } from 'gatsby';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { JSHINT } from 'jshint';
 
 import { useAuth0 } from 'auth/auth0';
 import { addPlace } from 'services/places';
 import { PlaceTypeEnum } from './model';
 
-import { JsonEditor, LinkWithOrg, ErrorMessages } from 'components';
-import { Card } from 'components/card';
+import { LinkWithOrg, ErrorMessages, Card } from 'components';
 import { ContentLayout } from 'layouts';
 
-export default function NewPlace(path: any) {
-  const { getValues, register, formState, triggerValidation, control } = useForm({
+export function NewPlace(path: any) {
+  const { getValues, register, formState } = useForm({
     mode: 'onChange',
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -33,9 +32,10 @@ export default function NewPlace(path: any) {
     }
     try {
       setIsLoading(true);
-      await addPlace(parsed, selectedGroup);
-      await navigate(`/${selectedGroup}/places`);
+      const response: any = await addPlace(parsed, selectedGroup);
+      await navigate(`/${selectedGroup}/places/${response.data.id}`);
     } catch (error) {
+      setIsLoading(false);
       setServerErrors(error.data.errors);
     }
   }
@@ -62,12 +62,11 @@ export default function NewPlace(path: any) {
 
   const handleUpload = async (e) => {
     const json = await filesToJson(e.target.files);
-
     handleJsonChange(json)
   }
 
   return (
-    <ContentLayout errors={serverErrors} backTo="/places" isLoading={isLoading}>
+    <ContentLayout backTo="/places">
       <div>
         <div className="ng-flex ng-flex-space-between">
           <h2 className="ng-text-display-m ng-c-flex-grow-1">New place</h2>
@@ -75,11 +74,8 @@ export default function NewPlace(path: any) {
 
         <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5">
 
-          {/* need a card component here */}
           <Card>
-            <label className="ng-form-label" htmlFor="input-name">
-              Title*
-              </label>
+            <label className="ng-form-label" htmlFor="input-name">Title*</label>
             <input
               ref={register({
                 required: true,
@@ -149,7 +145,7 @@ export default function NewPlace(path: any) {
             <button
               className="ng-button ng-button-primary ng-margin-medium-right"
               onClick={onSubmit}
-              disabled={!formState.isValid || jsonError}
+              disabled={!formState.isValid || jsonError || isLoading}
             >
               Save and view details
             </button>

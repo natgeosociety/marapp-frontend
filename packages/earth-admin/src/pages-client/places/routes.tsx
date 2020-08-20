@@ -21,18 +21,18 @@ import * as React from 'react';
 import { Router, } from '@reach/router';
 
 import { Sidebar } from 'components/places';
-import Home from './home';
-import Details from './details';
-import New from './new';
+import { PlacesHome } from './home';
+import { PlaceDetail } from './details';
+import { NewPlace } from './new';
 
 export default function PlacesPage(props) {
   return (
     <>
       <Sidebar />
       <Router>
-        <Home path="/" />
-        <New path="/new" />
-        <Details path="/:page" />
+        <PlacesHome path="/" />
+        <NewPlace path="/new" />
+        <PlaceDetail path="/:page" />
       </Router>
     </>
   );
