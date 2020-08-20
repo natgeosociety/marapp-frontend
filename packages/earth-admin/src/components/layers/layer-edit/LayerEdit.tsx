@@ -80,7 +80,7 @@ export default function LayerEdit(props: LayerProps) {
 
     try {
       await handleLayerForm(props.newLayer, formData, id, selectedGroup);
-      await navigate(`${selectedGroup}/layers`);
+      await navigate(`/${selectedGroup}/layers`);
     } catch (error) {
       setServerErrors(error.data.errors);
     }
