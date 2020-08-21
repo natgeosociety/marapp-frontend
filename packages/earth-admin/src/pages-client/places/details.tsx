@@ -4,7 +4,7 @@ import { groupBy, isEmpty, map } from 'lodash';
 import { JSHINT } from 'jshint';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
-import { encodeQueryToURL, formatDate, stripNumbers } from 'utils';
+import { encodeQueryToURL, formatDate, stripNumbers, km2toHa, formatArrayToParanthesis } from 'utils';
 import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
@@ -13,7 +13,16 @@ import { PlaceMetrics } from 'components/places/place-metrics';
 import { PlaceIntersections } from 'components/places/place-intersections';
 
 import { ContentLayout } from 'layouts';
-import { ErrorMessages, ActionModal, MapComponent, LinkWithOrg, JsonEditor, InlineEditCard } from 'components';
+import {
+  ErrorMessages,
+  ActionModal,
+  MapComponent,
+  LinkWithOrg,
+  JsonEditor,
+  InlineEditCard,
+  InlineCardButtons,
+  Toggle,
+} from 'components';
 import { PlaceTypeEnum } from 'components/places/model';
 import { Controller, useForm } from 'react-hook-form';
 import { navigate } from 'gatsby';
@@ -25,37 +34,28 @@ const PLACE_DETAIL_QUERY = {
   sort: 'intersections.name,metrics.slug,-metrics.version',
 };
 
-export default function DetailsPage( path: any ) {
-  const { getPermissions, selectedGroup } = useAuth0();
+export default function DetailsPage(path: any) {
+  const {getPermissions, selectedGroup} = useAuth0();
+  const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
+  const metricsPermission = getPermissions(AuthzGuards.accessMetricsGuard);
+  const writeMetricsPermission = getPermissions(AuthzGuards.writeMetricsGuard);
+
   const encodedQuery = encodeQueryToURL(`locations/${path.page}`, {
     ...PLACE_DETAIL_QUERY,
     group: selectedGroup,
   });
 
-  const { isLoading, errors, data } = useRequest(() => getPlace(encodedQuery), {
+  const [place, setPlace] = useState(null);
+
+  const {isLoading, errors, data} = useRequest(() => getPlace(encodedQuery), {
     permissions: AuthzGuards.accessPlacesGuard,
     query: encodedQuery,
   });
 
-  console.log(data);
+  useEffect(() => {
+    setPlace(data);
+  }, [data]);
 
-  const {
-    id,
-    slug,
-    name,
-    description,
-    geojson,
-    published,
-    featured,
-    bbox2d,
-    areaKm2,
-    createdAt,
-    updatedAt,
-    type,
-    version,
-    metrics,
-    intersections,
-  } = data;
 
   const [mapData, setMapData] = useState({});
   const [mappedIntersections, setMappedIntersections] = useState();
@@ -64,51 +64,35 @@ export default function DetailsPage( path: any ) {
   const [serverErrors, setServerErrors] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
-  const metricsPermission = getPermissions(AuthzGuards.accessMetricsGuard);
-  const writeMetricsPermission = getPermissions(AuthzGuards.writeMetricsGuard);
-
-  const [isEditing, setIsEditing] = useState(true);
-
-  useEffect(() => {
-    setMapData({ geojson, bbox: bbox2d });
-    setMappedIntersections(groupBy(intersections, 'type'));
-  }, [geojson, bbox2d, intersections]);
-
-  const { getValues, register, formState, triggerValidation, control } = useForm({
+  const {getValues, register, formState, triggerValidation, control} = useForm({
     mode: 'onChange',
   });
 
-  async function onSubmit( e ) {
-    e.preventDefault();
+  useEffect(() => {
+    place && setMapData({geojson: place.geojson, bbox: place.bbox2d});
+    console.log(place);
+    place && setMappedIntersections(groupBy(place.intersections, 'type'));
+  }, [place]);
 
+
+  async function onSubmit(e, setIsEditing?, setIsLoading?, setServerErrors?) {
+    e.preventDefault();
     const formData = getValues();
+
     try {
-      await handlePlaceForm(false, formData, id, selectedGroup);
-      // await navigate(`${selectedGroup}/places`);
-      await setIsEditing(false);
+      setIsLoading(true);
+      await handlePlaceForm(false, formData, place.id, selectedGroup);
+      const res = await getPlace(encodedQuery);
+      setPlace(res.data);
+      setIsLoading(false);
+      setIsEditing(false);
     } catch (error) {
+      setIsLoading(false);
       setServerErrors(error.data.errors);
     }
   }
 
-  const handleJsonChange = ( json ) => {
-    try {
-      JSON.parse(json);
-    } catch (err) {
-      setJsonError(true);
-    }
-    if (!JSHINT.errors.length) {
-      const parsedJson = JSON.parse(json);
-      setGeojson(parsedJson);
-      setJsonError(false);
-      return parsedJson;
-    }
-    setJsonError(true);
-  };
-
-
-  async function handleCalculateAll( e: MouseEvent, placeID: string ) {
+  async function handleCalculateAll(e: MouseEvent, placeID: string) {
     e.preventDefault();
     e.stopPropagation();
     try {
@@ -119,7 +103,7 @@ export default function DetailsPage( path: any ) {
     }
   }
 
-  function handleServerErrors( errors ) {
+  function handleServerErrors(errors) {
     setServerErrors(errors);
   }
 
@@ -127,280 +111,242 @@ export default function DetailsPage( path: any ) {
     setShowDeleteModal(!showDeleteModal);
   }
 
-  return (
-    <ContentLayout errors={errors} backTo="/places" isLoading={isLoading}>
-      {/*<div>*/}
-      {/*  {showDeleteModal && (*/}
-      {/*    <ActionModal*/}
-      {/*      id={id}*/}
-      {/*      navigateRoute={'places'}*/}
-      {/*      name={name}*/}
-      {/*      toggleModal={handleDeleteToggle}*/}
-      {/*      visibility={showDeleteModal}*/}
-      {/*    />*/}
-      {/*  )}*/}
+  const handleFlagChange = (val) => {
+    console.log(val, 'clock');
+  };
 
-      <div className="ng-padding-medium">
-        <form className="ng-form ng-form-dark ng-flex-column">
-          <div className="ng-grid">
-            <div className="ng-width-3-4">
-              <InlineEditCard
-                hasButtons={true}
-                saveAction={( e ) => onSubmit(e)}
-                validForm={formState.isValid || jsonError}
-                serverErrors={serverErrors}
-                editForm={( setIsEditing ) => (
-                  <>
-                    <label className="ng-form-label" htmlFor="name">
-                      Place title*
+  return !!place && <ContentLayout errors={errors} backTo="/places" isLoading={isLoading}>
+    {showDeleteModal && (
+      <ActionModal
+        id={place.id}
+        navigateRoute={'places'}
+        name={place.name}
+        toggleModal={handleDeleteToggle}
+        visibility={showDeleteModal}
+      />
+    )}
+    <div className="ng-padding-medium">
+      <form className="ng-form ng-form-dark ng-flex-column">
+        <div className="ng-grid">
+          <div className="ng-width-3-4">
+            <InlineEditCard
+              render={({setIsEditing, setIsLoading, setServerErrors}) => (
+                <>
+                  <label className="ng-form-label" htmlFor="name">
+                    Place title*
+                  </label>
+                  <input
+                    ref={register({
+                      required: true,
+                    })}
+                    name="name"
+                    type="text"
+                    defaultValue={place.name}
+                    placeholder="Place name"
+                    className={INPUT_SIZE_CLASSNAME}
+                  />
+                  <InlineCardButtons
+                    submitButtonText="Save"
+                    cancelButtonText="Cancel"
+                    cancelAction={(e) => setIsEditing(false)}
+                    submitAction={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}/>
+                </>
+              )}>
+              <h1 className="ng-text-display-m ng-margin-remove">{place.name}</h1>
+            </InlineEditCard>
+          </div>
+          <div className="ng-width-1-4">
+            <InlineEditCard>
+              <Controller
+                name="featured"
+                control={control}
+                defaultValue={place.featured}
+                as={
+                <div>
+                  Featured
+                  <Toggle className="ng-margin-right" active={place.featured === true}/>
+                </div>}
+              />
+            </InlineEditCard>
+          </div>
+        </div>
+        <div className="ng-grid">
+          <div className="ng-width-1-2">
+            <InlineEditCard
+              render={({setIsEditing, setIsLoading, setServerErrors}) => (
+                <>
+                  <div className="ng-margin-medium-bottom">
+                    <label className="ng-form-label" htmlFor="slug">
+                      Place slug*
                     </label>
                     <input
                       ref={register({
                         required: true,
                       })}
-                      name="name"
+                      name="slug"
                       type="text"
-                      defaultValue={name}
-                      placeholder="Place name"
+                      defaultValue={place.slug}
+                      placeholder="Place slug"
                       className={INPUT_SIZE_CLASSNAME}
                     />
-                  </>
-                )}>
-                <h1 className="ng-text-display-m ng-margin-remove">{name}</h1>
-              </InlineEditCard>
-            </div>
-            <div className="ng-width-1-4">
-              <InlineEditCard
-                hasButtons={false}
-                saveAction={( e ) => onSubmit(e)}
-                validForm={formState.isValid || jsonError}
-                serverErrors={serverErrors}>
-                featured & published
-              </InlineEditCard>
-            </div>
+                  </div>
+                  <div>
+                    <label htmlFor="type">Place type</label>
+                    <select
+                      className="ng-width-1-1 ng-form-large"
+                      id="type"
+                      ref={register({
+                        required: true,
+                      })}
+                      name="type"
+                      defaultValue={place.type}
+                    >
+                      {Object.keys(PlaceTypeEnum).map((t, idx) => (
+                        <option
+                          key={idx}
+                          value={PlaceTypeEnum[t]}
+                          selected={place.type === PlaceTypeEnum[t]}
+                        >
+                          {PlaceTypeEnum[t]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <InlineCardButtons
+                    submitButtonText="Save"
+                    cancelButtonText="Cancel"
+                    cancelAction={(e) => setIsEditing(false)}
+                    submitAction={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}/>
+                </>
+              )}>
+              <div className="ng-margin-medium-bottom">
+                <p className="ng-text-weight-bold ng-margin-remove">Place slug</p>
+                <p className="ng-margin-remove ng-padding-left">{place.slug}</p>
+              </div>
+              <div>
+                <p className="ng-text-weight-bold ng-margin-remove">Place type</p>
+                <p className="ng-margin-remove ng-padding-left">{place.type}</p>
+              </div>
+            </InlineEditCard>
           </div>
-          <div className="ng-grid">
-            <div className="ng-width-1-2">
-              <InlineEditCard
-                hasButtons={true}
-                saveAction={( e ) => onSubmit(e)}
-                validForm={formState.isValid || jsonError}
-                serverErrors={serverErrors}
-                editForm={( setIsEditing ) => (
-                  <>
-                    <div>
-                      <label className="ng-form-label" htmlFor="slug">
-                        Place slug*
-                      </label>
-                      <input
-                        ref={register({
-                          required: true,
-                        })}
-                        name="slug"
-                        type="text"
-                        defaultValue={slug}
-                        placeholder="Place slug"
-                        className={INPUT_SIZE_CLASSNAME}
+          <div className="ng-width-1-2">
+            <InlineEditCard
+              hasButtons={false}>
+              <p className="ng-margin-bottom ng-margin-top-remove">
+                <span className="ng-text-weight-bold ng-color-mdgray">ID:</span> {place.id}
+              </p>
+              <p className="ng-margin-bottom ng-margin-top-remove">
+                <span className="ng-text-weight-bold ng-color-mdgray">Version:</span> {place.version}
+              </p>
+              <p className="ng-margin-bottom ng-margin-top-remove">
+                <span className="ng-text-weight-bold ng-color-mdgray">Last Updated:</span> {formatDate(place.updatedAt)}
+              </p>
+              <p className="ng-margin-bottom ng-margin-top-remove">
+                <span className="ng-text-weight-bold ng-color-mdgray">Created:</span> {formatDate(place.createdAt)}
+              </p>
+            </InlineEditCard>
+          </div>
+        </div>
+        <div className="ng-grid">
+          {!!mapData && (
+            <MapComponentContext.Provider value={mapData}>
+              <div className="ng-margin-medium-bottom ng-width-1-1">
+                <InlineEditCard render={({setIsEditing, setIsLoading, setServerErrors}) => (
+                  <div className="ng-grid">
+                    <div className="ng-width-1-2">
+                      <MapComponent height="235px"/>
+                      <button
+                        className="ng-button ng-button-link ng-align-right ng-margin-top">Download
+                        geojson
+                      </button>
+                      <div className="ng-width-1-1 ng-margin-medium-top">
+                        <label htmlFor="geojson">Place shape</label>
+                        <input type="file" id={place.geojson} className="ng-width-1-1"/>
+                      </div>
+                    </div>
+                    <div className="ng-width-1-2">
+                      {place.areaKm2 && <p className="ng-margin-bottom ng-margin-top-remove">
+                                          <span
+                                            className="ng-text-weight-bold ng-color-mdgray">Area ha:</span> {km2toHa(place.areaKm2)}
+                      </p>}
+                      {place.bbox2d && <p className="ng-margin-bottom ng-margin-top-remove">
+                                          <span
+                                            className="ng-text-weight-bold ng-color-mdgray">Area Bbox:</span> {formatArrayToParanthesis(place.bbox2d, 'rounded', 2)}
+                      </p>}
+                      {place.centroid && <p className="ng-margin-bottom ng-margin-top-remove">
+                                          <span
+                                            className="ng-text-weight-bold ng-color-mdgray">Centroid:</span> {formatArrayToParanthesis(place.centroid.geometry.coordinates, 'brackets', 1)}
+                      </p>}
+                    </div>
+                    <InlineCardButtons
+                      submitButtonText="Save"
+                      cancelButtonText="Cancel"
+                      cancelAction={(e) => setIsEditing(false)}
+                      submitAction={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}/>
+                  </div>
+                )}>
+                  <br/>
+                  <MapComponent/>
+                </InlineEditCard>
+              </div>
+            </MapComponentContext.Provider>
+          )}
+        </div>
+      </form>
+
+      <div className="ng-margin-medium-bottom">
+        <InlineEditCard hasButtons={false}>
+          {metricsPermission && (
+            <div>
+              {place.metrics && (
+                <div>
+                  <h5 className="ng-text-display-s">Place Metrics</h5>
+                  <div className="ng-flex ng-flex-wrap">
+                    {place.metrics.map((metric) => (
+                      <PlaceMetrics
+                        key={metric.id}
+                        data={metric}
+                        handlers={{handleServerErrors}}
                       />
-                    </div>
-                    <div>
-                      <label htmlFor="type">Place type</label>
-                      <select
-                        className="ng-width-1-1 ng-form-large"
-                        id="type"
-                        ref={register({
-                          required: true,
-                        })}
-                        name="type"
-                        defaultValue={type}
-                      >
-                        {Object.keys(PlaceTypeEnum).map(( t, idx ) => (
-                          <option
-                            key={idx}
-                            value={PlaceTypeEnum[ t ]}
-                            selected={type === PlaceTypeEnum[ t ]}
-                          >
-                            {PlaceTypeEnum[ t ]}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {writeMetricsPermission && (
+                <button
+                  className="ng-button ng-button-primary"
+                  onClick={(e) => handleCalculateAll(e, place.id)}
+                >
+                  Recalculate all
+                </button>
+              )}
 
-                  </>
-                )}>
-                <p className="ng-margin-remove">{slug}</p>
-                <p className="ng-margin-remove">{type}</p>
-              </InlineEditCard>
+              {serverErrors && <ErrorMessages key={place.id} errors={serverErrors}/>}
             </div>
-            <div className="ng-width-1-2">
-              <InlineEditCard
-                hasButtons={false}>
-                <p className="ng-margin-bottom ng-margin-top-remove">
-                  <span className="ng-text-weight-bold ng-color-mdgray">ID:</span> {id}
-                </p>
-                <p className="ng-margin-bottom ng-margin-top-remove">
-                  <span className="ng-text-weight-bold ng-color-mdgray">Version:</span> {version}
-                </p>
-                <p className="ng-margin-bottom ng-margin-top-remove">
-                  <span className="ng-text-weight-bold ng-color-mdgray">Last Updated:</span> {formatDate(updatedAt)}
-                </p>
-                <p className="ng-margin-bottom ng-margin-top-remove">
-                  <span className="ng-text-weight-bold ng-color-mdgray">Created:</span> {formatDate(createdAt)}
-                </p>
-              </InlineEditCard>
-            </div>
-          </div>
-          {/*</div>*/}
-          {/*<div className="ng-margin-medium-bottom ng-grid">*/}
-          {/*<div className="ng-margin-medium-bottom ng-grid">*/}
-          {/*  <div className="ng-width-large-1-1 ng-width-1-1">*/}
-          {/*    <label className="ng-form-label" htmlFor="description">*/}
-          {/*      Place description*/}
-          {/*    </label>*/}
-          {/*    <textarea*/}
-          {/*      ref={register}*/}
-          {/*      name="description"*/}
-          {/*      defaultValue={description}*/}
-          {/*      placeholder="Place description"*/}
-          {/*      className={INPUT_SIZE_CLASSNAME}*/}
-          {/*    />*/}
-          {/*  </div>*/}
-          {/*</div>*/}
-          {/*<div className="ng-margin-medium-bottom ng-grid">*/}
-          {/*  <div className="ng-width-large-1-2 ng-width-1-1">*/}
-          {/*    <div className="ng-margin-medium-bottom">*/}
-          {/*      <input*/}
-          {/*        ref={register}*/}
-          {/*        name="featured"*/}
-          {/*        id="featured"*/}
-          {/*        type="checkbox"*/}
-          {/*        defaultChecked={featured}*/}
-          {/*        className="ng-margin-right"*/}
-          {/*      />*/}
-          {/*      <label htmlFor="featured">Featured?</label>*/}
-          {/*    </div>*/}
-
-          {/*    <div className="ng-margin-medium-bottom">*/}
-          {/*      <input*/}
-          {/*        ref={register}*/}
-          {/*        name="published"*/}
-          {/*        id="published"*/}
-          {/*        type="checkbox"*/}
-          {/*        defaultChecked={published}*/}
-          {/*        className="ng-margin-right"*/}
-          {/*      />*/}
-          {/*      <label htmlFor="published">Published?</label>*/}
-          {/*    </div>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
-
-          {/*<div className="ng-margin-medium-bottom">*/}
-          {/*  {!!geojsonValue && (*/}
-          {/*    <Controller*/}
-          {/*      name="geojson"*/}
-          {/*      control={control}*/}
-          {/*      defaultValue={geojsonValue}*/}
-          {/*      onChange={( layerConfig ) => handleJsonChange(layerConfig)}*/}
-          {/*      as={<JsonEditor json={geojsonValue}/>}*/}
-          {/*    />*/}
-          {/*  )}*/}
-          {/*</div>*/}
-
-          {/*<p>*/}
-          {/*  <span className="ng-text-weight-medium">Bbox2d: </span>*/}
-          {/*  {bbox2d || '-'}*/}
-          {/*</p>*/}
-          {/*<p>*/}
-          {/*  <span className="ng-text-weight-medium">AreaKm2: </span>*/}
-          {/*  {areaKm2 || '-'}*/}
-          {/*</p>*/}
-
-          {/*{serverErrors && <ErrorMessages errors={serverErrors}/>}*/}
-
-          {/*<div className="ng-flex">*/}
-          {/*  <button*/}
-          {/*    className="ng-button ng-button-primary ng-margin-medium-right"*/}
-          {/*    onClick={onSubmit}*/}
-          {/*    disabled={!formState.isValid || jsonError}*/}
-          {/*  >*/}
-          {/*    Save*/}
-          {/*  </button>*/}
-
-          {/*  <LinkWithOrg className="ng-button ng-button-secondary" to="/places">*/}
-          {/*    Cancel*/}
-          {/*  </LinkWithOrg>*/}
-          {/*</div>*/}
-        </form>
-
-
-        {/*<div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">*/}
-        {/*  {mappedIntersections &&*/}
-        {/*  map(mappedIntersections, ( intersections, idx ) => (*/}
-        {/*    <PlaceIntersections*/}
-        {/*      key={idx}*/}
-        {/*      name={intersections[0].type}*/}
-        {/*      intersections={intersections}*/}
-        {/*    />*/}
-        {/*  ))}*/}
-        {/*</div>*/}
-
-        {/*{!isEmpty(geojson) && (*/}
-        {/*  <div className="ng-margin-medium-bottom">*/}
-        {/*    <MapComponentContext.Provider value={mapData}>*/}
-        {/*      <MapComponent/>*/}
-        {/*    </MapComponentContext.Provider>*/}
-        {/*  </div>*/}
-        {/*)}*/}
-
-        {/*{writePermissions && (*/}
-        {/*  <LinkWithOrg*/}
-        {/*    to={`/places/${id}/edit`}*/}
-        {/*    className="ng-button ng-button-primary ng-margin-medium-right"*/}
-        {/*  >*/}
-        {/*    Edit Place*/}
-        {/*  </LinkWithOrg>*/}
-        {/*)}*/}
-        {/*<LinkWithOrg to="/places" className="ng-button ng-button-secondary">*/}
-        {/*  Go back to places list*/}
-        {/*</LinkWithOrg>*/}
+          )}
+        </InlineEditCard>
       </div>
-
-      {/*{metricsPermission && (*/}
-      {/*  <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">*/}
-      {/*    {metrics && (*/}
-      {/*      <div>*/}
-      {/*        <h5 className="ng-text-display-s">Place Metrics</h5>*/}
-      {/*        <div className="ng-flex ng-flex-wrap">*/}
-      {/*          {metrics.map(( metric ) => (*/}
-      {/*            <PlaceMetrics*/}
-      {/*              key={metric.id}*/}
-      {/*              data={metric}*/}
-      {/*              handlers={{ handleServerErrors }}*/}
-      {/*            />*/}
-      {/*          ))}*/}
-      {/*        </div>*/}
-      {/*      </div>*/}
-      {/*    )}*/}
-      {/*    {writeMetricsPermission && (*/}
-      {/*      <button*/}
-      {/*        className="ng-button ng-button-primary"*/}
-      {/*        onClick={( e ) => handleCalculateAll(e, id)}*/}
-      {/*      >*/}
-      {/*        Recalculate all*/}
-      {/*      </button>*/}
-      {/*    )}*/}
-
-      {/*    {serverErrors && <ErrorMessages key={id} errors={serverErrors}/>}*/}
-      {/*  </div>*/}
-      {/*)}*/}
-      {/*{writePermissions && (*/}
-      {/*  <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">*/}
-      {/*    <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>*/}
-      {/*      Delete place*/}
-      {/*    </button>*/}
-      {/*  </div>*/}
-      {/*)}*/}
-
-    </ContentLayout>
-  );
+      {!!place.intersections && <div className="ng-margin-medium-bottom">
+        <InlineEditCard hasButtons={false}>
+          <div className="">
+            {mappedIntersections &&
+            map(mappedIntersections, (intersections, idx) => (
+              <PlaceIntersections
+                key={idx}
+                name={intersections[0].type}
+                intersections={intersections}
+              />
+            ))}
+          </div>
+        </InlineEditCard>
+      </div>}
+      {writePermissions && (
+        <div className="ng-text-right">
+          <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
+            Delete place
+          </button>
+        </div>
+      )}
+    </div>
+  </ContentLayout>;
 }

@@ -31,68 +31,53 @@ export interface InlineCardProps {
   hasButtons?: boolean;
   primaryButtonText?: string;
   secondaryButtonText?: string;
-  editAction?: ( v: boolean ) => void;
-  saveAction?: ( s: any ) => void;
+  editAction?: (v: boolean) => void;
+  saveAction?: (s: any) => void;
   children?: ReactNode;
-  editForm?: ( setIsEditing: ( value: ((( prevState: boolean ) => boolean) | boolean) ) => void ) => {};
+  editForm?: any;
+  render?: any;
   serverErrors?: any;
   validForm?: boolean;
+  editButtonText?: string
 }
 
 const Card: any = Keyframes.Spring({
-  close: [{ x: 1 }],
-  open: [{ x: 1.01 }, { x: 1 }],
+  close: [{x: 1}],
+  open: [{x: 1.01}, {x: 1}],
 });
 
-export default function InlineEditCard( props: InlineCardProps ) {
+export default function InlineEditCard(props: InlineCardProps) {
   const {
-    children, saveAction, isLoading, editForm, hasButtons,
-    primaryButtonText = 'save', secondaryButtonText = 'cancel', serverErrors, validForm,
+    children, render, editButtonText = 'edit',
   } = props;
 
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [serverErrors, setServerErrors] = useState(null);
+
   const state = isEditing ? 'open' : 'close';
-
-
-  useEffect(() => {
-
-  });
-
-  const handleSave = ( e ) => {
-    saveAction && saveAction(e);
-    !serverErrors && setIsEditing(false);
-  };
-
 
   const renderEditable = () => (
     <>
-      {editForm(setIsEditing)}
+      {render({setIsEditing, setIsLoading, setServerErrors})}
       {serverErrors && <ErrorMessages errors={serverErrors}/>}
-      {hasButtons && <div className="ng-margin-medium-top">
-        {primaryButtonText &&
-        <button className="ng-button ng-button-primary ng-margin-right" disabled={!validForm}
-                onClick={handleSave}>{primaryButtonText}</button>}
-        {secondaryButtonText &&
-        <button className="ng-button ng-button-secondary"
-                onClick={( e ) => setIsEditing(false)}>{secondaryButtonText}</button>}
-      </div>}
       <InlineCardOverlay/>
     </>
   );
 
 
   const renderDefault = () => (<>
-    {editForm && (
+    {render && (
       <button className="ng-button ng-button-link ng-edit-card-button"
-              onClick={( e ) => setIsEditing(true)}>edit</button>
+              onClick={(e) => setIsEditing(true)}>{editButtonText}</button>
     )}
     {children}
   </>);
 
   return (
     <Card native state={state}>
-      {( { x, ...props } ) => (
+      {({x, ...props}) => (
         <animated.div
           className={classnames({
             'ng-padding-medium ng-inline-card ng-background-ultradkgray': true,

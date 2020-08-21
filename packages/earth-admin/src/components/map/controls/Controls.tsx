@@ -18,23 +18,38 @@
 */
 
 import * as React from 'react';
+import classnames from 'classnames';
+import './styles.scss';
 
-import { LinkWithOrg } from 'components';
-import { PlaceIntersectionProps } from '../model';
-
-export default function PlaceIntersections( props: PlaceIntersectionProps) {
-  const { intersections, name } = props;
-
-  return (
-    <div className="ng-flex ng-flex-column ng-margin-medium-bottom">
-      <p className="ng-text-weight-bold ng-margin-small-bottom">{name} Relationships</p>
-      <div className="ng-flex ng-flex-wrap ng-padding-left">
-        {intersections.map((int) => (
-          <LinkWithOrg to={`/places/${int.id}`} key={int.id} className="ng-margin-medium-right">
-            {int.name}
-          </LinkWithOrg>
-        ))}
-      </div>
-    </div>
-  );
+interface IMapControls {
+  children: any;
+  customClass?: string;
 }
+
+class MapControls extends React.PureComponent<IMapControls> {
+  render() {
+    const { customClass, children } = this.props;
+    const classNames = classnames({
+      'c-map-controls': true,
+      [customClass]: !!customClass,
+    });
+
+    return (
+      <div className={classNames}>
+        <div className="map-controls--list ng-flex-bottom">
+          {React.Children.map(
+            children,
+            (c, i) =>
+              React.isValidElement(c) && (
+                <div className="map-controls--list-item" key={i}>
+                  {React.cloneElement(c)}
+                </div>
+              )
+          )}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default MapControls;

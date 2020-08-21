@@ -17,31 +17,37 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './action-modal';
-export * from './dashboards';
-export * from './data-listing';
-export * from './dropdown';
-export * from './error-messages';
-export * from './html-editor';
-export * from './json-editor';
-export * from './layers';
-export * from './link-with-org';
-export * from './places';
-export * from './map';
-export * from './not-found';
-export * from './org-switcher';
-export * from './organizations';
-export * from './protected-route';
-export * from './search-input';
-export * from './users';
-export * from './user-menu';
-export * from './sidebar-select';
-export * from './users';
-export * from './widgets';
-export * from './inline-edit-card';
-export * from './toggle';
+import * as React from 'react';
+import classnames from 'classnames';
 
+import './styles.scss';
 
+export interface IRecenter {
+  className?: string;
+  onClick: () => void;
+}
 
+class RecenterControl extends React.PureComponent<IRecenter> {
+  static defaultProps = {
+    className: null,
+  };
 
+  render() {
+    const { className, onClick } = this.props;
 
+    const classNames = classnames({
+      'c-recenter-control': true,
+      [className]: !!className,
+    });
+
+    return (
+      <div className={classNames}>
+        <button type="button" className="recenter-control--btn" onClick={onClick}>
+          <i className="ng-body-color ng-icon-geolocate"></i>
+        </button>
+      </div>
+    );
+  }
+}
+
+export default RecenterControl;

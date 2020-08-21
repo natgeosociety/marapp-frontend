@@ -23,15 +23,14 @@ export const MAP_DEFAULT = {
   viewport: {
     zoom: 2,
     minZoom: 2,
-    latitude: 20,
-    longitude: 0,
+    maxZoom: 12,
   },
   bounds: {},
   interactions: {},
   hoverInteractions: {},
   latlng: {},
   mapStyle: APP_BASEMAPS[0].id,
-  mapLabels: false,
+  mapLabels: true,
   mapRoads: false,
 };
 

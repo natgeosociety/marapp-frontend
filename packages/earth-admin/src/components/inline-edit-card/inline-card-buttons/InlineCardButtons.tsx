@@ -17,31 +17,27 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './action-modal';
-export * from './dashboards';
-export * from './data-listing';
-export * from './dropdown';
-export * from './error-messages';
-export * from './html-editor';
-export * from './json-editor';
-export * from './layers';
-export * from './link-with-org';
-export * from './places';
-export * from './map';
-export * from './not-found';
-export * from './org-switcher';
-export * from './organizations';
-export * from './protected-route';
-export * from './search-input';
-export * from './users';
-export * from './user-menu';
-export * from './sidebar-select';
-export * from './users';
-export * from './widgets';
-export * from './inline-edit-card';
-export * from './toggle';
 
+import React from 'react';
 
+interface InlineCardButtonsProps {
+  submitAction?: (e: any) => Promise<void>;
+  cancelAction?: (e: any) => any;
+  submitButtonText?: string;
+  cancelButtonText?: string;
+}
 
+const InlineCardButtons = (props: InlineCardButtonsProps) => {
+  const {submitAction, cancelAction, submitButtonText, cancelButtonText} = props;
+//todo disable save
+  return <div className="ng-margin-medium-top">
+    <button className="ng-button ng-button-primary ng-margin-right"
+            onClick={submitAction}>{submitButtonText}
+    </button>
+    <button className="ng-button ng-button-secondary"
+            onClick={cancelAction}>{cancelButtonText}
+    </button>
+  </div>;
+};
 
-
+export default InlineCardButtons;

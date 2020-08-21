@@ -1,0 +1,37 @@
+@import '~styles/config';
+
+.layers--item-switch {
+  position: relative;
+  width: 30px;
+  height: 12px;
+  background: $marapp-gray-2;
+  border: none;
+  border-radius: 15px;
+  transition: background $animation-time linear;
+  flex-shrink: 0;
+  top: 8px;
+
+  span {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(0,-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: $marapp-gray-0;
+    transition: all $animation-time $ease-in-out-sine;
+    box-shadow: 0 1px 3px 0 rgba($marapp-gray-100, 0.5);
+  }
+
+  &.-active {
+    background-color: lighten($marapp-primary-color, 25%);
+
+    span {
+      background-color: $marapp-primary-color;
+      box-shadow: 0 1px 3px 0 rgba($marapp-gray-100, 0.5);
+      transform: translate(14px, -50%);
+    }
+  }
+}
