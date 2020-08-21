@@ -38,8 +38,8 @@ export interface Place {
 
 export interface PlaceContextProps {
   places: Place[];
-  handleSearchValueChange: (newValue: string) => {};
-  handleCursorChange: () => {};
+  handleSearchValueChange: (newValue: string) => void;
+  handleCursorChange: () => void;
   pageSize: number;
   isLoading: boolean;
   isNoMore: boolean;

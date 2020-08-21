@@ -17,6 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-import PlaceHome from './PlaceHome';
-
-export { PlaceHome };
+export { default as Sidebar } from './PlaceSidebar';

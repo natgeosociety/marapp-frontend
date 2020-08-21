@@ -74,7 +74,7 @@ export default function PlaceEdit( props: PlaceProps ) {
     const formData = getValues();
     try {
       await handlePlaceForm(props.newPlace, formData, id, selectedGroup);
-      await navigate(`${selectedGroup}/places`);
+      await navigate(`/${selectedGroup}/places`);
     } catch (error) {
       setServerErrors(error.data.errors);
     }

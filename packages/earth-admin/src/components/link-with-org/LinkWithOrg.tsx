@@ -31,9 +31,12 @@ interface IProps {
 
 export const LinkWithOrg = ( { to, switchOrgTo, ...rest }: IProps ) => {
   const { selectedGroup } = React.useContext(Auth0Context);
+  const separator = to[0] === '/'
+    ? ''
+    : '/';
   const finalLink = switchOrgTo
-    ? `/${switchOrgTo}/${to}`
-    : `/${selectedGroup}/${to}`;
+    ? `/${switchOrgTo}${separator}${to}`
+    : `/${selectedGroup}${separator}${to}`;
 
   return <Link {...rest} to={finalLink}/>;
 };
