@@ -56,6 +56,7 @@ export function NewPlace(path: any) {
               placeholder="Place title"
               label="Title*"
               size="large"
+              className="ng-display-block"
               error={touched.name && errors.name && errors.name.message}
               ref={register({
                 required: 'Place title is required',
@@ -63,7 +64,27 @@ export function NewPlace(path: any) {
           </Card>
 
           <Card>
-            <div className="ng-margin-medium-bottom">
+            <div className="ng-grid ng-margin-medium-bottom ng-flex-bottom">
+              <div className="ng-width-large-1-2">
+                <Input
+                  name="slug"
+                  placeholder="Place slug"
+                  label="Slug*"
+                  size="large"
+                  className="ng-display-block"
+                  error={touched.slug && errors.slug && errors.slug.message}
+                  ref={register({
+                    required: 'Slug is required',
+                  })} />
+              </div>
+              <div className="ng-width-large-1-2">
+                <button className="ng-button ng-button-secondary ng-button-large">
+                  Generate a slug name
+                </button>
+              </div>
+            </div>
+
+            <div>
               <label htmlFor="input-type">Place type*</label>
               <select
                 className="ng-width-1-1 ng-form-large"
@@ -82,18 +103,6 @@ export function NewPlace(path: any) {
                   </option>
                 ))}
               </select>
-            </div>
-
-            <div className="ng-width-1-1">
-              <Input
-                name="slug"
-                placeholder="Place slug"
-                label="Slug*"
-                size="large"
-                error={touched.slug && errors.slug && errors.slug.message}
-                ref={register({
-                  required: 'Slug is required',
-                })} />
             </div>
 
             {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}
@@ -116,16 +125,16 @@ export function NewPlace(path: any) {
             : (
               <div className="ng-flex">
                 <button
-                  className="ng-button ng-button-primary ng-margin-medium-right"
+                  className="ng-button ng-button-primary ng-button-large ng-margin-medium-right"
                   onClick={onSubmit}
                   disabled={!isValid || jsonError || !dirty}
                 >
                   Save and view details
-                  </button>
+                </button>
 
-                <LinkWithOrg className="ng-button ng-button-secondary" to="/places">
+                <LinkWithOrg className="ng-button ng-button-secondary ng-button-large" to="/places">
                   Return to dashboard
-                  </LinkWithOrg>
+                </LinkWithOrg>
               </div>
             )}
 
