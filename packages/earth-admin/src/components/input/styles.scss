@@ -1,0 +1,11 @@
+.input-component {
+  display: inline-block;
+
+  input {
+    width: 100%;
+  }
+
+  .error {
+    color: red;
+  }
+}

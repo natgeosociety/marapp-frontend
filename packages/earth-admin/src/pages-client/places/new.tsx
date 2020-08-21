@@ -8,13 +8,14 @@ import { useAuth0 } from 'auth/auth0';
 import { addPlace } from 'services/places';
 import { PlaceTypeEnum } from './model';
 
-import { LinkWithOrg, ErrorMessages, Card, FakeJsonUpload } from 'components';
+import { LinkWithOrg, ErrorMessages, Card, FakeJsonUpload, Input } from 'components';
 import { ContentLayout } from 'layouts';
 
 export function NewPlace(path: any) {
-  const { getValues, register, formState } = useForm({
+  const { getValues, register, formState, errors } = useForm({
     mode: 'onChange',
   });
+  const { touched, dirty, isValid } = formState;
   const [isLoading, setIsLoading] = useState(false);
   const [geojsonValue, setGeojson] = useState(null);
   const [serverErrors, setServerErrors] = useState([]);
@@ -50,17 +51,15 @@ export function NewPlace(path: any) {
         <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5">
 
           <Card>
-            <label className="ng-form-label" htmlFor="input-name">Title*</label>
-            <input
-              ref={register({
-                required: true,
-              })}
-              id="input-name"
+            <Input
               name="name"
-              type="text"
               placeholder="Place title"
-              className={INPUT_SIZE_CLASSNAME}
-            />
+              label="Title*"
+              size="large"
+              error={touched.name && errors.name && errors.name.message}
+              ref={register({
+                required: 'Place title is required',
+              })} />
           </Card>
 
           <Card>
@@ -86,17 +85,15 @@ export function NewPlace(path: any) {
             </div>
 
             <div className="ng-width-1-1">
-              <label htmlFor="input-slug">Slug*</label>
-              <input
-                ref={register({
-                  required: true,
-                })}
-                id="input-slug"
+              <Input
                 name="slug"
-                type="text"
                 placeholder="Place slug"
-                className={INPUT_SIZE_CLASSNAME}
-              />
+                label="Slug*"
+                size="large"
+                error={touched.slug && errors.slug && errors.slug.message}
+                ref={register({
+                  required: 'Slug is required',
+                })} />
             </div>
 
             {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}
@@ -108,7 +105,7 @@ export function NewPlace(path: any) {
               name="geojson"
               label="Place shape*"
               ref={register({
-                required: true,
+                required: 'GeoJSON is required',
               })}
               onChange={(json) => setGeojson(json)}
               onError={(err) => setJsonError(err)} />
@@ -121,7 +118,7 @@ export function NewPlace(path: any) {
                 <button
                   className="ng-button ng-button-primary ng-margin-medium-right"
                   onClick={onSubmit}
-                  disabled={!formState.isValid || jsonError}
+                  disabled={!isValid || jsonError || !dirty}
                 >
                   Save and view details
                   </button>
