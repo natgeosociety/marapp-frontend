@@ -17,24 +17,39 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
+@import '~styles/config';
 
-import { LinkWithOrg } from 'components';
-import { PlaceIntersectionProps } from '../../../pages-client/places/model';
+.c-zoom-control {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 5px 0 rgba($marapp-gray-100,0.5);
 
-export default function PlaceIntersections( props: PlaceIntersectionProps) {
-  const { intersections, name } = props;
+  .zoom-control--btn {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    background: $marapp-gray-8;
+    position: relative;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
 
-  return (
-    <div className="ng-flex ng-flex-column ng-margin-medium-bottom">
-      <p className="ng-text-weight-bold ng-margin-small-bottom">{name} Relationships</p>
-      <div className="ng-flex ng-flex-wrap ng-padding-left">
-        {intersections.map((int) => (
-          <LinkWithOrg to={`/places/${int.id}`} key={int.id} className="ng-margin-medium-right">
-            {int.name}
-          </LinkWithOrg>
-        ))}
-      </div>
-    </div>
-  );
+
+    &:hover {
+      background: lighten($marapp-gray-100, 10);
+    }
+
+    &:first-child {
+      border-top: none;
+    }
+
+    &.-disabled {
+      opacity: 0.8;
+      cursor: default;
+    }
+  }
 }

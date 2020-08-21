@@ -19,3 +19,4 @@
 
 export * from './layer-manager';
 export * from './map';
+export * from './controls';

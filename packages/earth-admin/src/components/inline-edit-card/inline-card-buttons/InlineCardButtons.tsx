@@ -17,24 +17,27 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 
-import { LinkWithOrg } from 'components';
-import { PlaceIntersectionProps } from '../../../pages-client/places/model';
+import React from 'react';
 
-export default function PlaceIntersections( props: PlaceIntersectionProps) {
-  const { intersections, name } = props;
-
-  return (
-    <div className="ng-flex ng-flex-column ng-margin-medium-bottom">
-      <p className="ng-text-weight-bold ng-margin-small-bottom">{name} Relationships</p>
-      <div className="ng-flex ng-flex-wrap ng-padding-left">
-        {intersections.map((int) => (
-          <LinkWithOrg to={`/places/${int.id}`} key={int.id} className="ng-margin-medium-right">
-            {int.name}
-          </LinkWithOrg>
-        ))}
-      </div>
-    </div>
-  );
+interface InlineCardButtonsProps {
+  submitAction?: (e: any) => Promise<void>;
+  cancelAction?: (e: any) => any;
+  submitButtonText?: string;
+  cancelButtonText?: string;
 }
+
+const InlineCardButtons = (props: InlineCardButtonsProps) => {
+  const {submitAction, cancelAction, submitButtonText, cancelButtonText} = props;
+//todo disable save
+  return <div className="ng-margin-medium-top">
+    <button className="ng-button ng-button-primary ng-margin-right"
+            onClick={submitAction}>{submitButtonText}
+    </button>
+    <button className="ng-button ng-button-secondary"
+            onClick={cancelAction}>{cancelButtonText}
+    </button>
+  </div>;
+};
+
+export default InlineCardButtons;
