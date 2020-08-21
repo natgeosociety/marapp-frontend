@@ -21,9 +21,9 @@ import {
   JsonEditor,
   InlineEditCard,
   InlineCardButtons,
-  Toggle,
+  Toggle, FakeJsonUpload,
 } from 'components';
-import { PlaceTypeEnum } from 'components/places/model';
+import { PlaceTypeEnum } from './model';
 import { Controller, useForm } from 'react-hook-form';
 import { navigate } from 'gatsby';
 
@@ -34,7 +34,7 @@ const PLACE_DETAIL_QUERY = {
   sort: 'intersections.name,metrics.slug,-metrics.version',
 };
 
-export default function DetailsPage(path: any) {
+export function PlaceDetail(path: any) {
   const {getPermissions, selectedGroup} = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
   const metricsPermission = getPermissions(AuthzGuards.accessMetricsGuard);
@@ -79,9 +79,14 @@ export default function DetailsPage(path: any) {
     e.preventDefault();
     const formData = getValues();
 
+    const parsed = {
+      ...formData,
+      geojson: geojsonValue,
+    }
+
     try {
       setIsLoading(true);
-      await handlePlaceForm(false, formData, place.id, selectedGroup);
+      await handlePlaceForm(false, parsed, place.id, selectedGroup);
       const res = await getPlace(encodedQuery);
       setPlace(res.data);
       setIsLoading(false);
@@ -251,7 +256,9 @@ export default function DetailsPage(path: any) {
           {!!mapData && (
             <MapComponentContext.Provider value={mapData}>
               <div className="ng-margin-medium-bottom ng-width-1-1">
-                <InlineEditCard render={({setIsEditing, setIsLoading, setServerErrors}) => (
+                <InlineEditCard
+                  editButtonText="View and upload shape"
+                  render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <div className="ng-grid">
                     <div className="ng-width-1-2">
                       <MapComponent height="235px"/>
@@ -260,8 +267,14 @@ export default function DetailsPage(path: any) {
                         geojson
                       </button>
                       <div className="ng-width-1-1 ng-margin-medium-top">
-                        <label htmlFor="geojson">Place shape</label>
-                        <input type="file" id={place.geojson} className="ng-width-1-1"/>
+                        <FakeJsonUpload
+                          name="geojson"
+                          label="Place shape*"
+                          ref={register({
+                            required: 'GeoJSON is required',
+                          })}
+                          onChange={(json) => setGeojson(json)}
+                          onError={(err) => setJsonError(err)} />
                       </div>
                     </div>
                     <div className="ng-width-1-2">
@@ -279,7 +292,7 @@ export default function DetailsPage(path: any) {
                       </p>}
                     </div>
                     <InlineCardButtons
-                      submitButtonText="Save"
+                      submitButtonText="Update shape"
                       cancelButtonText="Cancel"
                       cancelAction={(e) => setIsEditing(false)}
                       submitAction={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}/>
