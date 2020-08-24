@@ -56,7 +56,7 @@ const ZoomControl = (props: IZoomControl) => {
 
     onClick(zoom === minZoom ? zoom : zoom - 1);
   };
-  
+
   return (
     <div className={classNames}>
       <button

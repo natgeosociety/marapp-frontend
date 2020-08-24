@@ -46,7 +46,7 @@ export default function MapComponent(props: {height?: string}) {
     ...LAYER_DEFAULT,
     ...{source: {...LAYER_DEFAULT.source, ...{data: geojson}}},
   };
-  
+
   const onRecenterChange = () => {
     setBounds(null);
 
