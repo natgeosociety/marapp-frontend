@@ -109,7 +109,7 @@ export const Auth0Provider = ({
         const roles = get(idToken, `${NAMESPACE}/roles`, []);
         setRoles(mapAuthzScopes(roles));
 
-        const isSuperAdmin = roles.find(role => role === '*:Super Admin');
+        const isSuperAdmin = roles.find(role => role === '*:SuperAdmin');
 
         const groups = get(idToken, `${NAMESPACE}/groups`, []);
         const [defaultGroup] = groups;
