@@ -63,7 +63,6 @@ export function NewPlace(path: any) {
               name="name"
               placeholder="Place title"
               label="Title*"
-              size="large"
               className="ng-display-block"
               error={touched.name && errors.name && errors.name.message}
               ref={register({
@@ -100,7 +99,6 @@ export function NewPlace(path: any) {
                   name="slug"
                   placeholder="Place slug"
                   label="Slug*"
-                  size="large"
                   className="ng-display-block"
                   error={touched.slug && errors.slug && errors.slug.message}
                   ref={register({

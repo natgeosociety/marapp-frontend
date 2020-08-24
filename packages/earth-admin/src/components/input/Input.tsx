@@ -1,7 +1,7 @@
 import * as React from 'react';
 import cn from 'classnames';
 
-import './styles.scss';
+// import './styles.scss';
 
 interface IProps {
   name: string;
@@ -9,7 +9,7 @@ interface IProps {
   label?: string;
   placeholder?: string;
   error?: string;
-  size?: 'small' | 'medium' | 'large',
+  size?: 'small' | 'large',
   className?: string;
   [any: string]: any;
 }
@@ -21,7 +21,7 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
     type = 'text',
     placeholder,
     error,
-    size = 'medium',
+    size = 'large',
     className,
     ...rest
   } = props;
@@ -30,14 +30,16 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
   const rootClases = cn({
     'input-component': true,
     [className]: !!className,
+    'ng-invalid-input': !!error,
   });
   const inputClases = cn({
+    'ng-width-1-1': true,
     [`ng-form-${size}`]: true,
   })
 
   return (
     <div className={rootClases}>
-      {label && <label className="ng-form-label" htmlFor="input-name">{label}</label>}
+      {label && <label className="ng-form-label ng-display-block" htmlFor="input-name">{label}</label>}
       <input
         ref={ref}
         id={id}
@@ -48,7 +50,7 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
         {...rest}
       />
       {error && (
-        <span className="error">{error}</span>
+        <div className="ng-form-error-block">{error}</div>
       )}
     </div>
   )
