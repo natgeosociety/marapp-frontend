@@ -12,7 +12,7 @@ export const Card = (props: IProps) => {
   } = props;
 
   return (
-    <div className={`ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom ${className}`}>
+    <div className={`ng-padding-medium ng-background-ultradkgray ng-height-1-1 ${className}`}>
       {props.children}
     </div>
   )

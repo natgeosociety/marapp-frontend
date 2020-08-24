@@ -18,7 +18,7 @@
 */
 
 import * as React from 'react';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { Map } from '@marapp/earth-components';
 
@@ -34,13 +34,20 @@ import ZoomControl from 'components/map/controls/zoom';
 
 
 export default function MapComponent(props: {height?: string}) {
-
   const {height = '500px'} = props;
   const {geojson, bbox} = useContext(MapComponentContext);
 
   const [viewport, setViewport] = useState(MAP_DEFAULT.viewport);
   const [mapZoom, setMapZoom] = useState(null);
   const [bounds, setBounds] = useState({bbox: bbox});
+
+  useEffect(() => {
+    setBounds({bbox: bbox})
+  }, [bbox]);
+
+  useEffect(() => {
+    setBounds(bounds);
+  }, [bounds])
 
   const LAYER = {
     ...LAYER_DEFAULT,
@@ -66,8 +73,8 @@ export default function MapComponent(props: {height?: string}) {
   const handleViewportChange = (e) => {
     setMapZoom(e.zoom);
   };
-  return (
 
+  return (
     <div className="c-map-wrapper -open" style={{height: height}}>
       <Map
         mapboxApiAccessToken={GATSBY_APP_MAPBOX_TOKEN}

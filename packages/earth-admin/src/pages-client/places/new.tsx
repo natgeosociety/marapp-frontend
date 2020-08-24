@@ -50,7 +50,7 @@ export function NewPlace(path: any) {
 
         <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5">
 
-          <Card>
+          <Card className="ng-margin-medium-bottom">
             <Input
               name="name"
               placeholder="Place title"
@@ -63,7 +63,7 @@ export function NewPlace(path: any) {
               })} />
           </Card>
 
-          <Card>
+          <Card className="ng-margin-medium-bottom">
             <div className="ng-grid ng-margin-medium-bottom ng-flex-bottom">
               <div className="ng-width-large-1-2">
                 <Input
@@ -108,7 +108,7 @@ export function NewPlace(path: any) {
             {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}
           </Card>
 
-          <Card>
+          <Card className="ng-margin-medium-bottom">
             <p>Choose a GeoJSON to calulate shape maths and geographic relationships.</p>
             <FakeJsonUpload
               name="geojson"
