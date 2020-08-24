@@ -34,38 +34,48 @@ import ZoomControl from 'components/map/controls/zoom';
 
 
 export default function MapComponent(props: {height?: string}) {
+
   const {height = '500px'} = props;
   const {geojson, bbox} = useContext(MapComponentContext);
 
   const [viewport, setViewport] = useState(MAP_DEFAULT.viewport);
-  const [bounds, setBounds] = useState({bbox: bbox})
+  const [mapZoom, setMapZoom] = useState(null);
+  const [bounds, setBounds] = useState({bbox: bbox});
+
   const LAYER = {
     ...LAYER_DEFAULT,
     ...{source: {...LAYER_DEFAULT.source, ...{data: geojson}}},
   };
-
-
-
+  
   const onRecenterChange = () => {
-    setBounds(null)
+    setBounds(null);
 
     requestAnimationFrame(() => {
-      setBounds(bounds)
+      setBounds(bounds);
     });
   };
 
   const onZoomChange = (zoom) => {
-    console.log(zoom);
     setViewport({...viewport, ...{zoom: zoom, transitionDuration: 500}});
   };
 
+  const handleMapLoad = (e) => {
+    setMapZoom(e.map.getZoom());
+  };
+
+  const handleViewportChange = (e) => {
+    setMapZoom(e.zoom);
+  };
   return (
+
     <div className="c-map-wrapper -open" style={{height: height}}>
       <Map
         mapboxApiAccessToken={GATSBY_APP_MAPBOX_TOKEN}
         bounds={bounds}
         mapStyle={MAP_DEFAULT.mapStyle}
         viewport={viewport}
+        onLoad={(e) => handleMapLoad(e)}
+        onViewportChange={(e) => handleViewportChange(e)}
         mapOptions={{
           customAttribution: '',
         }}
@@ -81,7 +91,7 @@ export default function MapComponent(props: {height?: string}) {
       </Map>
       <MapControls>
         <RecenterControl onClick={onRecenterChange}/>
-        <ZoomControl viewport={viewport} onClick={(e) => onZoomChange(e)}/>
+        <ZoomControl viewport={viewport} onClick={(e) => onZoomChange(e)} zoom={mapZoom}/>
       </MapControls>
     </div>
   );

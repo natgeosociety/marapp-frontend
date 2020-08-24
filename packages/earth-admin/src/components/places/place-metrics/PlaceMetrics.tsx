@@ -41,6 +41,7 @@ export default function PlaceMetrics(props: PlaceMetricsProps) {
   const writePermission = getPermissions(AuthzGuards.writeMetricsGuard);
 
 
+
   async function handleCalculateSingle(e: MouseEvent, placeID: string, metricId: string) {
     e.preventDefault();
     e.stopPropagation();

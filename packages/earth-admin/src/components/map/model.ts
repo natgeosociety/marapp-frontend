@@ -21,9 +21,9 @@ import { APP_BASEMAPS } from '../../theme';
 
 export const MAP_DEFAULT = {
   viewport: {
-    zoom: 2,
+    zoom: 11,
     minZoom: 2,
-    maxZoom: 12,
+    maxZoom: 11,
   },
   bounds: {},
   interactions: {},

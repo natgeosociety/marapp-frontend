@@ -18,6 +18,10 @@
 */
 @import "../../../styles/config";
 
+.ng-place-metrics-container {
+  margin: 0 -5px;
+}
+
 .ng-recalculate-metrics.ng-icon-button {
   background: $marapp-gray-7;
   border: 0;

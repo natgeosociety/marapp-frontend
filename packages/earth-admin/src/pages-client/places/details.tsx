@@ -314,7 +314,7 @@ export function PlaceDetail(path: any) {
               {place.metrics && (
                 <div>
                   <h5 className="ng-text-display-s">Place Metrics</h5>
-                  <div className="ng-flex ng-flex-wrap">
+                  <div className="ng-flex ng-flex-wrap ng-place-metrics-container">
                     {place.metrics.map((metric) => (
                       <PlaceMetrics
                         key={metric.id}
