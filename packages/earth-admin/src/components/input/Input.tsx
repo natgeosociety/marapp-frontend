@@ -11,6 +11,7 @@ interface IProps {
   error?: string;
   size?: 'small' | 'medium' | 'large',
   className?: string;
+  [any: string]: any;
 }
 
 export const Input = React.forwardRef((props: IProps, ref: any) => {
@@ -22,6 +23,7 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
     error,
     size = 'medium',
     className,
+    ...rest
   } = props;
 
   const id = `input-${name}`;
@@ -43,6 +45,7 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
         type={type}
         placeholder={placeholder}
         className={inputClases}
+        {...rest}
       />
       {error && (
         <span className="error">{error}</span>

@@ -5,23 +5,23 @@ import { useForm } from 'react-hook-form';
 import { Spinner } from '@marapp/earth-components';
 
 import { useAuth0 } from 'auth/auth0';
-import { addPlace } from 'services/places';
+import { addPlace, getUniqueSlug } from 'services/places';
 import { PlaceTypeEnum } from './model';
 
 import { LinkWithOrg, ErrorMessages, Card, FakeJsonUpload, Input } from 'components';
 import { ContentLayout } from 'layouts';
 
 export function NewPlace(path: any) {
-  const { getValues, register, formState, errors } = useForm({
+  const { getValues, register, watch, formState, errors, setValue } = useForm({
     mode: 'onChange',
   });
   const { touched, dirty, isValid } = formState;
+  const watchName = watch('name');
   const [isLoading, setIsLoading] = useState(false);
   const [geojsonValue, setGeojson] = useState(null);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
   const { selectedGroup } = useAuth0();
-  const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -40,6 +40,15 @@ export function NewPlace(path: any) {
       setServerErrors(error.data.errors);
     }
   }
+  const generateSlug = async (e) => {
+    e.preventDefault();
+    try {
+      const { data }: any = await getUniqueSlug(watchName, selectedGroup, 'shortid');
+      setValue('slug', data.slug, true);
+    } catch (error) {
+      setServerErrors(error.data.errors);
+    }
+  }
 
   return (
     <ContentLayout backTo="/places">
@@ -49,7 +58,6 @@ export function NewPlace(path: any) {
         </div>
 
         <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5">
-
           <Card>
             <Input
               name="name"
@@ -64,27 +72,8 @@ export function NewPlace(path: any) {
           </Card>
 
           <Card>
-            <div className="ng-grid ng-margin-medium-bottom ng-flex-bottom">
-              <div className="ng-width-large-1-2">
-                <Input
-                  name="slug"
-                  placeholder="Place slug"
-                  label="Slug*"
-                  size="large"
-                  className="ng-display-block"
-                  error={touched.slug && errors.slug && errors.slug.message}
-                  ref={register({
-                    required: 'Slug is required',
-                  })} />
-              </div>
-              <div className="ng-width-large-1-2">
-                <button className="ng-button ng-button-secondary ng-button-large">
-                  Generate a slug name
-                </button>
-              </div>
-            </div>
 
-            <div>
+            <div className="ng-margin-medium-bottom">
               <label htmlFor="input-type">Place type*</label>
               <select
                 className="ng-width-1-1 ng-form-large"
@@ -105,7 +94,31 @@ export function NewPlace(path: any) {
               </select>
             </div>
 
-            {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}
+            <div className="ng-grid ng-flex-top">
+              <div className="ng-flex-item-1">
+                <Input
+                  name="slug"
+                  placeholder="Place slug"
+                  label="Slug*"
+                  size="large"
+                  className="ng-display-block"
+                  error={touched.slug && errors.slug && errors.slug.message}
+                  ref={register({
+                    required: 'Slug is required',
+                  })} />
+              </div>
+              <div>
+                <button
+                  onClick={generateSlug}
+                  disabled={!watchName}
+                  title={watchName ? 'Generate slug' : 'Add a title first'}
+                  className="ng-button ng-button-secondary ng-button-large ng-pointer"
+                  style={{ marginTop: '36px' }}>
+                  Generate a slug name
+                </button>
+              </div>
+            </div>
+
           </Card>
 
           <Card>
@@ -119,6 +132,9 @@ export function NewPlace(path: any) {
               onChange={(json) => setGeojson(json)}
               onError={(err) => setJsonError(err)} />
           </Card>
+
+          {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}
+
 
           {isLoading
             ? <div className="ng-padding-large ng-position-relative"><Spinner /></div>
@@ -137,7 +153,6 @@ export function NewPlace(path: any) {
                 </LinkWithOrg>
               </div>
             )}
-
         </form>
       </div>
     </ContentLayout>
