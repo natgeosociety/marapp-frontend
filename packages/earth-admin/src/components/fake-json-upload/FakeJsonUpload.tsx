@@ -44,7 +44,7 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
 
   return (
     <>
-      {label && <div><label htmlFor={id}>{label}</label></div>}
+      {label && <label className="ng-display-block" htmlFor={id}>{label}</label>}
       <input
         type="file"
         accept=".json"
