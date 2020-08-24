@@ -20,7 +20,7 @@
 import * as React from 'react';
 
 import { LinkWithOrg } from 'components';
-import { PlaceIntersectionProps } from '../model';
+import { PlaceIntersectionProps } from '../../../pages-client/places/model';
 
 export default function PlaceIntersections( props: PlaceIntersectionProps) {
   const { intersections, name } = props;

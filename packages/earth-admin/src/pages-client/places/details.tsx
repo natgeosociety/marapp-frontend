@@ -21,7 +21,7 @@ const PLACE_DETAIL_QUERY = {
   sort: 'intersections.name,metrics.slug,-metrics.version',
 };
 
-export default function DetailsPage(path: any) {
+export function PlaceDetail(path: any) {
   const { getPermissions, selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`locations/${path.page}`, {
     ...PLACE_DETAIL_QUERY,
