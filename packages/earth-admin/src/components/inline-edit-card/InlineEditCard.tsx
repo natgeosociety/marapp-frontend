@@ -26,19 +26,14 @@ import './styles.scss';
 import { ErrorMessages } from 'components/error-messages';
 
 export interface InlineCardProps {
-  isEditing?: boolean;
-  isLoading?: boolean;
-  hasButtons?: boolean;
-  primaryButtonText?: string;
-  secondaryButtonText?: string;
-  editAction?: (v: boolean) => void;
-  saveAction?: (s: any) => void;
-  children?: ReactNode;
-  editForm?: any;
+  children: ReactNode,
   render?: any;
-  serverErrors?: any;
-  validForm?: boolean;
-  editButtonText?: string
+  editButtonText?: string,
+  onSubmit?: (e: any, setIsEditing: (value: boolean) => void,
+              setIsLoading: (value: boolean) => void,
+              setServerErrors: (value: boolean) => void) => void,
+  submitButtonText?: string;
+  cancelButtonText?: string;
 }
 
 const Card: any = Keyframes.Spring({
@@ -48,7 +43,8 @@ const Card: any = Keyframes.Spring({
 
 export default function InlineEditCard(props: InlineCardProps) {
   const {
-    children, render, editButtonText = 'edit',
+    children, render, editButtonText = 'edit', onSubmit,
+    submitButtonText = 'Save', cancelButtonText = 'Cancel',
   } = props;
 
 
@@ -63,6 +59,14 @@ export default function InlineEditCard(props: InlineCardProps) {
       {render({setIsEditing, setIsLoading, setServerErrors})}
       {serverErrors && <ErrorMessages errors={serverErrors}/>}
       <InlineCardOverlay/>
+      <div className="ng-margin-medium-top">
+        <button className="ng-button ng-button-primary ng-margin-right"
+                onClick={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}>{submitButtonText}
+        </button>
+        <button className="ng-button ng-button-secondary"
+                onClick={(e) => setIsEditing(false)}>{cancelButtonText}
+        </button>
+      </div>
     </>
   );
 

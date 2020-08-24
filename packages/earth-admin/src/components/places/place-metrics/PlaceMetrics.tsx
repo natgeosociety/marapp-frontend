@@ -34,12 +34,13 @@ export default function PlaceMetrics(props: PlaceMetricsProps) {
     handlers: {handleServerErrors},
   } = props;
 
+  const [loading, setLoading] = useState(false);
+
   const {selectedGroup} = useContext(Auth0Context);
 
   const {getPermissions} = useAuth0();
 
   const writePermission = getPermissions(AuthzGuards.writeMetricsGuard);
-
 
 
   async function handleCalculateSingle(e: MouseEvent, placeID: string, metricId: string) {
@@ -48,6 +49,7 @@ export default function PlaceMetrics(props: PlaceMetricsProps) {
     try {
       handleServerErrors(false);
       await calculateForPlace(placeID, metricId, selectedGroup);
+      setLoading(true)
     } catch (error) {
       handleServerErrors(error.data.errors);
     }
@@ -64,6 +66,7 @@ export default function PlaceMetrics(props: PlaceMetricsProps) {
         <div className="ng-position-relative ng-flex ng-flex-column ng-flex-space-between ng-text-center">
           {writePermission && (
             <button
+              disabled={loading}
               className="ng-icon-button ng-recalculate-metrics"
               onClick={(e) => handleCalculateSingle(e, location, slug)}
             >

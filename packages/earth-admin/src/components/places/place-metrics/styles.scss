@@ -25,7 +25,10 @@
 .ng-recalculate-metrics.ng-icon-button {
   background: $marapp-gray-7;
   border: 0;
-  &:hover {
+  &:disabled {
+    opacity: .4;
+  }
+  &:hover, &:active, &:focus {
     background: $marapp-gray-6;
     border: 0;
   }
