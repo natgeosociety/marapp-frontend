@@ -37,6 +37,13 @@ export function PlaceDetail(path: any) {
   });
 
   const [place, setPlace] = useState(data);
+  const [mapData, setMapData] = useState({});
+  const [mappedIntersections, setMappedIntersections] = useState();
+  const [geojsonValue, setGeojson] = useState();
+  const [jsonError, setJsonError] = useState(false);
+  const [serverErrors, setServerErrors] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [metricsLoading, setMetricsLoading] = useState(false);
 
   useEffect(() => {
     setPlace(data);
@@ -47,13 +54,6 @@ export function PlaceDetail(path: any) {
     centroid, areaKm2, createdAt, updatedAt, version,
   } = place;
 
-  const [mapData, setMapData] = useState({});
-  const [mappedIntersections, setMappedIntersections] = useState();
-  const [geojsonValue, setGeojson] = useState();
-  const [jsonError, setJsonError] = useState(false);
-  const [serverErrors, setServerErrors] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [metricsLoading, setMetricsLoading] = useState(false);
 
   const {getValues, register, formState, errors} = useForm({
     mode: 'onChange',
