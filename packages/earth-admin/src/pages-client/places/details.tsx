@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { groupBy, map } from 'lodash';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
@@ -7,27 +8,17 @@ import { encodeQueryToURL, formatDate, km2toHa, formatArrayToParanthesis } from 
 import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
-
-import { PlaceMetrics } from 'components/places/place-metrics';
-import { PlaceIntersections } from 'components/places/place-intersections';
-
-import { ContentLayout } from 'layouts';
 import {
-  ErrorMessages,
+  PlaceMetrics, PlaceIntersections, ErrorMessages,
   ActionModal,
   MapComponent,
   InlineEditCard,
   Toggle, FakeJsonUpload, Card, Input,
 } from 'components';
-import { PlaceTypeEnum } from './model';
-import { useForm } from 'react-hook-form';
 
-const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
-const PLACE_DETAIL_QUERY = {
-  include: 'metrics,intersections',
-  select: 'intersections.id,intersections.name,intersections.type,-metrics.metric',
-  sort: 'intersections.name,metrics.slug,-metrics.version',
-};
+import { ContentLayout } from 'layouts';
+import { PlaceTypeEnum, PLACE_DETAIL_QUERY } from './model';
+
 
 export function PlaceDetail(path: any) {
   const {getPermissions, selectedGroup} = useAuth0();
@@ -40,7 +31,7 @@ export function PlaceDetail(path: any) {
     group: selectedGroup,
   });
 
-  const {isLoading, errors, data} = useRequest(() => getPlace(encodedQuery), {
+  const {isLoading, data} = useRequest(() => getPlace(encodedQuery), {
     permissions: AuthzGuards.accessPlacesGuard,
     query: encodedQuery,
   });
@@ -50,7 +41,6 @@ export function PlaceDetail(path: any) {
   useEffect(() => {
     setPlace(data);
   }, [data]);
-
 
   const {
     name, geojson, id, bbox2d, intersections, featured, published, type, slug, metrics,
@@ -65,9 +55,11 @@ export function PlaceDetail(path: any) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [metricsLoading, setMetricsLoading] = useState(false);
 
-  const {getValues, register, formState, triggerValidation, control, setValue} = useForm({
+  const {getValues, register, formState, errors} = useForm({
     mode: 'onChange',
   });
+
+  const {touched, dirty, isValid} = formState;
 
   useEffect(() => {
     place && setMapData({geojson: geojson, bbox: bbox2d});
@@ -83,8 +75,6 @@ export function PlaceDetail(path: any) {
       ...formData,
       geojson: geojsonValue,
     };
-
-    console.log(formData);
 
     try {
       setIsLoading && setIsLoading(true);
@@ -119,7 +109,7 @@ export function PlaceDetail(path: any) {
     setShowDeleteModal(!showDeleteModal);
   }
 
-  return !!place && <ContentLayout errors={errors} backTo="/places" isLoading={isLoading}>
+  return !!place && <ContentLayout backTo="/places" isLoading={isLoading}>
     {showDeleteModal && (
       <ActionModal
         id={id}
@@ -144,6 +134,7 @@ export function PlaceDetail(path: any) {
                     size="large"
                     defaultValue={name}
                     className="ng-display-block"
+                    error={touched.name && errors.name && errors.name.message}
                     ref={register({
                       required: 'Place title is required',
                     })}/>
@@ -184,6 +175,7 @@ export function PlaceDetail(path: any) {
                       label="Slug*"
                       size="large"
                       defaultValue={slug}
+                      error={touched.name && errors.name && errors.name.message}
                       className="ng-display-block"
                       ref={register({
                         required: 'Place slug is required',
@@ -292,36 +284,34 @@ export function PlaceDetail(path: any) {
       </form>
 
       <div className="ng-margin-medium-bottom">
-        <Card>
-          {metricsPermission && (
-            <div>
-              {metrics && (
-                <div>
-                  <h5 className="ng-text-display-s">Place Metrics</h5>
-                  <div className="ng-flex ng-flex-wrap ng-place-metrics-container">
-                    {metrics.map((metric) => (
-                      <PlaceMetrics
-                        key={metric.id}
-                        data={metric}
-                        handlers={{handleServerErrors}}
-                      />
-                    ))}
-                  </div>
+        {metricsPermission && (
+          <Card>
+            {metrics && (
+              <>
+                <p className="ng-text-weight-bold ng-margin-small-bottom">Place Metrics</p>
+                <div className="ng-flex ng-flex-wrap ng-place-metrics-container">
+                  {metrics.map((metric) => (
+                    <PlaceMetrics
+                      key={metric.id}
+                      data={metric}
+                      handlers={{handleServerErrors}}
+                    />
+                  ))}
                 </div>
-              )}
-              {serverErrors && <ErrorMessages key={id} errors={serverErrors}/>}
-              {writeMetricsPermission && (
-                <button
-                  disabled={metricsLoading}
-                  className="ng-button ng-button-primary"
-                  onClick={(e) => handleCalculateAll(e, id)}
-                >
-                  Recalculate all
-                </button>
-              )}
-            </div>
-          )}
-        </Card>
+              </>
+            )}
+            {serverErrors && <ErrorMessages key={id} errors={serverErrors}/>}
+            {writeMetricsPermission && (
+              <button
+                disabled={metricsLoading}
+                className="ng-button ng-button-primary ng-margin-medium-top"
+                onClick={(e) => handleCalculateAll(e, id)}
+              >
+                Recalculate all
+              </button>
+            )}
+          </Card>
+        )}
       </div>
       {!!intersections && <div className="ng-margin-medium-bottom">
         <Card>
