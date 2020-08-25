@@ -249,7 +249,8 @@ export function PlaceDetail(path: any) {
                     <div className="ng-grid">
                       <div className="ng-width-1-2">
                         <MapComponent height="235px"/>
-                        <DownloadFile data={geojson} fileName={slug}>Download geojson</DownloadFile>
+                        <DownloadFile data={geojson} fileName={slug} className="ng-align-right ng-margin-top">Download
+                          GeoJSON</DownloadFile>
                         <div className="ng-width-1-1 ng-margin-medium-top">
                           <FakeJsonUpload
                             name="geojson"
