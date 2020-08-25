@@ -126,12 +126,14 @@ export function NewPlace(path: any) {
               ref={register({
                 required: 'GeoJSON is required',
               })}
-              onChange={(json) => setGeojson(json)}
-              onError={(err) => setJsonError(err)} />
+              onChange={(json) => {
+                setGeojson(json);
+                setJsonError(false);
+              }}
+              onError={(err) => setJsonError(true)} />
           </Card>
 
           {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}
-
 
           {isLoading
             ? <div className="ng-padding-large ng-position-relative"><Spinner /></div>

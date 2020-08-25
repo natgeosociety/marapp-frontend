@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { JSHINT } from 'jshint';
 
 interface IProps {
@@ -17,17 +18,19 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
     onChange = noop,
     onError = noop,
   } = props;
+  const [error, setError] = useState('');
   const id = `input-${name}`;
 
   const handleJsonChange = (json) => {
     try {
-      JSON.parse(json);
+      const parsedJson = JSON.parse(json);
+      if (!JSHINT.errors) {
+        onChange(parsedJson);
+        setError('');
+      }
     } catch (err) {
       onError(err)
-    }
-    if (!JSHINT.errors) {
-      const parsedJson = JSON.parse(json);
-      onChange(parsedJson);
+      setError('Invalid GeoJSON file')
     }
   };
 
@@ -47,11 +50,14 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
       {label && <label className="ng-display-block" htmlFor={id}>{label}</label>}
       <input
         type="file"
-        accept=".json"
+        accept=".json,.geojson"
         id={id}
         name={name}
         onChange={handleUpload}
         ref={ref} />
+      {error && (
+        <div className="ng-form-error-block">{error}</div>
+      )}
     </>
   )
 });
