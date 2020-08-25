@@ -146,7 +146,7 @@ export function NewPlace(path: any) {
                 </button>
 
                 <LinkWithOrg className="ng-button ng-button-secondary ng-button-large" to="/places">
-                  Return to dashboard
+                  Return to places home
                 </LinkWithOrg>
               </div>
             )}
