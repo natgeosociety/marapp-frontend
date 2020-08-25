@@ -95,6 +95,7 @@ export default function DetailsPage(path: any) {
             id={id}
             navigateRoute={'places'}
             name={name}
+            type="place"
             toggleModal={handleDeleteToggle}
             visibility={showDeleteModal}
           />
