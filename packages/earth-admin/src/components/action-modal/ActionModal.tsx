@@ -25,8 +25,6 @@ import { useAuth0 } from 'auth/auth0';
 
 import { Modal } from '@marapp/earth-components';
 
-import './styles.scss';
-
 interface IModalProps {
   id: string;
   navigateRoute: string;
