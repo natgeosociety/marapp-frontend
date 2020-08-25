@@ -13,7 +13,7 @@ import {
   ActionModal,
   MapComponent,
   InlineEditCard,
-  Toggle, FakeJsonUpload, Card, Input,
+  Toggle, FakeJsonUpload, Card, Input, LinkWithOrg,
 } from 'components';
 
 import { ContentLayout } from 'layouts';
@@ -123,7 +123,11 @@ export function PlaceDetail(path: any) {
         visibility={showDeleteModal}
       />
     )}
-    <div className="ng-padding-medium">
+    <div className="ng-padding-medium-horizontal">
+      <LinkWithOrg className="ng-border-remove ng-margin-medium-bottom ng-display-block" to="/places">
+        <i className="ng-icon ng-icon-directionleft"></i>
+        return to places home
+      </LinkWithOrg>
       <form className="ng-form ng-form-dark ng-flex-column">
         <div className="ng-grid">
           <div className="ng-width-3-4">
