@@ -20,13 +20,14 @@
 
 import React from 'react';
 import { createPortal } from 'react-dom';
-
 import './styles.scss';
 
-const InlineCardOverlay = () => {
-  const mount = document.getElementById('page-wrapper');
 
-  return createPortal(<div className="ng-inline-card-overlay"/>, mount);
+
+const InlineCardOverlay = () => {
+  const portalRoot = typeof document !== `undefined` ? document.getElementById('portal') : null;
+
+  return createPortal(<div className="ng-inline-card-overlay"/>, portalRoot);
 };
 
 export default InlineCardOverlay;
