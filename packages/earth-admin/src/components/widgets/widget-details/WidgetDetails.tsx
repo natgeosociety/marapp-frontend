@@ -51,6 +51,7 @@ export default function WidgetDetails( props: WidgetProps ) {
           id={id}
           navigateRoute={'widgets'}
           name={name}
+          type="widget"
           toggleModal={handleDeleteToggle}
           visibility={showDeleteModal}
         />
