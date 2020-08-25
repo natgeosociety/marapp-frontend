@@ -39,7 +39,7 @@ export function PlaceDetail(path: any) {
   const [place, setPlace] = useState(data);
   const [mapData, setMapData] = useState({});
   const [mappedIntersections, setMappedIntersections] = useState();
-  const [geojsonValue, setGeojson] = useState();
+  const [geojsonValue, setGeojson] = useState(null);
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState();
   const [formValid, setFormValid] = useState(true);
@@ -247,7 +247,7 @@ export function PlaceDetail(path: any) {
                 <InlineEditCard
                   editButtonText="View and upload shape"
                   onSubmit={onSubmit}
-                  validForm={formValid}
+                  validForm={formValid && !jsonError}
                   render={({setIsEditing, setIsLoading, setServerErrors}) => (
                     <div className="ng-grid">
                       <div className="ng-width-1-2">
@@ -261,8 +261,11 @@ export function PlaceDetail(path: any) {
                             ref={register({
                               required: 'GeoJSON is required',
                             })}
-                            onChange={(json) => setGeojson(json)}
-                            onError={(err) => setJsonError(err)}/>
+                            onChange={(json) => {
+                              setGeojson(json);
+                              setJsonError(false);
+                            }}
+                            onError={(err) => setJsonError(true)}/>
                         </div>
                       </div>
                       <div className="ng-width-1-2">
