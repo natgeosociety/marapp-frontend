@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
 import './styles.scss';
 
 interface IProps {
+  value: boolean;
+  label: string
+  name: string;
+  onChange: (e) => {};
   className?: string;
-  value?: boolean;
-  label?: string
-  onChange?: (e) => {};
 }
 
-export const Toggle = React.forwardRef((props: any, ref: any) => {
-  const {className, value, label, onChange, name, checked, ceva} = props;
+export const Toggle = React.forwardRef((props: IProps, ref: any) => {
+  const {className, value, label, onChange, name} = props;
 
   const classes = classNames({
     '-active': value === true,

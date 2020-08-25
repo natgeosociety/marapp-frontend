@@ -152,12 +152,19 @@ export const km2toHa = (value: number): number => {
   return value * 100;
 };
 
-const Paranthesis = {
+const PARENTHESES_TYPE = {
   rounded: {first: '(', last: ')'},
   brackets: {first: '[', last: ']'},
 };
-export const formatArrayToParanthesis = (array: string, paranthesisType: string, formatNo: number): string => {
-  const {first, last} = Paranthesis[paranthesisType];
+/**
+ * Takes an array and formats it to a string surrounded by parentheses
+ * @param array
+ * @param parenthesesType - type or parentheses, maps to PARENTHESES_TYPE
+ * @param formatNo - how many parentheses groups
+ */
+
+export const formatArrayToParentheses = (array: string, parenthesesType: string, formatNo: number): string => {
+  const {first, last} = PARENTHESES_TYPE[parenthesesType];
 
   if (formatNo === 1) {
     return `${first}${array.toString()}${last}`;

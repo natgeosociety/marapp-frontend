@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { groupBy, map } from 'lodash';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
-import { encodeQueryToURL, formatDate, km2toHa, formatArrayToParanthesis } from 'utils';
+import { encodeQueryToURL, formatDate, km2toHa, formatArrayToParentheses } from 'utils';
 import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
@@ -270,11 +270,11 @@ export function PlaceDetail(path: any) {
                         </p>}
                         {bbox2d && <p className="ng-margin-bottom ng-margin-top-remove">
                                           <span
-                                            className="ng-text-weight-bold ng-color-mdgray">Area Bbox:</span> {formatArrayToParanthesis(bbox2d, 'rounded', 2)}
+                                            className="ng-text-weight-bold ng-color-mdgray">Area Bbox:</span> {formatArrayToParentheses(bbox2d, 'rounded', 2)}
                         </p>}
                         {centroid && <p className="ng-margin-bottom ng-margin-top-remove">
                                           <span
-                                            className="ng-text-weight-bold ng-color-mdgray">Centroid:</span> {formatArrayToParanthesis(centroid.geometry.coordinates, 'brackets', 1)}
+                                            className="ng-text-weight-bold ng-color-mdgray">Centroid:</span> {formatArrayToParentheses(centroid.geometry.coordinates, 'brackets', 1)}
                         </p>}
                       </div>
                     </div>
