@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { groupBy, map } from 'lodash';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
-import { encodeQueryToURL, formatDate, km2toHa, formatArrayToParanthesis } from 'utils';
+import { encodeQueryToURL, formatDate, km2toHa, formatArrayToParentheses } from 'utils';
 import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
@@ -13,8 +13,7 @@ import {
   ActionModal,
   MapComponent,
   InlineEditCard,
-  Toggle, FakeJsonUpload, Card, Input,
-  DownloadFile,
+  Toggle, FakeJsonUpload, Card, Input, LinkWithOrg, DownloadFile
 } from 'components';
 
 import { ContentLayout } from 'layouts';
@@ -70,7 +69,7 @@ export function PlaceDetail(path: any) {
 
   useEffect(() => {
     setFormValid(isValid);
-  }, [isValid]);
+  }, [isValid])
 
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
@@ -124,7 +123,11 @@ export function PlaceDetail(path: any) {
         visibility={showDeleteModal}
       />
     )}
-    <div className="ng-padding-medium">
+    <div className="ng-padding-medium-horizontal">
+      <LinkWithOrg className="ng-border-remove ng-margin-medium-bottom ng-display-block" to="/places">
+        <i className="ng-icon ng-icon-directionleft"></i>
+        return to places home
+      </LinkWithOrg>
       <form className="ng-form ng-form-dark ng-flex-column">
         <div className="ng-grid">
           <div className="ng-width-3-4">
@@ -269,11 +272,11 @@ export function PlaceDetail(path: any) {
                         </p>}
                         {bbox2d && <p className="ng-margin-bottom ng-margin-top-remove">
                                           <span
-                                            className="ng-text-weight-bold ng-color-mdgray">Area Bbox:</span> {formatArrayToParanthesis(bbox2d, 'rounded', 2)}
+                                            className="ng-text-weight-bold ng-color-mdgray">Area Bbox:</span> {formatArrayToParentheses(bbox2d, 'rounded', 2)}
                         </p>}
                         {centroid && <p className="ng-margin-bottom ng-margin-top-remove">
                                           <span
-                                            className="ng-text-weight-bold ng-color-mdgray">Centroid:</span> {formatArrayToParanthesis(centroid.geometry.coordinates, 'brackets', 1)}
+                                            className="ng-text-weight-bold ng-color-mdgray">Centroid:</span> {formatArrayToParentheses(centroid.geometry.coordinates, 'brackets', 1)}
                         </p>}
                       </div>
                     </div>

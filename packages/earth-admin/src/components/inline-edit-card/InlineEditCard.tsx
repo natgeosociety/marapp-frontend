@@ -25,9 +25,18 @@ import { InlineCardOverlay } from './index';
 import './styles.scss';
 import { ErrorMessages } from 'components/error-messages';
 
+interface IOptionsBag {
+  isEditing: boolean;
+  isLoading: boolean;
+  serverErrors: any[];
+  setIsEditing: (value: boolean) => void;
+  setIsLoading: (value: boolean) => void;
+  setServerErrors: (value: boolean) => void;
+}
+
 export interface InlineCardProps {
   children: ReactNode,
-  render?: any;
+  render?: (optionsBag: IOptionsBag) => React.ReactNode;
   editButtonText?: string,
   onSubmit?: (e: any, setIsEditing: (value: boolean) => void,
               setIsLoading: (value: boolean) => void,
@@ -55,10 +64,18 @@ export default function InlineEditCard(props: InlineCardProps) {
   const [serverErrors, setServerErrors] = useState(null);
 
   const state = isEditing ? 'open' : 'close';
+  const optionsBag: IOptionsBag = {
+    isEditing,
+    isLoading,
+    serverErrors,
+    setIsEditing,
+    setIsLoading,
+    setServerErrors,
+  };
 
   const renderEditable = () => (
     <>
-      {render({setIsEditing, setIsLoading, setServerErrors})}
+      {render(optionsBag)}
       {serverErrors && <ErrorMessages errors={serverErrors}/>}
       <InlineCardOverlay/>
       <div className="ng-margin-medium-top">

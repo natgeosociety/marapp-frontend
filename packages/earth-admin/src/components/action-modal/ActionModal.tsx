@@ -25,19 +25,18 @@ import { useAuth0 } from 'auth/auth0';
 
 import { Modal } from '@marapp/earth-components';
 
-import './styles.scss';
-
 interface IModalProps {
   id: string;
   navigateRoute: string;
   name: string;
+  type: string;
   toggleModal: any;
   visibility?: boolean;
   error?(err: Error): void;
 }
 
 const ActionModal = (props: IModalProps) => {
-  const { id, navigateRoute, name, toggleModal, visibility, error } = props;
+  const { id, navigateRoute, name, type, toggleModal, visibility, error } = props;
   const { selectedGroup } = useAuth0();
 
   async function handleDelete(e) {
@@ -88,17 +87,20 @@ const ActionModal = (props: IModalProps) => {
   };
 
   return (
-    <Modal isOpen={visibility} onRequestClose={handleModalToggle}>
-      <p className="ng-text-edit-s ng-space-wrap">Are you sure you want to delete {name}?</p>
-      <div className="ng-flex">
+    <Modal isOpen={visibility} onRequestClose={handleModalToggle} className="ng-text-center">
+      <h4 className="ng-text-display-s ng-margin-bottom">Delete {name}</h4>
+      <p className="ng-space-wrap">Are you sure you want to permanentally delete this {type}?</p>
+      <div className="ng-flex ng-flex-center">
         <button
-          className="ng-button ng-button-primary ng-margin-medium-right"
+          autoFocus
+          tabIndex={0}
+          className="ng-button ng-button-secondary ng-margin-medium-right"
           onClick={handleModalToggle}
         >
-          No
+          Cancel
         </button>
-        <button className="ng-button ng-button-secondary" onClick={(e) => handleDelete(e)}>
-          Yes
+        <button className="ng-button ng-button-primary" onClick={(e) => handleDelete(e)}>
+          Delete
         </button>
       </div>{' '}
     </Modal>
