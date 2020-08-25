@@ -166,3 +166,11 @@ export const formatArrayToParanthesis = (array: string, paranthesisType: string,
     return `${first}${array.slice(0, 2).toString()}${last} ,${first}${array.slice(2, 4)}${last}`;
   }
 };
+
+
+export const downloadFile = (data) => {
+  const stringifiedMetric = JSON.stringify(data);
+  const jsonBlob = new Blob([stringifiedMetric]);
+  const blobUrl = URL.createObjectURL(jsonBlob);
+  return blobUrl;
+}

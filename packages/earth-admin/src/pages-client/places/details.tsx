@@ -14,6 +14,7 @@ import {
   MapComponent,
   InlineEditCard,
   Toggle, FakeJsonUpload, Card, Input,
+  DownloadFile,
 } from 'components';
 
 import { ContentLayout } from 'layouts';
@@ -69,7 +70,7 @@ export function PlaceDetail(path: any) {
 
   useEffect(() => {
     setFormValid(isValid);
-  }, [isValid])
+  }, [isValid]);
 
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
@@ -248,10 +249,7 @@ export function PlaceDetail(path: any) {
                     <div className="ng-grid">
                       <div className="ng-width-1-2">
                         <MapComponent height="235px"/>
-                        <button
-                          className="ng-button ng-button-link ng-align-right ng-margin-top">Download
-                          geojson
-                        </button>
+                        <DownloadFile data={geojson} fileName={slug}>Download geojson</DownloadFile>
                         <div className="ng-width-1-1 ng-margin-medium-top">
                           <FakeJsonUpload
                             name="geojson"
