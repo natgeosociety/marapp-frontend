@@ -93,7 +93,7 @@ export default function InlineEditCard(props: InlineCardProps) {
 
   const renderDefault = () => (<>
     {render && (
-      <button className="ng-button ng-button-link ng-edit-card-button ng-text-lowercase"
+      <button className="ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
               onClick={(e) => setIsEditing(true)}>{editButtonText}</button>
     )}
     {children}
