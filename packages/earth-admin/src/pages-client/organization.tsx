@@ -50,14 +50,14 @@ const Organization = (props: IProps) => {
 
   // Important check for valid ORG and sets it on the context.
   // Happens everytime org changes (runtime/refresh)
-  // if (org && isValidOrg(groups, org)) {
-  //   setupUserOrg(org);
-  //   setIsLoading(false);
-  // } else {
-  //   return <OrgSwitcherPage groups={groups} />
-  // }
-  //
-  // if (isLoading) return <Spinner size="medium" />
+  if (org && isValidOrg(groups, org)) {
+    setupUserOrg(org);
+    setIsLoading(false);
+  } else {
+    return <OrgSwitcherPage groups={groups} />
+  }
+
+  if (isLoading) return <Spinner size="medium" />
 
   return children;
 }

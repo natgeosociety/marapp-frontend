@@ -1,8 +1,6 @@
 import * as React from 'react';
 import cn from 'classnames';
 
-// import './styles.scss';
-
 interface IProps {
   name: string;
   type?: string;
