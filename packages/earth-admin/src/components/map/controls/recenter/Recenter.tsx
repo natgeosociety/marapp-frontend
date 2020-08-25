@@ -18,23 +18,36 @@
 */
 
 import * as React from 'react';
+import classnames from 'classnames';
 
-import { LinkWithOrg } from 'components';
-import { PlaceIntersectionProps } from '../../../pages-client/places/model';
+import './styles.scss';
 
-export default function PlaceIntersections( props: PlaceIntersectionProps) {
-  const { intersections, name } = props;
-
-  return (
-    <div className="ng-flex ng-flex-column ng-margin-medium-bottom">
-      <p className="ng-text-weight-bold ng-margin-small-bottom">{name} Relationships</p>
-      <div className="ng-flex ng-flex-wrap ng-padding-left">
-        {intersections.map((int) => (
-          <LinkWithOrg to={`/places/${int.id}`} key={int.id} className="ng-margin-medium-right">
-            {int.name}
-          </LinkWithOrg>
-        ))}
-      </div>
-    </div>
-  );
+export interface IRecenter {
+  className?: string;
+  onClick: () => void;
 }
+
+class RecenterControl extends React.PureComponent<IRecenter> {
+  static defaultProps = {
+    className: null,
+  };
+
+  render() {
+    const { className, onClick } = this.props;
+
+    const classNames = classnames({
+      'c-recenter-control': true,
+      [className]: !!className,
+    });
+
+    return (
+      <div className={classNames}>
+        <button type="button" className="recenter-control--btn" onClick={onClick}>
+          <i className="ng-body-color ng-icon-geolocate"></i>
+        </button>
+      </div>
+    );
+  }
+}
+
+export default RecenterControl;

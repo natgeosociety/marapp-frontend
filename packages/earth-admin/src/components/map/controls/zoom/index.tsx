@@ -17,24 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
+import ZoomControlComponent from './Zoom';
 
-import { LinkWithOrg } from 'components';
-import { PlaceIntersectionProps } from '../../../pages-client/places/model';
-
-export default function PlaceIntersections( props: PlaceIntersectionProps) {
-  const { intersections, name } = props;
-
-  return (
-    <div className="ng-flex ng-flex-column ng-margin-medium-bottom">
-      <p className="ng-text-weight-bold ng-margin-small-bottom">{name} Relationships</p>
-      <div className="ng-flex ng-flex-wrap ng-padding-left">
-        {intersections.map((int) => (
-          <LinkWithOrg to={`/places/${int.id}`} key={int.id} className="ng-margin-medium-right">
-            {int.name}
-          </LinkWithOrg>
-        ))}
-      </div>
-    </div>
-  );
-}
+export default ZoomControlComponent;
