@@ -31,7 +31,5 @@ export const wrapRootElement = ({ element }) =>
     onRedirectCallback={onRedirectCallback}
     onSuccessHook={onSuccessHook}
     onFailureHook={onFailureHook}>
-    <div id="page-wrapper">
       {element}
-    </div>
   </Auth0Provider>;
