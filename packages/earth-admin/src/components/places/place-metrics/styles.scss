@@ -18,19 +18,25 @@
 */
 @import "../../../styles/config";
 
+.ng-place-metrics-container {
+  margin: 0 -5px;
+}
+
 .ng-recalculate-metrics.ng-icon-button {
   background: $marapp-gray-7;
-  position: absolute;
-  right: -17px;
-  top: 3px;
-  &:hover {
+  border: 0;
+  &:disabled {
+    opacity: .4;
+  }
+  &:hover, &:active, &:focus {
     background: $marapp-gray-6;
+    border: 0;
   }
 
   &.ng-icon-button {
     height: 20px;
-    line-height: 20px;
-    font-size: 12px;
+    line-height: 16px;
+    font-size: 16px;
     padding: 0;
     width: 20px;
   }

@@ -92,45 +92,9 @@ export interface PlaceIntersection {
   type?: 'country' | 'jurisdiction' | 'continent';
 }
 
-export const PLACE_METRICS_VISUAL_MAPPING = {
-  default: {
-    icon: 'warning',
-    color: '#FFD500',
-  },
-  'biodiversity-intactness': {
-    icon: 'atlas',
-    color: '#26A406',
-  },
-  'human-footprint': {
-    icon: 'walker',
-    color: 'rgb(230, 44, 144)',
-  },
-  'land-use': {
-    icon: 'home',
-    color: '#356122',
-  },
-  'terrestrial-carbon': {
-    icon: 'compass',
-    color: 'rgb(253, 158, 89)',
-  },
-  'human-impact': {
-    icon: 'family',
-    color: '#FFBC00',
-  },
-  'tree-loss': {
-    icon: 'atlas-globe',
-    color: 'rgb(253, 107, 133)',
-  },
-  'protected-areas': {
-    icon: 'search',
-    color: '#966DB3',
-  },
-  'modis-fire': {
-    icon: 'idea',
-    color: '#BA1001',
-  },
-  'modis-evi': {
-    icon: 'idea',
-    color: '#00BAAA',
-  },
-};
+
+export const PLACE_DETAIL_QUERY = {
+  include: 'metrics,intersections',
+  select: 'intersections.id,intersections.name,intersections.type,-metrics.metric',
+  sort: 'intersections.name,metrics.slug,-metrics.version',
+}

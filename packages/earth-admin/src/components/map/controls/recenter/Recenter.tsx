@@ -17,19 +17,37 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import { Auth0Provider } from './src/auth/auth0';
-import config from './src/auth/config';
-import { onRedirectCallback, onSuccessHook, onFailureHook } from './src/auth/hooks';
+import * as React from 'react';
+import classnames from 'classnames';
 
+import './styles.scss';
 
-export const wrapRootElement = ({ element }) =>
-  <Auth0Provider domain={`${config.auth0.domain}`}
-    client_id={`${config.auth0.clientId}`}
-    redirect_uri={`${config.auth0.redirectUri}`}
-    audience={config.auth0.audience}
-    onRedirectCallback={onRedirectCallback}
-    onSuccessHook={onSuccessHook}
-    onFailureHook={onFailureHook}>
-      {element}
-  </Auth0Provider>;
+export interface IRecenter {
+  className?: string;
+  onClick: () => void;
+}
+
+class RecenterControl extends React.PureComponent<IRecenter> {
+  static defaultProps = {
+    className: null,
+  };
+
+  render() {
+    const { className, onClick } = this.props;
+
+    const classNames = classnames({
+      'c-recenter-control': true,
+      [className]: !!className,
+    });
+
+    return (
+      <div className={classNames}>
+        <button type="button" className="recenter-control--btn" onClick={onClick}>
+          <i className="ng-body-color ng-icon-geolocate"></i>
+        </button>
+      </div>
+    );
+  }
+}
+
+export default RecenterControl;

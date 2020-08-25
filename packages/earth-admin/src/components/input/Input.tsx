@@ -1,8 +1,6 @@
 import * as React from 'react';
 import cn from 'classnames';
 
-// import './styles.scss';
-
 interface IProps {
   name: string;
   type?: string;
@@ -11,6 +9,7 @@ interface IProps {
   error?: string;
   size?: 'small' | 'large',
   className?: string;
+  defaultValue?: string | number;
   [any: string]: any;
 }
 
@@ -23,6 +22,7 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
     error,
     size = 'large',
     className,
+    defaultValue,
     ...rest
   } = props;
 
@@ -45,6 +45,7 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
         id={id}
         name={name}
         type={type}
+        defaultValue={defaultValue}
         placeholder={placeholder}
         className={inputClases}
         {...rest}

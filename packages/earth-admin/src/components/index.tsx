@@ -42,6 +42,8 @@ export * from './inline-edit-card';
 export * from './card';
 export * from './fake-json-upload';
 export * from './input';
+export * from './toggle';
+export * from './download-file';
 
 
 

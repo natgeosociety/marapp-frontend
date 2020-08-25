@@ -56,7 +56,7 @@ export function ProtectedRoute(props: IProps) {
     isAppBootstrapped && fn();
   }, [isAuthenticated, login, isAppBootstrapped, isAuthorized, selectedGroup]);
 
-  if (!isAppBootstrapped) return null
+  if (!isAppBootstrapped) return null;
 
   if (isAuthenticated && isAuthorized) {
     return <Component {...otherProps} />

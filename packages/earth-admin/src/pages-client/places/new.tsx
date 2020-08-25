@@ -58,7 +58,7 @@ export function NewPlace(path: any) {
         </div>
 
         <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5">
-          <Card>
+          <Card className="ng-margin-medium-bottom">
             <Input
               name="name"
               placeholder="Place title"
@@ -70,8 +70,7 @@ export function NewPlace(path: any) {
               })} />
           </Card>
 
-          <Card>
-
+          <Card className="ng-margin-medium-bottom">
             <div className="ng-margin-medium-bottom">
               <label htmlFor="input-type">Place type*</label>
               <select
@@ -119,8 +118,8 @@ export function NewPlace(path: any) {
 
           </Card>
 
-          <Card>
-            <p>Choose a GeoJSON to calulate shape maths and geographic relationships.</p>
+          <Card className="ng-margin-medium-bottom">
+            <p>Choose a GeoJSON to calculate shape maths and geographic relationships.</p>
             <FakeJsonUpload
               name="geojson"
               label="Place shape*"
@@ -149,7 +148,7 @@ export function NewPlace(path: any) {
                 </button>
 
                 <LinkWithOrg className="ng-button ng-button-secondary ng-button-large" to="/places">
-                  Return to dashboard
+                  Return to places home
                 </LinkWithOrg>
               </div>
             )}
