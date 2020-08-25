@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface IProps {
-  children: any;
+  children: React.ReactNode;
   className?: string
 }
 
@@ -12,7 +12,7 @@ export const Card = (props: IProps) => {
   } = props;
 
   return (
-    <div className={`ng-padding-medium ng-background-ultradkgray ng-height-1-1 ${className}`}>
+    <div className={`ng-padding-medium ng-background-ultradkgray  ${className}`}>
       {props.children}
     </div>
   )

@@ -28,7 +28,7 @@ interface IProps {
   setSidebarPanel?: (value: any) => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
-  resetPlace?: () => {};
+  resetPlace?: (value: any) => {};
   setIndexesSelected?: (value: any) => {};
   setPlacesSearch?: (value: any) => {};
   setPlacesSearchOpen?: (value: boolean) => {};
@@ -78,7 +78,7 @@ const Places = (props: IProps) => {
   }
 
   const handleReset = () => {
-    resetPlace();
+    resetPlace({ keepCache: true });
     setPlacesSearch({ search: '' });
     setIndexesSelected('');
     resetMap();

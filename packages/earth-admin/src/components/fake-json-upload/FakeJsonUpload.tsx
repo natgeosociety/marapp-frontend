@@ -33,14 +33,18 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
+
+    if (!file) {
+      return;
+    }
+
     const json = await file.text();
-    console.log(json);
     handleJsonChange(json)
   }
 
   return (
     <>
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && <label className="ng-display-block" htmlFor={id}>{label}</label>}
       <input
         type="file"
         accept=".json"

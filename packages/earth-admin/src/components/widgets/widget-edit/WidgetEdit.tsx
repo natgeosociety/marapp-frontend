@@ -75,7 +75,7 @@ export default function WidgetEdit( props: WidgetProps ) {
 
     try {
       await handleWidgetForm(props.newWidget, formData, id, selectedGroup);
-      await navigate(`${selectedGroup}/widgets`);
+      await navigate(`/${selectedGroup}/widgets`);
     } catch (error) {
       setServerErrors(error.data.errors);
     }
