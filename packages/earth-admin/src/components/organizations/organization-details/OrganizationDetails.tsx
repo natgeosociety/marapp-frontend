@@ -45,6 +45,7 @@ export default function OrganizationDetails( props: OrganizationProps ) {
           id={id}
           navigateRoute={'organizations'}
           name={name}
+          type="organization"
           toggleModal={handleDeleteToggle}
           visibility={showDeleteModal}
         />

@@ -50,6 +50,7 @@ export default function DashboardDetails(props: DashboardProps) {
           id={id}
           navigateRoute={'dashboards'}
           name={name}
+          type="dashboard"
           toggleModal={handleDeleteToggle}
           visibility={showDeleteModal}
         />

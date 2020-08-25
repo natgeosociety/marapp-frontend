@@ -73,6 +73,7 @@ export default function LayerDetails(props: LayerProps) {
         <ActionModal
           id={id}
           navigateRoute={'layers'}
+          type="layer"
           name={name}
           toggleModal={handleDeleteToggle}
           visibility={showDeleteModal}

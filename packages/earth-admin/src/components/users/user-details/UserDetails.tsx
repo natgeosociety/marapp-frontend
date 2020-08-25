@@ -49,6 +49,7 @@ export default function UserDetails(props: UserProps) {
           id={id}
           navigateRoute={'users'}
           name={name}
+          type="user"
           toggleModal={handleDeleteToggle}
           visibility={showDeleteModal}
           error={handleDeleteError}
