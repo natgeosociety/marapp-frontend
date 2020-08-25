@@ -97,4 +97,4 @@ export const PLACE_DETAIL_QUERY = {
   include: 'metrics,intersections',
   select: 'intersections.id,intersections.name,intersections.type,-metrics.metric',
   sort: 'intersections.name,metrics.slug,-metrics.version',
-};
+}

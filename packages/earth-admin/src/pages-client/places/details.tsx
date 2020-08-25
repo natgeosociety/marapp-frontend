@@ -41,7 +41,8 @@ export function PlaceDetail(path: any) {
   const [mappedIntersections, setMappedIntersections] = useState();
   const [geojsonValue, setGeojson] = useState();
   const [jsonError, setJsonError] = useState(false);
-  const [serverErrors, setServerErrors] = useState(null);
+  const [serverErrors, setServerErrors] = useState();
+  const [formValid, setFormValid] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [metricsLoading, setMetricsLoading] = useState(false);
 
@@ -66,6 +67,9 @@ export function PlaceDetail(path: any) {
     place && setMappedIntersections(groupBy(intersections, 'type'));
   }, [place]);
 
+  useEffect(() => {
+    setFormValid(isValid);
+  }, [isValid])
 
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
@@ -125,13 +129,13 @@ export function PlaceDetail(path: any) {
           <div className="ng-width-3-4">
             <InlineEditCard
               onSubmit={onSubmit}
+              validForm={formValid}
               render={({setIsEditing, setIsLoading, setServerErrors}) => (
                 <>
                   <Input
                     name="name"
                     placeholder="Place title"
                     label="Title*"
-                    size="large"
                     defaultValue={name}
                     className="ng-display-block"
                     error={touched.name && errors.name && errors.name.message}
@@ -166,6 +170,7 @@ export function PlaceDetail(path: any) {
           <div className="ng-width-1-2">
             <InlineEditCard
               onSubmit={onSubmit}
+              validForm={formValid}
               render={({setIsEditing, setIsLoading, setServerErrors}) => (
                 <>
                   <div className="ng-margin-medium-bottom">
@@ -173,9 +178,8 @@ export function PlaceDetail(path: any) {
                       name="slug"
                       placeholder="Place slug"
                       label="Slug*"
-                      size="large"
                       defaultValue={slug}
-                      error={touched.name && errors.name && errors.name.message}
+                      error={touched.slug && errors.slug && errors.slug.message}
                       className="ng-display-block"
                       ref={register({
                         required: 'Place slug is required',
@@ -239,6 +243,7 @@ export function PlaceDetail(path: any) {
                 <InlineEditCard
                   editButtonText="View and upload shape"
                   onSubmit={onSubmit}
+                  validForm={formValid}
                   render={({setIsEditing, setIsLoading, setServerErrors}) => (
                     <div className="ng-grid">
                       <div className="ng-width-1-2">

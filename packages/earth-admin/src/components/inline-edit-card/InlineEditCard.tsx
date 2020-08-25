@@ -34,6 +34,7 @@ export interface InlineCardProps {
               setServerErrors: (value: boolean) => void) => void,
   submitButtonText?: string;
   cancelButtonText?: string;
+  validForm?: boolean;
 }
 
 const Card: any = Keyframes.Spring({
@@ -45,6 +46,7 @@ export default function InlineEditCard(props: InlineCardProps) {
   const {
     children, render, editButtonText = 'edit', onSubmit,
     submitButtonText = 'Save', cancelButtonText = 'Cancel',
+    validForm,
   } = props;
 
 
@@ -61,6 +63,7 @@ export default function InlineEditCard(props: InlineCardProps) {
       <InlineCardOverlay/>
       <div className="ng-margin-medium-top">
         <button className="ng-button ng-button-primary ng-margin-right"
+                disabled={!validForm}
                 onClick={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}>{submitButtonText}
         </button>
         <button className="ng-button ng-button-secondary"
