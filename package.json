@@ -66,10 +66,10 @@
     "soundmanager2": "^2.97.20170602",
     "topojson-client": "^3.0.0",
     "vega-lib": "^4.4.0",
+    "viewport-mercator-project": "6.1.1",
     "vizzuality-components": "^3.0.1",
     "vizzuality-redux-tools": "^4.0.2",
-    "wri-json-api-serializer": "^1.0.1",
-    "viewport-mercator-project": "6.1.1"
+    "wri-json-api-serializer": "^1.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -78,6 +78,8 @@
     "@babel/plugin-syntax-jsx": "^7.2.0",
     "@babel/preset-env": "^7.4.2",
     "@babel/preset-react": "^7.0.0",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -91,6 +93,7 @@
     "lint-staged": "^9.4.2",
     "prettier": "^2.0.2",
     "react-test-renderer": "^16.8.5",
+    "semantic-release": "^17.1.1",
     "serverless": "^1.72.0",
     "serverless-s3-sync": "^1.14.3",
     "tslint": "^5.20.1",
