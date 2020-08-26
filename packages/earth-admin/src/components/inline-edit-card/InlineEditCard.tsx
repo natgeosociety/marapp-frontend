@@ -104,7 +104,7 @@ export default function InlineEditCard(props: InlineCardProps) {
       {({x, ...props}) => (
         <animated.div
           className={classnames({
-            'ng-padding-medium ng-inline-card ng-background-ultradkgray': true,
+            'ng-padding-medium ng-inline-card ng-shadow-small ng-background-ultradkgray': true,
             'ng-inline-card-editing': isEditing,
             'ng-inline-card-loading': isLoading,
           })}
