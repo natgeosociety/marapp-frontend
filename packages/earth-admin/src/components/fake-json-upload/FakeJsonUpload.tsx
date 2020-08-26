@@ -46,8 +46,8 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
   }
 
   return (
-    <>
-      {label && <label className="ng-display-block" htmlFor={id}>{label}</label>}
+    <div className="ng-flex-inline ng-flex-column">
+      {label && <label htmlFor={id}>{label}</label>}
       <input
         type="file"
         accept=".json,.geojson"
@@ -58,6 +58,6 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
       {error && (
         <div className="ng-form-error-block">{error}</div>
       )}
-    </>
+    </div>
   )
 });
