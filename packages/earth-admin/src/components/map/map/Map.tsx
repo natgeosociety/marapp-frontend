@@ -45,10 +45,6 @@ export default function MapComponent(props: {height?: string}) {
     setBounds({bbox: bbox})
   }, [bbox]);
 
-  useEffect(() => {
-    setBounds(bounds);
-  }, [bounds])
-
   const LAYER = {
     ...LAYER_DEFAULT,
     ...{source: {...LAYER_DEFAULT.source, ...{data: geojson}}},
