@@ -36,7 +36,15 @@ interface IModalProps {
 }
 
 const ActionModal = (props: IModalProps) => {
-  const { id, navigateRoute, name, type, toggleModal, visibility, error } = props;
+  const {
+    id,
+    navigateRoute,
+    name,
+    type = 'resource',
+    toggleModal,
+    visibility,
+    error,
+  } = props;
   const { selectedGroup } = useAuth0();
 
   async function handleDelete(e) {
@@ -89,7 +97,7 @@ const ActionModal = (props: IModalProps) => {
   return (
     <Modal isOpen={visibility} onRequestClose={handleModalToggle} className="ng-text-center">
       <h4 className="ng-text-display-s ng-margin-bottom">Delete {name}</h4>
-      <p className="ng-space-wrap">Are you sure you want to permanentally delete this {type}?</p>
+      <p className="ng-space-wrap">Are you sure you want to permanently delete this {type}?</p>
       <div className="ng-flex ng-flex-center">
         <button
           autoFocus
