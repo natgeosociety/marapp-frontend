@@ -5,6 +5,7 @@ import { groupBy, map } from 'lodash';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { encodeQueryToURL, formatDate, km2toHa, formatArrayToParentheses } from 'utils';
+import { setupErrors } from 'utils/validations';
 import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
@@ -18,7 +19,6 @@ import {
 
 import { ContentLayout } from 'layouts';
 import { PlaceTypeEnum, PLACE_DETAIL_QUERY } from './model';
-
 
 export function PlaceDetail(path: any) {
   const {getPermissions, selectedGroup} = useAuth0();
@@ -61,6 +61,7 @@ export function PlaceDetail(path: any) {
   });
 
   const {touched, dirty, isValid} = formState;
+  const renderErrorFor = setupErrors(errors, touched);
 
   useEffect(() => {
     place && setMapData({geojson: geojson, bbox: bbox2d});
@@ -143,7 +144,7 @@ export function PlaceDetail(path: any) {
                     label="Title*"
                     defaultValue={name}
                     className="ng-display-block"
-                    error={touched.name && errors.name && errors.name.message}
+                    error={renderErrorFor('name')}
                     ref={register({
                       required: 'Place title is required',
                     })}/>
@@ -184,7 +185,7 @@ export function PlaceDetail(path: any) {
                       placeholder="Place slug"
                       label="Slug*"
                       defaultValue={slug}
-                      error={touched.slug && errors.slug && errors.slug.message}
+                      error={renderErrorFor('slug')}
                       className="ng-display-block"
                       ref={register({
                         required: 'Place slug is required',

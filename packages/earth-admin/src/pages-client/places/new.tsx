@@ -1,3 +1,22 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import * as React from 'react';
 import { useState } from 'react';
 import { navigate } from 'gatsby';
@@ -7,6 +26,7 @@ import { Spinner } from '@marapp/earth-components';
 import { useAuth0 } from 'auth/auth0';
 import { addPlace, getUniqueSlug } from 'services/places';
 import { PlaceTypeEnum } from './model';
+import { noSpecialChars, setupErrors } from 'utils/validations';
 
 import { LinkWithOrg, ErrorMessages, Card, FakeJsonUpload, Input } from 'components';
 import { ContentLayout } from 'layouts';
@@ -22,6 +42,7 @@ export function NewPlace(path: any) {
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
   const { selectedGroup } = useAuth0();
+  const renderErrorFor = setupErrors(errors, touched);
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -64,9 +85,10 @@ export function NewPlace(path: any) {
               placeholder="Place title"
               label="Title*"
               className="ng-display-block"
-              error={touched.name && errors.name && errors.name.message}
+              error={renderErrorFor('name', 'noSpecialChars')}
               ref={register({
                 required: 'Place title is required',
+                validate: { noSpecialChars }
               })} />
           </Card>
 
@@ -99,7 +121,7 @@ export function NewPlace(path: any) {
                   placeholder="Place slug"
                   label="Slug*"
                   className="ng-display-block"
-                  error={touched.slug && errors.slug && errors.slug.message}
+                  error={renderErrorFor('slug')}
                   ref={register({
                     required: 'Slug is required',
                   })} />
@@ -107,7 +129,7 @@ export function NewPlace(path: any) {
               <div>
                 <button
                   onClick={generateSlug}
-                  disabled={!watchName}
+                  disabled={!watchName || !!errors.name}
                   title={watchName ? 'Generate slug' : 'Add a title first'}
                   className="ng-button ng-button-secondary ng-button-large ng-pointer"
                   style={{ marginTop: '36px' }}>
