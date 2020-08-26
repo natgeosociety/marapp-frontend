@@ -18,10 +18,11 @@
 */
 
 import * as React from 'react';
+import { useEffect } from 'react';
 import { Router } from '@reach/router';
+import { navigate } from 'gatsby';
 
 import { GATSBY_APP_BASE_URL } from 'config';
-import { ContentLayout, SidebarLayout } from 'layouts';
 import PlacesPage from 'pages-client/places/routes';
 import DashboardsPage from 'pages-client/dashboards';
 import LayersPage from 'pages-client/layers';
@@ -32,7 +33,8 @@ import Organization from 'pages-client/organization';
 import Homepage from 'pages-client/homepage';
 import UnauthorizedPage from 'pages-client/unauthorized';
 import { ProtectedRoute } from 'components';
-import { APP_NAME } from '../theme';
+
+import { useAuth0 } from 'auth/auth0';
 
 /**
  * All admin pages are client side pages only because the /:org makes them dinamic
@@ -40,9 +42,9 @@ import { APP_NAME } from '../theme';
 export default function IndexPage() {
   return (
     <Router basepath={GATSBY_APP_BASE_URL}>
-      <ProtectedRoute path="/" component={Homepage}/>
+      <ProtectedRoute path="/" component={RedirectToOrgHomepage}/>
       <ProtectedRoute path="/:org" component={Organization}>
-        <OrgIndex path="/"/>
+        <Homepage path="/"/>
         <PlacesPage path="/places/*"/>
         <DashboardsPage path="/dashboards/*"/>
         <LayersPage path="/layers/*"/>
@@ -56,17 +58,12 @@ export default function IndexPage() {
 }
 
 /**
- * Renders no children
+ * Just redirect to the default selectedGroup. (set in auth0.tsx)
  */
-const OrgIndex = ( props ) => (
-  <div>
-    <SidebarLayout/>
-    <ContentLayout permission={true}>
-      <div className="ng-background-ultradkgray ng-padding-large">
-        <h2 className="ng-text-edit-m">Welcome to the {APP_NAME} Admin!</h2>
-        <h6>{props.org}</h6>
-      </div>
-    </ContentLayout>
-  </div>
-
-);
+const RedirectToOrgHomepage = () => {
+  const { selectedGroup } = useAuth0();
+  useEffect(() => {
+    selectedGroup && navigate(`/${selectedGroup}`, { replace: true });
+  }, [selectedGroup]);
+  return <div>This is homepage - should be redirected to /:org</div>
+}

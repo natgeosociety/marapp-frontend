@@ -53,6 +53,7 @@ export function useRequest(
     const hasPermissions = getPermissions(permissions);
     async function fetchResource() {
       try {
+        setIsLoading(true);
         const res = await resource();
         setData(res.data);
         setIsLoading(false);

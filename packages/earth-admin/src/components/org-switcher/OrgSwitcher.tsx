@@ -18,26 +18,18 @@
 */
 
 import React, { useContext, useState } from 'react';
-import { Auth0Context } from 'utils/contexts';
-import { getAvailableOrgs } from 'utils';
-
 import classnames from 'classnames';
 
+import { Auth0Context } from 'utils/contexts';
+import { getAvailableOrgs } from 'utils';
 import { LinkWithOrg, DropdownComponent } from 'components';
 
 import { MAP_PATH } from 'config';
 import './styles.scss';
 
-const OrgSwitcher = (props) => {
+const OrgSwitcher = () => {
   const { permissions, selectedGroup, setupUserOrg } = useContext(Auth0Context);
-
   const [dropdownState, setDropdownState] = useState('close');
-
-  const handleOrgSwitch = (group) => {
-    setDropdownState('close');
-    setupUserOrg(group);
-  };
-
   const handleDropdownToggle = () => {
     dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
   };
@@ -75,7 +67,7 @@ const OrgSwitcher = (props) => {
                 <LinkWithOrg to="/" switchOrgTo={g} className="ng-display-block ng-border-remove">
                   <span
                     className="ng-text-display-s ng-display-block ng-dropdown-item"
-                    onClick={(e) => handleOrgSwitch(g)}
+                    onClick={(e) => setDropdownState('close')}
                   >
                     {g}
                   </span>
