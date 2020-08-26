@@ -5,7 +5,7 @@ import { groupBy, map } from 'lodash';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { encodeQueryToURL, formatDate, km2toHa, formatArrayToParentheses } from 'utils';
-import { noSpecialChars, setupErrors } from 'utils/validations';
+import { noSpecialChars, noSpecialCharsOrSpace, setupErrors } from 'utils/validations';
 import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
@@ -188,10 +188,10 @@ export function PlaceDetail(path: any) {
                       label="Slug*"
                       defaultValue={slug}
                       className="ng-display-block"
-                      error={renderErrorFor('slug', 'noSpecialChars')}
+                      error={renderErrorFor('slug', 'noSpecialCharsOrSpace')}
                       ref={register({
                         required: 'Place slug is required',
-                        validate: { noSpecialChars }
+                        validate: { noSpecialCharsOrSpace }
                       })} />
                   </div>
                   <div>
