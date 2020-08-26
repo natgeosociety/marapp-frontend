@@ -24,9 +24,8 @@ import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { getOrganizationStats } from 'services/organizations';
 
-import { APP_NAME } from '../theme';
 import { ContentLayout, SidebarLayout } from 'layouts';
-import { Card, ErrorMessages } from 'components';
+import { Card } from 'components';
 
 const Homepage = (props) => {
   const { selectedGroup } = useAuth0();
@@ -43,14 +42,14 @@ const Homepage = (props) => {
             <>
               <h2 className="ng-text-display-m ng-margin-bottom-remove">{organization.name}</h2>
               <p className="ng-margin-bottom-large">{organization.description}</p>
-              <p className="ng-margin-vertical"><strong>Slug: </strong>{organization.slug}</p>
+              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Slug: </strong>{organization.slug}</p>
 
               <hr className="ng-hr-small" style={{ opacity: .3 }} />
 
-              <p className="ng-margin-vertical"><strong>Organization collections: </strong>{organization.collections}</p>
-              <p className="ng-margin-vertical"><strong>Organization locations: </strong>{organization.locations}</p>
-              <p className="ng-margin-vertical"><strong>Organization layers: </strong>{organization.layers}</p>
-              <p className="ng-margin-vertical"><strong>Organization widgets: </strong>{organization.widgets}</p>
+              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization collections: </strong>{organization.collections}</p>
+              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization places: </strong>{organization.locations}</p>
+              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization layers: </strong>{organization.layers}</p>
+              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization widgets: </strong>{organization.widgets}</p>
             </>
           )}
         </Card>
@@ -59,7 +58,7 @@ const Homepage = (props) => {
         {!isLoading && (
           <>
             <h2 className="ng-text-display-m">Home</h2>
-            <Card>
+            <Card className="ng-width-1-2">
               <h4 className="ng-text-display-s ng-margin-bottom">Welcome to the {organization.name} Admin!</h4>
               <p>Search and edit sections related to your organization.</p>
             </Card>
