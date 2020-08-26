@@ -27,6 +27,8 @@ import { getOrganizationStats } from 'services/organizations';
 import { ContentLayout, SidebarLayout } from 'layouts';
 import { Card } from 'components';
 
+import './styles.scss';
+
 const Homepage = (props) => {
   const { selectedGroup } = useAuth0();
   const { isLoading, data: organization, errors } = useRequest(() => getOrganizationStats(selectedGroup), {
@@ -44,7 +46,7 @@ const Homepage = (props) => {
               <p className="ng-margin-bottom-large">{organization.description}</p>
               <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Slug: </strong>{organization.slug}</p>
 
-              <hr className="ng-hr-small" style={{ opacity: .3 }} />
+              <hr className="ng-hr-small ng-hr"/>
 
               <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization collections: </strong>{organization.collections}</p>
               <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization places: </strong>{organization.locations}</p>

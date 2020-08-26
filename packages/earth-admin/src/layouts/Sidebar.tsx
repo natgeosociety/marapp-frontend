@@ -22,12 +22,14 @@ import { Spinner } from '@marapp/earth-components';
 
 import { APP_LOGO, APP_NAME } from '../theme';
 import { SidebarSelect, LinkWithOrg, OrgSwitcher } from 'components';
+import { IAdminPage } from 'components/sidebar-select/model';
 
 import './styles.scss';
 
 interface IProps {
   isLoading?: boolean;
   children?: React.ReactNode;
+  page?: IAdminPage[];
 }
 
 const SidebarLayout = (props: IProps) => {
