@@ -76,9 +76,10 @@ export function PlaceDetail(path: any) {
     e.preventDefault();
 
     const formData = getValues();
+
     const parsed = {
       ...formData,
-      geojson: geojsonValue,
+      ...(geojsonValue && {geojson: geojsonValue})
     };
 
     try {
