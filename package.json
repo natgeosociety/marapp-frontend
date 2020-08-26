@@ -32,6 +32,7 @@
     "lodash": "^4.17.11",
     "luma.gl": "7.3.2",
     "moment": "^2.24.0",
+    "ngs-app-config": "git+ssh://git@github.com:natgeosociety/ngs-app-config.git#v1.0.16",
     "node-sass": "^4.11.0",
     "photo-sphere-viewer": "3.5.1",
     "prop-types": "^15.6.2",
