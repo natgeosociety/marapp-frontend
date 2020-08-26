@@ -58,12 +58,16 @@ export default function InlineEditCard(props: InlineCardProps) {
     validForm,
   } = props;
 
-
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
 
   const state = isEditing ? 'open' : 'close';
+
+  useEffect(() => {
+    setServerErrors(null);
+  }, [isEditing])
+
   const optionsBag: IOptionsBag = {
     isEditing,
     isLoading,
