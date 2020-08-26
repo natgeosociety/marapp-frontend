@@ -5,7 +5,7 @@ import { groupBy, map } from 'lodash';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { encodeQueryToURL, formatDate, km2toHa, formatArrayToParentheses } from 'utils';
-import { setupErrors } from 'utils/validations';
+import { noSpecialChars, setupErrors } from 'utils/validations';
 import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
@@ -145,10 +145,11 @@ export function PlaceDetail(path: any) {
                     label="Title*"
                     defaultValue={name}
                     className="ng-display-block"
-                    error={renderErrorFor('name')}
+                    error={renderErrorFor('name', 'noSpecialChars')}
                     ref={register({
                       required: 'Place title is required',
-                    })}/>
+                      validate: { noSpecialChars }
+                    })} />
                 </>
               )}>
               <h1 className="ng-text-display-m ng-margin-remove">{name}</h1>
@@ -186,11 +187,12 @@ export function PlaceDetail(path: any) {
                       placeholder="Place slug"
                       label="Slug*"
                       defaultValue={slug}
-                      error={renderErrorFor('slug')}
                       className="ng-display-block"
+                      error={renderErrorFor('slug', 'noSpecialChars')}
                       ref={register({
                         required: 'Place slug is required',
-                      })}/>
+                        validate: { noSpecialChars }
+                      })} />
                   </div>
                   <div>
                     <label htmlFor="type">Place type</label>
