@@ -22,7 +22,7 @@
  * Show error if string contains special characters.
  */
 export const noSpecialChars = (value: string): boolean => {
-  const regex = RegExp(/^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/);
+  const regex = RegExp('^[a-z0-9](-?[a-z0-9])*$');
   return regex.test(value);
 }
 
