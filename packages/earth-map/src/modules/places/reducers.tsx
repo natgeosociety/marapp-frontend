@@ -118,7 +118,12 @@ export default {
     results: [],
     nextPageCursor: null,
   }),
-  [actions.resetPlace]: (state, { payload }) => initialState,
+  [actions.resetPlace]: (state, { payload }) => payload?.keepCache ? {
+      ...initialState,
+      cache: {
+        ...state.cache
+      }
+    } : initialState,
   [actions.resetPlacesFeatured]: (state, { payload }) => ({
     ...state,
     cache: {

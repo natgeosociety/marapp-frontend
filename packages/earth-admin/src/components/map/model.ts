@@ -21,17 +21,16 @@ import { APP_BASEMAPS } from '../../theme';
 
 export const MAP_DEFAULT = {
   viewport: {
-    zoom: 2,
+    zoom: 11,
     minZoom: 2,
-    latitude: 20,
-    longitude: 0,
+    maxZoom: 11,
   },
   bounds: {},
   interactions: {},
   hoverInteractions: {},
   latlng: {},
   mapStyle: APP_BASEMAPS[0].id,
-  mapLabels: false,
+  mapLabels: true,
   mapRoads: false,
 };
 

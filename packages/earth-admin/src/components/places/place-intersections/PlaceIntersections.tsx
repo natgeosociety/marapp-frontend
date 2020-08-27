@@ -20,15 +20,15 @@
 import * as React from 'react';
 
 import { LinkWithOrg } from 'components';
-import { PlaceIntersectionProps } from '../model';
+import { PlaceIntersectionProps } from '../../../pages-client/places/model';
 
 export default function PlaceIntersections( props: PlaceIntersectionProps) {
   const { intersections, name } = props;
 
   return (
     <div className="ng-flex ng-flex-column ng-margin-medium-bottom">
-      <h5 className="ng-text-display-s ng-margin-small-bottom">{name} Intersections</h5>
-      <div className="ng-flex ng-flex-wrap">
+      <p className="ng-text-weight-bold ng-margin-small-bottom">{name} Relationships</p>
+      <div className="ng-flex ng-flex-wrap ng-padding-left">
         {intersections.map((int) => (
           <LinkWithOrg to={`/places/${int.id}`} key={int.id} className="ng-margin-medium-right">
             {int.name}

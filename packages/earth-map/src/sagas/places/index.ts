@@ -79,6 +79,7 @@ export function* nextPage({ payload }) {
       nextPageCursor: meta.pagination.nextCursor,
     })
   );
+
   yield put(setPlacesSearchLoading(false));
 
   return page;

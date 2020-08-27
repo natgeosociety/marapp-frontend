@@ -35,6 +35,7 @@ class ModalComponent extends PureComponent {
     children: PropTypes.node.isRequired,
     header: PropTypes.node,
     // Func
+    showCloseButton: PropTypes.bool,
     onAfterOpen: PropTypes.func,
     onRequestClose: PropTypes.func.isRequired,
   };
@@ -53,6 +54,7 @@ class ModalComponent extends PureComponent {
       header,
       onAfterOpen,
       onRequestClose,
+      showCloseButton = false
     } = this.props;
 
     const classNames = classnames({
@@ -71,13 +73,15 @@ class ModalComponent extends PureComponent {
       >
         {header}
 
-        <button
-          type="button"
-          className="modal-close"
-          onClick={(e) => e.stopPropagation() || onRequestClose()}
-        >
-          <i className="ng-icon-close" />
-        </button>
+        { showCloseButton && (
+          <button
+            type="button"
+            className="modal-close"
+            onClick={(e) => e.stopPropagation() || onRequestClose()}
+          >
+            <i className="ng-icon-close" />
+          </button>
+        )}
 
         <div className="modal-content">{children}</div>
       </Modal>

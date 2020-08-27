@@ -25,6 +25,7 @@ import ListItem from 'components/list-item';
 interface IFeaturedPlaces {
   featured?: {
     data: [];
+    meta?: object;
   };
   group?: string;
 }
@@ -36,7 +37,7 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
     <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
       <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Featured places</h2>
       <div>
-        {!featured?.data.length && (
+        {!featured?.data.length && !featured?.meta && (
           <div className="ng-padding-large ng-position-relative">
             <Spinner />
           </div>

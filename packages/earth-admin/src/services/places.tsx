@@ -91,3 +91,12 @@ export const handlePlaceForm = async (
     ? await addPlace(place, group)
     : await updatePlace(placeID, place, group);
 };
+
+export const getUniqueSlug = async (
+  keyword: string,
+  group: string,
+  type: string = 'counter'
+  ) =>
+  await PlacesAPIService.request({
+    url: `/locations/slug?keyword=${keyword}&group=${group}&type=${type}`,
+  });

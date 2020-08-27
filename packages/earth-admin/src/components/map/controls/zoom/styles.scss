@@ -17,6 +17,39 @@
   specific language governing permissions and limitations under the License.
 */
 
-import PlaceEdit from './PlaceEdit';
+@import '~styles/config';
 
-export { PlaceEdit };
+.c-zoom-control {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 5px 0 rgba($marapp-gray-100,0.5);
+
+  .zoom-control--btn {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    background: $marapp-gray-8;
+    position: relative;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
+
+
+    &:hover {
+      background: lighten($marapp-gray-100, 10);
+    }
+
+    &:first-child {
+      border-top: none;
+    }
+
+    &.-disabled {
+      opacity: 0.8;
+      cursor: default;
+    }
+  }
+}

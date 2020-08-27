@@ -38,7 +38,7 @@ const SearchBox = ( props: SearchBoxProps ) => {
   };
 
   return <div className="searchable-listing-container ng-margin-bottom ng-background-dkgray
-      ng-padding-medium-horizontal ng-padding-medium-bottom">
+      ng-padding-medium-horizontal ng-padding-medium-bottom ng-shadow-large">
     <div
       className={classnames({
         'ng-input-container ng-c-flex-grow-1 ng-flex ng-flex-middle ng-padding-vertical': true,

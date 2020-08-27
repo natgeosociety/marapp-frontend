@@ -17,11 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import '~styles/config';
+import ZoomControlComponent from './Zoom';
 
-.c-modal {
-  .modal-content {
-    background: $marapp-gray-7;
-  }
-}
-
+export default ZoomControlComponent;

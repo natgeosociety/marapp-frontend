@@ -22,22 +22,23 @@ import { SidebarSelect, LinkWithOrg, OrgSwitcher } from 'components';
 import { APP_LOGO, APP_NAME } from '../theme';
 import './styles.scss';
 
-const SidebarLayout = ( props: any ) => {
+const SidebarLayout = (props: any) => {
   return (
-    <div className="ng-sidebar ng-flex ng-flex-column ng-flex-top">
-      <nav className="ng-padding-medium-top ng-background-dkgray ng-sidebar-header">
-        <div
-          className="ng-padding-medium-horizontal ng-ep-background-dark ng-margin-bottom ng-flex ng-flex-middle ng-position-relative">
-          <LinkWithOrg to='/' className="ng-border-remove">
-            <img src={APP_LOGO} alt={APP_NAME} className="ng-margin-remove ng-display-block"/>
-          </LinkWithOrg>
-          <span className="ng-margin-small-horizontal ng-color-white">|</span>
-          <OrgSwitcher/>
-        </div>
-      </nav>
-      <div className="ng-padding-bottom ng-background-dkgray">
+    <div className="ng-sidebar ng-flex ng-flex-column ng-flex-top ng-shadow-medium">
+      <div className="ng-shadow-large ng-background-dkgray">
+        <nav className="ng-padding-medium-top ng-sidebar-header">
+          <div
+            className="ng-padding-medium-horizontal ng-ep-background-dark ng-margin-bottom ng-flex ng-flex-middle ng-position-relative">
+            <LinkWithOrg to='/' className="ng-border-remove">
+              <img src={APP_LOGO} alt={APP_NAME} className="ng-margin-remove ng-display-block"/>
+            </LinkWithOrg>
+            <span className="ng-margin-small-horizontal ng-color-white">|</span>
+            <OrgSwitcher/>
+          </div>
+        </nav>
         <SidebarSelect path={props.page}/>
       </div>
+      <div className="ng-position-relative ng-padding-horizontal ng-padding-top ng-background-dkgray"/>
       {props.children}
     </div>
   );

@@ -85,5 +85,15 @@ $base-heading-font-family: $marapp-primary-font;
 $base-body-font-family: $marapp-secondary-font;
 $theme-color: $marapp-gray-1;
 $theme-primary-color: $marapp-primary-color;
+$theme-contrast-color: $marapp-gray-1;
 
 $form-focus-border--dark: $marapp-primary-color;
+
+$box-shadows: (
+    (small, 8, 0.075),
+    (medium, 4, 0.15),
+    (large, 2, 0.175),
+);
+
+
+

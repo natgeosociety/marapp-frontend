@@ -2749,10 +2749,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@natgeosociety/marapp-uikit@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@natgeosociety/marapp-uikit/-/marapp-uikit-1.0.7.tgz#8bf11843bf50c904944acd17e813dd3d45181cbb"
-  integrity sha512-Go1QUmPCf/SkSRRi7jZpY66dANZUtJzfjSw2RyT+SWfZ5EefCvHttl6jNSd6LfaoGg+wItnCT33IJVfVuDWrpA==
+"@natgeosociety/marapp-uikit@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@natgeosociety/marapp-uikit/-/marapp-uikit-1.0.8.tgz#cdd72cee945f59328e42a12f33891a0be622e178"
+  integrity sha512-KaM+haRVuLwfqaegtKONTjBbxT3uxdjxwlp6COR0ymxci9cmOSQ5QrUD6Jr/HlnSRElx4gft0ArnfvFg3/+RJw==
   dependencies:
     countup.js "1.8.5"
     jquery "2.2.1"
@@ -10673,6 +10673,13 @@ gatsby-plugin-page-creator@^2.3.22:
     graphql "^14.6.0"
     lodash "^4.17.15"
     slugify "^1.4.4"
+
+gatsby-plugin-portal@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-portal/-/gatsby-plugin-portal-1.0.7.tgz#c2ff2cb2bbec27e0ae9ab610857f603197189dc0"
+  integrity sha512-Drb2zj9qOVbt+/miINhyT7IvUaY+z/sxFT+0+p0yX4theKSVJgtu0YisA+DFlCmNl+KE6VjbqANZ0HUh6aWVMA==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
 
 gatsby-plugin-root-import@^2.0.5:
   version "2.0.5"

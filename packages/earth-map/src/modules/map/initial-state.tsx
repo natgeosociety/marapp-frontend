@@ -31,6 +31,6 @@ export default {
   hoverInteractions: {},
   latlng: {},
   mapStyle: APP_BASEMAPS[0].id,
-  mapLabels: false,
+  mapLabels: true,
   mapRoads: false,
 };

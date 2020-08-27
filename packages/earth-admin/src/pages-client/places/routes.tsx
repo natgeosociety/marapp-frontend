@@ -21,21 +21,19 @@ import * as React from 'react';
 import { Router, } from '@reach/router';
 
 import { Sidebar } from 'components/places';
-import Home from './home';
-import Details from './details';
-import Edit from './edit';
+import { PlacesHome } from './home';
+import { PlaceDetail } from './details';
+import { NewPlace } from './new';
 
 export default function PlacesPage(props) {
   return (
     <>
       <Sidebar />
       <Router>
-        <Home path="/" />
-        <Details path="/:page" />
-        <Edit path="/:page/edit" newPlace={false} />
-        <Edit path="/new" newPlace={true} />
+        <PlacesHome path="/" />
+        <NewPlace path="/new" />
+        <PlaceDetail path="/:page" />
       </Router>
     </>
   );
 }
-

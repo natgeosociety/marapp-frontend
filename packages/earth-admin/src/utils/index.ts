@@ -55,7 +55,7 @@ export const deserializeData = (data) => DeserializerService.deserialize(data);
 /**
  * Url encode
  */
-export const encodeQueryToURL = (baseUrl: string, query: { [key: string]: any } = {}): string =>
+export const encodeQueryToURL = (baseUrl: string, query: {[key: string]: any} = {}): string =>
   [baseUrl, decodeURIComponent(queryStringEncode(query))].join('?');
 
 /**
@@ -103,7 +103,7 @@ export const hasAccess = (permissions: string[], required: string[] | string[][]
  * Extract and group scopes/permissions/roles by primary group (org).
  * @param scopes
  */
-export const mapAuthzScopes = (scopes: string[]): { [key: string]: string[] } => {
+export const mapAuthzScopes = (scopes: string[]): {[key: string]: string[]} => {
   return scopes.reduce((acc, perm) => {
     const [org, ...scope] = perm.split(':');
     acc[org] = get(acc, org, []).concat([scope.join(':')]);
@@ -136,10 +136,55 @@ export const setPage = (pageType: string) => {
  * Get available organizations based on permissions
  * @param permissions
  */
-export const getAvailableOrgs = (permissions: { [key: string]: string }): string[] => {
+export const getAvailableOrgs = (permissions: {[key: string]: string[]}): string[] => {
   const specialPermissions = [
     '*', // super-admin
   ];
 
-  return Object.keys(permissions).filter((permission) => !specialPermissions.includes(permission));
+  const writePermissionPrefix = 'write:';
+
+  return Object.keys(permissions).filter((permission) => {
+    const hasWritePermission = permissions[permission].find((p: string) => p.startsWith(writePermissionPrefix));
+
+    const isSuperAdmin = specialPermissions.includes(permission);
+    return !isSuperAdmin && hasWritePermission;
+  });
 };
+
+/**
+ * Convert km2 to ha
+ * @param value
+ */
+export const km2toHa = (value: number): number => {
+  return value * 100;
+};
+
+const PARENTHESES_TYPE = {
+  rounded: {first: '(', last: ')'},
+  brackets: {first: '[', last: ']'},
+};
+/**
+ * Takes an array and formats it to a string surrounded by parentheses
+ * @param array
+ * @param parenthesesType - type or parentheses, maps to PARENTHESES_TYPE
+ * @param formatNo - how many parentheses groups
+ */
+
+export const formatArrayToParentheses = (array: string, parenthesesType: string, formatNo: number): string => {
+  const {first, last} = PARENTHESES_TYPE[parenthesesType];
+
+  if (formatNo === 1) {
+    return `${first}${array.toString()}${last}`;
+  }
+  if (formatNo === 2) {
+    return `${first}${array.slice(0, 2).toString()}${last} ,${first}${array.slice(2, 4)}${last}`;
+  }
+};
+
+
+export const downloadFile = (data) => {
+  const stringifiedMetric = JSON.stringify(data);
+  const jsonBlob = new Blob([stringifiedMetric]);
+  const blobUrl = URL.createObjectURL(jsonBlob);
+  return blobUrl;
+}

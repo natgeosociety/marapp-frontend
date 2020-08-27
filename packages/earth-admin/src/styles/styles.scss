@@ -32,14 +32,17 @@ body {
   scrollbar-width: thin;
   scrollbar-color: $marapp-gray-7 $marapp-gray-8;
 }
+
 ::-webkit-scrollbar-track {
   background: $marapp-gray-8;
 }
+
 ::-webkit-scrollbar-thumb {
   background-color: $marapp-gray-7;
   border-radius: 6px;
   border: 3px solid $marapp-gray-8;
 }
+
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -75,17 +78,27 @@ body {
   background: $marapp-gray-8;
   border: 1px solid $marapp-gray-3;
   color: $marapp-gray-0;
+
   &:hover {
     background: $marapp-gray-9;
     border: 1px solid $marapp-gray-3;
     color: $marapp-gray-0;
   }
+
   &:active, &:focus, &.active {
     background: $marapp-gray-100;
     border: 1px solid $marapp-gray-3;
     color: $marapp-gray-0;
   }
+
   &:disabled {
     opacity: .65;
+  }
+}
+
+
+@each $shadow-type, $shadow-factor, $shadow-spread in $box-shadows {
+  .ng-shadow-#{$shadow-type} {
+    box-shadow: 0 16/$shadow-factor + px 48/$shadow-factor + px rgba(#000, $shadow-spread);
   }
 }

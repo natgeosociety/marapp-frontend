@@ -18,7 +18,7 @@
 */
 
 import * as React from 'react';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { Map } from '@marapp/earth-components';
 
@@ -28,22 +28,57 @@ import { MapComponentContext } from 'utils/contexts';
 import { LayerManagerComponent } from '../layer-manager';
 
 import './styles.scss';
+import MapControls from 'components/map/controls';
+import RecenterControl from 'components/map/controls/recenter';
+import ZoomControl from 'components/map/controls/zoom';
 
-export default function MapComponent() {
-  const { geojson, bbox } = useContext(MapComponentContext);
-  const bounds = { bbox: bbox };
+
+export default function MapComponent(props: {height?: string}) {
+  const {height = '500px'} = props;
+  const {geojson, bbox} = useContext(MapComponentContext);
+
+  const [viewport, setViewport] = useState(MAP_DEFAULT.viewport);
+  const [mapZoom, setMapZoom] = useState(null);
+  const [bounds, setBounds] = useState({bbox: bbox});
+
+  useEffect(() => {
+    setBounds({bbox: bbox})
+  }, [bbox]);
+
   const LAYER = {
     ...LAYER_DEFAULT,
-    ...{ source: { ...LAYER_DEFAULT.source, ...{ data: geojson } } },
+    ...{source: {...LAYER_DEFAULT.source, ...{data: geojson}}},
+  };
+
+  const onRecenterChange = () => {
+    setBounds(null);
+
+    requestAnimationFrame(() => {
+      setBounds(bounds);
+    });
+  };
+
+  const onZoomChange = (zoom) => {
+    setViewport({...viewport, ...{zoom: zoom, transitionDuration: 500}});
+  };
+
+  const handleMapLoad = (e) => {
+    setMapZoom(e.map.getZoom());
+  };
+
+  const handleViewportChange = (e) => {
+    setMapZoom(e.zoom);
   };
 
   return (
-    <div className="c-map-wrapper -open">
+    <div className="c-map-wrapper -open" style={{height: height}}>
       <Map
         mapboxApiAccessToken={GATSBY_APP_MAPBOX_TOKEN}
         bounds={bounds}
         mapStyle={MAP_DEFAULT.mapStyle}
-        viewport={MAP_DEFAULT.viewport}
+        viewport={viewport}
+        onLoad={(e) => handleMapLoad(e)}
+        onViewportChange={(e) => handleViewportChange(e)}
         mapOptions={{
           customAttribution: '',
         }}
@@ -52,11 +87,15 @@ export default function MapComponent() {
           return (
             <>
               {/* LAYER MANAGER */}
-              <LayerManagerComponent map={map} layer={LAYER} />
+              <LayerManagerComponent map={map} layer={LAYER}/>
             </>
           );
         }}
       </Map>
+      <MapControls>
+        <RecenterControl onClick={onRecenterChange}/>
+        <ZoomControl viewport={viewport} onClick={(e) => onZoomChange(e)} zoom={mapZoom}/>
+      </MapControls>
     </div>
   );
 }

@@ -38,6 +38,13 @@ module.exports = {
       }
     },
     {
+      resolve: `gatsby-plugin-portal`,
+      options: {
+        key: 'portal',
+        id: 'portal',
+      },
+    },
+    {
       resolve: `gatsby-plugin-root-import`,
       options: {
         root: path.join(__dirname, 'src'),
