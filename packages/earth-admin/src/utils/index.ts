@@ -146,7 +146,8 @@ export const getAvailableOrgs = (permissions: {[key: string]: string[]}): string
   return Object.keys(permissions).filter((permission) => {
     const hasWritePermission = permissions[permission].find((p: string) => p.startsWith(writePermissionPrefix));
 
-    return !specialPermissions.includes(permission) && hasWritePermission;
+    const isSuperAdmin = specialPermissions.includes(permission);
+    return !isSuperAdmin && hasWritePermission;
   });
 };
 
