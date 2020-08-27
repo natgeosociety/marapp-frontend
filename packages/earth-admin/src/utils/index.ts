@@ -136,12 +136,19 @@ export const setPage = (pageType: string) => {
  * Get available organizations based on permissions
  * @param permissions
  */
-export const getAvailableOrgs = (permissions: {[key: string]: string}): string[] => {
+export const getAvailableOrgs = (permissions: {[key: string]: string[]}): string[] => {
   const specialPermissions = [
     '*', // super-admin
   ];
 
-  return Object.keys(permissions).filter((permission) => !specialPermissions.includes(permission));
+  const writePermissionPrefix = 'write:';
+
+  return Object.keys(permissions).filter((permission) => {
+    const hasWritePermission = permissions[permission].find((p: string) => p.startsWith(writePermissionPrefix));
+
+    const isSuperAdmin = specialPermissions.includes(permission);
+    return !isSuperAdmin && hasWritePermission;
+  });
 };
 
 /**
