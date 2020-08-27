@@ -18,20 +18,57 @@
 */
 
 import * as React from 'react';
-import { useEffect } from 'react';
-import { navigate } from 'gatsby';
 
+import { useRequest } from 'utils/hooks';
 import { useAuth0 } from 'auth/auth0';
+import { AuthzGuards } from 'auth/permissions';
+import { getOrganizationStats } from 'services/organizations';
 
-/**
- * Just redirect to the default selectedGroup. (set in auth0.tsx)
- */
-const Homepage = () => {
+import { ContentLayout, SidebarLayout } from 'layouts';
+import { Card } from 'components';
+
+import './styles.scss';
+
+const Homepage = (props) => {
   const { selectedGroup } = useAuth0();
-  useEffect(() => {
-    selectedGroup && navigate(`/${selectedGroup}`, { replace: true });
-  }, [selectedGroup]);
-  return <div>This is homepage - should be redirected to /:org</div>
-}
+  const { isLoading, data: organization, errors } = useRequest(() => getOrganizationStats(selectedGroup), {
+    permissions: AuthzGuards.accessOrganizationsGuard,
+    query: selectedGroup // when this changes, we refetch
+  });
+
+  return (
+    <>
+      <SidebarLayout isLoading={isLoading}>
+        <Card className="ng-margin-top" style={{ 'overflowY': 'scroll' }}>
+          {organization.name && (
+            <>
+              <h2 className="ng-text-display-m ng-margin-bottom-remove">{organization.name}</h2>
+              <p className="ng-margin-bottom-large">{organization.description}</p>
+              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Slug: </strong>{organization.slug}</p>
+
+              <hr className="ng-hr-small ng-hr"/>
+
+              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization collections: </strong>{organization.collections}</p>
+              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization places: </strong>{organization.locations}</p>
+              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization layers: </strong>{organization.layers}</p>
+              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization widgets: </strong>{organization.widgets}</p>
+            </>
+          )}
+        </Card>
+      </SidebarLayout>
+      <ContentLayout permission={true} errors={errors}>
+        {!isLoading && (
+          <>
+            <h2 className="ng-text-display-m">Home</h2>
+            <Card className="ng-width-1-2">
+              <h4 className="ng-text-display-s ng-margin-bottom">Welcome to the {organization.name} Admin!</h4>
+              <p>Search and edit sections related to your organization.</p>
+            </Card>
+          </>
+        )}
+      </ContentLayout>
+    </>
+  );
+};
 
 export default Homepage;
