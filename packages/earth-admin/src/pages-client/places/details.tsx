@@ -127,7 +127,7 @@ export function PlaceDetail(path: any) {
       />
     )}
     <div className="ng-padding-medium-horizontal">
-      <LinkWithOrg className="ng-border-remove ng-margin-medium-bottom ng-display-block" to="/places">
+      <LinkWithOrg className="ng-border-remove ng-margin-bottom ng-display-block" to="/places">
         <i className="ng-icon ng-icon-directionleft"></i>
         return to places home
       </LinkWithOrg>
