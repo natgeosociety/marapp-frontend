@@ -16,6 +16,7 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
+@import '~styles/config';
 
 .ng-inline-card-overlay {
   position: fixed;
@@ -26,5 +27,5 @@
   z-index: 1010;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background: rgba(#000, .7);
+  background: rgba($marapp-gray-9, .65);
 }
