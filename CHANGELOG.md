@@ -1,3 +1,54 @@
+# [1.1.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.0.0...v1.1.0) (2020-08-27)
+
+
+### Bug Fixes
+
+* **admin:** [UNBL] Admin - Center shape button has no functionality [EP-2625] ([a5e4f21](https://github.com/natgeosociety/marapp-frontend/commit/a5e4f21f20c9d20f6e389a45bee8f177a0887e0b))
+* **admin:** [UNBL] Admin - Errors for invalid characters is not displayed for Title input [EP-2630] ([721e190](https://github.com/natgeosociety/marapp-frontend/commit/721e190838c452308f3c34c7f357727feccbda99))
+* **admin:** [UNBL] Admin -> Edit location is not working anymore [EP-2627] ([a4309b5](https://github.com/natgeosociety/marapp-frontend/commit/a4309b5d2a699c85249320ed052286b0e7df8fbc))
+* **admin:** [UNBL] Errors are still displayed after the card is reopened[UNBL] [EP-2628] ([26c5d51](https://github.com/natgeosociety/marapp-frontend/commit/26c5d5134a522945ac5153e6b44c570835948b2f))
+* **admin:** Add geojson upload error message [EP-2616] ([0d13ed3](https://github.com/natgeosociety/marapp-frontend/commit/0d13ed37e67d3893130b5eea47ce813678924e7c))
+* **admin:** added Generate slug button ([c937eac](https://github.com/natgeosociety/marapp-frontend/commit/c937eac4259099f37ca31a60b01e8d3567a13058))
+* **admin:** Dash should be allowed when slug name is edited [EP-2633] ([d4f8df6](https://github.com/natgeosociety/marapp-frontend/commit/d4f8df6a6d26450c7153ffa551df4bd46990c690))
+* **admin:** filter out orgs that can't be managed (no write access) [EP-2359] ([2f642d6](https://github.com/natgeosociety/marapp-frontend/commit/2f642d6b53bb3bc957f19c40a896e8efd6089e39))
+* **admin:** Fix typos [EP-2618] ([98cc8fb](https://github.com/natgeosociety/marapp-frontend/commit/98cc8fb5f72bc66217f020ca640edca663c31597))
+* **admin:** Json Upload click area [EP-2621] ([de1f175](https://github.com/natgeosociety/marapp-frontend/commit/de1f1751b4119d08fb7999a6d8ffa13bca678bf0))
+* **admin:** place detail design changes ([1d1ac2b](https://github.com/natgeosociety/marapp-frontend/commit/1d1ac2b73b41edad9a10091de79757d47f1a6e33))
+* **admin:** set page size to 10 for users list ([92059b2](https://github.com/natgeosociety/marapp-frontend/commit/92059b27d8a04080264ddb0778887dfe298679f9))
+* **map:** test spinner ([04408ff](https://github.com/natgeosociety/marapp-frontend/commit/04408ff23073b3d81618954709a7715190657183))
+* change portals because they do not work in the build env ([3e830ab](https://github.com/natgeosociety/marapp-frontend/commit/3e830abf9f9aa159907e56d1ea58e432b1bfc5ed))
+* design qa ([9848fb3](https://github.com/natgeosociety/marapp-frontend/commit/9848fb3c9ff8089385fa3c9bc0b8bcd58f01c033))
+* infinite loading feature places / reset button [EP-2495] ([8f8714b](https://github.com/natgeosociety/marapp-frontend/commit/8f8714b69b290a54eb127c99ab6d885a9678d90e))
+* super admin identifier ([6f37ada](https://github.com/natgeosociety/marapp-frontend/commit/6f37ada77145e40683ad7a53e33043b12754ed39))
+
+
+### Features
+
+* [Admin] Download GeoJSON [EP-2191] ([3347aaa](https://github.com/natgeosociety/marapp-frontend/commit/3347aaa4b1dac15ec63a8fe943f6694014ef0dbf))
+* [Admin] Download GeoJSON [EP-2191] ([6fe5844](https://github.com/natgeosociety/marapp-frontend/commit/6fe584417ccb09526372e744df4f9eadc77b8495))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([5d674a2](https://github.com/natgeosociety/marapp-frontend/commit/5d674a22ed88289f6db7a1e10281e550a0c96466))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([2796cc3](https://github.com/natgeosociety/marapp-frontend/commit/2796cc34b9a0b6800664a8ae3bc0e1b7da399b82))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([efce251](https://github.com/natgeosociety/marapp-frontend/commit/efce25112004aeb7c7accffd67fe52d168971b01))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([002f6ad](https://github.com/natgeosociety/marapp-frontend/commit/002f6ad61e49f93fe4c7dc8cdc9ac89cef327ac8))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([790d8e8](https://github.com/natgeosociety/marapp-frontend/commit/790d8e85cfcc459ed76f3e32cb409cf04bd772d6))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([91589a0](https://github.com/natgeosociety/marapp-frontend/commit/91589a03e8ba0fc958c3c91e6347424b94e51503))
+* Change default for Labels to be ON. (Roads still to be off) [EP-2380] ([86c4cbc](https://github.com/natgeosociety/marapp-frontend/commit/86c4cbcda8eb84a10e6c41ec0f3f5250af64c6a3))
+* **admin:** added the spinner when creating new place ([fc51017](https://github.com/natgeosociety/marapp-frontend/commit/fc51017d61b416a561f14eb1315ef828049afed8))
+* **admin:** redesign ActionModal component [EP-2192] ([7df96e6](https://github.com/natgeosociety/marapp-frontend/commit/7df96e6c47b5addb524791371d6efe933bf62b4f))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([8631eb3](https://github.com/natgeosociety/marapp-frontend/commit/8631eb37dd5f27a95ca319b00e2dd2ff27492bc1))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([55a95bb](https://github.com/natgeosociety/marapp-frontend/commit/55a95bbb0a35d751ab98d26a0314f37b4b7b213d))
+* **admin:** add generic Input component ([34406ed](https://github.com/natgeosociety/marapp-frontend/commit/34406ed9a9fb2ea03f483aa550e435e089fee109))
+* **admin:** create reusable FakeJsonUpload component ([b961c9e](https://github.com/natgeosociety/marapp-frontend/commit/b961c9e160481bbb784bcfe1cea90ce8724d6d91))
+* **admin:** New Places page UI [EP-2187] ([6c013fe](https://github.com/natgeosociety/marapp-frontend/commit/6c013fe6e3ff003feb33ce47f082bc92adb54690))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([f5eb070](https://github.com/natgeosociety/marapp-frontend/commit/f5eb070c7239dd6ccc8e0c3d3875a39bd585619a))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([d68e709](https://github.com/natgeosociety/marapp-frontend/commit/d68e709548f311f5c6452a39729d38a5cb12e898))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([954fc86](https://github.com/natgeosociety/marapp-frontend/commit/954fc86272b034bec5b2818e9e63c4c4ada83e44))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([cce5b89](https://github.com/natgeosociety/marapp-frontend/commit/cce5b89e0e5d0f2da5090a5bd31e140135413b4f))
+* [Admin] Places Detail page Layout UI. [EP-2188] ([38a7334](https://github.com/natgeosociety/marapp-frontend/commit/38a73343dafa6693a8d1cd6310666727e1c21b84))
+* redirect to place detail page after create ([785273b](https://github.com/natgeosociety/marapp-frontend/commit/785273ba097ecdd971b95c270747b0af177a99da))
+* WIP new places page [EP-2187] ([47ec047](https://github.com/natgeosociety/marapp-frontend/commit/47ec0471f0c5b6c602628c5a81379c3ade335d7a))
+* wip upload [EP-2187] ([d5cd0d2](https://github.com/natgeosociety/marapp-frontend/commit/d5cd0d2cc6661e14c846ce6b8cf1546817c317b0))
+
 # 1.0.0 (2020-08-26)
 
 
