@@ -95,7 +95,7 @@ export const handlePlaceForm = async (
 export const getUniqueSlug = async (
   keyword: string,
   group: string,
-  type: string = 'shortid'
+  type: string = 'counter'
   ) =>
   await PlacesAPIService.request({
     url: `/locations/slug?keyword=${keyword}&group=${group}&type=${type}`,

@@ -55,7 +55,7 @@ export default function UsersPage( props ) {
 
 function Sidebar( props: any ) {
   const [users, setUsers] = useState([]);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isNoMore, setIsNoMore] = useState(null);

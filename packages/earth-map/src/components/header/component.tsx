@@ -42,6 +42,7 @@ interface IProps {
   setUserGroup?: Function;
   setLayersSearch?: Function;
   setSidebarPanel?: Function;
+  resetLayers?: Function;
 }
 
 const Header = (props: IProps) => {
@@ -60,6 +61,7 @@ const Header = (props: IProps) => {
     setPlacesSearch,
     setLayersSearch,
     setSidebarPanel,
+    resetLayers
   } = props;
   const hasMultipleGroups = allGroups.length > 1;
   const allInitiallySelected = group.length === allGroups.length;
@@ -77,6 +79,7 @@ const Header = (props: IProps) => {
     setLayersSearch({ search: '' });
     setSidebarPanel(EPanels.PLACES);
     setIndexesSelected('');
+    resetLayers();
     resetMap();
   };
 

@@ -5,7 +5,7 @@ import { groupBy, map } from 'lodash';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { encodeQueryToURL, formatDate, km2toHa, formatArrayToParentheses } from 'utils';
-import { setupErrors } from 'utils/validations';
+import { noSpecialChars, noSpecialCharsOrSpace, setupErrors } from 'utils/validations';
 import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
@@ -76,9 +76,10 @@ export function PlaceDetail(path: any) {
     e.preventDefault();
 
     const formData = getValues();
+
     const parsed = {
       ...formData,
-      geojson: geojsonValue,
+      ...(geojsonValue && {geojson: geojsonValue})
     };
 
     try {
@@ -126,7 +127,7 @@ export function PlaceDetail(path: any) {
       />
     )}
     <div className="ng-padding-medium-horizontal">
-      <LinkWithOrg className="ng-border-remove ng-margin-medium-bottom ng-display-block" to="/places">
+      <LinkWithOrg className="ng-border-remove ng-margin-bottom ng-display-block" to="/places">
         <i className="ng-icon ng-icon-directionleft"></i>
         return to places home
       </LinkWithOrg>
@@ -144,10 +145,11 @@ export function PlaceDetail(path: any) {
                     label="Title*"
                     defaultValue={name}
                     className="ng-display-block"
-                    error={renderErrorFor('name')}
+                    error={renderErrorFor('name', 'noSpecialChars')}
                     ref={register({
                       required: 'Place title is required',
-                    })}/>
+                      validate: { noSpecialChars }
+                    })} />
                 </>
               )}>
               <h1 className="ng-text-display-m ng-margin-remove">{name}</h1>
@@ -185,11 +187,12 @@ export function PlaceDetail(path: any) {
                       placeholder="Place slug"
                       label="Slug*"
                       defaultValue={slug}
-                      error={renderErrorFor('slug')}
                       className="ng-display-block"
+                      error={renderErrorFor('slug', 'noSpecialCharsOrSpace')}
                       ref={register({
                         required: 'Place slug is required',
-                      })}/>
+                        validate: { noSpecialCharsOrSpace }
+                      })} />
                   </div>
                   <div>
                     <label htmlFor="type">Place type</label>

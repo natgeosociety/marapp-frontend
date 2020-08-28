@@ -26,11 +26,20 @@ export const noSpecialChars = (value: string): boolean => {
   return regex.test(value);
 }
 
+/**
+ * React-hook-form validation.
+ * Show error if string contains special characters or space.
+ */
+export const noSpecialCharsOrSpace = (value: string): boolean => {
+  const regex = RegExp('^[a-z0-9](-?[a-z0-9])*$');
+  return regex.test(value);
+}
 
 export const setupErrors = (errors, touched) =>
   (field: string, customErr?: string): string => {
     const errorMapping = {
-      noSpecialChars: 'Special characters are not allowed'
+      noSpecialChars: 'Special characters are not allowed',
+      noSpecialCharsOrSpace: 'Special characters or space are not allowed'
     };
     const fieldErr: any = errors[field];
     if (!fieldErr) {

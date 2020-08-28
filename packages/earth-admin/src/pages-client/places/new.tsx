@@ -64,7 +64,7 @@ export function NewPlace(path: any) {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getUniqueSlug(watchName, selectedGroup, 'shortid');
+      const { data }: any = await getUniqueSlug(watchName, selectedGroup);
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);

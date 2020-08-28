@@ -58,12 +58,12 @@ export default function InlineEditCard(props: InlineCardProps) {
     validForm,
   } = props;
 
-
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
 
   const state = isEditing ? 'open' : 'close';
+
   const optionsBag: IOptionsBag = {
     isEditing,
     isLoading,
@@ -72,6 +72,11 @@ export default function InlineEditCard(props: InlineCardProps) {
     setIsLoading,
     setServerErrors,
   };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setServerErrors(false);
+  }
 
   const renderEditable = () => (
     <>
@@ -84,7 +89,7 @@ export default function InlineEditCard(props: InlineCardProps) {
                 onClick={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}>{submitButtonText}
         </button>
         <button className="ng-button ng-button-secondary"
-                onClick={(e) => setIsEditing(false)}>{cancelButtonText}
+                onClick={handleCancel}>{cancelButtonText}
         </button>
       </div>
     </>
