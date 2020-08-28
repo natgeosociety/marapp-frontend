@@ -19,6 +19,7 @@
 
 import * as React from 'react';
 
+import { setPage } from 'utils';
 import { useRequest } from 'utils/hooks';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
@@ -29,6 +30,8 @@ import { Card } from 'components';
 
 import './styles.scss';
 
+const PAGE_TYPE = setPage('Home');
+
 const Homepage = (props) => {
   const { selectedGroup } = useAuth0();
   const { isLoading, data: organization, errors } = useRequest(() => getOrganizationStats(selectedGroup), {
@@ -38,7 +41,7 @@ const Homepage = (props) => {
 
   return (
     <>
-      <SidebarLayout isLoading={isLoading}>
+      <SidebarLayout isLoading={isLoading} page={PAGE_TYPE}>
         <Card className="ng-margin-top" style={{ 'overflowY': 'scroll' }}>
           {organization.name && (
             <>
@@ -52,6 +55,7 @@ const Homepage = (props) => {
               <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization places: </strong>{organization.locations}</p>
               <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization layers: </strong>{organization.layers}</p>
               <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization widgets: </strong>{organization.widgets}</p>
+              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization dashboards: </strong>{organization.dashboards}</p>
             </>
           )}
         </Card>
