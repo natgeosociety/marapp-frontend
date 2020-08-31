@@ -18,13 +18,13 @@
 */
 
 import React, { useState } from 'react';
-
-import { SidebarItem, DropdownComponent } from 'components/index';
-import { ADMIN_PAGES } from 'components/sidebar-select/model';
-import { useDomWatcher } from 'utils/hooks';
 import classnames from 'classnames';
 
-import { IAdminPage } from 'components/sidebar-select/model';
+import { useDomWatcher } from 'utils/hooks';
+
+import { SidebarItem, DropdownComponent } from 'components/index';
+import { IAdminPage } from '../model';
+import { ADMIN_PAGES } from '../model';
 
 import './styles.scss';
 
