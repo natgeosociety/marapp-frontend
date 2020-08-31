@@ -1,3 +1,18 @@
+# [1.2.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.1.0...v1.2.0) (2020-08-31)
+
+
+### Bug Fixes
+
+* **admin:**  Display correct information on homepage after switching orgs [EP-2182][EP-2717] ([6fc0c5e](https://github.com/natgeosociety/marapp-frontend/commit/6fc0c5e48f8d9490111b4e311c205135b0aa70b7))
+* **map:** Layers are not displayed in the url after the app logo is clicked [EP-2494] ([5d017c0](https://github.com/natgeosociety/marapp-frontend/commit/5d017c0e70b795ffc5479b96b2962374e0c03741))
+* **map:** Map view - App crashes if a layer with an info modal open is removed from the map [EP-2575] ([3295c06](https://github.com/natgeosociety/marapp-frontend/commit/3295c06c16d1c48d982e32094fc9fc2256b87482))
+
+
+### Features
+
+* **admin:** new homepage ui [EP-2182] ([4ac8ae3](https://github.com/natgeosociety/marapp-frontend/commit/4ac8ae3d84264ca3f1e307344c5a69d883b68135))
+* **admin:** New homepage UI [EP-2182] ([e4a6c40](https://github.com/natgeosociety/marapp-frontend/commit/e4a6c40759a63c0c3047f21b991e7aade564a700))
+
 # [1.1.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.0.0...v1.1.0) (2020-08-27)
 
 
