@@ -21,7 +21,7 @@ import React from 'react';
 
 import debounce from 'lodash/debounce';
 
-import {Keyframes, animated} from 'react-spring/renderprops';
+import { Keyframes, animated } from 'react-spring/renderprops';
 
 import Modal from 'components/modal';
 
@@ -82,8 +82,8 @@ class LegendComponent extends React.PureComponent<ILegend> {
   };
 
   onChangeOrder = datasetIds => {
-    const { setLayerOrder } = this.props;
-    setLayerOrder({ datasetIds });
+    const {setLayerOrder} = this.props;
+    setLayerOrder({datasetIds});
   };
 
   onChangeCurrent = (l, current, slug) => {
@@ -92,10 +92,10 @@ class LegendComponent extends React.PureComponent<ILegend> {
     setLayerGroupCurrent({ slug, current });
   };
 
-  onRemoveLayer = layer => {
+  onRemoveLayer = debounce((layer) => {
     const { toggleLayer } = this.props;
     toggleLayer(layer);
-  };
+  }, 250);
 
   onChangeLayerDate = (dates, layer) => {
     const { setLayerSettings } = this.props;
