@@ -108,7 +108,7 @@ class Datepicker extends PureComponent {
     return (
       <div
         ref={ref => { this.ref = ref; }}
-        className={classnames('c-datepicker', theme, className)}
+        className={classnames('c-datepicker', 'marapp-qa-datepicker', theme, className)}
       >
         <ReactDatePicker
           className="datepicker-input"

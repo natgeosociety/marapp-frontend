@@ -166,8 +166,7 @@ class Button extends PureComponent {
     const { className, children, ...props } = this.props;
     const { rippleStyle } = this.state;
 
-    const classNames = classnames({
-      'c-button': true,
+    const classNames = classnames('marapp-qa-button', 'c-button', {
       [className]: !!className
     });
 

@@ -32,7 +32,7 @@ class Markdown extends React.Component {
 
   render() {
     return (
-      <div className="c-markdown">
+      <div className="c-markdown marapp-qa-markdown">
         <ReactMarkdown {...this.props} />
       </div>
     );
