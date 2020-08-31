@@ -49,7 +49,7 @@ class BasemapComponent extends React.PureComponent<IBasemap> {
     const { mapStyle } = this.props;
 
     return (
-      <div className="layers--list">
+      <div className="layers--list marapp-qa-basemap">
         {APP_BASEMAPS.filter((l) => l.id !== mapStyle).map((basemap) => (
           <div key={basemap.id}>
             <Layer

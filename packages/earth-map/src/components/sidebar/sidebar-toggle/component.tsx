@@ -31,7 +31,7 @@ const SidebarToggle = (props: ISidebarToggle) => {
   const { open, setSidebarOpen } = props;
 
   return (
-    <div className="c-sidebar-close">
+    <div className="marapp-qa-sidebarclose c-sidebar-close">
       <button type="button" onClick={() => setSidebarOpen(!open)} className="sidebar--btn">
         <i
           className={classNames({

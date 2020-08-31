@@ -147,7 +147,7 @@ const YearDatePickerLegendComponent = (props: ILegendYearDatePicker) => {
 
   return (
     !!startDate && (
-      <div className="c-legend-year-date">
+      <div className="marapp-qa-legendyeardate c-legend-year-date">
         <Select onChange={e => onChange(e)} options={options}/>
         <br/>
 

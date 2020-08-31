@@ -72,7 +72,7 @@ class PlaceComponent extends React.PureComponent<IPlace> {
       <PlaceWrapper native state={state}>
         {({ x, ...props }) => (
           <animated.div
-            className="c-place"
+            className="marapp-qa-place c-place"
             style={{
               transform: x.interpolate(x => `translate3d(${x}px,0,0)`),
               ...props,

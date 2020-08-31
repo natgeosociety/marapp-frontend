@@ -96,10 +96,7 @@ class Sidebar extends React.Component<ISidebarPanel> {
       <SidebarPanel native state={state}>
         {({ x, ...props }) => (
           <animated.div
-            className={classNames({
-              'c-sidebar': true,
-              'ng-c-sidebar': true,
-              'ng-subsection-background': true,
+            className={classNames('marapp-qa-sidebar c-sidebar ng-c-sidebar ng-subsection-background', {
               'no-scroll': layersPanel,
             })}
             style={{

@@ -59,7 +59,7 @@ class IndexSidebarComponent extends React.Component<IndexSidebar> {
           show &&
           (({ x, ...props }) => (
             <animated.div
-              className="c-index-sidebar"
+              className="c-index-sidebar marapp-qa-indexsidebar"
               // @ts-ignore
               style={{
                 ...props,

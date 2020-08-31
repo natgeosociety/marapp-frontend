@@ -35,8 +35,7 @@ class RecenterControl extends React.PureComponent<IRecenter> {
   render() {
     const { className, onClick } = this.props;
 
-    const classNames = classnames({
-      'c-recenter-control': true,
+    const classNames = classnames('marapp-qa-recentercontrol c-recenter-control', {
       [className]: !!className,
     });
 

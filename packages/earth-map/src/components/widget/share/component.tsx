@@ -32,7 +32,7 @@ class WidgetShareComponent extends React.PureComponent<IWidgetShare> {
     const { url } = this.props;
 
     return (
-      <div className="c-widget-share">
+      <div className="marapp-qa-widgetshare c-widget-share">
         <Share link={url} />
       </div>
     );

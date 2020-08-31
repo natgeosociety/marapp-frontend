@@ -63,12 +63,8 @@ class WidgetsComponent extends React.Component<IWidgets, IWidgetsState> {
     const { groups, place, list, embed, toolbar, toggleLayer, metrics = [{}] } = this.props;
     const { collapsedState } = this.state;
 
-    const classNames = classnames({
-      'c-widgets': true,
-    });
-
     return (
-      <div className={classNames}>
+      <div className="marapp-qa-widgets c-widgets">
         <div className="widgets--content">
           <div className="ng-widget-header ng-padding-medium">
             <h3 className="ng-text-display-s ng-margin-bottom">

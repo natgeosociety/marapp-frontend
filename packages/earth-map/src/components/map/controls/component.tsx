@@ -29,8 +29,7 @@ interface IMapControls {
 class MapControls extends React.PureComponent<IMapControls> {
   render() {
     const { customClass, children } = this.props;
-    const classNames = classnames({
-      'c-map-controls': true,
+    const classNames = classnames('marapp-qa-mapcontrols', 'c-map-controls', {
       [customClass]: !!customClass,
     });
 
