@@ -23,6 +23,7 @@ import { setUserGroup } from 'modules/user/actions';
 import { resetPlacesFeatured, setPlacesSearch, resetPlace } from 'modules/places/actions';
 import { setLayersSearch } from 'modules/layers/actions';
 import { resetLayerCache } from 'modules/layers/actions';
+import { resetLayers } from 'modules/layers/actions';
 import { setSidebarPanel } from 'modules/sidebar/actions';
 import { resetMap } from 'modules/map/actions';
 import { setIndexesSelected } from 'modules/indexes/actions';
@@ -42,5 +43,6 @@ export default connect(
     setIndexesSelected,
     setLayersSearch,
     setSidebarPanel,
+    resetLayers
   }
 )(OrgSwitcher);

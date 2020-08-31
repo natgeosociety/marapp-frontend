@@ -18,15 +18,21 @@
 */
 
 import React, { useState } from 'react';
+import classnames from 'classnames';
+
+import { useDomWatcher } from 'utils/hooks';
 
 import { SidebarItem, DropdownComponent } from 'components/index';
-import { ADMIN_PAGES } from 'components/sidebar-select/model';
-import { useDomWatcher } from 'utils/hooks';
-import classnames from 'classnames';
+import { IAdminPage } from '../model';
+import { ADMIN_PAGES } from '../model';
 
 import './styles.scss';
 
-const SidebarSelect = ( props: any ) => {
+interface IProps {
+  path?: IAdminPage[];
+}
+
+const SidebarSelect = ( props: IProps ) => {
   const selectRef = React.useRef(null);
 
   const [dropdownState, setDropdownState] = useState('close');
