@@ -25,7 +25,7 @@ import { navigate } from 'gatsby';
 import { GATSBY_APP_BASE_URL } from 'config';
 import PlacesPage from 'pages-client/places/routes';
 import DashboardsPage from 'pages-client/dashboards';
-import LayersPage from 'pages-client/layers';
+import LayersPage from 'pages-client/layers/routes';
 import WidgetsPage from 'pages-client/widgets';
 import UsersPage from 'pages-client/users';
 import OrganizationsPage from 'pages-client/organizations';

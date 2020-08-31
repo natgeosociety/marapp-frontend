@@ -17,7 +17,23 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './layer-details';
-export * from './layer-edit';
-export * from './layer-list';
-export * from './layer-sidebar';
+import * as React from 'react';
+import { Router, } from '@reach/router';
+
+import { Sidebar } from 'components/layers';
+// import { LayersHome } from './home';
+// import { LayerDetail } from './details';
+import { NewLayer } from './new';
+
+export default function LayersPage(props) {
+  return (
+    <>
+      <Sidebar />
+      <Router>
+        {/*<LayersHome path="/" />*/}
+        <NewLayer path="/new" />
+        {/*<LayerDetail path="/:page" />*/}
+      </Router>
+    </>
+  );
+}

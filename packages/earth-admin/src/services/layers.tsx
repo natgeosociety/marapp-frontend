@@ -70,3 +70,13 @@ export const deleteLayer = async (layerId: string, group: string) =>
 
 export const handleLayerForm = async (newLayer: boolean, layer, layerId: string, group: string) =>
   newLayer ? await addLayer(layer, group) : await updateLayer(layerId, layer, group);
+
+
+export const getUniqueSlug = async (
+  keyword: string,
+  group: string,
+  type: string = 'counter'
+) =>
+  await LayerAPIService.request({
+    url: `/layers/slug?keyword=${keyword}&group=${group}&type=${type}`,
+  });

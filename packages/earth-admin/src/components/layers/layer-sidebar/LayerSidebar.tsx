@@ -18,37 +18,26 @@
 */
 
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { Router } from '@reach/router';
+import { useState, useEffect } from 'react';
 
-import { LayerContext } from 'utils/contexts';
-import { encodeQueryToURL, setPage } from 'utils';
-import { getAllLayers, getLayer } from 'services/layers';
-import { useRequest } from 'utils/hooks';
-import { LayerList, LayerDetails, LayerEdit, LinkWithOrg } from 'components';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
-import { ContentLayout, SidebarLayout } from 'layouts';
+import { LayerContext, PlaceContext } from 'utils/contexts';
+import { encodeQueryToURL, setPage } from 'utils';
+import { getAllPlaces } from 'services/places';
+
+import { SidebarLayout } from 'layouts';
+import { DataListing, DefaultListItem } from 'components';
+import { getAllLayers } from 'services';
+
 
 const LAYER_DETAIL_QUERY = { include: 'references', select: 'references.name,references.id' };
 const INIT_CURSOR_LOCATION = '-1';
 
 const PAGE_TYPE = setPage('Layers');
 
-export default function LayersPage( props ) {
-  return (
-    <Router>
-      <Page path="/">
-        <HomePage path="/"/>
-        <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newLayer={false}/>
-        <EditPage path="/new" newLayer={true}/>
-      </Page>
-    </Router>
-  );
-}
 
-function Sidebar( props: any ) {
+export default function Sidebar(props: any) {
   const [layers, setLayer] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -62,7 +51,6 @@ function Sidebar( props: any ) {
   const { selectedGroup, getPermissions } = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessLayersGuard);
-
 
   const handleSearchValueChange = ( newValue: string ) => {
     setPageCursor(INIT_CURSOR_LOCATION);
@@ -102,6 +90,7 @@ function Sidebar( props: any ) {
     permissions && setupLayers();
   }, [pageCursor, searchValue]);
 
+
   return (
     <LayerContext.Provider
       value={{
@@ -118,69 +107,21 @@ function Sidebar( props: any ) {
       }}
     >
       <SidebarLayout page={PAGE_TYPE}>
-        <LayerList/>
+        <DataListing
+          childComponent={DefaultListItem}
+          data={layers}
+          categoryUrl={'layers'}
+          pageTitle="layers"
+          searchValueAction={handleSearchValueChange}
+          cursorAction={handleCursorChange}
+          isLoading={isLoading}
+          isNoMore={isNoMore}
+          totalResults={totalResults}
+          pageSize={pageSize}
+          searchValue={searchValue}
+          selectedItem={selectedItem}
+        />
       </SidebarLayout>
     </LayerContext.Provider>
-  );
-}
-
-
-function Page( props: any ) {
-  return (
-    <>
-      <Sidebar/>
-      {props.children}
-    </>);
-}
-
-function HomePage( props: any ) {
-  const { getPermissions } = useAuth0();
-  const permissions = getPermissions(AuthzGuards.accessLayersGuard);
-  const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
-  return (writePermissions && (
-    <ContentLayout>
-      <div className="ng-flex ng-align-right">
-        <LinkWithOrg className="ng-button ng-button-overlay" to="/layers/new">
-          add new layer
-        </LinkWithOrg>
-      </div>
-    </ContentLayout>
-  ));
-}
-
-function DetailsPage( path: any ) {
-  const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`layers/${path.page}`, {
-    ...LAYER_DETAIL_QUERY,
-    ...{ group: selectedGroup },
-  });
-
-  const { isLoading, errors, data } = useRequest(() => getLayer(encodedQuery), {
-    permissions: AuthzGuards.accessLayersGuard,
-    query: encodedQuery,
-  });
-
-  return (
-    <ContentLayout errors={errors} backTo="/layers" isLoading={isLoading}>
-      <LayerDetails data={data} newLayer={false}/>
-    </ContentLayout>
-  );
-}
-
-function EditPage( path: any ) {
-  const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`layers/${path.page}`, {
-    ...LAYER_DETAIL_QUERY,
-    ...{ group: selectedGroup },
-  });
-  const { isLoading, errors, data } = useRequest(() => getLayer(encodedQuery), {
-    permissions: AuthzGuards.writeLayersGuard,
-    skip: path.newLayer,
-  });
-
-  return (
-    <ContentLayout errors={errors} backTo="/layers" isLoading={isLoading}>
-      <LayerEdit data={data} newLayer={path.newLayer}/>
-    </ContentLayout>
   );
 }
