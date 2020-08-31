@@ -21,7 +21,6 @@ import * as React from 'react';
 
 import { setPage } from 'utils';
 import { useRequest } from 'utils/hooks';
-import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { getOrganizationStats } from 'services/organizations';
 
@@ -33,10 +32,12 @@ import './styles.scss';
 const PAGE_TYPE = setPage('Home');
 
 const Homepage = (props) => {
-  const { selectedGroup } = useAuth0();
-  const { isLoading, data: organization, errors } = useRequest(() => getOrganizationStats(selectedGroup), {
+  // use org from URL
+  // `const { selectedGroup } = useAuth0()` fires multiple times on change
+  const { org } = props;
+  const { isLoading, data: organization, errors } = useRequest(() => getOrganizationStats(org), {
     permissions: AuthzGuards.accessOrganizationsGuard,
-    query: selectedGroup // when this changes, we refetch
+    query: org // when this changes, we refetch
   });
 
   return (
