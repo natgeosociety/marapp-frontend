@@ -44,7 +44,7 @@ const YearPickerLegendComponent = (props: any) => {
     });
 
   return (
-    <div className="c-legend-evi">
+    <div className="marapp-qa-legendyear c-legend-evi">
       <Select onChange={e => onChange(e)} options={options} />
     </div>
   );

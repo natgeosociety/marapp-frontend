@@ -96,8 +96,7 @@ class ShareComponent extends PureComponent {
 
     const { tab, width, height, copied } = this.state;
 
-    const classNames = classnames({
-      "c-share": true,
+    const classNames = classnames('marapp-qa-share', 'c-share', {
       [className]: !!className,
     });
 

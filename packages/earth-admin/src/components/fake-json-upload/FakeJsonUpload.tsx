@@ -46,7 +46,7 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
   }
 
   return (
-    <div className="ng-flex-inline ng-flex-column">
+    <div className="marapp-qa-fakejsonupload ng-flex-inline ng-flex-column">
       {label && <label htmlFor={id}>{label}</label>}
       <input
         type="file"

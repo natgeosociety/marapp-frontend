@@ -17,7 +17,7 @@ export const DownloadFile = (props: DownloadFileProps) => {
       href={downloadFile(data)}
       download={`${fileName}.json`}
       className={classnames(
-        'ng-button ng-button-link ng-text-transform-remove',
+        'marapp-qa-downloadfile ng-button ng-button-link ng-text-transform-remove',
         className,
       )}
     >

@@ -56,7 +56,7 @@ class Tooltip extends React.PureComponent<TooltipProps> {
     return (
       <div>
         {settings && settings.length && (
-          <div className="c-chart-tooltip" style={style}>
+          <div className="marapp-qa-widgettooltip c-chart-tooltip" style={style}>
             {settings.map((d: any) =>
               hideZeros && !values[d.key] ? null : (
                 <div key={d.key} className={`data-line ${d.position || ''}`}>

@@ -19,8 +19,8 @@
 
 import * as React from 'react';
 
+import { setPage } from 'utils';
 import { useRequest } from 'utils/hooks';
-import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { getOrganizationStats } from 'services/organizations';
 
@@ -29,17 +29,21 @@ import { Card } from 'components';
 
 import './styles.scss';
 
+const PAGE_TYPE = setPage('Home');
+
 const Homepage = (props) => {
-  const { selectedGroup } = useAuth0();
-  const { isLoading, data: organization, errors } = useRequest(() => getOrganizationStats(selectedGroup), {
-    permissions: AuthzGuards.accessOrganizationsGuard,
-    query: selectedGroup // when this changes, we refetch
+  // use org from URL
+  // `const { selectedGroup } = useAuth0()` fires multiple times on change
+  const { org } = props;
+  const { isLoading, data: organization, errors } = useRequest(() => getOrganizationStats(org), {
+    permissions: AuthzGuards.accessHomeGuard,
+    query: org // when this changes, we refetch
   });
 
   return (
     <>
-      <SidebarLayout isLoading={isLoading}>
-        <Card className="ng-margin-top" style={{ 'overflowY': 'scroll' }}>
+      <SidebarLayout isLoading={isLoading} page={PAGE_TYPE}>
+        <Card className="marapp-qa-homepage ng-margin-top" style={{ 'overflowY': 'scroll' }}>
           {organization.name && (
             <>
               <h2 className="ng-text-display-m ng-margin-bottom-remove">{organization.name}</h2>
@@ -52,6 +56,7 @@ const Homepage = (props) => {
               <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization places: </strong>{organization.locations}</p>
               <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization layers: </strong>{organization.layers}</p>
               <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization widgets: </strong>{organization.widgets}</p>
+              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization dashboards: </strong>{organization.dashboards}</p>
             </>
           )}
         </Card>

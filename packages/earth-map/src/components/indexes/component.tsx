@@ -71,11 +71,7 @@ class IndexesComponent extends React.PureComponent<IIndexes> {
     const state = this.getCardsState();
 
     return (
-      <div
-        className={classnames({
-          'c-indexes': true,
-        })}
-      >
+      <div className="marapp-qa-indexes c-indexes">
         <div className="indexes--list">
           <IndexCards
             native
@@ -88,8 +84,7 @@ class IndexesComponent extends React.PureComponent<IIndexes> {
             {(item, i) => styles => (
               <animated.div
                 role="button"
-                className={classnames({
-                  'indexes--list-item': true,
+                className={classnames('marapp-qa-indexcontainer indexes--list-item', {
                   '-active': selected === item.slug,
                   '-inactive': selected && selected !== item.slug,
                 })}

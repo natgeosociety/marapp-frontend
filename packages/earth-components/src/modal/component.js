@@ -57,13 +57,13 @@ class ModalComponent extends PureComponent {
       showCloseButton = false
     } = this.props;
 
-    const classNames = classnames({
+    const classNames = classnames('c-modal', 'marapp-qa-modal', {
       [className]: !!className,
     });
 
     return (
       <Modal
-        className={`c-modal ${classNames}`}
+        className={classNames}
         overlayClassName="c-modal-overlay"
         bodyOpenClassName="-no-scroll"
         isOpen={isOpen}

@@ -20,6 +20,7 @@
 import { AuthzGuards } from 'auth/permissions';
 
 export const ADMIN_PAGES: IAdminPage[] = [
+  { key: 'Home', url: '', guard: AuthzGuards.accessHomeGuard },
   { key: 'Places', url: 'places', guard: AuthzGuards.accessPlacesGuard },
   { key: 'Widgets', url: 'widgets', guard: AuthzGuards.accessWidgetsGuard },
   { key: 'Layers', url: 'layers', guard: AuthzGuards.accessLayersGuard },

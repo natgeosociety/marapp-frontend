@@ -18,13 +18,13 @@
 */
 
 import React, { useState } from 'react';
-
-import { SidebarItem, DropdownComponent } from 'components/index';
-import { ADMIN_PAGES } from 'components/sidebar-select/model';
-import { useDomWatcher } from 'utils/hooks';
 import classnames from 'classnames';
 
-import { IAdminPage } from 'components/sidebar-select/model';
+import { useDomWatcher } from 'utils/hooks';
+
+import { SidebarItem, DropdownComponent } from 'components/index';
+import { IAdminPage } from '../model';
+import { ADMIN_PAGES } from '../model';
 
 import './styles.scss';
 
@@ -49,10 +49,10 @@ const SidebarSelect = ( props: IProps ) => {
   useDomWatcher(selectRef, handleClickOutside, dropdownState === 'close');
 
   return (
-    <div className="ng-padding-medium-horizontal ng-form ng-form-dark">
+    <div className="marapp-qa-sidebarselect ng-padding-medium-horizontal ng-form ng-form-dark">
       <div className="ng-position-relative ng-select" ref={selectRef}>
         <div onClick={handleDropdownToggle}
-             className="ng-padding ng-c-cursor-pointer ng-flex ng-select-display-values">
+             className="marapp-qa-actiontoggle ng-padding ng-c-cursor-pointer ng-flex ng-select-display-values">
           {currentPage || 'Choose a page'}
           <i
             className={classnames({

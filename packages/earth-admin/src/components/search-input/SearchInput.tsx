@@ -152,7 +152,7 @@ export default function SearchInput(props: SearchInputProps) {
           ))}
       </div>
 
-      <div className="search-input-container">
+      <div className="marapp-qa-searchinput search-input-container">
         <input
           type="text"
           placeholder={placeholder}
@@ -169,7 +169,7 @@ export default function SearchInput(props: SearchInputProps) {
             >
               {availableOptions.map((option) => (
                 <li
-                  className="ng-padding-horizontal ng-padding-small-vertical ng-c-cursor-pointer ng-icon-hover"
+                  className="marapp-qa-actiongeneric ng-padding-horizontal ng-padding-small-vertical ng-c-cursor-pointer ng-icon-hover"
                   onClick={(e) => handleChange(e, option)}
                   key={option.id}
                 >

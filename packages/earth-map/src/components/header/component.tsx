@@ -115,7 +115,7 @@ const Header = (props: IProps) => {
 
   return (
 
-    <div className="ng-padding-medium-horizontal ng-ep-background-dark ng-flex ng-flex-middle ng-position-relative ng-padding-bottom ng-padding-small-top">
+    <div className="marapp-qa-header ng-padding-medium-horizontal ng-ep-background-dark ng-flex ng-flex-middle ng-position-relative ng-padding-bottom ng-padding-small-top">
       <Link
         className="ng-border-remove"
         to={{
@@ -138,7 +138,7 @@ const Header = (props: IProps) => {
 
       <div
         onClick={handleDropdownToggle}
-        className="ng-padding ng-c-cursor-pointer ng-position-relative"
+        className="marapp-qa-orgtogglebutton ng-padding ng-c-cursor-pointer ng-position-relative"
       >
         <i
           className={classNames({
@@ -154,7 +154,7 @@ const Header = (props: IProps) => {
         <li className="ng-ep-dropdown-category ng-ep-dropdown-selected">
           <span className="ng-dropdown-item">MAP VIEW</span>
         </li>
-        <li className="ng-form ng-form-dark">
+        <li className="marapp-qa-orglist ng-form ng-form-dark">
           <div className="ng-padding-medium-horizontal ng-padding-top">
             {getAvailableOrgs(roles).map((g, i) => (
               <label
@@ -185,7 +185,7 @@ const Header = (props: IProps) => {
         {Object.keys(roles).map(
           (g, i) =>
             checkRole(roles[g]) && (
-              <li className="ng-ep-dropdown-category" key={i}>
+              <li className="marapp-qa-adminlink ng-ep-dropdown-category" key={i}>
                 <a href={`${ADMIN_URL}${g}`} className="ng-c-cursor-pointer ng-dropdown-item">
                   {g} - ADMIN
                 </a>

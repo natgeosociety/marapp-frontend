@@ -55,15 +55,14 @@ class ZoomControl extends React.PureComponent<IZoomControl, any> {
     const { className, viewport } = this.props;
     const { zoom, maxZoom, minZoom } = viewport;
 
-    const classNames = classnames({
-      'c-zoom-control': true,
+    const classNames = classnames('marapp-qa-zoomcontrol c-zoom-control', {
       [className]: !!className,
     });
 
-    const zoomInClass = classnames('zoom-control--btn ng-ep-border-bottom', {
+    const zoomInClass = classnames('marapp-qa-zoomin zoom-control--btn ng-ep-border-bottom', {
       '-disabled': zoom >= maxZoom,
     });
-    const zoomOutClass = classnames('zoom-control--btn', {
+    const zoomOutClass = classnames('marapp-qa-zoomout zoom-control--btn', {
       '-disabled': zoom <= minZoom,
     });
 

@@ -54,7 +54,7 @@ class Fullscreen extends PureComponent {
       >
         {open => open && (({ height, y, ...props}) =>
           <div
-            className="c-fullscreen"
+            className="c-fullscreen marapp-qa-fullscreen"
             style={{
               height: `${height}%`,
               transform: `translate(0, ${y}%)`,

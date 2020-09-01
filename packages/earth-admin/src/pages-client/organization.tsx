@@ -50,10 +50,14 @@ const Organization = (props: IProps) => {
 
   // Important check for valid ORG and sets it on the context.
   // Happens everytime org changes (runtime/refresh)
-  if (org && isValidOrg(groups, org)) {
-    setupUserOrg(org);
-    setIsLoading(false);
-  } else {
+  useEffect(() => {
+    if (org && isValidOrg(groups, org)) {
+      setupUserOrg(org);
+      setIsLoading(false);
+    }
+  }, [groups, org]);
+
+  if (!org || !isValidOrg(groups, org)) {
     return <OrgSwitcherPage groups={groups} />
   }
 
@@ -63,7 +67,7 @@ const Organization = (props: IProps) => {
 }
 
 const OrgSwitcherPage = ({ groups }) => (
-  <div className="ng-orgswitcher-page">
+  <div className="marapp-qa-organizationpage ng-orgswitcher-page">
     <div>
       <h3>Invalid Organization</h3>
       <h6>Please select a valid one:</h6>

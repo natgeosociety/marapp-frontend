@@ -75,7 +75,7 @@ class Panorama extends Component {
 
   render() {
     return (
-      <div className="c-panorama">
+      <div className="c-panorama marapp-qa-panorama">
         <div ref={(r) => { this.container = r }} className="panorama--visualization" />
       </div>
     );

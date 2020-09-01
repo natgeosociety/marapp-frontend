@@ -35,8 +35,7 @@ const DefaultListItem = (props: DataListProps) => {
   return (
     <LinkWithOrg
       to={`/${categoryUrl}/${item.id}`}
-      className={classnames({
-        'ng-data-link ng-display-block ng-padding-medium-horizontal ng-padding-small-vertical': true,
+      className={classnames('marapp-qa-listitem ng-data-link ng-display-block ng-padding-medium-horizontal ng-padding-small-vertical', {
         'ng-data-link-selected': selectedItem === item.id
       })}>
       <p className="ng-margin-remove ng-color-ultraltgray">{item.name}</p>
