@@ -34,8 +34,7 @@ export default function SidebarItem( props ) {
   return (
     itemPermission && (
       <li
-        className={classnames({
-          'ng-ep-dropdown-category': true,
+        className={classnames('marapp-qa-sidebaritem ng-ep-dropdown-category', {
           'ng-ep-dropdown-selected': selected,
         })}>
         <LinkWithOrg

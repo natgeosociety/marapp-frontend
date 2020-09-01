@@ -43,7 +43,7 @@ export default function UserDetails(props: UserProps) {
   }
 
   return (
-    <div>
+    <div className="marapp-qa-userdetails">
       {showDeleteModal && (
         <ActionModal
           id={id}
@@ -77,19 +77,19 @@ export default function UserDetails(props: UserProps) {
         {writePermissions && (
           <LinkWithOrg
             to={`/users/${id}/edit`}
-            className="ng-button ng-button-primary ng-margin-medium-right"
+            className="marapp-qa-actionedit ng-button ng-button-primary ng-margin-medium-right"
           >
             Edit user
           </LinkWithOrg>
         )}
-        <LinkWithOrg className="ng-button ng-button-secondary" to="/users">
+        <LinkWithOrg className="marapp-qa-actionback ng-button ng-button-secondary" to="/users">
           Go back to users list
         </LinkWithOrg>
       </div>
       {serverErrors && <ErrorMessages errors={serverErrors} />}
       {writePermissions && (
         <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
-          <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
+          <button className="marapp-qa-actiondelete ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete user
           </button>
         </div>

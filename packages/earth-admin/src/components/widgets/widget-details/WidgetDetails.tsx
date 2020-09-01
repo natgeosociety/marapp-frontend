@@ -45,7 +45,7 @@ export default function WidgetDetails( props: WidgetProps ) {
   }
 
   return (
-    <div>
+    <div className="marapp-qa-widgetdetails">
       {showDeleteModal && (
         <ActionModal
           id={id}
@@ -119,18 +119,18 @@ export default function WidgetDetails( props: WidgetProps ) {
         {writePermissions && (
           <LinkWithOrg
             to={`/widgets/${id}/edit`}
-            className="ng-button ng-button-primary ng-margin-medium-right"
+            className="marapp-qa-actionedit ng-button ng-button-primary ng-margin-medium-right"
           >
             Edit widget
           </LinkWithOrg>
         )}
-        <LinkWithOrg className="ng-button ng-button-secondary" to="/widgets">
+        <LinkWithOrg className="marapp-qa-actionback ng-button ng-button-secondary" to="/widgets">
           Go back to widgets list
         </LinkWithOrg>
       </div>
       {writePermissions && (
         <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
-          <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
+          <button className="marapp-qa-actiondelete ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete widget
           </button>
         </div>

@@ -39,7 +39,7 @@ export default function OrganizationDetails( props: OrganizationProps ) {
   }
 
   return (
-    <div>
+    <div className="marapp-qa-organizationdetails">
       {showDeleteModal && (
         <ActionModal
           id={id}
@@ -71,18 +71,18 @@ export default function OrganizationDetails( props: OrganizationProps ) {
         {writePermissions && (
           <LinkWithOrg
             to={`/organizations/${id}/edit`}
-            className="ng-button ng-button-primary ng-margin-medium-right"
+            className="marapp-qa-actionedit ng-button ng-button-primary ng-margin-medium-right"
           >
             Edit organization
           </LinkWithOrg>
         )}
-        <LinkWithOrg className="ng-button ng-button-secondary" to="/organizations">
+        <LinkWithOrg className="marapp-qa-actionback ng-button ng-button-secondary" to="/organizations">
           Go back to organizations list
         </LinkWithOrg>
       </div>
       {writePermissions && (
         <div className="ng-padding-medium ultradkgray ng-text-right">
-          <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
+          <button className="marapp-qa-actiondelete ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete organization
           </button>
         </div>

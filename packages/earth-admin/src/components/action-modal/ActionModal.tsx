@@ -95,19 +95,19 @@ const ActionModal = (props: IModalProps) => {
   };
 
   return (
-    <Modal isOpen={visibility} onRequestClose={handleModalToggle} className="ng-text-center">
+    <Modal isOpen={visibility} onRequestClose={handleModalToggle} className="marapp-qa-actionmodal ng-text-center">
       <h4 className="ng-text-display-s ng-margin-bottom">Delete {name}</h4>
       <p className="ng-space-wrap">Are you sure you want to permanently delete this {type}?</p>
       <div className="ng-flex ng-flex-center">
         <button
           autoFocus
           tabIndex={0}
-          className="ng-button ng-button-secondary ng-margin-medium-right"
+          className="marapp-qa-actioncancel ng-button ng-button-secondary ng-margin-medium-right"
           onClick={handleModalToggle}
         >
           Cancel
         </button>
-        <button className="ng-button ng-button-primary" onClick={(e) => handleDelete(e)}>
+        <button className="marapp-qa-actiondelete ng-button ng-button-primary" onClick={(e) => handleDelete(e)}>
           Delete
         </button>
       </div>{' '}
