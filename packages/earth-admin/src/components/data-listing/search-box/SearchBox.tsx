@@ -37,26 +37,27 @@ const SearchBox = ( props: SearchBoxProps ) => {
     searchValueAction(newValue);
   };
 
-  return <div className="searchable-listing-container ng-margin-bottom ng-background-dkgray
+  return (
+    <div className="marapp-qa-searchbox searchable-listing-container ng-margin-bottom ng-background-dkgray
       ng-padding-medium-horizontal ng-padding-medium-bottom ng-shadow-large">
-    <div
-      className={classnames({
-        'ng-input-container ng-c-flex-grow-1 ng-flex ng-flex-middle ng-padding-vertical': true,
-        'is-focused': focus,
-      })}>
-      <i className="ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal"/>
-      <input
-        type=" text"
-        placeholder={`search ${pageTitle.toLowerCase()}...`}
-        className=" ng-width-1-1 ng-search-box"
-        onFocus={() => setFocus(true)}
-        onChange={( e ) => handleSearchChange(e.target.value)}
-        value={searchValue}
-        ref={input => input && input.getBoundingClientRect().top > 0 && input.focus()}
-      />
+      <div
+        className={classnames({
+          'ng-input-container ng-c-flex-grow-1 ng-flex ng-flex-middle ng-padding-vertical': true,
+          'is-focused': focus,
+        })}>
+        <i className="ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal" />
+        <input
+          type=" text"
+          placeholder={`search ${pageTitle.toLowerCase()}...`}
+          className=" ng-width-1-1 ng-search-box"
+          onFocus={() => setFocus(true)}
+          onChange={(e) => handleSearchChange(e.target.value)}
+          value={searchValue}
+          ref={input => input && input.getBoundingClientRect().top > 0 && input.focus()}
+        />
+      </div>
     </div>
-
-  </div>;
+  );
 };
 
 export default SearchBox;

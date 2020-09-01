@@ -61,7 +61,7 @@ class LegendEVIComponent extends React.PureComponent<ILegendEVI> {
       }));
 
     return (
-      <div className="c-legend-evi">
+      <div className="marapp-qa-legendevi c-legend-evi">
         <Select value={year} onChange={this.onChange} options={options} />
         <span>modis EVI</span>
       </div>

@@ -54,7 +54,7 @@ class LegendItemGroupComponent extends React.PureComponent<ILegendItemGroupCompo
     }
 
     return (
-      <div className="c-legend-item-group">
+      <div className="marapp-qa-layergroup c-legend-item-group">
         {references.map(l => {
           const currentActive = current || references[0].id;
           const checked = currentActive === l.id;

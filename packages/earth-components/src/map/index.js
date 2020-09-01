@@ -243,8 +243,7 @@ class Map extends Component {
     return (
       <div
         ref={r => { this.mapContainer = r}}
-        className={classnames({
-          "c-map": true,
+        className={classnames('marapp-qa-map', 'c-map', {
           [customClass]: !!customClass
         })}
       >

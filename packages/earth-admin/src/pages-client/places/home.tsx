@@ -12,7 +12,7 @@ export function PlacesHome(props: any) {
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
 
   return (writePermissions && (
-    <ContentLayout>
+    <ContentLayout className="marapp-qa-placeshome">
       {writePermissions && (
         <>
           <h1 className="ng-text-display-m ng-margin-medium-bottom">PLACES</h1>
@@ -21,9 +21,9 @@ export function PlacesHome(props: any) {
               <Card>
                 <p>Search a place to view and edit details, or start creating a new place.</p>
                 <div className="ng-flex ng-flex-center">
-                  <LinkWithOrg className="ng-button ng-button-secondary" to="places/new">
+                  <LinkWithOrg className="marapp-qa-actioncreate ng-button ng-button-secondary" to="places/new">
                     Create new place
-              </LinkWithOrg>
+                  </LinkWithOrg>
                 </div>
               </Card>
             </div>

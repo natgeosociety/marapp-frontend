@@ -64,7 +64,7 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
   };
 
   return (
-    <div>
+    <div className="marapp-qa-organizationedit">
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m">{newOrg ? 'Add organization' : `Edit Organization - ${name}`}</h2>
       </div>
@@ -122,12 +122,12 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
 
           <div className="ng-flex">
             <button
-              className="ng-button ng-button-primary ng-margin-medium-right"
+              className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-medium-right"
               disabled={!formState.isValid}
             >
               Save
             </button>
-            <LinkWithOrg className="ng-button ng-button-secondary" to="/organizations">
+            <LinkWithOrg className="marapp-qa-actioncancel ng-button ng-button-secondary" to="/organizations">
               Cancel
             </LinkWithOrg>
           </div>

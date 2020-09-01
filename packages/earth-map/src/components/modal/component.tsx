@@ -39,13 +39,13 @@ class ModalComponent extends PureComponent<IModalComponent> {
   render() {
     const { children, isOpen, className, header, onAfterOpen, onRequestClose } = this.props;
 
-    const classNames = classnames({
+    const classNames = classnames('marapp-qa-modal c-modal', {
       [className]: !!className,
     });
 
     return (
       <Modal
-        className={`c-modal ${classNames}`}
+        className={classNames}
         overlayClassName="c-modal-overlay"
         bodyOpenClassName="-no-scroll"
         isOpen={isOpen}
@@ -57,7 +57,7 @@ class ModalComponent extends PureComponent<IModalComponent> {
 
         <button
           type="button"
-          className="modal-close"
+          className="marapp-qa-modalclose modal-close"
           // @ts-ignore
           onClick={(e) => e.stopPropagation() || onRequestClose()}
         >

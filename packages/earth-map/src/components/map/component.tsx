@@ -265,8 +265,7 @@ class MapComponent extends React.Component<IMap> {
     // @ts-ignore
     return (
       <div
-        className={classnames({
-          'c-map-wrapper': true,
+        className={classnames('c-map-wrapper', {
           '-open': open,
         })}
       >

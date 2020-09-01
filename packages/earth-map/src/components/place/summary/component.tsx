@@ -58,8 +58,7 @@ class PlaceSummaryComponent extends React.PureComponent<IPlaceSummaryComponent> 
           return (
             <div
               key={key}
-              className={classnames({
-                'place--section': true,
+              className={classnames('marapp-qa-placesummary place--section', {
                 '-link': reachedMax,
               })}
               onClick={() => reachedMax && this.onChangeFilter(key)}

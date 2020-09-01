@@ -35,7 +35,7 @@ const InfiniteList = (props: IProps) => {
   };
 
   return (
-    <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
+    <div className="marapp-qa-infinitelist ng-section-background ng-position-relative ng-padding-medium-bottom">
       {title && (
         <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
           {title}

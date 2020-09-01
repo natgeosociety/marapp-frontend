@@ -42,8 +42,7 @@ class HTML extends React.Component {
 
     return (
       <div
-        className={classnames({
-          "c-html": true,
+        className={classnames('marapp-qa-html', 'c-html', {
           [className]: !!className
         })
       }>

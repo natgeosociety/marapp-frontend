@@ -59,7 +59,7 @@ class IndexContentComponent extends React.PureComponent<IIndexContent> {
 
         {!widgetsLoading && !metricsLoading && (
           <React.Fragment>
-            <div className="index-content--section">
+            <div className="index-content--section marapp-qa-indexcontent">
               <Widgets
                 place={place}
                 slugs={widgets.map((w) => {

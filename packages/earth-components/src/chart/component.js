@@ -120,8 +120,7 @@ class Chart extends PureComponent {
 
     return (
       <div
-        className={classnames({
-          'c-chart': true,
+        className={classnames('marapp-qa-chart', 'c-chart', {
           [className]: !!className
         })}
         style={{ height }}

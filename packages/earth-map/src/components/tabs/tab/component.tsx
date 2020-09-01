@@ -12,8 +12,7 @@ const Tabs = (props: IProps) => {
   const { label, selected, onClick, value } = props;
 
   return (
-    <div onClick={() => onClick(value)} className={classNames({
-      'ng-ep-tab': true,
+    <div onClick={() => onClick(value)} className={classNames('marapp-qa-tab ng-ep-tab', {
       'ng-ep-tab-selected': selected,
     })}>
       {label}

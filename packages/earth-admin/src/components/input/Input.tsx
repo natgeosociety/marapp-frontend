@@ -27,8 +27,7 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
   } = props;
 
   const id = `input-${name}`;
-  const rootClases = cn({
-    'input-component': true,
+  const rootClases = cn('marapp-qa-input input-component', {
     [className]: !!className,
     'ng-invalid-input': !!error,
   });

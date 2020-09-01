@@ -119,7 +119,7 @@ function HomePage( props: any ) {
   const permissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   return (writePermissions && (
-    <ContentLayout>
+    <ContentLayout className="marapp-qa-organizationhome">
       <div className="ng-flex ng-align-right">
         <LinkWithOrg className="ng-button ng-button-overlay" to="/organizations/new">
          add new organization
@@ -137,7 +137,7 @@ function DetailsPage( path: any ) {
   });
 
   return (
-      <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading}>
+    <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading} className="marapp-qa-organizationdetails">
         <OrganizationDetails data={data}/>
       </ContentLayout>
   );
@@ -151,7 +151,7 @@ function EditPage( path: any ) {
   });
 
   return (
-    <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading}>
+    <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading} className="marapp-qa-organizationedit">
       <OrganizationEdit data={data} newOrg={path.newOrg}/>
     </ContentLayout>
   );

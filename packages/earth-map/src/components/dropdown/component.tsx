@@ -39,7 +39,7 @@ export default function DropdownComponent(props: IDropdownComponent) {
     <DropdownPanel native state={state}>
       {({ x, ...props }) => (
         <animated.ul
-          className="ng-ep-dropdown ng-section-background"
+          className="marapp-qa-dropdown ng-ep-dropdown ng-section-background"
           style={{
             transform: x.interpolate((x) => `translate3d(0,${x}px,0)`),
             ...props,

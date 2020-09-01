@@ -167,10 +167,10 @@ const Layers = (props: IProps) => {
       {(!selected || panelExpanded) && (
         <>
           {listActive.length > 0 && (
-            <div className="ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
+            <div className="marapp-qa-activelayers ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
               <div className="ng-flex ng-flex-space-between ng-flex-align-items-baseline ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top">
                 <h2 className="ng-text-display-s ng-body-color ng-margin-remove">Selected Layers</h2>
-                <a onClick={() => resetLayersActive()}>deselect all</a>
+                <a className="marapp-qa-deselectlayers" onClick={() => resetLayersActive()}>deselect all</a>
               </div>
               {listActive.map((layer) => {
                 return (
@@ -185,7 +185,7 @@ const Layers = (props: IProps) => {
               })}
             </div>
           )}
-          <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
+          <div className="marapp-qa-other ng-section-background ng-position-relative ng-padding-medium-bottom">
             <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Other</h2>
             <ListItem
               title="Labels"

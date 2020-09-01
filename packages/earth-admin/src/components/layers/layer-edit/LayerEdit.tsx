@@ -102,7 +102,7 @@ export default function LayerEdit(props: LayerProps) {
   };
 
   return (
-    <div>
+    <div className="marapp-qa-layeredit">
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{ newLayer ? 'Add Layer' : `Edit Layer - ${name}` }</h2>
 
@@ -268,14 +268,14 @@ export default function LayerEdit(props: LayerProps) {
           {serverErrors && <ErrorMessages errors={serverErrors} />}
           <div className="ng-flex">
             <button
-              className="ng-button ng-button-primary ng-margin-medium-right"
+              className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-medium-right"
               onClick={onSubmit}
               disabled={!formState.isValid || jsonError}
             >
               Save
             </button>
 
-            <LinkWithOrg className="ng-button ng-button-secondary" to="/layers">
+            <LinkWithOrg className="marapp-qa-actioncancel ng-button ng-button-secondary" to="/layers">
               Cancel
             </LinkWithOrg>
           </div>

@@ -68,7 +68,7 @@ export default function LayerDetails(props: LayerProps) {
   }
 
   return (
-    <div>
+    <div className="marapp-qa-layerdetails">
       {showDeleteModal && (
         <ActionModal
           id={id}
@@ -166,18 +166,18 @@ export default function LayerDetails(props: LayerProps) {
         {writePermissions && (
           <LinkWithOrg
             to={`/layers/${id}/edit`}
-            className="ng-button ng-button-primary ng-margin-medium-right"
+            className="marapp-qa-actionlink ng-button ng-button-primary ng-margin-medium-right"
           >
             Edit Layer
           </LinkWithOrg>
         )}
-        <LinkWithOrg to="/layers" className="ng-button ng-button-secondary">
+        <LinkWithOrg to="/layers" className="marapp-qa-actionback ng-button ng-button-secondary">
           Go back to layers list
         </LinkWithOrg>
       </div>
       {writePermissions && (
         <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
-          <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
+          <button className="marapp-qa-actiondelete ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete layer
           </button>
         </div>

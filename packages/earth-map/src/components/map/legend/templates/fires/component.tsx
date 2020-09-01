@@ -120,7 +120,7 @@ class LegendFiresComponent extends React.PureComponent<ILegendFires> {
     const years = this.generateYearValues(startYear, endYear);
 
     return (
-      <div className="c-legend-fires">
+      <div className="marapp-qa-legendfires c-legend-fires">
         <Select value={year} onChange={this.onChange} options={years} />
         <span>burned areas</span>
         <br />

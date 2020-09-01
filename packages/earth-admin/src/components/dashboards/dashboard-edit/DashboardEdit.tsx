@@ -66,7 +66,7 @@ export default function DashboardEdit(props: DashboardProps) {
   }
 
   return (
-    <div>
+    <div className="marapp-qa-dashboardedit">
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">
           {newDashboard ? 'Add dashboard' : `Edit Dashboard - ${name}`}
@@ -156,7 +156,7 @@ export default function DashboardEdit(props: DashboardProps) {
           {serverErrors && <ErrorMessages errors={serverErrors} />}
           <div className="ng-flex">
             <button
-              className="ng-button ng-button-primary ng-margin-medium-right"
+              className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-medium-right"
               onClick={onSubmit}
               disabled={!formState.isValid}
             >
