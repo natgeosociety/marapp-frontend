@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.2.0...v1.2.1) (2020-09-01)
+
+
+### Bug Fixes
+
+* **admin:** Fix admin homepage permissions [EP-2721] ([083578d](https://github.com/natgeosociety/marapp-frontend/commit/083578d6a4e90ca3a5f8d0d88b9035e420605f4c))
+
 # [1.2.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.1.0...v1.2.0) (2020-08-31)
 
 
