@@ -56,8 +56,7 @@ class LayerComponent extends PureComponent {
     return (
       <div
         key={slug}
-        className={classnames({
-          "c-layer": true,
+        className={classnames('marapp-qa-layer', 'c-layer', {
           "-dark": dark,
           "-horizontal": !background,
           "-active": active,

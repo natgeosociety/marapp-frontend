@@ -45,7 +45,9 @@ class Slick extends PureComponent {
 
     return (
       <Slider
-        className={classnames({ 'c-slick': true, '--with-dots': dots })}
+        className={classnames('marapp-qa-slick', 'c-slick', {
+          '--with-dots': dots
+        })}
         {...settings}
         ref={slider => {
           this.slider = slider;

@@ -33,8 +33,7 @@ const ZoomControl = (props: IZoomControl) => {
   const {className, viewport, onClick, zoom} = props;
   const {maxZoom, minZoom} = viewport;
 
-  const classNames = classnames({
-    'c-zoom-control': true,
+  const classNames = classnames('marapp-qa-mapzoom c-zoom-control', {
     [className]: !!className,
   });
 

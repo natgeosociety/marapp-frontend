@@ -52,7 +52,7 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
     });
 
     return (
-      <div className={`c-widget-toolbar ng-flex ng-margin-horizontal ${classNames}`}>
+      <div className={`marapp-qa-widgettoolbar c-widget-toolbar ng-flex ng-margin-horizontal ${classNames}`}>
         <div className="ng-margin-right">
           <Tooltip
             placement="top"

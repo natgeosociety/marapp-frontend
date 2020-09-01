@@ -34,7 +34,7 @@ class HomeComponent extends React.PureComponent {
   render() {
     return (
       <React.Fragment>
-        <div className="c-landing">
+        <div className="c-landing marapp-qa-home">
           <ReactFullpage
             licenseKey={FULLPAGE_LICENSE}
             render={({ state, fullpageApi }) => {

@@ -38,7 +38,7 @@ class WidgetFooterComponent extends React.PureComponent<IWidgetFooter> {
     const { active } = this.props;
 
     return (
-      <footer className="widget--footer">
+      <footer className="marapp-qa-widgetfooter widget--footer">
         <button
           className={classnames({
             'ng-button ng-button-secondary': true,

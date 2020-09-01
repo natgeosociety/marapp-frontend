@@ -108,8 +108,7 @@ export default function InlineEditCard(props: InlineCardProps) {
     <Card native state={state}>
       {({x, ...props}) => (
         <animated.div
-          className={classnames({
-            'ng-padding-medium ng-inline-card ng-shadow-small ng-background-ultradkgray': true,
+          className={classnames('marapp-qa-inlineeditcard ng-padding-medium ng-inline-card ng-shadow-small ng-background-ultradkgray', {
             'ng-inline-card-editing': isEditing,
             'ng-inline-card-loading': isLoading,
           })}

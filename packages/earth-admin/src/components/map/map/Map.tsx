@@ -71,7 +71,7 @@ export default function MapComponent(props: {height?: string}) {
   };
 
   return (
-    <div className="c-map-wrapper -open" style={{height: height}}>
+    <div className="marapp-qa-mapwrapper c-map-wrapper -open" style={{height: height}}>
       <Map
         mapboxApiAccessToken={GATSBY_APP_MAPBOX_TOKEN}
         bounds={bounds}

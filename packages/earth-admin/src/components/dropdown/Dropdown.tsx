@@ -43,7 +43,7 @@ export const DropdownComponent = ( props: IDropdownComponent ) => {
       {( { x, ...props } ) => (
         <animated.ul
           className={classnames(
-            'ng-ep-dropdown ng-background-dkgray',
+            'marapp-qa-dropdown ng-ep-dropdown ng-background-dkgray',
             className,
           )}
           style={{

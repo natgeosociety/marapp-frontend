@@ -30,7 +30,7 @@ export const LastViewedPlace = ({ place }: IProps) => {
   const { name, slug, id, organization, type } = place;
 
   return (
-    <div className="ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
+    <div className="marapp-qa-lastviewedplace ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
       <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Last viewed place</h2>
       <ListItem
         title={name} key={`${slug}-${organization}`}

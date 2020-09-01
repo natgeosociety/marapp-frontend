@@ -53,7 +53,7 @@ export default function UserEdit(props: UserEditProps) {
   };
 
   return (
-    <div>
+    <div className="marapp-qa-useredit">
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m">{newUser ? 'Add user' : `Edit User - ${name}`}</h2>
       </div>
@@ -112,12 +112,12 @@ export default function UserEdit(props: UserEditProps) {
 
           <div className="ng-flex">
             <button
-              className="ng-button ng-button-primary ng-margin-medium-right"
+              className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-medium-right"
               disabled={!formState.isValid || selectedGroups.length === 0}
             >
               Save
             </button>
-            <LinkWithOrg className="ng-button ng-button-secondary" to="/users">
+            <LinkWithOrg className="marapp-qa-actioncancel ng-button ng-button-secondary" to="/users">
               Cancel
             </LinkWithOrg>
           </div>

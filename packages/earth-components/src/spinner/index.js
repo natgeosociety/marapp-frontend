@@ -25,8 +25,7 @@ import './styles.scss';
 
 const Spinner = (props) => {
   const { position, className, size="small" } = props;
-  const classNames = classnames({
-    'c-spinner': true,
+  const classNames = classnames('marapp-qa-spinner', 'c-spinner', {
     [`-${position}`]: true,
     [className]: !!className,
     [size]: !!size,

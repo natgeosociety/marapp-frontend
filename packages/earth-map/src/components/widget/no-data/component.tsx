@@ -30,7 +30,7 @@ class WidgetNoDataComponent extends React.PureComponent<IWidgetNoData> {
     const { children } = this.props;
 
     return (
-      <div className="widget--no-data">
+      <div className="marapp-qa-widgetnodata widget--no-data">
         <img className="widget--no-data-img" alt="No data" src={noDataIMG} />
         <div className="widget--no-data-text">
           {!!children && children}

@@ -56,14 +56,14 @@ class PlaceFilterComponent extends React.Component<IPlaceFilter, any> {
     return (
       <animated.div className="place--content-animated" style={style}>
         <div className="place--filter">
-          <div role="button" className="place--section -back" onClick={this.onBack}>
+          <div role="button" className="marapp-qa-placesectionbutton place--section -back" onClick={this.onBack}>
             <h4 className="place--title">
               <i className="ng-icon-directionleft" />
               <span>{upperFirst(selectedFilter)}</span>
             </h4>
           </div>
 
-          <ul className="place--list">
+          <ul className="marapp-qa-placelist place--list">
             <Filter filter={selectedSearch} keys={['name']} items={data[selectedFilter]}>
               {({ items }) =>
                 sortBy(items, 'name').map((place) => (

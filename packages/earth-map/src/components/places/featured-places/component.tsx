@@ -34,7 +34,7 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
   const { featured, group } = props;
 
   return (
-    <div className="ng-section-background ng-position-relative ng-padding-medium-bottom">
+    <div className="marapp-qa-featuredplaces ng-section-background ng-position-relative ng-padding-medium-bottom">
       <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Featured places</h2>
       <div>
         {!featured?.data.length && !featured?.meta && (

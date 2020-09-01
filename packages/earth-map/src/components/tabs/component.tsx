@@ -24,7 +24,7 @@ const Tabs = (props: IProps) => {
   });
 
   return (
-    <div className={`ng-ep-tabs ${className}`}>
+    <div className={`marapp-qa-tabs ng-ep-tabs ${className}`}>
       {tabs}
     </div>
   )

@@ -29,7 +29,7 @@ interface IProps {
 }
 
 const ErrorTemplate = (props: IProps) => (
-  <div className="c-not-found">
+  <div className="c-not-found marapp-qa-notfound">
     <div className="not-found--container">
       <div className="not-found--status">{props.type}</div>
       <div className="not-found--text">{props.message}</div>

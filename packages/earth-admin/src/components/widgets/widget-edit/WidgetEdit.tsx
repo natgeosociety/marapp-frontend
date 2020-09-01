@@ -97,7 +97,7 @@ export default function WidgetEdit( props: WidgetProps ) {
   };
 
   return (
-    <div>
+    <div className="marapp-qa-widgetedit">
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{newWidget ? 'Add Widget' : `Edit Widget - ${name}`}</h2>
 
@@ -209,14 +209,14 @@ export default function WidgetEdit( props: WidgetProps ) {
           {serverErrors && <ErrorMessages errors={serverErrors}/>}
           <div className="ng-flex">
             <button
-              className="ng-button ng-button-primary ng-margin-medium-right"
+              className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-medium-right"
               onClick={onSubmit}
               disabled={!formState.isValid || jsonError}
             >
               Save
             </button>
 
-            <LinkWithOrg className="ng-button ng-button-secondary" to="/widgets">
+            <LinkWithOrg className="marapp-qa-actioncancel ng-button ng-button-secondary" to="/widgets">
               Cancel
             </LinkWithOrg>
           </div>

@@ -25,7 +25,7 @@ export const Toggle = React.forwardRef((props: IProps, ref: any) => {
   };
 
   return (
-    <label htmlFor={name} className="ng-c-cursor-pointer ng-flex ng-text-weight-regular">
+    <label htmlFor={name} className="marapp-qa-toggle ng-c-cursor-pointer ng-flex ng-text-weight-regular">
       <span className={classes}>
         <input
           onClick={handleClick}
