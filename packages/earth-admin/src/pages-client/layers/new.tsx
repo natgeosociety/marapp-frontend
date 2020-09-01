@@ -18,7 +18,7 @@
 */
 
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
 import { Controller, useForm } from 'react-hook-form';
@@ -75,8 +75,6 @@ export function NewLayer(path: any) {
     console.log(isValid, errors);
     const parsed = {
       ...formData,
-      type: type,
-      provider: provider,
       references: references,
       config: layerConfig,
     };
@@ -179,36 +177,17 @@ export function NewLayer(path: any) {
                   isMulti
                   isClearable
                   isSearchable
-                  placeholder="Select layer categories"
-                  rules={{
-                    required: true
-                  }}/>}
+                  ref={() =>
+                    register(
+                      {name: 'category'},
+                      {
+                        required: true,
+                      },
+                    )
+                  }
+                  placeholder="Select layer categories"/>}
               />
 
-              {/*<MultiSelect*/}
-              {/*  name="category"*/}
-              {/*  options={LayerCategoriesOptions}*/}
-              {/*  as={MultiSelect}*/}
-              {/*  value={LayerCategoriesOptions[3]}*/}
-              {/*  isMulti*/}
-              {/*  isClearable*/}
-              {/*  isSearchable*/}
-              {/*  placeholder="Select layer categories"*/}
-              {/*  error={renderErrorFor('category')}*/}
-              {/*  ref={register({*/}
-              {/*    required: 'Place category is required',*/}
-              {/*  })}/>*/}
-              {/*<Controller name="category"*/}
-              {/*            control={control}*/}
-              {/*            options={LayerCategoriesOptions}*/}
-              {/*            as={MultiSelect}*/}
-              {/*            onChange={(e) => setCategory(e)}*/}
-              {/*            isMulti*/}
-              {/*            isClearable*/}
-              {/*            isSearchable*/}
-              {/*            placeholder="Select layer categories"*/}
-
-              {/*/>*/}
             </div>
           </Card>
 
@@ -229,27 +208,48 @@ export function NewLayer(path: any) {
           <Card className="ng-margin-medium-bottom">
             <div className="ng-width-1-1 ng-margin-medium-bottom">
               <label htmlFor="provider">Layer provider*</label>
-              {/*<Controller name="provider"*/}
-              {/*            control={control}*/}
-              {/*            options={LayerProviderOptions}*/}
-              {/*            as={MultiSelect}*/}
-              {/*            onChange={(e) => setProvider(e)}*/}
-              {/*            isClearable*/}
-              {/*            isSearchable*/}
-              {/*            placeholder="Select layer provider"*/}
-              {/*/>*/}
+
+              <Controller
+                control={control}
+                name="provider"
+                as={<MultiSelect
+                  name="provider"
+                  options={LayerProviderOptions}
+                  as={MultiSelect}
+                  isClearable
+                  isSearchable
+                  ref={() =>
+                    register(
+                      {name: 'provider'},
+                      {
+                        required: true,
+                      },
+                    )
+                  }
+                  placeholder="Select layer provider"/>}
+              />
             </div>
             <div className="ng-width-1-1">
               <label htmlFor="type">Layer type*</label>
-              {/*<Controller name="type"*/}
-              {/*            control={control}*/}
-              {/*            options={LayerTypeOptions}*/}
-              {/*            as={MultiSelect}*/}
-              {/*            onChange={(e) => setType(e)}*/}
-              {/*            isClearable*/}
-              {/*            isSearchable*/}
-              {/*            placeholder="Select layer type"*/}
-              {/*/>*/}
+              <Controller
+                control={control}
+                name="type"
+                as={<MultiSelect
+                  name="type"
+                  options={LayerTypeOptions}
+                  as={MultiSelect}
+                  isClearable
+                  isSearchable
+                  ref={() =>
+                    register(
+                      {name: 'type'},
+                      {
+                        required: true,
+                      },
+                    )
+                  }
+                  placeholder="Select layer type"/>}
+              />
             </div>
           </Card>
 
@@ -261,7 +261,6 @@ export function NewLayer(path: any) {
                 control={control}
                 onChange={(layerConfig) => handleJsonChange(layerConfig)}
                 as={<JsonEditor json=""/>}
-
               />
             </div>
 
