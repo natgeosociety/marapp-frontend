@@ -26,6 +26,8 @@ export { default as Legend } from './legend';
 export { default as Map } from './map';
 export { default as Markdown } from './markdown';
 export { default as Modal } from './modal';
+export { default as MultiSelect } from './multiselect/Multiselect';
+export { default as AsyncSelect } from './multiselect/AsyncSelect';
 export { default as Panorama } from './panorama';
 export { default as Select } from './select';
 export { default as Share } from './share';
@@ -34,5 +36,6 @@ export { default as SlickPrevArrow } from './slick/arrows/prev';
 export { default as SlickNextArrow } from './slick/arrows/next';
 export { default as Spinner } from './spinner';
 export { default as Tooltip } from './tooltip';
+
 export * from './utils';
 

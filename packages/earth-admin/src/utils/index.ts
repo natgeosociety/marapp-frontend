@@ -34,7 +34,6 @@ const DeserializerService = new JSONAPIDeserializer({
 });
 
 import queryStringEncode from 'query-string-encode';
-import { childOfKind } from 'tslint';
 
 /**
  * Wrapper over navigate that takes into account baseURL.

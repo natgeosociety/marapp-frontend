@@ -22,10 +22,10 @@ import { useState } from 'react';
 import { navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
 import { Controller, useForm } from 'react-hook-form';
-import { Spinner } from '@marapp/earth-components';
+import { Spinner, MultiSelect, AsyncSelect } from '@marapp/earth-components';
 
 import { useAuth0 } from 'auth/auth0';
-import { addLayer, getUniqueSlug } from 'services/layers';
+import { addLayer, getAllLayers, getLayer, getUniqueSlug } from 'services/layers';
 import { noSpecialChars, setupErrors } from 'utils/validations';
 
 import {
@@ -39,29 +39,79 @@ import {
   SearchInput,
 } from 'components';
 import { ContentLayout } from 'layouts';
-import { LayerCategory, LayerProvider, LayerType } from 'components/layers/model';
+import {
+  LayerCategory,
+  LayerProvider,
+  LayerType,
+  LayerCategoriesOptions,
+  LayerTypeOptions,
+  LayerProviderOptions,
+} from 'components/layers/model';
+import { encodeQueryToURL } from 'utils';
+
 
 export function NewLayer(path: any) {
-  const { getValues, register, watch, formState, errors, setValue, control } = useForm({
+  const {getValues, register, watch, formState, errors, setValue, control} = useForm({
     mode: 'onChange',
   });
-  const { touched, dirty, isValid } = formState;
+  const {touched, dirty, isValid} = formState;
   const watchName = watch('name');
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
   const [layerConfig, setLayerConfig] = useState();
-  const { selectedGroup } = useAuth0();
-
+  const {selectedGroup} = useAuth0();
+  const [cursor, setCursor] = useState(-1);
   const renderErrorFor = setupErrors(errors, touched);
+
+  const formatForSelect = (data) => {
+    return data.map(d => {
+      return {value: d.id, label: d.name};
+    });
+  };
+
+  const loadOptions = async (search, prevOptions) => {
+
+    const query = {
+      search: search,
+      sort: 'name',
+      page: {size: 10, cursor: cursor},
+      group: selectedGroup,
+    };
+    const encodedQuery = encodeQueryToURL('layers', query);
+    const res: any = await getAllLayers(encodedQuery);
+    const c = formatForSelect(res.data);
+    setCursor(res.pagination.nextCursor);
+
+
+    let filteredOptions = [];
+    if (!search) {
+      filteredOptions = [...filteredOptions, ...c];
+    } else {
+      filteredOptions = c;
+    }
+
+    const hasMore = !!res.pagination.nextCursor;
+
+    return {
+      options: filteredOptions,
+      hasMore,
+    };
+  };
+
+  const shouldLoadMore = (scrollHeight, clientHeight, scrollTop) => {
+    const bottomBorder = (scrollHeight - clientHeight) / 2;
+
+    return bottomBorder < scrollTop;
+  };
 
   async function onSubmit(e) {
     e.preventDefault();
 
     const formData = getValues();
     const parsed = {
-      ...formData
-    }
+      ...formData,
+    };
 
     try {
       setIsLoading(true);
@@ -76,12 +126,12 @@ export function NewLayer(path: any) {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getUniqueSlug(watchName, selectedGroup);
+      const {data}: any = await getUniqueSlug(watchName, selectedGroup);
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);
     }
-  }
+  };
 
   const handleJsonChange = (json) => {
     try {
@@ -98,12 +148,18 @@ export function NewLayer(path: any) {
     setJsonError(true);
   };
 
+
+  const [value, onChange] = useState(null);
+
+
   return (
     <ContentLayout backTo="/layers">
       <div>
         <div className="ng-flex ng-flex-space-between">
           <h2 className="ng-text-display-m ng-c-flex-grow-1">New layer</h2>
         </div>
+
+        <AsyncSelect type="layers" loadFunction={getAllLayers} selectedGroup={selectedGroup}/>
 
         <form className="ng-form ng-form-dark ng-flex-column">
           <Card className="ng-margin-medium-bottom">
@@ -113,8 +169,8 @@ export function NewLayer(path: any) {
               label="Title*"
               className="ng-display-block"
               ref={register({
-                required: 'Layer title is required'
-              })} />
+                required: 'Layer title is required',
+              })}/>
           </Card>
 
           <Card className="ng-margin-medium-bottom">
@@ -128,7 +184,7 @@ export function NewLayer(path: any) {
                   error={renderErrorFor('slug')}
                   ref={register({
                     required: 'Layer slug is required',
-                  })} />
+                  })}/>
               </div>
               <div>
                 <button
@@ -136,31 +192,32 @@ export function NewLayer(path: any) {
                   disabled={!watchName || !!errors.name}
                   title={watchName ? 'Generate slug' : 'Add a title first'}
                   className="ng-button ng-button-secondary ng-button-large ng-pointer"
-                  style={{ marginTop: '36px' }}>
+                  style={{marginTop: '36px'}}>
                   Generate a slug name
                 </button>
               </div>
             </div>
             <div className="ng-width-1-1">
-              <label htmlFor="category">Layer category*</label>
-              <select
-                className="ng-width-1-1 ng-form-large"
-                multiple
-                id="category"
-                ref={register({
-                  required: 'Layer category is required',
-                })}
-                name="category"
-              >
-                {Object.keys(LayerCategory).map((c, idx) => (
-                  <option
-                    key={idx}
-                    value={LayerCategory[c]}
-                  >
-                    {LayerCategory[c]}
-                  </option>
-                ))}
-              </select>
+              <MultiSelect options={LayerCategoriesOptions} isMulti isSearchable/>
+              {/*<label htmlFor="category">Layer category*</label>*/}
+              {/*<select*/}
+              {/*  className="ng-width-1-1 ng-form-large"*/}
+              {/*  multiple*/}
+              {/*  id="category"*/}
+              {/*  ref={register({*/}
+              {/*    required: 'Layer category is required',*/}
+              {/*  })}*/}
+              {/*  name="category"*/}
+              {/*>*/}
+              {/*  {Object.keys(LayerCategory).map((c, idx) => (*/}
+              {/*    <option*/}
+              {/*      key={idx}*/}
+              {/*      value={LayerCategory[c]}*/}
+              {/*    >*/}
+              {/*      {LayerCategory[c]}*/}
+              {/*    </option>*/}
+              {/*  ))}*/}
+              {/*</select>*/}
             </div>
           </Card>
 
@@ -173,45 +230,50 @@ export function NewLayer(path: any) {
               <Controller
                 name="description"
                 control={control}
-                as={<HtmlEditor html="" />}
+                as={<HtmlEditor html=""/>}
               />
             </div>
           </Card>
 
           <Card className="ng-margin-medium-bottom">
             <div className="ng-width-1-1 ng-margin-medium-bottom">
+
+
               <label htmlFor="provider">Layer provider*</label>
-              <select
-                className="ng-width-1-1 ng-form-large"
-                id="provider"
-                ref={register({
-                  required: 'Layer provider is required',
-                })}
-                name="provider"
-              >
-                {Object.keys(LayerProvider).map((p, idx) => (
-                  <option key={idx} value={p}>
-                    {p}
-                  </option>
-                ))}
-              </select>
+              <MultiSelect options={LayerProviderOptions} isSearchable/>
+              {/*<select*/}
+              {/*  className="ng-width-1-1 ng-form-large"*/}
+              {/*  id="provider"*/}
+              {/*  ref={register({*/}
+              {/*    required: 'Layer provider is required',*/}
+              {/*  })}*/}
+              {/*  name="provider"*/}
+              {/*>*/}
+              {/*  {Object.keys(LayerProvider).map((p, idx) => (*/}
+              {/*    <option key={idx} value={p}>*/}
+              {/*      {p}*/}
+              {/*    </option>*/}
+              {/*  ))}*/}
+              {/*</select>*/}
             </div>
             <div className="ng-width-1-1">
               <label htmlFor="type">Layer type*</label>
-              <select
-                className="ng-width-1-1 ng-form-large"
-                id="type"
-                ref={register({
-                  required: 'Layer type is required',
-                })}
-                name="type"
-              >
-                {Object.keys(LayerType).map((t, idx) => (
-                  <option key={idx} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
+
+              <MultiSelect options={LayerTypeOptions} isSearchable/>
+              {/*<select*/}
+              {/*  className="ng-width-1-1 ng-form-large"*/}
+              {/*  id="type"*/}
+              {/*  ref={register({*/}
+              {/*    required: 'Layer type is required',*/}
+              {/*  })}*/}
+              {/*  name="type"*/}
+              {/*>*/}
+              {/*  {Object.keys(LayerType).map((t, idx) => (*/}
+              {/*    <option key={idx} value={t}>*/}
+              {/*      {t}*/}
+              {/*    </option>*/}
+              {/*  ))}*/}
+              {/*</select>*/}
             </div>
           </Card>
 
@@ -220,17 +282,16 @@ export function NewLayer(path: any) {
               <label htmlFor="config">Layer Config*</label>
               <Controller
                 name="config"
-                ref={register({
-                  required: 'Layer config is required',
-                })}
                 control={control}
                 onChange={(layerConfig) => handleJsonChange(layerConfig)}
-                as={<JsonEditor json="" />}
+                as={<JsonEditor json=""/>}
               />
             </div>
 
             <div className="ng-width-1-1">
               <label htmlFor="provider">Included layers:</label>
+
+
               {/*<Controller*/}
               {/*  name="references"*/}
               {/*  control={control}*/}
@@ -240,10 +301,10 @@ export function NewLayer(path: any) {
             </div>
           </Card>
 
-          {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}
+          {!!serverErrors.length && <ErrorMessages errors={serverErrors}/>}
 
           {isLoading
-            ? <div className="ng-padding-large ng-position-relative"><Spinner /></div>
+            ? <div className="ng-padding-large ng-position-relative"><Spinner/></div>
             : (
               <div className="ng-flex">
                 <button

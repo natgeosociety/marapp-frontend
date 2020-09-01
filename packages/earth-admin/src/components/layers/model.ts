@@ -80,3 +80,34 @@ export enum LayerCategory {
   RESTORATION = 'Restoration',
   SOCIO_ECONOMIC = 'Socio-Economic',
 }
+
+
+export const LayerCategoriesOptions = [
+  { value: 'BIODIVERSITY', label: 'Biodiversity' },
+  { value: 'CLIMATE_CARBON', label: 'Climate & Carbon' },
+  { value: 'ECOSYSTEM_SERVICES', label: 'Ecosystem Services' },
+  { value: 'HUMAN_IMPACT', label: 'Human Impact' },
+  { value: 'LAND_COVER', label: 'Land Cover' },
+  { value: 'MARINE', label: 'Marine' },
+  { value: 'NATURAL_HAZARDS', label: 'Natural Hazards' },
+  { value: 'PROTECTED_AREAS', label: 'Protected Areas' },
+  { value: 'RESTORATION', label: 'Restoration' },
+  { value: 'SOCIO_ECONOMIC', label: 'Socio-Economic' }
+]
+
+
+export const LayerTypeOptions = [
+  { value: 'raster', label: 'raster' },
+  { value: 'vector', label: 'vector' },
+  { value: 'geojson', label: 'geojson' },
+  { value: 'group', label: 'group' },
+  { value: 'video', label: 'video' }
+]
+
+export const LayerProviderOptions = [
+  { value: 'cartodb', label: 'cartodb' },
+  { value: 'gee', label: 'gee' },
+  { value: 'mapbox', label: 'mapbox' },
+  { value: 'leaflet', label: 'leaflet' }
+]
+
