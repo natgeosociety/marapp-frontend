@@ -23,7 +23,7 @@ import { navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
 import { Controller, useForm } from 'react-hook-form';
 import { Spinner, MultiSelect, AsyncSelect } from '@marapp/earth-components';
-
+import Select from 'react-select';
 import { useAuth0 } from 'auth/auth0';
 import { addLayer, getAllLayers, getLayer, getUniqueSlug } from 'services/layers';
 import { noSpecialChars, setupErrors } from 'utils/validations';
@@ -32,11 +32,9 @@ import {
   LinkWithOrg,
   ErrorMessages,
   Card,
-  FakeJsonUpload,
   Input,
   HtmlEditor,
   JsonEditor,
-  SearchInput,
 } from 'components';
 import { ContentLayout } from 'layouts';
 import {
@@ -47,80 +45,52 @@ import {
   LayerTypeOptions,
   LayerProviderOptions,
 } from 'components/layers/model';
-import { encodeQueryToURL } from 'utils';
 
 
 export function NewLayer(path: any) {
   const {getValues, register, watch, formState, errors, setValue, control} = useForm({
     mode: 'onChange',
   });
+
+
   const {touched, dirty, isValid} = formState;
+
   const watchName = watch('name');
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
   const [layerConfig, setLayerConfig] = useState();
   const {selectedGroup} = useAuth0();
-  const [cursor, setCursor] = useState(-1);
   const renderErrorFor = setupErrors(errors, touched);
-
-  const formatForSelect = (data) => {
-    return data.map(d => {
-      return {value: d.id, label: d.name};
-    });
-  };
-
-  const loadOptions = async (search, prevOptions) => {
-
-    const query = {
-      search: search,
-      sort: 'name',
-      page: {size: 10, cursor: cursor},
-      group: selectedGroup,
-    };
-    const encodedQuery = encodeQueryToURL('layers', query);
-    const res: any = await getAllLayers(encodedQuery);
-    const c = formatForSelect(res.data);
-    setCursor(res.pagination.nextCursor);
-
-
-    let filteredOptions = [];
-    if (!search) {
-      filteredOptions = [...filteredOptions, ...c];
-    } else {
-      filteredOptions = c;
-    }
-
-    const hasMore = !!res.pagination.nextCursor;
-
-    return {
-      options: filteredOptions,
-      hasMore,
-    };
-  };
-
-  const shouldLoadMore = (scrollHeight, clientHeight, scrollTop) => {
-    const bottomBorder = (scrollHeight - clientHeight) / 2;
-
-    return bottomBorder < scrollTop;
-  };
+  const [category, setCategory] = useState(null);
+  const [provider, setProvider] = useState(null);
+  const [type, setType] = useState(null);
+  const [references, setReferences] = useState(null);
 
   async function onSubmit(e) {
     e.preventDefault();
 
     const formData = getValues();
+
+    console.log(isValid, errors);
     const parsed = {
       ...formData,
+      type: type,
+      provider: provider,
+      references: references,
+      config: layerConfig,
     };
 
-    try {
-      setIsLoading(true);
-      const response: any = await addLayer(parsed, selectedGroup);
-      await navigate(`/${selectedGroup}/layers/${response.data.id}`);
-    } catch (error) {
-      setIsLoading(false);
-      setServerErrors(error.data.errors);
-    }
+    console.log(parsed, 'form data');
+
+    // try {
+    //   setIsLoading(true);
+    //   const response: any = await addLayer(parsed, selectedGroup);
+    //   await navigate(`/${selectedGroup}/layers/${response.data.id}`);
+    // } catch (error) {
+    //   setIsLoading(false);
+    //   setServerErrors(error.data.errors);
+    // }
   }
 
   const generateSlug = async (e) => {
@@ -148,9 +118,10 @@ export function NewLayer(path: any) {
     setJsonError(true);
   };
 
-
-  const [value, onChange] = useState(null);
-
+  const coco = (e) => {
+    console.log(e);
+    setValue('category', e);
+  };
 
   return (
     <ContentLayout backTo="/layers">
@@ -158,8 +129,6 @@ export function NewLayer(path: any) {
         <div className="ng-flex ng-flex-space-between">
           <h2 className="ng-text-display-m ng-c-flex-grow-1">New layer</h2>
         </div>
-
-        <AsyncSelect type="layers" loadFunction={getAllLayers} selectedGroup={selectedGroup}/>
 
         <form className="ng-form ng-form-dark ng-flex-column">
           <Card className="ng-margin-medium-bottom">
@@ -198,26 +167,48 @@ export function NewLayer(path: any) {
               </div>
             </div>
             <div className="ng-width-1-1">
-              <MultiSelect options={LayerCategoriesOptions} isMulti isSearchable/>
-              {/*<label htmlFor="category">Layer category*</label>*/}
-              {/*<select*/}
-              {/*  className="ng-width-1-1 ng-form-large"*/}
-              {/*  multiple*/}
-              {/*  id="category"*/}
-              {/*  ref={register({*/}
-              {/*    required: 'Layer category is required',*/}
-              {/*  })}*/}
+              <label htmlFor="category">Layer category*</label>
+
+              <Controller
+                control={control}
+                name="category"
+                as={<MultiSelect
+                  name="category"
+                  options={LayerCategoriesOptions}
+                  as={MultiSelect}
+                  isMulti
+                  isClearable
+                  isSearchable
+                  placeholder="Select layer categories"
+                  rules={{
+                    required: true
+                  }}/>}
+              />
+
+              {/*<MultiSelect*/}
               {/*  name="category"*/}
-              {/*>*/}
-              {/*  {Object.keys(LayerCategory).map((c, idx) => (*/}
-              {/*    <option*/}
-              {/*      key={idx}*/}
-              {/*      value={LayerCategory[c]}*/}
-              {/*    >*/}
-              {/*      {LayerCategory[c]}*/}
-              {/*    </option>*/}
-              {/*  ))}*/}
-              {/*</select>*/}
+              {/*  options={LayerCategoriesOptions}*/}
+              {/*  as={MultiSelect}*/}
+              {/*  value={LayerCategoriesOptions[3]}*/}
+              {/*  isMulti*/}
+              {/*  isClearable*/}
+              {/*  isSearchable*/}
+              {/*  placeholder="Select layer categories"*/}
+              {/*  error={renderErrorFor('category')}*/}
+              {/*  ref={register({*/}
+              {/*    required: 'Place category is required',*/}
+              {/*  })}/>*/}
+              {/*<Controller name="category"*/}
+              {/*            control={control}*/}
+              {/*            options={LayerCategoriesOptions}*/}
+              {/*            as={MultiSelect}*/}
+              {/*            onChange={(e) => setCategory(e)}*/}
+              {/*            isMulti*/}
+              {/*            isClearable*/}
+              {/*            isSearchable*/}
+              {/*            placeholder="Select layer categories"*/}
+
+              {/*/>*/}
             </div>
           </Card>
 
@@ -237,43 +228,28 @@ export function NewLayer(path: any) {
 
           <Card className="ng-margin-medium-bottom">
             <div className="ng-width-1-1 ng-margin-medium-bottom">
-
-
               <label htmlFor="provider">Layer provider*</label>
-              <MultiSelect options={LayerProviderOptions} isSearchable/>
-              {/*<select*/}
-              {/*  className="ng-width-1-1 ng-form-large"*/}
-              {/*  id="provider"*/}
-              {/*  ref={register({*/}
-              {/*    required: 'Layer provider is required',*/}
-              {/*  })}*/}
-              {/*  name="provider"*/}
-              {/*>*/}
-              {/*  {Object.keys(LayerProvider).map((p, idx) => (*/}
-              {/*    <option key={idx} value={p}>*/}
-              {/*      {p}*/}
-              {/*    </option>*/}
-              {/*  ))}*/}
-              {/*</select>*/}
+              {/*<Controller name="provider"*/}
+              {/*            control={control}*/}
+              {/*            options={LayerProviderOptions}*/}
+              {/*            as={MultiSelect}*/}
+              {/*            onChange={(e) => setProvider(e)}*/}
+              {/*            isClearable*/}
+              {/*            isSearchable*/}
+              {/*            placeholder="Select layer provider"*/}
+              {/*/>*/}
             </div>
             <div className="ng-width-1-1">
               <label htmlFor="type">Layer type*</label>
-
-              <MultiSelect options={LayerTypeOptions} isSearchable/>
-              {/*<select*/}
-              {/*  className="ng-width-1-1 ng-form-large"*/}
-              {/*  id="type"*/}
-              {/*  ref={register({*/}
-              {/*    required: 'Layer type is required',*/}
-              {/*  })}*/}
-              {/*  name="type"*/}
-              {/*>*/}
-              {/*  {Object.keys(LayerType).map((t, idx) => (*/}
-              {/*    <option key={idx} value={t}>*/}
-              {/*      {t}*/}
-              {/*    </option>*/}
-              {/*  ))}*/}
-              {/*</select>*/}
+              {/*<Controller name="type"*/}
+              {/*            control={control}*/}
+              {/*            options={LayerTypeOptions}*/}
+              {/*            as={MultiSelect}*/}
+              {/*            onChange={(e) => setType(e)}*/}
+              {/*            isClearable*/}
+              {/*            isSearchable*/}
+              {/*            placeholder="Select layer type"*/}
+              {/*/>*/}
             </div>
           </Card>
 
@@ -285,19 +261,22 @@ export function NewLayer(path: any) {
                 control={control}
                 onChange={(layerConfig) => handleJsonChange(layerConfig)}
                 as={<JsonEditor json=""/>}
+
               />
             </div>
 
             <div className="ng-width-1-1">
               <label htmlFor="provider">Included layers:</label>
-
-
-              {/*<Controller*/}
-              {/*  name="references"*/}
-              {/*  control={control}*/}
-              {/*  valueName={id}*/}
-              {/*  as={<SearchInput options={references} optionType="layers" />}*/}
-              {/*/>*/}
+              <Controller name="references"
+                          type="layers"
+                          control={control}
+                          loadFunction={getAllLayers}
+                          selectedGroup={selectedGroup}
+                          onChange={(e) => setReferences(e)}
+                          as={AsyncSelect}
+                          isClearable
+                          isSearchable
+                          placeholder="Select layers"/>
             </div>
           </Card>
 
@@ -310,7 +289,7 @@ export function NewLayer(path: any) {
                 <button
                   className="ng-button ng-button-primary ng-button-large ng-margin-medium-right"
                   onClick={onSubmit}
-                  disabled={!isValid || jsonError || !dirty}
+                  disabled={!isValid}
                 >
                   Save and view details
                 </button>

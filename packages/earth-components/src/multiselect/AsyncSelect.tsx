@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { encodeQueryToURL } from '../utils';
 
-import {SELECT_THEME, CUSTOM_STYLES} from './model';
+import { SELECT_THEME, CUSTOM_STYLES } from './model';
 
 import './styles.scss';
 
@@ -12,13 +12,15 @@ interface AsyncSelectProps {
   loadFunction: (q: string) => void,
   type: string,
   selectedGroup: string
+  onChange: (e: any) => void;
+  isMulti: boolean
+  value: [] | string
 }
 
 const AsyncSelect = (props: AsyncSelectProps) => {
-  const {loadFunction, type, selectedGroup} = props;
+  const {loadFunction, type, selectedGroup, value, ...rest} = props;
 
   const [cursor, setCursor] = useState(-1);
-  const [value, onChange] = useState(null);
 
   const formatForSelect = (data) => data.map(d => ({value: d.id, label: d.name}));
 
@@ -57,18 +59,23 @@ const AsyncSelect = (props: AsyncSelectProps) => {
     return bottomBorder < scrollTop;
   };
 
+  const handleChange = (values) => {
+    const coco = values.map(val => val.value);
+    props.onChange && props.onChange(coco);
+  };
+
   return (<AsyncPaginate
     value={value}
     placeholder={`Select ${type}`}
     loadOptions={loadOptions}
-    onChange={onChange}
     shouldLoadMore={shouldLoadMore}
+    onChange={handleChange}
     isMulti
     isSearchable
     styles={CUSTOM_STYLES}
     theme={theme => ({
       ...theme,
-      ...SELECT_THEME
+      ...SELECT_THEME,
     })}
   />);
 };
