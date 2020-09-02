@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { encodeQueryToURL } from '../utils';
@@ -19,6 +19,8 @@ const AsyncSelect = (props: AsyncSelectProps) => {
   const {loadFunction, type, selectedGroup, value, ...rest} = props;
 
   const [cursor, setCursor] = useState(-1);
+  const [selectValues, setSelectValues] = useState();
+
 
   const formatForSelect = (data) => data.map(d => ({value: d.id, label: d.name}));
 
@@ -58,11 +60,13 @@ const AsyncSelect = (props: AsyncSelectProps) => {
   };
 
   const handleChange = (values) => {
-
-    const coco = values.map(val => val.value)
-    console.log(coco, 'aicisa');
-    props.onChange && props.onChange(coco);
+    !!values ? setSelectValues(values.map(val => val.value)) : setSelectValues(null);
   };
+
+  useEffect(() => {
+    props.onChange(selectValues);
+  }, [selectValues]);
+
 
   return (<AsyncPaginate
     value={value}

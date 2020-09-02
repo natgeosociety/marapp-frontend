@@ -40,26 +40,27 @@ import {
   LAYER_TYPE_OPTIONS,
   LAYER_PROVIDER_OPTIONS,
 } from 'components/layers/model';
-import { AsyncPaginate } from 'react-select-async-paginate';
 import { navigate } from 'gatsby';
 
 
 export function NewLayer(path: any) {
+  const {selectedGroup} = useAuth0();
+
   const {getValues, register, watch, formState, errors, setValue, control} = useForm({
     mode: 'onChange',
   });
 
-
   const {touched, dirty, isValid} = formState;
+  const renderErrorFor = setupErrors(errors, touched);
 
   const watchName = watch('name');
   const watchJson = watch('config');
+
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
   const [layerConfig, setLayerConfig] = useState({});
-  const {selectedGroup} = useAuth0();
-  const renderErrorFor = setupErrors(errors, touched);
+
   const [references, setReferences] = useState();
 
   async function onSubmit(e) {
@@ -67,26 +68,21 @@ export function NewLayer(path: any) {
 
     const formData = getValues();
 
-
-
-
     const parsed = {
       ...formData,
       ...(!!layerConfig && {config: layerConfig}),
-      // @ts-ignore
-      ...{references}
+      ...(!!references && {references}),
     };
 
-
-
-    try {
-      setIsLoading(true);
-      const response: any = await addLayer(parsed, selectedGroup);
-      await navigate(`/${selectedGroup}/layers/${response.data.id}`);
-    } catch (error) {
-      setIsLoading(false);
-      setServerErrors(error.data.errors);
-    }
+    console.log(parsed);
+    // try {
+    //   setIsLoading(true);
+    //   const response: any = await addLayer(parsed, selectedGroup);
+    //   await navigate(`/${selectedGroup}/layers/${response.data.id}`);
+    // } catch (error) {
+    //   setIsLoading(false);
+    //   setServerErrors(error.data.errors);
+    // }
   }
 
   const generateSlug = async (e) => {
@@ -281,7 +277,7 @@ export function NewLayer(path: any) {
                 <button
                   className="ng-button ng-button-primary ng-button-large ng-margin-medium-right"
                   onClick={onSubmit}
-                  //  disabled={!isValid || jsonError || !dirty || !watchJson}
+                //  disabled={!isValid || jsonError || !dirty || !watchJson}
                 >
                   Save and view details
                 </button>

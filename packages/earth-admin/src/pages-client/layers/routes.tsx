@@ -20,8 +20,7 @@
 import * as React from 'react';
 import { Router, } from '@reach/router';
 
-import { Sidebar } from 'components/layers';;
-import { LayerDetails } from 'components/layers/layer-details';
+import { Sidebar } from 'components/layers';
 import { NewLayer } from './new';
 
 export default function LayersPage(props) {
@@ -29,8 +28,7 @@ export default function LayersPage(props) {
     <>
       <Sidebar />
       <Router>
-        <NewLayer path="/new" />
-        <LayerDetails path="/:page" />
+        <NewLayer path="/new"/>
       </Router>
     </>
   );

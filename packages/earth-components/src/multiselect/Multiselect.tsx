@@ -1,17 +1,22 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Select from 'react-select';
 import { CUSTOM_STYLES, SELECT_THEME } from './model';
 
 export const MultiSelect = React.forwardRef((props: any, ref: any) => {
   const [value, setValue] = useState();
+  const [selectValues, setSelectValues] = useState();
 
   const handleChange = (values) => {
-    !!values && props.onChange &&
-    (props.isMulti ? props.onChange(values.map(val => val.value)) : props.onChange(values.value));
+    !!values ?
+      (props.isMulti ? setSelectValues(values.map(val => val.value)) : setSelectValues(values.value)) : setSelectValues(null);
     setValue(values);
   };
+
+  useEffect(() => {
+    props.onChange(selectValues);
+  }, [selectValues]);
 
   return <Select {...props}
                  ref={ref}
