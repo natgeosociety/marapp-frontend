@@ -1,45 +1,40 @@
 export const SELECT_THEME = {
   borderRadius: 0,
   colors: {
-    primary: '#0099A1',
-    neutral0: '#343A40',
-    neutral10: '#E9ECEF',
-    neutral20: '#E9ECEF',
-    neutral30: '#fff',
-    neutral50: '#F8F9FA',
-    neutral60: '#F8F9FA',
-    neutral80: '#212529'
+    primary: 'var(--marapp-primary-color)',
+    neutral0: 'var(--marapp-gray-8)',
+    neutral10: 'var(--marapp-gray-2)',
+    neutral20: 'var(--marapp-gray-2)',
+    neutral30: 'var(--marapp-gray-2)',
+    neutral50: 'var(--marapp-gray-1)',
+    neutral60: 'var(--marapp-gray-1)',
+    neutral80: 'var(--marapp-gray-8)'
   },
 };
 
 export const CUSTOM_STYLES = {
   valueContainer: (provided, state) => ({
     ...provided,
-    boxShadow: 'none',
-    //   backgroundColor: 'blue',
+    boxShadow: 'none'
   }),
   input: () => ({
-    boxShadow: 'none',
+    boxShadow: 'none'
   }),
   container: () => ({
-    boxShadow: 'none',
-    // backgroundColor: 'yellow',
-    //  border: '1px solid red',
-    // padding: 10,
+    boxShadow: 'none'
   }),
   menu: () => ({
-    border: '1px solid #F8F9FA',
+    border: '1px solid var(--marapp-gray-1)',
     boxShadow: 'none',
   }),
   option: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isFocused ? '#6C757D' : '#343A40',
+    backgroundColor: state.isFocused ? 'var(--marapp-gray-6)' : 'var(--marapp-gray-8)',
     padding: 10,
     boxShadow: 'none',
   }),
   control: (provided, state) => ({
     ...provided,
-    //  border: state.isFocused ? '1px solid red' : '1px solid blue',
     padding: 10,
     boxShadow: 'none',
   }),
@@ -49,15 +44,18 @@ export const CUSTOM_STYLES = {
     display: 'flex',
   }),
   multiValueRemove: () => ({
-    color: '#212529',
+    color: 'var(--marapp-gray-9)',
     padding: '0px 10px',
   }),
   singleValue: (provided, state) => ({
     ...provided,
     boxShadow: 'none',
-    // const opacity = state.isDisabled ? 0.5 : 1;
-    // const transition = 'opacity 300ms';
-    //
-    // return { ...provided, opacity, transition };
+    color: 'var(---marapp-gray-2)'
   }),
+  clearIndicator: () => ({
+    color: 'var(--marapp-gray-2)'
+  }),
+  dropdownIndicator: () => ({
+    color: 'var(--marapp-gray-2)'
+  })
 };

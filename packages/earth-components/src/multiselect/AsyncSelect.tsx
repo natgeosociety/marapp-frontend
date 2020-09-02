@@ -70,6 +70,7 @@ const AsyncSelect = (props: AsyncSelectProps) => {
     loadOptions={loadOptions}
     shouldLoadMore={shouldLoadMore}
     onChange={handleChange}
+    closeMenuOnSelect={false}
     isMulti
     isSearchable
     styles={CUSTOM_STYLES}

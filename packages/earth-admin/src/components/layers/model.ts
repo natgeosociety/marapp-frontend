@@ -82,21 +82,21 @@ export enum LayerCategory {
 }
 
 
-export const LayerCategoriesOptions = [
-  { value: 'BIODIVERSITY', label: 'Biodiversity' },
-  { value: 'CLIMATE_CARBON', label: 'Climate & Carbon' },
-  { value: 'ECOSYSTEM_SERVICES', label: 'Ecosystem Services' },
-  { value: 'HUMAN_IMPACT', label: 'Human Impact' },
-  { value: 'LAND_COVER', label: 'Land Cover' },
-  { value: 'MARINE', label: 'Marine' },
-  { value: 'NATURAL_HAZARDS', label: 'Natural Hazards' },
-  { value: 'PROTECTED_AREAS', label: 'Protected Areas' },
-  { value: 'RESTORATION', label: 'Restoration' },
-  { value: 'SOCIO_ECONOMIC', label: 'Socio-Economic' }
+export const LAYER_CATEGORY_OPTIONS = [
+  { value: 'Biodiversity', label: 'Biodiversity' },
+  { value: 'Climate & Carbon', label: 'Climate & Carbon' },
+  { value: 'Ecosystem Services', label: 'Ecosystem Services' },
+  { value: 'Human Impact', label: 'Human Impact' },
+  { value: 'Land Cover', label: 'Land Cover' },
+  { value: 'Marine', label: 'Marine' },
+  { value: 'Natural Hazards', label: 'Natural Hazards' },
+  { value: 'Protected Areas', label: 'Protected Areas' },
+  { value: 'Restoration', label: 'Restoration' },
+  { value: 'Socio-Economic', label: 'Socio-Economic' }
 ]
 
 
-export const LayerTypeOptions = [
+export const LAYER_TYPE_OPTIONS = [
   { value: 'raster', label: 'raster' },
   { value: 'vector', label: 'vector' },
   { value: 'geojson', label: 'geojson' },
@@ -104,7 +104,7 @@ export const LayerTypeOptions = [
   { value: 'video', label: 'video' }
 ]
 
-export const LayerProviderOptions = [
+export const LAYER_PROVIDER_OPTIONS = [
   { value: 'cartodb', label: 'cartodb' },
   { value: 'gee', label: 'gee' },
   { value: 'mapbox', label: 'mapbox' },

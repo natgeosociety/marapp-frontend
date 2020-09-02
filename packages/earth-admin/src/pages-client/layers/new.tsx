@@ -19,14 +19,12 @@
 
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
 import { Controller, useForm } from 'react-hook-form';
 import { Spinner, MultiSelect, AsyncSelect } from '@marapp/earth-components';
-import Select from 'react-select';
 import { useAuth0 } from 'auth/auth0';
-import { addLayer, getAllLayers, getLayer, getUniqueSlug } from 'services/layers';
-import { noSpecialChars, setupErrors } from 'utils/validations';
+import { getAllLayers, getUniqueSlug } from 'services/layers';
+import { setupErrors } from 'utils/validations';
 
 import {
   LinkWithOrg,
@@ -38,13 +36,11 @@ import {
 } from 'components';
 import { ContentLayout } from 'layouts';
 import {
-  LayerCategory,
-  LayerProvider,
-  LayerType,
-  LayerCategoriesOptions,
-  LayerTypeOptions,
-  LayerProviderOptions,
+  LAYER_CATEGORY_OPTIONS,
+  LAYER_TYPE_OPTIONS,
+  LAYER_PROVIDER_OPTIONS,
 } from 'components/layers/model';
+import { AsyncPaginate } from 'react-select-async-paginate';
 
 
 export function NewLayer(path: any) {
@@ -56,15 +52,13 @@ export function NewLayer(path: any) {
   const {touched, dirty, isValid} = formState;
 
   const watchName = watch('name');
+  const watchJson = watch('config');
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
-  const [layerConfig, setLayerConfig] = useState();
+  const [layerConfig, setLayerConfig] = useState({});
   const {selectedGroup} = useAuth0();
   const renderErrorFor = setupErrors(errors, touched);
-  const [category, setCategory] = useState(null);
-  const [provider, setProvider] = useState(null);
-  const [type, setType] = useState(null);
   const [references, setReferences] = useState(null);
 
   async function onSubmit(e) {
@@ -75,8 +69,8 @@ export function NewLayer(path: any) {
     console.log(isValid, errors);
     const parsed = {
       ...formData,
-      references: references,
-      config: layerConfig,
+      ...(!!layerConfig && {config: layerConfig}),
+      ...(!!references && {references: references})
     };
 
     console.log(parsed, 'form data');
@@ -114,11 +108,6 @@ export function NewLayer(path: any) {
       return parsedJson;
     }
     setJsonError(true);
-  };
-
-  const coco = (e) => {
-    console.log(e);
-    setValue('category', e);
   };
 
   return (
@@ -172,7 +161,7 @@ export function NewLayer(path: any) {
                 name="category"
                 as={<MultiSelect
                   name="category"
-                  options={LayerCategoriesOptions}
+                  options={LAYER_CATEGORY_OPTIONS}
                   as={MultiSelect}
                   isMulti
                   isClearable
@@ -214,7 +203,7 @@ export function NewLayer(path: any) {
                 name="provider"
                 as={<MultiSelect
                   name="provider"
-                  options={LayerProviderOptions}
+                  options={LAYER_PROVIDER_OPTIONS}
                   as={MultiSelect}
                   isClearable
                   isSearchable
@@ -236,7 +225,7 @@ export function NewLayer(path: any) {
                 name="type"
                 as={<MultiSelect
                   name="type"
-                  options={LayerTypeOptions}
+                  options={LAYER_TYPE_OPTIONS}
                   as={MultiSelect}
                   isClearable
                   isSearchable
@@ -288,7 +277,7 @@ export function NewLayer(path: any) {
                 <button
                   className="ng-button ng-button-primary ng-button-large ng-margin-medium-right"
                   onClick={onSubmit}
-                  disabled={!isValid}
+                  disabled={!isValid || jsonError || !dirty || !watchJson}
                 >
                   Save and view details
                 </button>
