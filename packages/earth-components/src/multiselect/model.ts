@@ -15,7 +15,10 @@ export const SELECT_THEME = {
 export const CUSTOM_STYLES = {
   valueContainer: (provided, state) => ({
     ...provided,
-    boxShadow: 'none'
+    boxShadow: 'none',
+  }),
+  placeholder: () => ({
+    color: 'var(--marapp-gray-5)'
   }),
   input: () => ({
     boxShadow: 'none'
