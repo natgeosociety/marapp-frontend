@@ -6,8 +6,6 @@ import { encodeQueryToURL } from '../utils';
 
 import { SELECT_THEME, CUSTOM_STYLES } from './model';
 
-import './styles.scss';
-
 interface AsyncSelectProps {
   loadFunction: (q: string) => void,
   type: string,
@@ -60,8 +58,8 @@ const AsyncSelect = (props: AsyncSelectProps) => {
   };
 
   const handleChange = (values) => {
-    const coco = values.map(val => val.value);
-    props.onChange && props.onChange(coco);
+    props.onChange &&
+    props.isMulti ? props.onChange(values.map(val => val.value)) : props.onChange(values.value);
   };
 
   return (<AsyncPaginate

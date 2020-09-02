@@ -1,9 +1,8 @@
 import * as React from 'react';
-import './styles.scss';
+import { useState } from 'react';
 
 import Select from 'react-select';
 import { CUSTOM_STYLES, SELECT_THEME } from './model';
-import { useState } from 'react';
 
 export const MultiSelect = React.forwardRef((props: any, ref: any) => {
   const [value, setValue] = useState();
