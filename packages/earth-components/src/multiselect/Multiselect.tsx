@@ -8,8 +8,8 @@ export const MultiSelect = React.forwardRef((props: any, ref: any) => {
   const [value, setValue] = useState();
 
   const handleChange = (values) => {
-    props.onChange &&
-    props.isMulti ? props.onChange(values.map(val => val.value)) : props.onChange(values.value);
+    !!values && props.onChange &&
+    (props.isMulti ? props.onChange(values.map(val => val.value)) : props.onChange(values.value));
     setValue(values);
   };
 

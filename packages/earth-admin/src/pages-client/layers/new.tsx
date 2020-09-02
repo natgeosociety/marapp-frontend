@@ -23,7 +23,7 @@ import { JSHINT } from 'jshint';
 import { Controller, useForm } from 'react-hook-form';
 import { Spinner, MultiSelect, AsyncSelect } from '@marapp/earth-components';
 import { useAuth0 } from 'auth/auth0';
-import { getAllLayers, getUniqueSlug } from 'services/layers';
+import { getAllLayers, getUniqueSlug, addLayer } from 'services/layers';
 import { setupErrors } from 'utils/validations';
 
 import {
@@ -41,6 +41,7 @@ import {
   LAYER_PROVIDER_OPTIONS,
 } from 'components/layers/model';
 import { AsyncPaginate } from 'react-select-async-paginate';
+import { navigate } from 'gatsby';
 
 
 export function NewLayer(path: any) {
@@ -59,30 +60,33 @@ export function NewLayer(path: any) {
   const [layerConfig, setLayerConfig] = useState({});
   const {selectedGroup} = useAuth0();
   const renderErrorFor = setupErrors(errors, touched);
-  const [references, setReferences] = useState(null);
+  const [references, setReferences] = useState();
 
   async function onSubmit(e) {
     e.preventDefault();
 
     const formData = getValues();
 
-    console.log(isValid, errors);
+
+
+
     const parsed = {
       ...formData,
       ...(!!layerConfig && {config: layerConfig}),
-      ...(!!references && {references: references})
+      // @ts-ignore
+      ...{references}
     };
 
-    console.log(parsed, 'form data');
 
-    // try {
-    //   setIsLoading(true);
-    //   const response: any = await addLayer(parsed, selectedGroup);
-    //   await navigate(`/${selectedGroup}/layers/${response.data.id}`);
-    // } catch (error) {
-    //   setIsLoading(false);
-    //   setServerErrors(error.data.errors);
-    // }
+
+    try {
+      setIsLoading(true);
+      const response: any = await addLayer(parsed, selectedGroup);
+      await navigate(`/${selectedGroup}/layers/${response.data.id}`);
+    } catch (error) {
+      setIsLoading(false);
+      setServerErrors(error.data.errors);
+    }
   }
 
   const generateSlug = async (e) => {
@@ -260,7 +264,7 @@ export function NewLayer(path: any) {
                           control={control}
                           loadFunction={getAllLayers}
                           selectedGroup={selectedGroup}
-                          onChange={(e) => setReferences(e)}
+                          onChange={(e) => setReferences(e[0])}
                           as={AsyncSelect}
                           isClearable
                           isSearchable
@@ -277,7 +281,7 @@ export function NewLayer(path: any) {
                 <button
                   className="ng-button ng-button-primary ng-button-large ng-margin-medium-right"
                   onClick={onSubmit}
-                  disabled={!isValid || jsonError || !dirty || !watchJson}
+                  //  disabled={!isValid || jsonError || !dirty || !watchJson}
                 >
                   Save and view details
                 </button>

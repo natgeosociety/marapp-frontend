@@ -58,8 +58,10 @@ const AsyncSelect = (props: AsyncSelectProps) => {
   };
 
   const handleChange = (values) => {
-    props.onChange &&
-    props.isMulti ? props.onChange(values.map(val => val.value)) : props.onChange(values.value);
+
+    const coco = values.map(val => val.value)
+    console.log(coco, 'aicisa');
+    props.onChange && props.onChange(coco);
   };
 
   return (<AsyncPaginate
