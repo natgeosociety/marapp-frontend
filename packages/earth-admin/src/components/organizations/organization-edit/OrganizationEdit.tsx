@@ -46,14 +46,14 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
     try {
       if (newOrg) {
         await addOrganization({
+          slug: formData.slug,
           name: formData.name,
-          description: formData.description,
           owners: [].concat(formData.owners)
         }, selectedGroup);
       }
       else {
         await updateOrganization(id || formData.id, {
-          description: formData.description,
+          name: formData.name,
           owners: [].concat(formData.owners)
         }, selectedGroup);
       }
@@ -101,7 +101,6 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
                 defaultValue={name}
                 placeholder="Organization name"
                 className={INPUT_SIZE_CLASSNAME}
-                disabled={!newOrg}
               />
             </div>
             <div className="ng-width-large-1-2 ng-width-1-1">
