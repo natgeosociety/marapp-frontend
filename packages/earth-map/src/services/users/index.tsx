@@ -18,16 +18,16 @@
 */
 
 import { setup } from 'axios-cache-adapter';
-import Jsona, { SwitchCaseJsonMapper, SwitchCaseModelMapper } from 'jsona';
 import { encodeQueryToURL } from 'utils/query';
+import Jsona, { SwitchCaseJsonMapper, SwitchCaseModelMapper } from 'jsona';
 import { AxiosInstance } from 'axios';
 
 import { API_URL } from "config";
 
 /**
- * Metrics service class.
+ * Users service class.
  */
-class MetricsService {
+class UsersService {
   private dataFormatter: Jsona;
   private api: AxiosInstance;
 
@@ -63,11 +63,11 @@ class MetricsService {
   }
 }
 
-export const service = new MetricsService();
+export const service = new UsersService();
 
-export function fetchMetric(id, options = {}) {
-  const metricQuery = encodeQueryToURL(`/metrics/${id}`, options);
-  return service.request(metricQuery);
+export function changeEmailConfirmation(options = {}) {
+  const widgetsQuery = encodeQueryToURL(`/users/change-email`, options);
+  return service.request(widgetsQuery);
 }
 
 export default service;
