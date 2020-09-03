@@ -26,7 +26,7 @@ import { ActionModal, LinkWithOrg } from 'components';
 
 export default function OrganizationDetails( props: OrganizationProps ) {
   const {
-    data: { name, owners, description, id },
+    data: { id, slug, name, owners },
   } = props;
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -58,13 +58,13 @@ export default function OrganizationDetails( props: OrganizationProps ) {
         <h3 className="ng-text-display-s">Organization details</h3>
 
         <p>
+          <span className="ng-text-weight-medium">Slug:</span> {slug || '-'}
+        </p>
+        <p>
           <span className="ng-text-weight-medium">Name:</span> {name || '-'}
         </p>
         <p>
           <span className="ng-text-weight-medium">Owner:</span> {owners[0] || '-'}
-        </p>
-        <p>
-          <span className="ng-text-weight-medium">Description: </span> {description || '-'}
         </p>
       </div>
       <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">

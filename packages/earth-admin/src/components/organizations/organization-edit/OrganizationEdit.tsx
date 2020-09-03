@@ -30,7 +30,7 @@ const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
 export default function OrganizationEdit(props: OrganizationEditProps) {
   const {
-    data: { name, owners, description, id },
+    data: { id, slug, name, owners },
     newOrg,
   } = props;
 
@@ -73,6 +73,22 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
         <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5" onSubmit={handleSubmit(onSubmit)}>
           <div className="ng-margin-medium-bottom ng-grid">
             <div className="ng-width-large-1-2 ng-width-1-1">
+              <label className="ng-form-label" htmlFor="slug">
+                Organization slug
+              </label>
+              <input
+                ref={register({
+                  required: true,
+                })}
+                name="slug"
+                type="text"
+                defaultValue={slug}
+                placeholder="Organization slug"
+                className={INPUT_SIZE_CLASSNAME}
+                disabled={!newOrg}
+              />
+            </div>
+            <div className="ng-width-large-1-2 ng-width-1-1">
               <label className="ng-form-label" htmlFor="name">
                 Organization name
               </label>
@@ -100,19 +116,6 @@ export default function OrganizationEdit(props: OrganizationEditProps) {
                 type="text"
                 defaultValue={owners ? owners[0] : ''}
                 placeholder="Organization owner"
-                className={INPUT_SIZE_CLASSNAME}
-              />
-            </div>
-            <div className="ng-width-large-1-2 ng-width-1-1">
-              <label htmlFor="email">Organization description*</label>
-              <input
-                ref={register({
-                  required: true,
-                })}
-                name="description"
-                type="text"
-                defaultValue={description}
-                placeholder="Organization description"
                 className={INPUT_SIZE_CLASSNAME}
               />
             </div>
