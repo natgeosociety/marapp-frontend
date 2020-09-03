@@ -84,9 +84,8 @@ const FilterBy = (props: IProps) => {
       {open &&
         Object.keys(availableFilters).map((key) => (
           <React.Fragment key={key}>
-            {/* {<h2 className="ng-color-ltgray ng-text-display-s ng-margin-bottom">{key}</h2>} */}
+            {<h2 className="ng-color-ltgray ng-text-display-s ng-margin-bottom">{key}</h2>}
             <div className="ng-grid ng-form-dark ng-form" key={`${key}-form`}>
-              <div className="ng-width-1-1 ng-margin-bottom ng-text-capital" key={`${key}-filter`}>{key}</div>
               {availableFilters[key].map((filter, i) => {
                 const checked = !!(filters[key] && filters[key].includes(filter.value));
                 const domId = `${key}-${filter.value}`;
