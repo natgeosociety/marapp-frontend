@@ -22,9 +22,11 @@ import { replace } from 'redux-first-router'
 
 import { Spinner } from '@marapp/earth-components';
 
+import { useAuth0 } from 'auth/auth0';
 import { changeEmailConfirmation } from 'services/users'
 
 export default function ChangeEmailComponent() {
+  const { login } = useAuth0();
 
   useEffect(() => {
     (async () => {
@@ -38,10 +40,19 @@ export default function ChangeEmailComponent() {
         const error_description = params.get('error_description')
 
         if (accessToken) {
-          await changeEmailConfirmation({ accessToken })
+          const response: any = await changeEmailConfirmation({ accessToken })
+          if (response && response?.success) {
+            alert('Email change successful. Please login using the new credentials.');
+            // Auth0 sessions are reset when a user’s email or password changes;
+            // force a re-login if email change request successful;
+            return login({ appState: { targetUrl: '/' } }); // TODO: redirect to profile after successful change;
+          } else {
+            alert('Could not change email address.');
+          }
         }
         if (error || error_description) {
           console.error(error, error_description)
+          alert(error_description)
         }
       } catch (e) {
         console.error(e);
