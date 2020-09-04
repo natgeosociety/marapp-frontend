@@ -19,9 +19,9 @@
 
 export interface Organization {
   id: string;
+  slug: string;
   name: string;
   owners: string[];
-  description: string;
 }
 
 export interface OrganizationProps {
