@@ -20,7 +20,7 @@
 import * as React from 'react';
 import { Router, } from '@reach/router';
 
-import { Sidebar } from 'components/places';
+import { Sidebar } from './place-sidebar';
 import { PlacesHome } from './home';
 import { PlaceDetail } from './details';
 import { NewPlace } from './new';

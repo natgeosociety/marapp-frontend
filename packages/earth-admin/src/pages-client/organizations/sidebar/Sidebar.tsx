@@ -7,7 +7,7 @@ import { encodeQueryToURL, setPage } from 'utils';
 import { OrganizationContext } from 'utils/contexts';
 import { getAllOrganizations } from 'services/organizations';
 import { SidebarLayout } from 'layouts';
-import { OrganizationList } from 'components';
+import { OrganizationList } from '../organization-list';
 
 const PAGE_TYPE = setPage('Organizations');
 

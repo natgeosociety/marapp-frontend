@@ -9,8 +9,10 @@ import { noSpecialCharsRule, noSpecialCharsOrSpaceRule, setupErrors } from 'util
 import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
+import { Metrics } from './metrics';
+import { Intersections } from './intersections';
 import {
-  PlaceMetrics, PlaceIntersections, ErrorMessages,
+  ErrorMessages,
   ActionModal,
   MapComponent,
   InlineEditCard,
@@ -310,7 +312,7 @@ export function PlaceDetail(path: any) {
                 <p className="ng-text-weight-bold ng-margin-small-bottom">Place Metrics</p>
                 <div className="ng-flex ng-flex-wrap ng-place-metrics-container">
                   {metrics.map((metric) => (
-                    <PlaceMetrics
+                    <Metrics
                       key={metric.id}
                       data={metric}
                       handlers={{handleServerErrors}}
@@ -337,7 +339,7 @@ export function PlaceDetail(path: any) {
           <div className="">
             {mappedIntersections &&
             map(mappedIntersections, (intersections, idx) => (
-              <PlaceIntersections
+              <Intersections
                 key={idx}
                 name={intersections[0].type}
                 intersections={intersections}

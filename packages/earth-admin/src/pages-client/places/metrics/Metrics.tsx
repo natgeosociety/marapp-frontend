@@ -20,7 +20,7 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 
-import { PlaceMetricsProps } from '../../../pages-client/places/model';
+import { PlaceMetricsProps } from '../model';
 import { calculateForPlace } from 'services';
 import { AuthzGuards } from 'auth/permissions';
 import { useAuth0 } from 'auth/auth0';
@@ -28,7 +28,7 @@ import { useAuth0 } from 'auth/auth0';
 import './styles.scss';
 import { Auth0Context } from 'utils/contexts';
 
-export default function PlaceMetrics(props: PlaceMetricsProps) {
+export default function Metrics(props: PlaceMetricsProps) {
   const {
     data: {slug, version, location},
     handlers: {handleServerErrors},
