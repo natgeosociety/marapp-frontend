@@ -44,7 +44,7 @@ export default function DashboardDetails(props: DashboardProps) {
   }
 
   return (
-    <div>
+    <div className="marapp-qa-dashboarddetails">
       {showDeleteModal && (
         <ActionModal
           id={id}
@@ -128,7 +128,7 @@ export default function DashboardDetails(props: DashboardProps) {
       </div>
       {writePermissions && (
         <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
-          <button className="ng-button ng-button-primary" onClick={handleDeleteToggle}>
+          <button className="marapp-qa-actiondelete ng-button ng-button-primary" onClick={handleDeleteToggle}>
             Delete dashboard
           </button>
         </div>

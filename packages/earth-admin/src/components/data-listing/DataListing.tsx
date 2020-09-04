@@ -72,7 +72,7 @@ const DataListing = ( props:DataListingProps ) => {
   return (<>
     {searchValueAction &&
     <SearchBox searchValue={searchValue} pageTitle={pageTitle} searchValueAction={searchValueAction}/>}
-    <div style={{ 'overflowY': 'scroll' }} className="ng-shadow-small">
+    <div style={{ 'overflowY': 'scroll' }} className="marapp-qa-datalisting ng-shadow-small">
       {!!totalResults && <div
         className="ng-padding-medium-horizontal ng-padding-medium-top ng-padding-bottom ng-background-ultradkgray">
         <h4 className="ng-text-display-s ng-color-ultraltgray ng-margin-remove">{selectedGroup} {pageTitle} &nbsp;

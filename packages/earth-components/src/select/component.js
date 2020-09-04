@@ -52,8 +52,7 @@ class Select extends React.Component {
 
     return (
       <div
-        className={classnames({
-          'c-select': true,
+        className={classnames('marapp-qa-select', 'c-select', {
           [className]: !!className
         })}
       >

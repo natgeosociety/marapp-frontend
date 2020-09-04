@@ -43,7 +43,7 @@ const Homepage = (props) => {
   return (
     <>
       <SidebarLayout isLoading={isLoading} page={PAGE_TYPE}>
-        <Card className="ng-margin-top" style={{ 'overflowY': 'scroll' }}>
+        <Card className="marapp-qa-homepage ng-margin-top" style={{ 'overflowY': 'scroll' }}>
           {organization.name && (
             <>
               <h2 className="ng-text-display-m ng-margin-bottom-remove">{organization.name}</h2>

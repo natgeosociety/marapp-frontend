@@ -67,7 +67,7 @@ const Organization = (props: IProps) => {
 }
 
 const OrgSwitcherPage = ({ groups }) => (
-  <div className="ng-orgswitcher-page">
+  <div className="marapp-qa-organizationpage ng-orgswitcher-page">
     <div>
       <h3>Invalid Organization</h3>
       <h6>Please select a valid one:</h6>

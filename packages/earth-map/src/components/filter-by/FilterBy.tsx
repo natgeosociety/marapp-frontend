@@ -63,20 +63,18 @@ const FilterBy = (props: IProps) => {
   const openToggle = () => onOpenToggle(!open)
 
   return (
-    <div className="ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
+    <div className="marapp-qa-filterby ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
       <div className="ng-flex search-title">
         <h2
-          className="ng-text-display-s ng-body-color ng-margin-bottom ng-margin-small-right ng-c-cursor-pointer"
+          className="marapp-qa-filterbyopen ng-text-display-s ng-body-color ng-margin-bottom ng-margin-small-right ng-c-cursor-pointer"
           onClick={openToggle}>
           Filters
         </h2>
         {numberOfFilters > 0 &&
-          <a className="ng-link ng-nohover ng-text-weight-regular ng-text-capital" onClick={clearCheckedFilters}>Clear {`(${numberOfFilters})`}</a>
+          <a className="marapp-qa-filterbyclear ng-link ng-nohover ng-text-weight-regular ng-text-capital" onClick={clearCheckedFilters}>Clear {`(${numberOfFilters})`}</a>
         }
         <i
-          className={classnames({
-            'ng-c-cursor-pointer': true,
-            'ng-margin-small-left': true,
+          className={classnames('marapp-qa-filterbyarrow ng-c-cursor-pointer ng-margin-small-left', {
             'ng-icon-directionup': open,
             'ng-icon-directiondown': !open,
           })}
@@ -86,7 +84,7 @@ const FilterBy = (props: IProps) => {
       {open &&
         Object.keys(availableFilters).map((key) => (
           <React.Fragment key={key}>
-            {/* {<h2 className="ng-color-ltgray ng-text-display-s ng-margin-bottom">{key}</h2>} */}
+            {<h2 className="ng-color-ltgray ng-text-display-s ng-margin-bottom">{key}</h2>}
             <div className="ng-grid ng-form-dark ng-form" key={`${key}-form`}>
               {availableFilters[key].map((filter, i) => {
                 const checked = !!(filters[key] && filters[key].includes(filter.value));

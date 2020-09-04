@@ -19,40 +19,35 @@
 
 import * as React from 'react';
 import { useState } from 'react';
-import { UserProps } from '../model';
+import { OrganizationProps } from '../model';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
-import { ActionModal, LinkWithOrg, ErrorMessages } from 'components';
+import { ActionModal, LinkWithOrg } from 'components';
 
-export default function UserDetails(props: UserProps) {
+export default function OrganizationDetails( props: OrganizationProps ) {
   const {
-    data: { name, email, groups, id },
+    data: { id, slug, name, owners },
   } = props;
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [serverErrors, setServerErrors] = useState(null);
 
   const { getPermissions } = useAuth0();
-  const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
+  const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
   function handleDeleteToggle() {
     setShowDeleteModal(!showDeleteModal);
   }
 
-  function handleDeleteError(error) {
-    setServerErrors(error.data.errors);
-  }
-
   return (
-    <div className="marapp-qa-userdetails">
+    <div className="marapp-qa-organizationdetails">
       {showDeleteModal && (
         <ActionModal
           id={id}
-          navigateRoute={'users'}
+          navigateRoute={'organizations'}
           name={name}
-          type="user"
+          type="organization"
           toggleModal={handleDeleteToggle}
           visibility={showDeleteModal}
-          error={handleDeleteError}
         />
       )}
       <div className="ng-flex ng-flex-space-between">
@@ -60,37 +55,35 @@ export default function UserDetails(props: UserProps) {
       </div>
 
       <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
-        <h3 className="ng-text-display-s">User details</h3>
+        <h3 className="ng-text-display-s">Organization details</h3>
 
         <p>
-          <span className="ng-text-weight-medium">Email:</span> {email || '-'}
+          <span className="ng-text-weight-medium">Slug:</span> {slug || '-'}
         </p>
         <p>
-          <span className="ng-text-weight-medium">Name: </span> {name || '-'}
+          <span className="ng-text-weight-medium">Name:</span> {name || '-'}
         </p>
         <p>
-          <span className="ng-text-weight-medium">Groups:</span>{' '}
-          {groups.map((group) => group.name).join(', ') || '-'}
+          <span className="ng-text-weight-medium">Owner:</span> {owners[0] || '-'}
         </p>
       </div>
       <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
         {writePermissions && (
           <LinkWithOrg
-            to={`/users/${id}/edit`}
+            to={`/organizations/${id}/edit`}
             className="marapp-qa-actionedit ng-button ng-button-primary ng-margin-medium-right"
           >
-            Edit user
+            Edit organization
           </LinkWithOrg>
         )}
-        <LinkWithOrg className="marapp-qa-actionback ng-button ng-button-secondary" to="/users">
-          Go back to users list
+        <LinkWithOrg className="marapp-qa-actionback ng-button ng-button-secondary" to="/organizations">
+          Go back to organizations list
         </LinkWithOrg>
       </div>
-      {serverErrors && <ErrorMessages errors={serverErrors} />}
       {writePermissions && (
-        <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
+        <div className="ng-padding-medium ultradkgray ng-text-right">
           <button className="marapp-qa-actiondelete ng-button ng-button-primary" onClick={handleDeleteToggle}>
-            Delete user
+            Delete organization
           </button>
         </div>
       )}

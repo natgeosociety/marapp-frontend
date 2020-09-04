@@ -31,7 +31,7 @@ const Auth0ListItem = ( props: Auth0ListProps ) => {
   return (
     <LinkWithOrg
       to={`/${categoryUrl}/${item.id}`}
-      className="ng-data-link ng-display-block ng-padding-medium-horizontal ng-padding-small-vertical"
+      className="marapp-qa-auth0listitem ng-data-link ng-display-block ng-padding-medium-horizontal ng-padding-small-vertical"
     >
       <p className="ng-margin-remove ng-color-ultraltgray">{item.name}</p>
       {!!item.groups &&

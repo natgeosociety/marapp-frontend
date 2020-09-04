@@ -70,9 +70,7 @@ class Tooltip extends React.Component {
   render() {
     const { contentClass, triggerClass, placement, animated } = this.props;
 
-    const CONTENT_CLASSES = classNames(
-      {
-        "ng-c-tooltip-content": true,
+    const CONTENT_CLASSES = classNames('marapp-qa-tooltip', 'ng-c-tooltip-content', {
         animated: animated,
       },
       contentClass

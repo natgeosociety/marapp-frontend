@@ -10,9 +10,8 @@ interface IProps {
 
 const Toggle = (props: IProps) => {
   const { className, active } = props;
-  const classes = classNames({
+  const classes = classNames('marapp-qa-toggle layers--item-switch', {
     '-active': active,
-    'layers--item-switch': true,
     [className]: true,
   });
 

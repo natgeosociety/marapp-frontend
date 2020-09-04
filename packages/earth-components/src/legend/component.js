@@ -71,7 +71,7 @@ class LegendComponent extends PureComponent {
     const { layerGroups } = this.props;
 
     return (
-      <div className="c-legend-globe">
+      <div className="c-legend-globe marapp-qa-legend">
         <Legend
           onChangeOrder={this.onChangeOrder}
           sortable={false}

@@ -56,7 +56,7 @@ export default function Metrics(props: PlaceMetricsProps) {
   }
 
   return (
-    <div className="ng-width-1-4 ng-padding-small">
+    <div className="marapp-qa-placemetrics ng-width-1-4 ng-padding-small">
       <div style={{"minHeight": '50px'}} className="ng-padding-medium-horizontal ng-padding-vertical ng-background-dkgray ng-height-1-1 ng-flex ng-flex-space-between">
         <div className="ng-flex-middle ng-flex">
                 <span>
@@ -67,7 +67,7 @@ export default function Metrics(props: PlaceMetricsProps) {
           {writePermission && (
             <button
               disabled={loading}
-              className="ng-icon-button ng-recalculate-metrics"
+              className="marapp-qa-actionrecalculate ng-icon-button ng-recalculate-metrics"
               onClick={(e) => handleCalculateSingle(e, location, slug)}
             >
               <span className="ng-icon ng-icon-reload"/>

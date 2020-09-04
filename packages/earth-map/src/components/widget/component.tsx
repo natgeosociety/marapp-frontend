@@ -236,9 +236,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
       data,
     } = this.state;
 
-    const classNames = classnames({
-      'c-widget': true,
-      'ng-ep-border-bottom': true,
+    const classNames = classnames('marapp-qa-widget c-widget ng-ep-border-bottom', {
       '-embed': embed,
       '-footer': footer,
       '-box': box,

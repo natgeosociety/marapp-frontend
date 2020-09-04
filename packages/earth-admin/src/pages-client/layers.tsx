@@ -138,7 +138,7 @@ function HomePage( props: any ) {
   const permissions = getPermissions(AuthzGuards.accessLayersGuard);
   const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
   return (writePermissions && (
-    <ContentLayout>
+    <ContentLayout className="marapp-qa-layershome">
       <div className="ng-flex ng-align-right">
         <LinkWithOrg className="ng-button ng-button-overlay" to="/layers/new">
           add new layer
@@ -161,7 +161,7 @@ function DetailsPage( path: any ) {
   });
 
   return (
-    <ContentLayout errors={errors} backTo="/layers" isLoading={isLoading}>
+    <ContentLayout errors={errors} backTo="/layers" isLoading={isLoading} className="marapp-qa-layersdetails">
       <LayerDetails data={data} newLayer={false}/>
     </ContentLayout>
   );
@@ -179,7 +179,7 @@ function EditPage( path: any ) {
   });
 
   return (
-    <ContentLayout errors={errors} backTo="/layers" isLoading={isLoading}>
+    <ContentLayout errors={errors} backTo="/layers" isLoading={isLoading} className="marapp-qa-layersedit">
       <LayerEdit data={data} newLayer={path.newLayer}/>
     </ContentLayout>
   );

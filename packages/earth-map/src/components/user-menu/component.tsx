@@ -57,7 +57,7 @@ export default function UserMenuComponent() {
   };
 
   return (
-    <div className="ng-user-account" ref={menuRef}>
+    <div className="marapp-qa-useraccount ng-user-account" ref={menuRef}>
       <button className="ng-unstyled" onClick={(e) => toggleDrop(e)}>
         {userData.picture && (
           <img className="ng-user-profile" src={userData.picture} alt={userData.name} />
@@ -74,11 +74,11 @@ export default function UserMenuComponent() {
           >
             <ul className="ng-user-profile-dropdown">
               <li>ACCOUNT</li>
-              { userData.allGroups.length === 0 ? 
-              <li className="ng-user-profile-signin">
+              { userData.allGroups.length === 0 ?
+              <li className="marapp-qa-signin ng-user-profile-signin">
                 <a onClick={handleLogin}>Sign in</a>
               </li> :
-              <li className="ng-user-profile-signout">
+              <li className="marapp-qa-signout ng-user-profile-signout">
                 <a onClick={handleLogout}>Sign Out</a>
               </li>
               }

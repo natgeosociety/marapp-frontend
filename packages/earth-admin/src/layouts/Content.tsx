@@ -32,6 +32,7 @@ interface ILayoutProps {
   errors?: Object[];
   backTo?: string;
   isLoading?: boolean;
+  className?: string;
 }
 
 interface IUnauthorizedProps {
@@ -52,7 +53,7 @@ const Unauthorized = ( props: IUnauthorizedProps ) => {
 
 export default function ContentLayout( props: ILayoutProps ) {
   return (
-    <div className="ng-flex">
+    <div className={`ng-flex ${props.className || ''}`}>
       <Helmet>
         <link rel="icon"
               href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="/>

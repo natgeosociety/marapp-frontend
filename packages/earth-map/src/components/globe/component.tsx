@@ -208,8 +208,7 @@ class GlobeComponent extends React.Component<IGlobe, any> {
         ref={r => {
           this.container = r;
         }}
-        className={classNames({
-          'c-globe': true,
+        className={classNames('marapp-qa-globe c-globe', {
           '-presentation': presentationMode,
         })}
         style={styles}

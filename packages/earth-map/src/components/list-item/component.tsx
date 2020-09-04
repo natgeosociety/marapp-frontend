@@ -76,7 +76,7 @@ const ListItem = (props: IProps) => {
     <Wrapper
       to={linkTo}
       onClick={onClick || onClickIndex} key={key}
-      className="ng-list-item ng-padding-small-vertical ng-padding-medium-horizontal ng-cursor-pointer"
+      className="marapp-qa-listitem ng-list-item ng-padding-small-vertical ng-padding-medium-horizontal ng-cursor-pointer"
     >
       {showToggle && <Toggle className="ng-margin-right" active={active} />}
       <div className="ng-list-item-content">

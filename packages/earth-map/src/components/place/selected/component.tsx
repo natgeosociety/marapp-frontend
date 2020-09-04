@@ -52,8 +52,7 @@ class PlaceSelectedComponent extends React.PureComponent<IPlaceSelected> {
 
     return (
       <div
-        className={classnames({
-          'place--selected': true,
+        className={classnames('marapp-qa-placeselected place--selected', {
           '-no-data': !relations,
         })}
         onClick={relations ? this.onToggleOpen : undefined}

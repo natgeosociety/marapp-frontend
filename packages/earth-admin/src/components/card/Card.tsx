@@ -12,7 +12,7 @@ export const Card = (props: IProps) => {
   } = props;
 
   return (
-    <div className={`ng-padding-medium ng-background-ultradkgray ng-shadow-small  ${className}`}>
+    <div className={`marapp-qa-card ng-padding-medium ng-background-ultradkgray ng-shadow-small ${className}`}>
       {props.children}
     </div>
   )

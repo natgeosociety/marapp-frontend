@@ -72,7 +72,7 @@ export function NewPlace(path: any) {
   }
 
   return (
-    <ContentLayout backTo="/places">
+    <ContentLayout backTo="/places" className="marapp-qa-placesnew">
       <div>
         <div className="ng-flex ng-flex-space-between">
           <h2 className="ng-text-display-m ng-c-flex-grow-1">New place</h2>
@@ -133,7 +133,7 @@ export function NewPlace(path: any) {
                   onClick={generateSlug}
                   disabled={!watchName || !!errors.name}
                   title={watchName ? 'Generate slug' : 'Add a title first'}
-                  className="ng-button ng-button-secondary ng-button-large ng-pointer"
+                  className="marapp-qa-actiongenerateslug ng-button ng-button-secondary ng-button-large ng-pointer"
                   style={{ marginTop: '36px' }}>
                   Generate a slug name
                 </button>
@@ -164,14 +164,14 @@ export function NewPlace(path: any) {
             : (
               <div className="ng-flex">
                 <button
-                  className="ng-button ng-button-primary ng-button-large ng-margin-medium-right"
+                  className="marapp-qa-actionsave ng-button ng-button-primary ng-button-large ng-margin-medium-right"
                   onClick={onSubmit}
                   disabled={!isValid || jsonError || !dirty}
                 >
                   Save and view details
                 </button>
 
-                <LinkWithOrg className="ng-button ng-button-secondary ng-button-large" to="/places">
+                <LinkWithOrg className="marapp-qa-actionreturn ng-button ng-button-secondary ng-button-large" to="/places">
                   Return to places home
                 </LinkWithOrg>
               </div>

@@ -66,19 +66,19 @@ const SearchBox = (props: ISearchbox) => {
   );
 
   return (
-    <div className="ng-padding-medium ng-flex ng-ep-background-dark ng-padding-top-remove">
+    <div className="marapp-qa-searchbox ng-padding-medium ng-flex ng-ep-background-dark ng-padding-top-remove">
       <div className={searchBoxClasses}>
         <i className="ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal" />
         <input
           type="text"
           placeholder={placeholder}
-          className="ng-width-1-1 ng-search-box"
+          className="marapp-qa-searchboxinput ng-width-1-1 ng-search-box"
           value={value}
           onChange={onChange}
           onFocus={onFocus}
         />
         {showClose && (
-          <div className="ng-c-cursor-pointer" onClick={onReset}>
+          <div className="marapp-qa-searchboxclear ng-c-cursor-pointer" onClick={onReset}>
             <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close ng-display-block"></i>
           </div>
         )}
