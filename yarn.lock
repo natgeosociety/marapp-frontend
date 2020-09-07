@@ -18412,7 +18412,7 @@ qs@6.7.0:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
 
-qs@^6.5.1, qs@^6.5.2, qs@^6.9.4:
+qs@^6.5.1, qs@^6.5.2:
   version "6.9.4"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.4.tgz#9090b290d1f91728d3c22e54843ca44aea5ab687"
   integrity sha512-A1kFqHekCTM7cz0udomYUoYNWjBebHm/5wzU/XqrBRBNWectVH0QIiN+NEcZ0Dte5hvzHwbr8+XQmguPhJ6WdQ==
@@ -19134,14 +19134,6 @@ react-select-async-paginate@^0.4.0:
     "@seznam/compose-react-refs" "^1.0.4"
     react-is-mounted-hook "^1.0.3"
     sleep-promise "^8.0.1"
-
-react-select-fetch@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/react-select-fetch/-/react-select-fetch-0.2.0.tgz#c91e0060427af6089cea9df61c6f098f67bbe311"
-  integrity sha512-1HZChdK7Led+KDL/n81JJCVquuARy85Bh+tcKCGrnsC96njatLCCp2H3xzTSg0yI3wTr6yHSMg4klcbi3B2XGg==
-  dependencies:
-    "@babel/runtime" "^7.10.5"
-    qs "^6.9.4"
 
 react-select@^3.1.0:
   version "3.1.0"

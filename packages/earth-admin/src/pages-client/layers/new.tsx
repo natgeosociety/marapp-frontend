@@ -17,8 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState } from 'react';
+import React, {useState} from 'react';
 import { navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
 import { Controller, useForm } from 'react-hook-form';
@@ -41,10 +40,10 @@ import {
   LAYER_CATEGORY_OPTIONS,
   LAYER_TYPE_OPTIONS,
   LAYER_PROVIDER_OPTIONS,
-} from 'components/layers/model';
+} from './model';
 
 
-export function NewLayer(path: any) {
+export function NewLayer(path: string) {
   const {selectedGroup} = useAuth0();
 
   const {getValues, register, watch, formState, errors, setValue, control} = useForm({
