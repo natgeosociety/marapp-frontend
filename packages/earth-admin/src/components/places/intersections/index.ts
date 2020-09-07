@@ -17,32 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-export interface Organization {
-  id: string;
-  slug: string;
-  name: string;
-  owners: string[];
-}
+import Intersections from './Intersections';
 
-export interface OrganizationProps {
-  data: Organization;
-}
-
-export interface OrganizationEditProps {
-  data: Organization;
-  newOrg: boolean;
-}
-
-export interface OrganizationContextProps {
-  organizations: Organization[];
-  handleSearchValueChange?: (newValue: string) => void;
-  handleCursorChange?: Function;
-  pageSize?: number;
-  isLoading?: boolean;
-  isNoMore?: boolean;
-  searchValue?: string;
-  permissions?: any;
-  totalResults?: number;
-  nextCursor?: string;
-  selectedItem?: string;
-}
+export { Intersections };

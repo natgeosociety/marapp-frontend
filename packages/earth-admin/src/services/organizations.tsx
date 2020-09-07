@@ -66,7 +66,7 @@ export const getOrganizationStats = async (group: string) => {
 
 export const updateOrganization = async (organizationID: string, organization, group: string) => {
   return await OrganizationAPIService.request({
-    url: `/organizations/${organizationID}?group=${group}`,
+    url: `/organizations/${organizationID}?group=${group}&include=owners`,
     method: 'put',
     data: organization,
   });
