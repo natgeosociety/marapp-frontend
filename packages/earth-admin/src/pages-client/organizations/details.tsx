@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { navigate } from 'gatsby';
 
@@ -15,19 +15,28 @@ import { ActionModal, LinkWithOrg, InlineEditCard, Input } from 'components';
 
 export function OrganizationDetails(props: any) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [localOrgData, setLocalOrgData] = useState(null);
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   const encodedQuery = encodeQueryToURL(`organizations/${props.page}`, { include: 'owners' });
-  const { isLoading, errors, data: orgData } = useRequest(() => getOrganization(encodedQuery), {
+
+  const { isLoading, errors, data } = useRequest(() =>
+    getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessOrganizationsGuard,
     query: encodedQuery,
   });
+
+  useEffect(() => {
+    setLocalOrgData(data);
+  }, [data]);
+
+
   const { getValues, register, formState, errors: formErrors } = useForm({
     mode: 'onChange',
   });
-  const { touched, dirty, isValid, dirtyFields } = formState;
+
+  const { touched } = formState;
   const renderErrorFor = setupErrors(formErrors, touched);
-  console.log(formErrors, touched, dirtyFields)
 
   function handleDeleteToggle() {
     setShowDeleteModal(!showDeleteModal);
@@ -35,15 +44,22 @@ export function OrganizationDetails(props: any) {
 
   async function onSubmit(e, setIsEditing, setIsLoading, setServerErrors) {
     e.preventDefault();
-    const formData = getValues();
-    console.log(formData)
+    const { owner, ...rest } = getValues();
+
+    const transformedFormData = {
+      ...rest,
+      ...owner && {
+        owners: [owner]
+      }
+    }
+
     try {
       setIsLoading(true);
-      const response = await updateOrganization(id, formData, selectedGroup);
-      console.log(response);
-      navigate(`/organizations/${response.data.id}`);
+      const { data }: any = await updateOrganization(id, transformedFormData, selectedGroup);
+      setIsEditing(false);
+      setLocalOrgData(data);
       setIsLoading(false);
-    } catch(err) {
+    } catch (err) {
       setIsLoading(false);
       setServerErrors(err.data.errors);
     }
@@ -53,8 +69,7 @@ export function OrganizationDetails(props: any) {
     return <ContentLayout isLoading />
   }
 
-  console.log(orgData)
-  const { name, owners, slug, id } = orgData;
+  const { name, owners, slug, id } = localOrgData;
   const owner = owners && owners[0];
 
   return (
@@ -94,7 +109,8 @@ export function OrganizationDetails(props: any) {
                       ref={register({
                         required: 'Organization name is required',
                         validate: {
-                          noSpecialCharsRule: noSpecialCharsRule('Organization name can not contain special characters') }
+                          noSpecialCharsRule: noSpecialCharsRule('Organization name can not contain special characters')
+                        }
                       })} />
                   </>
                 )}>
@@ -126,7 +142,7 @@ export function OrganizationDetails(props: any) {
                 )}>
                 <div className="ng-margin-medium-bottom">
                   <p className="ng-text-weight-bold ng-margin-remove">Owner</p>
-                    <p className="ng-margin-remove ng-padding-left">{owner}</p>
+                  <p className="ng-margin-remove ng-padding-left">{owner}</p>
                 </div>
               </InlineEditCard>
             </div>
