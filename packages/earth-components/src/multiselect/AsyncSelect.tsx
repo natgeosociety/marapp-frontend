@@ -39,12 +39,23 @@ interface AsyncSelectProps {
 }
 
 const AsyncSelect = (props: AsyncSelectProps) => {
-  const {loadFunction, type, selectedGroup, value, onChange, isMulti, className, ...rest} = props;
+  const {loadFunction, type, selectedGroup, layers, onChange, isMulti, className, ...rest} = props;
+
+  console.log(props);
+
+
+
+  // useEffect(() => {
+  //   console.log(value);
+  //   !!value && setCoco(formatForSelect(value))
+  // }, [value])
 
   const [cursor, setCursor] = useState(-1);
   const [selectValues, setSelectValues] = useState();
 
   const formatForSelect = (data) => data.map(d => ({value: d.id, label: d.name}));
+
+  const [coco, setCoco] = useState(formatForSelect(layers));
 
   const handleSelectValues = (values) => {
     setSelectValues(isMulti ? values.map(val => val.value) : values.value);
@@ -90,13 +101,14 @@ const AsyncSelect = (props: AsyncSelectProps) => {
   };
 
   useEffect(() => {
-    onChange(selectValues);
+    console.log(selectValues, 'selecty');
+    !!selectValues && onChange(selectValues);
   }, [selectValues]);
 
 
   return (<AsyncPaginate
     className={classnames('marapp-qa-asyncselect', className)}
-    value={value}
+    value={coco}
     isMulti={isMulti}
     placeholder={`Select ${type}`}
     loadOptions={loadOptions}

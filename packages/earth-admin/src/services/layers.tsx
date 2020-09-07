@@ -20,6 +20,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { deserializeData } from 'utils';
 import { GATSBY_API_URL } from 'config';
+import { addPlace, updatePlace } from 'services/places';
 
 const LayerAPIService = {
   request: (options: AxiosRequestConfig) => {
@@ -30,7 +31,7 @@ const LayerAPIService = {
       transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
         data: data.data ? deserializeData(data) : data,
         pagination: data.meta ? data.meta.pagination : null,
-        total: data.meta ? data.meta.results : null
+        total: data.meta ? data.meta.results : null,
       })),
     });
 
@@ -44,13 +45,13 @@ const LayerAPIService = {
 };
 
 export const getAllLayers = async (layerQuery: string) =>
-  await LayerAPIService.request({ url: layerQuery });
+  await LayerAPIService.request({url: layerQuery});
 
 export const addLayer = async (layer, group: string) =>
-  await LayerAPIService.request({ url: `/layers?group=${group}`, method: 'post', data: layer });
+  await LayerAPIService.request({url: `/layers?group=${group}`, method: 'post', data: layer});
 
-export const getLayer = async (layerQuery: string) =>
-  await LayerAPIService.request({
+export const getLayer = (layerQuery: string) =>
+  LayerAPIService.request({
     url: layerQuery,
     method: 'get',
   });
@@ -75,7 +76,7 @@ export const handleLayerForm = async (newLayer: boolean, layer, layerId: string,
 export const getUniqueSlug = async (
   keyword: string,
   group: string,
-  type: string = 'counter'
+  type: string = 'counter',
 ) =>
   await LayerAPIService.request({
     url: `/layers/slug?keyword=${keyword}&group=${group}&type=${type}`,

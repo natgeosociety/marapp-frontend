@@ -17,9 +17,10 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { JSHINT } from 'jshint';
 import { LayerContext } from 'utils/contexts';
-import { encodeQueryToURL, setPage } from 'utils';
+import { encodeQueryToURL, formatDate, setPage } from 'utils';
 import { getAllLayers, getLayer, handleLayerForm } from 'services/layers';
 import { useRequest } from 'utils/hooks';
+import renderHTML from 'react-render-html';
 import {
   LayerList,
   LayerDetails,
@@ -34,9 +35,13 @@ import {
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { ContentLayout, SidebarLayout } from 'layouts';
-import { useForm } from 'react-hook-form';
-import { noSpecialChars, setupErrors } from 'utils/validations';
+import { Controller, useForm } from 'react-hook-form';
+import { noSpecialChars, noSpecialCharsOrSpace, setupErrors } from 'utils/validations';
 import { navigate } from 'gatsby';
+import { PlaceTypeEnum } from 'pages-client/places/model';
+import { getPlace, handlePlaceForm } from 'services';
+import { LAYER_CATEGORY_OPTIONS } from 'pages-client/layers/model';
+import { AsyncSelect, MultiSelect } from '@marapp/earth-components';
 
 const LAYER_DETAIL_QUERY = {include: 'references', select: 'references.name,references.id'};
 const INIT_CURSOR_LOCATION = '-1';
@@ -77,14 +82,17 @@ export function LayerDetail(path: any) {
     provider,
     category,
     config,
-    references
+    references,
   } = layer;
+
 
   useEffect(() => {
     setLayer(data);
   }, [data]);
 
-  const {getValues, register, formState, errors} = useForm({
+
+
+  const {getValues, register, formState, errors, control} = useForm({
     mode: 'onChange',
   });
 
@@ -93,17 +101,19 @@ export function LayerDetail(path: any) {
 
   useEffect(() => {
     setFormValid(isValid);
-  }, [isValid])
+  }, [isValid]);
 
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
 
     const formData = getValues();
 
+    console.log(formData, id);
+
     try {
       setIsLoading && setIsLoading(true);
       await handleLayerForm(false, formData, id, selectedGroup);
-      const res = getLayer(encodedQuery);
+      const res = await getLayer(encodedQuery);
       setLayer(res.data);
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
@@ -155,12 +165,28 @@ export function LayerDetail(path: any) {
           return to layers home
         </LinkWithOrg>
         <form className="ng-form ng-form-dark ng-flex-column">
+
+          <label htmlFor="provider">Included layers:</label>
+          { <Controller name="references"
+                      type="layers"
+                      className="marapp-qa-references"
+                      control={control}
+                      loadFunction={getAllLayers}
+                      selectedGroup={selectedGroup}
+                      as={AsyncSelect}
+                      isClearable
+                      isSearchable
+                      isMulti
+                      closeMenuOnSelect={false}
+                      placeholder="Select layers"/>}
+
+
           <div className="ng-grid">
             <div className="ng-width-3-4">
               <InlineEditCard
                 onSubmit={onSubmit}
                 validForm={formValid}
-                render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <Input
                       name="name"
@@ -171,8 +197,8 @@ export function LayerDetail(path: any) {
                       error={renderErrorFor('name', 'noSpecialChars')}
                       ref={register({
                         required: 'Layer title is required',
-                        validate: { noSpecialChars }
-                      })} />
+                        validate: {noSpecialChars},
+                      })}/>
                   </>
                 )}>
                 <h1 className="ng-text-display-m ng-margin-remove">{name}</h1>
@@ -181,20 +207,172 @@ export function LayerDetail(path: any) {
             <div className="ng-width-1-4">
               <Card>
                 <Toggle
-                  name="featured"
-                  label="Featured"
+                  name="primary"
+                  label="Primary"
                   value={primary}
                   className="ng-display-block"
                   onChange={(e) => onSubmit(e)}
-                  ref={register({})} />
+                  ref={register({})}/>
                 <Toggle
                   name="published"
                   label="Published"
                   value={published}
                   className="ng-display-block"
                   onChange={(e) => onSubmit(e)}
-                  ref={register({})} />
+                  ref={register({})}/>
               </Card>
+            </div>
+          </div>
+          <div className="ng-grid">
+            <div className="ng-width-1-2">
+              <InlineEditCard
+                onSubmit={onSubmit}
+                validForm={formValid}
+                render={({setIsEditing, setIsLoading, setServerErrors}) => (
+                  <>
+                    <div className="ng-margin-medium-bottom">
+                      <Input
+                        name="slug"
+                        placeholder="Layer slug"
+                        label="Slug*"
+                        defaultValue={slug}
+                        className="ng-display-block"
+                        error={renderErrorFor('slug', 'noSpecialCharsOrSpace')}
+                        ref={register({
+                          required: 'Layer slug is required',
+                          validate: {noSpecialCharsOrSpace},
+                        })}/>
+                    </div>
+                    <div>
+                      <label htmlFor="category">Layer category {category}</label>
+                      {/*{category && <Controller*/}
+                      {/*  className="marapp-qa-category"*/}
+                      {/*  control={control}*/}
+                      {/*  name="category"*/}
+                      {/*  options={LAYER_CATEGORY_OPTIONS}*/}
+                      {/*  isMulti*/}
+                      {/*  isClearable*/}
+                      {/*  isSearchable*/}
+                      {/*  defaultValue={category}*/}
+                      {/*  placeholder="Select layer categories"*/}
+                      {/*  as={<MultiSelect*/}
+                      {/*    ref={() =>*/}
+                      {/*      register(*/}
+                      {/*        {name: 'category'},*/}
+                      {/*        {*/}
+                      {/*          required: true,*/}
+                      {/*        },*/}
+                      {/*      )*/}
+                      {/*    }*/}
+                      {/*  />}*/}
+                      {/*/>}*/}
+                    </div>
+                  </>
+                )}>
+                <div className="ng-margin-medium-bottom">
+                  <p className="ng-text-weight-bold ng-margin-remove">Layer slug</p>
+                  <p className="ng-margin-remove ng-padding-left">{slug}</p>
+                </div>
+                <div>
+                  <p className="ng-text-weight-bold ng-margin-remove">Layer category</p>
+
+                  <p className="ng-margin-remove ng-padding-left">{category}</p>
+                </div>
+              </InlineEditCard>
+            </div>
+            <div className="ng-width-1-2">
+              <Card>
+                <p className="ng-margin-bottom ng-margin-top-remove">
+                  <span className="ng-text-weight-bold ng-color-mdgray">ID:</span> {id}
+                </p>
+                <p className="ng-margin-bottom ng-margin-top-remove">
+                  <span className="ng-text-weight-bold ng-color-mdgray">Version:</span> {version}
+                </p>
+                <p className="ng-margin-bottom ng-margin-top-remove">
+                  <span className="ng-text-weight-bold ng-color-mdgray">Last Updated:</span> {formatDate(updatedAt)}
+                </p>
+                <p className="ng-margin-bottom ng-margin-top-remove">
+                  <span className="ng-text-weight-bold ng-color-mdgray">Created:</span> {formatDate(createdAt)}
+                </p>
+              </Card>
+            </div>
+          </div>
+          <div className="ng-grid">
+            <div className="ng-width-1-1">
+              {/*  <Card>
+                {description && <div className="ng-border-add ng-padding">{renderHTML(description)}</div>}
+              </Card>*/}
+            </div>
+          </div>
+          <div className="ng-grid">
+            <div className="ng-width-1-1">
+              <InlineEditCard
+                onSubmit={onSubmit}
+                validForm={formValid}
+                render={({setIsEditing, setIsLoading, setServerErrors}) => (
+                  <>
+                    <div className="ng-margin-medium-bottom">
+                      {/*<label htmlFor="provider">Included layers:</label>*/}
+                      {/*<Controller name="references"*/}
+                      {/*            type="layers"*/}
+                      {/*            className="marapp-qa-references"*/}
+                      {/*            control={control}*/}
+                      {/*            loadFunction={getAllLayers}*/}
+                      {/*            selectedGroup={selectedGroup}*/}
+                      {/*            onChange={(e) => setCooc(e[0])}*/}
+                      {/*            as={AsyncSelect}*/}
+                      {/*            isClearable*/}
+                      {/*            isSearchable*/}
+                      {/*            isMulti*/}
+                      {/*            closeMenuOnSelect={false}*/}
+                      {/*            placeholder="Select layers"/>*/}
+
+                      {/*<Input*/}
+                      {/*  name="slug"*/}
+                      {/*  placeholder="Layer provider"*/}
+                      {/*  label="Provider*"*/}
+                      {/*  defaultValue={slug}*/}
+                      {/*  className="ng-display-block"*/}
+                      {/*  error={renderErrorFor('slug', 'noSpecialCharsOrSpace')}*/}
+                      {/*  ref={register({*/}
+                      {/*    required: 'Place slug is required',*/}
+                      {/*    validate: { noSpecialCharsOrSpace }*/}
+                      {/*  })} />*/}
+                    </div>
+                    <div>
+                      layer type
+                      {/*<label htmlFor="type">Place type</label>*/}
+                      {/*<select*/}
+                      {/*  className="ng-width-1-1 ng-form-large"*/}
+                      {/*  id="type"*/}
+                      {/*  ref={register({*/}
+                      {/*    required: true,*/}
+                      {/*  })}*/}
+                      {/*  name="type"*/}
+                      {/*  defaultValue={type}*/}
+                      {/*>*/}
+                      {/*  {Object.keys(PlaceTypeEnum).map((t, idx) => (*/}
+                      {/*    <option*/}
+                      {/*      key={idx}*/}
+                      {/*      value={PlaceTypeEnum[t]}*/}
+                      {/*      selected={type === PlaceTypeEnum[t]}*/}
+                      {/*    >*/}
+                      {/*      {PlaceTypeEnum[t]}*/}
+                      {/*    </option>*/}
+                      {/*  ))}*/}
+                      {/*</select>*/}
+                    </div>
+                  </>
+                )}>
+                <div className="ng-margin-medium-bottom">
+                  <p className="ng-text-weight-bold ng-margin-remove">Layer provider</p>
+                  <p className="ng-margin-remove ng-padding-left">{provider}</p>
+                </div>
+                <div>
+                  <p className="ng-text-weight-bold ng-margin-remove">Later type</p>
+                  <p className="ng-margin-remove ng-padding-left">{type}</p>
+                </div>
+              </InlineEditCard>
             </div>
           </div>
         </form>

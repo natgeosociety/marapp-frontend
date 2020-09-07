@@ -30,13 +30,27 @@ interface MultiselectProps {
   isMulti?: boolean;
   onChange?: (e: any) => void;
   className?: string;
+  options: any;
+  value: any;
 }
 
 const MultiSelect = React.forwardRef((props: MultiselectProps, ref: any) => {
-
-  const {className, isMulti, onChange, ...rest} = props;
-  const [value, setValue] = useState();
+  const {className, isMulti, onChange, options, value, ...rest} = props;
+  const [internalValue, setInternalValue] = useState();
   const [selectValues, setSelectValues] = useState();
+
+
+  // useEffect(() => {
+  //   console.log('effect');
+  //   setInternalValue(options.find(op => {
+  //     return op.value === props.value[0];
+  //   }));
+  // }, [value]);
+
+  useEffect(() => {
+    console.log('are trebaa?')
+    onChange(selectValues);
+  }, [selectValues]);
 
   const handleSelectValues = (values) => {
     setSelectValues(isMulti ? values.map(val => val.value) : values.value);
@@ -44,23 +58,22 @@ const MultiSelect = React.forwardRef((props: MultiselectProps, ref: any) => {
 
   const handleChange = (values) => {
     !!values ? handleSelectValues(values) : setSelectValues(null);
-    setValue(values);
+    setInternalValue(values);
   };
 
-  useEffect(() => {
-    onChange(selectValues);
-  }, [selectValues]);
-
   return <Select
+    {...rest}
     className={classnames('marapp-qa-multiselect', className)}
     ref={ref}
-    value={value}
-    styles={CUSTOM_STYLES}
+    isMulti={isMulti}
+    value={internalValue}
     onChange={handleChange}
+    styles={CUSTOM_STYLES}
+    options={options}
     theme={theme => ({
       ...theme,
       ...SELECT_THEME,
-    })} {...rest}/>;
+    })}/>;
 });
 
 export default MultiSelect;

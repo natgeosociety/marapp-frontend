@@ -279,7 +279,7 @@ export function NewLayer(path: any) {
                 <button
                   className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
                   onClick={onSubmit}
-                  disabled={!isValid || jsonError || !dirty || !watchJson}
+               //   disabled={!isValid || jsonError || !dirty || !watchJson}
                 >
                   Save and view details
                 </button>
