@@ -9,8 +9,8 @@ import { noSpecialCharsRule, noSpecialCharsOrSpaceRule, setupErrors } from 'util
 import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
-import { Metrics } from './metrics';
-import { Intersections } from './intersections';
+import { Metrics } from '../../components/places/metrics';
+import { Intersections } from '../../components/places/intersections';
 import {
   ErrorMessages,
   ActionModal,

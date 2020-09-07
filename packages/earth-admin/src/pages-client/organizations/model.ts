@@ -28,6 +28,10 @@ export interface OrganizationProps {
   data: Organization;
 }
 
+export interface OrganizationDetailsProps {
+  page: string;
+}
+
 export interface OrganizationEditProps {
   data: Organization;
   newOrg: boolean;

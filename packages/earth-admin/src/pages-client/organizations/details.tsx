@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { navigate } from 'gatsby';
 
-import { OrganizationProps } from './model';
+import { OrganizationDetailsProps } from './model';
 import { useRequest } from 'utils/hooks';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
@@ -13,7 +13,7 @@ import { ContentLayout } from 'layouts';
 import { encodeQueryToURL } from 'utils';
 import { ActionModal, LinkWithOrg, InlineEditCard, Input } from 'components';
 
-export function OrganizationDetails(props: any) {
+export function OrganizationDetails(props: OrganizationDetailsProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [localOrgData, setLocalOrgData] = useState(null);
   const { getPermissions, selectedGroup } = useAuth0();
