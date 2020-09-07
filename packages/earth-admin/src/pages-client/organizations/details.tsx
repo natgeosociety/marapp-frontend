@@ -85,7 +85,7 @@ export function OrganizationDetails(props: any) {
         />
       )}
 
-      <div className="ng-padding-medium-horizontal">
+      <div className="marapp-qa-organizationdetails ng-padding-medium-horizontal">
         <LinkWithOrg className="ng-border-remove ng-margin-bottom ng-display-block" to="/organizations">
           <i className="ng-icon ng-icon-directionleft"></i>
           return to organizations home
@@ -103,7 +103,7 @@ export function OrganizationDetails(props: any) {
                       name="name"
                       placeholder="Organization name is required"
                       label="Organization name*"
-                      className="ng-display-block"
+                      className="marapp-qa-inputname ng-display-block"
                       error={renderErrorFor('name')}
                       defaultValue={name}
                       ref={register({
@@ -129,7 +129,7 @@ export function OrganizationDetails(props: any) {
                       name="owner"
                       placeholder="required"
                       label="Owner*"
-                      className="ng-display-block ng-margin-medium-bottom"
+                      className="marapp-qa-inputowner ng-display-block ng-margin-medium-bottom"
                       defaultValue={owner}
                       error={renderErrorFor('owner')}
                       ref={register({
@@ -166,7 +166,7 @@ export function OrganizationDetails(props: any) {
       <div>
         {writePermissions && (
           <div className="ng-padding-medium ultradkgray ng-text-right">
-            <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
+            <button className="marapp-qa-actiondelete ng-button ng-button-secondary" onClick={handleDeleteToggle}>
               Delete organization
           </button>
           </div>
