@@ -43,7 +43,7 @@ import {
 } from './model';
 
 
-export function NewLayer(path: string) {
+export function NewLayer(path: any) {
   const {selectedGroup} = useAuth0();
 
   const {getValues, register, watch, formState, errors, setValue, control} = useForm({
