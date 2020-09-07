@@ -38,7 +38,7 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
 
   return (
     <div className={rootClases}>
-      {label && <label className="ng-form-label ng-display-block" htmlFor="input-name">{label}</label>}
+      {label && <label className="ng-form-label ng-display-block" htmlFor={id}>{label}</label>}
       <input
         ref={ref}
         id={id}
