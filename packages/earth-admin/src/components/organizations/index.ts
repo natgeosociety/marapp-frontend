@@ -17,4 +17,5 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { default as Sidebar } from './Sidebar';
+export * from './organization-list'
+export * from './organizations-sidebar';

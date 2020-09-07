@@ -17,23 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { Router } from '@reach/router';
-
-import { OrganizationsSidebar } from 'components';
-import { OrganizationHome } from './home';
-import { OrganizationDetails } from './details';
-import { NewOrganization } from './new';
-
-export default function PlacesPage(props) {
-  return (
-    <>
-      <OrganizationsSidebar />
-      <Router>
-        <OrganizationHome path="/" />
-        <NewOrganization path="/new" />
-        <OrganizationDetails path="/:page" />
-      </Router>
-    </>
-  );
-}
+export { default as PlacesSidebar } from './PlacesSidebar';

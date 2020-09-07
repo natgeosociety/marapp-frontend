@@ -20,7 +20,7 @@
 import * as React from 'react';
 import { Router, } from '@reach/router';
 
-import { Sidebar } from '../../components/places/sidebar';
+import { PlacesSidebar } from 'components';
 import { PlacesHome } from './home';
 import { PlaceDetail } from './details';
 import { NewPlace } from './new';
@@ -28,7 +28,7 @@ import { NewPlace } from './new';
 export default function PlacesPage(props) {
   return (
     <>
-      <Sidebar />
+      <PlacesSidebar />
       <Router>
         <PlacesHome path="/" />
         <NewPlace path="/new" />

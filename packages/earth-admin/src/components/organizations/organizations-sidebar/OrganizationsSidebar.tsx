@@ -11,7 +11,7 @@ import { OrganizationList } from '../organization-list';
 
 const PAGE_TYPE = setPage('Organizations');
 
-export function Sidebar(props: any) {
+export function OrganizationsSidebar(props: any) {
   const [organizations, setOrganizations] = useState([]);
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);

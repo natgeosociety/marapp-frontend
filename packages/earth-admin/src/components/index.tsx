@@ -37,6 +37,8 @@ export * from './sidebar-select';
 export * from './users';
 export * from './widgets';
 export * from './inline-edit-card';
+export * from './places';
+export * from './organizations';
 export * from './card';
 export * from './fake-json-upload';
 export * from './input';
