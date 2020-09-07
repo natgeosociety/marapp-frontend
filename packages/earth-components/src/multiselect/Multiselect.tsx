@@ -52,15 +52,17 @@ const MultiSelect = React.forwardRef((props: MultiselectProps, ref: any) => {
   }, [selectValues]);
 
   return <Select
+    {...rest}
     className={classnames('marapp-qa-multiselect', className)}
     ref={ref}
     value={value}
+    isMulti={isMulti}
     styles={CUSTOM_STYLES}
     onChange={handleChange}
     theme={theme => ({
       ...theme,
       ...SELECT_THEME,
-    })} {...rest}/>;
+    })}/>;
 });
 
 export default MultiSelect;
