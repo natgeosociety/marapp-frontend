@@ -44,7 +44,6 @@ import {
 } from 'components/layers/model';
 
 
-
 export function NewLayer(path: any) {
   const {selectedGroup} = useAuth0();
 
@@ -124,7 +123,7 @@ export function NewLayer(path: any) {
               name="name"
               placeholder="Layer title"
               label="Title*"
-              className="ng-display-block"
+              className="ng-display-block marapp-qa-inputtitle"
               ref={register({
                 required: 'Layer title is required',
               })}/>
@@ -137,7 +136,7 @@ export function NewLayer(path: any) {
                   name="slug"
                   placeholder="Layer slug"
                   label="Slug*"
-                  className="ng-display-block"
+                  className="ng-display-block marapp-qa-inputslug"
                   error={renderErrorFor('slug')}
                   ref={register({
                     required: 'Layer slug is required',
@@ -148,7 +147,7 @@ export function NewLayer(path: any) {
                   onClick={generateSlug}
                   disabled={!watchName || !!errors.name}
                   title={watchName ? 'Generate slug' : 'Add a title first'}
-                  className="ng-button ng-button-secondary ng-button-large ng-pointer"
+                  className="ng-button ng-button-secondary ng-button-large ng-pointer marapp-qa-actiongenerateslug"
                   style={{marginTop: '36px'}}>
                   Generate a slug name
                 </button>
@@ -158,15 +157,15 @@ export function NewLayer(path: any) {
               <label htmlFor="category">Layer category*</label>
 
               <Controller
+                className="marapp-qa-category"
                 control={control}
                 name="category"
+                options={LAYER_CATEGORY_OPTIONS}
+                isMulti
+                isClearable
+                isSearchable
+                placeholder="Select layer categories"
                 as={<MultiSelect
-                  name="category"
-                  options={LAYER_CATEGORY_OPTIONS}
-                  as={MultiSelect}
-                  isMulti
-                  isClearable
-                  isSearchable
                   ref={() =>
                     register(
                       {name: 'category'},
@@ -175,9 +174,8 @@ export function NewLayer(path: any) {
                       },
                     )
                   }
-                  placeholder="Select layer categories"/>}
+                />}
               />
-
             </div>
           </Card>
 
@@ -188,6 +186,7 @@ export function NewLayer(path: any) {
               </label>
 
               <Controller
+                className="marapp-qa-description"
                 name="description"
                 control={control}
                 as={<HtmlEditor html=""/>}
@@ -200,14 +199,14 @@ export function NewLayer(path: any) {
               <label htmlFor="provider">Layer provider*</label>
 
               <Controller
+                className="marapp-qa-provider"
                 control={control}
                 name="provider"
+                options={LAYER_PROVIDER_OPTIONS}
+                isClearable
+                isSearchable
+                placeholder="Select layer provider"
                 as={<MultiSelect
-                  name="provider"
-                  options={LAYER_PROVIDER_OPTIONS}
-                  as={MultiSelect}
-                  isClearable
-                  isSearchable
                   ref={() =>
                     register(
                       {name: 'provider'},
@@ -216,20 +215,20 @@ export function NewLayer(path: any) {
                       },
                     )
                   }
-                  placeholder="Select layer provider"/>}
+                />}
               />
             </div>
             <div className="ng-width-1-1">
               <label htmlFor="type">Layer type*</label>
               <Controller
+                className="marapp-qa-type"
                 control={control}
                 name="type"
+                options={LAYER_TYPE_OPTIONS}
+                isClearable
+                isSearchable
+                placeholder="Select layer type"
                 as={<MultiSelect
-                  name="type"
-                  options={LAYER_TYPE_OPTIONS}
-                  as={MultiSelect}
-                  isClearable
-                  isSearchable
                   ref={() =>
                     register(
                       {name: 'type'},
@@ -238,7 +237,7 @@ export function NewLayer(path: any) {
                       },
                     )
                   }
-                  placeholder="Select layer type"/>}
+                />}
               />
             </div>
           </Card>
@@ -247,6 +246,7 @@ export function NewLayer(path: any) {
             <div className="ng-margin-medium-bottom">
               <label htmlFor="config">Layer Config*</label>
               <Controller
+                className="marapp-qa-config"
                 name="config"
                 control={control}
                 onChange={(layerConfig) => handleJsonChange(layerConfig)}
@@ -258,6 +258,7 @@ export function NewLayer(path: any) {
               <label htmlFor="provider">Included layers:</label>
               <Controller name="references"
                           type="layers"
+                          className="marapp-qa-references"
                           control={control}
                           loadFunction={getAllLayers}
                           selectedGroup={selectedGroup}
@@ -277,14 +278,14 @@ export function NewLayer(path: any) {
             : (
               <div className="ng-flex">
                 <button
-                  className="ng-button ng-button-primary ng-button-large ng-margin-medium-right"
+                  className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
                   onClick={onSubmit}
                   disabled={!isValid || jsonError || !dirty || !watchJson}
                 >
                   Save and view details
                 </button>
 
-                <LinkWithOrg className="ng-button ng-button-secondary ng-button-large" to="/layers">
+                <LinkWithOrg className="ng-button ng-button-secondary ng-button-large marapp-qa-back" to="/layers">
                   Return to layers home
                 </LinkWithOrg>
               </div>

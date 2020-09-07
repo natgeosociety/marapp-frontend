@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import classnames from 'classnames';
 
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { encodeQueryToURL } from '../utils';
 
 import { SELECT_THEME, CUSTOM_STYLES } from './model';
+
 
 interface AsyncSelectProps {
   loadFunction: (q: string) => void;
@@ -13,10 +15,11 @@ interface AsyncSelectProps {
   onChange?: (e: any) => void;
   isMulti?: boolean;
   value?: [] | string;
+  className?: string;
 }
 
 const AsyncSelect = (props: AsyncSelectProps) => {
-  const {loadFunction, type, selectedGroup, value, onChange, isMulti, ...rest} = props;
+  const {loadFunction, type, selectedGroup, value, onChange, isMulti, className, ...rest} = props;
 
   const [cursor, setCursor] = useState(-1);
   const [selectValues, setSelectValues] = useState();
@@ -72,7 +75,7 @@ const AsyncSelect = (props: AsyncSelectProps) => {
 
 
   return (<AsyncPaginate
-    {...rest}
+    className={classnames('marapp-qa-asyncselect', className)}
     value={value}
     isMulti={isMulti}
     placeholder={`Select ${type}`}
@@ -83,7 +86,7 @@ const AsyncSelect = (props: AsyncSelectProps) => {
     theme={theme => ({
       ...theme,
       ...SELECT_THEME,
-    })}
+    })} {...rest}
   />);
 };
 
