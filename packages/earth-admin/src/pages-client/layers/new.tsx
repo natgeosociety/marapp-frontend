@@ -74,15 +74,14 @@ export function NewLayer(path: any) {
       ...(!!references && {references}),
     };
 
-    console.log(parsed);
-    // try {
-    //   setIsLoading(true);
-    //   const response: any = await addLayer(parsed, selectedGroup);
-    //   await navigate(`/${selectedGroup}/layers/${response.data.id}`);
-    // } catch (error) {
-    //   setIsLoading(false);
-    //   setServerErrors(error.data.errors);
-    // }
+    try {
+      setIsLoading(true);
+      const response: any = await addLayer(parsed, selectedGroup);
+      await navigate(`/${selectedGroup}/layers/${response.data.id}`);
+    } catch (error) {
+      setIsLoading(false);
+      setServerErrors(error.data.errors);
+    }
   }
 
   const generateSlug = async (e) => {
@@ -277,7 +276,7 @@ export function NewLayer(path: any) {
                 <button
                   className="ng-button ng-button-primary ng-button-large ng-margin-medium-right"
                   onClick={onSubmit}
-                //  disabled={!isValid || jsonError || !dirty || !watchJson}
+                  disabled={!isValid || jsonError || !dirty || !watchJson}
                 >
                   Save and view details
                 </button>

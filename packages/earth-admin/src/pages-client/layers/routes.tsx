@@ -22,13 +22,19 @@ import { Router, } from '@reach/router';
 
 import { Sidebar } from 'components/layers';
 import { NewLayer } from './new';
+import { LayersHome } from './home';
+import { LayerDetail } from './details';
+import { EditLayer } from './details';
 
 export default function LayersPage(props) {
   return (
     <>
       <Sidebar />
       <Router>
+        <LayersHome path="/" />
         <NewLayer path="/new"/>
+        <LayerDetail path="/:page" />
+        <EditLayer path="/:page/edit" />
       </Router>
     </>
   );
