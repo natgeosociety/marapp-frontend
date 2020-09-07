@@ -18,9 +18,11 @@
 */
 
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
 import { Controller, useForm } from 'react-hook-form';
+
 import { Spinner, MultiSelect, AsyncSelect } from '@marapp/earth-components';
 import { useAuth0 } from 'auth/auth0';
 import { getAllLayers, getUniqueSlug, addLayer } from 'services/layers';
@@ -40,7 +42,7 @@ import {
   LAYER_TYPE_OPTIONS,
   LAYER_PROVIDER_OPTIONS,
 } from 'components/layers/model';
-import { navigate } from 'gatsby';
+
 
 
 export function NewLayer(path: any) {
@@ -263,12 +265,13 @@ export function NewLayer(path: any) {
                           as={AsyncSelect}
                           isClearable
                           isSearchable
+                          isMulti
+                          closeMenuOnSelect={false}
                           placeholder="Select layers"/>
             </div>
           </Card>
 
           {!!serverErrors.length && <ErrorMessages errors={serverErrors}/>}
-
           {isLoading
             ? <div className="ng-padding-large ng-position-relative"><Spinner/></div>
             : (

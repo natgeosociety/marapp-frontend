@@ -16,13 +16,16 @@ interface AsyncSelectProps {
 }
 
 const AsyncSelect = (props: AsyncSelectProps) => {
-  const {loadFunction, type, selectedGroup, value, ...rest} = props;
+  const {loadFunction, type, selectedGroup, value, onChange, isMulti, ...rest} = props;
 
   const [cursor, setCursor] = useState(-1);
   const [selectValues, setSelectValues] = useState();
 
-
   const formatForSelect = (data) => data.map(d => ({value: d.id, label: d.name}));
+
+  const handleSelectValues = (values) => {
+    setSelectValues(isMulti ? values.map(val => val.value) : values.value);
+  };
 
   const loadOptions = async (search, prevOptions) => {
     const query = {
@@ -60,23 +63,22 @@ const AsyncSelect = (props: AsyncSelectProps) => {
   };
 
   const handleChange = (values) => {
-    !!values ? setSelectValues(values.map(val => val.value)) : setSelectValues(null);
+    !!values ? handleSelectValues(values) : setSelectValues(null);
   };
 
   useEffect(() => {
-    props.onChange(selectValues);
+    onChange(selectValues);
   }, [selectValues]);
 
 
   return (<AsyncPaginate
+    {...rest}
     value={value}
+    isMulti={isMulti}
     placeholder={`Select ${type}`}
     loadOptions={loadOptions}
     shouldLoadMore={shouldLoadMore}
     onChange={handleChange}
-    closeMenuOnSelect={false}
-    isMulti
-    isSearchable
     styles={CUSTOM_STYLES}
     theme={theme => ({
       ...theme,

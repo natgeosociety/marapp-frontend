@@ -13,9 +13,12 @@ const MultiSelect = React.forwardRef((props: MultiselectProps, ref: any) => {
   const [value, setValue] = useState();
   const [selectValues, setSelectValues] = useState();
 
+  const handleSelectValues = (values) => {
+    setSelectValues(props.isMulti ?  values.map(val => val.value) : values.value);
+  };
+
   const handleChange = (values) => {
-    !!values ?
-      (props.isMulti ? setSelectValues(values.map(val => val.value)) : setSelectValues(values.value)) : setSelectValues(null);
+    !!values ? handleSelectValues(values) : setSelectValues(null);
     setValue(values);
   };
 
