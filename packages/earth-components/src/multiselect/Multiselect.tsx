@@ -4,7 +4,12 @@ import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { CUSTOM_STYLES, SELECT_THEME } from './model';
 
-export const MultiSelect = React.forwardRef((props: any, ref: any) => {
+interface MultiselectProps {
+  isMulti?: boolean;
+  onChange?: (e: any) => void;
+}
+
+const MultiSelect = React.forwardRef((props: MultiselectProps, ref: any) => {
   const [value, setValue] = useState();
   const [selectValues, setSelectValues] = useState();
 

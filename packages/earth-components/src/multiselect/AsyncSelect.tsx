@@ -7,12 +7,12 @@ import { encodeQueryToURL } from '../utils';
 import { SELECT_THEME, CUSTOM_STYLES } from './model';
 
 interface AsyncSelectProps {
-  loadFunction: (q: string) => void,
-  type: string,
-  selectedGroup: string
-  onChange: (e: any) => void;
-  isMulti: boolean
-  value: [] | string
+  loadFunction: (q: string) => void;
+  type: string;
+  selectedGroup: string;
+  onChange?: (e: any) => void;
+  isMulti?: boolean;
+  value?: [] | string;
 }
 
 const AsyncSelect = (props: AsyncSelectProps) => {

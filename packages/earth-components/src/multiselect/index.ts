@@ -20,4 +20,5 @@
 import MultiSelect from './Multiselect';
 import AsyncSelect from './AsyncSelect';
 
-export default {MultiSelect, AsyncSelect};
+
+export { MultiSelect, AsyncSelect };
