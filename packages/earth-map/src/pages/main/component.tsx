@@ -44,6 +44,10 @@ const Main = ({ router }) => {
         // @ts-ignore
         <Page page="experience" fallbackRoute={fallbackRoute} />
       )}
+      {page === 'change-email' && (
+        // @ts-ignore
+        <Page page="change-email" fallbackRoute={fallbackRoute} />
+      )}
       {page === 'not-found' && (
         // @ts-ignore
         <Page page="not-found" fallbackRoute={fallbackRoute} />

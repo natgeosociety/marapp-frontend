@@ -48,6 +48,13 @@ export const ROUTES = {
     authorized: !ENABLE_PUBLIC_ACCESS,
     fallbackRoute,
   },
+  CHANGE_EMAIL: {
+    path: '/profile/change-email',
+    page: 'change-email',
+    authenticated: true,
+    authorized: false,
+    fallbackRoute: null,
+  },
   ERROR: {
     path: '/error',
     page: 'error',

@@ -25,8 +25,7 @@ import { AxiosInstance } from 'axios';
 import { API_URL } from "config";
 
 /**
- * Layers service class
- * It is a singleton for not instanciate Jsona on each request.
+ * Layers service class.
  */
 class LayersService {
   private dataFormatter: Jsona;
@@ -50,8 +49,6 @@ class LayersService {
    * Creates an axios request based on type an options.
    * @param {string} path - The path of the request.
    */
-
-
   request(path) {
     return new Promise((resolve, reject) => {
       this.api
