@@ -32,7 +32,7 @@ import OrganizationsPage from 'pages-client/organizations';
 import Organization from 'pages-client/organization';
 import Homepage from 'pages-client/homepage';
 import UnauthorizedPage from 'pages-client/unauthorized';
-import { ProtectedRoute } from 'components';
+import { ProtectedRoute } from 'components/protected-route';
 
 import { useAuth0 } from 'auth/auth0';
 

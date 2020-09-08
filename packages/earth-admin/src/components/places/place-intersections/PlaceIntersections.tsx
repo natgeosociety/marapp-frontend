@@ -19,8 +19,8 @@
 
 import * as React from 'react';
 
-import { LinkWithOrg } from 'components';
-import { PlaceIntersectionProps } from '../../../pages-client/places/model';
+import { LinkWithOrg } from 'components/link-with-org';
+import { PlaceIntersectionProps } from 'pages-client/places/model';
 
 export default function PlaceIntersections( props: PlaceIntersectionProps) {
   const { intersections, name } = props;

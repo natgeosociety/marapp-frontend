@@ -22,13 +22,14 @@ import classnames from 'classnames';
 
 import { Auth0Context } from 'utils/contexts';
 import { getAvailableOrgs } from 'utils';
-import { LinkWithOrg, DropdownComponent } from 'components';
+import { LinkWithOrg } from 'components/link-with-org';
+import { DropdownComponent } from 'components/dropdown';
 
 import { MAP_PATH } from 'config';
 import './styles.scss';
 
 const OrgSwitcher = () => {
-  const { permissions, selectedGroup, setupUserOrg } = useContext(Auth0Context);
+  const {permissions, selectedGroup, setupUserOrg} = useContext(Auth0Context);
   const [dropdownState, setDropdownState] = useState('close');
   const handleDropdownToggle = () => {
     dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
@@ -36,7 +37,8 @@ const OrgSwitcher = () => {
 
   return (
     <>
-      <span className="ng-text-display-s ng-text-weight-regular ng-color-white ng-margin-remove ng-display-block ng-org-name">
+      <span
+        className="ng-text-display-s ng-text-weight-regular ng-color-white ng-margin-remove ng-display-block ng-org-name">
         admin
       </span>
       <div onClick={handleDropdownToggle} className="ng-padding ng-c-cursor-pointer">
@@ -56,25 +58,25 @@ const OrgSwitcher = () => {
           </a>
         </li>
         {!!permissions &&
-          getAvailableOrgs(permissions).map((g, i) => (
-            <React.Fragment key={i}>
-              <li
-                className={classnames({
-                  'ng-ep-dropdown-category': true,
-                  'ng-ep-dropdown-selected': selectedGroup === g,
-                })}
-              >
-                <LinkWithOrg to="/" switchOrgTo={g} className="ng-display-block ng-border-remove">
+        getAvailableOrgs(permissions).map((g, i) => (
+          <React.Fragment key={i}>
+            <li
+              className={classnames({
+                'ng-ep-dropdown-category': true,
+                'ng-ep-dropdown-selected': selectedGroup === g,
+              })}
+            >
+              <LinkWithOrg to="/" switchOrgTo={g} className="ng-display-block ng-border-remove">
                   <span
                     className="ng-text-display-s ng-display-block ng-dropdown-item"
                     onClick={(e) => setDropdownState('close')}
                   >
                     {g}
                   </span>
-                </LinkWithOrg>
-              </li>
-            </React.Fragment>
-          ))}
+              </LinkWithOrg>
+            </li>
+          </React.Fragment>
+        ))}
       </DropdownComponent>
     </>
   );

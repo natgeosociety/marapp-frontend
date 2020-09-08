@@ -22,7 +22,8 @@ import { useState } from 'react';
 import { OrganizationProps } from '../model';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
-import { ActionModal, LinkWithOrg } from 'components';
+import { ActionModal } from 'components/action-modal';
+import { LinkWithOrg } from 'components/link-with-org';
 
 export default function OrganizationDetails( props: OrganizationProps ) {
   const {

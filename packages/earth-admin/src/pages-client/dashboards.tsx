@@ -27,7 +27,8 @@ import { useRequest } from 'utils/hooks';
 
 import { getAllDashboards, getDashboard } from 'services/dashboards';
 import { ContentLayout, SidebarLayout } from 'layouts';
-import { DashboardList, DashboardDetails, DashboardEdit, LinkWithOrg } from 'components';
+import { DashboardList, DashboardDetails, DashboardEdit } from 'components/dashboards';
+import { LinkWithOrg } from 'components/link-with-org';
 import { AuthzGuards } from 'auth/permissions';
 import { useAuth0 } from 'auth/auth0';
 
@@ -42,7 +43,7 @@ const INIT_CURSOR_LOCATION = '-1';
 
 const PAGE_TYPE = setPage('Data Indexes');
 
-export default function DashboardsPage( props ) {
+export default function DashboardsPage(props) {
   return (
     <Router>
       <Page path="/">
@@ -55,7 +56,7 @@ export default function DashboardsPage( props ) {
   );
 }
 
-function Sidebar( props: any ) {
+function Sidebar(props: any) {
   const [dashboards, setDashboards] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -66,11 +67,11 @@ function Sidebar( props: any ) {
   const [totalResults, setTotalResults] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const { selectedGroup, getPermissions } = useAuth0();
+  const {selectedGroup, getPermissions} = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
 
-  const handleSearchValueChange = ( newValue: string ) => {
+  const handleSearchValueChange = (newValue: string) => {
     setPageCursor('-1');
     setNextCursor(null);
     setSearchValue(newValue);
@@ -89,7 +90,7 @@ function Sidebar( props: any ) {
       const query = {
         search: searchValue,
         sort: 'name',
-        page: { size: pageSize, cursor: pageCursor },
+        page: {size: pageSize, cursor: pageCursor},
         select: EXCLUDED_FIELDS,
         group: selectedGroup,
       };
@@ -131,7 +132,7 @@ function Sidebar( props: any ) {
   );
 }
 
-function Page( props: any ) {
+function Page(props: any) {
   return (
     <>
       <Sidebar/>
@@ -140,8 +141,8 @@ function Page( props: any ) {
 }
 
 
-function HomePage( props: any ) {
-  const { getPermissions } = useAuth0();
+function HomePage(props: any) {
+  const {getPermissions} = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
   return (writePermissions && (
@@ -155,13 +156,13 @@ function HomePage( props: any ) {
   ));
 }
 
-function DetailsPage( path: any ) {
-  const { selectedGroup } = useAuth0();
+function DetailsPage(path: any) {
+  const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
     ...DASHBOARD_DETAIL_QUERY,
-    ...{ group: selectedGroup },
+    ...{group: selectedGroup},
   });
-  const { isLoading, errors, data } = useRequest(() => getDashboard(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getDashboard(encodedQuery), {
     permissions: AuthzGuards.accessDashboardsGuard,
     query: encodedQuery,
   });
@@ -173,13 +174,13 @@ function DetailsPage( path: any ) {
   );
 }
 
-function EditPage( path: any ) {
-  const { selectedGroup } = useAuth0();
+function EditPage(path: any) {
+  const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
     ...DASHBOARD_DETAIL_QUERY,
-    ...{ group: selectedGroup },
+    ...{group: selectedGroup},
   });
-  const { isLoading, errors, data } = useRequest(() => getDashboard(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getDashboard(encodedQuery), {
     permissions: AuthzGuards.writeDashboardsGuard,
     skip: path.newDashboard,
   });

@@ -27,7 +27,7 @@ import { encodeQueryToURL, setPage } from 'utils';
 import { getAllPlaces } from 'services/places';
 
 import { SidebarLayout } from 'layouts';
-import { DataListing, DefaultListItem } from 'components';
+import { DataListing, DefaultListItem } from 'components/data-listing';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const PAGE_TYPE = setPage('Places');

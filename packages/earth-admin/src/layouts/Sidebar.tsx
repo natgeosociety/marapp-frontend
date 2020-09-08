@@ -21,7 +21,9 @@ import React from 'react';
 import { Spinner } from '@marapp/earth-components';
 
 import { APP_LOGO, APP_NAME } from '../theme';
-import { SidebarSelect, LinkWithOrg, OrgSwitcher } from 'components';
+import { SidebarSelect } from 'components/sidebar-select';
+import { LinkWithOrg } from 'components/link-with-org';
+import { OrgSwitcher } from 'components/org-switcher';
 import { IAdminPage } from 'components/sidebar-select/model';
 
 import './styles.scss';
@@ -49,7 +51,7 @@ const SidebarLayout = (props: IProps) => {
         <SidebarSelect path={props.page}/>
       </div>
       <div className="ng-position-relative ng-padding-horizontal ng-padding-top ng-background-dkgray"/>
-      {props.isLoading ? <div className="ng-position-relative ng-margin-large"><Spinner /></div> : props.children}
+      {props.isLoading ? <div className="ng-position-relative ng-margin-large"><Spinner/></div> : props.children}
     </div>
   );
 };

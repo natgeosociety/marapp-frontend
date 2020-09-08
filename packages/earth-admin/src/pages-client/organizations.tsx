@@ -28,12 +28,13 @@ import { AuthzGuards } from 'auth/permissions';
 import { useRequest } from 'utils/hooks';
 
 import { ContentLayout, SidebarLayout } from 'layouts';
-import { OrganizationList, OrganizationDetails, OrganizationEdit, LinkWithOrg } from 'components';
+import { OrganizationList, OrganizationDetails, OrganizationEdit } from 'components/organizations';
+import { LinkWithOrg } from 'components/link-with-org';
 import { useAuth0 } from 'auth/auth0';
 
 const PAGE_TYPE = setPage('Organizations');
 
-export default function OrganizationsPage( props ) {
+export default function OrganizationsPage(props) {
   return (
     <Router>
       <Page path="/">
@@ -46,7 +47,7 @@ export default function OrganizationsPage( props ) {
   );
 }
 
-function Sidebar( props: any ) {
+function Sidebar(props: any) {
   const [organizations, setOrganizations] = useState([]);
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
@@ -55,7 +56,7 @@ function Sidebar( props: any ) {
   const [totalResults, setTotalResults] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const { selectedGroup, getPermissions } = useAuth0();
+  const {selectedGroup, getPermissions} = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
@@ -68,7 +69,7 @@ function Sidebar( props: any ) {
       setIsLoading(true);
 
       const query = {
-        page: { size: pageSize, number: pageNumber },
+        page: {size: pageSize, number: pageNumber},
         group: selectedGroup,
       };
 
@@ -106,7 +107,8 @@ function Sidebar( props: any ) {
     </OrganizationContext.Provider>
   );
 }
-function Page( props: any ) {
+
+function Page(props: any) {
   return (
     <>
       <Sidebar/>
@@ -114,38 +116,39 @@ function Page( props: any ) {
     </>);
 }
 
-function HomePage( props: any ) {
-  const { getPermissions } = useAuth0();
+function HomePage(props: any) {
+  const {getPermissions} = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   return (writePermissions && (
     <ContentLayout className="marapp-qa-organizationhome">
       <div className="ng-flex ng-align-right">
         <LinkWithOrg className="ng-button ng-button-overlay" to="/organizations/new">
-         add new organization
+          add new organization
         </LinkWithOrg>
       </div>
     </ContentLayout>
   ));
 }
 
-function DetailsPage( path: any ) {
+function DetailsPage(path: any) {
   const encodedQuery = encodeQueryToURL(`organizations/${path.page}`);
-  const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessOrganizationsGuard,
     query: encodedQuery,
   });
 
   return (
-    <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading} className="marapp-qa-organizationdetails">
-        <OrganizationDetails data={data}/>
-      </ContentLayout>
+    <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading}
+                   className="marapp-qa-organizationdetails">
+      <OrganizationDetails data={data}/>
+    </ContentLayout>
   );
 }
 
-function EditPage( path: any ) {
+function EditPage(path: any) {
   const encodedQuery = encodeQueryToURL(`organizations/${path.page}`);
-  const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
+  const {isLoading, errors, data} = useRequest(() => getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessOrganizationsGuard,
     skip: path.newOrg,
   });

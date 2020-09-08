@@ -20,7 +20,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import { LinkWithOrg } from 'components';
+import { LinkWithOrg } from 'components/link-with-org';
 
 interface DataListProps {
   categoryUrl: string;

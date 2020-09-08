@@ -9,13 +9,19 @@ import { noSpecialChars, noSpecialCharsOrSpace, setupErrors } from 'utils/valida
 import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
-import {
-  PlaceMetrics, PlaceIntersections, ErrorMessages,
-  ActionModal,
-  MapComponent,
-  InlineEditCard,
-  Toggle, FakeJsonUpload, Card, Input, LinkWithOrg, DownloadFile
-} from 'components';
+
+import { PlaceMetrics, PlaceIntersections } from 'components/places';
+import { ErrorMessages } from 'components/error-messages';
+import { ActionModal } from 'components/action-modal';
+import { MapComponent } from 'components/map';
+import { InlineEditCard } from 'components/inline-edit-card';
+import { Toggle } from 'components/toggle';
+import { FakeJsonUpload } from 'components/fake-json-upload';
+import { Card } from 'components/card';
+import { Input } from 'components/input';
+import { LinkWithOrg } from 'components/link-with-org';
+import { DownloadFile } from 'components/download-file';
+
 
 import { ContentLayout } from 'layouts';
 import { PlaceTypeEnum, PLACE_DETAIL_QUERY } from './model';
@@ -70,7 +76,7 @@ export function PlaceDetail(path: any) {
 
   useEffect(() => {
     setFormValid(isValid);
-  }, [isValid])
+  }, [isValid]);
 
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
@@ -79,7 +85,7 @@ export function PlaceDetail(path: any) {
 
     const parsed = {
       ...formData,
-      ...(geojsonValue && {geojson: geojsonValue})
+      ...(geojsonValue && {geojson: geojsonValue}),
     };
 
     try {
@@ -130,15 +136,15 @@ export function PlaceDetail(path: any) {
       <div className="ng-padding-medium-horizontal">
         <LinkWithOrg className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block" to="/places">
           <i className="ng-icon ng-icon-directionleft"></i>
-        return to places home
-      </LinkWithOrg>
+          return to places home
+        </LinkWithOrg>
         <form className="ng-form ng-form-dark ng-flex-column">
           <div className="ng-grid">
             <div className="ng-width-3-4">
               <InlineEditCard
                 onSubmit={onSubmit}
                 validForm={formValid}
-                render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <Input
                       name="name"
@@ -149,8 +155,8 @@ export function PlaceDetail(path: any) {
                       error={renderErrorFor('name', 'noSpecialChars')}
                       ref={register({
                         required: 'Place title is required',
-                        validate: { noSpecialChars }
-                      })} />
+                        validate: {noSpecialChars},
+                      })}/>
                   </>
                 )}>
                 <h1 className="ng-text-display-m ng-margin-remove">{name}</h1>
@@ -164,14 +170,14 @@ export function PlaceDetail(path: any) {
                   value={featured}
                   className="ng-display-block"
                   onChange={(e) => onSubmit(e)}
-                  ref={register({})} />
+                  ref={register({})}/>
                 <Toggle
                   name="published"
                   label="Published"
                   value={published}
                   className="ng-display-block"
                   onChange={(e) => onSubmit(e)}
-                  ref={register({})} />
+                  ref={register({})}/>
               </Card>
             </div>
           </div>
@@ -180,7 +186,7 @@ export function PlaceDetail(path: any) {
               <InlineEditCard
                 onSubmit={onSubmit}
                 validForm={formValid}
-                render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <div className="ng-margin-medium-bottom">
                       <Input
@@ -192,8 +198,8 @@ export function PlaceDetail(path: any) {
                         error={renderErrorFor('slug', 'noSpecialCharsOrSpace')}
                         ref={register({
                           required: 'Place slug is required',
-                          validate: { noSpecialCharsOrSpace }
-                        })} />
+                          validate: {noSpecialCharsOrSpace},
+                        })}/>
                     </div>
                     <div>
                       <label htmlFor="type">Place type</label>
@@ -254,12 +260,12 @@ export function PlaceDetail(path: any) {
                     editButtonText="View and upload shape"
                     onSubmit={onSubmit}
                     validForm={formValid && !jsonError}
-                    render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                    render={({setIsEditing, setIsLoading, setServerErrors}) => (
                       <div className="ng-grid">
                         <div className="ng-width-1-2">
-                          <MapComponent height="235px" />
+                          <MapComponent height="235px"/>
                           <DownloadFile data={geojson} fileName={slug} className="ng-align-right ng-margin-top">Download
-                          GeoJSON</DownloadFile>
+                            GeoJSON</DownloadFile>
                           <div className="ng-width-1-1 ng-margin-medium-top">
                             <FakeJsonUpload
                               name="geojson"
@@ -271,7 +277,7 @@ export function PlaceDetail(path: any) {
                                 setGeojson(json);
                                 setJsonError(false);
                               }}
-                              onError={(err) => setJsonError(true)} />
+                              onError={(err) => setJsonError(true)}/>
                           </div>
                         </div>
                         <div className="ng-width-1-2">
@@ -290,8 +296,8 @@ export function PlaceDetail(path: any) {
                         </div>
                       </div>
                     )}>
-                    <br />
-                    <MapComponent />
+                    <br/>
+                    <MapComponent/>
                   </InlineEditCard>
                 </div>
               </MapComponentContext.Provider>
@@ -310,13 +316,13 @@ export function PlaceDetail(path: any) {
                       <PlaceMetrics
                         key={metric.id}
                         data={metric}
-                        handlers={{ handleServerErrors }}
+                        handlers={{handleServerErrors}}
                       />
                     ))}
                   </div>
                 </>
               )}
-              {serverErrors && <ErrorMessages key={id} errors={serverErrors} />}
+              {serverErrors && <ErrorMessages key={id} errors={serverErrors}/>}
               {writeMetricsPermission && (
                 <button
                   disabled={metricsLoading}
@@ -333,13 +339,13 @@ export function PlaceDetail(path: any) {
           <Card>
             <div className="">
               {mappedIntersections &&
-                map(mappedIntersections, (intersections, idx) => (
-                  <PlaceIntersections
-                    key={idx}
-                    name={intersections[0].type}
-                    intersections={intersections}
-                  />
-                ))}
+              map(mappedIntersections, (intersections, idx) => (
+                <PlaceIntersections
+                  key={idx}
+                  name={intersections[0].type}
+                  intersections={intersections}
+                />
+              ))}
             </div>
           </Card>
         </div>}
@@ -347,7 +353,7 @@ export function PlaceDetail(path: any) {
           <div className="ng-text-right">
             <button className="marapp-qa-actiondelete ng-button ng-button-secondary" onClick={handleDeleteToggle}>
               Delete place
-          </button>
+            </button>
           </div>
         )}
       </div>

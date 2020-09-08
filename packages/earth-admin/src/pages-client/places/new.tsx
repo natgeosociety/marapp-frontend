@@ -28,20 +28,24 @@ import { addPlace, getUniqueSlug } from 'services/places';
 import { PlaceTypeEnum } from './model';
 import { noSpecialChars, setupErrors } from 'utils/validations';
 
-import { LinkWithOrg, ErrorMessages, Card, FakeJsonUpload, Input } from 'components';
+import { LinkWithOrg } from 'components/link-with-org';
+import { ErrorMessages } from 'components/error-messages';
+import { Card } from 'components/card';
+import { FakeJsonUpload } from 'components/fake-json-upload';
+import { Input } from 'components/input';
 import { ContentLayout } from 'layouts';
 
 export function NewPlace(path: any) {
-  const { getValues, register, watch, formState, errors, setValue } = useForm({
+  const {getValues, register, watch, formState, errors, setValue} = useForm({
     mode: 'onChange',
   });
-  const { touched, dirty, isValid } = formState;
+  const {touched, dirty, isValid} = formState;
   const watchName = watch('name');
   const [isLoading, setIsLoading] = useState(false);
   const [geojsonValue, setGeojson] = useState(null);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
-  const { selectedGroup } = useAuth0();
+  const {selectedGroup} = useAuth0();
   const renderErrorFor = setupErrors(errors, touched);
 
   async function onSubmit(e) {
@@ -51,7 +55,7 @@ export function NewPlace(path: any) {
     const parsed = {
       ...formData,
       geojson: geojsonValue,
-    }
+    };
     try {
       setIsLoading(true);
       const response: any = await addPlace(parsed, selectedGroup);
@@ -61,15 +65,16 @@ export function NewPlace(path: any) {
       setServerErrors(error.data.errors);
     }
   }
+
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getUniqueSlug(watchName, selectedGroup);
+      const {data}: any = await getUniqueSlug(watchName, selectedGroup);
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);
     }
-  }
+  };
 
   return (
     <ContentLayout backTo="/places" className="marapp-qa-placesnew">
@@ -88,8 +93,8 @@ export function NewPlace(path: any) {
               error={renderErrorFor('name', 'noSpecialChars')}
               ref={register({
                 required: 'Place title is required',
-                validate: { noSpecialChars }
-              })} />
+                validate: {noSpecialChars},
+              })}/>
           </Card>
 
           <Card className="ng-margin-medium-bottom">
@@ -124,7 +129,7 @@ export function NewPlace(path: any) {
                   error={renderErrorFor('slug')}
                   ref={register({
                     required: 'Slug is required',
-                  })} />
+                  })}/>
               </div>
               <div>
                 <button
@@ -132,7 +137,7 @@ export function NewPlace(path: any) {
                   disabled={!watchName || !!errors.name}
                   title={watchName ? 'Generate slug' : 'Add a title first'}
                   className="marapp-qa-actiongenerateslug ng-button ng-button-secondary ng-button-large ng-pointer"
-                  style={{ marginTop: '36px' }}>
+                  style={{marginTop: '36px'}}>
                   Generate a slug name
                 </button>
               </div>
@@ -152,13 +157,13 @@ export function NewPlace(path: any) {
                 setGeojson(json);
                 setJsonError(false);
               }}
-              onError={(err) => setJsonError(true)} />
+              onError={(err) => setJsonError(true)}/>
           </Card>
 
-          {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}
+          {!!serverErrors.length && <ErrorMessages errors={serverErrors}/>}
 
           {isLoading
-            ? <div className="ng-padding-large ng-position-relative"><Spinner /></div>
+            ? <div className="ng-padding-large ng-position-relative"><Spinner/></div>
             : (
               <div className="ng-flex">
                 <button
@@ -169,7 +174,8 @@ export function NewPlace(path: any) {
                   Save and view details
                 </button>
 
-                <LinkWithOrg className="marapp-qa-actionreturn ng-button ng-button-secondary ng-button-large" to="/places">
+                <LinkWithOrg className="marapp-qa-actionreturn ng-button ng-button-secondary ng-button-large"
+                             to="/places">
                   Return to places home
                 </LinkWithOrg>
               </div>

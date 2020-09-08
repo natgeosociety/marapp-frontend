@@ -22,16 +22,18 @@ import { useState } from 'react';
 import { UserProps } from '../model';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
-import { ActionModal, LinkWithOrg, ErrorMessages } from 'components';
+import { ActionModal } from 'components/action-modal';
+import { LinkWithOrg } from 'components/link-with-org';
+import { ErrorMessages } from 'components/error-messages';
 
 export default function UserDetails(props: UserProps) {
   const {
-    data: { name, email, groups, id },
+    data: {name, email, groups, id},
   } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
 
-  const { getPermissions } = useAuth0();
+  const {getPermissions} = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
 
   function handleDeleteToggle() {
@@ -86,7 +88,7 @@ export default function UserDetails(props: UserProps) {
           Go back to users list
         </LinkWithOrg>
       </div>
-      {serverErrors && <ErrorMessages errors={serverErrors} />}
+      {serverErrors && <ErrorMessages errors={serverErrors}/>}
       {writePermissions && (
         <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
           <button className="marapp-qa-actiondelete ng-button ng-button-primary" onClick={handleDeleteToggle}>

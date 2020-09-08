@@ -28,14 +28,12 @@ import { useAuth0 } from 'auth/auth0';
 import { getAllLayers, getUniqueSlug, addLayer } from 'services/layers';
 import { setupErrors } from 'utils/validations';
 
-import {
-  LinkWithOrg,
-  ErrorMessages,
-  Card,
-  Input,
-  HtmlEditor,
-  JsonEditor,
-} from 'components';
+import { LinkWithOrg } from 'components/link-with-org';
+import { ErrorMessages } from 'components/error-messages';
+import { Card } from 'components/card';
+import { Input } from 'components/input';
+import { HtmlEditor } from 'components/html-editor';
+import { JsonEditor } from 'components/json-editor';
 import { ContentLayout } from 'layouts';
 import {
   LAYER_CATEGORY_OPTIONS,
@@ -209,7 +207,7 @@ export function NewLayer(path: any) {
               <label htmlFor="provider">Layer provider*</label>
               <Controller as={Select} control={control} className="marapp-qa-provider"
                           name="provider"
-                          options={LAYER_TYPE_OPTIONS}
+                          options={LAYER_PROVIDER_OPTIONS}
                           isSearchable
                           placeholder="Select layer provider"
                           styles={CUSTOM_STYLES}
