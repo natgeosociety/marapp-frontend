@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { remove } from 'lodash';
 import classNames from 'classnames';
 import Link from 'redux-first-router-link';
@@ -28,6 +28,8 @@ import { EPanels } from 'modules/sidebar/model';
 import { checkRole, getAvailableOrgs } from 'utils';
 import { APP_LOGO } from '../../theme';
 import { ADMIN_URL, APP_NAME } from 'config';
+import { fetchStats } from 'services/stats';
+import { Spinner } from '@marapp/earth-components';
 
 import './styles.scss';
 
@@ -67,6 +69,15 @@ const Header = (props: IProps) => {
   const allInitiallySelected = group.length === allGroups.length;
   const [selectedGroups, setSelectedGroups] = useState(allInitiallySelected ? [] : group);
   const [dropdownState, setDropdownState] = useState('close');
+  const [availableOrgs, setAvailableOrgs] = useState([]);
+  const [isLoadingOrgsStats, setIsLoadingOrgsStats] = useState(true);
+
+  useEffect(() => {
+    fetchStats({ group: getAvailableOrgs(roles).join(',') }).then((res: any) => {
+      setAvailableOrgs(res.data);
+      setIsLoadingOrgsStats(false);
+    });
+  }, []);
 
   const handleDropdownToggle = () => {
     dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
@@ -155,10 +166,11 @@ const Header = (props: IProps) => {
           <span className="ng-dropdown-item">MAP VIEW</span>
         </li>
         <li className="marapp-qa-orglist ng-form ng-form-dark">
+          { isLoadingOrgsStats && <div className="ng-margin-vertical ng-padding-vertical"><Spinner /></div> }
           <div className="ng-padding-medium-horizontal ng-padding-top">
-            {getAvailableOrgs(roles).map((g, i) => (
+            {availableOrgs.map((g, i) => (
               <label
-                htmlFor={g}
+                htmlFor={g.name}
                 className={classNames({
                   'ng-display-block ng-padding-bottom': true,
                   'ng-c-cursor-pointer': hasMultipleGroups,
@@ -169,14 +181,20 @@ const Header = (props: IProps) => {
                   <input
                     className="ng-checkbox-input"
                     type="checkbox"
-                    id={g}
-                    value={g}
-                    checked={!!selectedGroups.find((x) => x === g)}
-                    name={g}
+                    id={g.name}
+                    value={g.name}
+                    checked={!!selectedGroups.find((x) => x === g.name)}
+                    name={g.name}
                     onChange={(e) => onOrgChange(e)}
                   />
                 )}
-                {g}
+                <div className="ng-org-count">
+                  {g.name}
+                  <br/>
+                  Places ({g.locations})
+                  <strong className="ng-icon-bullet"></strong>
+                  Layers ({g.layers})
+                </div>
               </label>
             ))}
           </div>
