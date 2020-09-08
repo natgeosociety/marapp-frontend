@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import OrganizationEdit from './OrganizationEdit';
+import Metrics from './Metrics';
 
-export { OrganizationEdit };
+export { Metrics };

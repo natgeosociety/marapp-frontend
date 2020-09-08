@@ -17,24 +17,36 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
+export interface Organization {
+  id: string;
+  slug: string;
+  name: string;
+  owners: string[];
+}
 
-import { LinkWithOrg } from 'components/link-with-org';
-import { PlaceIntersectionProps } from 'pages-client/places/model';
+export interface OrganizationProps {
+  data: Organization;
+}
 
-export default function PlaceIntersections( props: PlaceIntersectionProps) {
-  const { intersections, name } = props;
+export interface OrganizationDetailsProps {
+  page: string;
+}
 
-  return (
-    <div className="marapp-qa-placesintersections ng-flex ng-flex-column ng-margin-medium-bottom">
-      <p className="ng-text-weight-bold ng-margin-small-bottom">{name} Relationships</p>
-      <div className="ng-flex ng-flex-wrap ng-padding-left">
-        {intersections.map((int) => (
-          <LinkWithOrg to={`/places/${int.id}`} key={int.id} className="marapp-qa-actionintersection ng-margin-medium-right">
-            {int.name}
-          </LinkWithOrg>
-        ))}
-      </div>
-    </div>
-  );
+export interface OrganizationEditProps {
+  data: Organization;
+  newOrg: boolean;
+}
+
+export interface OrganizationContextProps {
+  organizations: Organization[];
+  handleSearchValueChange?: (newValue: string) => void;
+  handleCursorChange?: Function;
+  pageSize?: number;
+  isLoading?: boolean;
+  isNoMore?: boolean;
+  searchValue?: string;
+  permissions?: any;
+  totalResults?: number;
+  nextCursor?: string;
+  selectedItem?: string;
 }

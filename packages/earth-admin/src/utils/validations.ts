@@ -17,42 +17,65 @@
   specific language governing permissions and limitations under the License.
 */
 
+import compose from 'lodash/fp/compose'
+
 /**
- * React-hook-form validation.
- * Show error if string contains special characters.
+ * Receives an error message and returns a function that receives a valid flag.
+ * Returns either the error message or the valid flag for react-hook-form to use
  */
-export const noSpecialChars = (value: string): boolean => {
+const maybeShowError = (errorMessage: string) =>
+  (valid: boolean): string | boolean => valid ? valid : errorMessage;
+
+/**
+ * Return true if value has any special characters in it
+ */
+const noSpecialChars = (value: string): boolean => {
   const regex = RegExp(/^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/);
   return regex.test(value);
 }
 
 /**
- * React-hook-form validation.
- * Show error if string contains special characters or space.
+ * Return true if value contains special characters or space.
  */
-export const noSpecialCharsOrSpace = (value: string): boolean => {
+const noSpecialCharsOrSpace = (value: string): boolean => {
   const regex = RegExp('^[a-z0-9](-?[a-z0-9])*$');
   return regex.test(value);
 }
 
+/**
+ * Return true if email is not valid format
+ */
+const validEmail = (email: string): boolean => {
+  const rule = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return rule.test(email.toLowerCase());
+}
+
+/**
+ * Validation rules used by react-hook-form
+ * Allow for message customization
+ */
+
+export const noSpecialCharsRule = (
+  errorMessage: string = 'Special characters are not allowed'
+) => compose(maybeShowError(errorMessage), noSpecialChars);
+
+export const validEmailRule = (
+  errorMessage: string = 'Invalid email address'
+) => compose(maybeShowError(errorMessage), validEmail);
+
+export const noSpecialCharsOrSpaceRule = (
+  errorMessage: string = 'Special characters or space are not allowed'
+) => compose(maybeShowError(errorMessage), noSpecialCharsOrSpace);
+
 export const setupErrors = (errors, touched) =>
-  (field: string, customErr?: string): string => {
-    const errorMapping = {
-      noSpecialChars: 'Special characters are not allowed',
-      noSpecialCharsOrSpace: 'Special characters or space are not allowed'
-    };
+  (field: string): string => {
     const fieldErr: any = errors[field];
     if (!fieldErr) {
       return;
     }
+
     // render error only after user interacted with the field
-    // default error has priority over custom one
     if (touched[field] && fieldErr.message) {
       return fieldErr.message;
-    }
-    // render error as they type
-    if (customErr) {
-      const text = errorMapping[fieldErr.type]
-      return text;
     }
   }

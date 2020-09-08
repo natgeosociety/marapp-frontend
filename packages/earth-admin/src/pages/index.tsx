@@ -28,7 +28,7 @@ import DashboardsPage from 'pages-client/dashboards';
 import LayersPage from 'pages-client/layers/routes';
 import WidgetsPage from 'pages-client/widgets';
 import UsersPage from 'pages-client/users';
-import OrganizationsPage from 'pages-client/organizations';
+import OrganizationsPage from 'pages-client/organizations/routes';
 import Organization from 'pages-client/organization';
 import Homepage from 'pages-client/homepage';
 import UnauthorizedPage from 'pages-client/unauthorized';

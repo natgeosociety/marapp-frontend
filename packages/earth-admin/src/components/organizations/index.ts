@@ -17,6 +17,5 @@
   specific language governing permissions and limitations under the License.
 */
 
-import PlaceMetrics from './PlaceMetrics';
-
-export { PlaceMetrics };
+export * from './organization-list'
+export * from './organizations-sidebar';

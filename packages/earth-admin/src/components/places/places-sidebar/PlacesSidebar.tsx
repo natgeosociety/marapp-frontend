@@ -33,7 +33,7 @@ const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const PAGE_TYPE = setPage('Places');
 const INIT_CURSOR_PLACE = '-1';
 
-export default function Sidebar(props: any) {
+export default function PlacesSidebar(props: any) {
   const [places, setPlaces] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
