@@ -17,12 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
 import { Controller, useForm } from 'react-hook-form';
+import Select from 'react-select';
 
-import { Spinner, MultiSelect, AsyncSelect } from '@marapp/earth-components';
+import { Spinner, AsyncSelect } from '@marapp/earth-components';
 import { useAuth0 } from 'auth/auth0';
 import { getAllLayers, getUniqueSlug, addLayer } from 'services/layers';
 import { setupErrors } from 'utils/validations';
@@ -41,6 +42,7 @@ import {
   LAYER_TYPE_OPTIONS,
   LAYER_PROVIDER_OPTIONS,
 } from './model';
+import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 
 
 export function NewLayer(path: any) {
@@ -55,6 +57,9 @@ export function NewLayer(path: any) {
 
   const watchName = watch('name');
   const watchJson = watch('config');
+  const watchCategory = watch('category');
+  const watchType = watch('type');
+  const watchProvider = watch('provider');
 
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState([]);
@@ -63,15 +68,29 @@ export function NewLayer(path: any) {
 
   const [references, setReferences] = useState();
 
+  const flattenArrayForSelect = (e, field) => {
+    return !!e ? e.map(val => val[field]) : e;
+  };
+
+  const flattenObjectForSelect = (e) => {
+    return !!e ? e.value : e;
+  };
+
   async function onSubmit(e) {
     e.preventDefault();
 
     const formData = getValues();
 
+    const {type, category, provider, references} = formData;
+
+
     const parsed = {
       ...formData,
+      ...(category && {category: flattenArrayForSelect(category, 'value')}),
+      ...(type && {type: flattenObjectForSelect(type)}),
+      ...(provider && {provider: flattenObjectForSelect(provider)}),
       ...(!!layerConfig && {config: layerConfig}),
-      ...(!!references && {references}),
+      ...(!!references && {references: flattenArrayForSelect(references, 'id')}),
     };
 
     try {
@@ -155,26 +174,18 @@ export function NewLayer(path: any) {
             <div className="ng-width-1-1">
               <label htmlFor="category">Layer category*</label>
 
-              <Controller
-                className="marapp-qa-category"
-                control={control}
-                name="category"
-                options={LAYER_CATEGORY_OPTIONS}
-                isMulti
-                isClearable
-                isSearchable
-                placeholder="Select layer categories"
-                as={<MultiSelect
-                  ref={() =>
-                    register(
-                      {name: 'category'},
-                      {
-                        required: true,
-                      },
-                    )
-                  }
-                />}
-              />
+              <Controller as={Select} control={control} className="marapp-qa-category"
+                          name="category"
+                          options={LAYER_CATEGORY_OPTIONS}
+                          isSearchable
+                          isMulti
+                          placeholder="Select layer category"
+                          styles={CUSTOM_STYLES}
+                          theme={theme => ({
+                            ...theme,
+                            ...SELECT_THEME,
+                          })}
+                          rules={{required: true}}/>
             </div>
           </Card>
 
@@ -196,48 +207,31 @@ export function NewLayer(path: any) {
           <Card className="ng-margin-medium-bottom">
             <div className="ng-width-1-1 ng-margin-medium-bottom">
               <label htmlFor="provider">Layer provider*</label>
-
-              <Controller
-                className="marapp-qa-provider"
-                control={control}
-                name="provider"
-                options={LAYER_PROVIDER_OPTIONS}
-                isClearable
-                isSearchable
-                placeholder="Select layer provider"
-                as={<MultiSelect
-                  ref={() =>
-                    register(
-                      {name: 'provider'},
-                      {
-                        required: true,
-                      },
-                    )
-                  }
-                />}
-              />
+              <Controller as={Select} control={control} className="marapp-qa-provider"
+                          name="provider"
+                          options={LAYER_TYPE_OPTIONS}
+                          isSearchable
+                          placeholder="Select layer provider"
+                          styles={CUSTOM_STYLES}
+                          theme={theme => ({
+                            ...theme,
+                            ...SELECT_THEME,
+                          })}
+                          rules={{required: true}}/>
             </div>
             <div className="ng-width-1-1">
               <label htmlFor="type">Layer type*</label>
-              <Controller
-                className="marapp-qa-type"
-                control={control}
-                name="type"
-                options={LAYER_TYPE_OPTIONS}
-                isClearable
-                isSearchable
-                placeholder="Select layer type"
-                as={<MultiSelect
-                  ref={() =>
-                    register(
-                      {name: 'type'},
-                      {
-                        required: true,
-                      },
-                    )
-                  }
-                />}
-              />
+              <Controller as={Select} control={control} className="marapp-qa-type"
+                          name="type"
+                          options={LAYER_TYPE_OPTIONS}
+                          isSearchable
+                          placeholder="Select layer type"
+                          styles={CUSTOM_STYLES}
+                          theme={theme => ({
+                            ...theme,
+                            ...SELECT_THEME,
+                          })}
+                          rules={{required: true}}/>
             </div>
           </Card>
 
@@ -259,15 +253,23 @@ export function NewLayer(path: any) {
                           type="layers"
                           className="marapp-qa-references"
                           control={control}
+                          getOptionLabel={option => option.name}
+                          getOptionValue={option => option.id}
                           loadFunction={getAllLayers}
+                          defaultValue={references}
                           selectedGroup={selectedGroup}
-                          onChange={(e) => setReferences(e[0])}
                           as={AsyncSelect}
                           isClearable
                           isSearchable
                           isMulti
                           closeMenuOnSelect={false}
-                          placeholder="Select layers"/>
+                          placeholder="Select layers"
+                          styles={CUSTOM_STYLES}
+                          theme={theme => ({
+                            ...theme,
+                            ...SELECT_THEME,
+                          })}
+              />
             </div>
           </Card>
 
@@ -279,7 +281,7 @@ export function NewLayer(path: any) {
                 <button
                   className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
                   onClick={onSubmit}
-               //   disabled={!isValid || jsonError || !dirty || !watchJson}
+                  disabled={!isValid || jsonError || !dirty || !watchJson}
                 >
                   Save and view details
                 </button>

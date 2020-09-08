@@ -74,6 +74,7 @@ export function LayerDetail(path: any) {
   const [layerCategory, setLayerCategory] = useState(null);
   const [layerType, setLayerType] = useState(null);
 
+
   const {
     id,
     name,
@@ -352,49 +353,6 @@ export function LayerDetail(path: any) {
                   <>
                     <div className="ng-margin-medium-bottom">
                       <label htmlFor="provider">Included layers:</label>
-
-                      {/*<Controller*/}
-                      {/*  className="marapp-qa-category"*/}
-                      {/*  control={control}*/}
-                      {/*  name="category"*/}
-                      {/*  options={LAYER_CATEGORY_OPTIONS}*/}
-                      {/*  isMulti*/}
-                      {/*  isClearable*/}
-                      {/*  isSearchable*/}
-                      {/*  defaultValue={getSelectValues(LAYER_CATEGORY_OPTIONS, category)}*/}
-                      {/*  placeholder="Select layer categories"*/}
-                      {/*  as={<MultiSelect*/}
-                      {/*    ref={() =>*/}
-                      {/*      register(*/}
-                      {/*        {name: 'category'},*/}
-                      {/*        {*/}
-                      {/*          required: true,*/}
-                      {/*        },*/}
-                      {/*      )*/}
-                      {/*    }*/}
-                      {/*  />}*/}
-                      {/*/>*/}
-                      {/*<Controller*/}
-                      {/*  className="marapp-qa-category"*/}
-                      {/*  name="category"*/}
-                      {/*  options={LAYER_CATEGORY_OPTIONS}*/}
-                      {/*  control={control}*/}
-                      {/*  isClearable*/}
-                      {/*  isSearchable*/}
-                      {/*  as={Select}*/}
-                      {/*  isMulti*/}
-                      {/*  defaultValue={getSelectValues(LAYER_CATEGORY_OPTIONS, category)}*/}
-                      {/*  placeholder="Select layer category"*/}
-                      {/*  styles={CUSTOM_STYLES}*/}
-                      {/*  theme={theme => ({*/}
-                      {/*    ...theme,*/}
-                      {/*    ...SELECT_THEME,*/}
-                      {/*  })}*/}
-                      {/*  ref={register({*/}
-                      {/*    name: 'category',*/}
-                      {/*    required: 'Layer category is required',*/}
-                      {/*  })}/>*/}
-
                       <Controller name="references"
                                   type="layers"
                                   className="marapp-qa-references"
@@ -406,34 +364,14 @@ export function LayerDetail(path: any) {
                                   selectedGroup={selectedGroup}
                                   as={AsyncSelect}
                                   onChange={([e]) => e}
-                        // onChange={(e) => setaaa(e[0])}
                                   isClearable
                                   isSearchable
                                   isMulti
                                   closeMenuOnSelect={false}
                                   placeholder="Select layers"/>
-
-                      {/*<Input*/}
-                      {/*  name="slug"*/}
-                      {/*  placeholder="Layer provider"*/}
-                      {/*  label="Provider*"*/}
-                      {/*  defaultValue={slug}*/}
-                      {/*  className="ng-display-block"*/}
-                      {/*  error={renderErrorFor('slug', 'noSpecialCharsOrSpace')}*/}
-                      {/*  ref={register({*/}
-                      {/*    required: 'Place slug is required',*/}
-                      {/*    validate: { noSpecialCharsOrSpace }*/}
-                      {/*  })} />*/}
                     </div>
                     <div>
                       <label htmlFor="type">Layer type</label>
-                      {/*<Controller*/}
-                      {/*  name="MyCheckbox"*/}
-                      {/*  control={control}*/}
-                      {/*  defaultValue={false}*/}
-                      {/*  rules={{ required: true }}*/}
-                      {/*  render={props => <Checkbox {...props} />} // props contains: onChange, onBlur and value*/}
-                      {/*/>*/}
                       <Select
                         className="marapp-qa-type"
                         name="type"

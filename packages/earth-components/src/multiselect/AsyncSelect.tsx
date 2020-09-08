@@ -19,14 +19,11 @@
 
 
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import classnames from 'classnames';
 
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { encodeQueryToURL } from '../utils';
-
-import { SELECT_THEME, CUSTOM_STYLES } from './model';
-
 
 interface AsyncSelectProps {
   loadFunction: (q: string) => void;
@@ -83,11 +80,7 @@ const AsyncSelect = (props: AsyncSelectProps) => {
     loadOptions={loadOptions}
     shouldLoadMore={shouldLoadMore}
     onChange={(values) => onChange(values)}
-    styles={CUSTOM_STYLES}
-    theme={theme => ({
-      ...theme,
-      ...SELECT_THEME,
-    })} {...rest}
+    {...rest}
   />);
 };
 
