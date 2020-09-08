@@ -28,8 +28,10 @@ import { Auth0Context } from 'utils/contexts';
 import { addOrganization } from 'services/organizations';
 import { setupErrors, noSpecialCharsRule, upperNumericDashesRule, validEmailRule } from 'utils/validations';
 import { ContentLayout } from 'layouts';
-import { LinkWithOrg, ErrorMessages, Input } from 'components';
-import { Card } from 'components/card'
+import { LinkWithOrg } from 'components/link-with-org';
+import { ErrorMessages } from 'components/error-messages';
+import { Card } from 'components/card';
+import { Input } from 'components/input';
 
 export function NewOrganization(props) {
   const [serverErrors, setServerErrors] = useState(null);

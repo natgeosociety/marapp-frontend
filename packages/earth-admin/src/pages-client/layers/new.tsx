@@ -26,7 +26,7 @@ import Select from 'react-select';
 import { Spinner, AsyncSelect } from '@marapp/earth-components';
 import { useAuth0 } from 'auth/auth0';
 import { getAllLayers, getUniqueSlug, addLayer } from 'services/layers';
-import { noSpecialChars, setupErrors } from 'utils/validations';
+import { noSpecialCharsRule, alphaNumericDashesRule, setupErrors } from 'utils/validations';
 
 import { LinkWithOrg } from 'components/link-with-org';
 import { ErrorMessages } from 'components/error-messages';
@@ -41,7 +41,6 @@ import {
   LAYER_PROVIDER_OPTIONS,
 } from './model';
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
-
 
 export function NewLayer(path: any) {
   const {selectedGroup} = useAuth0();
@@ -140,10 +139,12 @@ export function NewLayer(path: any) {
               placeholder="Layer title"
               label="Title*"
               className="ng-display-block"
-              error={renderErrorFor('name', 'noSpecialChars')}
+              error={renderErrorFor('name')}
               ref={register({
                 required: 'Layer title is required',
-                validate: {noSpecialChars},
+                validate: {
+                  noSpecialCharsRule: noSpecialCharsRule()
+                },
               })}/>
           </Card>
 
@@ -158,6 +159,9 @@ export function NewLayer(path: any) {
                   error={renderErrorFor('slug')}
                   ref={register({
                     required: 'Layer slug is required',
+                    validate: {
+                      alphaNumericDashesRule: alphaNumericDashesRule()
+                    }
                   })}/>
               </div>
               <div>
