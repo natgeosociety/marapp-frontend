@@ -127,7 +127,7 @@ export function NewOrganization(props) {
                   Save and view details
             </button>
                 <LinkWithOrg className="ng-button ng-button-secondary" to="/organizations">
-                  Return to dashboard
+                  return to organizations home
             </LinkWithOrg>
               </div>
             )
