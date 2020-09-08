@@ -41,9 +41,11 @@ import { noSpecialCharsRule, alphaNumericDashesRule, setupErrors } from 'utils/v
 import { navigate } from 'gatsby';
 import { PlaceTypeEnum } from 'pages-client/places/model';
 import { getPlace, handlePlaceForm } from 'services';
-import { LAYER_CATEGORY_OPTIONS, LAYER_TYPE_OPTIONS } from 'pages-client/layers/model';
+import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from 'pages-client/layers/model';
 import { AsyncSelect } from '@marapp/earth-components';
 import { JsonEditor } from 'components/json-editor';
+import { HtmlEditor } from 'components/html-editor';
+import classnames from 'classnames';
 
 const LAYER_DETAIL_QUERY = {include: 'references', select: 'references.name,references.id'};
 const INIT_CURSOR_LOCATION = '-1';
@@ -101,7 +103,9 @@ export function LayerDetail(path: any) {
 
     data.category && setLayerCategory(getSelectValues(LAYER_CATEGORY_OPTIONS, data.category));
     data.type && setLayerType(LAYER_TYPE_OPTIONS.find((t) => t.value === data.type));
+    data.config && setLayerConfig(config);
   }, [data]);
+
 
   const getSelectValues = (options, values) => {
 
@@ -115,12 +119,11 @@ export function LayerDetail(path: any) {
     return coco;
   };
 
-  const setSelectValues = (e, field) => {
+  const flattenArrayForSelect = (e, field) => {
     return !!e ? e.map(val => val[field]) : e;
   };
 
-  const setSelectValues2 = (e) => {
-    console.log(e, 'values 2');
+  const flattenObjectForSelect = (e) => {
     return !!e ? e.value : e;
   };
 
@@ -141,28 +144,32 @@ export function LayerDetail(path: any) {
 
     const formData = getValues();
 
-    console.log(layerType, 'layer type');
+    const {type, category, provider, references} = formData;
+
+    console.log(formData);
     const parsed = {
       ...formData,
-      ...(layerCategory && {category: setSelectValues(layerCategory, 'value')}),
-      ...(layerType && {type: setSelectValues2(layerType)}),
-      ...(!!formData.references && {references: setSelectValues(formData.references, 'id')}),
+      ...(category && {category: flattenArrayForSelect(category, 'value')}),
+      ...(type && {type: flattenObjectForSelect(type)}),
+      ...(provider && {provider: flattenObjectForSelect(provider)}),
+      ...(references && {references: flattenArrayForSelect(references, 'id')}),
     };
 
 
     console.log(parsed);
 
-    // try {
-    //   setIsLoading && setIsLoading(true);
-    //   await handleLayerForm(false, formData, id, selectedGroup);
-    //   const res = await getLayer(encodedQuery);
-    //   setLayer(res.data);
-    //   setIsLoading && setIsLoading(false);
-    //   setIsEditing && setIsEditing(false);
-    // } catch (error) {
-    //   setIsLoading && setIsLoading(false);
-    //   setServerErrors && setServerErrors(error.data.errors);
-    // }
+
+    try {
+      setIsLoading && setIsLoading(true);
+      await handleLayerForm(false, parsed, id, selectedGroup);
+      const res = await getLayer(encodedQuery);
+      setLayer(res.data);
+      setIsLoading && setIsLoading(false);
+      setIsEditing && setIsEditing(false);
+    } catch (error) {
+      setIsLoading && setIsLoading(false);
+      setServerErrors && setServerErrors(error.data.errors);
+    }
   }
 
   const handleJsonChange = (json) => {
@@ -207,24 +214,6 @@ export function LayerDetail(path: any) {
           return to layers home
         </LinkWithOrg>
         <form className="ng-form ng-form-dark ng-flex-column">
-
-          <label htmlFor="provider">Included layers:</label>
-
-
-          {/*{ <Controller name="references"*/}
-          {/*            type="layers"*/}
-          {/*            className="marapp-qa-references"*/}
-          {/*            control={control}*/}
-          {/*            loadFunction={getAllLayers}*/}
-          {/*            selectedGroup={selectedGroup}*/}
-          {/*            as={AsyncSelect}*/}
-          {/*            isClearable*/}
-          {/*            isSearchable*/}
-          {/*            isMulti*/}
-          {/*            closeMenuOnSelect={false}*/}
-          {/*            placeholder="Select layers"/>}*/}
-
-
           <div className="ng-grid">
             <div className="ng-width-3-4">
               <InlineEditCard
@@ -273,7 +262,7 @@ export function LayerDetail(path: any) {
             <div className="ng-width-1-2">
               <InlineEditCard
                 onSubmit={onSubmit}
-                validForm={true}
+                validForm={formValid}
                 render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <div className="ng-margin-medium-bottom">
@@ -293,25 +282,40 @@ export function LayerDetail(path: any) {
                     </div>
                     <div>
                       <label htmlFor="category">Layer category</label>
-                      <Select
-                        className="marapp-qa-category"
-                        name="category"
-                        options={LAYER_CATEGORY_OPTIONS}
-                        isClearable
-                        isSearchable
-                        isMulti
-                        value={layerCategory}
-                        placeholder="Select layer category"
-                        onChange={(e) => setLayerCategory(e)}
-                        styles={CUSTOM_STYLES}
-                        theme={theme => ({
-                          ...theme,
-                          ...SELECT_THEME,
-                        })}
-                        ref={register({
-                          name: 'category',
-                          required: 'Layer category is required',
-                        })}/>
+                      <Controller as={Select} control={control} className="marapp-qa-category"
+                                  name="category"
+                                  options={LAYER_CATEGORY_OPTIONS}
+                                  defaultValue={getSelectValues(LAYER_CATEGORY_OPTIONS, layer.category)}
+                                  isSearchable
+                                  isMulti
+                                  placeholder="Select layer category"
+                                  styles={CUSTOM_STYLES}
+                                  theme={theme => ({
+                                    ...theme,
+                                    ...SELECT_THEME,
+                                  })}
+                                  rules={{required: true}}/>
+
+
+                      {/*<Select*/}
+                      {/*  className="marapp-qa-category"*/}
+                      {/*  name="category"*/}
+                      {/*  options={LAYER_CATEGORY_OPTIONS}*/}
+                      {/*  isClearable*/}
+                      {/*  isSearchable*/}
+                      {/*  isMulti*/}
+                      {/*  value={layerCategory}*/}
+                      {/*  placeholder="Select layer category"*/}
+                      {/*  onChange={(e) => setLayerCategory(e)}*/}
+                      {/*  styles={CUSTOM_STYLES}*/}
+                      {/*  theme={theme => ({*/}
+                      {/*    ...theme,*/}
+                      {/*    ...SELECT_THEME,*/}
+                      {/*  })}*/}
+                      {/*  ref={register({*/}
+                      {/*    name: 'category',*/}
+                      {/*    required: 'Layer category is required',*/}
+                      {/*  })}/>*/}
                     </div>
                   </>
                 )}>
@@ -321,7 +325,6 @@ export function LayerDetail(path: any) {
                 </div>
                 <div>
                   <p className="ng-text-weight-bold ng-margin-remove">Layer category</p>
-
                   <p className="ng-margin-remove ng-padding-left">{category}</p>
                 </div>
               </InlineEditCard>
@@ -345,9 +348,78 @@ export function LayerDetail(path: any) {
           </div>
           <div className="ng-grid">
             <div className="ng-width-1-1">
-              {/*  <Card>
-                {description && <div className="ng-border-add ng-padding">{renderHTML(description)}</div>}
-              </Card>*/}
+              <InlineEditCard
+                onSubmit={onSubmit}
+                validForm={formValid}
+                render={({setIsEditing, setIsLoading, setServerErrors}) => (
+                  <>
+                    <label className="ng-form-label" htmlFor="description">
+                      Layer description
+                    </label>
+
+                    <Controller
+                      name="description"
+                      control={control}
+                      defaultValue={description}
+                      as={<HtmlEditor html={description}/>}
+                    />
+                  </>
+                )}>
+                <div className="ng-margin-medium-bottom">
+
+                  <p className="ng-text-weight-bold ng-margin-remove">Layer description</p>
+                  <div
+                    className="ng-margin-remove ng-padding-left">{description ? renderHTML(description) : 'No description'}</div>
+                </div>
+              </InlineEditCard>
+            </div>
+          </div>
+          <div className="ng-grid">
+            <div className="ng-width-1-1">
+              <InlineEditCard
+                onSubmit={onSubmit}
+                validForm={formValid}
+                render={({setIsEditing, setIsLoading, setServerErrors}) => (
+                  <>
+                    <div>
+                      <label htmlFor="type">Layer provider</label>
+                      <Controller as={Select} control={control} className="marapp-qa-provider"
+                                  name="provider"
+                                  options={LAYER_PROVIDER_OPTIONS}
+                                  isSearchable
+                                  placeholder="Select layer provider"
+                                  styles={CUSTOM_STYLES}
+                                  theme={theme => ({
+                                    ...theme,
+                                    ...SELECT_THEME,
+                                  })}
+                                  rules={{required: true}}/>
+                    </div>
+                    <div>
+                      <label htmlFor="type">Layer type</label>
+                      <Controller as={Select} control={control} className="marapp-qa-type"
+                                  name="type"
+                                  options={LAYER_TYPE_OPTIONS}
+                                  isSearchable
+                                  placeholder="Select layer type"
+                                  styles={CUSTOM_STYLES}
+                                  theme={theme => ({
+                                    ...theme,
+                                    ...SELECT_THEME,
+                                  })}
+                                  rules={{required: true}}/>
+                    </div>
+                  </>
+                )}>
+                <div className="ng-margin-medium-bottom">
+                  <p className="ng-text-weight-bold ng-margin-remove">Layer provider</p>
+                  <p className="ng-margin-remove ng-padding-left">{provider}</p>
+                </div>
+                <div>
+                  <p className="ng-text-weight-bold ng-margin-remove">Later type</p>
+                  <p className="ng-margin-remove ng-padding-left">{type}</p>
+                </div>
+              </InlineEditCard>
             </div>
           </div>
           <div className="ng-grid">
@@ -355,6 +427,56 @@ export function LayerDetail(path: any) {
               <InlineEditCard
                 onSubmit={onSubmit}
                 validForm={true}
+                render={({setIsEditing, setIsLoading, setServerErrors}) => (
+                  <>
+
+                    <div className="ng-margin-medium-bottom">
+                      <label htmlFor="config">Layer Config</label>
+                      <Controller
+                        name="config"
+                        control={control}
+                        defaultValue={layerConfig}
+                        onChange={(layerConfig) => handleJsonChange(layerConfig)}
+                        as={<JsonEditor json={layerConfig}/>}
+                      />
+                    </div>
+
+                  </>
+                )}>
+                <div className="ng-margin-medium-bottom">
+                  {config && <div>
+                    <p className="ng-flex">
+                      <span className="ng-text-weight-medium">Layer config</span>
+                      <span>
+                        <i onClick={(e) => copyToClipboard(e, textAreaRef, setCopySuccess)}
+                           className='ng-icon ng-icon-layers ng-c-cursor-pointer ng-margin-small-horizontal'/>
+                        <span className="ng-text-weight-normal">{copySuccess}</span>
+                      </span>
+                    </p>
+
+                    <Collapse addState isOpen={toggle} collapseHeight="100px">
+                      <JsonEditor json={config} readOnly={true}/>
+                    </Collapse>
+                    <div className="ng-flex ng-flex-center">
+                      <i onClick={e => setToggle(!toggle)}
+                         className={classnames({
+                           'ng-icon ng-c-cursor-pointer': true,
+                           'ng-icon-directionup': toggle,
+                           'ng-icon-directiondown': !toggle,
+                         })}></i>
+                    </div>
+
+                  </div>}
+                </div>
+              </InlineEditCard>
+            </div>
+          </div>
+          <div className="ng-grid">
+            <div className="ng-width-1-1">
+
+              <InlineEditCard
+                onSubmit={onSubmit}
+                validForm={formValid}
                 render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <div className="ng-margin-medium-bottom">
@@ -373,66 +495,31 @@ export function LayerDetail(path: any) {
                                   isClearable
                                   isSearchable
                                   isMulti
+                                  styles={CUSTOM_STYLES}
+                                  theme={theme => ({
+                                    ...theme,
+                                    ...SELECT_THEME,
+                                  })}
                                   closeMenuOnSelect={false}
                                   placeholder="Select layers"/>
-                    </div>
-                    <div>
-                      <label htmlFor="type">Layer type</label>
-                      <Select
-                        className="marapp-qa-type"
-                        name="type"
-                        options={LAYER_TYPE_OPTIONS}
-                        isClearable
-                        isSearchable
-                        value={layerType}
-                        placeholder="Select layer type"
-                        onChange={(e) => setLayerType(e)}
-                        styles={CUSTOM_STYLES}
-                        theme={theme => ({
-                          ...theme,
-                          ...SELECT_THEME,
-                        })}
-                        ref={register({
-                          name: 'type',
-                          required: 'Layer type is required',
-                        })}/>
-
                     </div>
                   </>
                 )}>
                 <div className="ng-margin-medium-bottom">
-                  <p className="ng-text-weight-bold ng-margin-remove">Layer provider</p>
-                  <p className="ng-margin-remove ng-padding-left">{provider}</p>
-                </div>
-                <div>
-                  <p className="ng-text-weight-bold ng-margin-remove">Later type</p>
-                  <p className="ng-margin-remove ng-padding-left">{type}</p>
-
-                  {config && <div>
-                    <p className="ng-flex ng-flex-space-between">
-                      <span className="ng-text-weight-medium">Layer config:</span>
-                      <span>
-                        <i onClick={(e) => copyToClipboard(e, textAreaRef, setCopySuccess)}
-                           className='ng-icon ng-icon-layers ng-c-cursor-pointer ng-margin-small-right'/>
-                        <span className="ng-text-weight-normal">{copySuccess}</span>
-                      </span>
-                    </p>
-
-                    <Collapse addState isOpen={toggle} collapseHeight="100px">
-                      <JsonEditor json={config} readOnly={true}/>
-                    </Collapse>
-                    <span onClick={e => setToggle(!toggle)}
-                          className="ng-text-center ng-c-cursor-pointer ng-display-block">show {toggle ? 'less' : 'more'}</span>
-                  </div>}
+                  <p className="ng-text-weight-bold ng-margin-remove">Layer references</p>
+                  {references && references.map(layer => <span>{layer.name}</span>)}
                 </div>
               </InlineEditCard>
+
             </div>
           </div>
         </form>
 
-        <input type="text" ref={textAreaRef} value={JSON.stringify(config)}
-               style={{position: 'absolute', left: '-10000px', top: '-10000px'}}/>
+        {/*<input type="text" ref={textAreaRef} value={JSON.stringify(config)} readOnly={true}*/}
+        {/*       style={{position: 'absolute', left: '-10000px', top: '-10000px'}}/>*/}
       </div>
     </ContentLayout>
   );
 }
+
+
