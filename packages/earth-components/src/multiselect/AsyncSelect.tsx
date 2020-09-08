@@ -41,14 +41,14 @@ const AsyncSelect = (props: AsyncSelectProps) => {
 
   const loadOptions = async (search, prevOptions) => {
     const query = {
-        search: search,
-        sort: 'name',
-        page: {size: 10, cursor: cursor},
-        group: selectedGroup,
-      },
-      encodedQuery = encodeQueryToURL(type, query),
-      res: any = await loadFunction(encodedQuery),
-      data = res.data;
+      search: search,
+      sort: 'name',
+      page: {size: 10, cursor: cursor},
+      group: selectedGroup,
+    };
+    const encodedQuery = encodeQueryToURL(type, query);
+    const res: any = await loadFunction(encodedQuery);
+    const data = res.data;
 
     setCursor(res.pagination.nextCursor);
 

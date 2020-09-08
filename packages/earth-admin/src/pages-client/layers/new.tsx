@@ -26,7 +26,7 @@ import Select from 'react-select';
 import { Spinner, AsyncSelect } from '@marapp/earth-components';
 import { useAuth0 } from 'auth/auth0';
 import { getAllLayers, getUniqueSlug, addLayer } from 'services/layers';
-import { setupErrors } from 'utils/validations';
+import { noSpecialChars, setupErrors } from 'utils/validations';
 
 import { LinkWithOrg } from 'components/link-with-org';
 import { ErrorMessages } from 'components/error-messages';
@@ -127,7 +127,7 @@ export function NewLayer(path: any) {
   };
 
   return (
-    <ContentLayout backTo="/layers">
+    <ContentLayout backTo="/layers" className="marapp-qa-newlayer">
       <div>
         <div className="ng-flex ng-flex-space-between">
           <h2 className="ng-text-display-m ng-c-flex-grow-1">New layer</h2>
@@ -139,9 +139,11 @@ export function NewLayer(path: any) {
               name="name"
               placeholder="Layer title"
               label="Title*"
-              className="ng-display-block marapp-qa-inputtitle"
+              className="ng-display-block"
+              error={renderErrorFor('name', 'noSpecialChars')}
               ref={register({
                 required: 'Layer title is required',
+                validate: {noSpecialChars},
               })}/>
           </Card>
 
