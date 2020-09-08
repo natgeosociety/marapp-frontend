@@ -34,7 +34,7 @@ export { default as SlickPrevArrow } from './slick/arrows/prev';
 export { default as SlickNextArrow } from './slick/arrows/next';
 export { default as Spinner } from './spinner';
 export { default as Tooltip } from './tooltip';
-export * from './multiselect';
+export { default as AsyncSelect } from './multiselect';
 
 export * from './utils';
 

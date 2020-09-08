@@ -33,33 +33,14 @@ interface AsyncSelectProps {
   type: string;
   selectedGroup: string;
   onChange?: (e: any) => void;
-  isMulti?: boolean;
   value?: [] | string;
   className?: string;
 }
 
 const AsyncSelect = (props: AsyncSelectProps) => {
-  const {loadFunction, type, selectedGroup, layers, onChange, isMulti, className, ...rest} = props;
-
-  console.log(props);
-
-
-
-  // useEffect(() => {
-  //   console.log(value);
-  //   !!value && setCoco(formatForSelect(value))
-  // }, [value])
+  const {loadFunction, type, selectedGroup, onChange, className, ...rest} = props;
 
   const [cursor, setCursor] = useState(-1);
-  const [selectValues, setSelectValues] = useState();
-
-  const formatForSelect = (data) => data.map(d => ({value: d.id, label: d.name}));
-
-  const [coco, setCoco] = useState(formatForSelect(layers));
-
-  const handleSelectValues = (values) => {
-    setSelectValues(isMulti ? values.map(val => val.value) : values.value);
-  };
 
   const loadOptions = async (search, prevOptions) => {
     const query = {
@@ -70,7 +51,7 @@ const AsyncSelect = (props: AsyncSelectProps) => {
       },
       encodedQuery = encodeQueryToURL(type, query),
       res: any = await loadFunction(encodedQuery),
-      data = formatForSelect(res.data);
+      data = res.data;
 
     setCursor(res.pagination.nextCursor);
 
@@ -96,24 +77,12 @@ const AsyncSelect = (props: AsyncSelectProps) => {
     return bottomBorder < scrollTop;
   };
 
-  const handleChange = (values) => {
-    !!values ? handleSelectValues(values) : setSelectValues(null);
-  };
-
-  useEffect(() => {
-    console.log(selectValues, 'selecty');
-    !!selectValues && onChange(selectValues);
-  }, [selectValues]);
-
-
   return (<AsyncPaginate
     className={classnames('marapp-qa-asyncselect', className)}
-    value={coco}
-    isMulti={isMulti}
     placeholder={`Select ${type}`}
     loadOptions={loadOptions}
     shouldLoadMore={shouldLoadMore}
-    onChange={handleChange}
+    onChange={(values) => onChange(values)}
     styles={CUSTOM_STYLES}
     theme={theme => ({
       ...theme,

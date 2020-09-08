@@ -17,8 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import MultiSelect from './Multiselect';
 import AsyncSelect from './AsyncSelect';
 
-
-export { MultiSelect, AsyncSelect };
+export default AsyncSelect;

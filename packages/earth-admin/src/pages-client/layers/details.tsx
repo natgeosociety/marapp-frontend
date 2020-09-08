@@ -21,6 +21,9 @@ import { encodeQueryToURL, formatDate, setPage } from 'utils';
 import { getAllLayers, getLayer, handleLayerForm } from 'services/layers';
 import { useRequest } from 'utils/hooks';
 import renderHTML from 'react-render-html';
+import { intersection } from 'lodash';
+import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+import Select from 'react-select';
 import {
   LayerList,
   LayerDetails,
@@ -40,8 +43,8 @@ import { noSpecialChars, noSpecialCharsOrSpace, setupErrors } from 'utils/valida
 import { navigate } from 'gatsby';
 import { PlaceTypeEnum } from 'pages-client/places/model';
 import { getPlace, handlePlaceForm } from 'services';
-import { LAYER_CATEGORY_OPTIONS } from 'pages-client/layers/model';
-import { AsyncSelect, MultiSelect } from '@marapp/earth-components';
+import { LAYER_CATEGORY_OPTIONS, LAYER_TYPE_OPTIONS } from 'pages-client/layers/model';
+import { AsyncSelect } from '@marapp/earth-components';
 
 const LAYER_DETAIL_QUERY = {include: 'references', select: 'references.name,references.id'};
 const INIT_CURSOR_LOCATION = '-1';
@@ -67,6 +70,9 @@ export function LayerDetail(path: any) {
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState();
   const [layerConfig, setLayerConfig] = useState();
+  const [aaa, setaaa] = useState();
+  const [layerCategory, setLayerCategory] = useState(null);
+  const [layerType, setLayerType] = useState(null);
 
   const {
     id,
@@ -88,9 +94,31 @@ export function LayerDetail(path: any) {
 
   useEffect(() => {
     setLayer(data);
+
+    data.category && setLayerCategory(getSelectValues(LAYER_CATEGORY_OPTIONS, data.category));
+    data.type && setLayerType(LAYER_TYPE_OPTIONS.find((t) => t.value === data.type));
   }, [data]);
 
+  const getSelectValues = (options, values) => {
 
+    let coco = [];
+    values.map(value => {
+      const puff = options.find(val => val.value === value);
+      return coco.push(puff);
+    });
+
+
+    return coco;
+  };
+
+  const setSelectValues = (e, field) => {
+    return !!e ? e.map(val => val[field]) : e;
+  };
+
+  const setSelectValues2 = (e) => {
+    console.log(e, 'values 2');
+    return !!e ? e.value : e;
+  };
 
   const {getValues, register, formState, errors, control} = useForm({
     mode: 'onChange',
@@ -103,24 +131,35 @@ export function LayerDetail(path: any) {
     setFormValid(isValid);
   }, [isValid]);
 
+
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
 
     const formData = getValues();
 
-    console.log(formData, id);
+    console.log(layerType, 'layer type');
+    const parsed = {
+      ...formData,
+      ...(layerCategory && {category: setSelectValues(layerCategory, 'value')}),
+      ...(layerType && {type: setSelectValues2(layerType)}),
+      ...(!!formData.references && {references: setSelectValues(formData.references, 'id')}),
+    };
 
-    try {
-      setIsLoading && setIsLoading(true);
-      await handleLayerForm(false, formData, id, selectedGroup);
-      const res = await getLayer(encodedQuery);
-      setLayer(res.data);
-      setIsLoading && setIsLoading(false);
-      setIsEditing && setIsEditing(false);
-    } catch (error) {
-      setIsLoading && setIsLoading(false);
-      setServerErrors && setServerErrors(error.data.errors);
-    }
+
+
+    console.log(parsed);
+
+    // try {
+    //   setIsLoading && setIsLoading(true);
+    //   await handleLayerForm(false, formData, id, selectedGroup);
+    //   const res = await getLayer(encodedQuery);
+    //   setLayer(res.data);
+    //   setIsLoading && setIsLoading(false);
+    //   setIsEditing && setIsEditing(false);
+    // } catch (error) {
+    //   setIsLoading && setIsLoading(false);
+    //   setServerErrors && setServerErrors(error.data.errors);
+    // }
   }
 
   const handleJsonChange = (json) => {
@@ -167,18 +206,20 @@ export function LayerDetail(path: any) {
         <form className="ng-form ng-form-dark ng-flex-column">
 
           <label htmlFor="provider">Included layers:</label>
-          { <Controller name="references"
-                      type="layers"
-                      className="marapp-qa-references"
-                      control={control}
-                      loadFunction={getAllLayers}
-                      selectedGroup={selectedGroup}
-                      as={AsyncSelect}
-                      isClearable
-                      isSearchable
-                      isMulti
-                      closeMenuOnSelect={false}
-                      placeholder="Select layers"/>}
+
+
+          {/*{ <Controller name="references"*/}
+          {/*            type="layers"*/}
+          {/*            className="marapp-qa-references"*/}
+          {/*            control={control}*/}
+          {/*            loadFunction={getAllLayers}*/}
+          {/*            selectedGroup={selectedGroup}*/}
+          {/*            as={AsyncSelect}*/}
+          {/*            isClearable*/}
+          {/*            isSearchable*/}
+          {/*            isMulti*/}
+          {/*            closeMenuOnSelect={false}*/}
+          {/*            placeholder="Select layers"/>}*/}
 
 
           <div className="ng-grid">
@@ -227,7 +268,7 @@ export function LayerDetail(path: any) {
             <div className="ng-width-1-2">
               <InlineEditCard
                 onSubmit={onSubmit}
-                validForm={formValid}
+                validForm={true}
                 render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <div className="ng-margin-medium-bottom">
@@ -244,28 +285,26 @@ export function LayerDetail(path: any) {
                         })}/>
                     </div>
                     <div>
-                      <label htmlFor="category">Layer category {category}</label>
-                      {/*{category && <Controller*/}
-                      {/*  className="marapp-qa-category"*/}
-                      {/*  control={control}*/}
-                      {/*  name="category"*/}
-                      {/*  options={LAYER_CATEGORY_OPTIONS}*/}
-                      {/*  isMulti*/}
-                      {/*  isClearable*/}
-                      {/*  isSearchable*/}
-                      {/*  defaultValue={category}*/}
-                      {/*  placeholder="Select layer categories"*/}
-                      {/*  as={<MultiSelect*/}
-                      {/*    ref={() =>*/}
-                      {/*      register(*/}
-                      {/*        {name: 'category'},*/}
-                      {/*        {*/}
-                      {/*          required: true,*/}
-                      {/*        },*/}
-                      {/*      )*/}
-                      {/*    }*/}
-                      {/*  />}*/}
-                      {/*/>}*/}
+                      <label htmlFor="category">Layer category</label>
+                      <Select
+                        className="marapp-qa-category"
+                        name="category"
+                        options={LAYER_CATEGORY_OPTIONS}
+                        isClearable
+                        isSearchable
+                        isMulti
+                        value={layerCategory}
+                        placeholder="Select layer category"
+                        onChange={(e) => setLayerCategory(e)}
+                        styles={CUSTOM_STYLES}
+                        theme={theme => ({
+                          ...theme,
+                          ...SELECT_THEME,
+                        })}
+                        ref={register({
+                          name: 'category',
+                          required: 'Layer category is required',
+                        })}/>
                     </div>
                   </>
                 )}>
@@ -308,24 +347,71 @@ export function LayerDetail(path: any) {
             <div className="ng-width-1-1">
               <InlineEditCard
                 onSubmit={onSubmit}
-                validForm={formValid}
+                validForm={true}
                 render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <div className="ng-margin-medium-bottom">
-                      {/*<label htmlFor="provider">Included layers:</label>*/}
-                      {/*<Controller name="references"*/}
-                      {/*            type="layers"*/}
-                      {/*            className="marapp-qa-references"*/}
-                      {/*            control={control}*/}
-                      {/*            loadFunction={getAllLayers}*/}
-                      {/*            selectedGroup={selectedGroup}*/}
-                      {/*            onChange={(e) => setCooc(e[0])}*/}
-                      {/*            as={AsyncSelect}*/}
-                      {/*            isClearable*/}
-                      {/*            isSearchable*/}
-                      {/*            isMulti*/}
-                      {/*            closeMenuOnSelect={false}*/}
-                      {/*            placeholder="Select layers"/>*/}
+                      <label htmlFor="provider">Included layers:</label>
+
+                      {/*<Controller*/}
+                      {/*  className="marapp-qa-category"*/}
+                      {/*  control={control}*/}
+                      {/*  name="category"*/}
+                      {/*  options={LAYER_CATEGORY_OPTIONS}*/}
+                      {/*  isMulti*/}
+                      {/*  isClearable*/}
+                      {/*  isSearchable*/}
+                      {/*  defaultValue={getSelectValues(LAYER_CATEGORY_OPTIONS, category)}*/}
+                      {/*  placeholder="Select layer categories"*/}
+                      {/*  as={<MultiSelect*/}
+                      {/*    ref={() =>*/}
+                      {/*      register(*/}
+                      {/*        {name: 'category'},*/}
+                      {/*        {*/}
+                      {/*          required: true,*/}
+                      {/*        },*/}
+                      {/*      )*/}
+                      {/*    }*/}
+                      {/*  />}*/}
+                      {/*/>*/}
+                      {/*<Controller*/}
+                      {/*  className="marapp-qa-category"*/}
+                      {/*  name="category"*/}
+                      {/*  options={LAYER_CATEGORY_OPTIONS}*/}
+                      {/*  control={control}*/}
+                      {/*  isClearable*/}
+                      {/*  isSearchable*/}
+                      {/*  as={Select}*/}
+                      {/*  isMulti*/}
+                      {/*  defaultValue={getSelectValues(LAYER_CATEGORY_OPTIONS, category)}*/}
+                      {/*  placeholder="Select layer category"*/}
+                      {/*  styles={CUSTOM_STYLES}*/}
+                      {/*  theme={theme => ({*/}
+                      {/*    ...theme,*/}
+                      {/*    ...SELECT_THEME,*/}
+                      {/*  })}*/}
+                      {/*  ref={register({*/}
+                      {/*    name: 'category',*/}
+                      {/*    required: 'Layer category is required',*/}
+                      {/*  })}/>*/}
+
+                      <Controller name="references"
+                                  type="layers"
+                                  className="marapp-qa-references"
+                                  control={control}
+                                  getOptionLabel={option => option.name}
+                                  getOptionValue={option => option.id}
+                                  loadFunction={getAllLayers}
+                                  defaultValue={references}
+                                  selectedGroup={selectedGroup}
+                                  as={AsyncSelect}
+                                  onChange={([e]) => e}
+                        // onChange={(e) => setaaa(e[0])}
+                                  isClearable
+                                  isSearchable
+                                  isMulti
+                                  closeMenuOnSelect={false}
+                                  placeholder="Select layers"/>
 
                       {/*<Input*/}
                       {/*  name="slug"*/}
@@ -340,27 +426,33 @@ export function LayerDetail(path: any) {
                       {/*  })} />*/}
                     </div>
                     <div>
-                      layer type
-                      {/*<label htmlFor="type">Place type</label>*/}
-                      {/*<select*/}
-                      {/*  className="ng-width-1-1 ng-form-large"*/}
-                      {/*  id="type"*/}
-                      {/*  ref={register({*/}
-                      {/*    required: true,*/}
-                      {/*  })}*/}
-                      {/*  name="type"*/}
-                      {/*  defaultValue={type}*/}
-                      {/*>*/}
-                      {/*  {Object.keys(PlaceTypeEnum).map((t, idx) => (*/}
-                      {/*    <option*/}
-                      {/*      key={idx}*/}
-                      {/*      value={PlaceTypeEnum[t]}*/}
-                      {/*      selected={type === PlaceTypeEnum[t]}*/}
-                      {/*    >*/}
-                      {/*      {PlaceTypeEnum[t]}*/}
-                      {/*    </option>*/}
-                      {/*  ))}*/}
-                      {/*</select>*/}
+                      <label htmlFor="type">Layer type</label>
+                      {/*<Controller*/}
+                      {/*  name="MyCheckbox"*/}
+                      {/*  control={control}*/}
+                      {/*  defaultValue={false}*/}
+                      {/*  rules={{ required: true }}*/}
+                      {/*  render={props => <Checkbox {...props} />} // props contains: onChange, onBlur and value*/}
+                      {/*/>*/}
+                      <Select
+                        className="marapp-qa-type"
+                        name="type"
+                        options={LAYER_TYPE_OPTIONS}
+                        isClearable
+                        isSearchable
+                        value={layerType}
+                        placeholder="Select layer type"
+                        onChange={(e) => setLayerType(e)}
+                        styles={CUSTOM_STYLES}
+                        theme={theme => ({
+                          ...theme,
+                          ...SELECT_THEME,
+                        })}
+                        ref={register({
+                          name: 'type',
+                          required: 'Layer type is required',
+                        })}/>
+
                     </div>
                   </>
                 )}>
