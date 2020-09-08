@@ -20,7 +20,7 @@
 import * as React from 'react';
 import { Router } from '@reach/router';
 
-import { OrganizationsSidebar } from 'components';
+import { OrganizationsSidebar } from 'components/organizations';
 import { OrganizationHome } from './home';
 import { OrganizationDetails } from './details';
 import { NewOrganization } from './new';

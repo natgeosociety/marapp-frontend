@@ -50,6 +50,16 @@ const validEmail = (email: string): boolean => {
   return rule.test(email.toLowerCase());
 }
 
+const upperNumericDashes = (value: string): boolean => {
+  const regex = RegExp('^[A-Z0-9](-?[A-Z0-9])*$');
+  return regex.test(value);
+}
+
+const alphaNumericDashes = (value: string): boolean => {
+  const regex = RegExp(/^[a-z0-9](-?[a-z0-9])*$/gi);
+  return regex.test(value);
+}
+
 /**
  * Validation rules used by react-hook-form
  * Allow for message customization
@@ -59,9 +69,18 @@ export const noSpecialCharsRule = (
   errorMessage: string = 'Special characters are not allowed'
 ) => compose(maybeShowError(errorMessage), noSpecialChars);
 
+
 export const validEmailRule = (
-  errorMessage: string = 'Invalid email address'
+  errorMessage: string = 'Please add a valid email address'
 ) => compose(maybeShowError(errorMessage), validEmail);
+
+export const upperNumericDashesRule = (
+  errorMessage: string = 'Only upercase alphanumeric characters and hyphens allowed.'
+) => compose(maybeShowError(errorMessage), upperNumericDashes);
+
+export const alphaNumericDashesRule = (
+  errorMessage: string = 'Only lowercase alphanumeric characters and hyphens allowed.'
+) => compose(maybeShowError(errorMessage), alphaNumericDashes);
 
 export const noSpecialCharsOrSpaceRule = (
   errorMessage: string = 'Special characters or space are not allowed'
