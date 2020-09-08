@@ -26,7 +26,8 @@ import { encodeQueryToURL, setPage } from 'utils';
 import { getAllWidgets, getWidget } from 'services/widgets';
 import { useRequest } from 'utils/hooks';
 
-import { WidgetList, WidgetDetails, WidgetEdit, LinkWithOrg } from 'components';
+import { WidgetList, WidgetDetails, WidgetEdit } from 'components/widgets';
+import { LinkWithOrg } from 'components/link-with-org';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { SidebarLayout, ContentLayout } from 'layouts';

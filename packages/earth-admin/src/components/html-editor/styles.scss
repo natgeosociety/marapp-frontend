@@ -22,9 +22,26 @@
 :root {
   --ck-color-focus-border: #{$marapp-primary-color}!important;
   --ck-color-base-background: #{$marapp-gray-9} !important;
+  --ck-color-toolbar-background: #{$marapp-gray-7} !important;
+  --ck-color-text: #{$marapp-gray-1}!important;
+  --ck-color-button-on-background: #{$marapp-gray-9}!important;
+  --ck-color-button-default-hover-background: #{$marapp-gray-9}!important;
+  --ck-color-tooltip-text: #{$marapp-gray-1}!important;
+  --ck-color-button-default-active-background: #{$marapp-gray-9}!important;
+  --ck-color-button-default-active-shadow: none!important;
+  --ck-color-button-on-active-background: #{$marapp-gray-9}!important;
+  --ck-color-button-on-hover-background: #{$marapp-gray-9}!important;
+  --ck-color-button-on-active-shadow: none!important;
+  --ck-color-list-button-on-background: #{$marapp-gray-7}!important;
+  --ck-color-list-button-on-text: #{$marapp-gray-1}!important;
+  --ck-color-list-button-on-background-focus: #{$marapp-gray-7}!important;
+  --ck-color-list-button-hover-background: #{$marapp-gray-7}!important;
 }
 
 .ck-editor .ck-content {
   max-height: 400px;
 }
 
+.ck.ck-list {
+  padding-left: 0!important;
+}

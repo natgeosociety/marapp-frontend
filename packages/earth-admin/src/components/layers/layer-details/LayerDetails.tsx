@@ -26,7 +26,9 @@ import renderHTML from 'react-render-html';
 
 import { LayerProps } from '../model';
 
-import { JsonEditor, ActionModal, LinkWithOrg } from 'components';
+import { JsonEditor } from 'components/json-editor';
+import { ActionModal } from 'components/action-modal';
+import { LinkWithOrg } from 'components/link-with-org';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 
@@ -52,7 +54,7 @@ export default function LayerDetails(props: LayerProps) {
   const [layerConfig, setLayerConfig] = useState();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const { getPermissions } = useAuth0();
+  const {getPermissions} = useAuth0();
 
   const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
 
@@ -84,12 +86,12 @@ export default function LayerDetails(props: LayerProps) {
         <div className="ng-flex ng-align-center ng-flex-center ng-text-center ng-center">
           <span className="ng-padding-horizontal">
             Published
-            <br />
+            <br/>
             <i className={`ng-icon-${publishIcon}`}></i>
           </span>
           <span className="ng-padding-horizontal">
             Primary
-            <br />
+            <br/>
             <i className={`ng-icon-${primaryIcon}`}></i>
           </span>
         </div>
@@ -140,7 +142,7 @@ export default function LayerDetails(props: LayerProps) {
             <p>
               <span className="ng-text-weight-medium">Layer config: </span>
             </p>
-            <JsonEditor json={layerConfig} readOnly={true} />
+            <JsonEditor json={layerConfig} readOnly={true}/>
           </div>
         )}
       </div>

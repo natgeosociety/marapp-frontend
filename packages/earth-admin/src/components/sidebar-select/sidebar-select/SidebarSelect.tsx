@@ -22,7 +22,8 @@ import classnames from 'classnames';
 
 import { useDomWatcher } from 'utils/hooks';
 
-import { SidebarItem, DropdownComponent } from 'components/index';
+import { SidebarItem } from 'components/sidebar-select';
+import { DropdownComponent } from 'components/dropdown';
 import { IAdminPage } from '../model';
 import { ADMIN_PAGES } from '../model';
 

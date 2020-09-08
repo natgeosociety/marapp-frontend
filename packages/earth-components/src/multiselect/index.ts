@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './layer-details';
-export * from './layer-edit';
-export * from './layer-list';
-export * from './layer-sidebar';
+import AsyncSelect from './AsyncSelect';
+
+export default AsyncSelect;

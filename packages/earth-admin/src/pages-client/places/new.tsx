@@ -28,7 +28,11 @@ import { addPlace, getUniqueSlug } from 'services/places';
 import { PlaceTypeEnum } from './model';
 import { noSpecialCharsRule, setupErrors } from 'utils/validations';
 
-import { LinkWithOrg, ErrorMessages, Card, FakeJsonUpload, Input } from 'components';
+import { LinkWithOrg } from 'components/link-with-org';
+import { ErrorMessages } from 'components/error-messages';
+import { Card } from 'components/card';
+import { FakeJsonUpload } from 'components/fake-json-upload';
+import { Input } from 'components/input';
 import { ContentLayout } from 'layouts';
 
 export function NewPlace(path: any) {

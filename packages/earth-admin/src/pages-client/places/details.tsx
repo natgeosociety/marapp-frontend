@@ -9,15 +9,19 @@ import { noSpecialCharsRule, noSpecialCharsOrSpaceRule, setupErrors } from 'util
 import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
-import {
-  ErrorMessages,
-  ActionModal,
-  MapComponent,
-  InlineEditCard,
-  Metrics,
-  Intersections,
-  Toggle, FakeJsonUpload, Card, Input, LinkWithOrg, DownloadFile
-} from 'components';
+
+import { PlaceMetrics, PlaceIntersections } from 'components/places';
+import { ErrorMessages } from 'components/error-messages';
+import { ActionModal } from 'components/action-modal';
+import { MapComponent } from 'components/map';
+import { InlineEditCard } from 'components/inline-edit-card';
+import { Toggle } from 'components/toggle';
+import { FakeJsonUpload } from 'components/fake-json-upload';
+import { Card } from 'components/card';
+import { Input } from 'components/input';
+import { LinkWithOrg } from 'components/link-with-org';
+import { DownloadFile } from 'components/download-file';
+
 
 import { ContentLayout } from 'layouts';
 import { PlaceTypeEnum, PLACE_DETAIL_QUERY } from './model';

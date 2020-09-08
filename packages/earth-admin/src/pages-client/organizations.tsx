@@ -28,7 +28,8 @@ import { AuthzGuards } from 'auth/permissions';
 import { useRequest } from 'utils/hooks';
 
 import { ContentLayout, SidebarLayout } from 'layouts';
-import { OrganizationList, OrganizationDetails, OrganizationEdit, LinkWithOrg } from 'components';
+import { OrganizationList, OrganizationDetails, OrganizationEdit } from 'components/organizations';
+import { LinkWithOrg } from 'components/link-with-org';
 import { useAuth0 } from 'auth/auth0';
 
 const PAGE_TYPE = setPage('Organizations');

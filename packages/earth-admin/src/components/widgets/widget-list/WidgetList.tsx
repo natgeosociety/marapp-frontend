@@ -18,7 +18,7 @@
 */
 
 import * as React from 'react';
-import { DataListing, DefaultListItem } from 'components';
+import { DataListing, DefaultListItem } from 'components/data-listing';
 import { WidgetContext } from 'utils/contexts';
 
 export default function WidgetList() {

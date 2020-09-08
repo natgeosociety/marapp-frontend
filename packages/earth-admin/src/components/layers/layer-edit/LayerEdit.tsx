@@ -28,7 +28,11 @@ import { JSHINT } from 'jshint';
 
 import { LayerProps, LayerType, LayerProvider, LayerCategory } from '../model';
 
-import { JsonEditor, HtmlEditor, ErrorMessages, LinkWithOrg, SearchInput} from 'components';
+import { JsonEditor } from 'components/json-editor';
+import { HtmlEditor } from 'components/html-editor';
+import { ErrorMessages } from 'components/error-messages';
+import { LinkWithOrg } from 'components/link-with-org';
+import { SearchInput } from 'components/search-input';
 import { handleLayerForm } from 'services/layers';
 import { Auth0Context } from 'utils/contexts';
 
@@ -55,7 +59,7 @@ export default function LayerEdit(props: LayerProps) {
     newLayer,
   } = props;
 
-  const { getValues, register, formState, triggerValidation, control } = useForm({
+  const {getValues, register, formState, triggerValidation, control} = useForm({
     mode: 'onChange',
   });
 
@@ -64,7 +68,7 @@ export default function LayerEdit(props: LayerProps) {
   const [jsonError, setJsonError] = useState(false);
   const [layerCategory, setLayerCategory] = useState([]);
 
-  const { selectedGroup } = useContext(Auth0Context);
+  const {selectedGroup} = useContext(Auth0Context);
 
   useEffect(() => {
     setLayerConfig(newLayer ? {} : config);
@@ -104,7 +108,7 @@ export default function LayerEdit(props: LayerProps) {
   return (
     <div className="marapp-qa-layeredit">
       <div className="ng-flex ng-flex-space-between">
-        <h2 className="ng-text-display-m ng-c-flex-grow-1">{ newLayer ? 'Add Layer' : `Edit Layer - ${name}` }</h2>
+        <h2 className="ng-text-display-m ng-c-flex-grow-1">{newLayer ? 'Add Layer' : `Edit Layer - ${name}`}</h2>
 
         <span>
           Last updated at: {formatDate(updatedAt)}; Created at: {formatDate(createdAt)}
@@ -153,7 +157,7 @@ export default function LayerEdit(props: LayerProps) {
                 name="description"
                 control={control}
                 defaultValue={description}
-                as={<HtmlEditor html={description} />}
+                as={<HtmlEditor html={description}/>}
               />
             </div>
           </div>
@@ -248,7 +252,7 @@ export default function LayerEdit(props: LayerProps) {
               name="references"
               control={control}
               valueName={id}
-              as={<SearchInput options={references} optionType="layers" />}
+              as={<SearchInput options={references} optionType="layers"/>}
             />
           </div>
 
@@ -260,12 +264,12 @@ export default function LayerEdit(props: LayerProps) {
                 control={control}
                 defaultValue={layerConfig}
                 onChange={(layerConfig) => handleJsonChange(layerConfig)}
-                as={<JsonEditor json={layerConfig} />}
+                as={<JsonEditor json={layerConfig}/>}
               />
             </div>
           )}
 
-          {serverErrors && <ErrorMessages errors={serverErrors} />}
+          {serverErrors && <ErrorMessages errors={serverErrors}/>}
           <div className="ng-flex">
             <button
               className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-medium-right"

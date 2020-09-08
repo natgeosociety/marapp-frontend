@@ -19,29 +19,30 @@
 
 import * as React from 'react';
 
-import { AuthzGuards } from 'auth/permissions';
 import { useAuth0 } from 'auth/auth0';
-import { ContentLayout } from 'layouts';
-import { LinkWithOrg } from 'components/link-with-org';
-import { Card } from 'components/card';
+import { AuthzGuards } from 'auth/permissions';
 
-export function OrganizationHome() {
-  const {getPermissions} = useAuth0();
-  const permissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
-  const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
+import { ContentLayout } from 'layouts';
+import { Card } from 'components/card';
+import { LinkWithOrg } from 'components/link-with-org';
+
+export function LayersHome(props: any) {
+  const { getPermissions } = useAuth0();
+  const permissions = getPermissions(AuthzGuards.accessLayersGuard);
+  const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
 
   return (writePermissions && (
-    <ContentLayout className="marapp-qa-organizationhome">
+    <ContentLayout className="marapp-qa-layershome">
       {writePermissions && (
         <>
-          <h1 className="ng-text-display-m ng-margin-medium-bottom">ORGANIZATIONS</h1>
+          <h1 className="ng-text-display-m ng-margin-medium-bottom">Layers</h1>
           <div className="ng-grid">
             <div className="ng-width-1-2">
               <Card>
-                <p>Start creating a new organization for users to collaborate and share with each other</p>
+                <p>Search a layer to view and edit details, or start creating a new layer.</p>
                 <div className="ng-flex ng-flex-center">
-                  <LinkWithOrg className="marapp-qa-actioncreate ng-button ng-button-secondary" to="organizations/new">
-                    Create new Organization
+                  <LinkWithOrg className="marapp-qa-actioncreate ng-button ng-button-secondary" to="layers/new">
+                    Create new layer
                   </LinkWithOrg>
                 </div>
               </Card>
