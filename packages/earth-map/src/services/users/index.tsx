@@ -66,7 +66,7 @@ class UsersService {
 export const service = new UsersService();
 
 export function changeEmailConfirmation(options = {}) {
-  const widgetsQuery = encodeQueryToURL(`/users/change-email`, options);
+  const widgetsQuery = encodeQueryToURL(`/users/profile/change-email`, options);
   return service.request(widgetsQuery);
 }
 
