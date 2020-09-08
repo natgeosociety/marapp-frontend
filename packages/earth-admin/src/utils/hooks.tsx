@@ -102,3 +102,17 @@ export function useDomWatcher(ref, callback, skip) {
     };
   }, [ref, skip]);
 }
+
+
+export function copyToClipboard(e, ref, successFunction) {
+  e.preventDefault();
+  ref.current.select();
+
+  document.execCommand('copy');
+  e.target.focus();
+  successFunction('Copied!');
+
+  setTimeout(() => {
+    successFunction('');
+  }, 4000);
+}

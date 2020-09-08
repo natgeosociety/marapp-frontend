@@ -20,7 +20,7 @@ import { LayerContext } from 'utils/contexts';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { encodeQueryToURL, formatDate, setPage } from 'utils';
 import { getAllLayers, getLayer, handleLayerForm } from 'services/layers';
-import { useRequest } from 'utils/hooks';
+import { useRequest, copyToClipboard } from 'utils/hooks';
 import renderHTML from 'react-render-html';
 import { intersection } from 'lodash';
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
@@ -70,22 +70,6 @@ export function LayerDetail(path: any) {
   const [aaa, setaaa] = useState();
   const [layerCategory, setLayerCategory] = useState(null);
   const [layerType, setLayerType] = useState(null);
-
-
-  function copyToClipboard(e) {
-    e.preventDefault();
-    textAreaRef.current.select();
-
-    document.execCommand('copy');
-    // This is just personal preference.
-    // I prefer to not show the whole text area selected.
-    e.target.focus();
-    setCopySuccess('Copied!');
-
-    setTimeout(() => {
-      setCopySuccess('');
-    }, 4000);
-  }
 
 
   const {
@@ -421,7 +405,7 @@ export function LayerDetail(path: any) {
                     <p className="ng-flex ng-flex-space-between">
                       <span className="ng-text-weight-medium">Layer config:</span>
                       <span>
-                        <i onClick={(e) => copyToClipboard(e)}
+                        <i onClick={(e) => copyToClipboard(e, textAreaRef, setCopySuccess)}
                            className='ng-icon ng-icon-layers ng-c-cursor-pointer ng-margin-small-right'/>
                         <span className="ng-text-weight-normal">{copySuccess}</span>
                       </span>
