@@ -25,8 +25,7 @@ import { AxiosInstance } from 'axios';
 import { API_URL } from "config";
 
 /**
- * DataIndexes service class
- * It is a singleton for not instanciate Jsona on each request.
+ * DataIndexes service class.
  */
 class DataIndexesService {
   private dataFormatter: Jsona;
