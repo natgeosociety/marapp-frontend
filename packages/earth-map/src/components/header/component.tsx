@@ -29,7 +29,6 @@ import { checkRole, getAvailableOrgs } from 'utils';
 import { APP_LOGO } from '../../theme';
 import { ADMIN_URL, APP_NAME } from 'config';
 import { fetchStats } from 'services/stats';
-import { Spinner } from '@marapp/earth-components';
 
 import './styles.scss';
 
@@ -69,14 +68,20 @@ const Header = (props: IProps) => {
   const allInitiallySelected = group.length === allGroups.length;
   const [selectedGroups, setSelectedGroups] = useState(allInitiallySelected ? [] : group);
   const [dropdownState, setDropdownState] = useState('close');
-  const [availableOrgs, setAvailableOrgs] = useState([]);
-  const [isLoadingOrgsStats, setIsLoadingOrgsStats] = useState(true);
+  const [availableOrgs, setAvailableOrgs] = useState(getAvailableOrgs(roles).map(role => ({ name: role, layers: 'N/A', locations: 'N/A' })));
 
   useEffect(() => {
-    fetchStats({ group: getAvailableOrgs(roles).join(',') }).then((res: any) => {
-      setAvailableOrgs(res.data);
-      setIsLoadingOrgsStats(false);
-    });
+    
+    (async () => {
+      try {
+        const response: any = await fetchStats({ group: getAvailableOrgs(roles).join(',') });
+        setTimeout(() => 
+        setAvailableOrgs(response.data), 5000);
+      }
+      catch (err) {
+        console.error(err);
+      }
+    })();
   }, []);
 
   const handleDropdownToggle = () => {
@@ -166,20 +171,18 @@ const Header = (props: IProps) => {
           <span className="ng-dropdown-item">MAP VIEW</span>
         </li>
         <li className="marapp-qa-orglist ng-form ng-form-dark">
-          { isLoadingOrgsStats && <div className="ng-margin-vertical ng-padding-vertical"><Spinner /></div> }
           <div className="ng-padding-medium-horizontal ng-padding-top">
             {availableOrgs.map((g, i) => (
               <label
                 htmlFor={g.name}
-                className={classNames({
-                  'ng-display-block ng-padding-bottom': true,
+                className={classNames('ng-padding-bottom ng-flex', {
                   'ng-c-cursor-pointer': hasMultipleGroups,
                 })}
                 key={i}
               >
                 {hasMultipleGroups && (
                   <input
-                    className="ng-checkbox-input"
+                    className="ng-checkbox-input ng-flex-item-none ng-margin-top-remove"
                     type="checkbox"
                     id={g.name}
                     value={g.name}
@@ -188,12 +191,13 @@ const Header = (props: IProps) => {
                     onChange={(e) => onOrgChange(e)}
                   />
                 )}
-                <div className="ng-org-count">
+                <div>
                   {g.name}
-                  <br/>
-                  Places ({g.locations})
-                  <strong className="ng-icon-bullet"></strong>
-                  Layers ({g.layers})
+                  <span className="ng-display-block ng-color-mdgray">
+                    Places ({g.locations})
+                    <strong className="ng-icon-bullet"></strong>
+                    Layers ({g.layers})
+                  </span>
                 </div>
               </label>
             ))}
