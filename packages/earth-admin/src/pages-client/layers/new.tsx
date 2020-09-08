@@ -42,10 +42,10 @@ import {
 } from './model';
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 
-export function NewLayer(path: any) {
+export function NewLayer() {
   const {selectedGroup} = useAuth0();
 
-  const {getValues, register, watch, formState, errors, setValue, control} = useForm({
+  const {register, watch, formState, errors, setValue, control, handleSubmit} = useForm({
     mode: 'onChange',
   });
 
@@ -54,9 +54,6 @@ export function NewLayer(path: any) {
 
   const watchName = watch('name');
   const watchJson = watch('config');
-  const watchCategory = watch('category');
-  const watchType = watch('type');
-  const watchProvider = watch('provider');
 
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState([]);
@@ -73,16 +70,11 @@ export function NewLayer(path: any) {
     return !!e ? e.value : e;
   };
 
-  async function onSubmit(e) {
-    e.preventDefault();
-
-    const formData = getValues();
-
-    const {type, category, provider, references} = formData;
-
+  const onSubmit = async (values: any) => {
+    const {type, category, provider, references} = values;
 
     const parsed = {
-      ...formData,
+      ...values,
       ...(category && {category: flattenArrayForSelect(category, 'value')}),
       ...(type && {type: flattenObjectForSelect(type)}),
       ...(provider && {provider: flattenObjectForSelect(provider)}),
@@ -101,7 +93,6 @@ export function NewLayer(path: any) {
   }
 
   const generateSlug = async (e) => {
-    e.preventDefault();
     try {
       const {data}: any = await getUniqueSlug(watchName, selectedGroup);
       setValue('slug', data.slug, true);
@@ -132,7 +123,7 @@ export function NewLayer(path: any) {
           <h2 className="ng-text-display-m ng-c-flex-grow-1">New layer</h2>
         </div>
 
-        <form className="ng-form ng-form-dark ng-flex-column">
+        <form className="ng-form ng-form-dark ng-flex-column" onSubmit={handleSubmit(onSubmit)}>
           <Card className="ng-margin-medium-bottom">
             <Input
               name="name"
@@ -284,7 +275,6 @@ export function NewLayer(path: any) {
               <div className="ng-flex">
                 <button
                   className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
-                  onClick={onSubmit}
                   disabled={!isValid || jsonError || !dirty || !watchJson}
                 >
                   Save and view details

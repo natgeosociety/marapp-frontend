@@ -29,16 +29,19 @@ import { setupErrors, validEmailRule, noSpecialCharsRule } from 'utils/validatio
 import { getOrganization, updateOrganization } from 'services/organizations';
 import { ContentLayout } from 'layouts';
 import { encodeQueryToURL } from 'utils';
-import { ActionModal, LinkWithOrg, InlineEditCard, Input } from 'components';
+import { ActionModal } from 'components/action-modal';
+import { LinkWithOrg } from 'components/link-with-org';
+import { InlineEditCard } from 'components/inline-edit-card';
+import { Input } from 'components/input';
 
 export function OrganizationDetails(props: OrganizationDetailsProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [localOrgData, setLocalOrgData] = useState(null);
-  const { getPermissions, selectedGroup } = useAuth0();
+  const {getPermissions, selectedGroup} = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
-  const encodedQuery = encodeQueryToURL(`organizations/${props.page}`, { include: 'owners' });
+  const encodedQuery = encodeQueryToURL(`organizations/${props.page}`, {include: 'owners'});
 
-  const { isLoading, errors, data } = useRequest(() =>
+  const {isLoading, errors, data} = useRequest(() =>
     getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessOrganizationsGuard,
     query: encodedQuery,
@@ -49,11 +52,11 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   }, [data]);
 
 
-  const { getValues, register, formState, errors: formErrors } = useForm({
+  const {getValues, register, formState, errors: formErrors} = useForm({
     mode: 'onChange',
   });
 
-  const { touched } = formState;
+  const {touched} = formState;
   const renderErrorFor = setupErrors(formErrors, touched);
 
   function handleDeleteToggle() {
@@ -62,18 +65,18 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
 
   async function onSubmit(e, setIsEditing, setIsLoading, setServerErrors) {
     e.preventDefault();
-    const { owner, ...rest } = getValues();
+    const {owner, ...rest} = getValues();
 
     const transformedFormData = {
       ...rest,
       ...owner && {
-        owners: [owner]
-      }
-    }
+        owners: [owner],
+      },
+    };
 
     try {
       setIsLoading(true);
-      const { data }: any = await updateOrganization(id, transformedFormData, selectedGroup);
+      const {data}: any = await updateOrganization(id, transformedFormData, selectedGroup);
       setIsEditing(false);
       setLocalOrgData(data);
       setIsLoading(false);
@@ -84,10 +87,10 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   }
 
   if (isLoading) {
-    return <ContentLayout isLoading />
+    return <ContentLayout isLoading/>;
   }
 
-  const { name, owners, slug, id } = localOrgData;
+  const {name, owners, slug, id} = localOrgData;
   const owner = owners && owners[0];
 
   return (
@@ -127,9 +130,9 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                       ref={register({
                         required: 'Organization name is required',
                         validate: {
-                          noSpecialCharsRule: noSpecialCharsRule('Organization name can not contain special characters')
-                        }
-                      })} />
+                          noSpecialCharsRule: noSpecialCharsRule('Organization name can not contain special characters'),
+                        },
+                      })}/>
                   </>
                 )}>
                 <h1 className="ng-text-display-m ng-margin-remove">{name}</h1>
@@ -153,9 +156,9 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                       ref={register({
                         required: 'Please enter owner email',
                         validate: {
-                          validEmailRule: validEmailRule()
-                        }
-                      })} />
+                          validEmailRule: validEmailRule(),
+                        },
+                      })}/>
                   </>
                 )}>
                 <div className="ng-margin-medium-bottom">
@@ -186,11 +189,11 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
           <div className="ng-padding-medium ultradkgray ng-text-right">
             <button className="marapp-qa-actiondelete ng-button ng-button-secondary" onClick={handleDeleteToggle}>
               Delete organization
-          </button>
+            </button>
           </div>
         )}
       </div>
 
     </ContentLayout>
-  )
+  );
 };

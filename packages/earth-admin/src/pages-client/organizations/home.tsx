@@ -22,10 +22,11 @@ import * as React from 'react';
 import { AuthzGuards } from 'auth/permissions';
 import { useAuth0 } from 'auth/auth0';
 import { ContentLayout } from 'layouts';
-import { LinkWithOrg, Card } from 'components';
+import { LinkWithOrg } from 'components/link-with-org';
+import { Card } from 'components/card';
 
 export function OrganizationHome() {
-  const { getPermissions } = useAuth0();
+  const {getPermissions} = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
