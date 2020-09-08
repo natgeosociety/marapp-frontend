@@ -27,6 +27,8 @@ import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 import Select from 'react-select';
 import { LinkWithOrg } from 'components/link-with-org';
 import { ActionModal } from 'components/action-modal';
+// import ShowMore from 'react-show-more';
+import Collapse from '@kunukn/react-collapse';
 import { Input } from 'components/input';
 import { InlineEditCard } from 'components/inline-edit-card';
 import { Card } from 'components/card';
@@ -35,7 +37,7 @@ import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { ContentLayout, SidebarLayout } from 'layouts';
 import { Controller, useForm } from 'react-hook-form';
-import { noSpecialChars, noSpecialCharsOrSpace, setupErrors } from 'utils/validations';
+import { noSpecialCharsRule, alphaNumericDashesRule, setupErrors } from 'utils/validations';
 import { navigate } from 'gatsby';
 import { PlaceTypeEnum } from 'pages-client/places/model';
 import { getPlace, handlePlaceForm } from 'services';
@@ -70,6 +72,7 @@ export function LayerDetail(path: any) {
   const [aaa, setaaa] = useState();
   const [layerCategory, setLayerCategory] = useState(null);
   const [layerType, setLayerType] = useState(null);
+  const [toggle, setToggle] = useState(false);
 
 
   const {
@@ -235,10 +238,12 @@ export function LayerDetail(path: any) {
                       label="Title*"
                       defaultValue={name}
                       className="ng-display-block"
-                      error={renderErrorFor('name', 'noSpecialChars')}
+                      error={renderErrorFor('name')}
                       ref={register({
                         required: 'Layer title is required',
-                        validate: {noSpecialChars},
+                        validate: {
+                          noSpecialCharsRule: noSpecialCharsRule(),
+                        },
                       })}/>
                   </>
                 )}>
@@ -278,10 +283,12 @@ export function LayerDetail(path: any) {
                         label="Slug*"
                         defaultValue={slug}
                         className="ng-display-block"
-                        error={renderErrorFor('slug', 'noSpecialCharsOrSpace')}
+                        error={renderErrorFor('slug')}
                         ref={register({
                           required: 'Layer slug is required',
-                          validate: {noSpecialCharsOrSpace},
+                          validate: {
+                            noSpecialCharsRule: noSpecialCharsRule(),
+                          },
                         })}/>
                     </div>
                     <div>
@@ -410,8 +417,12 @@ export function LayerDetail(path: any) {
                         <span className="ng-text-weight-normal">{copySuccess}</span>
                       </span>
                     </p>
-                    <JsonEditor json={config} readOnly={true}/>
 
+                    <Collapse addState isOpen={toggle} collapseHeight="100px">
+                      <JsonEditor json={config} readOnly={true}/>
+                    </Collapse>
+                    <span onClick={e => setToggle(!toggle)}
+                          className="ng-text-center ng-c-cursor-pointer ng-display-block">show {toggle ? 'less' : 'more'}</span>
                   </div>}
                 </div>
               </InlineEditCard>

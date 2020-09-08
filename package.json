@@ -39,6 +39,8 @@
     "rc-progress": "^2.3.0",
     "react": "^16.8.6",
     "react-show-more": "^2.0.0",
+    "react-collapse": "^5.0.1",
+    "@kunukn/react-collapse": "^2.2.9",
     "react-copy-to-clipboard": "^5.0.2",
     "react-datepicker": "^2.8.0",
     "react-dom": "^16.8.6",
