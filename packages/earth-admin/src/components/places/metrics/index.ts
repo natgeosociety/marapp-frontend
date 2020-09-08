@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import PlaceIntersections from './PlaceIntersections';
+import Metrics from './Metrics';
 
-export { PlaceIntersections };
+export { Metrics };

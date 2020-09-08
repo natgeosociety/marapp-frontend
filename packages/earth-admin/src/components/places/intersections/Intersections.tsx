@@ -17,4 +17,24 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { default as Sidebar } from './PlaceSidebar';
+import * as React from 'react';
+
+import { LinkWithOrg } from 'components';
+import { PlaceIntersectionProps } from '../../../pages-client/places/model';
+
+export default function Intersections( props: PlaceIntersectionProps) {
+  const { intersections, name } = props;
+
+  return (
+    <div className="marapp-qa-placesintersections ng-flex ng-flex-column ng-margin-medium-bottom">
+      <p className="ng-text-weight-bold ng-margin-small-bottom">{name} Relationships</p>
+      <div className="ng-flex ng-flex-wrap ng-padding-left">
+        {intersections.map((int) => (
+          <LinkWithOrg to={`/places/${int.id}`} key={int.id} className="marapp-qa-actionintersection ng-margin-medium-right">
+            {int.name}
+          </LinkWithOrg>
+        ))}
+      </div>
+    </div>
+  );
+}
