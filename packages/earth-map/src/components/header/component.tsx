@@ -75,8 +75,7 @@ const Header = (props: IProps) => {
     (async () => {
       try {
         const response: any = await fetchStats({ group: getAvailableOrgs(roles).join(',') });
-        setTimeout(() => 
-        setAvailableOrgs(response.data), 5000);
+        setAvailableOrgs(response.data);
       }
       catch (err) {
         console.error(err);
