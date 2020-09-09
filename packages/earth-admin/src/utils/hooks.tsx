@@ -103,7 +103,12 @@ export function useDomWatcher(ref, callback, skip) {
   }, [ref, skip]);
 }
 
-
+/**
+ * Copy to clipboard function
+ * @param e
+ * @param ref
+ * @param successFunction
+ */
 export function copyToClipboard(e, ref, successFunction) {
   e.preventDefault();
   ref.current.select();

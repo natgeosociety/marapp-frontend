@@ -133,7 +133,6 @@ export function LayerDetail(path: any) {
 
     const {type, category, provider, references} = formData;
 
-    console.log(formData);
     const parsed = {
       ...formData,
       ...(category && {category: flattenArrayForSelect(category, 'value')}),
@@ -141,10 +140,6 @@ export function LayerDetail(path: any) {
       ...(provider && {provider: flattenObjectForSelect(provider, 'value')}),
       ...(references && {references: flattenArrayForSelect(references, 'id')}),
     };
-
-
-    console.log(parsed);
-
 
     try {
       setIsLoading && setIsLoading(true);
