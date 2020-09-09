@@ -19,7 +19,7 @@
 
 import * as React from 'react';
 import { useEffect } from 'react';
-import { Link } from 'gatsby';
+import { Link, navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
 
 import { Spinner } from '@marapp/earth-components';
@@ -59,6 +59,12 @@ const Organization = (props: IProps) => {
 
   if (!org || !isValidOrg(groups, org)) {
     return <OrgSwitcherPage groups={groups} />
+  }
+
+  if (org === '*' && !location.pathname.startsWith('/*/organizations')) {
+    navigate(`/${org}/organizations`, { replace: true });
+
+    return null;
   }
 
   if (isLoading) return <Spinner size="medium" />
