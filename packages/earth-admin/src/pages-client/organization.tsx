@@ -63,7 +63,7 @@ const Organization = (props: IProps) => {
   }
 
   if (org === '*' && !location.pathname.startsWith(`${BASE_URL}*/organizations`)) {
-    navigate(`${BASE_URL}${org}/organizations`, { replace: true });
+    window.location.assign(`${BASE_URL}*/organizations`);
 
     return null;
   }
