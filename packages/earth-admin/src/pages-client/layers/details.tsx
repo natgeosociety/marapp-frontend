@@ -62,7 +62,7 @@ export function LayerDetail(path: any) {
   });
   const {isLoading, data} = useRequest(() => getLayer(encodedQuery), {
     permissions: AuthzGuards.writeLayersGuard,
-    skip: path.newLayer,
+    query: encodedQuery,
   });
 
   const [layer, setLayer] = useState(data);
@@ -71,7 +71,6 @@ export function LayerDetail(path: any) {
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState();
   const [layerConfig, setLayerConfig] = useState();
-  const [aaa, setaaa] = useState();
   const [layerCategory, setLayerCategory] = useState(null);
   const [layerType, setLayerType] = useState(null);
   const [toggle, setToggle] = useState(false);
@@ -100,6 +99,8 @@ export function LayerDetail(path: any) {
 
   useEffect(() => {
     setLayer(data);
+
+    console.log('data change');
 
     data.category && setLayerCategory(getSelectValues(LAYER_CATEGORY_OPTIONS, data.category));
     data.type && setLayerType(LAYER_TYPE_OPTIONS.find((t) => t.value === data.type));
@@ -196,8 +197,7 @@ export function LayerDetail(path: any) {
     setShowDeleteModal(!showDeleteModal);
   }
 
-  return (
-    <ContentLayout backTo="/layers" isLoading={isLoading} className="marapp-qa-layerdetail">
+  return !!layer && (<ContentLayout backTo="/layers" isLoading={isLoading} className="marapp-qa-layerdetail">
       {showDeleteModal && (
         <ActionModal
           id={id}
@@ -295,27 +295,6 @@ export function LayerDetail(path: any) {
                                     ...SELECT_THEME,
                                   })}
                                   rules={{required: true}}/>
-
-
-                      {/*<Select*/}
-                      {/*  className="marapp-qa-category"*/}
-                      {/*  name="category"*/}
-                      {/*  options={LAYER_CATEGORY_OPTIONS}*/}
-                      {/*  isClearable*/}
-                      {/*  isSearchable*/}
-                      {/*  isMulti*/}
-                      {/*  value={layerCategory}*/}
-                      {/*  placeholder="Select layer category"*/}
-                      {/*  onChange={(e) => setLayerCategory(e)}*/}
-                      {/*  styles={CUSTOM_STYLES}*/}
-                      {/*  theme={theme => ({*/}
-                      {/*    ...theme,*/}
-                      {/*    ...SELECT_THEME,*/}
-                      {/*  })}*/}
-                      {/*  ref={register({*/}
-                      {/*    name: 'category',*/}
-                      {/*    required: 'Layer category is required',*/}
-                      {/*  })}/>*/}
                     </div>
                   </>
                 )}>
@@ -515,8 +494,8 @@ export function LayerDetail(path: any) {
           </div>
         </form>
 
-        {/*<input type="text" ref={textAreaRef} value={JSON.stringify(config)} readOnly={true}*/}
-        {/*       style={{position: 'absolute', left: '-10000px', top: '-10000px'}}/>*/}
+        <input type="text" ref={textAreaRef} value={JSON.stringify(config)} readOnly={true}
+               style={{position: 'absolute', left: '-10000px', top: '-10000px'}}/>
       </div>
     </ContentLayout>
   );

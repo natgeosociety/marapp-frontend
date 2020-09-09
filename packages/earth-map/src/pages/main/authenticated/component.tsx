@@ -29,8 +29,10 @@ const AuthenticatedPage = ({ component: Component, ...rest }) => {
   useEffect(() => {
     const fn = async () => {
       if (!isAuthenticated) {
-        // Save target URL to redirect to after login;
-        await login({ appState: { targetUrl: `${window.location.pathname}${window.location.search}` } });
+        // preserve path, query and hash params when redirecting;
+        const target = window.location.href.replace(window.location.origin, '')
+        // save target URL to redirect to after login;
+        await login({ appState: { targetUrl: target } });
       }
     };
     fn();

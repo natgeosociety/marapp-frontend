@@ -22,20 +22,22 @@ import { useState, useEffect } from 'react';
 
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
-import { LayerContext } from 'utils/contexts';
+import { LayerContext, PlaceContext } from 'utils/contexts';
 import { encodeQueryToURL, setPage } from 'utils';
+import { getAllPlaces } from 'services/places';
 
 import { SidebarLayout } from 'layouts';
 import { DataListing, DefaultListItem } from 'components/data-listing';
 import { getAllLayers } from 'services';
 
 
+const LAYER_DETAIL_QUERY = { include: 'references', select: 'references.name,references.id' };
 const INIT_CURSOR_LOCATION = '-1';
 
 const PAGE_TYPE = setPage('Layers');
 
 
-export default function Sidebar(props: any) {
+export default function LayerSidebar(props: any) {
   const [layers, setLayer] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);

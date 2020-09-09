@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { remove } from 'lodash';
 import classNames from 'classnames';
 import Link from 'redux-first-router-link';
@@ -28,6 +28,7 @@ import { EPanels } from 'modules/sidebar/model';
 import { checkRole, getAvailableOrgs } from 'utils';
 import { APP_LOGO } from '../../theme';
 import { ADMIN_URL, APP_NAME } from 'config';
+import { fetchStats } from 'services/stats';
 
 import './styles.scss';
 
@@ -67,6 +68,20 @@ const Header = (props: IProps) => {
   const allInitiallySelected = group.length === allGroups.length;
   const [selectedGroups, setSelectedGroups] = useState(allInitiallySelected ? [] : group);
   const [dropdownState, setDropdownState] = useState('close');
+  const [availableOrgs, setAvailableOrgs] = useState(getAvailableOrgs(roles).map(role => ({ name: role, layers: 'N/A', locations: 'N/A' })));
+
+  useEffect(() => {
+    
+    (async () => {
+      try {
+        const response: any = await fetchStats({ group: getAvailableOrgs(roles).join(',') });
+        setAvailableOrgs(response.data);
+      }
+      catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
 
   const handleDropdownToggle = () => {
     dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
@@ -156,27 +171,33 @@ const Header = (props: IProps) => {
         </li>
         <li className="marapp-qa-orglist ng-form ng-form-dark">
           <div className="ng-padding-medium-horizontal ng-padding-top">
-            {getAvailableOrgs(roles).map((g, i) => (
+            {availableOrgs.map((g, i) => (
               <label
-                htmlFor={g}
-                className={classNames({
-                  'ng-display-block ng-padding-bottom': true,
+                htmlFor={g.name}
+                className={classNames('ng-padding-bottom ng-flex', {
                   'ng-c-cursor-pointer': hasMultipleGroups,
                 })}
                 key={i}
               >
                 {hasMultipleGroups && (
                   <input
-                    className="ng-checkbox-input"
+                    className="ng-checkbox-input ng-flex-item-none ng-margin-top-remove"
                     type="checkbox"
-                    id={g}
-                    value={g}
-                    checked={!!selectedGroups.find((x) => x === g)}
-                    name={g}
+                    id={g.name}
+                    value={g.name}
+                    checked={!!selectedGroups.find((x) => x === g.name)}
+                    name={g.name}
                     onChange={(e) => onOrgChange(e)}
                   />
                 )}
-                {g}
+                <div>
+                  {g.name}
+                  <span className="ng-display-block ng-color-mdgray">
+                    Places ({g.locations})
+                    <strong className="ng-icon-bullet"></strong>
+                    Layers ({g.layers})
+                  </span>
+                </div>
               </label>
             ))}
           </div>

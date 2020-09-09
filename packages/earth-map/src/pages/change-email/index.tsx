@@ -17,23 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { Router, } from '@reach/router';
+import ChangeEmailComponent from './component';
 
-import { LayerSidebar } from 'components/layers';
-import { NewLayer } from './new';
-import { LayersHome } from './home';
-import { LayerDetail } from './details';
-
-export default function LayersPage(props) {
-  return (
-    <>
-      <LayerSidebar />
-      <Router>
-        <LayersHome path="/" />
-        <NewLayer path="/new"/>
-        <LayerDetail path="/:page" />
-      </Router>
-    </>
-  );
-}
+export default ChangeEmailComponent;

@@ -10,7 +10,7 @@ import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
 
-import { PlaceMetrics, PlaceIntersections } from 'components/places';
+import { Metrics, Intersections } from 'components/places';
 import { ErrorMessages } from 'components/error-messages';
 import { ActionModal } from 'components/action-modal';
 import { MapComponent } from 'components/map';

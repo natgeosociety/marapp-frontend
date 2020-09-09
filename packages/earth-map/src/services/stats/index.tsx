@@ -25,9 +25,10 @@ import { AxiosInstance } from 'axios';
 import { API_URL } from "config";
 
 /**
- * Metrics service class.
+ * Stats service class
+ * It is a singleton for not instanciate Jsona on each request.
  */
-class MetricsService {
+class StatsService {
   private dataFormatter: Jsona;
   private api: AxiosInstance;
 
@@ -49,12 +50,18 @@ class MetricsService {
    * Creates an axios request based on type an options.
    * @param {string} path - The path of the request.
    */
+
+
   request(path) {
     return new Promise((resolve, reject) => {
       this.api
         .get(path)
         .then(response => {
-          resolve(this.dataFormatter.deserialize(response.data));
+          const result = this.dataFormatter.deserialize(response.data);
+          resolve({
+            data: result,
+            meta: response.data.meta,
+          });
         })
         .catch(err => {
           reject(err);
@@ -63,11 +70,11 @@ class MetricsService {
   }
 }
 
-export const service = new MetricsService();
+export const service = new StatsService();
 
-export function fetchMetric(id, options = {}) {
-  const metricQuery = encodeQueryToURL(`/metrics/${id}`, options);
-  return service.request(metricQuery);
+export function fetchStats(options = {}) {
+  const layerQuery = encodeQueryToURL('/organizations/stats', options);
+  return service.request(layerQuery);
 }
 
 export default service;

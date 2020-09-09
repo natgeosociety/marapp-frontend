@@ -73,8 +73,6 @@ export function NewLayer() {
   const onSubmit = async (values: any) => {
     const {type, category, provider, references} = values;
 
-
-    console.log();
     const parsed = {
       ...values,
       ...(category && {category: flattenArrayForSelect(category, 'value')}),
