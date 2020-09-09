@@ -25,12 +25,13 @@ import { JSHINT } from 'jshint';
 import { Spinner } from '@marapp/earth-components';
 import { isValidOrg } from 'utils';
 import { useAuth0 } from 'auth/auth0';
+import { BASE_URL } from 'config';
 
 import './styles.scss';
 
 interface IProps {
   org: string;
-  children: any
+  children: any;
 }
 
 const Organization = (props: IProps) => {
@@ -61,8 +62,8 @@ const Organization = (props: IProps) => {
     return <OrgSwitcherPage groups={groups} />
   }
 
-  if (org === '*' && !location.pathname.startsWith('/*/organizations')) {
-    navigate(`/${org}/organizations`, { replace: true });
+  if (org === '*' && !location.pathname.startsWith(`${BASE_URL}*/organizations`)) {
+    navigate(`${BASE_URL}${org}/organizations`, { replace: true });
 
     return null;
   }
