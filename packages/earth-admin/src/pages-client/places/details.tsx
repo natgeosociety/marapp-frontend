@@ -25,6 +25,7 @@ import { DownloadFile } from 'components/download-file';
 
 import { ContentLayout } from 'layouts';
 import { PlaceTypeEnum, PLACE_DETAIL_QUERY } from './model';
+import { DetailList } from 'components/detail-list';
 
 export function PlaceDetail(path: any) {
   const { getPermissions, selectedGroup } = useAuth0();
@@ -373,10 +374,11 @@ export function PlaceDetail(path: any) {
           <div className="">
             {mappedIntersections &&
               map(mappedIntersections, (intersections, idx) => (
-                <Intersections
+                <DetailList
                   key={idx}
                   name={intersections[0].type}
-                  intersections={intersections}
+                  type='places'
+                  data={intersections}
                 />
               ))}
           </div>

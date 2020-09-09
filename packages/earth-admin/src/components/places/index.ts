@@ -17,6 +17,5 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './intersections';
 export * from './metrics';
 export * from './places-sidebar';

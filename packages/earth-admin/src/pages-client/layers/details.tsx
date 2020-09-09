@@ -15,42 +15,46 @@
 
 import * as React from 'react';
 import { useEffect, useState, useRef } from 'react';
+
+
 import { JSHINT } from 'jshint';
-import { LayerContext } from 'utils/contexts';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { encodeQueryToURL, formatDate, setPage } from 'utils';
+import renderHTML from 'react-render-html';
+import Select from 'react-select';
+import Collapse from '@kunukn/react-collapse';
+import { Controller, useForm } from 'react-hook-form';
+
+import { encodeQueryToURL, formatDate, flattenArrayForSelect, flattenObjectForSelect, getSelectValues } from 'utils';
 import { getAllLayers, getLayer, handleLayerForm } from 'services/layers';
 import { useRequest, copyToClipboard } from 'utils/hooks';
-import renderHTML from 'react-render-html';
-import { intersection } from 'lodash';
-import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
-import Select from 'react-select';
+import classnames from 'classnames';
+import { navigate } from 'gatsby';
+
+import { getPlace, handlePlaceForm } from 'services';
+
+import { noSpecialCharsRule, alphaNumericDashesRule, setupErrors } from 'utils/validations';
+
+import { AsyncSelect } from '@marapp/earth-components';
 import { LinkWithOrg } from 'components/link-with-org';
 import { ActionModal } from 'components/action-modal';
-// import ShowMore from 'react-show-more';
-import Collapse from '@kunukn/react-collapse';
 import { Input } from 'components/input';
 import { InlineEditCard } from 'components/inline-edit-card';
 import { Card } from 'components/card';
 import { Toggle } from 'components/toggle';
-import { useAuth0 } from 'auth/auth0';
-import { AuthzGuards } from 'auth/permissions';
-import { ContentLayout, SidebarLayout } from 'layouts';
-import { Controller, useForm } from 'react-hook-form';
-import { noSpecialCharsRule, alphaNumericDashesRule, setupErrors } from 'utils/validations';
-import { navigate } from 'gatsby';
-import { PlaceTypeEnum } from 'pages-client/places/model';
-import { getPlace, handlePlaceForm } from 'services';
-import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from 'pages-client/layers/model';
-import { AsyncSelect } from '@marapp/earth-components';
 import { JsonEditor } from 'components/json-editor';
 import { HtmlEditor } from 'components/html-editor';
-import classnames from 'classnames';
+import { DetailList } from 'components/detail-list';
+
+import { useAuth0 } from 'auth/auth0';
+import { AuthzGuards } from 'auth/permissions';
+import { ContentLayout } from 'layouts';
+
+
+import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
+import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+
 
 const LAYER_DETAIL_QUERY = {include: 'references', select: 'references.name,references.id'};
-const INIT_CURSOR_LOCATION = '-1';
 
-const PAGE_TYPE = setPage('Layers');
 
 export function LayerDetail(path: any) {
   const {getPermissions, selectedGroup} = useAuth0();
@@ -73,8 +77,10 @@ export function LayerDetail(path: any) {
   const [layerConfig, setLayerConfig] = useState();
   const [layerCategory, setLayerCategory] = useState(null);
   const [layerType, setLayerType] = useState(null);
+  const [layerProvider, setLayerProvider] = useState(null);
   const [toggle, setToggle] = useState(false);
-
+  const [copySuccess, setCopySuccess] = useState('');
+  const textAreaRef = useRef(null);
 
   const {
     id,
@@ -94,39 +100,19 @@ export function LayerDetail(path: any) {
   } = layer;
 
 
-  const [copySuccess, setCopySuccess] = useState('');
-  const textAreaRef = useRef(null);
-
   useEffect(() => {
     setLayer(data);
 
-    console.log('data change');
-
-    data.category && setLayerCategory(getSelectValues(LAYER_CATEGORY_OPTIONS, data.category));
-    data.type && setLayerType(LAYER_TYPE_OPTIONS.find((t) => t.value === data.type));
-    data.config && setLayerConfig(config);
   }, [data]);
 
 
-  const getSelectValues = (options, values) => {
+  useEffect(() => {
+    layer.config && setLayerConfig(layer.config);
+    layer.category && setLayerCategory(getSelectValues(LAYER_CATEGORY_OPTIONS, layer.category));
+    layer.type && setLayerType(LAYER_TYPE_OPTIONS.find((t) => t.value === layer.type));
+    layer.provider && setLayerProvider(LAYER_PROVIDER_OPTIONS.find((p) => p.value === layer.provider));
+  }, [layer]);
 
-    let coco = [];
-    values.map(value => {
-      const puff = options.find(val => val.value === value);
-      return coco.push(puff);
-    });
-
-
-    return coco;
-  };
-
-  const flattenArrayForSelect = (e, field) => {
-    return !!e ? e.map(val => val[field]) : e;
-  };
-
-  const flattenObjectForSelect = (e) => {
-    return !!e ? e.value : e;
-  };
 
   const {getValues, register, formState, errors, control} = useForm({
     mode: 'onChange',
@@ -151,8 +137,8 @@ export function LayerDetail(path: any) {
     const parsed = {
       ...formData,
       ...(category && {category: flattenArrayForSelect(category, 'value')}),
-      ...(type && {type: flattenObjectForSelect(type)}),
-      ...(provider && {provider: flattenObjectForSelect(provider)}),
+      ...(type && {type: flattenObjectForSelect(type, 'value')}),
+      ...(provider && {provider: flattenObjectForSelect(provider, 'value')}),
       ...(references && {references: flattenArrayForSelect(references, 'id')}),
     };
 
@@ -210,7 +196,7 @@ export function LayerDetail(path: any) {
       )}
       <div className="ng-padding-medium-horizontal">
         <LinkWithOrg className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block" to="/layers">
-          <i className="ng-icon ng-icon-directionleft"></i>
+          <i className="ng-icon ng-icon-directionleft"/>
           return to layers home
         </LinkWithOrg>
         <form className="ng-form ng-form-dark ng-flex-column">
@@ -231,7 +217,7 @@ export function LayerDetail(path: any) {
                       ref={register({
                         required: 'Layer title is required',
                         validate: {
-                          noSpecialCharsRule: noSpecialCharsRule(),
+                          noSpecialCharsRule: noSpecialCharsRule()
                         },
                       })}/>
                   </>
@@ -271,13 +257,13 @@ export function LayerDetail(path: any) {
                         placeholder="Layer slug"
                         label="Slug*"
                         defaultValue={slug}
-                        className="ng-display-block"
+                        className="ng-display-block marapp-qa-inputslug"
                         error={renderErrorFor('slug')}
                         ref={register({
                           required: 'Layer slug is required',
                           validate: {
-                            noSpecialCharsRule: noSpecialCharsRule(),
-                          },
+                            alphaNumericDashesRule: alphaNumericDashesRule()
+                          }
                         })}/>
                     </div>
                     <div>
@@ -285,7 +271,7 @@ export function LayerDetail(path: any) {
                       <Controller as={Select} control={control} className="marapp-qa-category"
                                   name="category"
                                   options={LAYER_CATEGORY_OPTIONS}
-                                  defaultValue={getSelectValues(LAYER_CATEGORY_OPTIONS, layer.category)}
+                                  defaultValue={layerCategory}
                                   isSearchable
                                   isMulti
                                   placeholder="Select layer category"
@@ -304,7 +290,7 @@ export function LayerDetail(path: any) {
                 </div>
                 <div>
                   <p className="ng-text-weight-bold ng-margin-remove">Layer category</p>
-                  <p className="ng-margin-remove ng-padding-left">{category}</p>
+                  {category && <p className="ng-margin-remove ng-padding-left">{category.join(', ')}</p>}
                 </div>
               </InlineEditCard>
             </div>
@@ -365,6 +351,7 @@ export function LayerDetail(path: any) {
                       <Controller as={Select} control={control} className="marapp-qa-provider"
                                   name="provider"
                                   options={LAYER_PROVIDER_OPTIONS}
+                                  defaultValue={layerProvider}
                                   isSearchable
                                   placeholder="Select layer provider"
                                   styles={CUSTOM_STYLES}
@@ -379,6 +366,7 @@ export function LayerDetail(path: any) {
                       <Controller as={Select} control={control} className="marapp-qa-type"
                                   name="type"
                                   options={LAYER_TYPE_OPTIONS}
+                                  defaultValue={layerType}
                                   isSearchable
                                   placeholder="Select layer type"
                                   styles={CUSTOM_STYLES}
@@ -442,7 +430,7 @@ export function LayerDetail(path: any) {
                            'ng-icon ng-c-cursor-pointer': true,
                            'ng-icon-directionup': toggle,
                            'ng-icon-directiondown': !toggle,
-                         })}></i>
+                         })}/>
                     </div>
 
                   </div>}
@@ -452,7 +440,6 @@ export function LayerDetail(path: any) {
           </div>
           <div className="ng-grid">
             <div className="ng-width-1-1">
-
               <InlineEditCard
                 onSubmit={onSubmit}
                 validForm={formValid}
@@ -485,8 +472,11 @@ export function LayerDetail(path: any) {
                   </>
                 )}>
                 <div className="ng-margin-medium-bottom">
-                  <p className="ng-text-weight-bold ng-margin-remove">Layer references</p>
-                  {references && references.map(layer => <span>{layer.name}</span>)}
+                  {!!references ? <DetailList data={references} name='Layer References' type='layers'
+                                              className="ng-flex-column ng-flex-top"/> :
+                    <div>
+                      <p className="ng-text-weight-bold ng-margin-small-bottom">Layer references</p>
+                      <span className="ng-padding-left">No layer references</span></div>}
                 </div>
               </InlineEditCard>
 

@@ -186,4 +186,35 @@ export const downloadFile = (data) => {
   const jsonBlob = new Blob([stringifiedMetric]);
   const blobUrl = URL.createObjectURL(jsonBlob);
   return blobUrl;
-}
+};
+
+
+/**
+ * Flattens object array returned from multiselect to work with api
+ * @param data
+ * @param fieldName
+ */
+export const flattenArrayForSelect = (data: {}[], fieldName: string) => {
+  return !!data ? data.map(val => val[fieldName]) : data;
+};
+
+/**
+ * Flattens object returned from single select to work with the APIs
+ * @param data
+ * @param fieldName
+ */
+export const flattenObjectForSelect = (data: {}, fieldName: string) => {
+  return !!data ? data[fieldName] : data;
+};
+
+/**
+ * Sets up object needed for multiselect based on value returned from APIs
+ * @param options
+ * @param values
+ */
+export const getSelectValues = (options: {value: string}[], values) => {
+  let temp = [];
+  values.map(value => temp.push(options.find(val => val.value === value)));
+
+  return temp;
+};
