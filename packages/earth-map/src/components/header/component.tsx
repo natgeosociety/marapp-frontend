@@ -50,6 +50,7 @@ const Header = (props: IProps) => {
   const {
     roles,
     userData: { allGroups },
+    isAuthenticated
   } = useContext(Auth0Context);
   const {
     group,
@@ -144,7 +145,7 @@ const Header = (props: IProps) => {
           onClick={handleResetLocation}
         />
       </Link>
-      {allGroups.length > 0 && <>
+      {isAuthenticated && <>
       <span className="ng-ep-kicker"></span>
 
       <span className="ng-text-display-s ng-text-weight-regular ng-body-color ng-margin-remove ng-display-block ng-org-name">

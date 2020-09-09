@@ -33,7 +33,7 @@ const Dropdown: any =  Keyframes.Spring({
 export default function UserMenuComponent() {
   const [showDrop, setShowDrop] = useState(false);
 
-  const { userData, logout, login } = useContext(Auth0Context);
+  const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
 
   const menuRef = React.useRef(null);
 
@@ -74,12 +74,12 @@ export default function UserMenuComponent() {
           >
             <ul className="ng-user-profile-dropdown">
               <li>ACCOUNT</li>
-              { userData.allGroups.length === 0 ?
-              <li className="marapp-qa-signin ng-user-profile-signin">
-                <a onClick={handleLogin}>Sign in</a>
-              </li> :
+              { isAuthenticated ?
               <li className="marapp-qa-signout ng-user-profile-signout">
                 <a onClick={handleLogout}>Sign Out</a>
+              </li> :
+              <li className="marapp-qa-signin ng-user-profile-signin">
+                <a onClick={handleLogin}>Sign in</a>
               </li>
               }
             </ul>

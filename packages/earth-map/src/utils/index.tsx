@@ -59,7 +59,7 @@ export const removeNestedGroups = (groups: string[]): string[] => {
  *  Returns true if user has permission to
  *  view admin link
  */
-const ADMIN_ROLE_TYPES = ['Owner', 'Admin', 'Editor'];
+const ADMIN_ROLE_TYPES = ['SuperAdmin', 'Owner', 'Admin', 'Editor'];
 
 export const checkRole = (roles: string[]) => roles.some((role) => ADMIN_ROLE_TYPES.includes(role));
 
