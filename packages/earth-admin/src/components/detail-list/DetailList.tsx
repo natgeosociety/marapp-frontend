@@ -18,19 +18,28 @@
 */
 
 import * as React from 'react';
+import classNames from 'classnames';
 
 import { LinkWithOrg } from 'components/link-with-org';
-import { PlaceIntersectionProps } from 'pages-client/places/model';
 
-export default function Intersections( props: PlaceIntersectionProps) {
-  const { intersections, name } = props;
+interface DetailListProps {
+  data: {id: string, name: string, type?: string}[],
+  name: string;
+  type: string;
+  className?: string;
+  key?: string | number;
+}
+
+export default function DetailList(props: DetailListProps) {
+  const {data, name, type, className} = props;
 
   return (
-    <div className="marapp-qa-placesintersections ng-flex ng-flex-column ng-margin-medium-bottom">
-      <p className="ng-text-weight-bold ng-margin-small-bottom">{name} Relationships</p>
-      <div className="ng-flex ng-flex-wrap ng-padding-left">
-        {intersections.map((int) => (
-          <LinkWithOrg to={`/places/${int.id}`} key={int.id} className="marapp-qa-actionintersection ng-margin-medium-right">
+    <div className="marapp-qa-detaillist ng-flex ng-flex-column ng-margin-medium-bottom">
+      <p className="ng-text-weight-bold ng-margin-small-bottom">{name}</p>
+      <div className={classNames('ng-flex ng-flex-wrap ng-padding-left', className)}>
+        {data.map((int) => (
+          <LinkWithOrg to={`/${type}/${int.id}`} key={int.id}
+                       className="marapp-qa-actionintersection ng-margin-medium-right">
             {int.name}
           </LinkWithOrg>
         ))}

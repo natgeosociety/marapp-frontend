@@ -37,7 +37,7 @@ const INIT_CURSOR_LOCATION = '-1';
 const PAGE_TYPE = setPage('Layers');
 
 
-export default function Sidebar(props: any) {
+export default function LayerSidebar(props: any) {
   const [layers, setLayer] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
