@@ -64,6 +64,7 @@ export const CUSTOM_STYLES = {
   option: (provided, state) => ({
     ...provided,
     backgroundColor: state.isFocused ? 'var(--marapp-gray-6)' : 'var(--marapp-gray-8)',
+    color: 'var(--marapp-gray-2)',
     padding: 10,
     boxShadow: 'none',
   }),
