@@ -18,12 +18,12 @@
 */
 
 import * as React from 'react';
-
-import { LinkWithOrg } from 'components/link-with-org';
 import classNames from 'classnames';
 
+import { LinkWithOrg } from 'components/link-with-org';
+
 interface DetailListProps {
-  data: any,
+  data: {id: string, name: string, type?: string}[],
   name: string;
   type: string;
   className?: string;
@@ -34,7 +34,7 @@ export default function DetailList(props: DetailListProps) {
   const {data, name, type, className} = props;
 
   return (
-    <div className="marapp-qa-placesintersections ng-flex ng-flex-column ng-margin-medium-bottom">
+    <div className="marapp-qa-detaillist ng-flex ng-flex-column ng-margin-medium-bottom">
       <p className="ng-text-weight-bold ng-margin-small-bottom">{name}</p>
       <div className={classNames('ng-flex ng-flex-wrap ng-padding-left', className)}>
         {data.map((int) => (

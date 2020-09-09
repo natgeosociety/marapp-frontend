@@ -17,14 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { RefObject } from 'react';
 import { navigate } from 'gatsby';
 import { BASE_URL } from 'config';
-import { ADMIN_PAGES } from 'components/sidebar-select/model';
+import moment from 'moment';
 import get from 'lodash/get';
 import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
-
-import moment from 'moment';
+import queryStringEncode from 'query-string-encode';
+import { ADMIN_PAGES } from 'components/sidebar-select/model';
 
 const JSONAPIDeserializer = require('ts-jsonapi').Deserializer;
 const DeserializerService = new JSONAPIDeserializer({
@@ -33,7 +34,7 @@ const DeserializerService = new JSONAPIDeserializer({
   },
 });
 
-import queryStringEncode from 'query-string-encode';
+
 
 /**
  * Wrapper over navigate that takes into account baseURL.
@@ -194,7 +195,7 @@ export const downloadFile = (data) => {
  * @param data
  * @param fieldName
  */
-export const flattenArrayForSelect = (data: {}[], fieldName: string) => {
+export const flattenArrayForSelect = (data: {}[], fieldName: string): string[] => {
   return !!data ? data.map(val => val[fieldName]) : data;
 };
 
@@ -203,7 +204,7 @@ export const flattenArrayForSelect = (data: {}[], fieldName: string) => {
  * @param data
  * @param fieldName
  */
-export const flattenObjectForSelect = (data: {}, fieldName: string) => {
+export const flattenObjectForSelect = (data: {}, fieldName: string): string => {
   return !!data ? data[fieldName] : data;
 };
 
@@ -212,9 +213,29 @@ export const flattenObjectForSelect = (data: {}, fieldName: string) => {
  * @param options
  * @param values
  */
-export const getSelectValues = (options: {value: string}[], values) => {
+export const getSelectValues = (options: {value: string}[], values): {value: string}[] => {
   let temp = [];
   values.map(value => temp.push(options.find(val => val.value === value)));
 
   return temp;
 };
+
+/**
+ * Copy to clipboard function
+ * @param e
+ * @param ref
+ * @param successFunction
+ */
+export function copyToClipboard(e: Event, ref: RefObject<any>, successFunction: (value: string) => void):void {
+  e.preventDefault();
+  ref.current.select();
+
+  document.execCommand('copy');
+
+  successFunction('Copied!');
+
+  setTimeout(() => {
+    successFunction('');
+  }, 4000);
+}
+

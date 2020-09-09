@@ -10,7 +10,7 @@ import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
 
-import { Metrics, Intersections } from 'components/places';
+import { Metrics } from 'components/places';
 import { ErrorMessages } from 'components/error-messages';
 import { ActionModal } from 'components/action-modal';
 import { MapComponent } from 'components/map';
@@ -24,7 +24,7 @@ import { DownloadFile } from 'components/download-file';
 
 
 import { ContentLayout } from 'layouts';
-import { PlaceTypeEnum, PLACE_DETAIL_QUERY } from './model';
+import { PlaceTypeEnum, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
 import { DetailList } from 'components/detail-list';
 
 export function PlaceDetail(path: any) {
@@ -63,7 +63,7 @@ export function PlaceDetail(path: any) {
   } = place;
 
 
-  const { getValues, register, formState, errors } = useForm({
+  const {getValues, register, formState, errors} = useForm({
     mode: 'onChange',
   });
 
@@ -373,14 +373,14 @@ export function PlaceDetail(path: any) {
         <Card>
           <div className="">
             {mappedIntersections &&
-              map(mappedIntersections, (intersections, idx) => (
-                <DetailList
-                  key={idx}
-                  name={intersections[0].type}
-                  type='places'
-                  data={intersections}
-                />
-              ))}
+            map(mappedIntersections, (intersections: PlaceIntersection[], idx) => (
+              <DetailList
+                key={idx}
+                name={intersections[0].type}
+                type='places'
+                data={intersections}
+              />
+            ))}
           </div>
         </Card>
       </div>}

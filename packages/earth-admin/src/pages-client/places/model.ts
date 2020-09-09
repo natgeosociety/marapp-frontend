@@ -87,8 +87,8 @@ export interface PlaceIntersectionProps {
 }
 
 export interface PlaceIntersection {
-  name?: string;
-  id?: string;
+  name: string;
+  id: string;
   type?: 'country' | 'jurisdiction' | 'continent';
 }
 

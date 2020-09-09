@@ -15,21 +15,23 @@
 
 import * as React from 'react';
 import { useEffect, useState, useRef } from 'react';
-
-
+import classnames from 'classnames';
 import { JSHINT } from 'jshint';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
 import Collapse from '@kunukn/react-collapse';
 import { Controller, useForm } from 'react-hook-form';
 
-import { encodeQueryToURL, formatDate, flattenArrayForSelect, flattenObjectForSelect, getSelectValues } from 'utils';
+import {
+  encodeQueryToURL,
+  formatDate,
+  flattenArrayForSelect,
+  flattenObjectForSelect,
+  getSelectValues,
+  copyToClipboard,
+} from 'utils';
 import { getAllLayers, getLayer, handleLayerForm } from 'services/layers';
-import { useRequest, copyToClipboard } from 'utils/hooks';
-import classnames from 'classnames';
-import { navigate } from 'gatsby';
-
-import { getPlace, handlePlaceForm } from 'services';
+import { useRequest } from 'utils/hooks';
 
 import { noSpecialCharsRule, alphaNumericDashesRule, setupErrors } from 'utils/validations';
 
@@ -43,6 +45,7 @@ import { Toggle } from 'components/toggle';
 import { JsonEditor } from 'components/json-editor';
 import { HtmlEditor } from 'components/html-editor';
 import { DetailList } from 'components/detail-list';
+import { ErrorMessages } from 'components/error-messages';
 
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
@@ -51,6 +54,7 @@ import { ContentLayout } from 'layouts';
 
 import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+
 
 
 const LAYER_DETAIL_QUERY = {include: 'references', select: 'references.name,references.id'};
@@ -71,14 +75,13 @@ export function LayerDetail(path: any) {
 
   const [layer, setLayer] = useState(data);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [formValid, setFormValid] = useState(true);
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState();
   const [layerConfig, setLayerConfig] = useState();
   const [layerCategory, setLayerCategory] = useState(null);
   const [layerType, setLayerType] = useState(null);
   const [layerProvider, setLayerProvider] = useState(null);
-  const [toggle, setToggle] = useState(false);
+  const [collapseJson, setCollapseJson] = useState(false);
   const [copySuccess, setCopySuccess] = useState('');
   const textAreaRef = useRef(null);
 
@@ -102,7 +105,6 @@ export function LayerDetail(path: any) {
 
   useEffect(() => {
     setLayer(data);
-
   }, [data]);
 
 
@@ -120,11 +122,6 @@ export function LayerDetail(path: any) {
 
   const {touched, dirty, isValid} = formState;
   const renderErrorFor = setupErrors(errors, touched);
-
-  useEffect(() => {
-    setFormValid(isValid);
-  }, [isValid]);
-
 
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
@@ -169,11 +166,6 @@ export function LayerDetail(path: any) {
     setJsonError(true);
   };
 
-
-  function handleServerErrors(errors) {
-    setServerErrors(errors);
-  }
-
   function handleDeleteToggle() {
     setShowDeleteModal(!showDeleteModal);
   }
@@ -199,7 +191,7 @@ export function LayerDetail(path: any) {
             <div className="ng-width-3-4">
               <InlineEditCard
                 onSubmit={onSubmit}
-                validForm={formValid}
+                validForm={isValid}
                 render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <Input
@@ -212,7 +204,7 @@ export function LayerDetail(path: any) {
                       ref={register({
                         required: 'Layer title is required',
                         validate: {
-                          noSpecialCharsRule: noSpecialCharsRule()
+                          noSpecialCharsRule: noSpecialCharsRule(),
                         },
                       })}/>
                   </>
@@ -227,14 +219,14 @@ export function LayerDetail(path: any) {
                   label="Primary"
                   value={primary}
                   className="ng-display-block"
-                  onChange={(e) => onSubmit(e)}
+                  onChange={onSubmit}
                   ref={register({})}/>
                 <Toggle
                   name="published"
                   label="Published"
                   value={published}
                   className="ng-display-block"
-                  onChange={(e) => onSubmit(e)}
+                  onChange={onSubmit}
                   ref={register({})}/>
               </Card>
             </div>
@@ -243,7 +235,7 @@ export function LayerDetail(path: any) {
             <div className="ng-width-1-2">
               <InlineEditCard
                 onSubmit={onSubmit}
-                validForm={formValid}
+                validForm={isValid}
                 render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <div className="ng-margin-medium-bottom">
@@ -257,8 +249,8 @@ export function LayerDetail(path: any) {
                         ref={register({
                           required: 'Layer slug is required',
                           validate: {
-                            alphaNumericDashesRule: alphaNumericDashesRule()
-                          }
+                            alphaNumericDashesRule: alphaNumericDashesRule(),
+                          },
                         })}/>
                     </div>
                     <div>
@@ -310,7 +302,7 @@ export function LayerDetail(path: any) {
             <div className="ng-width-1-1">
               <InlineEditCard
                 onSubmit={onSubmit}
-                validForm={formValid}
+                validForm={isValid}
                 render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <label className="ng-form-label" htmlFor="description">
@@ -326,7 +318,6 @@ export function LayerDetail(path: any) {
                   </>
                 )}>
                 <div className="ng-margin-medium-bottom">
-
                   <p className="ng-text-weight-bold ng-margin-remove">Layer description</p>
                   <div
                     className="ng-margin-remove ng-padding-left">{description ? renderHTML(description) : 'No description'}</div>
@@ -338,7 +329,7 @@ export function LayerDetail(path: any) {
             <div className="ng-width-1-1">
               <InlineEditCard
                 onSubmit={onSubmit}
-                validForm={formValid}
+                validForm={isValid}
                 render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <div>
@@ -398,7 +389,7 @@ export function LayerDetail(path: any) {
                         name="config"
                         control={control}
                         defaultValue={layerConfig}
-                        onChange={(layerConfig) => handleJsonChange(layerConfig)}
+                        onChange={handleJsonChange}
                         as={<JsonEditor json={layerConfig}/>}
                       />
                     </div>
@@ -406,29 +397,30 @@ export function LayerDetail(path: any) {
                   </>
                 )}>
                 <div className="ng-margin-medium-bottom">
-                  {config && <div>
-                    <p className="ng-flex">
-                      <span className="ng-text-weight-medium">Layer config</span>
-                      <span>
-                        <i onClick={(e) => copyToClipboard(e, textAreaRef, setCopySuccess)}
-                           className='ng-icon ng-icon-layers ng-c-cursor-pointer ng-margin-small-horizontal'/>
-                        <span className="ng-text-weight-normal">{copySuccess}</span>
-                      </span>
-                    </p>
+                  {config && (
+                    <div>
+                      <p className="ng-flex">
+                        <span className="ng-text-weight-medium">Layer config</span>
+                        <span>
+                          <i onClick={(e) => copyToClipboard(e, textAreaRef, setCopySuccess)}
+                             className='ng-icon ng-icon-layers ng-c-cursor-pointer ng-margin-small-horizontal'/>
+                          <span className="ng-text-weight-normal">{copySuccess}</span>
+                        </span>
+                      </p>
 
-                    <Collapse addState isOpen={toggle} collapseHeight="100px">
-                      <JsonEditor json={config} readOnly={true}/>
-                    </Collapse>
-                    <div className="ng-flex ng-flex-center">
-                      <i onClick={e => setToggle(!toggle)}
-                         className={classnames({
-                           'ng-icon ng-c-cursor-pointer': true,
-                           'ng-icon-directionup': toggle,
-                           'ng-icon-directiondown': !toggle,
-                         })}/>
+                      <Collapse addState isOpen={collapseJson} collapseHeight="100px">
+                        <JsonEditor json={config} readOnly={true}/>
+                      </Collapse>
+                      <div className="ng-flex ng-flex-center">
+                        <i onClick={e => setCollapseJson(!collapseJson)}
+                           className={classnames({
+                             'ng-icon ng-c-cursor-pointer': true,
+                             'ng-icon-directionup': collapseJson,
+                             'ng-icon-directiondown': !collapseJson,
+                           })}/>
+                      </div>
                     </div>
-
-                  </div>}
+                  )}
                 </div>
               </InlineEditCard>
             </div>
@@ -437,7 +429,7 @@ export function LayerDetail(path: any) {
             <div className="ng-width-1-1">
               <InlineEditCard
                 onSubmit={onSubmit}
-                validForm={formValid}
+                validForm={isValid}
                 render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <div className="ng-margin-medium-bottom">
@@ -467,18 +459,21 @@ export function LayerDetail(path: any) {
                   </>
                 )}>
                 <div className="ng-margin-medium-bottom">
-                  {!!references ? <DetailList data={references} name='Layer References' type='layers'
-                                              className="ng-flex-column ng-flex-top"/> :
+                  {!!references ?
+                    <DetailList data={references} name='Layer References' type='layers'
+                                 className="ng-flex-column ng-flex-top"/> :
                     <div>
                       <p className="ng-text-weight-bold ng-margin-small-bottom">Layer references</p>
-                      <span className="ng-padding-left">No layer references</span></div>}
+                      <span className="ng-padding-left">No layer references</span>
+                    </div>}
                 </div>
               </InlineEditCard>
 
             </div>
           </div>
+          {serverErrors && <ErrorMessages key={id} errors={serverErrors}/>}
         </form>
-
+        {/*hidden input to store config needed for copy to clipboard function*/}
         <input type="text" ref={textAreaRef} value={JSON.stringify(config)} readOnly={true}
                style={{position: 'absolute', left: '-10000px', top: '-10000px'}}/>
       </div>
