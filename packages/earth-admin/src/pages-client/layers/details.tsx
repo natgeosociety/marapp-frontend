@@ -380,10 +380,9 @@ export function LayerDetail(path: any) {
             <div className="ng-width-1-1">
               <InlineEditCard
                 onSubmit={onSubmit}
-                validForm={true}
+                validForm={!jsonError}
                 render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
-
                     <div className="ng-margin-medium-bottom">
                       <label htmlFor="config">Layer Config</label>
                       <Controller
@@ -394,7 +393,6 @@ export function LayerDetail(path: any) {
                         as={<JsonEditor json={layerConfig}/>}
                       />
                     </div>
-
                   </>
                 )}>
                 <div className="ng-margin-medium-bottom">
