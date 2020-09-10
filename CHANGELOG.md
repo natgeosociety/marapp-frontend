@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.3.0...v1.3.1) (2020-09-10)
+
+
+### Bug Fixes
+
+* **admin:** removed metrics duplicates ([#139](https://github.com/natgeosociety/marapp-frontend/issues/139)) ([#140](https://github.com/natgeosociety/marapp-frontend/issues/140)) ([3e17aa1](https://github.com/natgeosociety/marapp-frontend/commit/3e17aa11ead58a77d28fb454be9c446b80a11dee))
+
 # [1.3.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.2.1...v1.3.0) (2020-09-10)
 
 
