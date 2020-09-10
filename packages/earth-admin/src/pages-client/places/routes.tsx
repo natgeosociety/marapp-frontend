@@ -18,17 +18,74 @@
 */
 
 import * as React from 'react';
+import { useState } from 'react';
 import { Router, } from '@reach/router';
+import { useSWRInfinite } from 'swr';
 
-import { PlacesSidebar } from 'components/places';
+import { encodeQueryToURL, setPage } from 'utils';
+import { useAuth0 } from 'auth/auth0';
+import { getAllPlaces } from 'services/places';
+
+import { SidebarLayout } from 'layouts';
+import { DataListing, DefaultListItem } from 'components/data-listing';
 import { PlacesHome } from './home';
 import { PlaceDetail } from './details';
 import { NewPlace } from './new';
 
-export default function PlacesPage(props) {
+const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
+const PAGE_TYPE = setPage('Places');
+const PAGE_SIZE = 20;
+
+interface IPlacesData {
+  data?: any[];
+  total?: number;
+  pagination?: any;
+}
+
+export default function PlacesPage() {
+  const { selectedGroup } = useAuth0();
+  const [searchValue, setSearchValue] = useState('');
+  const getQuery = (pageIndex) => {
+    const query = {
+      search: searchValue,
+      sort: 'name',
+      page: { size: PAGE_SIZE, number: pageIndex },
+      select: EXCLUDED_FIELDS,
+      group: selectedGroup,
+    };
+    return encodeQueryToURL('locations', query);
+  }
+  const { data: response = [], error, isValidating, size, setSize } = useSWRInfinite(getQuery, getAllPlaces);
+
+  const handleSearchValueChange = (newValue: string) => {
+    setSearchValue(newValue);
+  }
+
+  const places: IPlacesData = response.reduce((acc: any, { data, ...rest }: any) => {
+    return {
+      data: acc.data.concat(data),
+      ...rest,
+    }
+  }, { data: [] });
+
   return (
     <>
-      <PlacesSidebar />
+      <SidebarLayout page={PAGE_TYPE}>
+        <DataListing
+          childComponent={DefaultListItem}
+          data={places.data}
+          categoryUrl="places"
+          pageTitle="places"
+          searchValueAction={handleSearchValueChange}
+          cursorAction={() => setSize(size + 1)}
+          isLoading={isValidating}
+          isNoMore={places.data.length < PAGE_SIZE}
+          totalResults={places.total}
+          pageSize={PAGE_SIZE}
+          searchValue={searchValue}
+          // selectedItem={selectedItem}
+        />
+      </SidebarLayout>
       <Router>
         <PlacesHome path="/" />
         <NewPlace path="/new" />

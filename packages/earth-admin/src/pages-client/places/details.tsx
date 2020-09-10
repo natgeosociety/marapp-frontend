@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { groupBy, map } from 'lodash';
+import useSWR from 'swr';
+
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { encodeQueryToURL, formatDate, km2toHa, formatArrayToParentheses } from 'utils';
@@ -37,12 +39,11 @@ export function PlaceDetail(path: any) {
     group: selectedGroup,
   });
 
-  const { isLoading, data } = useRequest(() => getPlace(encodedQuery), {
-    permissions: AuthzGuards.accessPlacesGuard,
-    query: encodedQuery,
-  });
+  const { data, error } = useSWR(encodedQuery, (url) =>
+    getPlace(url).then((response: any) => response.data)
+  );
 
-  const [place, setPlace] = useState(data);
+  const [place, setPlace] = useState({});
   const [mapData, setMapData] = useState({});
   const [mappedIntersections, setMappedIntersections] = useState();
   const [geojsonValue, setGeojson] = useState(null);
@@ -53,7 +54,7 @@ export function PlaceDetail(path: any) {
   const [metricsLoading, setMetricsLoading] = useState(false);
 
   useEffect(() => {
-    setPlace(data);
+    data && setPlace(data);
   }, [data]);
 
   const {
@@ -122,7 +123,7 @@ export function PlaceDetail(path: any) {
   }
 
   return !!place && (
-    <ContentLayout backTo="/places" isLoading={isLoading} className="marapp-qa-placesdetail">
+    <ContentLayout backTo="/places" isLoading={!data} className="marapp-qa-placesdetail">
       {showDeleteModal && (
         <ActionModal
           id={id}
