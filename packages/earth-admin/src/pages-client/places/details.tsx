@@ -342,48 +342,21 @@ export function PlaceDetail(path: any) {
         </div>
         {!!intersections && <div className="ng-margin-medium-bottom">
           <Card>
-            {metrics && (
-              <>
-                <p className="ng-text-weight-bold ng-margin-small-bottom">Place Metrics</p>
-                <div className="ng-flex ng-flex-wrap ng-place-metrics-container">
-                  {metrics.map((metric) => (
-                    <Metrics
-                      key={metric.id}
-                      data={metric}
-                      handlers={{ handleServerErrors }}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-            {serverErrors && <ErrorMessages key={id} errors={serverErrors} />}
-            {writeMetricsPermission && (
-              <button
-                disabled={metricsLoading}
-                className="ng-button ng-button-primary ng-margin-medium-top"
-                onClick={(e) => handleCalculateAll(e, id)}
-              >
-                Recalculate all
-              </button>
-            )}
+            <div className="">
+              {mappedIntersections &&
+              map(mappedIntersections, (intersections: PlaceIntersection[], idx) => (
+                <DetailList
+                  key={idx}
+                  name={intersections[0].type}
+                  type='places'
+                  data={intersections}
+                />
+              ))}
+            </div>
           </Card>
         </div>}
       </div>
-      {!!intersections && <div className="ng-margin-medium-bottom">
-        <Card>
-          <div className="">
-            {mappedIntersections &&
-            map(mappedIntersections, (intersections: PlaceIntersection[], idx) => (
-              <DetailList
-                key={idx}
-                name={intersections[0].type}
-                type='places'
-                data={intersections}
-              />
-            ))}
-          </div>
-        </Card>
-      </div>}
+
       {writePermissions && (
         <div className="ng-text-right">
           <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
