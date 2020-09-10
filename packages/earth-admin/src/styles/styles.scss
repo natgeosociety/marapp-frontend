@@ -102,3 +102,47 @@ body {
     box-shadow: 0 16/$shadow-factor + px 48/$shadow-factor + px rgba(#000, $shadow-spread);
   }
 }
+
+:root {
+  --marapp-primary-color: #{$marapp-primary-color};
+  --marapp-secondary-color: #{$marapp-secondary-color};
+  --marapp-gray-0: #{$marapp-gray-0};
+  --marapp-gray-1: #{$marapp-gray-1};
+  --marapp-gray-2: #{$marapp-gray-2};
+  --marapp-gray-3: #{$marapp-gray-3};
+  --marapp-gray-4: #{$marapp-gray-4};
+  --marapp-gray-5: #{$marapp-gray-5};
+  --marapp-gray-6: #{$marapp-gray-6};
+  --marapp-gray-7: #{$marapp-gray-7};
+  --marapp-gray-8: #{$marapp-gray-8};
+  --marapp-gray-9: #{$marapp-gray-9};
+  --marapp-gray-100: #{$marapp-gray-100};
+}
+
+
+
+$transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+.collapse-css-transition {
+  position: relative;
+  transition: height $transition;
+  &:after {
+    transition: opacity $transition;
+    pointer-events: none;
+    opacity: 0;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: linear-gradient(rgba($marapp-gray-9, 0) 20%, rgba($marapp-gray-9, 0.6));
+    z-index: 100;
+  }
+  &.--c-collapsed {
+    &:after {
+      opacity: 1;
+    }
+  }
+}

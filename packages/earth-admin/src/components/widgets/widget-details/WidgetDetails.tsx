@@ -24,17 +24,19 @@ import renderHTML from 'react-render-html';
 import { formatDate } from 'utils';
 
 import { WidgetProps } from '../model';
-import { ActionModal, JsonEditor, LinkWithOrg } from 'components';
+import { ActionModal } from 'components/action-modal';
+import { JsonEditor } from 'components/json-editor';
+import { LinkWithOrg } from 'components/link-with-org';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 
-export default function WidgetDetails( props: WidgetProps ) {
+export default function WidgetDetails(props: WidgetProps) {
   const {
-    data: { id, name, createdAt, updatedAt, published, description, slug, config, metrics, layers },
+    data: {id, name, createdAt, updatedAt, published, description, slug, config, metrics, layers},
   } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const { getPermissions } = useAuth0();
+  const {getPermissions} = useAuth0();
 
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
@@ -94,7 +96,7 @@ export default function WidgetDetails( props: WidgetProps ) {
 
         <p>
           <span className="ng-text-weight-medium">Metric slug: </span>
-          {(!!metrics && metrics.length > 0 && metrics[ 0 ]) || '-'}
+          {(!!metrics && metrics.length > 0 && metrics[0]) || '-'}
         </p>
       </div>
 
@@ -102,7 +104,7 @@ export default function WidgetDetails( props: WidgetProps ) {
         <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
           <span className="ng-text-weight-medium">Layers: </span>
           <div className="ng-flex ng-flex-wrap">
-            {layers.map(( layer, index ) => (
+            {layers.map((layer, index) => (
               <LinkWithOrg
                 to={`/layers/${layer.id}`}
                 key={layer.id}

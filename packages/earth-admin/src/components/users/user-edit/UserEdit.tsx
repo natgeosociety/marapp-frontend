@@ -21,7 +21,9 @@ import * as React from 'react';
 import { useState, useContext } from 'react';
 import { UserEditProps } from '../model';
 import { useForm, Controller } from 'react-hook-form';
-import { LinkWithOrg, SearchInput, ErrorMessages } from 'components';
+import { LinkWithOrg } from 'components/link-with-org';
+import { SearchInput } from 'components/search-input';
+import { ErrorMessages } from 'components/error-messages';
 import { handleUserForm } from 'services/users';
 import { Auth0Context } from 'utils/contexts';
 import { navigate } from 'gatsby';
@@ -30,22 +32,22 @@ const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
 export default function UserEdit(props: UserEditProps) {
   const {
-    data: { name, email, groups, id },
+    data: {name, email, groups, id},
     newUser,
   } = props;
 
-  const { handleSubmit, register, errors, control, getValues, formState } = useForm({
+  const {handleSubmit, register, errors, control, getValues, formState} = useForm({
     mode: 'onChange',
   });
   const [serverErrors, setServerErrors] = useState(null);
   const [selectedGroups, setSelectedGroups] = useState([]);
-  const { selectedGroup } = useContext(Auth0Context);
+  const {selectedGroup} = useContext(Auth0Context);
 
   const onSubmit = async (values: any) => {
     const formData = getValues();
 
     try {
-      await handleUserForm(false, { groups: selectedGroups }, id || formData.email, selectedGroup);
+      await handleUserForm(false, {groups: selectedGroups}, id || formData.email, selectedGroup);
       await navigate(`/${selectedGroup}/users`);
     } catch (error) {
       setServerErrors(error.data.errors);
@@ -108,7 +110,7 @@ export default function UserEdit(props: UserEditProps) {
             />
           </div>
 
-          {serverErrors && <ErrorMessages errors={serverErrors} />}
+          {serverErrors && <ErrorMessages errors={serverErrors}/>}
 
           <div className="ng-flex">
             <button

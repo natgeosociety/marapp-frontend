@@ -25,8 +25,7 @@ import { AxiosInstance } from 'axios';
 import { API_URL } from "config";
 
 /**
- * Places service class
- * It is a singleton for not instanciate Jsona on each request.
+ * Places service class.
  */
 class PlacesService {
   private dataFormatter: Jsona;

@@ -28,7 +28,7 @@ import { useAuth0 } from 'auth/auth0';
 import './styles.scss';
 import { Auth0Context } from 'utils/contexts';
 
-export default function PlaceMetrics(props: PlaceMetricsProps) {
+export default function Metrics(props: PlaceMetricsProps) {
   const {
     data: {slug, version, location},
     handlers: {handleServerErrors},

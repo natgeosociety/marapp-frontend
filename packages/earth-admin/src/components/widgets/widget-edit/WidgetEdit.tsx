@@ -27,12 +27,16 @@ import { formatDate } from 'utils';
 import { handleWidgetForm } from 'services';
 
 import { WidgetProps } from 'components/widgets/model';
-import { JsonEditor, HtmlEditor, ErrorMessages, SearchInput, LinkWithOrg } from 'components';
+import { JsonEditor } from 'components/json-editor';
+import { HtmlEditor } from 'components/html-editor';
+import { ErrorMessages } from 'components/error-messages';
+import { SearchInput } from 'components/search-input';
+import { LinkWithOrg } from 'components/link-with-org';
 import { Auth0Context } from 'utils/contexts';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
-export default function WidgetEdit( props: WidgetProps ) {
+export default function WidgetEdit(props: WidgetProps) {
   const {
     data: {
       id,
@@ -50,7 +54,7 @@ export default function WidgetEdit( props: WidgetProps ) {
     newWidget,
   } = props;
 
-  const { getValues, register, formState, triggerValidation, control } = useForm({
+  const {getValues, register, formState, triggerValidation, control} = useForm({
     mode: 'onChange',
     defaultValues: {
       config: config || {},
@@ -61,14 +65,14 @@ export default function WidgetEdit( props: WidgetProps ) {
   const [widgetConfig, setWidgetConfig] = useState({});
   const [jsonError, setJsonError] = useState(false);
 
-  const { selectedGroup } = useContext(Auth0Context);
+  const {selectedGroup} = useContext(Auth0Context);
 
   useEffect(() => {
     setWidgetConfig(newWidget ? {} : config);
     triggerValidation();
   }, [config]);
 
-  async function onSubmit( e ) {
+  async function onSubmit(e) {
     e.preventDefault();
 
     const formData = getValues();
@@ -81,7 +85,7 @@ export default function WidgetEdit( props: WidgetProps ) {
     }
   }
 
-  const handleJsonChange = ( json ) => {
+  const handleJsonChange = (json) => {
     try {
       JSON.parse(json);
     } catch (err) {
@@ -164,7 +168,7 @@ export default function WidgetEdit( props: WidgetProps ) {
                 name="config"
                 control={control}
                 defaultValue={widgetConfig}
-                onChange={( widgetConfig ) => handleJsonChange(widgetConfig)}
+                onChange={(widgetConfig) => handleJsonChange(widgetConfig)}
                 as={<JsonEditor json={widgetConfig}/>}
               />
             </div>

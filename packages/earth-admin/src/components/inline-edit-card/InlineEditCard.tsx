@@ -84,11 +84,11 @@ export default function InlineEditCard(props: InlineCardProps) {
       {serverErrors && <ErrorMessages errors={serverErrors}/>}
       <InlineCardOverlay/>
       <div className="ng-margin-medium-top">
-        <button className="ng-button ng-button-primary ng-margin-right"
+        <button className="marapp-qa-actionsaveinline ng-button ng-button-primary ng-margin-right"
                 disabled={!validForm}
                 onClick={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}>{submitButtonText}
         </button>
-        <button className="ng-button ng-button-secondary"
+        <button className="marapp-qa-actioncancelinline ng-button ng-button-secondary"
                 onClick={handleCancel}>{cancelButtonText}
         </button>
       </div>
@@ -98,7 +98,7 @@ export default function InlineEditCard(props: InlineCardProps) {
 
   const renderDefault = () => (<>
     {render && (
-      <button className="ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
+      <button className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
               onClick={(e) => setIsEditing(true)}>{editButtonText}</button>
     )}
     {children}

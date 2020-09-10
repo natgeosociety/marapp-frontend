@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { remove } from 'lodash';
 import classNames from 'classnames';
 import Link from 'redux-first-router-link';
@@ -28,6 +28,7 @@ import { EPanels } from 'modules/sidebar/model';
 import { checkRole, getAvailableOrgs } from 'utils';
 import { APP_LOGO } from '../../theme';
 import { ADMIN_URL, APP_NAME } from 'config';
+import { fetchStats } from 'services/stats';
 
 import './styles.scss';
 
@@ -49,6 +50,7 @@ const Header = (props: IProps) => {
   const {
     roles,
     userData: { allGroups },
+    isAuthenticated
   } = useContext(Auth0Context);
   const {
     group,
@@ -67,6 +69,20 @@ const Header = (props: IProps) => {
   const allInitiallySelected = group.length === allGroups.length;
   const [selectedGroups, setSelectedGroups] = useState(allInitiallySelected ? [] : group);
   const [dropdownState, setDropdownState] = useState('close');
+  const [availableOrgs, setAvailableOrgs] = useState(getAvailableOrgs(roles).map(role => ({ name: role, layers: 'N/A', locations: 'N/A' })));
+
+  useEffect(() => {
+    
+    (async () => {
+      try {
+        const response: any = await fetchStats({ group: getAvailableOrgs(roles).join(',') });
+        setAvailableOrgs(response.data);
+      }
+      catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
 
   const handleDropdownToggle = () => {
     dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
@@ -129,71 +145,79 @@ const Header = (props: IProps) => {
           onClick={handleResetLocation}
         />
       </Link>
-      {allGroups.length > 0 && <>
-      <span className="ng-ep-kicker"></span>
+      {isAuthenticated && (
+        <>
+          <span className="ng-ep-kicker"></span>
 
-      <span className="ng-text-display-s ng-text-weight-regular ng-body-color ng-margin-remove ng-display-block ng-org-name">
-        map view
-      </span>
+          <span className="ng-text-display-s ng-text-weight-regular ng-body-color ng-margin-remove ng-display-block ng-org-name">
+            map view
+          </span>
 
-      <div
-        onClick={handleDropdownToggle}
-        className="marapp-qa-orgtogglebutton ng-padding ng-c-cursor-pointer ng-position-relative"
-      >
-        <i
-          className={classNames({
-            'ng-body-color': true,
-            'ng-icon-directionup': dropdownState === 'open',
-            'ng-icon-directiondown': dropdownState !== 'open',
-          })}
-        />
-        {selectedGroups.length > 0 && <span className="ng-org-badge">{selectedGroups.length}</span>}
-      </div>
-
-      <DropdownComponent state={dropdownState}>
-        <li className="ng-ep-dropdown-category ng-ep-dropdown-selected">
-          <span className="ng-dropdown-item">MAP VIEW</span>
-        </li>
-        <li className="marapp-qa-orglist ng-form ng-form-dark">
-          <div className="ng-padding-medium-horizontal ng-padding-top">
-            {getAvailableOrgs(roles).map((g, i) => (
-              <label
-                htmlFor={g}
-                className={classNames({
-                  'ng-display-block ng-padding-bottom': true,
-                  'ng-c-cursor-pointer': hasMultipleGroups,
-                })}
-                key={i}
-              >
-                {hasMultipleGroups && (
-                  <input
-                    className="ng-checkbox-input"
-                    type="checkbox"
-                    id={g}
-                    value={g}
-                    checked={!!selectedGroups.find((x) => x === g)}
-                    name={g}
-                    onChange={(e) => onOrgChange(e)}
-                  />
-                )}
-                {g}
-              </label>
-            ))}
+          <div
+            onClick={handleDropdownToggle}
+            className="marapp-qa-orgtogglebutton ng-padding ng-c-cursor-pointer ng-position-relative"
+          >
+            <i
+              className={classNames({
+                'ng-body-color': true,
+                'ng-icon-directionup': dropdownState === 'open',
+                'ng-icon-directiondown': dropdownState !== 'open',
+              })}
+            />
+            {selectedGroups.length > 0 && <span className="ng-org-badge">{selectedGroups.length}</span>}
           </div>
-        </li>
 
-        {Object.keys(roles).map(
-          (g, i) =>
-            checkRole(roles[g]) && (
-              <li className="marapp-qa-adminlink ng-ep-dropdown-category" key={i}>
-                <a href={`${ADMIN_URL}${g}`} className="ng-c-cursor-pointer ng-dropdown-item">
-                  {g} - ADMIN
-                </a>
-              </li>
-            )
-        )}
-      </DropdownComponent>
-      </> }
+          <DropdownComponent state={dropdownState}>
+            <li className="ng-ep-dropdown-category ng-ep-dropdown-selected">
+              <span className="ng-dropdown-item">MAP VIEW</span>
+            </li>
+            <li className="marapp-qa-orglist ng-form ng-form-dark">
+              <div className="ng-padding-medium-horizontal ng-padding-top">
+                {availableOrgs.map((g, i) => (
+                  <label
+                    htmlFor={g.name}
+                    className={classNames('ng-padding-bottom ng-flex', {
+                      'ng-c-cursor-pointer': hasMultipleGroups,
+                    })}
+                    key={i}
+                  >
+                    {hasMultipleGroups && (
+                      <input
+                        className="ng-checkbox-input ng-flex-item-none ng-margin-top-remove"
+                        type="checkbox"
+                        id={g.name}
+                        value={g.name}
+                        checked={!!selectedGroups.find((x) => x === g.name)}
+                        name={g.name}
+                        onChange={(e) => onOrgChange(e)}
+                      />
+                    )}
+                    <div>
+                      {g.name}
+                      <span className="ng-display-block ng-color-mdgray">
+                        Places ({g.locations})
+                        <strong className="ng-icon-bullet"></strong>
+                        Layers ({g.layers})
+                      </span>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </li>
+
+            {Object.keys(roles).map(
+              (g, i) =>
+                checkRole(roles[g]) && (
+                  <li className="marapp-qa-adminlink ng-ep-dropdown-category" key={i}>
+                    <a href={`${ADMIN_URL}${g}`} className="ng-c-cursor-pointer ng-dropdown-item">
+                      {g} - ADMIN
+                    </a>
+                  </li>
+                )
+            )}
+          </DropdownComponent>
+        </> 
+      )}
     </div>
   );
 };

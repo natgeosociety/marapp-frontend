@@ -17,14 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { RefObject } from 'react';
 import { navigate } from 'gatsby';
 import { BASE_URL } from 'config';
-import { ADMIN_PAGES } from 'components/sidebar-select/model';
+import moment from 'moment';
 import get from 'lodash/get';
 import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
-
-import moment from 'moment';
+import queryStringEncode from 'query-string-encode';
+import { ADMIN_PAGES } from 'components/sidebar-select/model';
 
 const JSONAPIDeserializer = require('ts-jsonapi').Deserializer;
 const DeserializerService = new JSONAPIDeserializer({
@@ -33,8 +34,7 @@ const DeserializerService = new JSONAPIDeserializer({
   },
 });
 
-import queryStringEncode from 'query-string-encode';
-import { childOfKind } from 'tslint';
+
 
 /**
  * Wrapper over navigate that takes into account baseURL.
@@ -187,4 +187,55 @@ export const downloadFile = (data) => {
   const jsonBlob = new Blob([stringifiedMetric]);
   const blobUrl = URL.createObjectURL(jsonBlob);
   return blobUrl;
+};
+
+
+/**
+ * Flattens object array returned from multiselect to work with api
+ * @param data
+ * @param fieldName
+ */
+export const flattenArrayForSelect = (data: {}[], fieldName: string): string[] => {
+  return !!data ? data.map(val => val[fieldName]) : data;
+};
+
+/**
+ * Flattens object returned from single select to work with the APIs
+ * @param data
+ * @param fieldName
+ */
+export const flattenObjectForSelect = (data: {}, fieldName: string): string => {
+  return !!data ? data[fieldName] : data;
+};
+
+/**
+ * Sets up object needed for multiselect based on value returned from APIs
+ * @param options
+ * @param values
+ */
+export const getSelectValues = (options: {value: string}[], values): {value: string}[] => {
+  let temp = [];
+  values.map(value => temp.push(options.find(val => val.value === value)));
+
+  return temp;
+};
+
+/**
+ * Copy to clipboard function
+ * @param e
+ * @param ref
+ * @param successFunction
+ */
+export function copyToClipboard(e: Event, ref: RefObject<any>, successFunction: (value: string) => void):void {
+  e.preventDefault();
+  ref.current.select();
+
+  document.execCommand('copy');
+
+  successFunction('Copied!');
+
+  setTimeout(() => {
+    successFunction('');
+  }, 4000);
 }
+

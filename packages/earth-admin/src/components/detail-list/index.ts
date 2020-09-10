@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import OrganizationDetails from './OrganizationDetails';
+import DetailList from './DetailList';
 
-export { OrganizationDetails };
+export { DetailList };

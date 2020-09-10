@@ -26,9 +26,13 @@ import { Spinner } from '@marapp/earth-components';
 import { useAuth0 } from 'auth/auth0';
 import { addPlace, getUniqueSlug } from 'services/places';
 import { PlaceTypeEnum } from './model';
-import { noSpecialChars, setupErrors } from 'utils/validations';
+import { noSpecialCharsRule, setupErrors } from 'utils/validations';
 
-import { LinkWithOrg, ErrorMessages, Card, FakeJsonUpload, Input } from 'components';
+import { LinkWithOrg } from 'components/link-with-org';
+import { ErrorMessages } from 'components/error-messages';
+import { Card } from 'components/card';
+import { FakeJsonUpload } from 'components/fake-json-upload';
+import { Input } from 'components/input';
 import { ContentLayout } from 'layouts';
 
 export function NewPlace(path: any) {
@@ -85,10 +89,12 @@ export function NewPlace(path: any) {
               placeholder="Place title"
               label="Title*"
               className="ng-display-block"
-              error={renderErrorFor('name', 'noSpecialChars')}
+              error={renderErrorFor('name')}
               ref={register({
                 required: 'Place title is required',
-                validate: { noSpecialChars }
+                validate: {
+                  noSpecialCharsRule: noSpecialCharsRule()
+                }
               })} />
           </Card>
 

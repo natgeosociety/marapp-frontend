@@ -4,10 +4,11 @@ import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 
 import { ContentLayout } from 'layouts';
-import { Card, LinkWithOrg } from 'components';
+import { Card } from 'components/card';
+import { LinkWithOrg } from 'components/link-with-org';
 
 export function PlacesHome(props: any) {
-  const { getPermissions } = useAuth0();
+  const {getPermissions} = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessPlacesGuard);
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
 

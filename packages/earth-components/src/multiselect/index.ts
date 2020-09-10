@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import LayerDetails from './LayerDetails';
+import AsyncSelect from './AsyncSelect';
 
-export { LayerDetails };
+export default AsyncSelect;

@@ -19,7 +19,9 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import { LinkWithOrg, UserMenuComponent, ErrorMessages } from 'components';
+import { LinkWithOrg } from 'components/link-with-org';
+import { UserMenuComponent } from 'components/user-menu';
+import { ErrorMessages } from 'components/error-messages';
 import { Spinner } from '@marapp/earth-components';
 
 import { APP_NAME } from '../theme';
@@ -39,8 +41,8 @@ interface IUnauthorizedProps {
   message: string;
 }
 
-const Unauthorized = ( props: IUnauthorizedProps ) => {
-  const { message } = props;
+const Unauthorized = (props: IUnauthorizedProps) => {
+  const {message} = props;
 
   return (
     <div className="ng-flex ng-flex-middle">
@@ -51,7 +53,7 @@ const Unauthorized = ( props: IUnauthorizedProps ) => {
   );
 };
 
-export default function ContentLayout( props: ILayoutProps ) {
+export default function ContentLayout(props: ILayoutProps) {
   return (
     <div className={`ng-flex ${props.className || ''}`}>
       <Helmet>

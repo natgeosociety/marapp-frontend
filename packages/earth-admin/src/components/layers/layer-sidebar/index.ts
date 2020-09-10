@@ -17,6 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-import OrganizationEdit from './OrganizationEdit';
-
-export { OrganizationEdit };
+export { default as LayerSidebar } from './LayerSidebar';

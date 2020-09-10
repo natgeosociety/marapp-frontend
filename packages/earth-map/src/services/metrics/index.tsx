@@ -25,8 +25,7 @@ import { AxiosInstance } from 'axios';
 import { API_URL } from "config";
 
 /**
- * Metrics service class
- * It is a singleton for not instanciate Jsona on each request.
+ * Metrics service class.
  */
 class MetricsService {
   private dataFormatter: Jsona;
@@ -56,7 +55,6 @@ class MetricsService {
         .get(path)
         .then(response => {
           resolve(this.dataFormatter.deserialize(response.data));
-          resolve(response.data);
         })
         .catch(err => {
           reject(err);

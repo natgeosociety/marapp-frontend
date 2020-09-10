@@ -25,7 +25,7 @@ import { AuthzGuards } from 'auth/permissions';
 import { getOrganizationStats } from 'services/organizations';
 
 import { ContentLayout, SidebarLayout } from 'layouts';
-import { Card } from 'components';
+import { Card } from 'components/card';
 
 import './styles.scss';
 

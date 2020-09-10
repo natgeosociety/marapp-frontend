@@ -16,6 +16,7 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
+import queryStringEncode from 'query-string-encode';
 
 /**
  * Serialize filters in the format
@@ -35,3 +36,9 @@ export const serializeFilters = (filters, filterSep = ',', valueSep = ';') => {
     return encodedFilters;
   }, '');
 };
+
+/**
+ * Url encode
+ */
+export const encodeQueryToURL = (baseUrl, query) =>
+  [baseUrl, decodeURIComponent(queryStringEncode(query))].join('?');

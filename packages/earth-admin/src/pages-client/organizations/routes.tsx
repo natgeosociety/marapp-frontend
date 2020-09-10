@@ -17,6 +17,23 @@
   specific language governing permissions and limitations under the License.
 */
 
-import PlaceIntersections from './PlaceIntersections';
+import * as React from 'react';
+import { Router } from '@reach/router';
 
-export { PlaceIntersections };
+import { OrganizationsSidebar } from 'components/organizations';
+import { OrganizationHome } from './home';
+import { OrganizationDetails } from './details';
+import { NewOrganization } from './new';
+
+export default function PlacesPage(props) {
+  return (
+    <>
+      <OrganizationsSidebar />
+      <Router>
+        <OrganizationHome path="/" />
+        <NewOrganization path="/new" />
+        <OrganizationDetails path="/:page" />
+      </Router>
+    </>
+  );
+}

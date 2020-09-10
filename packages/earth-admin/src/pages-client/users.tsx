@@ -22,13 +22,14 @@ import { useEffect, useState } from 'react';
 import { Router } from '@reach/router';
 
 import { UserContext } from 'utils/contexts';
-import { LinkWithOrg } from 'components';
+import { LinkWithOrg } from 'components/link-with-org';
+import { UserList, UserEdit, UserDetails } from 'components/users';
 import { encodeQueryToURL, setPage } from 'utils';
 import { getAllUsers, getUser } from 'services/users';
 import { AuthzGuards } from 'auth/permissions';
 import { useRequest } from 'utils/hooks';
 
-import { UserList, UserEdit, UserDetails } from 'components';
+
 import { useAuth0 } from 'auth/auth0';
 import { SidebarLayout } from 'layouts';
 import ContentLayout from 'layouts/Content';

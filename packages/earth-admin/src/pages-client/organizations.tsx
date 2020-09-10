@@ -28,7 +28,8 @@ import { AuthzGuards } from 'auth/permissions';
 import { useRequest } from 'utils/hooks';
 
 import { ContentLayout, SidebarLayout } from 'layouts';
-import { OrganizationList, OrganizationDetails, OrganizationEdit, LinkWithOrg } from 'components';
+import { OrganizationList, OrganizationDetails, OrganizationEdit } from 'components/organizations';
+import { LinkWithOrg } from 'components/link-with-org';
 import { useAuth0 } from 'auth/auth0';
 
 const PAGE_TYPE = setPage('Organizations');
@@ -130,7 +131,7 @@ function HomePage( props: any ) {
 }
 
 function DetailsPage( path: any ) {
-  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`);
+  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, { include: 'owners' });
   const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessOrganizationsGuard,
     query: encodedQuery,
@@ -144,7 +145,7 @@ function DetailsPage( path: any ) {
 }
 
 function EditPage( path: any ) {
-  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`);
+  const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, { include: 'owners' });
   const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessOrganizationsGuard,
     skip: path.newOrg,

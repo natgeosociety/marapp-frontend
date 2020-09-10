@@ -34,7 +34,7 @@ export const APP_BASEMAPS = [
     slug: 'satellite',
     name: 'Satellite',
     background: satellite,
-    id: 'mapbox://styles/mapbox/satellite-streets-v11',
+    id: 'mapbox://styles/ngsmapbox-gf/cke00tz1h09as19pr3bjatugw',
   },
 ];
 

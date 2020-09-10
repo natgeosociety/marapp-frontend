@@ -17,6 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-import LayerList from './LayerList';
-
-export { LayerList };
+export { default as PlacesSidebar } from './PlacesSidebar';

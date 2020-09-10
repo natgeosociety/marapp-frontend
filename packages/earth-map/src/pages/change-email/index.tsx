@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './organization-list';
-export * from './organization-details';
-export * from './organization-edit';
+import ChangeEmailComponent from './component';
+
+export default ChangeEmailComponent;
