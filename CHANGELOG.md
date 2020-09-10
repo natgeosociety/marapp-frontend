@@ -1,3 +1,11 @@
+## [1.3.2](https://github.com/natgeosociety/marapp-frontend/compare/v1.3.1...v1.3.2) (2020-09-10)
+
+
+### Bug Fixes
+
+* remove GTM data layer ([33fb873](https://github.com/natgeosociety/marapp-frontend/commit/33fb873b522f0399094b892ecf40742e4688a22d))
+* **admin:** removed metrics duplicates ([#139](https://github.com/natgeosociety/marapp-frontend/issues/139)) ([f27fe21](https://github.com/natgeosociety/marapp-frontend/commit/f27fe2134ae34c7613753eb4392e646d8344c5ef))
+
 ## [1.3.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.3.0...v1.3.1) (2020-09-10)
 
 
