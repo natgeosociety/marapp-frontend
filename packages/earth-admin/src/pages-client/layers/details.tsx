@@ -20,7 +20,7 @@ import { JSHINT } from 'jshint';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
 import Collapse from '@kunukn/react-collapse';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, ErrorMessage } from 'react-hook-form';
 
 import {
   encodeQueryToURL,
@@ -55,10 +55,7 @@ import { ContentLayout } from 'layouts';
 import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 
-
-
 const LAYER_DETAIL_QUERY = {include: 'references', select: 'references.name,references.id'};
-
 
 export function LayerDetail(path: any) {
   const {getPermissions, selectedGroup} = useAuth0();
@@ -263,11 +260,15 @@ export function LayerDetail(path: any) {
                                   isMulti
                                   placeholder="Select layer category"
                                   styles={CUSTOM_STYLES}
+                                  error={renderErrorFor('category')}
                                   theme={theme => ({
                                     ...theme,
                                     ...SELECT_THEME,
                                   })}
                                   rules={{required: true}}/>
+                      <div className="ng-form-error-block">
+                        <ErrorMessage errors={errors} name="category" message="Layer category cannot be empty" />
+                      </div>
                     </div>
                   </>
                 )}>
@@ -461,7 +462,7 @@ export function LayerDetail(path: any) {
                 <div className="ng-margin-medium-bottom">
                   {!!references ?
                     <DetailList data={references} name='Layer References' type='layers'
-                                 className="ng-flex-column ng-flex-top"/> :
+                                className="ng-flex-column ng-flex-top"/> :
                     <div>
                       <p className="ng-text-weight-bold ng-margin-small-bottom">Layer references</p>
                       <span className="ng-padding-left">No layer references</span>
@@ -476,6 +477,13 @@ export function LayerDetail(path: any) {
         {/*hidden input to store config needed for copy to clipboard function*/}
         <input type="text" ref={textAreaRef} value={JSON.stringify(config)} readOnly={true}
                style={{position: 'absolute', left: '-10000px', top: '-10000px'}}/>
+        {writePermissions && (
+          <div className="ng-text-right ng-margin-medium-top">
+            <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
+              Delete layer
+            </button>
+          </div>
+        )}
       </div>
     </ContentLayout>
   );
