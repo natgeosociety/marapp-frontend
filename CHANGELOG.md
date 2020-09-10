@@ -1,3 +1,34 @@
+# [1.3.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.2.1...v1.3.0) (2020-09-10)
+
+
+### Bug Fixes
+
+* **admin:** added delete layer button & error validation for empty la… ([#137](https://github.com/natgeosociety/marapp-frontend/issues/137)) ([17d15ae](https://github.com/natgeosociety/marapp-frontend/commit/17d15aee7d1104b1b9038e6e62ff1987a2a962cb))
+* **admin:** basepath navigation ([8d37bee](https://github.com/natgeosociety/marapp-frontend/commit/8d37bee8888859fd808b0971961c9c5d9c3b0f78))
+* **admin:** Fix button text on new organization [EP-2745] ([d5dfdc6](https://github.com/natgeosociety/marapp-frontend/commit/d5dfdc638f3358fd987ff71dc11188a931c8f12f))
+* **admin:** redirect to org page when wilcard group [EP-2754] ([8555a15](https://github.com/natgeosociety/marapp-frontend/commit/8555a155a361008d673216492995c0eee62747c0))
+
+
+### Features
+
+* **admin:** Layer detail page ([#132](https://github.com/natgeosociety/marapp-frontend/issues/132)) ([89e23c1](https://github.com/natgeosociety/marapp-frontend/commit/89e23c14787cf3e03cb45608d17f8490a0a563e4))
+* **map:** admin link for super admins [EP-2488] ([9299d79](https://github.com/natgeosociety/marapp-frontend/commit/9299d7992b4776ef1d5d76c86d565dabef60bd3b))
+* change profile API service ([e3087cf](https://github.com/natgeosociety/marapp-frontend/commit/e3087cf3b6d682f743731ab2bf345d7d0237d1d2))
+* replace Mapbox satellite basemap [EP-2590] ([475d4a5](https://github.com/natgeosociety/marapp-frontend/commit/475d4a56b9289bc4d60a43c0fb3cc2334f4d05bc))
+* **admin:** New Add Organization UI [EP-2210] ([c973d05](https://github.com/natgeosociety/marapp-frontend/commit/c973d05c9089c15fa46b319368d82d84b144cd58))
+* **admin:** New Organization Landing page [EP-2209] ([ede936b](https://github.com/natgeosociety/marapp-frontend/commit/ede936b2f19af1124a13ba24a15c2d48e3ed91ab))
+* **admin:** Organization Details new UI [EP-2211] ([32fb5cc](https://github.com/natgeosociety/marapp-frontend/commit/32fb5ccfe1734dcc188112d519b392997ef27d6e))
+* **map:** org stats (places & layers) [EP-2087] ([94c7644](https://github.com/natgeosociety/marapp-frontend/commit/94c7644d5b4fce5dfe3144af98e28dc8f0943e8b))
+* add change email confirmation callback ([655ac12](https://github.com/natgeosociety/marapp-frontend/commit/655ac129dd768688807b463e029d71ca8b3962f8))
+* change organization view fields ([7a4fb8e](https://github.com/natgeosociety/marapp-frontend/commit/7a4fb8e97d5b6d65374d85fe9aa3ccf50a749965))
+* force re-login if email change request successful ([03b3492](https://github.com/natgeosociety/marapp-frontend/commit/03b3492fafd2de28ae05e127887d4a35885b65f0))
+* **map:** add filter key [EP-2125] ([e67f80e](https://github.com/natgeosociety/marapp-frontend/commit/e67f80ef77e02ee8814df91ef4b30e837d966faa))
+
+
+### Reverts
+
+* **map:** filter key [EP-2125] ([c28b147](https://github.com/natgeosociety/marapp-frontend/commit/c28b147149788918fed5cd0d1a56d287e82b2497))
+
 ## [1.2.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.2.0...v1.2.1) (2020-09-01)
 
 
