@@ -44,7 +44,7 @@ export function PlaceDetail(props: IProps) {
     group: selectedGroup,
   });
 
-  const { data, error } = useSWR(encodedQuery, (url) =>
+  const { data, error, mutate, revalidate } = useSWR(encodedQuery, (url) =>
     getPlace(url).then((response: any) => response.data)
   );
 
@@ -66,7 +66,6 @@ export function PlaceDetail(props: IProps) {
     name, geojson, id, bbox2d, intersections, featured, published, type, slug, metrics,
     centroid, areaKm2, createdAt, updatedAt, version,
   } = place;
-
 
   const { getValues, register, formState, errors } = useForm({
     mode: 'onChange',
@@ -95,15 +94,13 @@ export function PlaceDetail(props: IProps) {
     };
 
     try {
-      setIsLoading && setIsLoading(true);
-      await handlePlaceForm(false, parsed, id, selectedGroup);
-      const res = await getPlace(encodedQuery);
-      setPlace(res.data);
-      revalidateList();
-      setIsLoading && setIsLoading(false);
+      // change local state, without revalidating from the api
+      mutate({ ...data, ...parsed }, false);
       setIsEditing && setIsEditing(false);
+      await handlePlaceForm(false, parsed, id, selectedGroup);
+      revalidate();
+      revalidateList();
     } catch (error) {
-      setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data.errors);
     }
   }
