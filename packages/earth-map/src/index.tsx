@@ -19,7 +19,7 @@
 
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import TagManager from 'react-gtm-module'
+import TagManager from 'react-gtm-module';
 
 import 'styles/index.scss';
 import 'core-js/stable';
@@ -32,12 +32,7 @@ import { GTM_TAG } from './config';
 import { onRedirectCallback, onSuccessHook, onFailureHook } from './auth/hooks';
 
 if (GTM_TAG) {
-  const tagManagerArgs = {
-    gtmId: GTM_TAG,
-    dataLayer: {
-      platform: 'react'
-    }
-  };
+  const tagManagerArgs = { gtmId: GTM_TAG };
   TagManager.initialize(tagManagerArgs);
 }
 

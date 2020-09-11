@@ -93,6 +93,7 @@ export function NewLayer() {
   }
 
   const generateSlug = async (e) => {
+    e.preventDefault();
     try {
       const {data}: any = await getUniqueSlug(watchName, selectedGroup);
       setValue('slug', data.slug, true);

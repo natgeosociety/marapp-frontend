@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import LayerDetails from './LayerDetails';
+import DetailList from './DetailList';
 
-export { LayerDetails };
+export { DetailList };

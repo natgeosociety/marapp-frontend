@@ -19,18 +19,19 @@
 
 import * as React from 'react';
 import { useEffect } from 'react';
-import { Link } from 'gatsby';
+import { Link, navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
 
 import { Spinner } from '@marapp/earth-components';
 import { isValidOrg } from 'utils';
 import { useAuth0 } from 'auth/auth0';
+import { BASE_URL } from 'config';
 
 import './styles.scss';
 
 interface IProps {
   org: string;
-  children: any
+  children: any;
 }
 
 const Organization = (props: IProps) => {
@@ -59,6 +60,12 @@ const Organization = (props: IProps) => {
 
   if (!org || !isValidOrg(groups, org)) {
     return <OrgSwitcherPage groups={groups} />
+  }
+
+  if (org === '*' && !location.pathname.startsWith(`${BASE_URL}*/organizations`)) {
+    window.location.assign(`${BASE_URL}*/organizations`);
+
+    return null;
   }
 
   if (isLoading) return <Spinner size="medium" />

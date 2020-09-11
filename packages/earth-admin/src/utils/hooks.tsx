@@ -47,10 +47,8 @@ export function useRequest(
   const [isLoading, setIsLoading] = useState(!skip);
   const [errors, setErrors] = useState<IError[]>([]);
   const [data, setData] = useState({});
-  const { getPermissions } = useAuth0();
 
   useEffect(() => {
-    const hasPermissions = getPermissions(permissions);
     async function fetchResource() {
       try {
         setIsLoading(true);
@@ -63,15 +61,6 @@ export function useRequest(
       }
     }
 
-    if (!hasPermissions) {
-      setErrors([
-        {
-          message: `Unauthorized`,
-          details: `Unauthorized`,
-        },
-      ]);
-      return;
-    }
     if (skip) {
       return;
     }
@@ -102,3 +91,4 @@ export function useDomWatcher(ref, callback, skip) {
     };
   }, [ref, skip]);
 }
+

@@ -11,7 +11,7 @@ import { noSpecialCharsRule, noSpecialCharsOrSpaceRule, setupErrors } from 'util
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
 
-import { Metrics, Intersections } from 'components/places';
+import { Metrics } from 'components/places';
 import { ErrorMessages } from 'components/error-messages';
 import { ActionModal } from 'components/action-modal';
 import { MapComponent } from 'components/map';
@@ -24,7 +24,8 @@ import { LinkWithOrg } from 'components/link-with-org';
 import { DownloadFile } from 'components/download-file';
 
 import { ContentLayout } from 'layouts';
-import { PlaceTypeEnum, PLACE_DETAIL_QUERY } from './model';
+import { PlaceTypeEnum, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
+import { DetailList } from 'components/detail-list';
 
 interface IProps {
   path: string;
@@ -67,7 +68,8 @@ export function PlaceDetail(props: IProps) {
     centroid, areaKm2, createdAt, updatedAt, version,
   } = place;
 
-  const { getValues, register, formState, errors } = useForm({
+
+  const {getValues, register, formState, errors} = useForm({
     mode: 'onChange',
   });
 
@@ -345,47 +347,21 @@ export function PlaceDetail(props: IProps) {
         </div>
         {!!intersections && <div className="ng-margin-medium-bottom">
           <Card>
-            {metrics && (
-              <>
-                <p className="ng-text-weight-bold ng-margin-small-bottom">Place Metrics</p>
-                <div className="ng-flex ng-flex-wrap ng-place-metrics-container">
-                  {metrics.map((metric) => (
-                    <Metrics
-                      key={metric.id}
-                      data={metric}
-                      handlers={{ handleServerErrors }}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-            {serverErrors && <ErrorMessages key={id} errors={serverErrors} />}
-            {writeMetricsPermission && (
-              <button
-                disabled={metricsLoading}
-                className="ng-button ng-button-primary ng-margin-medium-top"
-                onClick={(e) => handleCalculateAll(e, id)}
-              >
-                Recalculate all
-              </button>
-            )}
+            <div className="">
+              {mappedIntersections &&
+              map(mappedIntersections, (intersections: PlaceIntersection[], idx) => (
+                <DetailList
+                  key={idx}
+                  name={intersections[0].type}
+                  type='places'
+                  data={intersections}
+                />
+              ))}
+            </div>
           </Card>
         </div>}
       </div>
-      {!!intersections && <div className="ng-margin-medium-bottom">
-        <Card>
-          <div className="">
-            {mappedIntersections &&
-              map(mappedIntersections, (intersections, idx) => (
-                <Intersections
-                  key={idx}
-                  name={intersections[0].type}
-                  intersections={intersections}
-                />
-              ))}
-          </div>
-        </Card>
-      </div>}
+
       {writePermissions && (
         <div className="ng-text-right">
           <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
