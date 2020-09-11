@@ -18,10 +18,9 @@
 */
 
 import * as React from 'react';
+import useSWR from 'swr';
 
-import { setPage } from 'utils';
-import { useRequest } from 'utils/hooks';
-import { AuthzGuards } from 'auth/permissions';
+import { setPage, encodeQueryToURL } from 'utils';
 import { getOrganizationStats } from 'services/organizations';
 
 import { ContentLayout, SidebarLayout } from 'layouts';
@@ -35,16 +34,19 @@ const Homepage = (props) => {
   // use org from URL
   // `const { selectedGroup } = useAuth0()` fires multiple times on change
   const { org } = props;
-  const { isLoading, data: organization, errors } = useRequest(() => getOrganizationStats(org), {
-    permissions: AuthzGuards.accessHomeGuard,
-    query: org // when this changes, we refetch
+  const encodedQuery = encodeQueryToURL(`/organizations/stats`, {
+    group: org
   });
+  const { data: organization, error } = useSWR(
+    encodedQuery,
+    (url) => getOrganizationStats(url).then(res => res.data)
+  );
 
   return (
     <>
-      <SidebarLayout isLoading={isLoading} page={PAGE_TYPE}>
+      <SidebarLayout isLoading={!organization} page={PAGE_TYPE}>
         <Card className="marapp-qa-homepage ng-margin-top" style={{ 'overflowY': 'scroll' }}>
-          {organization.name && (
+          {organization && organization.name && (
             <>
               <h2 className="ng-text-display-m ng-margin-bottom-remove">{organization.name}</h2>
               <p className="ng-margin-bottom-large">{organization.description}</p>
@@ -61,8 +63,9 @@ const Homepage = (props) => {
           )}
         </Card>
       </SidebarLayout>
-      <ContentLayout permission={true} errors={errors}>
-        {!isLoading && (
+
+      <ContentLayout permission={true} errors={error}>
+        {!!organization && (
           <>
             <h2 className="ng-text-display-m">Home</h2>
             <Card className="ng-width-1-2">
