@@ -45,21 +45,26 @@ interface IPlacesData {
 export default function PlacesPage() {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
+
   const getQuery = (pageIndex) => {
+    // Our api starts with page 1 instead of 0
+    const offsetPageIndex = pageIndex + 1;
     const query = {
       search: searchValue,
       sort: 'name',
-      page: { size: PAGE_SIZE, number: pageIndex },
+      page: { size: PAGE_SIZE, number: offsetPageIndex },
       select: EXCLUDED_FIELDS,
       group: selectedGroup,
     };
     return encodeQueryToURL('locations', query);
   }
-  const { data: response = [], error, isValidating, size, setSize } = useSWRInfinite(getQuery, getAllPlaces);
 
-  const handleSearchValueChange = (newValue: string) => {
-    setSearchValue(newValue);
-  }
+  const {
+    data: response = [],
+    error,
+    isValidating, revalidate,
+    size, setSize,
+  } = useSWRInfinite(getQuery, getAllPlaces);
 
   const places: IPlacesData = response.reduce((acc: any, { data, ...rest }: any) => {
     return {
@@ -76,7 +81,7 @@ export default function PlacesPage() {
           data={places.data}
           categoryUrl="places"
           pageTitle="places"
-          searchValueAction={handleSearchValueChange}
+          searchValueAction={setSearchValue}
           cursorAction={() => setSize(size + 1)}
           isLoading={isValidating}
           isNoMore={places.data.length < PAGE_SIZE}
@@ -88,8 +93,8 @@ export default function PlacesPage() {
       </SidebarLayout>
       <Router>
         <PlacesHome path="/" />
-        <NewPlace path="/new" />
-        <PlaceDetail path="/:page" />
+        <NewPlace path="/new" revalidateList={revalidate} />
+        <PlaceDetail path="/:page" revalidateList={revalidate} />
       </Router>
     </>
   );

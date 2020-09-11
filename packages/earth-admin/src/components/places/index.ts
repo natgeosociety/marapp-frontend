@@ -19,4 +19,3 @@
 
 export * from './intersections';
 export * from './metrics';
-export * from './places-sidebar';

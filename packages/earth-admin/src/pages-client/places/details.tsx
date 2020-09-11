@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { groupBy, map } from 'lodash';
+import { groupBy, map, noop } from 'lodash';
 import useSWR from 'swr';
 
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { encodeQueryToURL, formatDate, km2toHa, formatArrayToParentheses } from 'utils';
 import { noSpecialCharsRule, noSpecialCharsOrSpaceRule, setupErrors } from 'utils/validations';
-import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
 
@@ -24,17 +23,23 @@ import { Input } from 'components/input';
 import { LinkWithOrg } from 'components/link-with-org';
 import { DownloadFile } from 'components/download-file';
 
-
 import { ContentLayout } from 'layouts';
 import { PlaceTypeEnum, PLACE_DETAIL_QUERY } from './model';
 
-export function PlaceDetail(path: any) {
+interface IProps {
+  path: string;
+  page?: string;
+  revalidateList?: () => {};
+}
+
+export function PlaceDetail(props: IProps) {
+  const { page, revalidateList = noop } = props;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
   const metricsPermission = getPermissions(AuthzGuards.accessMetricsGuard);
   const writeMetricsPermission = getPermissions(AuthzGuards.writeMetricsGuard);
 
-  const encodedQuery = encodeQueryToURL(`locations/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`locations/${page}`, {
     ...PLACE_DETAIL_QUERY,
     group: selectedGroup,
   });
@@ -94,6 +99,7 @@ export function PlaceDetail(path: any) {
       await handlePlaceForm(false, parsed, id, selectedGroup);
       const res = await getPlace(encodedQuery);
       setPlace(res.data);
+      revalidateList();
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
     } catch (error) {

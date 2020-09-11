@@ -22,6 +22,7 @@ import { useState } from 'react';
 import { navigate } from 'gatsby';
 import { useForm } from 'react-hook-form';
 import { Spinner } from '@marapp/earth-components';
+import { noop } from 'lodash';
 
 import { useAuth0 } from 'auth/auth0';
 import { addPlace, getUniqueSlug } from 'services/places';
@@ -35,7 +36,13 @@ import { FakeJsonUpload } from 'components/fake-json-upload';
 import { Input } from 'components/input';
 import { ContentLayout } from 'layouts';
 
-export function NewPlace(path: any) {
+interface IProps {
+  path: string;
+  revalidateList?: () => {};
+}
+
+export function NewPlace(props: IProps) {
+  const { revalidateList = noop } = props;
   const { getValues, register, watch, formState, errors, setValue } = useForm({
     mode: 'onChange',
   });
@@ -59,6 +66,7 @@ export function NewPlace(path: any) {
     try {
       setIsLoading(true);
       const response: any = await addPlace(parsed, selectedGroup);
+      revalidateList();
       await navigate(`/${selectedGroup}/places/${response.data.id}`);
     } catch (error) {
       setIsLoading(false);
