@@ -61,6 +61,7 @@ export function NewPlace(path: any) {
       const response: any = await addPlace(parsed, selectedGroup);
       await navigate(`/${selectedGroup}/places/${response.data.id}`);
     } catch (error) {
+      // TODO: Remove this when the real "upload file" feature is available.
       const fallbackError =  [{ detail: 'Something went wrong. Please make sure the selected file is under 6MB.' }];
 
       setIsLoading(false);
