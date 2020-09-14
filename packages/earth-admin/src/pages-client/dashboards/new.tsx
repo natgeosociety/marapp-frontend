@@ -57,6 +57,8 @@ export function NewDashboard() {
 
 
   const onSubmit = async (values: any) => {
+    const { widgets } = values;
+
     const parsed = {
       ...values,
       ...(!!widgets && {widgets: flattenArrayForSelect(widgets, 'id')}),
