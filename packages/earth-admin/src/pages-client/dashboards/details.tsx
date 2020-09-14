@@ -14,23 +14,15 @@
 */
 
 import * as React from 'react';
-import { useEffect, useState, useRef } from 'react';
-import classnames from 'classnames';
-import { JSHINT } from 'jshint';
+import { useEffect, useState } from 'react';
 import renderHTML from 'react-render-html';
-import Select from 'react-select';
-import Collapse from '@kunukn/react-collapse';
-import { Controller, useForm, ErrorMessage } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import {
   encodeQueryToURL,
   formatDate,
   flattenArrayForSelect,
-  flattenObjectForSelect,
-  getSelectValues,
-  copyToClipboard,
 } from 'utils';
-import { getAllLayers, getLayer, handleLayerForm } from 'services/layers';
 import { useRequest } from 'utils/hooks';
 
 import { noSpecialCharsRule, alphaNumericDashesRule, setupErrors } from 'utils/validations';
@@ -42,7 +34,6 @@ import { Input } from 'components/input';
 import { InlineEditCard } from 'components/inline-edit-card';
 import { Card } from 'components/card';
 import { Toggle } from 'components/toggle';
-import { JsonEditor } from 'components/json-editor';
 import { HtmlEditor } from 'components/html-editor';
 import { DetailList } from 'components/detail-list';
 import { ErrorMessages } from 'components/error-messages';
@@ -52,18 +43,21 @@ import { AuthzGuards } from 'auth/permissions';
 import { ContentLayout } from 'layouts';
 
 
-// import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
-import { getDashboard, handleDashboardForm } from 'services';
+import { getAllWidgets, getDashboard, handleDashboardForm } from 'services';
 
-const LAYER_DETAIL_QUERY = {include: 'references', select: 'references.name,references.id'};
+const DASHBOARD_DETAIL_QUERY = {
+  include: 'layers,widgets',
+  select: 'layers.id,layers.name,layers.type,widgets.id,widgets.name,widgets.type',
+  sort: 'layers.name,widgets.name',
+};
 
 export function DashboardDetail(path: any) {
   const {getPermissions, selectedGroup} = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
-    ...LAYER_DETAIL_QUERY,
+    ...DASHBOARD_DETAIL_QUERY,
     ...{group: selectedGroup},
   });
 
@@ -76,16 +70,13 @@ export function DashboardDetail(path: any) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [serverErrors, setServerErrors] = useState();
 
-
   const {
-    id, slug, name, description, published, widgets, createdAt, updatedAt, version
+    id, slug, name, description, published, widgets, createdAt, updatedAt, version,
   } = dashboard;
-
 
   useEffect(() => {
     setDashboard(data);
   }, [data]);
-
 
   const {getValues, register, formState, errors, control} = useForm({
     mode: 'onChange',
@@ -99,11 +90,11 @@ export function DashboardDetail(path: any) {
 
     const formData = getValues();
 
-    const { references} = formData;
+    const {widgets} = formData;
 
     const parsed = {
       ...formData,
-      ...(references && {references: flattenArrayForSelect(references, 'id')}),
+      ...(widgets && {widgets: flattenArrayForSelect(widgets, 'id')}),
     };
 
     try {
@@ -123,19 +114,21 @@ export function DashboardDetail(path: any) {
     setShowDeleteModal(!showDeleteModal);
   }
 
-  return !!dashboard && (<ContentLayout backTo="/dashboards" isLoading={isLoading} className="marapp-qa-dashboarddetail">
+  return !!dashboard && (
+    <ContentLayout backTo="/dashboards" isLoading={isLoading} className="marapp-qa-dashboarddetail">
       {showDeleteModal && (
         <ActionModal
           id={id}
           navigateRoute={'dashboards'}
           name={name}
-          type="dashboards"
+          type="dashboard"
           toggleModal={handleDeleteToggle}
           visibility={showDeleteModal}
         />
       )}
       <div className="ng-padding-medium-horizontal">
-        <LinkWithOrg className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block" to="/dashboards">
+        <LinkWithOrg className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block"
+                     to="/dashboards">
           <i className="ng-icon ng-icon-directionleft"/>
           return to dashboards home
         </LinkWithOrg>
@@ -202,7 +195,7 @@ export function DashboardDetail(path: any) {
                   </>
                 )}>
                 <div className="ng-margin-medium-bottom">
-                  <p className="ng-text-weight-bold ng-margin-remove">Layer slug</p>
+                  <p className="ng-text-weight-bold ng-margin-remove">Dashboard slug</p>
                   <p className="ng-margin-remove ng-padding-left">{slug}</p>
                 </div>
               </InlineEditCard>
@@ -259,10 +252,10 @@ export function DashboardDetail(path: any) {
                 render={({setIsEditing, setIsLoading, setServerErrors}) => (
                   <>
                     <div className="ng-margin-medium-bottom">
-                      <label htmlFor="provider">Included widgets:</label>
-                      <Controller name="references"
+                      <label htmlFor="provider">Dashboard widgets:</label>
+                      <Controller name="widgets"
                                   type="widgets"
-                                  className="marapp-qa-references"
+                                  className="marapp-qa-widgets"
                                   control={control}
                                   getOptionLabel={option => option.name}
                                   getOptionValue={option => option.id}

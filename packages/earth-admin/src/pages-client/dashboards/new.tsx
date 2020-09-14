@@ -191,7 +191,7 @@ export function NewDashboard() {
                   Save and view details
                 </button>
 
-                <LinkWithOrg className="ng-button ng-button-secondary ng-button-large marapp-qa-back" to="/dashboard">
+                <LinkWithOrg className="ng-button ng-button-secondary ng-button-large marapp-qa-back" to="/dashboards">
                   Return to dashboards home
                 </LinkWithOrg>
               </div>

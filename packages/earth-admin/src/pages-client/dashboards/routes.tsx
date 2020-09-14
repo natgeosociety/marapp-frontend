@@ -23,7 +23,7 @@ import { Router, } from '@reach/router';
 
 import { DashboardsHome } from './home';
 import { NewDashboard } from './new';
-import { DetailsPage, EditPage } from 'pages-client/dashboards';
+import { DashboardDetail } from './details';
 import { DashboardSidebar } from 'components/dashboards';
 
 export default function DashboardsPage(props) {
@@ -33,8 +33,7 @@ export default function DashboardsPage(props) {
       <Router>
         <DashboardsHome path="/" />
         <NewDashboard path="/new"/>
-        <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newDashboard={false}/>
+        <DashboardDetail path="/:page"/>
       </Router>
     </>
   );
