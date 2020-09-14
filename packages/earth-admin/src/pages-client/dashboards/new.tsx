@@ -53,13 +53,13 @@ export function NewDashboard() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState([]);
-  const [references, setReferences] = useState();
+  const [widgets, setWidgets] = useState();
 
 
   const onSubmit = async (values: any) => {
     const parsed = {
       ...values,
-      ...(!!references && {references: flattenArrayForSelect(references, 'id')}),
+      ...(!!widgets && {widgets: flattenArrayForSelect(widgets, 'id')}),
     };
 
     try {
@@ -153,14 +153,14 @@ export function NewDashboard() {
           <Card className="ng-margin-medium-bottom">
             <div className="ng-width-1-1">
               <label htmlFor="provider">Included Widgets:</label>
-              <Controller name="references"
+              <Controller name="widgets"
                           type="widgets"
-                          className="marapp-qa-references"
+                          className="marapp-qa-widgets"
                           control={control}
                           getOptionLabel={option => option.name}
                           getOptionValue={option => option.id}
                           loadFunction={getAllWidgets}
-                          defaultValue={references}
+                          defaultValue={widgets}
                           selectedGroup={selectedGroup}
                           as={AsyncSelect}
                           isClearable
