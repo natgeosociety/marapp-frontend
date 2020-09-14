@@ -19,28 +19,25 @@
 
 import React, { useState } from 'react';
 import { navigate } from 'gatsby';
-import { JSHINT } from 'jshint';
 import { Controller, useForm } from 'react-hook-form';
-import Select from 'react-select';
 
 import { Spinner, AsyncSelect } from '@marapp/earth-components';
 import { useAuth0 } from 'auth/auth0';
-import { getAllLayers, getUniqueSlug, addLayer } from 'services/layers';
+
+import { getUniqueSlug, addDashboard } from 'services/dashboards';
+import { getAllWidgets } from 'services/widgets';
 import { noSpecialCharsRule, alphaNumericDashesRule, setupErrors } from 'utils/validations';
+import { flattenArrayForSelect } from 'utils';
 
 import { LinkWithOrg } from 'components/link-with-org';
 import { ErrorMessages } from 'components/error-messages';
 import { Card } from 'components/card';
 import { Input } from 'components/input';
 import { HtmlEditor } from 'components/html-editor';
-import { JsonEditor } from 'components/json-editor';
 import { ContentLayout } from 'layouts';
-// import {
-//   LAYER_CATEGORY_OPTIONS,
-//   LAYER_TYPE_OPTIONS,
-//   LAYER_PROVIDER_OPTIONS,
-// } from './model';
+
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+
 
 export function NewDashboard() {
   const {selectedGroup} = useAuth0();
@@ -53,42 +50,27 @@ export function NewDashboard() {
   const renderErrorFor = setupErrors(errors, touched);
 
   const watchName = watch('name');
-  // const watchJson = watch('config');
 
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState([]);
-
   const [references, setReferences] = useState();
 
-  const flattenArrayForSelect = (e, field) => {
-    return !!e ? e.map(val => val[field]) : e;
-  };
-
-  const flattenObjectForSelect = (e) => {
-    return !!e ? e.value : e;
-  };
 
   const onSubmit = async (values: any) => {
-    const {type, category, provider, references} = values;
-
     const parsed = {
       ...values,
-      ...(category && {category: flattenArrayForSelect(category, 'value')}),
-      ...(type && {type: flattenObjectForSelect(type)}),
-      ...(provider && {provider: flattenObjectForSelect(provider)}),
-      ...(!!layerConfig && {config: layerConfig}),
       ...(!!references && {references: flattenArrayForSelect(references, 'id')}),
     };
 
     try {
       setIsLoading(true);
-      const response: any = await addLayer(parsed, selectedGroup);
-      await navigate(`/${selectedGroup}/layers/${response.data.id}`);
+      const response = await addDashboard(parsed, selectedGroup);
+      await navigate(`/${selectedGroup}/dashboards/${response.data.id}`);
     } catch (error) {
       setIsLoading(false);
       setServerErrors(error.data.errors);
     }
-  }
+  };
 
   const generateSlug = async (e) => {
     e.preventDefault();
@@ -100,40 +82,26 @@ export function NewDashboard() {
     }
   };
 
-  const handleJsonChange = (json) => {
-    try {
-      JSON.parse(json);
-    } catch (err) {
-      setJsonError(true);
-    }
-    if (!JSHINT.errors.length) {
-      const parsedJson = JSON.parse(json);
-      setLayerConfig(parsedJson);
-      setJsonError(false);
-      return parsedJson;
-    }
-    setJsonError(true);
-  };
 
   return (
-    <ContentLayout backTo="/layers" className="marapp-qa-newlayer">
+    <ContentLayout backTo="/dashboards" className="marapp-qa-newdashboard">
       <div>
         <div className="ng-flex ng-flex-space-between">
-          <h2 className="ng-text-display-m ng-c-flex-grow-1">New layer</h2>
+          <h2 className="ng-text-display-m ng-c-flex-grow-1">New dashboard</h2>
         </div>
 
         <form className="ng-form ng-form-dark ng-flex-column" onSubmit={handleSubmit(onSubmit)}>
           <Card className="ng-margin-medium-bottom">
             <Input
               name="name"
-              placeholder="Layer title"
+              placeholder="Dashboard title"
               label="Title*"
               className="ng-display-block"
               error={renderErrorFor('name')}
               ref={register({
-                required: 'Layer title is required',
+                required: 'Dashboard title is required',
                 validate: {
-                  noSpecialCharsRule: noSpecialCharsRule()
+                  noSpecialCharsRule: noSpecialCharsRule(),
                 },
               })}/>
           </Card>
@@ -143,15 +111,15 @@ export function NewDashboard() {
               <div className="ng-flex-item-1">
                 <Input
                   name="slug"
-                  placeholder="Layer slug"
+                  placeholder="Dashboard slug"
                   label="Slug*"
                   className="ng-display-block marapp-qa-inputslug"
                   error={renderErrorFor('slug')}
                   ref={register({
-                    required: 'Layer slug is required',
+                    required: 'Dashboard slug is required',
                     validate: {
-                      alphaNumericDashesRule: alphaNumericDashesRule()
-                    }
+                      alphaNumericDashesRule: alphaNumericDashesRule(),
+                    },
                   })}/>
               </div>
               <div>
@@ -165,28 +133,12 @@ export function NewDashboard() {
                 </button>
               </div>
             </div>
-            <div className="ng-width-1-1">
-              <label htmlFor="category">Layer category*</label>
-
-              <Controller as={Select} control={control} className="marapp-qa-category"
-                          name="category"
-                          options={LAYER_CATEGORY_OPTIONS}
-                          isSearchable
-                          isMulti
-                          placeholder="Select layer category"
-                          styles={CUSTOM_STYLES}
-                          theme={theme => ({
-                            ...theme,
-                            ...SELECT_THEME,
-                          })}
-                          rules={{required: true}}/>
-            </div>
           </Card>
 
           <Card className="ng-margin-medium-bottom">
             <div className="ng-width-1-1">
               <label className="ng-form-label" htmlFor="description">
-                Layer description
+                Dashboard description
               </label>
 
               <Controller
@@ -199,57 +151,15 @@ export function NewDashboard() {
           </Card>
 
           <Card className="ng-margin-medium-bottom">
-            <div className="ng-width-1-1 ng-margin-medium-bottom">
-              <label htmlFor="provider">Layer provider*</label>
-              <Controller as={Select} control={control} className="marapp-qa-provider"
-                          name="provider"
-                          options={LAYER_PROVIDER_OPTIONS}
-                          isSearchable
-                          placeholder="Select layer provider"
-                          styles={CUSTOM_STYLES}
-                          theme={theme => ({
-                            ...theme,
-                            ...SELECT_THEME,
-                          })}
-                          rules={{required: true}}/>
-            </div>
             <div className="ng-width-1-1">
-              <label htmlFor="type">Layer type*</label>
-              <Controller as={Select} control={control} className="marapp-qa-type"
-                          name="type"
-                          options={LAYER_TYPE_OPTIONS}
-                          isSearchable
-                          placeholder="Select layer type"
-                          styles={CUSTOM_STYLES}
-                          theme={theme => ({
-                            ...theme,
-                            ...SELECT_THEME,
-                          })}
-                          rules={{required: true}}/>
-            </div>
-          </Card>
-
-          <Card className="ng-margin-medium-bottom">
-            <div className="ng-margin-medium-bottom">
-              <label htmlFor="config">Layer Config*</label>
-              <Controller
-                className="marapp-qa-config"
-                name="config"
-                control={control}
-                onChange={(layerConfig) => handleJsonChange(layerConfig)}
-                as={<JsonEditor json=""/>}
-              />
-            </div>
-
-            <div className="ng-width-1-1">
-              <label htmlFor="provider">Included layers:</label>
+              <label htmlFor="provider">Included Widgets:</label>
               <Controller name="references"
-                          type="layers"
+                          type="widgets"
                           className="marapp-qa-references"
                           control={control}
                           getOptionLabel={option => option.name}
                           getOptionValue={option => option.id}
-                          loadFunction={getAllLayers}
+                          loadFunction={getAllWidgets}
                           defaultValue={references}
                           selectedGroup={selectedGroup}
                           as={AsyncSelect}
@@ -257,7 +167,7 @@ export function NewDashboard() {
                           isSearchable
                           isMulti
                           closeMenuOnSelect={false}
-                          placeholder="Select layers"
+                          placeholder="Select widgets"
                           styles={CUSTOM_STYLES}
                           theme={theme => ({
                             ...theme,
@@ -274,13 +184,13 @@ export function NewDashboard() {
               <div className="ng-flex">
                 <button
                   className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
-                  disabled={!isValid || jsonError || !dirty || !watchJson}
+                  disabled={!isValid || !dirty}
                 >
                   Save and view details
                 </button>
 
-                <LinkWithOrg className="ng-button ng-button-secondary ng-button-large marapp-qa-back" to="/layers">
-                  Return to layers home
+                <LinkWithOrg className="ng-button ng-button-secondary ng-button-large marapp-qa-back" to="/dashboard">
+                  Return to dashboards home
                 </LinkWithOrg>
               </div>
             )}

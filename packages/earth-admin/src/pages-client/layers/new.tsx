@@ -27,6 +27,7 @@ import { Spinner, AsyncSelect } from '@marapp/earth-components';
 import { useAuth0 } from 'auth/auth0';
 import { getAllLayers, getUniqueSlug, addLayer } from 'services/layers';
 import { noSpecialCharsRule, alphaNumericDashesRule, setupErrors } from 'utils/validations';
+import { flattenArrayForSelect, flattenObjectForSelect } from 'utils';
 
 import { LinkWithOrg } from 'components/link-with-org';
 import { ErrorMessages } from 'components/error-messages';
@@ -61,14 +62,6 @@ export function NewLayer() {
   const [layerConfig, setLayerConfig] = useState({});
 
   const [references, setReferences] = useState();
-
-  const flattenArrayForSelect = (e, field) => {
-    return !!e ? e.map(val => val[field]) : e;
-  };
-
-  const flattenObjectForSelect = (e) => {
-    return !!e ? e.value : e;
-  };
 
   const onSubmit = async (values: any) => {
     const {type, category, provider, references} = values;
