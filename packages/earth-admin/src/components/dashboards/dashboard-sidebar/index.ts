@@ -17,7 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './dashboard-details';
-export * from './dashboard-edit';
-export * from './dashboard-list';
-export * from './dashboard-sidebar';
+export { default as DashboardSidebar } from './DashboardSidebar';

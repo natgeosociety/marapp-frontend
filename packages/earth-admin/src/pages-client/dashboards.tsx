@@ -39,124 +39,8 @@ const DASHBOARD_DETAIL_QUERY = {
   select: 'layers.id,layers.name,layers.type,widgets.id,widgets.name,widgets.type',
   sort: 'layers.name,widgets.name',
 };
-const INIT_CURSOR_LOCATION = '-1';
 
-const PAGE_TYPE = setPage('Data Indexes');
-
-export default function DashboardsPage(props) {
-  return (
-    <Router>
-      <Page path="/">
-        <HomePage path="/"/>
-        <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newDashboard={false}/>
-        <EditPage path="/new" newDashboard={true}/>
-      </Page>
-    </Router>
-  );
-}
-
-function Sidebar(props: any) {
-  const [dashboards, setDashboards] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
-  const [pageSize, setPageSize] = useState(20);
-  const [pageCursor, setPageCursor] = useState('-1');
-  const [nextCursor, setNextCursor] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isNoMore, setIsNoMore] = useState(null);
-  const [totalResults, setTotalResults] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  const {selectedGroup, getPermissions} = useAuth0();
-
-  const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
-
-  const handleSearchValueChange = (newValue: string) => {
-    setPageCursor('-1');
-    setNextCursor(null);
-    setSearchValue(newValue);
-  };
-
-  const handleCursorChange = () => {
-    if (nextCursor) {
-      setPageCursor(nextCursor);
-    }
-  };
-
-  useEffect(() => {
-    async function setupDashboards() {
-      setIsLoading(true);
-
-      const query = {
-        search: searchValue,
-        sort: 'name',
-        page: {size: pageSize, cursor: pageCursor},
-        select: EXCLUDED_FIELDS,
-        group: selectedGroup,
-      };
-      const encodedQuery = encodeQueryToURL('dashboards', query);
-      const res: any = await getAllDashboards(encodedQuery);
-
-
-      setTotalResults(res.total);
-
-      setDashboards(!nextCursor ? res.data : [...dashboards, ...res.data]);
-      setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-      setIsNoMore(!res.pagination.nextCursor);
-
-      setIsLoading(false);
-    }
-
-    permissions && setupDashboards();
-  }, [pageCursor, searchValue]);
-
-  return (
-    <DashboardContext.Provider
-      value={{
-        handleSearchValueChange,
-        handleCursorChange,
-        isLoading,
-        isNoMore,
-        dashboards,
-        nextCursor,
-        totalResults,
-        pageSize,
-        searchValue,
-        selectedItem,
-      }}
-    >
-      <SidebarLayout page={PAGE_TYPE}>
-        <DashboardList/>
-      </SidebarLayout>
-    </DashboardContext.Provider>
-  );
-}
-
-function Page(props: any) {
-  return (
-    <>
-      <Sidebar/>
-      {props.children}
-    </>);
-}
-
-
-function HomePage(props: any) {
-  const {getPermissions} = useAuth0();
-  const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
-  const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
-  return (writePermissions && (
-    <ContentLayout>
-      <div className="ng-flex ng-align-right">
-        <LinkWithOrg className="ng-button ng-button-overlay" to="/dashboards/new">
-          add new dashboard
-        </LinkWithOrg>
-      </div>
-    </ContentLayout>
-  ));
-}
-
-function DetailsPage(path: any) {
+export function DetailsPage(path: any) {
   const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
     ...DASHBOARD_DETAIL_QUERY,
@@ -174,7 +58,7 @@ function DetailsPage(path: any) {
   );
 }
 
-function EditPage(path: any) {
+export function EditPage(path: any) {
   const {selectedGroup} = useAuth0();
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
     ...DASHBOARD_DETAIL_QUERY,

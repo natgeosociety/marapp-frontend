@@ -17,7 +17,24 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './dashboard-details';
-export * from './dashboard-edit';
-export * from './dashboard-list';
-export * from './dashboard-sidebar';
+import * as React from 'react';
+import { Router, } from '@reach/router';
+
+
+import { DashboardsHome } from './home';
+import { DetailsPage, EditPage } from 'pages-client/dashboards';
+import { DashboardSidebar } from 'components/dashboards';
+
+export default function DashboardsPage(props) {
+  return (
+    <>
+      <DashboardSidebar />
+      <Router>
+        <DashboardsHome path="/" />
+        <DetailsPage path="/:page"/>
+        <EditPage path="/:page/edit" newDashboard={false}/>
+        <EditPage path="/new" newDashboard={true}/>
+      </Router>
+    </>
+  );
+}
