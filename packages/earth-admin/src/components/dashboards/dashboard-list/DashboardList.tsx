@@ -33,7 +33,7 @@ export default function DashboardList() {
             childComponent={DefaultListItem}
             data={dashboards}
             categoryUrl={'dashboards'}
-            pageTitle="data indexes"
+            pageTitle="dashboards"
             searchValueAction={handleSearchValueChange}
             cursorAction={handleCursorChange}
             isLoading={isLoading}

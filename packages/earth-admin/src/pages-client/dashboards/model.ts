@@ -17,7 +17,34 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './dashboard-details';
-export * from './dashboard-edit';
-export * from './dashboard-list';
-export * from './dashboard-sidebar';
+import { Layer } from '../layers/model';
+import { Widget } from '../../components/widgets/model';
+
+export interface DashboardContextProps {
+  handleSearchValueChange: (newValue: string) => void;
+  handleCursorChange: Function;
+  pageSize: number;
+  isLoading: boolean;
+  isNoMore: boolean;
+  searchValue?: string;
+  permissions?: any;
+  totalResults?: number;
+  nextCursor?: string;
+  dashboards: Dashboard[];
+  selectedItem?: string;
+}
+
+export interface Dashboard {
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  published: boolean;
+  layers?: string[] | Layer[];
+  widgets?: string[] | Widget[];
+}
+
+export interface DashboardProps {
+  data: Dashboard;
+  newDashboard?: boolean;
+}
