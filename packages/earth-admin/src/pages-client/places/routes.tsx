@@ -25,6 +25,7 @@ import { useSWRInfinite } from 'swr';
 import { encodeQueryToURL, setPage } from 'utils';
 import { useAuth0 } from 'auth/auth0';
 import { getAllPlaces } from 'services/places';
+import { useInfiniteList } from 'utils/hooks';
 
 import { SidebarLayout } from 'layouts';
 import { DataListing, DefaultListItem } from 'components/data-listing';
@@ -35,12 +36,6 @@ import { NewPlace } from './new';
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const PAGE_TYPE = setPage('Places');
 const PAGE_SIZE = 20;
-
-interface IPlacesData {
-  data?: any[];
-  total?: number;
-  pagination?: any;
-}
 
 export default function PlacesPage() {
   const { selectedGroup } = useAuth0();
@@ -58,38 +53,19 @@ export default function PlacesPage() {
     };
     return encodeQueryToURL('locations', query);
   }
-
-  const {
-    data: response = [],
-    error,
-    isValidating,
-    size,
-    setSize,
-    mutate,
-  } = useSWRInfinite(getQuery, getAllPlaces);
-
-  const places: IPlacesData = response.reduce((acc: any, { data, ...rest }: any) => {
-    return {
-      data: acc.data.concat(data),
-      ...rest,
-    }
-  }, { data: [] });
+  const {listData, mutate} = useInfiniteList(getQuery, getAllPlaces);
 
   return (
     <>
       <SidebarLayout page={PAGE_TYPE}>
         <DataListing
           childComponent={DefaultListItem}
-          data={places.data}
           categoryUrl="places"
           pageTitle="places"
           searchValueAction={setSearchValue}
-          cursorAction={() => setSize(size + 1)}
-          isLoading={isValidating}
-          isNoMore={places.data.length < PAGE_SIZE}
-          totalResults={places.total}
           pageSize={PAGE_SIZE}
           searchValue={searchValue}
+          {...listData}
           // selectedItem={selectedItem}
         />
       </SidebarLayout>

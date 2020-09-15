@@ -18,9 +18,7 @@
 */
 
 import { useState, useEffect } from 'react';
-
-import { ScopesEnum } from 'auth/permissions';
-import { useAuth0 } from 'auth/auth0';
+import { useSWRInfinite } from 'swr';
 
 interface IError {
   details: string;
@@ -91,3 +89,41 @@ export function useDomWatcher(ref, callback, skip) {
   }, [ref, skip]);
 }
 
+/**
+ * Custom hook that integrates useSWRInfinite with <DataListing /> component
+ * @param getQuery Function responsible for returning the api url
+ * @param fetcher Function queries the api
+ */
+export function useInfiniteList(
+  getQuery: (pageIndex: number) => string,
+  fetcher: (any) => Promise<any>) {
+  const {
+    data: response = [],
+    error,
+    isValidating,
+    size,
+    setSize,
+    mutate,
+  } = useSWRInfinite(getQuery, fetcher);
+
+  // Merge multiple page results into a single list of results
+  const items = response.reduce((acc: any, { data, ...rest }: any) => {
+    return {
+      data: acc.data.concat(data),
+      ...rest,
+    }
+  }, { data: [] });
+
+  return {
+    // props for <DataListing />
+    listData: {
+      data: items.data,
+      cursorAction: () => setSize(size + 1),
+      isLoading: isValidating,
+      isNoMore: items.data.length >= items.total,
+      totalResults: items.total,
+    },
+    mutate,
+    error,
+  }
+}
