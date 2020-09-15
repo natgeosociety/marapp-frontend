@@ -30,11 +30,11 @@ import { DetailList } from 'components/detail-list';
 interface IProps {
   path: string;
   page?: string;
-  revalidateList?: () => {};
+  onChange?: () => {};
 }
 
 export function PlaceDetail(props: IProps) {
-  const { page, revalidateList = noop } = props;
+  const { page, onChange = noop } = props;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
   const metricsPermission = getPermissions(AuthzGuards.accessMetricsGuard);
@@ -101,7 +101,7 @@ export function PlaceDetail(props: IProps) {
       setIsEditing && setIsEditing(false);
       await handlePlaceForm(false, parsed, id, selectedGroup);
       revalidate();
-      revalidateList();
+      onChange();
     } catch (error) {
       setServerErrors && setServerErrors(error.data.errors);
     }

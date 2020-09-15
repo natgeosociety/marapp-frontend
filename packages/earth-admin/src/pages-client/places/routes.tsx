@@ -62,8 +62,10 @@ export default function PlacesPage() {
   const {
     data: response = [],
     error,
-    isValidating, revalidate,
-    size, setSize,
+    isValidating,
+    size,
+    setSize,
+    mutate,
   } = useSWRInfinite(getQuery, getAllPlaces);
 
   const places: IPlacesData = response.reduce((acc: any, { data, ...rest }: any) => {
@@ -93,8 +95,8 @@ export default function PlacesPage() {
       </SidebarLayout>
       <Router>
         <PlacesHome path="/" />
-        <NewPlace path="/new" revalidateList={revalidate} />
-        <PlaceDetail path="/:page" revalidateList={revalidate} />
+        <NewPlace path="/new" onChange={mutate} />
+        <PlaceDetail path="/:page" onChange={mutate} />
       </Router>
     </>
   );
