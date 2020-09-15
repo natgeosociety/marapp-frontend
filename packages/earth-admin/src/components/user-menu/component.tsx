@@ -70,6 +70,9 @@ export default function UserMenuComponent() {
           >
             <ul className="ng-user-profile-dropdown">
               <li>ACCOUNT</li>
+              <li className="ng-user-profile-userprofile">
+                <a href="/user-profile" className="marapp-qa-actionuserprofile">Profile</a>
+              </li>
               <li className="ng-user-profile-signout">
                 <a className="marapp-qa-actionsignout" onClick={handleLogout}>Sign Out</a>
               </li>

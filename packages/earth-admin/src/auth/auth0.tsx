@@ -107,7 +107,8 @@ export const Auth0Provider = ({
         const idToken = await auth0FromHook.getUser();
 
         const roles = get(idToken, `${NAMESPACE}/roles`, []);
-        setRoles(mapAuthzScopes(roles));
+        const mappedRoles = mapAuthzScopes(roles);
+        setRoles(mappedRoles);
 
         const isSuperAdmin = roles.find(role => role === '*:SuperAdmin');
 
@@ -124,7 +125,7 @@ export const Auth0Provider = ({
         const userName = get(idToken, 'name', '');
         const userPicture = get(idToken, 'picture', '');
 
-        setUserData({ name: userName, picture: userPicture, allGroups: nonNestedGroups });
+        setUserData({ name: userName, picture: userPicture, allGroups: nonNestedGroups, email, roles: mappedRoles });
 
         const authorized = !!roles.length;
         setIsAuthorized(authorized);

@@ -32,6 +32,7 @@ import OrganizationsPage from 'pages-client/organizations/routes';
 import Organization from 'pages-client/organization';
 import Homepage from 'pages-client/homepage';
 import UnauthorizedPage from 'pages-client/unauthorized';
+import UserProfilePage from 'pages-client/user-profile/routes';
 import { ProtectedRoute } from 'components/protected-route';
 
 import { useAuth0 } from 'auth/auth0';
@@ -52,6 +53,7 @@ export default function IndexPage() {
         <UsersPage path="/users/*"/>
         <OrganizationsPage path="/organizations/*"/>
       </ProtectedRoute>
+      <ProtectedRoute path="/user-profile" component={UserProfilePage}/>
       <UnauthorizedPage path="/unauthorized"/>
     </Router>
   );
