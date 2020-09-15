@@ -96,15 +96,20 @@ export function PlaceDetail(props: IProps) {
     };
 
     try {
-      // change local state, without revalidating from the api
+      // optimistic ui update
       mutate({ ...data, ...parsed }, false);
+
       setIsEditing && setIsEditing(false);
       await handlePlaceForm(false, parsed, id, selectedGroup);
+
       revalidate();
       onDataChange();
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
       const fallbackError =  [{ detail: 'Something went wrong. Please make sure the selected file is under 6MB.' }];
+
+      // undo optimistic ui update
+      mutate({ ...data }, false);
 
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error?.data.errors || fallbackError);
@@ -180,14 +185,14 @@ export function PlaceDetail(props: IProps) {
                   label="Featured"
                   value={featured}
                   className="ng-display-block"
-                  onChange={(e) => onSubmit(e)}
+                  onChange={onSubmit}
                   ref={register({})} />
                 <Toggle
                   name="published"
                   label="Published"
                   value={published}
                   className="ng-display-block"
-                  onChange={(e) => onSubmit(e)}
+                  onChange={onSubmit}
                   ref={register({})} />
               </Card>
             </div>
