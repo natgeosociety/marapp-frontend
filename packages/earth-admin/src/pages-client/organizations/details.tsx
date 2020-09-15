@@ -43,7 +43,6 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
 
   const {isLoading, errors, data} = useRequest(() =>
     getOrganization(encodedQuery), {
-    permissions: AuthzGuards.accessOrganizationsGuard,
     query: encodedQuery,
   });
 

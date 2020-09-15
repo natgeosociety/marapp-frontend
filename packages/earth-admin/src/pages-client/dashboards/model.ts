@@ -18,7 +18,7 @@
 */
 
 import { Layer } from '../layers/model';
-import { Widget } from '../widgets/model';
+import { Widget } from '../../components/widgets/model';
 
 export interface DashboardContextProps {
   handleSearchValueChange: (newValue: string) => void;

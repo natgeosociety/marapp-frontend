@@ -103,7 +103,11 @@ export function PlaceDetail(props: IProps) {
       revalidate();
       onDataChange();
     } catch (error) {
-      setServerErrors && setServerErrors(error.data.errors);
+      // TODO: Remove this when the real "upload file" feature is available.
+      const fallbackError =  [{ detail: 'Something went wrong. Please make sure the selected file is under 6MB.' }];
+
+      setIsLoading && setIsLoading(false);
+      setServerErrors && setServerErrors(error?.data.errors || fallbackError);
     }
   }
 

@@ -17,6 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-import DashboardList from './DashboardList';
-
-export { DashboardList };
+export { default as DashboardSidebar } from './DashboardSidebar';
