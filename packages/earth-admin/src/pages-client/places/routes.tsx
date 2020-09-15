@@ -42,18 +42,16 @@ export default function PlacesPage() {
   const [searchValue, setSearchValue] = useState('');
 
   const getQuery = (pageIndex) => {
-    // Our api starts with page 1 instead of 0
-    const offsetPageIndex = pageIndex + 1;
     const query = {
       search: searchValue,
       sort: 'name',
-      page: { size: PAGE_SIZE, number: offsetPageIndex },
+      page: { size: PAGE_SIZE, number: pageIndex },
       select: EXCLUDED_FIELDS,
       group: selectedGroup,
     };
     return encodeQueryToURL('locations', query);
   }
-  const {listData, mutate} = useInfiniteList(getQuery, getAllPlaces);
+  const {listProps, mutate} = useInfiniteList(getQuery, getAllPlaces);
 
   return (
     <>
@@ -65,7 +63,7 @@ export default function PlacesPage() {
           searchValueAction={setSearchValue}
           pageSize={PAGE_SIZE}
           searchValue={searchValue}
-          {...listData}
+          {...listProps}
           // selectedItem={selectedItem}
         />
       </SidebarLayout>

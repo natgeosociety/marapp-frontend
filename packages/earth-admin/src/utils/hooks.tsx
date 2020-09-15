@@ -19,6 +19,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSWRInfinite } from 'swr';
+import { compose, add } from 'lodash/fp';
 
 interface IError {
   details: string;
@@ -96,7 +97,10 @@ export function useDomWatcher(ref, callback, skip) {
  */
 export function useInfiniteList(
   getQuery: (pageIndex: number) => string,
-  fetcher: (any) => Promise<any>) {
+  fetcher: (any) => Promise<any>
+) {
+    // Our api starts with page 1 instead of 0, so we increment the pageIndex
+  const offsetGetQuery = compose(getQuery, add(1));
   const {
     data: response = [],
     error,
@@ -104,7 +108,7 @@ export function useInfiniteList(
     size,
     setSize,
     mutate,
-  } = useSWRInfinite(getQuery, fetcher);
+  } = useSWRInfinite(offsetGetQuery, fetcher);
 
   // Merge multiple page results into a single list of results
   const items = response.reduce((acc: any, { data, ...rest }: any) => {
@@ -116,7 +120,7 @@ export function useInfiniteList(
 
   return {
     // props for <DataListing />
-    listData: {
+    listProps: {
       data: items.data,
       cursorAction: () => setSize(size + 1),
       isLoading: isValidating,
