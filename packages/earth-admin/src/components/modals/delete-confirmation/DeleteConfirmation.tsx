@@ -18,24 +18,26 @@
 */
 
 import * as React from 'react';
-
 import { navigate } from 'gatsby';
+import { noop } from 'lodash';
+
 import { deleteDashboards, deleteLayer, deletePlace, deleteWidgets, deleteUser, deleteOrganization } from 'services';
 import { useAuth0 } from 'auth/auth0';
 
 import { Modal } from '@marapp/earth-components';
 
-interface IModalProps {
+interface IProps {
   id: string;
   navigateRoute: string;
   name: string;
   type: string;
   toggleModal: any;
   visibility?: boolean;
+  onDelete?: () => void;
   error?(err: Error): void;
 }
 
-const ActionModal = (props: IModalProps) => {
+export const DeleteConfirmation = (props: IProps) => {
   const {
     id,
     navigateRoute,
@@ -44,6 +46,7 @@ const ActionModal = (props: IModalProps) => {
     toggleModal,
     visibility,
     error,
+    onDelete = noop,
   } = props;
   const { selectedGroup } = useAuth0();
 
@@ -79,6 +82,8 @@ const ActionModal = (props: IModalProps) => {
         }
       }
 
+      onDelete();
+
       await navigate(`/${selectedGroup}/${navigateRoute}`, {
         state: { refresh: true },
       });
@@ -95,7 +100,7 @@ const ActionModal = (props: IModalProps) => {
   };
 
   return (
-    <Modal isOpen={visibility} onRequestClose={handleModalToggle} className="marapp-qa-actionmodal ng-text-center">
+    <Modal isOpen={visibility} onRequestClose={handleModalToggle} className="marapp-qa-DeleteConfirmation ng-text-center">
       <h4 className="ng-text-display-s ng-margin-bottom">Delete {name}</h4>
       <p className="ng-space-wrap">Are you sure you want to permanently delete this {type}?</p>
       <div className="ng-flex ng-flex-center">
@@ -114,5 +119,3 @@ const ActionModal = (props: IModalProps) => {
     </Modal>
   );
 };
-
-export default ActionModal;

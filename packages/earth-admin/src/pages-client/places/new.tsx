@@ -38,11 +38,11 @@ import { ContentLayout } from 'layouts';
 
 interface IProps {
   path: string;
-  onChange?: () => {};
+  onDataChange?: () => {};
 }
 
 export function NewPlace(props: IProps) {
-  const { onChange = noop } = props;
+  const { onDataChange = noop } = props;
   const { getValues, register, watch, formState, errors, setValue } = useForm({
     mode: 'onChange',
   });
@@ -66,7 +66,7 @@ export function NewPlace(props: IProps) {
     try {
       setIsLoading(true);
       const response: any = await addPlace(parsed, selectedGroup);
-      onChange();
+      onDataChange();
       await navigate(`/${selectedGroup}/places/${response.data.id}`);
     } catch (error) {
       setIsLoading(false);

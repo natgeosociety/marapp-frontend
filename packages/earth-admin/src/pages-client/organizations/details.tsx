@@ -29,7 +29,7 @@ import { setupErrors, validEmailRule, noSpecialCharsRule } from 'utils/validatio
 import { getOrganization, updateOrganization } from 'services/organizations';
 import { ContentLayout } from 'layouts';
 import { encodeQueryToURL } from 'utils';
-import { ActionModal } from 'components/action-modal';
+import { DeleteConfirmation } from 'components/modals/delete-confirmation';
 import { LinkWithOrg } from 'components/link-with-org';
 import { InlineEditCard } from 'components/inline-edit-card';
 import { Input } from 'components/input';
@@ -95,16 +95,14 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
 
   return (
     <ContentLayout errors={errors} backTo="/organizations">
-      {showDeleteModal && (
-        <ActionModal
-          id={id}
-          navigateRoute={'organizations'}
-          name={name}
-          type="organization"
-          toggleModal={handleDeleteToggle}
-          visibility={showDeleteModal}
-        />
-      )}
+      <DeleteConfirmation
+        id={id}
+        navigateRoute={'organizations'}
+        name={name}
+        type="organization"
+        toggleModal={handleDeleteToggle}
+        visibility={showDeleteModal}
+      />
 
       <div className="marapp-qa-organizationdetails ng-padding-medium-horizontal">
         <LinkWithOrg className="ng-border-remove ng-margin-bottom ng-display-block" to="/organizations">

@@ -13,7 +13,7 @@ import { MapComponentContext } from 'utils/contexts';
 
 import { Metrics } from 'components/places';
 import { ErrorMessages } from 'components/error-messages';
-import { ActionModal } from 'components/action-modal';
+import { DeleteConfirmation } from 'components/modals/delete-confirmation';
 import { MapComponent } from 'components/map';
 import { InlineEditCard } from 'components/inline-edit-card';
 import { Toggle } from 'components/toggle';
@@ -30,11 +30,11 @@ import { DetailList } from 'components/detail-list';
 interface IProps {
   path: string;
   page?: string;
-  onChange?: () => {};
+  onDataChange?: () => {};
 }
 
 export function PlaceDetail(props: IProps) {
-  const { page, onChange = noop } = props;
+  const { page, onDataChange = noop } = props;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
   const metricsPermission = getPermissions(AuthzGuards.accessMetricsGuard);
@@ -69,7 +69,7 @@ export function PlaceDetail(props: IProps) {
   } = place;
 
 
-  const {getValues, register, formState, errors} = useForm({
+  const { getValues, register, formState, errors } = useForm({
     mode: 'onChange',
   });
 
@@ -101,7 +101,7 @@ export function PlaceDetail(props: IProps) {
       setIsEditing && setIsEditing(false);
       await handlePlaceForm(false, parsed, id, selectedGroup);
       revalidate();
-      onChange();
+      onDataChange();
     } catch (error) {
       setServerErrors && setServerErrors(error.data.errors);
     }
@@ -129,16 +129,15 @@ export function PlaceDetail(props: IProps) {
 
   return !!place && (
     <ContentLayout backTo="/places" isLoading={!data} className="marapp-qa-placesdetail">
-      {showDeleteModal && (
-        <ActionModal
-          id={id}
-          navigateRoute={'places'}
-          name={name}
-          type="place"
-          toggleModal={handleDeleteToggle}
-          visibility={showDeleteModal}
-        />
-      )}
+      <DeleteConfirmation
+        id={id}
+        navigateRoute="places"
+        type="place"
+        name={name}
+        toggleModal={handleDeleteToggle}
+        onDelete={onDataChange}
+        visibility={showDeleteModal}
+      />
       <div className="ng-padding-medium-horizontal">
         <LinkWithOrg className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block" to="/places">
           <i className="ng-icon ng-icon-directionleft"></i>
@@ -349,14 +348,14 @@ export function PlaceDetail(props: IProps) {
           <Card>
             <div className="">
               {mappedIntersections &&
-              map(mappedIntersections, (intersections: PlaceIntersection[], idx) => (
-                <DetailList
-                  key={idx}
-                  name={intersections[0].type}
-                  type='places'
-                  data={intersections}
-                />
-              ))}
+                map(mappedIntersections, (intersections: PlaceIntersection[], idx) => (
+                  <DetailList
+                    key={idx}
+                    name={intersections[0].type}
+                    type='places'
+                    data={intersections}
+                  />
+                ))}
             </div>
           </Card>
         </div>}

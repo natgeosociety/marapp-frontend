@@ -23,18 +23,18 @@ import renderHTML from 'react-render-html';
 
 import { DashboardProps } from '../model';
 import { useState } from 'react';
-import { ActionModal } from 'components/action-modal';
+import { DeleteConfirmation } from 'components/modals/delete-confirmation';
 import { LinkWithOrg } from 'components/link-with-org';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 
 export default function DashboardDetails(props: DashboardProps) {
   const {
-    data: {id, slug, name, description, published, layers, widgets},
+    data: { id, slug, name, description, published, layers, widgets },
   } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const {getPermissions} = useAuth0();
+  const { getPermissions } = useAuth0();
 
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
@@ -46,22 +46,20 @@ export default function DashboardDetails(props: DashboardProps) {
 
   return (
     <div className="marapp-qa-dashboarddetails">
-      {showDeleteModal && (
-        <ActionModal
-          id={id}
-          navigateRoute={'dashboards'}
-          name={name}
-          type="dashboard"
-          toggleModal={handleDeleteToggle}
-          visibility={showDeleteModal}
-        />
-      )}
+      <DeleteConfirmation
+        id={id}
+        navigateRoute={'dashboards'}
+        name={name}
+        type="dashboard"
+        toggleModal={handleDeleteToggle}
+        visibility={showDeleteModal}
+      />
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
         <div className="ng-flex ng-align-center ng-flex-center ng-text-center ng-center">
           <span className="ng-padding-horizontal">
             Published
-            <br/>
+            <br />
             <i className={`ng-icon-${publishIcon}`}></i>
           </span>
         </div>

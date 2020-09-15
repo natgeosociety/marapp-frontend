@@ -37,7 +37,7 @@ import { noSpecialCharsRule, alphaNumericDashesRule, setupErrors } from 'utils/v
 
 import { AsyncSelect } from '@marapp/earth-components';
 import { LinkWithOrg } from 'components/link-with-org';
-import { ActionModal } from 'components/action-modal';
+import { DeleteConfirmation } from 'components/modals/delete-confirmation';
 import { Input } from 'components/input';
 import { InlineEditCard } from 'components/inline-edit-card';
 import { Card } from 'components/card';
@@ -167,17 +167,16 @@ export function LayerDetail(path: any) {
     setShowDeleteModal(!showDeleteModal);
   }
 
-  return !!layer && (<ContentLayout backTo="/layers" isLoading={isLoading} className="marapp-qa-layerdetail">
-      {showDeleteModal && (
-        <ActionModal
-          id={id}
-          navigateRoute={'layers'}
-          name={name}
-          type="layer"
-          toggleModal={handleDeleteToggle}
-          visibility={showDeleteModal}
-        />
-      )}
+  return !!layer && (
+    <ContentLayout backTo="/layers" isLoading={isLoading} className="marapp-qa-layerdetail">
+      <DeleteConfirmation
+        id={id}
+        navigateRoute="layers"
+        name={name}
+        type="layer"
+        toggleModal={handleDeleteToggle}
+        visibility={showDeleteModal}
+      />
       <div className="ng-padding-medium-horizontal">
         <LinkWithOrg className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block" to="/layers">
           <i className="ng-icon ng-icon-directionleft"/>

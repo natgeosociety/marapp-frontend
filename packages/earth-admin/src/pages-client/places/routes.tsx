@@ -95,8 +95,8 @@ export default function PlacesPage() {
       </SidebarLayout>
       <Router>
         <PlacesHome path="/" />
-        <NewPlace path="/new" onChange={mutate} />
-        <PlaceDetail path="/:page" onChange={mutate} />
+        <NewPlace path="/new" onDataChange={mutate} />
+        <PlaceDetail path="/:page" onDataChange={mutate} />
       </Router>
     </>
   );
