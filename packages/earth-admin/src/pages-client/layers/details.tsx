@@ -66,7 +66,6 @@ export function LayerDetail(path: any) {
     ...{group: selectedGroup},
   });
   const {isLoading, data} = useRequest(() => getLayer(encodedQuery), {
-    permissions: AuthzGuards.writeLayersGuard,
     query: encodedQuery,
   });
 

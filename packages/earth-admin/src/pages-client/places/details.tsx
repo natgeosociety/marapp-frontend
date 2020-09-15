@@ -39,7 +39,6 @@ export function PlaceDetail(path: any) {
   });
 
   const { isLoading, data } = useRequest(() => getPlace(encodedQuery), {
-    permissions: AuthzGuards.accessPlacesGuard,
     query: encodedQuery,
   });
 
