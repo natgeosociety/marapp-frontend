@@ -87,3 +87,13 @@ export const handleDashboardForm = async (
   newDashboard
     ? await addDashboard(dashboard, group)
     : await updateDashboard(dashboardId, dashboard, group);
+
+
+export const getUniqueSlug = async (
+  keyword: string,
+  group: string,
+  type: string = 'counter',
+) =>
+  await DashboardAPIService.request({
+    url: `/dashboards/slug?keyword=${keyword}&group=${group}&type=${type}`,
+  });

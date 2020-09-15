@@ -20,8 +20,8 @@
 import * as React from 'react';
 import { Router, } from '@reach/router';
 
-
 import { DashboardsHome } from './home';
+import { NewDashboard } from './new';
 import { DetailsPage, EditPage } from 'pages-client/dashboards';
 import { DashboardSidebar } from 'components/dashboards';
 
@@ -31,9 +31,9 @@ export default function DashboardsPage(props) {
       <DashboardSidebar />
       <Router>
         <DashboardsHome path="/" />
+        <NewDashboard path="/new"/>
         <DetailsPage path="/:page"/>
         <EditPage path="/:page/edit" newDashboard={false}/>
-        <EditPage path="/new" newDashboard={true}/>
       </Router>
     </>
   );
