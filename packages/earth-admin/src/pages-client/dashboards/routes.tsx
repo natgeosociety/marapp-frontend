@@ -18,8 +18,7 @@
 */
 
 import * as React from 'react';
-import { Router } from '@reach/router';
-
+import { Router, } from '@reach/router';
 
 import { DashboardsHome } from './home';
 import { NewDashboard } from './new';

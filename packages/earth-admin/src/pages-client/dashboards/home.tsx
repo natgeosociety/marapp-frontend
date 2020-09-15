@@ -28,7 +28,6 @@ import { LinkWithOrg } from 'components/link-with-org';
 
 export function DashboardsHome(props: any) {
   const { getPermissions } = useAuth0();
-  const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
   return (writePermissions && (
