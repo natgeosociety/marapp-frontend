@@ -36,7 +36,6 @@ const Homepage = (props) => {
   // `const { selectedGroup } = useAuth0()` fires multiple times on change
   const { org } = props;
   const { isLoading, data: organization, errors } = useRequest(() => getOrganizationStats(org), {
-    permissions: AuthzGuards.accessHomeGuard,
     query: org // when this changes, we refetch
   });
 

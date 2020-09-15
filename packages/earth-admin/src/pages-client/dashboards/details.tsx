@@ -62,7 +62,6 @@ export function DashboardDetail(path: any) {
   });
 
   const {isLoading, data} = useRequest(() => getDashboard(encodedQuery), {
-    permissions: AuthzGuards.writeDashboardsGuard,
     query: encodedQuery,
   });
 
