@@ -17,19 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useContext, useState } from 'react';
 import classnames from 'classnames';
-
-import { Auth0Context } from 'utils/contexts';
-import { getAvailableOrgs } from 'utils';
-import { LinkWithOrg } from 'components/link-with-org';
 import { DropdownComponent } from 'components/dropdown';
-
+import { LinkWithOrg } from 'components/link-with-org';
 import { MAP_PATH } from 'config';
+import React, { useContext, useState } from 'react';
+import { Auth0Context } from 'utils/contexts';
+
 import './styles.scss';
 
 const OrgSwitcher = () => {
-  const {permissions, selectedGroup, setupUserOrg} = useContext(Auth0Context);
+  const { groups, selectedGroup } = useContext(Auth0Context);
   const [dropdownState, setDropdownState] = useState('close');
   const handleDropdownToggle = () => {
     dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
@@ -37,8 +35,7 @@ const OrgSwitcher = () => {
 
   return (
     <>
-      <span
-        className="ng-text-display-s ng-text-weight-regular ng-color-white ng-margin-remove ng-display-block ng-org-name">
+      <span className="ng-text-display-s ng-text-weight-regular ng-color-white ng-margin-remove ng-display-block ng-org-name">
         admin
       </span>
       <div onClick={handleDropdownToggle} className="ng-padding ng-c-cursor-pointer">
@@ -48,7 +45,7 @@ const OrgSwitcher = () => {
             'ng-icon-directionup': dropdownState === 'open',
             'ng-icon-directiondown': dropdownState !== 'open',
           })}
-        ></i>
+        />
       </div>
 
       <DropdownComponent state={dropdownState}>
@@ -57,26 +54,26 @@ const OrgSwitcher = () => {
             MAP VIEW
           </a>
         </li>
-        {!!permissions &&
-        getAvailableOrgs(permissions).map((g, i) => (
-          <React.Fragment key={i}>
-            <li
-              className={classnames({
-                'ng-ep-dropdown-category': true,
-                'ng-ep-dropdown-selected': selectedGroup === g,
-              })}
-            >
-              <LinkWithOrg to="/" switchOrgTo={g} className="ng-display-block ng-border-remove">
+        {!!groups &&
+          groups.map((g, i) => (
+            <React.Fragment key={i}>
+              <li
+                className={classnames({
+                  'ng-ep-dropdown-category': true,
+                  'ng-ep-dropdown-selected': selectedGroup === g,
+                })}
+              >
+                <LinkWithOrg to="/" switchOrgTo={g} className="ng-display-block ng-border-remove">
                   <span
                     className="ng-text-display-s ng-display-block ng-dropdown-item"
                     onClick={(e) => setDropdownState('close')}
                   >
                     {g}
                   </span>
-              </LinkWithOrg>
-            </li>
-          </React.Fragment>
-        ))}
+                </LinkWithOrg>
+              </li>
+            </React.Fragment>
+          ))}
       </DropdownComponent>
     </>
   );

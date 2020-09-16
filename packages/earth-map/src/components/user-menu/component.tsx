@@ -17,17 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useContext, useState, useEffect } from 'react';
+import { Auth0Context } from 'auth/auth0';
+import React, { useContext, useEffect, useState } from 'react';
+import { animated, Keyframes } from 'react-spring/renderprops';
+import useDomWatcher from 'utils/hooks';
 
 import './styles.scss';
 
-import { Auth0Context } from 'auth/auth0';
-import {Keyframes, animated} from 'react-spring/renderprops';
-import useDomWatcher from 'utils/hooks';
-
-const Dropdown: any =  Keyframes.Spring({
-  false: { x: `-100vh`},
-  true: { x: '0vh'},
+const Dropdown: any = Keyframes.Spring({
+  false: { x: `-100vh` },
+  true: { x: '0vh' },
 });
 
 export default function UserMenuComponent() {
@@ -64,7 +63,7 @@ export default function UserMenuComponent() {
         )}
         {!userData.picture && <i className="ng-icon-menu" />}
       </button>
-      <Dropdown native state={`${showDrop}`}>
+      <Dropdown native={true} state={`${showDrop}`}>
         {({ x, ...props }) => (
           <animated.div
             style={{
@@ -74,14 +73,15 @@ export default function UserMenuComponent() {
           >
             <ul className="ng-user-profile-dropdown">
               <li>ACCOUNT</li>
-              { isAuthenticated ?
-              <li className="marapp-qa-signout ng-user-profile-signout">
-                <a onClick={handleLogout}>Sign Out</a>
-              </li> :
-              <li className="marapp-qa-signin ng-user-profile-signin">
-                <a onClick={handleLogin}>Sign in</a>
-              </li>
-              }
+              {isAuthenticated ? (
+                <li className="marapp-qa-signout ng-user-profile-signout">
+                  <a onClick={handleLogout}>Sign Out</a>
+                </li>
+              ) : (
+                <li className="marapp-qa-signin ng-user-profile-signin">
+                  <a onClick={handleLogin}>Sign in</a>
+                </li>
+              )}
             </ul>
           </animated.div>
         )}

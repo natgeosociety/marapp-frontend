@@ -17,33 +17,31 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { createStore, combineReducers, applyMiddleware, Store } from 'redux';
-import { connectRoutes } from 'redux-first-router';
+import * as fullscreen from 'modules/fullscreen';
+import * as global from 'modules/global';
+import * as indexes from 'modules/indexes';
+import * as layers from 'modules/layers';
+import * as map from 'modules/map';
+import * as metrics from 'modules/metrics';
+import * as places from 'modules/places';
+import * as sidebar from 'modules/sidebar';
+import * as user from 'modules/user';
+import * as widget from 'modules/widget';
+import * as widgets from 'modules/widgets';
+import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-
+import { connectRoutes } from 'redux-first-router';
 import createSagaMiddleware from 'redux-saga';
 import thunk from 'redux-thunk';
-
 import sagas from 'sagas';
-
-import { ROUTES, CONFIG } from '../routes';
 import restoreState from 'store/ephemeral-state';
-
-// New modules
 import { handleModule } from 'vizzuality-redux-tools';
 
+import { CONFIG, ROUTES } from '../routes';
+
+// New modules
+
 // Modules
-import * as global from 'modules/global';
-import * as user from 'modules/user';
-import * as map from 'modules/map';
-import * as sidebar from 'modules/sidebar';
-import * as indexes from 'modules/indexes';
-import * as places from 'modules/places';
-import * as layers from 'modules/layers';
-import * as fullscreen from 'modules/fullscreen';
-import * as widgets from 'modules/widgets';
-import * as widget from 'modules/widget';
-import * as metrics from 'modules/metrics';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -76,7 +74,7 @@ const initStore = (initialState = {}) => {
       state = initialState;
     }
     return reducers(state, action);
-  }
+  };
 
   const middlewares = applyMiddleware(thunk, routerMiddleware, sagaMiddleware);
   const enhancers = composeWithDevTools(routerEnhancer, middlewares);

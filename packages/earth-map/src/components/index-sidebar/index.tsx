@@ -17,11 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
 import { setIndexesSelected } from 'modules/indexes/actions';
+import { connect } from 'react-redux';
+
+import { setSidebarOpen } from '../../modules/sidebar/actions';
 
 import SidebarComponent from './component';
-import { setSidebarOpen } from '../../modules/sidebar/actions';
 
 export default connect(
   (state: any) => ({

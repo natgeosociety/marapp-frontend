@@ -17,10 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import classnames from 'classnames';
-
 import { LinkWithOrg } from 'components/link-with-org';
+import React from 'react';
 
 interface DataListProps {
   categoryUrl: string;
@@ -31,13 +30,16 @@ interface DataListProps {
 const DefaultListItem = (props: DataListProps) => {
   const { categoryUrl, item, selectedItem } = props;
 
-
   return (
     <LinkWithOrg
       to={`/${categoryUrl}/${item.id}`}
-      className={classnames('marapp-qa-listitem ng-data-link ng-display-block ng-padding-medium-horizontal ng-padding-small-vertical', {
-        'ng-data-link-selected': selectedItem === item.id
-      })}>
+      className={classnames(
+        'marapp-qa-listitem ng-data-link ng-display-block ng-padding-medium-horizontal ng-padding-small-vertical',
+        {
+          'ng-data-link-selected': selectedItem === item.id,
+        }
+      )}
+    >
       <p className="ng-margin-remove ng-color-ultraltgray">{item.name}</p>
       <span className="ng-display-block ng-color-mdgray">{item.slug}</span>
     </LinkWithOrg>

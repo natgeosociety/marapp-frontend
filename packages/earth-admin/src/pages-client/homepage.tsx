@@ -17,15 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-
+import { AuthzGuards } from '@marapp/earth-shared';
+import { Card } from 'components/card';
+import { ContentLayout, SidebarLayout } from 'layouts';
+import React from 'react';
+import { getOrganizationStats } from 'services/organizations';
 import { setPage } from 'utils';
 import { useRequest } from 'utils/hooks';
-import { AuthzGuards } from 'auth/permissions';
-import { getOrganizationStats } from 'services/organizations';
-
-import { ContentLayout, SidebarLayout } from 'layouts';
-import { Card } from 'components/card';
 
 import './styles.scss';
 
@@ -37,26 +35,44 @@ const Homepage = (props) => {
   const { org } = props;
   const { isLoading, data: organization, errors } = useRequest(() => getOrganizationStats(org), {
     permissions: AuthzGuards.accessHomeGuard,
-    query: org // when this changes, we refetch
+    query: org, // when this changes, we refetch
   });
 
   return (
     <>
       <SidebarLayout isLoading={isLoading} page={PAGE_TYPE}>
-        <Card className="marapp-qa-homepage ng-margin-top" style={{ 'overflowY': 'scroll' }}>
+        <Card className="marapp-qa-homepage ng-margin-top" style={{ overflowY: 'scroll' }}>
           {organization.name && (
             <>
               <h2 className="ng-text-display-m ng-margin-bottom-remove">{organization.name}</h2>
               <p className="ng-margin-bottom-large">{organization.description}</p>
-              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Slug: </strong>{organization.slug}</p>
+              <p className="ng-margin-vertical">
+                <strong className="ng-color-mdgray">Slug: </strong>
+                {organization.slug}
+              </p>
 
-              <hr className="ng-hr-small ng-hr"/>
+              <hr className="ng-hr-small ng-hr" />
 
-              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization collections: </strong>{organization.collections}</p>
-              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization places: </strong>{organization.locations}</p>
-              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization layers: </strong>{organization.layers}</p>
-              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization widgets: </strong>{organization.widgets}</p>
-              <p className="ng-margin-vertical"><strong className="ng-color-mdgray">Organization dashboards: </strong>{organization.dashboards}</p>
+              <p className="ng-margin-vertical">
+                <strong className="ng-color-mdgray">Organization collections: </strong>
+                {organization.collections}
+              </p>
+              <p className="ng-margin-vertical">
+                <strong className="ng-color-mdgray">Organization places: </strong>
+                {organization.locations}
+              </p>
+              <p className="ng-margin-vertical">
+                <strong className="ng-color-mdgray">Organization layers: </strong>
+                {organization.layers}
+              </p>
+              <p className="ng-margin-vertical">
+                <strong className="ng-color-mdgray">Organization widgets: </strong>
+                {organization.widgets}
+              </p>
+              <p className="ng-margin-vertical">
+                <strong className="ng-color-mdgray">Organization dashboards: </strong>
+                {organization.dashboards}
+              </p>
             </>
           )}
         </Card>
@@ -66,7 +82,9 @@ const Homepage = (props) => {
           <>
             <h2 className="ng-text-display-m">Home</h2>
             <Card className="ng-width-1-2">
-              <h4 className="ng-text-display-s ng-margin-bottom">Welcome to the {organization.name} Admin!</h4>
+              <h4 className="ng-text-display-s ng-margin-bottom">
+                Welcome to the {organization.name} Admin!
+              </h4>
               <p>Search and edit sections related to your organization.</p>
             </Card>
           </>

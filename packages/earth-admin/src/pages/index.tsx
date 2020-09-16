@@ -17,24 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useEffect } from 'react';
 import { Router } from '@reach/router';
-import { navigate } from 'gatsby';
-
-import { GATSBY_APP_BASE_URL } from 'config';
-import PlacesPage from 'pages-client/places/routes';
-import DashboardsPage from 'pages-client/dashboards';
-import LayersPage from 'pages-client/layers/routes';
-import WidgetsPage from 'pages-client/widgets';
-import UsersPage from 'pages-client/users';
-import OrganizationsPage from 'pages-client/organizations/routes';
-import Organization from 'pages-client/organization';
-import Homepage from 'pages-client/homepage';
-import UnauthorizedPage from 'pages-client/unauthorized';
-import { ProtectedRoute } from 'components/protected-route';
-
 import { useAuth0 } from 'auth/auth0';
+import { ProtectedRoute } from 'components/protected-route';
+import { GATSBY_APP_BASE_URL } from 'config';
+import { navigate } from 'gatsby';
+import DashboardsPage from 'pages-client/dashboards';
+import Homepage from 'pages-client/homepage';
+import LayersPage from 'pages-client/layers/routes';
+import Organization from 'pages-client/organization';
+import OrganizationsPage from 'pages-client/organizations/routes';
+import PlacesPage from 'pages-client/places/routes';
+import UnauthorizedPage from 'pages-client/unauthorized';
+import UsersPage from 'pages-client/users';
+import WidgetsPage from 'pages-client/widgets';
+import React, { useEffect } from 'react';
 
 /**
  * All admin pages are client side pages only because the /:org makes them dinamic
@@ -42,17 +39,17 @@ import { useAuth0 } from 'auth/auth0';
 export default function IndexPage() {
   return (
     <Router basepath={GATSBY_APP_BASE_URL}>
-      <ProtectedRoute path="/" component={RedirectToOrgHomepage}/>
+      <ProtectedRoute path="/" component={RedirectToOrgHomepage} />
       <ProtectedRoute path="/:org" component={Organization}>
-        <Homepage path="/"/>
-        <PlacesPage path="/places/*"/>
-        <DashboardsPage path="/dashboards/*"/>
-        <LayersPage path="/layers/*"/>
-        <WidgetsPage path="/widgets/*"/>
-        <UsersPage path="/users/*"/>
-        <OrganizationsPage path="/organizations/*"/>
+        <Homepage path="/" />
+        <PlacesPage path="/places/*" />
+        <DashboardsPage path="/dashboards/*" />
+        <LayersPage path="/layers/*" />
+        <WidgetsPage path="/widgets/*" />
+        <UsersPage path="/users/*" />
+        <OrganizationsPage path="/organizations/*" />
       </ProtectedRoute>
-      <UnauthorizedPage path="/unauthorized"/>
+      <UnauthorizedPage path="/unauthorized" />
     </Router>
   );
 }
@@ -65,5 +62,5 @@ const RedirectToOrgHomepage = () => {
   useEffect(() => {
     selectedGroup && navigate(`/${selectedGroup}`, { replace: true });
   }, [selectedGroup]);
-  return <div>This is homepage - should be redirected to /:org</div>
-}
+  return <div>This is homepage - should be redirected to /:org</div>;
+};

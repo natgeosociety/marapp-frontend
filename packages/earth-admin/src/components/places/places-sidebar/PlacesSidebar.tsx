@@ -17,17 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState, useEffect } from 'react';
-
+import { AuthzGuards } from '@marapp/earth-shared';
 import { useAuth0 } from 'auth/auth0';
-import { AuthzGuards } from 'auth/permissions';
-import { PlaceContext } from 'utils/contexts';
-import { encodeQueryToURL, setPage } from 'utils';
-import { getAllPlaces } from 'services/places';
-
-import { SidebarLayout } from 'layouts';
 import { DataListing, DefaultListItem } from 'components/data-listing';
+import { SidebarLayout } from 'layouts';
+import React, { useEffect, useState } from 'react';
+import { getAllPlaces } from 'services/places';
+import { encodeQueryToURL, setPage } from 'utils';
+import { PlaceContext } from 'utils/contexts';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const PAGE_TYPE = setPage('Places');
@@ -84,7 +81,6 @@ export default function PlacesSidebar(props: any) {
 
     permissions && setupPlaces();
   }, [pageCursor, searchValue]);
-
 
   return (
     <PlaceContext.Provider

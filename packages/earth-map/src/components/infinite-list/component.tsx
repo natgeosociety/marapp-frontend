@@ -1,8 +1,7 @@
-import React from 'react';
+import { Spinner } from '@marapp/earth-shared';
 import List from '@researchgate/react-intersection-list';
-
+import React from 'react';
 import { PAGE_SIZE } from 'theme';
-import { Spinner } from '@marapp/earth-components';
 
 interface IProps {
   data: any[];
@@ -27,7 +26,9 @@ const InfiniteList = (props: IProps) => {
   const awaitMore = !loading && !!nextPageCursor;
 
   const onIntersection = (size, pageSize) => {
-    if (!awaitMore) return;
+    if (!awaitMore) {
+      return;
+    }
     onNextPage({
       pageCursor: nextPageCursor,
       pageSize,
@@ -50,7 +51,7 @@ const InfiniteList = (props: IProps) => {
       />
       {loading && <Spinner position="relative" />}
     </div>
-  )
-}
+  );
+};
 
 export default InfiniteList;

@@ -17,38 +17,45 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-
-import { AuthzGuards } from 'auth/permissions';
+import { AuthzGuards } from '@marapp/earth-shared';
 import { useAuth0 } from 'auth/auth0';
-import { ContentLayout } from 'layouts';
-import { LinkWithOrg } from 'components/link-with-org';
 import { Card } from 'components/card';
+import { LinkWithOrg } from 'components/link-with-org';
+import { ContentLayout } from 'layouts';
+import React from 'react';
 
 export function OrganizationHome() {
-  const {getPermissions} = useAuth0();
+  const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
-  return (writePermissions && (
-    <ContentLayout className="marapp-qa-organizationhome">
-      {writePermissions && (
-        <>
-          <h1 className="ng-text-display-m ng-margin-medium-bottom">ORGANIZATIONS</h1>
-          <div className="ng-grid">
-            <div className="ng-width-1-2">
-              <Card>
-                <p>Start creating a new organization for users to collaborate and share with each other</p>
-                <div className="ng-flex ng-flex-center">
-                  <LinkWithOrg className="marapp-qa-actioncreate ng-button ng-button-secondary" to="organizations/new">
-                    Create new Organization
-                  </LinkWithOrg>
-                </div>
-              </Card>
+  return (
+    writePermissions && (
+      <ContentLayout className="marapp-qa-organizationhome">
+        {writePermissions && (
+          <>
+            <h1 className="ng-text-display-m ng-margin-medium-bottom">ORGANIZATIONS</h1>
+            <div className="ng-grid">
+              <div className="ng-width-1-2">
+                <Card>
+                  <p>
+                    Start creating a new organization for users to collaborate and share with each
+                    other
+                  </p>
+                  <div className="ng-flex ng-flex-center">
+                    <LinkWithOrg
+                      className="marapp-qa-actioncreate ng-button ng-button-secondary"
+                      to="organizations/new"
+                    >
+                      Create new Organization
+                    </LinkWithOrg>
+                  </div>
+                </Card>
+              </div>
             </div>
-          </div>
-        </>
-      )}
-    </ContentLayout>
-  ));
+          </>
+        )}
+      </ContentLayout>
+    )
+  );
 }

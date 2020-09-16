@@ -17,33 +17,30 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState, useEffect, useContext } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { navigate } from 'gatsby';
-
-import { handleDashboardForm } from 'services';
-
 import { DashboardProps } from 'components/dashboards/model';
-import { HtmlEditor } from 'components/html-editor';
 import { ErrorMessages } from 'components/error-messages';
-import { SearchInput } from 'components/search-input';
+import { HtmlEditor } from 'components/html-editor';
 import { LinkWithOrg } from 'components/link-with-org';
+import { SearchInput } from 'components/search-input';
+import { navigate } from 'gatsby';
+import React, { useContext, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { handleDashboardForm } from 'services';
 import { Auth0Context } from 'utils/contexts';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
 export default function DashboardEdit(props: DashboardProps) {
   const {
-    data: {id, slug, name, description, published, layers, widgets},
+    data: { id, slug, name, description, published, layers, widgets },
     newDashboard,
   } = props;
 
-  const {getValues, register, formState, triggerValidation, control} = useForm({
+  const { getValues, register, formState, triggerValidation, control } = useForm({
     mode: 'onChange',
   });
 
-  const {selectedGroup} = useContext(Auth0Context);
+  const { selectedGroup } = useContext(Auth0Context);
 
   const [dashboardLayers, setDashboardLayers] = useState(null);
   const [dashboardWidgets, setDashboardWidgets] = useState(null);
@@ -119,7 +116,7 @@ export default function DashboardEdit(props: DashboardProps) {
                 name="description"
                 control={control}
                 defaultValue={description}
-                as={<HtmlEditor html={description}/>}
+                as={<HtmlEditor html={description} />}
               />
             </div>
           </div>
@@ -130,7 +127,7 @@ export default function DashboardEdit(props: DashboardProps) {
               name="layers"
               control={control}
               valueName={id}
-              as={<SearchInput options={dashboardLayers} optionType="layers"/>}
+              as={<SearchInput options={dashboardLayers} optionType="layers" />}
             />
           </div>
 
@@ -140,7 +137,13 @@ export default function DashboardEdit(props: DashboardProps) {
               name="widgets"
               control={control}
               valueName={id}
-              as={<SearchInput options={dashboardWidgets} optionType="widgets" placeholder='Search widgets to add...'/>}
+              as={
+                <SearchInput
+                  options={dashboardWidgets}
+                  optionType="widgets"
+                  placeholder="Search widgets to add..."
+                />
+              }
             />
           </div>
 
@@ -156,7 +159,7 @@ export default function DashboardEdit(props: DashboardProps) {
             <label htmlFor="published">Published?</label>
           </div>
 
-          {serverErrors && <ErrorMessages errors={serverErrors}/>}
+          {serverErrors && <ErrorMessages errors={serverErrors} />}
           <div className="ng-flex">
             <button
               className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-medium-right"

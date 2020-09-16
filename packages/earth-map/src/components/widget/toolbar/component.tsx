@@ -17,20 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
-// Components
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { Tooltip } from 'vizzuality-components';
+
 import WidgetDownload from '../download';
 
-// Styles
 import './styles.scss';
 
+// Components
+
+// Styles
 
 class WidgetToolbarComponent extends PureComponent<any, any> {
-  static propTypes = {
+  public static propTypes = {
     className: PropTypes.string,
     activeInfo: PropTypes.bool.isRequired,
     activeShare: PropTypes.bool.isRequired,
@@ -40,11 +41,11 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
     onShare: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
+  public static defaultProps = {
     className: '',
   };
 
-  render() {
+  public render() {
     const { className, activeInfo, onInfo, data } = this.props;
 
     const classNames = classnames({
@@ -52,7 +53,9 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
     });
 
     return (
-      <div className={`marapp-qa-widgettoolbar c-widget-toolbar ng-flex ng-margin-horizontal ${classNames}`}>
+      <div
+        className={`marapp-qa-widgettoolbar c-widget-toolbar ng-flex ng-margin-horizontal ${classNames}`}
+      >
         <div className="ng-margin-right">
           <Tooltip
             placement="top"

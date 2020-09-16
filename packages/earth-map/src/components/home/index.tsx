@@ -18,10 +18,10 @@
 */
 
 // Components
-import { connect } from 'react-redux';
-import HomeComponent from './component';
-
 import { setRouter } from 'modules/router/actions';
+import { connect } from 'react-redux';
+
+import HomeComponent from './component';
 
 export default connect(
   (state: any) => ({

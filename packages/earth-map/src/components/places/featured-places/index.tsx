@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-import { setSidebarPanel } from 'modules/sidebar/actions';
 import { setIndexesList, setIndexesSelected } from 'modules/indexes/actions';
 import { setPlacesSearch } from 'modules/places/actions';
+import { setSidebarPanel } from 'modules/sidebar/actions';
+import { connect } from 'react-redux';
 
 import FeaturedPlacesComponent from './component';
 

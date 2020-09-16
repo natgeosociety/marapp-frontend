@@ -17,19 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-
+import { Spinner } from '@marapp/earth-shared';
 import List from '@researchgate/react-intersection-list';
-import { Spinner } from '@marapp/earth-components';
-import { SearchBox } from './search-box';
 import { useAuth0 } from 'auth/auth0';
+import React from 'react';
 
+import { SearchBox } from './search-box';
 import './styles.scss';
 
 interface DataListingProps {
   data: any;
   categoryUrl: string;
-  childComponent: React.ElementType
+  childComponent: React.ElementType;
   pageSize: number;
   totalResults: number;
   selectedItem?: string;
@@ -41,63 +40,83 @@ interface DataListingProps {
   searchValue?: string;
 }
 
-const DataListing = ( props:DataListingProps ) => {
+const DataListing = (props: DataListingProps) => {
   const {
-    cursorAction, data, isLoading, isNoMore,
-    searchValue, searchValueAction, categoryUrl, pageTitle, childComponent, pageSize, totalResults, selectedItem,
+    cursorAction,
+    data,
+    isLoading,
+    isNoMore,
+    searchValue,
+    searchValueAction,
+    categoryUrl,
+    pageTitle,
+    childComponent,
+    pageSize,
+    totalResults,
+    selectedItem,
   } = props;
   const { selectedGroup } = useAuth0();
 
   const PAGE_SIZE = pageSize;
   const hasNextPage = data.length >= PAGE_SIZE;
-  let awaitMore = !isLoading && hasNextPage && !isNoMore;
+  const awaitMore = !isLoading && hasNextPage && !isNoMore;
 
-  const renderItem = ( index ) => {
-    const item = data[ index ];
+  const renderItem = (index) => {
+    const item = data[index];
     return (
       <div key={`${index}-${item.slug}`}>
         {React.createElement(childComponent, {
-          item: item,
-          categoryUrl: categoryUrl,
-          selectedItem: selectedItem,
+          item,
+          categoryUrl,
+          selectedItem,
         })}
       </div>
     );
   };
 
-  const onIntersection = ( size, pageSize ) => {
+  const onIntersection = (size, pageSize) => {
     cursorAction();
   };
 
-  return (<>
-    {searchValueAction &&
-    <SearchBox searchValue={searchValue} pageTitle={pageTitle} searchValueAction={searchValueAction}/>}
-    <div style={{ 'overflowY': 'scroll' }} className="marapp-qa-datalisting ng-shadow-small">
-      {!!totalResults && <div
-        className="ng-padding-medium-horizontal ng-padding-medium-top ng-padding-bottom ng-background-ultradkgray">
-        <h4 className="ng-text-display-s ng-color-ultraltgray ng-margin-remove">{selectedGroup} {pageTitle} &nbsp;
-          <span className="ng-color-mdgray">({totalResults})</span></h4>
-      </div>}
-
-      <div>
-        <List
-          awaitMore={awaitMore}
-          pageSize={PAGE_SIZE}
-          itemCount={data.length}
-          renderItem={renderItem}
-          onIntersection={onIntersection}
+  return (
+    <>
+      {searchValueAction && (
+        <SearchBox
+          searchValue={searchValue}
+          pageTitle={pageTitle}
+          searchValueAction={searchValueAction}
         />
-        {!searchValue && isNoMore && (
-          <div className=" ng-text-center">
-            <p className=" ng-color-gray-3 ng-margin-medium-top ng-margin-bottom-remove">
-              - end -
-            </p>
+      )}
+      <div style={{ overflowY: 'scroll' }} className="marapp-qa-datalisting ng-shadow-small">
+        {!!totalResults && (
+          <div className="ng-padding-medium-horizontal ng-padding-medium-top ng-padding-bottom ng-background-ultradkgray">
+            <h4 className="ng-text-display-s ng-color-ultraltgray ng-margin-remove">
+              {selectedGroup} {pageTitle} &nbsp;
+              <span className="ng-color-mdgray">({totalResults})</span>
+            </h4>
           </div>
         )}
+
+        <div>
+          <List
+            awaitMore={awaitMore}
+            pageSize={PAGE_SIZE}
+            itemCount={data.length}
+            renderItem={renderItem}
+            onIntersection={onIntersection}
+          />
+          {!searchValue && isNoMore && (
+            <div className=" ng-text-center">
+              <p className=" ng-color-gray-3 ng-margin-medium-top ng-margin-bottom-remove">
+                - end -
+              </p>
+            </div>
+          )}
+        </div>
+        {isLoading && <Spinner position="relative" />}
       </div>
-      {isLoading && <Spinner position="relative"/>}
-    </div>
-  </>);
+    </>
+  );
 };
 
 export default DataListing;

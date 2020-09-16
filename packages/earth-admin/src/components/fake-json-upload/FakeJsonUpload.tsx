@@ -1,6 +1,5 @@
-import * as React from 'react';
-import { useState } from 'react';
 import { JSHINT } from 'jshint';
+import React, { useState } from 'react';
 
 interface IProps {
   name: string;
@@ -12,12 +11,7 @@ interface IProps {
 const noop = () => {};
 
 export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
-  const {
-    name,
-    label,
-    onChange = noop,
-    onError = noop,
-  } = props;
+  const { name, label, onChange = noop, onError = noop } = props;
   const [error, setError] = useState('');
   const id = `input-${name}`;
 
@@ -29,8 +23,8 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
         setError('');
       }
     } catch (err) {
-      onError(err)
-      setError('Invalid GeoJSON file')
+      onError(err);
+      setError('Invalid GeoJSON file');
     }
   };
 
@@ -42,8 +36,8 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
     }
 
     const json = await file.text();
-    handleJsonChange(json)
-  }
+    handleJsonChange(json);
+  };
 
   return (
     <div className="marapp-qa-fakejsonupload ng-flex-inline ng-flex-column">
@@ -54,10 +48,9 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
         id={id}
         name={name}
         onChange={handleUpload}
-        ref={ref} />
-      {error && (
-        <div className="ng-form-error-block">{error}</div>
-      )}
+        ref={ref}
+      />
+      {error && <div className="ng-form-error-block">{error}</div>}
     </div>
-  )
+  );
 });

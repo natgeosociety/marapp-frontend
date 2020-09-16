@@ -17,18 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
+import {
+  nextLayersPage,
+  resetLayersActive,
+  setLayersSearch,
+  setLayersSearchOpen,
+  toggleLayer,
+} from 'modules/layers/actions';
+import { setMapLabels, setMapRoads, setMapStyle } from 'modules/map/actions';
+import { setPlacesSearch } from 'modules/places/actions';
+import { setSidebarPanel, setSidebarPanelExpanded } from 'modules/sidebar/actions';
 import { connect } from 'react-redux';
 
-// Actions
-import { setMapStyle, setMapLabels, setMapRoads } from 'modules/map/actions';
-import { setSidebarPanel, setSidebarPanelExpanded } from 'modules/sidebar/actions';
-import { setLayersSearch, resetLayersActive, setLayersSearchOpen } from 'modules/layers/actions';
-import { setPlacesSearch } from 'modules/places/actions';
-
-// Components
 import Layers from './Layers';
-
-import { toggleLayer, nextLayersPage } from 'modules/layers/actions';
 
 export default connect(
   (state: any) => ({

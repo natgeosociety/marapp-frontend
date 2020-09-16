@@ -17,34 +17,39 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import { DataListing, DefaultListItem } from 'components/data-listing';
+import React from 'react';
 import { WidgetContext } from 'utils/contexts';
 
 export default function WidgetList() {
   return (
     <WidgetContext.Consumer>
-      {( {
-           widgets, handleSearchValueChange, handleCursorChange,
-           isLoading, isNoMore, searchValue, pageSize, totalResults, selectedItem,
-         } ) =>
-        (
-          <DataListing
-            childComponent={DefaultListItem}
-            data={widgets}
-            categoryUrl={'widgets'}
-            pageTitle="widgets"
-            searchValueAction={handleSearchValueChange}
-            cursorAction={handleCursorChange}
-            isLoading={isLoading}
-            isNoMore={isNoMore}
-            totalResults={totalResults}
-            pageSize={pageSize}
-            searchValue={searchValue}
-            selectedItem={selectedItem}
-          />
-        )
-      }
+      {({
+        widgets,
+        handleSearchValueChange,
+        handleCursorChange,
+        isLoading,
+        isNoMore,
+        searchValue,
+        pageSize,
+        totalResults,
+        selectedItem,
+      }) => (
+        <DataListing
+          childComponent={DefaultListItem}
+          data={widgets}
+          categoryUrl={'widgets'}
+          pageTitle="widgets"
+          searchValueAction={handleSearchValueChange}
+          cursorAction={handleCursorChange}
+          isLoading={isLoading}
+          isNoMore={isNoMore}
+          totalResults={totalResults}
+          pageSize={pageSize}
+          searchValue={searchValue}
+          selectedItem={selectedItem}
+        />
+      )}
     </WidgetContext.Consumer>
   );
 }

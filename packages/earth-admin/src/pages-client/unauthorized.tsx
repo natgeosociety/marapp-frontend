@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
+import React from 'react';
 import { Auth0Context } from 'utils/contexts';
 
 export default function UnauthorizedPage(props) {

@@ -17,20 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import {Keyframes, animated} from 'react-spring/renderprops';
 import classNames from 'classnames';
+import React from 'react';
+import { animated, Keyframes } from 'react-spring/renderprops';
 
 import SidebarToggle from './sidebar-toggle';
-
 import './styles.scss';
 
 // Creates a spring with predefined animation slots
 const SidebarPanel: any = Keyframes.Spring({
   open: { x: 0, width: 375, from: { x: -100 }, delay: 0 },
   openW: { x: 0, width: 500, from: { x: 0 }, delay: 0 },
-  close:
-    { x: -100, delay: 100 }
+  close: { x: -100, delay: 100 },
 });
 
 interface ISidebarPanel {
@@ -50,63 +48,54 @@ interface ISidebarPanel {
 class Sidebar extends React.Component<ISidebarPanel> {
   private sidebarPanel: any;
 
-  componentWillUnmount() {
-    const {setSidebarOpen} = this.props;
+  public componentWillUnmount() {
+    const { setSidebarOpen } = this.props;
     setSidebarOpen(false);
   }
 
-  onClose = () => {
-    const {setSidebarOpen} = this.props;
+  public onClose = () => {
+    const { setSidebarOpen } = this.props;
     setSidebarOpen(false);
   };
 
-  resetMap = () => {
-    const {
-      setPlacesSearch,
-      setIndexesSelected,
-      resetMap,
-      resetPlace,
-      resetLayers,
-    } = this.props;
+  public resetMap = () => {
+    const { setPlacesSearch, setIndexesSelected, resetMap, resetPlace, resetLayers } = this.props;
 
     resetPlace();
-    setPlacesSearch({search: ''});
+    setPlacesSearch({ search: '' });
     setIndexesSelected('');
     resetLayers();
     resetMap();
   };
 
-  render() {
-    const {
-      children,
-      open,
-      selected,
-      layersPanel,
-      setSidebarOpen,
-    } = this.props;
+  public render() {
+    const { children, open, selected, layersPanel, setSidebarOpen } = this.props;
     let state;
     if (open) {
       state = 'open';
-      if (!!selected) state = 'openW';
+      if (!!selected) {
+        state = 'openW';
+      }
     } else {
       state = 'close';
     }
 
     return (
-      <SidebarPanel native state={state}>
+      <SidebarPanel native={true} state={state}>
         {({ x, ...props }) => (
           <animated.div
-            className={classNames('marapp-qa-sidebar c-sidebar ng-c-sidebar ng-subsection-background', {
-              'no-scroll': layersPanel,
-            })}
+            className={classNames(
+              'marapp-qa-sidebar c-sidebar ng-c-sidebar ng-subsection-background',
+              {
+                'no-scroll': layersPanel,
+              }
+            )}
             style={{
               transform: x.interpolate((x) => `translate3d(${x}%,0,0)`),
               ...props,
             }}
           >
-            <SidebarToggle
-              open={open}
-              setSidebarOpen={setSidebarOpen} />
+            <SidebarToggle open={open} setSidebarOpen={setSidebarOpen} />
             {children}
           </animated.div>
         )}

@@ -17,16 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import upperFirst from 'lodash/upperFirst';
+import Filter from 'components/filter';
 import sortBy from 'lodash/sortBy';
+import upperFirst from 'lodash/upperFirst';
+import React from 'react';
+import { animated } from 'react-spring/renderprops';
+import Link from 'redux-first-router-link';
 
 // Spring
-import { animated } from 'react-spring/renderprops';
 
 // Components
-import Link from 'redux-first-router-link';
-import Filter from 'components/filter';
 
 interface IPlaceFilter {
   data?: {};
@@ -39,24 +39,28 @@ interface IPlaceFilter {
 
 class PlaceFilterComponent extends React.Component<IPlaceFilter, any> {
   // Prevent content during transition
-  shouldComponentUpdate(nextProps) {
+  public shouldComponentUpdate(nextProps) {
     const { selectedFilter } = nextProps;
 
     return selectedFilter;
   }
 
-  onBack = (search) => {
+  public onBack = (search) => {
     const { setPlaceSelectedFilter } = this.props;
     setPlaceSelectedFilter('');
   };
 
-  render() {
+  public render() {
     const { data, selectedFilter, selectedSearch, style } = this.props;
 
     return (
       <animated.div className="place--content-animated" style={style}>
         <div className="place--filter">
-          <div role="button" className="marapp-qa-placesectionbutton place--section -back" onClick={this.onBack}>
+          <div
+            role="button"
+            className="marapp-qa-placesectionbutton place--section -back"
+            onClick={this.onBack}
+          >
             <h4 className="place--title">
               <i className="ng-icon-directionleft" />
               <span>{upperFirst(selectedFilter)}</span>

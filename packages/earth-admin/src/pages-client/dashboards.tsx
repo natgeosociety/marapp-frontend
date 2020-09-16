@@ -17,20 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { AuthzGuards } from '@marapp/earth-shared';
 import { Router } from '@reach/router';
-
-import { DashboardContext } from 'utils/contexts';
-import { encodeQueryToURL, setPage } from 'utils';
-import { useRequest } from 'utils/hooks';
-
-import { getAllDashboards, getDashboard } from 'services/dashboards';
-import { ContentLayout, SidebarLayout } from 'layouts';
-import { DashboardList, DashboardDetails, DashboardEdit } from 'components/dashboards';
-import { LinkWithOrg } from 'components/link-with-org';
-import { AuthzGuards } from 'auth/permissions';
 import { useAuth0 } from 'auth/auth0';
+import { DashboardDetails, DashboardEdit, DashboardList } from 'components/dashboards';
+import { LinkWithOrg } from 'components/link-with-org';
+import { ContentLayout, SidebarLayout } from 'layouts';
+import React, { useEffect, useState } from 'react';
+import { getAllDashboards, getDashboard } from 'services/dashboards';
+import { encodeQueryToURL, setPage } from 'utils';
+import { DashboardContext } from 'utils/contexts';
+import { useRequest } from 'utils/hooks';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 
@@ -47,10 +44,10 @@ export default function DashboardsPage(props) {
   return (
     <Router>
       <Page path="/">
-        <HomePage path="/"/>
-        <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newDashboard={false}/>
-        <EditPage path="/new" newDashboard={true}/>
+        <HomePage path="/" />
+        <DetailsPage path="/:page" />
+        <EditPage path="/:page/edit" newDashboard={false} />
+        <EditPage path="/new" newDashboard={true} />
       </Page>
     </Router>
   );
@@ -67,7 +64,7 @@ function Sidebar(props: any) {
   const [totalResults, setTotalResults] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const {selectedGroup, getPermissions} = useAuth0();
+  const { selectedGroup, getPermissions } = useAuth0();
 
   const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
 
@@ -90,13 +87,12 @@ function Sidebar(props: any) {
       const query = {
         search: searchValue,
         sort: 'name',
-        page: {size: pageSize, cursor: pageCursor},
+        page: { size: pageSize, cursor: pageCursor },
         select: EXCLUDED_FIELDS,
         group: selectedGroup,
       };
       const encodedQuery = encodeQueryToURL('dashboards', query);
       const res: any = await getAllDashboards(encodedQuery);
-
 
       setTotalResults(res.total);
 
@@ -126,7 +122,7 @@ function Sidebar(props: any) {
       }}
     >
       <SidebarLayout page={PAGE_TYPE}>
-        <DashboardList/>
+        <DashboardList />
       </SidebarLayout>
     </DashboardContext.Provider>
   );
@@ -135,59 +131,61 @@ function Sidebar(props: any) {
 function Page(props: any) {
   return (
     <>
-      <Sidebar/>
+      <Sidebar />
       {props.children}
-    </>);
+    </>
+  );
 }
 
-
 function HomePage(props: any) {
-  const {getPermissions} = useAuth0();
+  const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
-  return (writePermissions && (
-    <ContentLayout>
-      <div className="ng-flex ng-align-right">
-        <LinkWithOrg className="ng-button ng-button-overlay" to="/dashboards/new">
-          add new dashboard
-        </LinkWithOrg>
-      </div>
-    </ContentLayout>
-  ));
+  return (
+    writePermissions && (
+      <ContentLayout>
+        <div className="ng-flex ng-align-right">
+          <LinkWithOrg className="ng-button ng-button-overlay" to="/dashboards/new">
+            add new dashboard
+          </LinkWithOrg>
+        </div>
+      </ContentLayout>
+    )
+  );
 }
 
 function DetailsPage(path: any) {
-  const {selectedGroup} = useAuth0();
+  const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
     ...DASHBOARD_DETAIL_QUERY,
-    ...{group: selectedGroup},
+    ...{ group: selectedGroup },
   });
-  const {isLoading, errors, data} = useRequest(() => getDashboard(encodedQuery), {
+  const { isLoading, errors, data } = useRequest(() => getDashboard(encodedQuery), {
     permissions: AuthzGuards.accessDashboardsGuard,
     query: encodedQuery,
   });
 
   return (
     <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
-      <DashboardDetails data={data}/>
+      <DashboardDetails data={data} />
     </ContentLayout>
   );
 }
 
 function EditPage(path: any) {
-  const {selectedGroup} = useAuth0();
+  const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
     ...DASHBOARD_DETAIL_QUERY,
-    ...{group: selectedGroup},
+    ...{ group: selectedGroup },
   });
-  const {isLoading, errors, data} = useRequest(() => getDashboard(encodedQuery), {
+  const { isLoading, errors, data } = useRequest(() => getDashboard(encodedQuery), {
     permissions: AuthzGuards.writeDashboardsGuard,
     skip: path.newDashboard,
   });
 
   return (
     <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
-      <DashboardEdit data={data} newDashboard={path.newDashboard}/>
+      <DashboardEdit data={data} newDashboard={path.newDashboard} />
     </ContentLayout>
   );
 }

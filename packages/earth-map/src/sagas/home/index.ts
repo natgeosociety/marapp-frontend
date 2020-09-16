@@ -17,19 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { takeLatest, put, all, call, cancelled, select } from 'redux-saga/effects';
-
-// Services
+import { all, call, cancelled, put, select, takeLatest } from 'redux-saga/effects';
+import { LOCATION_QUERY } from 'sagas/model';
+import { getGroup } from 'sagas/saga-utils';
 import { fetchPlaces } from 'services/places';
 
-// Actions
 import {
   setPlaceSelectedOpen,
-  setPlacesLoading,
   setPlacesError,
+  setPlacesLoading,
 } from '../../modules/places/actions';
-import { getGroup } from 'sagas/saga-utils';
-import { LOCATION_QUERY } from 'sagas/model';
+
+// Services
+
+// Actions
 
 export default function* earth() {
   yield takeLatest('HOME', toHome);

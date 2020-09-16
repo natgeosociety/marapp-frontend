@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { downloadFile } from 'utils';
 import classnames from 'classnames';
+import React from 'react';
+import { downloadFile } from 'utils';
 
 interface DownloadFileProps {
   data: any;
-  fileName: string
+  fileName: string;
   children: React.ReactNode;
   className?: string;
 }
 
 export const DownloadFile = (props: DownloadFileProps) => {
-  const {data, fileName, children, className} = props;
+  const { data, fileName, children, className } = props;
 
   return (
     <a
@@ -18,7 +18,7 @@ export const DownloadFile = (props: DownloadFileProps) => {
       download={`${fileName}.json`}
       className={classnames(
         'marapp-qa-downloadfile ng-button ng-button-link ng-text-transform-remove',
-        className,
+        className
       )}
     >
       {children}

@@ -17,29 +17,29 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import { replace } from 'redux-first-router'
-import { Button } from '@marapp/earth-components';
-
+import { Button } from '@marapp/earth-shared';
 import ErrorTemplate from 'components/error-template';
+import React from 'react';
+import { replace } from 'redux-first-router';
 
 const NotFound = ({ resetStore }) => {
   return (
-    <ErrorTemplate
-      type="404"
-      message="Sorry we couldn't find that page.">
+    <ErrorTemplate type="404" message="Sorry we couldn't find that page.">
       <ul className="not-found--links--list">
         <li>
-          <Button onClick={() => {
-            resetStore();
-            replace('/');
-          }} className="-light -fullwidth">
+          <Button
+            onClick={() => {
+              resetStore();
+              replace('/');
+            }}
+            className="-light -fullwidth"
+          >
             Home
           </Button>
         </li>
       </ul>
     </ErrorTemplate>
-  )
-}
+  );
+};
 
 export default NotFound;

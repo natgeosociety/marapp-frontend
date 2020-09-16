@@ -17,9 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import YearPickerLegendComponent from './component';
-import { connect } from 'react-redux';
 import { setLayerGroupCurrent, setLayerSettings } from 'modules/layers/actions';
+import { connect } from 'react-redux';
+
+import YearPickerLegendComponent from './component';
 
 export default connect(null, {
   setLayerSettings,

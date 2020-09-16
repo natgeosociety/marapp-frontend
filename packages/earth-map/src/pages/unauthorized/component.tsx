@@ -17,32 +17,30 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import { Button } from '@marapp/earth-components';
-
+import { Button } from '@marapp/earth-shared';
 import { useAuth0 } from 'auth/auth0';
 import ErrorTemplate from 'components/error-template';
+import React from 'react';
 
 const Unauthorized = () => {
   const { logout } = useAuth0();
 
   return (
-    <ErrorTemplate
-      type="403"
-      message="You don’t have permission to access this page.">
+    <ErrorTemplate type="403" message="You don’t have permission to access this page.">
       <ul className="not-found--links--list">
         <li>
           <Button
             onClick={() => {
               logout();
             }}
-            className="-light -fullwidth">
+            className="-light -fullwidth"
+          >
             Log out
           </Button>
         </li>
       </ul>
     </ErrorTemplate>
   );
-}
+};
 
 export default Unauthorized;

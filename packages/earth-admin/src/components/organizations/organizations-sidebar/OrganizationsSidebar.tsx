@@ -1,12 +1,11 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
-
+import { AuthzGuards } from '@marapp/earth-shared';
 import { useAuth0 } from 'auth/auth0';
-import { AuthzGuards } from 'auth/permissions';
+import { SidebarLayout } from 'layouts';
+import React, { useEffect, useState } from 'react';
+import { getAllOrganizations } from 'services/organizations';
 import { encodeQueryToURL, setPage } from 'utils';
 import { OrganizationContext } from 'utils/contexts';
-import { getAllOrganizations } from 'services/organizations';
-import { SidebarLayout } from 'layouts';
+
 import { OrganizationList } from '../organization-list';
 
 const PAGE_TYPE = setPage('Organizations');
@@ -45,7 +44,6 @@ export function OrganizationsSidebar(props: any) {
       setTotalResults(res.total);
       setOrganizations([...organizations, ...validOrganizations]);
       setIsNoMore(pageNumber === res.pagination.total);
-
 
       setIsLoading(false);
     }

@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
 import classNames from 'classnames';
+import React from 'react';
 
 import './styles.scss';
 
@@ -43,6 +43,6 @@ const SidebarToggle = (props: ISidebarToggle) => {
       </button>
     </div>
   );
-}
+};
 
 export default SidebarToggle;

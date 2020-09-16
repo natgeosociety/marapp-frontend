@@ -19,6 +19,7 @@
 
 import compact from 'lodash/compact';
 import { createSelector } from 'reselect';
+
 import { IWidget } from '../widget/model';
 
 const place = (state, props) => props.place;

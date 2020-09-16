@@ -17,19 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
 import classnames from 'classnames';
-import { InView } from 'react-intersection-observer'
-
-// Components
 import Widget from 'components/widget';
 import TEMPLATES from 'components/widget/templates';
 import CONFIGS from 'components/widget/templates/configs';
-
-import { IWidget } from 'modules/widget/model';
 import { IPlace } from 'modules/places/model';
+import { IWidget } from 'modules/widget/model';
+import React from 'react';
+import { InView } from 'react-intersection-observer';
 
 import './styles.scss';
+
+// Components
 
 interface IWidgets {
   groups?: string[];
@@ -59,7 +58,7 @@ class WidgetsComponent extends React.Component<IWidgets, IWidgetsState> {
     };
   }
 
-  render() {
+  public render() {
     const { groups, place, list, embed, toolbar, toggleLayer, metrics = [{}] } = this.props;
     const { collapsedState } = this.state;
 
@@ -81,48 +80,50 @@ class WidgetsComponent extends React.Component<IWidgets, IWidgetsState> {
 
             return (
               <div key={`${w.slug}-${i}`} className="widgets--list-item ng-position-relative">
-                <InView threshold={0.2} triggerOnce>
+                <InView threshold={0.2} triggerOnce={true}>
                   {({ ref, inView }) => (
                     <div style={{ minHeight: '40vh' }} ref={ref}>
-                      {inView && <Widget
-                        {...w}
-                        {...(typeof collapsedState[widgetMetricName] !== 'undefined' && {
-                          collapsed: collapsedState[widgetMetricName],
-                        })}
-                        {...CONFIGS[widgetMetricName]}
-                        id={place.slug}
-                        place={place}
-                        widgetDescription={w.description}
-                        metric={!!filteredMetric ? filteredMetric : {}}
-                        showOrgLabel={groups.length > 1}
-                        embed={embed}
-                        toolbar={toolbar}
-                        activeDownload={false} // To be done, only if it's necessary
-                        onShare={() => this.setState({ share: true, widgetId: w.id })}
-                        onCollapse={(c) => {
-                          this.setState({
-                            collapsedState: { ...collapsedState, [widgetMetricName]: c },
-                          });
-                        }}
-                        onToggleLayer={(bool) => {
-                          const { layers } = w;
+                      {inView && (
+                        <Widget
+                          {...w}
+                          {...(typeof collapsedState[widgetMetricName] !== 'undefined' && {
+                            collapsed: collapsedState[widgetMetricName],
+                          })}
+                          {...CONFIGS[widgetMetricName]}
+                          id={place.slug}
+                          place={place}
+                          widgetDescription={w.description}
+                          metric={!!filteredMetric ? filteredMetric : {}}
+                          showOrgLabel={groups.length > 1}
+                          embed={embed}
+                          toolbar={toolbar}
+                          activeDownload={false} // To be done, only if it's necessary
+                          onShare={() => this.setState({ share: true, widgetId: w.id })}
+                          onCollapse={(c) => {
+                            this.setState({
+                              collapsedState: { ...collapsedState, [widgetMetricName]: c },
+                            });
+                          }}
+                          onToggleLayer={(bool) => {
+                            const { layers } = w;
 
-                          if (layers[0]) {
-                            toggleLayer(layers[0]);
-                          }
-                        }}
-                      >
-                        {({ slug, data, ...props }) => (
-                          <React.Fragment>
-                            {/* Template */}
-                            {!!TEMPLATES[widgetMetricName] &&
-                              React.createElement(TEMPLATES[widgetMetricName], {
-                                ...data,
-                                ...props,
-                              })}
-                          </React.Fragment>
-                        )}
-                      </Widget>}
+                            if (layers[0]) {
+                              toggleLayer(layers[0]);
+                            }
+                          }}
+                        >
+                          {({ slug, data, ...props }) => (
+                            <React.Fragment>
+                              {/* Template */}
+                              {!!TEMPLATES[widgetMetricName] &&
+                                React.createElement(TEMPLATES[widgetMetricName], {
+                                  ...data,
+                                  ...props,
+                                })}
+                            </React.Fragment>
+                          )}
+                        </Widget>
+                      )}
                     </div>
                   )}
                 </InView>

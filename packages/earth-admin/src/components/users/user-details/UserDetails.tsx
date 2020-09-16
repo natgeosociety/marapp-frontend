@@ -17,23 +17,23 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState } from 'react';
-import { UserProps } from '../model';
+import { AuthzGuards } from '@marapp/earth-shared';
 import { useAuth0 } from 'auth/auth0';
-import { AuthzGuards } from 'auth/permissions';
 import { ActionModal } from 'components/action-modal';
-import { LinkWithOrg } from 'components/link-with-org';
 import { ErrorMessages } from 'components/error-messages';
+import { LinkWithOrg } from 'components/link-with-org';
+import React, { useState } from 'react';
+
+import { UserProps } from '../model';
 
 export default function UserDetails(props: UserProps) {
   const {
-    data: {name, email, groups, id},
+    data: { name, email, groups, id },
   } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
 
-  const {getPermissions} = useAuth0();
+  const { getPermissions } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
 
   function handleDeleteToggle() {
@@ -88,10 +88,13 @@ export default function UserDetails(props: UserProps) {
           Go back to users list
         </LinkWithOrg>
       </div>
-      {serverErrors && <ErrorMessages errors={serverErrors}/>}
+      {serverErrors && <ErrorMessages errors={serverErrors} />}
       {writePermissions && (
         <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
-          <button className="marapp-qa-actiondelete ng-button ng-button-primary" onClick={handleDeleteToggle}>
+          <button
+            className="marapp-qa-actiondelete ng-button ng-button-primary"
+            onClick={handleDeleteToggle}
+          >
             Delete user
           </button>
         </div>

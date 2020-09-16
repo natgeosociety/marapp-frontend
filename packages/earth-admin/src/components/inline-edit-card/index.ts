@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import InlineEditCard from './InlineEditCard';
 import { InlineCardOverlay } from './inline-card-overlay';
+import InlineEditCard from './InlineEditCard';
 
 export { InlineEditCard, InlineCardOverlay };

@@ -17,18 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Fullscreen from 'components/fullscreen';
+import Layers from 'components/layers';
+import Map from 'components/map';
+import Place from 'components/place';
+import Places from 'components/places';
+import Sidebar from 'components/sidebar';
+import Url from 'components/url';
+import { EPanels } from 'modules/sidebar/model';
 import React from 'react';
 import { Icons as VizzIcons } from 'vizzuality-components';
 
-import Layers from 'components/layers';
-import Places from 'components/places';
-import Url from 'components/url';
-import Map from 'components/map';
-import Sidebar from 'components/sidebar';
-import Place from 'components/place';
-import Fullscreen from 'components/fullscreen';
 import { URL_PROPS } from './url';
-import { EPanels } from 'modules/sidebar/model';
 
 interface IEarth {
   setFullscreen?: (p: { data: {}; open: boolean }) => void;
@@ -39,7 +39,7 @@ interface IEarth {
 }
 
 class EarthPage extends React.Component<IEarth> {
-  render() {
+  public render() {
     const { setFullscreen, setMapInteractions, selected, panel } = this.props;
 
     return (
@@ -56,12 +56,8 @@ class EarthPage extends React.Component<IEarth> {
         />
 
         <Sidebar>
-          {panel === EPanels.PLACES && (
-            <Places selected={!!selected} />
-          )}
-          {panel === EPanels.LAYERS && (
-            <Layers selected={!!selected} />
-          )}
+          {panel === EPanels.PLACES && <Places selected={!!selected} />}
+          {panel === EPanels.LAYERS && <Layers selected={!!selected} />}
         </Sidebar>
 
         <div className="l-content">

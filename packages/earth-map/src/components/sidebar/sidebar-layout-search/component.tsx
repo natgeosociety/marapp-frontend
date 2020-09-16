@@ -1,7 +1,6 @@
-import React from 'react';
-
 import Header from 'components/header';
-import { Tabs, Tab } from 'components/tabs';
+import { Tab, Tabs } from 'components/tabs';
+import React from 'react';
 
 import './styles.scss';
 
@@ -19,7 +18,8 @@ const SidebarLayoutSearch = (props: IProps) => (
       <Tabs
         value={props.panel}
         onChange={props.setSidebarPanel}
-        className="ng-padding-medium-horizontal ng-padding-bottom ng-ep-background-dark">
+        className="ng-padding-medium-horizontal ng-padding-bottom ng-ep-background-dark"
+      >
         <Tab label="Places" value="places" />
         <Tab label="Layers" value="layers" />
       </Tabs>

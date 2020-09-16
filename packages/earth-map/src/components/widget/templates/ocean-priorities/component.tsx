@@ -17,21 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
+import { Html } from '@marapp/earth-shared';
 import classnames from 'classnames';
-
-import { Html } from '@marapp/earth-components';
 import WidgetNoDataComponent from 'components/widget/no-data';
+import React from 'react';
+
 import { IWidgetTemplate } from '../model';
 
 import './styles.scss';
 
 class OceanCarbonPriorities extends React.PureComponent<IWidgetTemplate, any> {
-  static defaultProps = {
+  public static defaultProps = {
     collapsed: false,
   };
 
-  collapsed() {
+  public collapsed() {
     const { template } = this.props;
 
     return (
@@ -41,7 +41,7 @@ class OceanCarbonPriorities extends React.PureComponent<IWidgetTemplate, any> {
     );
   }
 
-  expanded() {
+  public expanded() {
     const { chart, template } = this.props;
 
     return (
@@ -76,7 +76,7 @@ class OceanCarbonPriorities extends React.PureComponent<IWidgetTemplate, any> {
     );
   }
 
-  render() {
+  public render() {
     const { collapsed, noData } = this.props;
 
     if (noData) {

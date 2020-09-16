@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { redirect } from 'redux-first-router';
 import { connect } from 'react-redux';
+import { redirect } from 'redux-first-router';
 
 import AuthorizedPage from './component';
 

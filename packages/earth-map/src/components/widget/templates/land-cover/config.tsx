@@ -17,21 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-
-// Utils
-import { format } from 'd3-format';
+import WidgetTooltip from 'components/widget/tooltip';
 import { replace } from 'components/widget/utils';
-import sum from 'lodash/sum';
+import { format } from 'd3-format';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
+import sum from 'lodash/sum';
+import { IPlace } from 'modules/places/model';
+import { IWidgetConfig } from 'modules/widget/model';
+import React from 'react';
+
+import { LandCoverMetric } from './model';
+
+// Utils
 
 // Components
-import WidgetTooltip from 'components/widget/tooltip';
-
-import { IWidgetConfig } from 'modules/widget/model';
-import { IPlace } from 'modules/places/model';
-import { LandCoverMetric } from './model';
 interface LandCoverConfig {
   metric: LandCoverMetric;
 }
@@ -56,13 +56,13 @@ export const CONFIG = {
     const data2015 = parsedYears['2015'];
 
     const px_2015 = sum(
-      Object.values(data2015).map(value => {
+      Object.values(data2015).map((value) => {
         return value;
       })
     );
 
     let data2015Perc = {};
-    Object.keys(data2015).forEach(key => {
+    Object.keys(data2015).forEach((key) => {
       data2015Perc = {
         ...data2015Perc,
         [key]: (100 * data2015[key]) / px_2015,
@@ -79,8 +79,8 @@ export const CONFIG = {
     return {
       chart: sortBy(
         legendConfig.items
-          .filter(l => graphValues[l.label.toLowerCase()])
-          .map(l => {
+          .filter((l) => graphValues[l.label.toLowerCase()])
+          .map((l) => {
             const percentage = graphValues[l.label.toLowerCase()];
             const area = data2015[l.label.toLowerCase()];
 
@@ -124,18 +124,18 @@ export const CONFIG = {
           align: 'left',
           verticalAlign: 'middle',
           layout: 'vertical',
-          content: properties => {
+          content: (properties) => {
             const { payload } = properties;
-            const groups = groupBy(payload, p => p.payload.category);
+            const groups = groupBy(payload, (p) => p.payload.category);
 
             return (
               <div className="widget--legend">
-                {Object.keys(groups).map(g => (
+                {Object.keys(groups).map((g) => (
                   <div key={g} className="widget--legend-group">
                     <ul className="widget--legend-list">
                       {sortBy(groups[g], 'payload.percent')
                         .reverse()
-                        .map(item => (
+                        .map((item) => (
                           <li key={`item-${item.color}`} className="widget--legend-list-item">
                             <span
                               className="widget--legend-list-item-square"
@@ -174,12 +174,12 @@ export const CONFIG = {
                 {
                   label: 'Area:',
                   key: 'area',
-                  format: value => `${format(',.0f')(value)}km²`,
+                  format: (value) => `${format(',.0f')(value)}km²`,
                 },
                 {
                   label: 'Percentage:',
                   key: 'percentage',
-                  format: value => `${format('.2%')(value / 100)}`,
+                  format: (value) => `${format('.2%')(value / 100)}`,
                 },
               ]}
             />

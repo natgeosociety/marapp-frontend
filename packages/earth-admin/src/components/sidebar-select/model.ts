@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from 'auth/permissions';
+import { AuthzGuards } from '@marapp/earth-shared';
 
 export const ADMIN_PAGES: IAdminPage[] = [
   { key: 'Home', url: '', guard: AuthzGuards.accessHomeGuard },

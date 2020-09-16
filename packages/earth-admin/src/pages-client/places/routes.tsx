@@ -17,12 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { Router, } from '@reach/router';
-
+import { Router } from '@reach/router';
 import { PlacesSidebar } from 'components/places';
-import { PlacesHome } from './home';
+import React from 'react';
+
 import { PlaceDetail } from './details';
+import { PlacesHome } from './home';
 import { NewPlace } from './new';
 
 export default function PlacesPage(props) {

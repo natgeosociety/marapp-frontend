@@ -19,14 +19,14 @@
 
 const path = require('path');
 
-const GATSBY_ACTIVE_ENV = process.env.GATSBY_ACTIVE_ENV || '.env'
+const GATSBY_ACTIVE_ENV = process.env.GATSBY_ACTIVE_ENV || '.env';
 
 require('dotenv').config({ path: GATSBY_ACTIVE_ENV });
 
 module.exports = {
   pathPrefix: process.env.GATSBY_APP_BASE_URL,
   siteMetadata: {
-    siteName: 'Admin'
+    siteName: 'Admin',
   },
   plugins: [
     'gatsby-plugin-typescript',
@@ -34,8 +34,8 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-create-client-paths',
       options: {
-        prefixes: ['/*']
-      }
+        prefixes: ['/*'],
+      },
     },
     {
       resolve: `gatsby-plugin-portal`,
@@ -57,8 +57,8 @@ module.exports = {
         auth: path.join(__dirname, 'src/auth'),
         config: path.join(__dirname, 'src/config'),
         services: path.join(__dirname, 'src/services'),
-        styles: path.join(__dirname, 'src/styles')
-      }
-    }
-  ]
+        styles: path.join(__dirname, 'src/styles'),
+      },
+    },
+  ],
 };

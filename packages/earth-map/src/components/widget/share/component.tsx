@@ -17,9 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-
-import { Share } from '@marapp/earth-components';
+import { Share } from '@marapp/earth-shared';
+import React from 'react';
 
 import './styles.scss';
 
@@ -28,7 +27,7 @@ interface IWidgetShare {
 }
 
 class WidgetShareComponent extends React.PureComponent<IWidgetShare> {
-  render() {
+  public render() {
     const { url } = this.props;
 
     return (

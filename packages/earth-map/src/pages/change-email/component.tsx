@@ -17,13 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useEffect } from 'react';
-import { replace } from 'redux-first-router'
-
-import { Spinner } from '@marapp/earth-components';
-
+import { Spinner } from '@marapp/earth-shared';
 import { useAuth0 } from 'auth/auth0';
-import { changeEmailConfirmation } from 'services/users'
+import React, { useEffect } from 'react';
+import { replace } from 'redux-first-router';
+import { changeEmailConfirmation } from 'services/users';
 
 export default function ChangeEmailComponent() {
   const { login } = useAuth0();
@@ -33,14 +31,14 @@ export default function ChangeEmailComponent() {
       try {
         const hashParameter = window.location.hash;
         const hashQuery = hashParameter.split('#')[1];
-        const params = new URLSearchParams(hashQuery)
+        const params = new URLSearchParams(hashQuery);
 
-        const accessToken = params.get('access_token')
-        const error = params.get('error')
-        const error_description = params.get('error_description')
+        const accessToken = params.get('access_token');
+        const error = params.get('error');
+        const error_description = params.get('error_description');
 
         if (accessToken) {
-          const response: any = await changeEmailConfirmation({ accessToken })
+          const response: any = await changeEmailConfirmation({ accessToken });
           if (response && response?.success) {
             alert('Email change successful. Please login using the new credentials.');
             // Auth0 sessions are reset when a user’s email or password changes;
@@ -51,8 +49,8 @@ export default function ChangeEmailComponent() {
           }
         }
         if (error || error_description) {
-          console.error(error, error_description)
-          alert(error_description)
+          console.error(error, error_description);
+          alert(error_description);
         }
       } catch (e) {
         console.error(e);
@@ -62,7 +60,5 @@ export default function ChangeEmailComponent() {
     })();
   });
 
-  return (
-    <Spinner size="large" />
-  )
+  return <Spinner size="large" />;
 }

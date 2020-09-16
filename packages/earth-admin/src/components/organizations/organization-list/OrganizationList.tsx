@@ -17,34 +17,39 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { DataListing, Auth0ListItem } from 'components/data-listing';
+import { Auth0ListItem, DataListing } from 'components/data-listing';
+import React from 'react';
 import { OrganizationContext } from 'utils/contexts';
 
 export default function OrganizationList() {
   return (
     <OrganizationContext.Consumer>
-      {( {
-           organizations, handleSearchValueChange, handleCursorChange,
-           isLoading, isNoMore, searchValue, pageSize, totalResults, selectedItem,
-         } ) =>
-        (
-          <DataListing
-            childComponent={Auth0ListItem}
-            data={organizations}
-            categoryUrl={'organizations'}
-            pageTitle="ORGANIZATIONS"
-            searchValueAction={handleSearchValueChange}
-            cursorAction={handleCursorChange}
-            isLoading={isLoading}
-            isNoMore={isNoMore}
-            totalResults={totalResults}
-            pageSize={pageSize}
-            searchValue={searchValue}
-            selectedItem={selectedItem}
-          />
-        )
-      }
+      {({
+        organizations,
+        handleSearchValueChange,
+        handleCursorChange,
+        isLoading,
+        isNoMore,
+        searchValue,
+        pageSize,
+        totalResults,
+        selectedItem,
+      }) => (
+        <DataListing
+          childComponent={Auth0ListItem}
+          data={organizations}
+          categoryUrl={'organizations'}
+          pageTitle="ORGANIZATIONS"
+          searchValueAction={handleSearchValueChange}
+          cursorAction={handleCursorChange}
+          isLoading={isLoading}
+          isNoMore={isNoMore}
+          totalResults={totalResults}
+          pageSize={pageSize}
+          searchValue={searchValue}
+          selectedItem={selectedItem}
+        />
+      )}
     </OrganizationContext.Consumer>
   );
 }

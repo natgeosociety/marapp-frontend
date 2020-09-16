@@ -17,34 +17,39 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import { DataListing, DefaultListItem } from 'components/data-listing';
+import React from 'react';
 import { DashboardContext } from 'utils/contexts';
 
 export default function DashboardList() {
   return (
     <DashboardContext.Consumer>
-      {( {
-           dashboards, handleSearchValueChange, handleCursorChange,
-           isLoading, isNoMore, searchValue, pageSize, totalResults, selectedItem,
-         } ) =>
-        (
-          <DataListing
-            childComponent={DefaultListItem}
-            data={dashboards}
-            categoryUrl={'dashboards'}
-            pageTitle="data indexes"
-            searchValueAction={handleSearchValueChange}
-            cursorAction={handleCursorChange}
-            isLoading={isLoading}
-            isNoMore={isNoMore}
-            totalResults={totalResults}
-            pageSize={pageSize}
-            searchValue={searchValue}
-            selectedItem={selectedItem}
-          />
-        )
-      }
+      {({
+        dashboards,
+        handleSearchValueChange,
+        handleCursorChange,
+        isLoading,
+        isNoMore,
+        searchValue,
+        pageSize,
+        totalResults,
+        selectedItem,
+      }) => (
+        <DataListing
+          childComponent={DefaultListItem}
+          data={dashboards}
+          categoryUrl={'dashboards'}
+          pageTitle="data indexes"
+          searchValueAction={handleSearchValueChange}
+          cursorAction={handleCursorChange}
+          isLoading={isLoading}
+          isNoMore={isNoMore}
+          totalResults={totalResults}
+          pageSize={pageSize}
+          searchValue={searchValue}
+          selectedItem={selectedItem}
+        />
+      )}
     </DashboardContext.Consumer>
   );
 }

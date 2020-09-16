@@ -17,18 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { Chart, Html } from '@marapp/earth-shared';
+import WidgetNoDataComponent from 'components/widget/no-data';
 import React from 'react';
 
-import { Chart, Html } from '@marapp/earth-components';
-import WidgetNoDataComponent from 'components/widget/no-data';
 import { IWidgetTemplate } from '../model';
 
 class Fire extends React.PureComponent<IWidgetTemplate> {
-  static defaultProps = {
+  public static defaultProps = {
     collapsed: false,
   };
 
-  collapsed() {
+  public collapsed() {
     const { template } = this.props;
 
     return (
@@ -38,7 +38,7 @@ class Fire extends React.PureComponent<IWidgetTemplate> {
     );
   }
 
-  expanded() {
+  public expanded() {
     const { chart, template, config } = this.props;
 
     return (
@@ -53,7 +53,7 @@ class Fire extends React.PureComponent<IWidgetTemplate> {
     );
   }
 
-  render() {
+  public render() {
     const { collapsed, noData } = this.props;
 
     if (noData) {

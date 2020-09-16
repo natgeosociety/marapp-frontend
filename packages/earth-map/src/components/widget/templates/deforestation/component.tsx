@@ -17,19 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-
-import { Chart, Html } from '@marapp/earth-components';
+import { Chart, Html } from '@marapp/earth-shared';
 import WidgetNoDataComponent from 'components/widget/no-data';
+import React from 'react';
 
 import { IWidgetTemplate } from '../model';
 
 class Deforestation extends React.PureComponent<IWidgetTemplate, any> {
-  static defaultProps = {
+  public static defaultProps = {
     collapsed: false,
   };
 
-  collapsed() {
+  public collapsed() {
     const { template } = this.props;
 
     return (
@@ -39,7 +38,7 @@ class Deforestation extends React.PureComponent<IWidgetTemplate, any> {
     );
   }
 
-  expanded() {
+  public expanded() {
     const { chart, template, config } = this.props;
 
     return (
@@ -54,7 +53,7 @@ class Deforestation extends React.PureComponent<IWidgetTemplate, any> {
     );
   }
 
-  render() {
+  public render() {
     const { collapsed, noData } = this.props;
 
     if (noData) {

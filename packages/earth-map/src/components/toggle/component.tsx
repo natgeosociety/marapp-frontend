@@ -1,5 +1,5 @@
-import React from 'react';
 import classNames from 'classnames';
+import React from 'react';
 
 import './styles.scss';
 
@@ -15,7 +15,11 @@ const Toggle = (props: IProps) => {
     [className]: true,
   });
 
-  return <div className={classes}><span /></div>
-}
+  return (
+    <div className={classes}>
+      <span />
+    </div>
+  );
+};
 
 export default Toggle;

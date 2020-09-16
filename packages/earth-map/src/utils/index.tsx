@@ -17,12 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-
-import urljoin from 'url-join';
-import get from 'lodash/get';
-
 import { BASE_URL } from 'config';
+import React from 'react';
+import urljoin from 'url-join';
 
 /**
  * Route to target URL in case of success/failure.
@@ -41,67 +38,16 @@ export const routeToPage = ({
   window.history.replaceState({}, document.title, target);
 };
 
-/**
- * Remove nested groups (children) from groups.
- * Nested groups are prefixed with the group label.
- * @param groups
- */
-export const removeNestedGroups = (groups: string[]): string[] => {
-  if (groups.length) {
-    return groups.filter((group: string) => {
-      return groups.filter((g: string) => g.includes(group)).length >= 2;
-    });
-  }
-  return [];
-};
-
-/**
- *  Returns true if user has permission to
- *  view admin link
- */
-const ADMIN_ROLE_TYPES = ['SuperAdmin', 'Owner', 'Admin', 'Editor'];
-
-export const checkRole = (roles: string[]) => roles.some((role) => ADMIN_ROLE_TYPES.includes(role));
-
-/**
- * Extract and group scopes/permissions/roles by primary group (org).
- * @param scopes
- */
-export const mapAuthzScopes = (scopes: string[]): { [key: string]: string[] } => {
-  return scopes.reduce((acc, perm) => {
-    const [org, ...scope] = perm.split(':');
-    acc[org] = get(acc, org, []).concat([scope.join(':')]);
-    return acc;
-  }, {});
-};
-
-export const isValidOrg = (orgsFromToken: string[], org: string): boolean =>
-  orgsFromToken.includes(org);
-
 export const parseHintBold = (text: string = '') => {
-  return text.split(/({{.+?}})/).map(term => (
-    term.startsWith('{{') && term.endsWith('}}')
-      ? (
-        <b className="ng-text-weight-bold">
-          {term.replace('{{', '').replace('}}', '')}
-        </b>
+  return text
+    .split(/({{.+?}})/)
+    .map((term) =>
+      term.startsWith('{{') && term.endsWith('}}') ? (
+        <b className="ng-text-weight-bold">{term.replace('{{', '').replace('}}', '')}</b>
+      ) : (
+        term
       )
-      : term
-  ))
-};
-
-/**
- * Get available organizations based on permissions
- * @param permissions
- */
-export const getAvailableOrgs = (permissions: { [key: string]: string }): string[] => {
-  const specialPermissions = [
-    '*' // super-admin
-  ];
-
-  return Object
-    .keys(permissions)
-    .filter(permission => !specialPermissions.includes(permission));
+    );
 };
 
 /**

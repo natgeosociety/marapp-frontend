@@ -17,13 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { Router, } from '@reach/router';
-
+import { Router } from '@reach/router';
 import { LayerSidebar } from 'components/layers';
-import { NewLayer } from './new';
-import { LayersHome } from './home';
+import React from 'react';
+
 import { LayerDetail } from './details';
+import { LayersHome } from './home';
+import { NewLayer } from './new';
 
 export default function LayersPage(props) {
   return (
@@ -31,7 +31,7 @@ export default function LayersPage(props) {
       <LayerSidebar />
       <Router>
         <LayersHome path="/" />
-        <NewLayer path="/new"/>
+        <NewLayer path="/new" />
         <LayerDetail path="/:page" />
       </Router>
     </>

@@ -17,22 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { AuthzGuards } from '@marapp/earth-shared';
 import { Router } from '@reach/router';
-
-import { UserContext } from 'utils/contexts';
-import { LinkWithOrg } from 'components/link-with-org';
-import { UserList, UserEdit, UserDetails } from 'components/users';
-import { encodeQueryToURL, setPage } from 'utils';
-import { getAllUsers, getUser } from 'services/users';
-import { AuthzGuards } from 'auth/permissions';
-import { useRequest } from 'utils/hooks';
-
-
 import { useAuth0 } from 'auth/auth0';
+import { LinkWithOrg } from 'components/link-with-org';
+import { UserDetails, UserEdit, UserList } from 'components/users';
 import { SidebarLayout } from 'layouts';
 import ContentLayout from 'layouts/Content';
+import React, { useEffect, useState } from 'react';
+import { getAllUsers, getUser } from 'services/users';
+import { encodeQueryToURL, setPage } from 'utils';
+import { UserContext } from 'utils/contexts';
+import { useRequest } from 'utils/hooks';
 
 const USER_DETAIL_QUERY = {
   include: 'groups',
@@ -40,21 +36,20 @@ const USER_DETAIL_QUERY = {
 
 const PAGE_TYPE = setPage('Users');
 
-export default function UsersPage( props ) {
+export default function UsersPage(props) {
   return (
-
     <Router>
       <Page path="/">
-        <HomePage path="/"/>
-        <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newUser={false}/>
-        <EditPage path="/new" newUser={true}/>
+        <HomePage path="/" />
+        <DetailsPage path="/:page" />
+        <EditPage path="/:page/edit" newUser={false} />
+        <EditPage path="/new" newUser={true} />
       </Page>
     </Router>
   );
 }
 
-function Sidebar( props: any ) {
+function Sidebar(props: any) {
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
@@ -75,7 +70,6 @@ function Sidebar( props: any ) {
     async function setupUsers() {
       setIsLoading(true);
 
-
       const query = {
         page: { size: pageSize, number: pageNumber },
         group: selectedGroup,
@@ -84,8 +78,7 @@ function Sidebar( props: any ) {
       const encodedQuery = encodeQueryToURL('users', query);
       const res: any = await getAllUsers(encodedQuery);
 
-
-      const validUsers = res.data.filter(( item ) => item.id !== '|' && item.groups.length > 0);
+      const validUsers = res.data.filter((item) => item.id !== '|' && item.groups.length > 0);
       setTotalResults(res.total);
       setUsers([...users, ...validUsers]);
       setIsNoMore(pageNumber === res.pagination.total);
@@ -109,37 +102,39 @@ function Sidebar( props: any ) {
       }}
     >
       <SidebarLayout page={PAGE_TYPE}>
-        <UserList/>
+        <UserList />
       </SidebarLayout>
     </UserContext.Provider>
   );
 }
 
-function Page( props: any ) {
+function Page(props: any) {
   return (
     <>
-      <Sidebar/>
+      <Sidebar />
       {props.children}
-    </>);
+    </>
+  );
 }
 
-function HomePage( props: any ) {
+function HomePage(props: any) {
   const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessUsersGuard);
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
-  return (writePermissions && (
-    <ContentLayout>
-      <div className="ng-flex ng-align-right">
-        <LinkWithOrg className="ng-button ng-button-overlay" to="/users/new">
-          add new user
-        </LinkWithOrg>
-      </div>
-    </ContentLayout>
-  ));
+  return (
+    writePermissions && (
+      <ContentLayout>
+        <div className="ng-flex ng-align-right">
+          <LinkWithOrg className="ng-button ng-button-overlay" to="/users/new">
+            add new user
+          </LinkWithOrg>
+        </div>
+      </ContentLayout>
+    )
+  );
 }
 
-
-function DetailsPage( path: any ) {
+function DetailsPage(path: any) {
   const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`users/${path.page}`, {
     ...USER_DETAIL_QUERY,
@@ -152,12 +147,12 @@ function DetailsPage( path: any ) {
 
   return (
     <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
-      <UserDetails data={data}/>
+      <UserDetails data={data} />
     </ContentLayout>
   );
 }
 
-function EditPage( path: any ) {
+function EditPage(path: any) {
   const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`users/${path.page}`, {
     ...USER_DETAIL_QUERY,
@@ -170,7 +165,7 @@ function EditPage( path: any ) {
 
   return (
     <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
-      <UserEdit data={data} newUser={path.newUser}/>
+      <UserEdit data={data} newUser={path.newUser} />
     </ContentLayout>
   );
 }

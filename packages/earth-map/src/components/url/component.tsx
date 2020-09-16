@@ -29,10 +29,10 @@ interface IUrl {
 }
 
 class UrlComponent extends PureComponent<IUrl, any> {
-  componentDidMount() {
+  public componentDidMount() {
     const { urlProps, paramsFromUrl } = this.props;
 
-    urlProps.forEach(r => {
+    urlProps.forEach((r) => {
       const action = this.props[r.action];
       const payload = paramsFromUrl[r.value];
 
@@ -41,7 +41,7 @@ class UrlComponent extends PureComponent<IUrl, any> {
     });
   }
 
-  componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps) {
     const { url } = this.props;
     const { url: prevUrl } = prevProps;
 
@@ -51,7 +51,7 @@ class UrlComponent extends PureComponent<IUrl, any> {
     }
   }
 
-  render() {
+  public render() {
     return null;
   }
 }

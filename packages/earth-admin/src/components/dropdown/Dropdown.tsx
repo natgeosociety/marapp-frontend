@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
+import classnames from 'classnames';
 import React, { ReactNode } from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops';
-import classnames from 'classnames';
 
 import './styles.scss';
 
@@ -34,20 +34,19 @@ const DropdownPanel: any = Keyframes.Spring({
   open: { x: 0, from: { x: 0 } },
 });
 
-export const DropdownComponent = ( props: IDropdownComponent ) => {
-
+export const DropdownComponent = (props: IDropdownComponent) => {
   const { state, children, className } = props;
 
   return (
-    <DropdownPanel native state={state}>
-      {( { x, ...props } ) => (
+    <DropdownPanel native={true} state={state}>
+      {({ x, ...props }) => (
         <animated.ul
           className={classnames(
             'marapp-qa-dropdown ng-ep-dropdown ng-background-dkgray',
-            className,
+            className
           )}
           style={{
-            transform: x.interpolate(( x ) => `translate3d(0,${x}px,0)`),
+            transform: x.interpolate((x) => `translate3d(0,${x}px,0)`),
             ...props,
           }}
         >
@@ -56,4 +55,4 @@ export const DropdownComponent = ( props: IDropdownComponent ) => {
       )}
     </DropdownPanel>
   );
-}
+};

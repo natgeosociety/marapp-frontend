@@ -17,13 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import classNames from 'classnames';
-
 import { LinkWithOrg } from 'components/link-with-org';
+import React from 'react';
 
 interface DetailListProps {
-  data: {id: string, name: string, type?: string}[],
+  data: Array<{ id: string; name: string; type?: string }>;
   name: string;
   type: string;
   className?: string;
@@ -31,15 +30,18 @@ interface DetailListProps {
 }
 
 export default function DetailList(props: DetailListProps) {
-  const {data, name, type, className} = props;
+  const { data, name, type, className } = props;
 
   return (
     <div className="marapp-qa-detaillist ng-flex ng-flex-column ng-margin-medium-bottom">
       <p className="ng-text-weight-bold ng-margin-small-bottom">{name}</p>
       <div className={classNames('ng-flex ng-flex-wrap ng-padding-left', className)}>
         {data.map((int) => (
-          <LinkWithOrg to={`/${type}/${int.id}`} key={int.id}
-                       className="marapp-qa-actionintersection ng-margin-medium-right">
+          <LinkWithOrg
+            to={`/${type}/${int.id}`}
+            key={int.id}
+            className="marapp-qa-actionintersection ng-margin-medium-right"
+          >
             {int.name}
           </LinkWithOrg>
         ))}

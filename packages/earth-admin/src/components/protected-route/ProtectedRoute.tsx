@@ -17,16 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useEffect, FunctionComponent } from 'react';
-import { navigate } from 'gatsby';
-
+import { Spinner } from '@marapp/earth-shared';
 import { useAuth0 } from 'auth/auth0';
-import { Spinner } from '@marapp/earth-components';
+import { navigate } from 'gatsby';
+import React, { FunctionComponent, useEffect } from 'react';
 
 interface IProps {
   path: string;
-  component: FunctionComponent<any>
-  children?: any
+  component: FunctionComponent<any>;
+  children?: any;
 }
 
 /**
@@ -35,13 +34,7 @@ interface IProps {
  */
 export function ProtectedRoute(props: IProps) {
   const { component: Component, ...otherProps } = props;
-  const {
-    isAuthenticated,
-    isAppBootstrapped,
-    isAuthorized,
-    login,
-    selectedGroup,
-  } = useAuth0();
+  const { isAuthenticated, isAppBootstrapped, isAuthorized, login, selectedGroup } = useAuth0();
 
   useEffect(() => {
     const fn = async () => {
@@ -56,13 +49,13 @@ export function ProtectedRoute(props: IProps) {
     isAppBootstrapped && fn();
   }, [isAuthenticated, login, isAppBootstrapped, isAuthorized, selectedGroup]);
 
-  if (!isAppBootstrapped) return <Spinner size="medium" />;
-
-  if (isAuthenticated && isAuthorized) {
-    return <Component {...otherProps} />
+  if (!isAppBootstrapped) {
+    return <Spinner size="medium" />;
   }
 
-  return (
-    <Spinner size="medium" />
-  );
+  if (isAuthenticated && isAuthorized) {
+    return <Component {...otherProps} />;
+  }
+
+  return <Spinner size="medium" />;
 }

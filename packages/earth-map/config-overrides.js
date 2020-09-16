@@ -20,14 +20,14 @@
 const path = require('path');
 
 module.exports = {
-  webpack: function(config, env) {
+  webpack: function (config, env) {
     // Without this, the monorepo won't work
-    config.module.rules = config.module.rules.map(rule => {
+    config.module.rules = config.module.rules.map((rule) => {
       if (!Reflect.has(rule, 'oneOf')) {
         return rule;
       }
 
-      const oneOf = rule.oneOf.map(loader => {
+      const oneOf = rule.oneOf.map((loader) => {
         if (!Reflect.has(loader, 'test')) {
           return loader;
         }
@@ -50,19 +50,16 @@ module.exports = {
 
         return {
           ...loader,
-          include: [
-            path.join(__dirname, 'src'),
-            path.join(__dirname, '..', 'earth-components')
-          ]
+          include: [path.join(__dirname, 'src'), path.join(__dirname, '..', 'earth-shared')],
         };
       });
 
       return {
         ...rule,
-        oneOf
-      }
+        oneOf,
+      };
     });
 
     return config;
-  }
+  },
 };

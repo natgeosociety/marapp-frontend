@@ -17,34 +17,39 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { DataListing, Auth0ListItem } from 'components/data-listing';
+import { Auth0ListItem, DataListing } from 'components/data-listing';
+import React from 'react';
 import { UserContext } from 'utils/contexts';
 
 export default function UserList() {
   return (
     <UserContext.Consumer>
-      {( {
-           users, handleSearchValueChange, handleCursorChange,
-           isLoading, isNoMore, searchValue, pageSize, totalResults, selectedItem,
-         } ) =>
-        (
-          <DataListing
-            childComponent={Auth0ListItem}
-            data={users}
-            categoryUrl={'users'}
-            pageTitle="users"
-            searchValueAction={handleSearchValueChange}
-            cursorAction={handleCursorChange}
-            isLoading={isLoading}
-            isNoMore={isNoMore}
-            totalResults={totalResults}
-            pageSize={pageSize}
-            searchValue={searchValue}
-            selectedItem={selectedItem}
-          />
-        )
-      }
+      {({
+        users,
+        handleSearchValueChange,
+        handleCursorChange,
+        isLoading,
+        isNoMore,
+        searchValue,
+        pageSize,
+        totalResults,
+        selectedItem,
+      }) => (
+        <DataListing
+          childComponent={Auth0ListItem}
+          data={users}
+          categoryUrl={'users'}
+          pageTitle="users"
+          searchValueAction={handleSearchValueChange}
+          cursorAction={handleCursorChange}
+          isLoading={isLoading}
+          isNoMore={isNoMore}
+          totalResults={totalResults}
+          pageSize={pageSize}
+          searchValue={searchValue}
+          selectedItem={selectedItem}
+        />
+      )}
     </UserContext.Consumer>
   );
 }

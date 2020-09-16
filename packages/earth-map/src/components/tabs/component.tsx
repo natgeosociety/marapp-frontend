@@ -1,5 +1,4 @@
 import React, { Children, cloneElement } from 'react';
-
 import { noop } from 'utils';
 
 import './styles.scss';
@@ -20,14 +19,10 @@ const Tabs = (props: IProps) => {
       onClick: selected // do nothing when clicking the selected tab multiple times
         ? noop
         : onChange,
-    })
+    });
   });
 
-  return (
-    <div className={`marapp-qa-tabs ng-ep-tabs ${className}`}>
-      {tabs}
-    </div>
-  )
-}
+  return <div className={`marapp-qa-tabs ng-ep-tabs ${className}`}>{tabs}</div>;
+};
 
 export default Tabs;

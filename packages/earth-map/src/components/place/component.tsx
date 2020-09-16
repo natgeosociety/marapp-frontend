@@ -17,16 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
 import isEmpty from 'lodash/isEmpty';
+import React from 'react';
+import { animated, Keyframes, Transition } from 'react-spring/renderprops';
 
-import {Keyframes, Transition, animated} from 'react-spring/renderprops';
-
-import PlaceSummary from './summary';
 import PlaceFilter from './filter';
+import './styles.scss';
+import PlaceSummary from './summary';
 
 // styles
-import './styles.scss';
 
 // Creates a keyframed spring
 const PlaceWrapper: any = Keyframes.Spring({
@@ -45,7 +44,7 @@ interface IPlace {
 }
 
 class PlaceComponent extends React.PureComponent<IPlace> {
-  onDestroyed = () => {
+  public onDestroyed = () => {
     const { selectedOpen, setPlaceSelectedFilter } = this.props;
 
     if (!selectedOpen) {
@@ -53,7 +52,7 @@ class PlaceComponent extends React.PureComponent<IPlace> {
     }
   };
 
-  getState = () => {
+  public getState = () => {
     const { data, sidebarState } = this.props;
 
     if (isEmpty(data)) {
@@ -63,37 +62,37 @@ class PlaceComponent extends React.PureComponent<IPlace> {
     return sidebarState ? 'expanded' : 'open';
   };
 
-  render() {
+  public render() {
     const { selectedOpen, selectedFilter } = this.props;
 
     const state = this.getState();
 
     return (
-      <PlaceWrapper native state={state}>
+      <PlaceWrapper native={true} state={state}>
         {({ x, ...props }) => (
           <animated.div
             className="marapp-qa-place c-place"
             style={{
-              transform: x.interpolate(x => `translate3d(${x}px,0,0)`),
+              transform: x.interpolate((x) => `translate3d(${x}px,0,0)`),
               ...props,
             }}
           >
             {/*<PlaceSelected />*/}
 
             <Transition
-              native
+              native={true}
               items={selectedOpen}
               from={{ opacity: 0 }}
               enter={{ opacity: 1 }}
               leave={[{ opacity: 0 }]}
             >
-              {show =>
+              {(show) =>
                 show &&
                 ((props: any) => (
                   <animated.div className="place--content" style={props}>
                     {/* Summary */}
                     <Transition
-                      native
+                      native={true}
                       items={!selectedFilter}
                       from={{ transform: 'translate(0, -10px)', opacity: 0 }}
                       enter={{
@@ -103,12 +102,12 @@ class PlaceComponent extends React.PureComponent<IPlace> {
                       }}
                       leave={[{ transform: 'translate(0, 10px)', opacity: 0 }]}
                     >
-                      {show2 => show2 && (props2 => <PlaceSummary style={props2} />)}
+                      {(show2) => show2 && ((props2) => <PlaceSummary style={props2} />)}
                     </Transition>
 
                     {/* Filter */}
                     <Transition
-                      native
+                      native={true}
                       items={selectedFilter}
                       from={{ transform: 'translate(0, -10px)', opacity: 0 }}
                       enter={{
@@ -118,7 +117,7 @@ class PlaceComponent extends React.PureComponent<IPlace> {
                       }}
                       leave={[{ transform: 'translate(0, 10px)', opacity: 0 }]}
                     >
-                      {show2 => show2 && (props2 => <PlaceFilter style={props2} />)}
+                      {(show2) => show2 && ((props2) => <PlaceFilter style={props2} />)}
                     </Transition>
                   </animated.div>
                 ))

@@ -17,19 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { WebGLRenderer, Scene, PerspectiveCamera, TextureLoader } from 'three';
-
-import { CSS2DRenderer } from 'three-css2drender';
-import OrbitControls from 'orbit-controls-es6';
-
 import SCENE_BACKGROUND from 'images/spinny-globe/background-min.png';
+import OrbitControls from 'orbit-controls-es6';
+import { PerspectiveCamera, Scene, TextureLoader, WebGLRenderer } from 'three';
+import { CSS2DRenderer } from 'three-css2drender';
 
 export default (rendererMount, renderer2dMount, props) => {
   const scene = new Scene();
 
-  scene.background = new TextureLoader().load(
-    SCENE_BACKGROUND
-  );
+  scene.background = new TextureLoader().load(SCENE_BACKGROUND);
 
   const camera = new PerspectiveCamera(50, 4 / 3, 0.5, 100);
   camera.position.set(0.0, 1.5, 3.0);

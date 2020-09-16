@@ -42,7 +42,9 @@ export const setLayersSearch = createAction('LAYERS/setLayersSearch');
 export const setLayersSearchOpen = createAction('LAYERS/setLayersSearchOpen');
 export const setLayersSearchLoading = createAction('LAYERS/setLayersSearchLoading');
 export const setLayersSearchFilters = createAction('LAYERS/setLayersSearchFilters');
-export const setLayersSearchAvailableFilters = createAction('LAYERS/setLayersSearchAvailableFilters');
+export const setLayersSearchAvailableFilters = createAction(
+  'LAYERS/setLayersSearchAvailableFilters'
+);
 export const setLayersSearchResults = createAction('LAYERS/setLayersSearchResults');
 export const nextLayersPage = createAction('LAYERS/nextLayersPage');
 

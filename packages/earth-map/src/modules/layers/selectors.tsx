@@ -17,18 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { createSelector } from 'reselect';
-import isEmpty from 'lodash/isEmpty';
-
+import { replace } from 'layer-manager';
 import compact from 'lodash/compact';
 import flatten from 'lodash/flatten';
+import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
-
-import { replace } from 'layer-manager';
+import { createSelector } from 'reselect';
 
 import decodes from './decodes';
-import { getParams } from './utils';
 import { ILayer } from './model';
+import { getParams } from './utils';
 
 const layers = (state) => state.layers.listActive;
 const active = (state) => state.layers.active;
@@ -46,7 +44,6 @@ const YEAR_DATE_PICKER_LEGEND = (type) => type === 'yeardatepicker';
 export const getLegendLayers = createSelector(
   [layers, settings, active],
   (_layers: ILayer[], _settings, _active) => {
-
     if (!_layers) {
       return [];
     }
@@ -60,8 +57,17 @@ export const getLegendLayers = createSelector(
         return false;
       }
 
-      const { name, description, source, legendConfig, paramsConfig,
-        sqlConfig, decodeConfig, timelineConfig, type } = layer;
+      const {
+        name,
+        description,
+        source,
+        legendConfig,
+        paramsConfig,
+        sqlConfig,
+        decodeConfig,
+        timelineConfig,
+        type,
+      } = layer;
 
       const settings = _settings[layer.slug] || {};
 
@@ -71,7 +77,7 @@ export const getLegendLayers = createSelector(
       const decodeParams = !!decodeConfig && getParams(decodeConfig.values, settings.decodeParams);
 
       let legend: any = legendConfig;
-      let decode: any = { decodeParams: decodeParams };
+      let decode: any = { decodeParams };
       let settingsConfig = params;
       let configParams = paramsConfig;
       let configDecode = decodeConfig && decodeConfig.values;
@@ -146,7 +152,6 @@ export const getLegendLayers = createSelector(
       });
     });
 
-
     return layerGroups;
   }
 );
@@ -168,13 +173,7 @@ export const getActiveLayers = createSelector(
 
         const { source } = layer;
         const { legendConfig } = layer;
-        const {
-          type,
-          paramsConfig,
-          sqlConfig,
-          decodeConfig,
-          timelineConfig,
-        } = layer;
+        const { type, paramsConfig, sqlConfig, decodeConfig, timelineConfig } = layer;
         const settings = _settings[layer.slug] || {};
 
         // @ts-ignore
@@ -190,7 +189,6 @@ export const getActiveLayers = createSelector(
             // @ts-ignore
             YEAR_DATE_PICKER_LEGEND(legendType)) && {
             ...layer.references.find((l) => {
-
               const current = settings.current || layer.references[0].id;
               return l.id === current;
             }),
@@ -244,7 +242,7 @@ export const getActiveBoundsLayer = createSelector([place], (_place) => {
     },
     render: {
       metadata: {
-        position: 'top'
+        position: 'top',
       },
       layers: [
         {
@@ -266,7 +264,7 @@ export const getActiveBoundsLayer = createSelector([place], (_place) => {
           },
         },
       ],
-    }
+    },
   };
 });
 
@@ -278,16 +276,13 @@ export const getActiveInteractiveLayersIds = createSelector(
     }
 
     const getIds = (layer: ILayer) => {
-
       const { id, source, interactionConfig, render } = layer;
 
-
       if (isEmpty(render) || isEmpty(interactionConfig)) {
-
         return null;
       }
 
-      const { layers } =  render;
+      const { layers } = render;
 
       if (!layers) {
         return null;
@@ -308,7 +303,6 @@ export const getActiveInteractiveLayersIds = createSelector(
             return null;
           }
 
-
           const { slug, source, legendConfig, type } = layer;
           const { legendType } = legendConfig as any;
 
@@ -317,10 +311,7 @@ export const getActiveInteractiveLayersIds = createSelector(
             YEAR_PICKER_LEGEND(legendType) ||
             YEAR_DATE_PICKER_LEGEND(legendType)
           ) {
-
-
-            const  layerConfigLayers  = layer.references;
-
+            const layerConfigLayers = layer.references;
 
             const current =
               _settings[slug] && _settings[slug].current
@@ -349,7 +340,7 @@ export const getActiveInteractiveLayers = createSelector(
     const allLayers = uniqBy(
       flatten(
         _layers.map((l: ILayer) => {
-          const {  name } = l;
+          const { name } = l;
           const { type } = l;
 
           if (GROUP_LEGEND(type)) {
@@ -368,9 +359,7 @@ export const getActiveInteractiveLayers = createSelector(
     const interactiveLayerKeys = Object.keys(_interactions);
     const interactiveLayers = [];
 
-
     allLayers.forEach((layer: ILayer) => {
-
       if (!!layer.references && layer.references.length > 0) {
         layer.references.forEach((layerRef) => {
           if (interactiveLayerKeys.includes(layerRef.id)) {
@@ -383,7 +372,6 @@ export const getActiveInteractiveLayers = createSelector(
         }
       }
     });
-
 
     return interactiveLayers.map((l: any) => ({
       ...l,

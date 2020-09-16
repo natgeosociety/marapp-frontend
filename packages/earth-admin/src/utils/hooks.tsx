@@ -17,10 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useState, useEffect } from 'react';
-
-import { ScopesEnum } from 'auth/permissions';
-import { useAuth0 } from 'auth/auth0';
+import { ScopesEnum } from '@marapp/earth-shared';
+import { useEffect, useState } from 'react';
 
 interface IError {
   details: string;
@@ -77,9 +75,11 @@ export function useRequest(
 
 export function useDomWatcher(ref, callback, skip) {
   useEffect(() => {
-    if (skip) return;
+    if (skip) {
+      return;
+    }
 
-    const handleClickOutside = event => {
+    const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
         callback && callback();
       }
@@ -91,4 +91,3 @@ export function useDomWatcher(ref, callback, skip) {
     };
   }, [ref, skip]);
 }
-

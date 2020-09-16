@@ -17,14 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-
-// Components
+import React, { PureComponent } from 'react';
 import Modal from 'react-modal';
 
-// Styles
 import './styles.scss';
+
+// Components
+
+// Styles
 
 interface IModalComponent {
   isOpen: boolean;
@@ -36,7 +37,7 @@ interface IModalComponent {
 }
 
 class ModalComponent extends PureComponent<IModalComponent> {
-  render() {
+  public render() {
     const { children, isOpen, className, header, onAfterOpen, onRequestClose } = this.props;
 
     const classNames = classnames('marapp-qa-modal c-modal', {
@@ -61,7 +62,7 @@ class ModalComponent extends PureComponent<IModalComponent> {
           // @ts-ignore
           onClick={(e) => e.stopPropagation() || onRequestClose()}
         >
-          <i className="ng-icon-close"></i>
+          <i className="ng-icon-close" />
         </button>
         <div className="modal-content">{children}</div>
       </Modal>

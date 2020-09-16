@@ -17,18 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
 import classnames from 'classnames';
-import upperFirst from 'lodash/upperFirst';
+import { SECTIONS } from 'components/place/constants';
 import sortBy from 'lodash/sortBy';
-
-// Spring
+import upperFirst from 'lodash/upperFirst';
+import React from 'react';
 import { animated } from 'react-spring/renderprops';
-
-// Components
 import Link from 'redux-first-router-link';
 
-import { SECTIONS } from 'components/place/constants';
+// Spring
+
+// Components
 
 const MAX_ITEMS = 5;
 
@@ -39,12 +38,12 @@ interface IPlaceSummaryComponent {
 }
 
 class PlaceSummaryComponent extends React.PureComponent<IPlaceSummaryComponent> {
-  onChangeFilter = (filter) => {
+  public onChangeFilter = (filter) => {
     const { setPlaceSelectedFilter } = this.props;
     setPlaceSelectedFilter(filter);
   };
 
-  render() {
+  public render() {
     const { data, style } = this.props;
 
     return (

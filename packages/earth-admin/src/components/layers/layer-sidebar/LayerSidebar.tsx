@@ -17,25 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState, useEffect } from 'react';
-
+import { AuthzGuards } from '@marapp/earth-shared';
 import { useAuth0 } from 'auth/auth0';
-import { AuthzGuards } from 'auth/permissions';
-import { LayerContext, PlaceContext } from 'utils/contexts';
-import { encodeQueryToURL, setPage } from 'utils';
-import { getAllPlaces } from 'services/places';
-
-import { SidebarLayout } from 'layouts';
 import { DataListing, DefaultListItem } from 'components/data-listing';
+import { SidebarLayout } from 'layouts';
+import React, { useEffect, useState } from 'react';
 import { getAllLayers } from 'services';
-
+import { encodeQueryToURL, setPage } from 'utils';
+import { LayerContext } from 'utils/contexts';
 
 const LAYER_DETAIL_QUERY = { include: 'references', select: 'references.name,references.id' };
 const INIT_CURSOR_LOCATION = '-1';
 
 const PAGE_TYPE = setPage('Layers');
-
 
 export default function LayerSidebar(props: any) {
   const [layers, setLayer] = useState([]);
@@ -52,7 +46,7 @@ export default function LayerSidebar(props: any) {
 
   const permissions = getPermissions(AuthzGuards.accessLayersGuard);
 
-  const handleSearchValueChange = ( newValue: string ) => {
+  const handleSearchValueChange = (newValue: string) => {
     setPageCursor(INIT_CURSOR_LOCATION);
     setNextCursor(null);
     setSearchValue(newValue);
@@ -77,7 +71,6 @@ export default function LayerSidebar(props: any) {
       const encodedQuery = encodeQueryToURL('layers', query);
       const res: any = await getAllLayers(encodedQuery);
 
-
       setTotalResults(res.total);
 
       setLayer(!nextCursor ? res.data : [...layers, ...res.data]);
@@ -89,7 +82,6 @@ export default function LayerSidebar(props: any) {
 
     permissions && setupLayers();
   }, [pageCursor, searchValue]);
-
 
   return (
     <LayerContext.Provider

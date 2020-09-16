@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
 import { getActiveInteractiveLayer, getActiveInteractiveLayers } from 'modules/layers/selectors';
+import { connect } from 'react-redux';
 
 import LayerPopupComponent from './component';
 

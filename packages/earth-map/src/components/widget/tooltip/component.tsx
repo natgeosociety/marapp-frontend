@@ -30,13 +30,13 @@ interface TooltipProps {
 }
 
 class Tooltip extends React.PureComponent<TooltipProps> {
-  static defaultProps = {
+  public static defaultProps = {
     payload: [],
     style: {},
     hideZeros: false,
   };
 
-  getValue = (item, value) => {
+  public getValue = (item, value) => {
     const { format, suffix = '', preffix = '' } = item;
     let val = value;
 
@@ -47,7 +47,7 @@ class Tooltip extends React.PureComponent<TooltipProps> {
     return `${preffix}${val}${suffix}`;
   };
 
-  render() {
+  public render() {
     const { payload, settings, style, hideZeros } = this.props;
 
     // @ts-ignore

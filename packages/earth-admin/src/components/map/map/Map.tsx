@@ -17,37 +17,34 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useContext, useEffect, useState } from 'react';
-
-import { Map } from '@marapp/earth-components';
-
-import { GATSBY_APP_MAPBOX_TOKEN } from 'config';
-import { LAYER_DEFAULT, MAP_DEFAULT } from '../model';
-import { MapComponentContext } from 'utils/contexts';
-import { LayerManagerComponent } from '../layer-manager';
-
-import './styles.scss';
+import { Map } from '@marapp/earth-shared';
 import MapControls from 'components/map/controls';
 import RecenterControl from 'components/map/controls/recenter';
 import ZoomControl from 'components/map/controls/zoom';
+import { GATSBY_APP_MAPBOX_TOKEN } from 'config';
+import React, { useContext, useEffect, useState } from 'react';
+import { MapComponentContext } from 'utils/contexts';
 
+import { LayerManagerComponent } from '../layer-manager';
+import { LAYER_DEFAULT, MAP_DEFAULT } from '../model';
 
-export default function MapComponent(props: {height?: string}) {
-  const {height = '500px'} = props;
-  const {geojson, bbox} = useContext(MapComponentContext);
+import './styles.scss';
+
+export default function MapComponent(props: { height?: string }) {
+  const { height = '500px' } = props;
+  const { geojson, bbox } = useContext(MapComponentContext);
 
   const [viewport, setViewport] = useState(MAP_DEFAULT.viewport);
   const [mapZoom, setMapZoom] = useState(null);
-  const [bounds, setBounds] = useState({bbox: bbox});
+  const [bounds, setBounds] = useState({ bbox });
 
   useEffect(() => {
-    setBounds({bbox: bbox})
+    setBounds({ bbox });
   }, [bbox]);
 
   const LAYER = {
     ...LAYER_DEFAULT,
-    ...{source: {...LAYER_DEFAULT.source, ...{data: geojson}}},
+    ...{ source: { ...LAYER_DEFAULT.source, ...{ data: geojson } } },
   };
 
   const onRecenterChange = () => {
@@ -59,7 +56,7 @@ export default function MapComponent(props: {height?: string}) {
   };
 
   const onZoomChange = (zoom) => {
-    setViewport({...viewport, ...{zoom: zoom, transitionDuration: 500}});
+    setViewport({ ...viewport, ...{ zoom, transitionDuration: 500 } });
   };
 
   const handleMapLoad = (e) => {
@@ -71,7 +68,7 @@ export default function MapComponent(props: {height?: string}) {
   };
 
   return (
-    <div className="marapp-qa-mapwrapper c-map-wrapper -open" style={{height: height}}>
+    <div className="marapp-qa-mapwrapper c-map-wrapper -open" style={{ height }}>
       <Map
         mapboxApiAccessToken={GATSBY_APP_MAPBOX_TOKEN}
         bounds={bounds}
@@ -87,14 +84,14 @@ export default function MapComponent(props: {height?: string}) {
           return (
             <>
               {/* LAYER MANAGER */}
-              <LayerManagerComponent map={map} layer={LAYER}/>
+              <LayerManagerComponent map={map} layer={LAYER} />
             </>
           );
         }}
       </Map>
       <MapControls>
-        <RecenterControl onClick={onRecenterChange}/>
-        <ZoomControl viewport={viewport} onClick={(e) => onZoomChange(e)} zoom={mapZoom}/>
+        <RecenterControl onClick={onRecenterChange} />
+        <ZoomControl viewport={viewport} onClick={(e) => onZoomChange(e)} zoom={mapZoom} />
       </MapControls>
     </div>
   );

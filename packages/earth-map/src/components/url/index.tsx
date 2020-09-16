@@ -19,11 +19,12 @@
 
 import { connect } from 'react-redux';
 
+import UrlComponent from './component';
+import { getParamsFromUrl, getUrl, getUrlFromParams } from './selectors';
+
 // Selectors
-import { getUrl, getParamsFromUrl, getUrlFromParams } from './selectors';
 
 // Components
-import UrlComponent from './component';
 
 export default connect(
   (state: any, props: any) => ({
@@ -36,7 +37,7 @@ export default connect(
     ...urlProps.reduce((acc, current) => {
       return {
         ...acc,
-        [current.action]: props => dispatch(current.action(props)),
+        [current.action]: (props) => dispatch(current.action(props)),
       };
     }, {}),
   })

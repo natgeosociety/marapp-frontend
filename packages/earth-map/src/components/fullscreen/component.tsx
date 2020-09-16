@@ -17,16 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-
-import { Fullscreen } from '@marapp/earth-components';
+import { Fullscreen } from '@marapp/earth-shared';
+import React from 'react';
 
 interface IFullscreen {
   onClose: () => void;
 }
 
 class FullscreenComponent extends React.PureComponent<IFullscreen> {
-  render() {
+  public render() {
     return <Fullscreen {...this.props} />;
   }
 }

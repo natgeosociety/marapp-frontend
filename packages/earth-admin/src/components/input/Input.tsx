@@ -1,5 +1,5 @@
-import * as React from 'react';
 import cn from 'classnames';
+import React from 'react';
 
 interface IProps {
   name: string;
@@ -7,7 +7,7 @@ interface IProps {
   label?: string;
   placeholder?: string;
   error?: string;
-  size?: 'small' | 'large',
+  size?: 'small' | 'large';
   className?: string;
   defaultValue?: string | number;
   [any: string]: any;
@@ -34,11 +34,15 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
   const inputClases = cn({
     'ng-width-1-1': true,
     [`ng-form-${size}`]: true,
-  })
+  });
 
   return (
     <div className={rootClases}>
-      {label && <label className="ng-form-label ng-display-block" htmlFor={id}>{label}</label>}
+      {label && (
+        <label className="ng-form-label ng-display-block" htmlFor={id}>
+          {label}
+        </label>
+      )}
       <input
         ref={ref}
         id={id}
@@ -49,9 +53,7 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
         className={inputClases}
         {...rest}
       />
-      {error && (
-        <div className="ng-form-error-block">{error}</div>
-      )}
+      {error && <div className="ng-form-error-block">{error}</div>}
     </div>
-  )
+  );
 });

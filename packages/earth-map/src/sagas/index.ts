@@ -18,15 +18,15 @@
 */
 
 import { all, fork } from 'redux-saga/effects';
-
-// Sagas
-import home from 'sagas/home';
 import earth from 'sagas/earth';
 import global from 'sagas/global';
-import places from 'sagas/places';
-import layers from 'sagas/layers';
+import home from 'sagas/home';
 import indexes from 'sagas/indexes';
+import layers from 'sagas/layers';
 import location from 'sagas/location';
+import places from 'sagas/places';
+
+// Sagas
 
 export default function* root() {
   yield all([

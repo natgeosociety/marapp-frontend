@@ -3,24 +3,29 @@
   "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
   "jsRules": {},
   "rules": {
-    "semicolon": [true, "never"],
-    "member-access": [false],
-    "no-var-requires": true,
-    "quotemark": [true, "single", "jsx-single"],
-    "interface-name": false,
-    "jsx-alignment": false,
-    "jsx-boolean-value": false,
-    "jsx-no-lambda": false,
-    "jsx-no-multiline-js": false,
-    "jsx-wrap-multiline": false,
-    "member-ordering": false,
-    "no-console": false,
-    "esModuleInterop": true,
-    "no-implicit-dependencies": [true, "dev"],
-    "no-submodule-imports": false,
-    "ordered-imports": false,
     "object-literal-sort-keys": false,
-    "variable-name": [true, "allow-leading-underscore"]
+    "no-submodule-imports": false,
+    "no-shadowed-variable": false,
+    "no-var-requires": false,
+    "no-implicit-dependencies": false,
+    "interface-name": false,
+    "no-unused-expression": false,
+    "variable-name": false,
+    "ban-types": false,
+    "no-empty": false,
+    "no-console": false,
+    "only-arrow-functions": false,
+    "jsx-no-lambda": false,
+    "jsx-key": false,
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "case-insensitive",
+        "named-imports-order": "case-insensitive",
+        "grouped-imports": true,
+        "module-source-path": "full"
+      }
+    ]
   },
   "rulesDirectory": [],
   "linterOptions": {

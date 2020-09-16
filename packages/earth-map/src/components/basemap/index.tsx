@@ -17,14 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { persistData } from 'modules/global/actions';
+import { setMapStyle } from 'modules/map/actions';
 import { connect } from 'react-redux';
 
+import BasemapComponent from './component';
+
 // Actions
-import { setMapStyle } from 'modules/map/actions';
-import { persistData } from 'modules/global/actions';
 
 // Components
-import BasemapComponent from './component';
 
 export default connect(
   (state: any) => ({

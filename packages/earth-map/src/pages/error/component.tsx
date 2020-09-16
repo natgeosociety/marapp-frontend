@@ -17,29 +17,29 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import { Button } from '@marapp/earth-components';
-
-import { replace } from 'redux-first-router'
+import { Button } from '@marapp/earth-shared';
 import ErrorTemplate from 'components/error-template';
+import React from 'react';
+import { replace } from 'redux-first-router';
 
 const ErrorPage = ({ resetStore }) => {
   return (
-    <ErrorTemplate
-      type="Error"
-      message="Sorry, something went wrong.">
+    <ErrorTemplate type="Error" message="Sorry, something went wrong.">
       <ul className="not-found--links--list">
         <li>
-          <Button onClick={() => {
-            resetStore();
-            replace('/');
-          }} className="-light -fullwidth">
+          <Button
+            onClick={() => {
+              resetStore();
+              replace('/');
+            }}
+            className="-light -fullwidth"
+          >
             Home
           </Button>
         </li>
       </ul>
     </ErrorTemplate>
-  )
+  );
 };
 
 export default ErrorPage;

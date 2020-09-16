@@ -17,37 +17,34 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { AuthzGuards } from '@marapp/earth-shared';
 import { Router } from '@reach/router';
-
-import { OrganizationContext } from 'utils/contexts';
-import { encodeQueryToURL, setPage } from 'utils';
-import { getAllOrganizations, getOrganization } from 'services/organizations';
-import { AuthzGuards } from 'auth/permissions';
-import { useRequest } from 'utils/hooks';
-
-import { ContentLayout, SidebarLayout } from 'layouts';
-import { OrganizationList, OrganizationDetails, OrganizationEdit } from 'components/organizations';
-import { LinkWithOrg } from 'components/link-with-org';
 import { useAuth0 } from 'auth/auth0';
+import { LinkWithOrg } from 'components/link-with-org';
+import { OrganizationDetails, OrganizationEdit, OrganizationList } from 'components/organizations';
+import { ContentLayout, SidebarLayout } from 'layouts';
+import React, { useEffect, useState } from 'react';
+import { getAllOrganizations, getOrganization } from 'services/organizations';
+import { encodeQueryToURL, setPage } from 'utils';
+import { OrganizationContext } from 'utils/contexts';
+import { useRequest } from 'utils/hooks';
 
 const PAGE_TYPE = setPage('Organizations');
 
-export default function OrganizationsPage( props ) {
+export default function OrganizationsPage(props) {
   return (
     <Router>
       <Page path="/">
-        <HomePage path="/"/>
-        <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newOrg={false}/>
-        <EditPage path="/new" newOrg={true}/>
+        <HomePage path="/" />
+        <DetailsPage path="/:page" />
+        <EditPage path="/:page/edit" newOrg={false} />
+        <EditPage path="/new" newOrg={true} />
       </Page>
     </Router>
   );
 }
 
-function Sidebar( props: any ) {
+function Sidebar(props: any) {
   const [organizations, setOrganizations] = useState([]);
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
@@ -82,7 +79,6 @@ function Sidebar( props: any ) {
       setOrganizations([...organizations, ...validOrganizations]);
       setIsNoMore(pageNumber === res.pagination.total);
 
-
       setIsLoading(false);
     }
 
@@ -102,35 +98,38 @@ function Sidebar( props: any ) {
       }}
     >
       <SidebarLayout page={PAGE_TYPE}>
-        <OrganizationList/>
+        <OrganizationList />
       </SidebarLayout>
     </OrganizationContext.Provider>
   );
 }
-function Page( props: any ) {
+function Page(props: any) {
   return (
     <>
-      <Sidebar/>
+      <Sidebar />
       {props.children}
-    </>);
+    </>
+  );
 }
 
-function HomePage( props: any ) {
+function HomePage(props: any) {
   const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
-  return (writePermissions && (
-    <ContentLayout className="marapp-qa-organizationhome">
-      <div className="ng-flex ng-align-right">
-        <LinkWithOrg className="ng-button ng-button-overlay" to="/organizations/new">
-         add new organization
-        </LinkWithOrg>
-      </div>
-    </ContentLayout>
-  ));
+  return (
+    writePermissions && (
+      <ContentLayout className="marapp-qa-organizationhome">
+        <div className="ng-flex ng-align-right">
+          <LinkWithOrg className="ng-button ng-button-overlay" to="/organizations/new">
+            add new organization
+          </LinkWithOrg>
+        </div>
+      </ContentLayout>
+    )
+  );
 }
 
-function DetailsPage( path: any ) {
+function DetailsPage(path: any) {
   const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, { include: 'owners' });
   const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessOrganizationsGuard,
@@ -138,13 +137,18 @@ function DetailsPage( path: any ) {
   });
 
   return (
-    <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading} className="marapp-qa-organizationdetails">
-        <OrganizationDetails data={data}/>
-      </ContentLayout>
+    <ContentLayout
+      errors={errors}
+      backTo="/organizations"
+      isLoading={isLoading}
+      className="marapp-qa-organizationdetails"
+    >
+      <OrganizationDetails data={data} />
+    </ContentLayout>
   );
 }
 
-function EditPage( path: any ) {
+function EditPage(path: any) {
   const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, { include: 'owners' });
   const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
     permissions: AuthzGuards.accessOrganizationsGuard,
@@ -152,8 +156,13 @@ function EditPage( path: any ) {
   });
 
   return (
-    <ContentLayout errors={errors} backTo="/organizations" isLoading={isLoading} className="marapp-qa-organizationedit">
-      <OrganizationEdit data={data} newOrg={path.newOrg}/>
+    <ContentLayout
+      errors={errors}
+      backTo="/organizations"
+      isLoading={isLoading}
+      className="marapp-qa-organizationedit"
+    >
+      <OrganizationEdit data={data} newOrg={path.newOrg} />
     </ContentLayout>
   );
 }

@@ -17,24 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { RefObject } from 'react';
-import { navigate } from 'gatsby';
-import { BASE_URL } from 'config';
-import moment from 'moment';
-import get from 'lodash/get';
-import isArray from 'lodash/isArray';
-import isString from 'lodash/isString';
-import queryStringEncode from 'query-string-encode';
 import { ADMIN_PAGES } from 'components/sidebar-select/model';
+import { BASE_URL } from 'config';
+import { navigate } from 'gatsby';
+import moment from 'moment';
+import queryStringEncode from 'query-string-encode';
+import { RefObject } from 'react';
 
 const JSONAPIDeserializer = require('ts-jsonapi').Deserializer;
+
 const DeserializerService = new JSONAPIDeserializer({
   keyForAttribute: (attribute: any) => {
     return attribute;
   },
 });
-
-
 
 /**
  * Wrapper over navigate that takes into account baseURL.
@@ -55,7 +51,7 @@ export const deserializeData = (data) => DeserializerService.deserialize(data);
 /**
  * Url encode
  */
-export const encodeQueryToURL = (baseUrl: string, query: {[key: string]: any} = {}): string =>
+export const encodeQueryToURL = (baseUrl: string, query: { [key: string]: any } = {}): string =>
   [baseUrl, decodeURIComponent(queryStringEncode(query))].join('?');
 
 /**
@@ -70,85 +66,8 @@ export const formatDate = (date: Date): string => {
   return moment(date).format('YYYY-MM-DD');
 };
 
-/**
- * Validate a JWTs `scope` to authorize access to a resource.
- * Rules:
- *  - required: ['read', 'write']: 'read' AND 'write' required;
- *  - required: [['read'], ['write']]: 'read' OR 'write' required;
- *
- * @param permissions: permission scopes
- * @param required: array of scopes to check
- */
-export const hasAccess = (permissions: string[], required: string[] | string[][]) => {
-  if (!Array.isArray(permissions)) {
-    return false;
-  }
-
-  let scopes: string[][];
-
-  if (isArray(required) && required.every(isString)) {
-    scopes = [<string[]>required];
-  } else {
-    scopes = <string[][]>required;
-  }
-
-  return scopes.some((required: string[]) => {
-    return required.every((permission: string) => {
-      return permissions.includes(permission);
-    });
-  });
-};
-
-/**
- * Extract and group scopes/permissions/roles by primary group (org).
- * @param scopes
- */
-export const mapAuthzScopes = (scopes: string[]): {[key: string]: string[]} => {
-  return scopes.reduce((acc, perm) => {
-    const [org, ...scope] = perm.split(':');
-    acc[org] = get(acc, org, []).concat([scope.join(':')]);
-    return acc;
-  }, {});
-};
-
-/**
- * Remove nested groups (children) from groups.
- * Nested groups are prefixed with the group label.
- * @param groups
- */
-export const removeNestedGroups = (groups: string[]): string[] => {
-  if (groups.length) {
-    return groups.filter((group: string) => {
-      return groups.filter((g: string) => g.includes(group)).length >= 2;
-    });
-  }
-  return [];
-};
-
-export const isValidOrg = (orgsFromToken: string[], org: string): boolean =>
-  orgsFromToken.includes(org);
-
 export const setPage = (pageType: string) => {
   return ADMIN_PAGES.filter((page) => page.key === pageType);
-};
-
-/**
- * Get available organizations based on permissions
- * @param permissions
- */
-export const getAvailableOrgs = (permissions: {[key: string]: string[]}): string[] => {
-  const specialPermissions = [
-    '*', // super-admin
-  ];
-
-  const writePermissionPrefix = 'write:';
-
-  return Object.keys(permissions).filter((permission) => {
-    const hasWritePermission = permissions[permission].find((p: string) => p.startsWith(writePermissionPrefix));
-
-    const isSuperAdmin = specialPermissions.includes(permission);
-    return !isSuperAdmin && hasWritePermission;
-  });
 };
 
 /**
@@ -160,18 +79,22 @@ export const km2toHa = (value: number): number => {
 };
 
 const PARENTHESES_TYPE = {
-  rounded: {first: '(', last: ')'},
-  brackets: {first: '[', last: ']'},
+  rounded: { first: '(', last: ')' },
+  brackets: { first: '[', last: ']' },
 };
+
 /**
  * Takes an array and formats it to a string surrounded by parentheses
  * @param array
  * @param parenthesesType - type or parentheses, maps to PARENTHESES_TYPE
  * @param formatNo - how many parentheses groups
  */
-
-export const formatArrayToParentheses = (array: string, parenthesesType: string, formatNo: number): string => {
-  const {first, last} = PARENTHESES_TYPE[parenthesesType];
+export const formatArrayToParentheses = (
+  array: string,
+  parenthesesType: string,
+  formatNo: number
+): string => {
+  const { first, last } = PARENTHESES_TYPE[parenthesesType];
 
   if (formatNo === 1) {
     return `${first}${array.toString()}${last}`;
@@ -181,22 +104,19 @@ export const formatArrayToParentheses = (array: string, parenthesesType: string,
   }
 };
 
-
-export const downloadFile = (data) => {
-  const stringifiedMetric = JSON.stringify(data);
-  const jsonBlob = new Blob([stringifiedMetric]);
-  const blobUrl = URL.createObjectURL(jsonBlob);
-  return blobUrl;
+export const downloadFile = (data): string => {
+  const encoded = JSON.stringify(data);
+  const jsonBlob = new Blob([encoded]);
+  return URL.createObjectURL(jsonBlob);
 };
-
 
 /**
  * Flattens object array returned from multiselect to work with api
  * @param data
  * @param fieldName
  */
-export const flattenArrayForSelect = (data: {}[], fieldName: string): string[] => {
-  return !!data ? data.map(val => val[fieldName]) : data;
+export const flattenArrayForSelect = (data: Array<{}>, fieldName: string): string[] => {
+  return !!data ? data.map((val) => val[fieldName]) : data;
 };
 
 /**
@@ -213,9 +133,12 @@ export const flattenObjectForSelect = (data: {}, fieldName: string): string => {
  * @param options
  * @param values
  */
-export const getSelectValues = (options: {value: string}[], values): {value: string}[] => {
-  let temp = [];
-  values.map(value => temp.push(options.find(val => val.value === value)));
+export const getSelectValues = (
+  options: Array<{ value: string }>,
+  values
+): Array<{ value: string }> => {
+  const temp = [];
+  values.map((value) => temp.push(options.find((val) => val.value === value)));
 
   return temp;
 };
@@ -226,7 +149,11 @@ export const getSelectValues = (options: {value: string}[], values): {value: str
  * @param ref
  * @param successFunction
  */
-export function copyToClipboard(e: Event, ref: RefObject<any>, successFunction: (value: string) => void):void {
+export function copyToClipboard(
+  e: Event,
+  ref: RefObject<any>,
+  successFunction: (value: string) => void
+): void {
   e.preventDefault();
   ref.current.select();
 
@@ -238,4 +165,3 @@ export function copyToClipboard(e: Event, ref: RefObject<any>, successFunction: 
     successFunction('');
   }, 4000);
 }
-

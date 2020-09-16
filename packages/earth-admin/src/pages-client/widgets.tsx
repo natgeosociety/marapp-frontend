@@ -17,21 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { AuthzGuards } from '@marapp/earth-shared';
 import { Router } from '@reach/router';
-
-import { WidgetContext } from 'utils/contexts';
-import { encodeQueryToURL, setPage } from 'utils';
-import { getAllWidgets, getWidget } from 'services/widgets';
-import { useRequest } from 'utils/hooks';
-
-import { WidgetList, WidgetDetails, WidgetEdit } from 'components/widgets';
-import { LinkWithOrg } from 'components/link-with-org';
 import { useAuth0 } from 'auth/auth0';
-import { AuthzGuards } from 'auth/permissions';
-import { SidebarLayout, ContentLayout } from 'layouts';
-
+import { LinkWithOrg } from 'components/link-with-org';
+import { WidgetDetails, WidgetEdit, WidgetList } from 'components/widgets';
+import { ContentLayout, SidebarLayout } from 'layouts';
+import React, { useEffect, useState } from 'react';
+import { getAllWidgets, getWidget } from 'services/widgets';
+import { encodeQueryToURL, setPage } from 'utils';
+import { WidgetContext } from 'utils/contexts';
+import { useRequest } from 'utils/hooks';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const WIDGET_DETAIL_QUERY = {
@@ -43,20 +39,20 @@ const INIT_CURSOR_LOCATION = '-1';
 
 const PAGE_TYPE = setPage('Widgets');
 
-export default function WidgetsPage( props ) {
+export default function WidgetsPage(props) {
   return (
     <Router>
       <Page path="/">
-        <HomePage path="/"/>
-        <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newWidget={false}/>
-        <EditPage path="/new" newWidget={true}/>
+        <HomePage path="/" />
+        <DetailsPage path="/:page" />
+        <EditPage path="/:page/edit" newWidget={false} />
+        <EditPage path="/new" newWidget={true} />
       </Page>
     </Router>
   );
 }
 
-function Sidebar( props: any ) {
+function Sidebar(props: any) {
   const [widgets, setWidgets] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -71,8 +67,7 @@ function Sidebar( props: any ) {
 
   const permissions = getPermissions(AuthzGuards.accessWidgetsGuard);
 
-
-  const handleSearchValueChange = ( newValue: string ) => {
+  const handleSearchValueChange = (newValue: string) => {
     setPageCursor('-1');
     setNextCursor(null);
     setSearchValue(newValue);
@@ -125,36 +120,39 @@ function Sidebar( props: any ) {
       }}
     >
       <SidebarLayout page={PAGE_TYPE}>
-        <WidgetList/>
+        <WidgetList />
       </SidebarLayout>
     </WidgetContext.Provider>
   );
 }
 
-function Page( props: any ) {
+function Page(props: any) {
   return (
     <>
-      <Sidebar/>
+      <Sidebar />
       {props.children}
-    </>);
+    </>
+  );
 }
 
-function HomePage( props: any ) {
+function HomePage(props: any) {
   const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessWidgetsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeWidgetsGuard);
-  return (writePermissions && (
-    <ContentLayout>
-      <div className="ng-flex ng-align-right">
-        <LinkWithOrg className="ng-button ng-button-overlay" to="/widgets/new">
-          add new widget
-        </LinkWithOrg>
-      </div>
-    </ContentLayout>
-  ));
+  return (
+    writePermissions && (
+      <ContentLayout>
+        <div className="ng-flex ng-align-right">
+          <LinkWithOrg className="ng-button ng-button-overlay" to="/widgets/new">
+            add new widget
+          </LinkWithOrg>
+        </div>
+      </ContentLayout>
+    )
+  );
 }
 
-function DetailsPage( path: any ) {
+function DetailsPage(path: any) {
   const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`widgets/${path.page}`, {
     ...WIDGET_DETAIL_QUERY,
@@ -166,15 +164,13 @@ function DetailsPage( path: any ) {
   });
 
   return (
-
     <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
-      <WidgetDetails data={data}/>
+      <WidgetDetails data={data} />
     </ContentLayout>
-
   );
 }
 
-function EditPage( path: any ) {
+function EditPage(path: any) {
   const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`widgets/${path.page}`, {
     ...WIDGET_DETAIL_QUERY,
@@ -186,11 +182,8 @@ function EditPage( path: any ) {
   });
 
   return (
-
     <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
-      <WidgetEdit data={data} newWidget={path.newWidget}/>
+      <WidgetEdit data={data} newWidget={path.newWidget} />
     </ContentLayout>
-
-
   );
 }

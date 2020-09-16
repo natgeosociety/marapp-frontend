@@ -17,9 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useState } from 'react';
 import classnames from 'classnames';
-
+import React, { useState } from 'react';
 import { cleanFilters, countFilters } from 'utils/filters';
 
 import './styles.scss';
@@ -29,15 +28,10 @@ interface IProps {
   open: boolean;
   onOpenToggle: (payload?) => void;
   onChange: (payload?) => void;
-};
+}
 
 const FilterBy = (props: IProps) => {
-  const {
-    data,
-    open,
-    onOpenToggle,
-    onChange,
-  } = props;
+  const { data, open, onOpenToggle, onChange } = props;
   const { filters, availableFilters } = data;
   const numberOfFilters = countFilters(filters);
 
@@ -45,9 +39,7 @@ const FilterBy = (props: IProps) => {
     const filterGroup = filters[key] || [];
     const exists = filterGroup.includes(value);
     const newFilters = {
-      [key]: exists
-        ? filterGroup.filter((x) => x !== value)
-        : [...filterGroup, value],
+      [key]: exists ? filterGroup.filter((x) => x !== value) : [...filterGroup, value],
     };
     onChange({
       filters: cleanFilters({
@@ -57,27 +49,37 @@ const FilterBy = (props: IProps) => {
     });
   };
 
-  const clearCheckedFilters = () => onChange({
-    filters: {}
-  });
-  const openToggle = () => onOpenToggle(!open)
+  const clearCheckedFilters = () =>
+    onChange({
+      filters: {},
+    });
+  const openToggle = () => onOpenToggle(!open);
 
   return (
     <div className="marapp-qa-filterby ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
       <div className="ng-flex search-title">
         <h2
           className="marapp-qa-filterbyopen ng-text-display-s ng-body-color ng-margin-bottom ng-margin-small-right ng-c-cursor-pointer"
-          onClick={openToggle}>
+          onClick={openToggle}
+        >
           Filters
         </h2>
-        {numberOfFilters > 0 &&
-          <a className="marapp-qa-filterbyclear ng-link ng-nohover ng-text-weight-regular ng-text-capital" onClick={clearCheckedFilters}>Clear {`(${numberOfFilters})`}</a>
-        }
+        {numberOfFilters > 0 && (
+          <a
+            className="marapp-qa-filterbyclear ng-link ng-nohover ng-text-weight-regular ng-text-capital"
+            onClick={clearCheckedFilters}
+          >
+            Clear {`(${numberOfFilters})`}
+          </a>
+        )}
         <i
-          className={classnames('marapp-qa-filterbyarrow ng-c-cursor-pointer ng-margin-small-left', {
-            'ng-icon-directionup': open,
-            'ng-icon-directiondown': !open,
-          })}
+          className={classnames(
+            'marapp-qa-filterbyarrow ng-c-cursor-pointer ng-margin-small-left',
+            {
+              'ng-icon-directionup': open,
+              'ng-icon-directiondown': !open,
+            }
+          )}
           onClick={openToggle}
         />
       </div>
@@ -92,7 +94,10 @@ const FilterBy = (props: IProps) => {
                 const disabled = filter.count === 0;
 
                 return (
-                  <div className="ng-width-1-2 ng-margin-bottom" key={`${filter.key}-${filter.value}`}>
+                  <div
+                    className="ng-width-1-2 ng-margin-bottom"
+                    key={`${filter.key}-${filter.value}`}
+                  >
                     <label
                       htmlFor={domId}
                       className={classnames({

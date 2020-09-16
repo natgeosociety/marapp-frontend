@@ -17,17 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
+import { Icon } from '@marapp/earth-shared';
 import classnames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+import React from 'react';
+import { animated, Keyframes } from 'react-spring/renderprops';
 
-import {Keyframes, animated} from 'react-spring/renderprops'
+import './styles.scss';
 
 // Components
-import { Icon } from '@marapp/earth-components';
 
 // styles
-import './styles.scss';
 
 const IndexCards: any = Keyframes.Trail({
   show: { transform: 'translate(0,0)', opacity: 1 },
@@ -45,7 +45,7 @@ interface IIndexes {
 }
 
 class IndexesComponent extends React.PureComponent<IIndexes> {
-  getCardsState() {
+  public getCardsState() {
     const { loading, selected, data } = this.props;
 
     if (loading) {
@@ -59,13 +59,13 @@ class IndexesComponent extends React.PureComponent<IIndexes> {
     return !isEmpty(data) ? 'show' : 'hide';
   }
 
-  onClickIndex = item => {
+  public onClickIndex = (item) => {
     const { setIndexesSelected } = this.props;
 
     setIndexesSelected(item.slug);
   };
 
-  render() {
+  public render() {
     const { selected, list } = this.props;
 
     const state = this.getCardsState();
@@ -74,14 +74,14 @@ class IndexesComponent extends React.PureComponent<IIndexes> {
       <div className="marapp-qa-indexes c-indexes">
         <div className="indexes--list">
           <IndexCards
-            native
+            native={true}
             items={list}
             keys={list.map((_, i) => i)}
             state={state}
             selected={selected}
             config={{ tension: 250, friction: 25 }}
           >
-            {(item, i) => styles => (
+            {(item, i) => (styles) => (
               <animated.div
                 role="button"
                 className={classnames('marapp-qa-indexcontainer indexes--list-item', {

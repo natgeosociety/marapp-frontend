@@ -17,12 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { setIndexesSelected } from 'modules/indexes/actions';
 import { connect } from 'react-redux';
 
-import { setIndexesSelected } from 'modules/indexes/actions';
+import IndexesComponent from './component';
 
 // Components
-import IndexesComponent from './component';
 
 export default connect(
   (state: any) => ({

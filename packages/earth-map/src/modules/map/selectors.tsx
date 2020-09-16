@@ -17,12 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
+import { createSelector } from 'reselect';
 
-const latlng = state => state.map.latlng;
+const latlng = (state) => state.map.latlng;
 
-export const getPopup = createSelector([latlng], _latlng => {
+export const getPopup = createSelector([latlng], (_latlng) => {
   if (isEmpty(_latlng) || !_latlng.lat || !_latlng.lng) {
     return {};
   }
