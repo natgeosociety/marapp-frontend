@@ -69,6 +69,7 @@ export const Auth0Provider = ({
   const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState('');
   const [userData, setUserData] = useState({});
+  const [verifiedEmail, setVerifiedEmail] = useState(false);
 
   const [groups, setGroups] = useState([]);
   const [roles, setRoles] = useState({});
@@ -111,6 +112,9 @@ export const Auth0Provider = ({
       const email = get(idToken, 'email', '');
       const userName = get(idToken, 'name', '');
       const userPicture = get(idToken, 'picture', '');
+      const emailVerified = get(idToken, 'email_verified', '');
+
+      setVerifiedEmail(emailVerified);
 
       const groups = get(idToken, `${NAMESPACE}/groups`, []);
 
@@ -172,6 +176,7 @@ export const Auth0Provider = ({
         roles,
         permissions,
         selectedGroup,
+        verifiedEmail,
         login,
         logout,
         getUser,

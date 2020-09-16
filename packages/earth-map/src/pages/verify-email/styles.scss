@@ -17,9 +17,24 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { redirect } from 'redux-first-router';
-import { connect } from 'react-redux';
+@import '~styles/config';
 
-import AuthenticatedComponent from './component';
+.c-not-found {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  color: $marapp-gray-0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  background-color: $marapp-gray-7;
 
-export default connect(null, { redirect })(AuthenticatedComponent);
+  .not-found--container {
+    padding: $space-1 * 6;
+    max-width: 800px;
+  }
+}

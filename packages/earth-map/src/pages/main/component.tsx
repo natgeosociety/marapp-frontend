@@ -22,44 +22,59 @@ import React from 'react';
 import AuthenticatedPage from './authenticated';
 import AuthorizedPage from './authorized';
 import AsyncPage from './async';
+import { useAuth0 } from 'auth/auth0';
 
-const Main = ({ router }) => {
-  const { type, routesMap } = router;
-  const { page, authenticated, authorized, fallbackRoute } = routesMap[type];
+const Main = ({router}) => {
+  const {type, routesMap} = router;
+  const {verifiedEmail, email} = useAuth0();
 
-  const Page =
-    authenticated && authorized ? AuthorizedPage : authenticated ? AuthenticatedPage : AsyncPage;
+  const {page, authenticated, authorized, fallbackRoute, verifyEmailRoute} = routesMap[type];
+
+  let Page;
+
+  if (authenticated && authorized) {
+    Page = AuthorizedPage;
+  } else if (authenticated || (email && !verifiedEmail)) {
+    Page = AuthenticatedPage;
+  } else {
+    Page = AsyncPage;
+  }
 
   return (
     <React.Fragment>
       {page === 'home' && (
         // @ts-ignore
-        <Page page="home" fallbackRoute={fallbackRoute} />
+        <Page page="home" fallbackRoute={fallbackRoute} verifyEmailRoute={verifyEmailRoute}/>
       )}
       {page === 'earth' && (
         // @ts-ignore
-        <Page page="earth" fallbackRoute={fallbackRoute} />
+        <Page page="earth" fallbackRoute={fallbackRoute} verifyEmailRoute={verifyEmailRoute}/>
       )}
       {page === 'experience' && (
         // @ts-ignore
-        <Page page="experience" fallbackRoute={fallbackRoute} />
+        <Page page="experience" fallbackRoute={fallbackRoute} verifyEmailRoute={verifyEmailRoute}/>
       )}
       {page === 'change-email' && (
         // @ts-ignore
-        <Page page="change-email" fallbackRoute={fallbackRoute} />
+        <Page page="change-email" fallbackRoute={fallbackRoute} verifyEmailRoute={verifyEmailRoute}/>
       )}
       {page === 'not-found' && (
         // @ts-ignore
-        <Page page="not-found" fallbackRoute={fallbackRoute} />
+        <Page page="not-found" fallbackRoute={fallbackRoute} verifyEmailRoute={verifyEmailRoute}/>
       )}
       {page === 'error' && (
         // @ts-ignore
-        <Page page="error" fallbackRoute={fallbackRoute} />
+        <Page page="error" fallbackRoute={fallbackRoute} verifyEmailRoute={verifyEmailRoute}/>
       )}
       {page === 'unauthorized' && (
         // @ts-ignore
-        <Page page="unauthorized" fallbackRoute={fallbackRoute} />
+        <Page page="unauthorized" fallbackRoute={fallbackRoute} verifyEmailRoute={verifyEmailRoute}/>
       )}
+      {page === 'verify-email' && (
+        // @ts-ignore
+        <Page page="verify-email"/>
+      )}
+
     </React.Fragment>
   );
 };

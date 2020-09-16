@@ -23,16 +23,19 @@ import { useEffect } from 'react';
 import { useAuth0 } from 'auth/auth0';
 import AsyncPage from 'pages/main/async';
 
-const AuthenticatedPage = ({ component: Component, ...rest }) => {
-  const { isAuthenticated, login } = useAuth0();
+const AuthenticatedPage = ({component: Component, verifyEmailRoute, redirect, ...rest}) => {
+  const {isAuthenticated, login, verifiedEmail} = useAuth0();
 
   useEffect(() => {
     const fn = async () => {
       if (!isAuthenticated) {
         // preserve path, query and hash params when redirecting;
-        const target = window.location.href.replace(window.location.origin, '')
+        const target = window.location.href.replace(window.location.origin, '');
         // save target URL to redirect to after login;
-        await login({ appState: { targetUrl: target } });
+        await login({appState: {targetUrl: target}});
+      }
+      if (!verifiedEmail && verifyEmailRoute) {
+        redirect({type: verifyEmailRoute});
       }
     };
     fn();

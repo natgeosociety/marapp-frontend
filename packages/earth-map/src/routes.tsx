@@ -24,6 +24,7 @@ import restoreScroll from 'redux-first-router-restore-scroll';
 import { BASE_URL, ENABLE_PUBLIC_ACCESS } from 'config';
 
 const UNAUTHORIZED_PAGE = 'UNAUTHORIZED';
+const VERIFY_EMAIL = 'VERIFY_EMAIL';
 const fallbackRoute = ENABLE_PUBLIC_ACCESS ? null : UNAUTHORIZED_PAGE;
 
 export const ROUTES = {
@@ -33,20 +34,25 @@ export const ROUTES = {
     authenticated: !ENABLE_PUBLIC_ACCESS,
     authorized: !ENABLE_PUBLIC_ACCESS,
     fallbackRoute,
+    verifyEmailRoute: VERIFY_EMAIL
   },
   EARTH: {
     path: '/earth',
     page: 'earth',
+    publicAccess: ENABLE_PUBLIC_ACCESS,
     authenticated: !ENABLE_PUBLIC_ACCESS,
     authorized: !ENABLE_PUBLIC_ACCESS,
     fallbackRoute,
+    verifyEmailRoute: VERIFY_EMAIL
   },
   LOCATION: {
     path: '/earth/:organization/:slug',
     page: 'earth',
+    publicAccess: ENABLE_PUBLIC_ACCESS,
     authenticated: !ENABLE_PUBLIC_ACCESS,
     authorized: !ENABLE_PUBLIC_ACCESS,
     fallbackRoute,
+    verifyEmailRoute: VERIFY_EMAIL
   },
   CHANGE_EMAIL: {
     path: '/profile/change-email',
@@ -54,6 +60,7 @@ export const ROUTES = {
     authenticated: true,
     authorized: false,
     fallbackRoute: null,
+    verifyEmailRoute: VERIFY_EMAIL
   },
   ERROR: {
     path: '/error',
@@ -61,6 +68,7 @@ export const ROUTES = {
     authenticated: false,
     authorized: false,
     fallbackRoute: null,
+    verifyEmailRoute: VERIFY_EMAIL
   },
   [NOT_FOUND]: {
     path: '/404',
@@ -68,6 +76,15 @@ export const ROUTES = {
     authenticated: false,
     authorized: false,
     fallbackRoute: null,
+    verifyEmailRoute: VERIFY_EMAIL
+  },
+  [VERIFY_EMAIL]: {
+    path: '/verify-email',
+    page: 'verify-email',
+    authenticated: true,
+    authorized: false,
+    fallbackRoute: null,
+    verifyEmailRoute: null
   },
   [UNAUTHORIZED_PAGE]: {
     path: '/unauthorized',
@@ -75,6 +92,7 @@ export const ROUTES = {
     authenticated: true,
     authorized: false,
     fallbackRoute: null,
+    verifyEmailRoute: VERIFY_EMAIL
   },
 };
 
@@ -88,8 +106,8 @@ export const CONFIG = {
         arrayFormat: 'comma',
         parseNumbers: true,
         parseBooleans: true,
-      })
-    }
+      });
+    },
   },
   initialDispatch: false,
   restoreScroll: restoreScroll({

@@ -17,9 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { redirect } from 'redux-first-router';
+
 import { connect } from 'react-redux';
+import VerifyEmail from './component';
 
-import AuthenticatedComponent from './component';
-
-export default connect(null, { redirect })(AuthenticatedComponent);
+export default connect(
+  null,
+  (dispatch) => ({
+    resetStore: () => dispatch({type: 'GLOBAL/resetStore'}),
+  }))(VerifyEmail);
