@@ -18,20 +18,21 @@
 */
 
 import { Router } from '@reach/router';
-import { useAuth0 } from 'auth/auth0';
-import { ProtectedRoute } from 'components/protected-route';
-import { GATSBY_APP_BASE_URL } from 'config';
 import { navigate } from 'gatsby';
-import DashboardsPage from 'pages-client/dashboards/routes';
-import Homepage from 'pages-client/homepage';
-import LayersPage from 'pages-client/layers/routes';
-import Organization from 'pages-client/organization';
-import OrganizationsPage from 'pages-client/organizations/routes';
-import PlacesPage from 'pages-client/places/routes';
-import UnauthorizedPage from 'pages-client/unauthorized';
-import UsersPage from 'pages-client/users';
-import WidgetsPage from 'pages-client/widgets';
 import React, { useEffect } from 'react';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { ProtectedRoute } from '@app/components/protected-route';
+import { GATSBY_APP_BASE_URL } from '@app/config';
+import DashboardsPage from '@app/pages-client/dashboards/routes';
+import Homepage from '@app/pages-client/homepage';
+import LayersPage from '@app/pages-client/layers/routes';
+import Organization from '@app/pages-client/organization';
+import OrganizationsPage from '@app/pages-client/organizations/routes';
+import PlacesPage from '@app/pages-client/places/routes';
+import UnauthorizedPage from '@app/pages-client/unauthorized';
+import UsersPage from '@app/pages-client/users';
+import WidgetsPage from '@app/pages-client/widgets';
 
 /**
  * All admin pages are client side pages only because the /:org makes them dinamic

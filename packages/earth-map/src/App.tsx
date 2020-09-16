@@ -17,9 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Spinner } from '@marapp/earth-shared';
 import React, { useContext } from 'react';
 import { Provider } from 'react-redux';
+
+import { Spinner } from '@marapp/earth-shared';
 
 import { Auth0Context, useAuth0 } from './auth/auth0';
 import Main from './pages/main';

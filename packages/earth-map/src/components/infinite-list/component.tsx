@@ -1,7 +1,8 @@
-import { Spinner } from '@marapp/earth-shared';
 import List from '@researchgate/react-intersection-list';
 import React from 'react';
 import { PAGE_SIZE } from 'theme';
+
+import { Spinner } from '@marapp/earth-shared';
 
 interface IProps {
   data: any[];

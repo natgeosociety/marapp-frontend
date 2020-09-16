@@ -1,26 +1,28 @@
-import { AuthzGuards } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { ActionModal } from 'components/action-modal';
-import { Card } from 'components/card';
-import { DetailList } from 'components/detail-list';
-import { DownloadFile } from 'components/download-file';
-import { ErrorMessages } from 'components/error-messages';
-import { FakeJsonUpload } from 'components/fake-json-upload';
-import { InlineEditCard } from 'components/inline-edit-card';
-import { Input } from 'components/input';
-import { LinkWithOrg } from 'components/link-with-org';
-import { MapComponent } from 'components/map';
-import { Metrics } from 'components/places';
-import { Toggle } from 'components/toggle';
-import { ContentLayout } from 'layouts';
 import { groupBy, map } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
-import { encodeQueryToURL, formatArrayToParentheses, formatDate, km2toHa } from 'utils';
-import { MapComponentContext } from 'utils/contexts';
-import { useRequest } from 'utils/hooks';
-import { noSpecialCharsOrSpaceRule, noSpecialCharsRule, setupErrors } from 'utils/validations';
+
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { ActionModal } from '@app/components/action-modal';
+import { Card } from '@app/components/card';
+import { DetailList } from '@app/components/detail-list';
+import { DownloadFile } from '@app/components/download-file';
+import { ErrorMessages } from '@app/components/error-messages';
+import { FakeJsonUpload } from '@app/components/fake-json-upload';
+import { InlineEditCard } from '@app/components/inline-edit-card';
+import { Input } from '@app/components/input';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { MapComponent } from '@app/components/map';
+import { Metrics } from '@app/components/places';
+import { Toggle } from '@app/components/toggle';
+import { ContentLayout } from '@app/layouts';
+import { calculateAllForPlace, getPlace, handlePlaceForm } from '@app/services';
+import { encodeQueryToURL, formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
+import { MapComponentContext } from '@app/utils/contexts';
+import { useRequest } from '@app/utils/hooks';
+import { noSpecialCharsOrSpaceRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 import { PLACE_DETAIL_QUERY, PlaceIntersection, PlaceTypeEnum } from './model';
 

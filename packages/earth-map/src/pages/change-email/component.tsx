@@ -17,11 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Spinner } from '@marapp/earth-shared';
 import { useAuth0 } from 'auth/auth0';
 import React, { useEffect } from 'react';
 import { replace } from 'redux-first-router';
 import { changeEmailConfirmation } from 'services/users';
+
+import { Spinner } from '@marapp/earth-shared';
 
 export default function ChangeEmailComponent() {
   const { login } = useAuth0();

@@ -17,19 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Spinner } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { Card } from 'components/card';
-import { ErrorMessages } from 'components/error-messages';
-import { FakeJsonUpload } from 'components/fake-json-upload';
-import { Input } from 'components/input';
-import { LinkWithOrg } from 'components/link-with-org';
 import { navigate } from 'gatsby';
-import { ContentLayout } from 'layouts';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { addPlace, getUniqueSlug } from 'services/places';
-import { noSpecialCharsRule, setupErrors } from 'utils/validations';
+
+import { Spinner } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { Card } from '@app/components/card';
+import { ErrorMessages } from '@app/components/error-messages';
+import { FakeJsonUpload } from '@app/components/fake-json-upload';
+import { Input } from '@app/components/input';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { ContentLayout } from '@app/layouts';
+import { addPlace, getUniqueSlug } from '@app/services/places';
+import { noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 import { PlaceTypeEnum } from './model';
 

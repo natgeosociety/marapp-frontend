@@ -17,12 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { ADMIN_PAGES } from 'components/sidebar-select/model';
-import { BASE_URL } from 'config';
 import { navigate } from 'gatsby';
 import moment from 'moment';
 import queryStringEncode from 'query-string-encode';
 import { RefObject } from 'react';
+
+import { ADMIN_PAGES } from '@app/components/sidebar-select/model';
+import { BASE_URL } from '@app/config';
 
 const JSONAPIDeserializer = require('ts-jsonapi').Deserializer;
 

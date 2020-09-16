@@ -17,17 +17,23 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from '@marapp/earth-shared';
 import { Router } from '@reach/router';
-import { useAuth0 } from 'auth/auth0';
-import { LinkWithOrg } from 'components/link-with-org';
-import { OrganizationDetails, OrganizationEdit, OrganizationList } from 'components/organizations';
-import { ContentLayout, SidebarLayout } from 'layouts';
 import React, { useEffect, useState } from 'react';
-import { getAllOrganizations, getOrganization } from 'services/organizations';
-import { encodeQueryToURL, setPage } from 'utils';
-import { OrganizationContext } from 'utils/contexts';
-import { useRequest } from 'utils/hooks';
+
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import {
+  OrganizationDetails,
+  OrganizationEdit,
+  OrganizationList,
+} from '@app/components/organizations';
+import { ContentLayout, SidebarLayout } from '@app/layouts';
+import { getAllOrganizations, getOrganization } from '@app/services/organizations';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { OrganizationContext } from '@app/utils/contexts';
+import { useRequest } from '@app/utils/hooks';
 
 const PAGE_TYPE = setPage('Organizations');
 

@@ -19,8 +19,9 @@
 
 import React, { useContext, useState } from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops';
-import { Auth0Context } from 'utils/contexts';
-import { useDomWatcher } from 'utils/hooks';
+
+import { Auth0Context } from '@app/utils/contexts';
+import { useDomWatcher } from '@app/utils/hooks';
 
 import './styles.scss';
 

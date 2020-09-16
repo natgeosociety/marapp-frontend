@@ -17,21 +17,23 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AsyncSelect, Spinner } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { Card } from 'components/card';
-import { ErrorMessages } from 'components/error-messages';
-import { HtmlEditor } from 'components/html-editor';
-import { Input } from 'components/input';
-import { LinkWithOrg } from 'components/link-with-org';
 import { navigate } from 'gatsby';
-import { ContentLayout } from 'layouts';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { addDashboard, getUniqueSlug } from 'services/dashboards';
-import { getAllWidgets } from 'services/widgets';
-import { flattenArrayForSelect } from 'utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from 'utils/validations';
+
+import { AsyncSelect, Spinner } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { Card } from '@app/components/card';
+import { ErrorMessages } from '@app/components/error-messages';
+import { HtmlEditor } from '@app/components/html-editor';
+import { Input } from '@app/components/input';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { ContentLayout } from '@app/layouts';
+import { addDashboard, getUniqueSlug } from '@app/services/dashboards';
+import { getAllWidgets } from '@app/services/widgets';
+import { flattenArrayForSelect } from '@app/utils';
+import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 

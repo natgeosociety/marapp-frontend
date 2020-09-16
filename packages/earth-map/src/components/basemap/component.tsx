@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Layer } from '@marapp/earth-shared';
 import React from 'react';
+import { APP_BASEMAPS } from 'theme';
 
-import { APP_BASEMAPS } from '../../theme';
+import { Layer } from '@marapp/earth-shared';
 
 import './styles.scss';
 

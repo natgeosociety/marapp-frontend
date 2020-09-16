@@ -21,7 +21,6 @@ import React from 'react';
 import { animated, Transition } from 'react-spring/renderprops';
 
 import IndexContent from '../index-content';
-
 import './styles.scss';
 
 interface IndexSidebar {

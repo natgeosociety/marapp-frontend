@@ -17,14 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { ErrorMessages } from 'components/error-messages';
-import { LinkWithOrg } from 'components/link-with-org';
-import { SearchInput } from 'components/search-input';
 import { navigate } from 'gatsby';
 import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { handleUserForm } from 'services/users';
-import { Auth0Context } from 'utils/contexts';
+
+import { ErrorMessages } from '@app/components/error-messages';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { SearchInput } from '@app/components/search-input';
+import { handleUserForm } from '@app/services/users';
+import { Auth0Context } from '@app/utils/contexts';
 
 import { UserEditProps } from '../model';
 

@@ -17,14 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
 import React, { useContext, useState } from 'react';
-import { calculateForPlace } from 'services';
-import { Auth0Context } from 'utils/contexts';
+
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { calculateForPlace } from '@app/services';
+import { Auth0Context } from '@app/utils/contexts';
 
 import { PlaceMetricsProps } from '../../../pages-client/places/model';
-
 import './styles.scss';
 
 export default function Metrics(props: PlaceMetricsProps) {

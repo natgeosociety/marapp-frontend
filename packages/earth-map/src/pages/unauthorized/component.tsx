@@ -17,10 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Button } from '@marapp/earth-shared';
 import { useAuth0 } from 'auth/auth0';
 import ErrorTemplate from 'components/error-template';
 import React from 'react';
+
+import { Button } from '@marapp/earth-shared';
 
 const Unauthorized = () => {
   const { logout } = useAuth0();

@@ -17,14 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Auth0 } from 'auth/model';
-import { DashboardContextProps } from 'components/dashboards/model';
-import { LayerContextProps } from 'components/layers/model';
-import { OrganizationContextProps } from 'components/organizations/model';
-import { UserContextProps } from 'components/users/model';
-import { WidgetContextProps } from 'components/widgets/model';
-import { PlaceContextProps } from 'pages-client/places/model';
 import React from 'react';
+
+import { Auth0 } from '@app/auth/model';
+import { DashboardContextProps } from '@app/components/dashboards/model';
+import { LayerContextProps } from '@app/components/layers/model';
+import { OrganizationContextProps } from '@app/components/organizations/model';
+import { UserContextProps } from '@app/components/users/model';
+import { WidgetContextProps } from '@app/components/widgets/model';
+import { PlaceContextProps } from '@app/pages-client/places/model';
 
 export const PlaceContext = React.createContext<PlaceContextProps | null>(null);
 export const LayerContext = React.createContext<LayerContextProps | null>(null);

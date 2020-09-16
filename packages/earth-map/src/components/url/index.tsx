@@ -22,10 +22,6 @@ import { connect } from 'react-redux';
 import UrlComponent from './component';
 import { getParamsFromUrl, getUrl, getUrlFromParams } from './selectors';
 
-// Selectors
-
-// Components
-
 export default connect(
   (state: any, props: any) => ({
     router: state.router,

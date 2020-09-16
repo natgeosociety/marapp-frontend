@@ -18,11 +18,12 @@
 */
 
 import classnames from 'classnames';
-import { DropdownComponent } from 'components/dropdown';
-import { LinkWithOrg } from 'components/link-with-org';
-import { MAP_PATH } from 'config';
 import React, { useContext, useState } from 'react';
-import { Auth0Context } from 'utils/contexts';
+
+import { DropdownComponent } from '@app/components/dropdown';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { MAP_PATH } from '@app/config';
+import { Auth0Context } from '@app/utils/contexts';
 
 import './styles.scss';
 

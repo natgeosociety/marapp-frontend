@@ -17,23 +17,25 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Spinner } from '@marapp/earth-shared';
-import { Card } from 'components/card';
-import { ErrorMessages } from 'components/error-messages';
-import { Input } from 'components/input';
-import { LinkWithOrg } from 'components/link-with-org';
 import { navigate } from 'gatsby';
-import { ContentLayout } from 'layouts';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { addOrganization } from 'services/organizations';
-import { Auth0Context } from 'utils/contexts';
+
+import { Spinner } from '@marapp/earth-shared';
+
+import { Card } from '@app/components/card';
+import { ErrorMessages } from '@app/components/error-messages';
+import { Input } from '@app/components/input';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { ContentLayout } from '@app/layouts';
+import { addOrganization } from '@app/services/organizations';
+import { Auth0Context } from '@app/utils/contexts';
 import {
   noSpecialCharsRule,
   setupErrors,
   upperNumericDashesRule,
   validEmailRule,
-} from 'utils/validations';
+} from '@app/utils/validations';
 
 export function NewOrganization(props) {
   const [serverErrors, setServerErrors] = useState(null);

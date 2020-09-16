@@ -23,7 +23,29 @@
         "import-sources-order": "case-insensitive",
         "named-imports-order": "case-insensitive",
         "grouped-imports": true,
-        "module-source-path": "full"
+        "module-source-path": "full",
+        "groups": [
+          {
+            "name": "internal",
+            "match": "^@marapp",
+            "order": 2
+          },
+          {
+            "name": "alias",
+            "match": "^@app",
+            "order": 3
+          },
+          {
+            "name": "relative",
+            "match": "^[.].*",
+            "order": 4
+          },
+          {
+            "name": "node_modules",
+            "match": ".*",
+            "order": 1
+          }
+        ]
       }
     ]
   },

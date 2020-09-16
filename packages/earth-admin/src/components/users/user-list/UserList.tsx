@@ -17,9 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Auth0ListItem, DataListing } from 'components/data-listing';
 import React from 'react';
-import { UserContext } from 'utils/contexts';
+
+import { Auth0ListItem, DataListing } from '@app/components/data-listing';
+import { UserContext } from '@app/utils/contexts';
 
 export default function UserList() {
   return (

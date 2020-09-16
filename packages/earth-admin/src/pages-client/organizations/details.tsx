@@ -17,19 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { ActionModal } from 'components/action-modal';
-import { InlineEditCard } from 'components/inline-edit-card';
-import { Input } from 'components/input';
-import { LinkWithOrg } from 'components/link-with-org';
-import { ContentLayout } from 'layouts';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { getOrganization, updateOrganization } from 'services/organizations';
-import { encodeQueryToURL } from 'utils';
-import { useRequest } from 'utils/hooks';
-import { noSpecialCharsRule, setupErrors, validEmailRule } from 'utils/validations';
+
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { ActionModal } from '@app/components/action-modal';
+import { InlineEditCard } from '@app/components/inline-edit-card';
+import { Input } from '@app/components/input';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { ContentLayout } from '@app/layouts';
+import { getOrganization, updateOrganization } from '@app/services/organizations';
+import { encodeQueryToURL } from '@app/utils';
+import { useRequest } from '@app/utils/hooks';
+import { noSpecialCharsRule, setupErrors, validEmailRule } from '@app/utils/validations';
 
 import { OrganizationDetailsProps } from './model';
 

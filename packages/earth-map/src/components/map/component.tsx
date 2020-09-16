@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Map } from '@marapp/earth-shared';
 import axios from 'axios';
 import classnames from 'classnames';
 import { UserMenuComponent } from 'components/user-menu';
@@ -28,8 +27,9 @@ import React from 'react';
 import isEqual from 'react-fast-compare';
 import { APP_ABOUT } from 'theme';
 
-import BasemapComponent from '../basemap';
+import { Map } from '@marapp/earth-shared';
 
+import BasemapComponent from '../basemap';
 import MapControls from './controls';
 import RecenterControl from './controls/recenter';
 import ZoomControl from './controls/zoom';

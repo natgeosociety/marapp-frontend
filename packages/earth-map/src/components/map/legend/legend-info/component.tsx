@@ -17,8 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Html } from '@marapp/earth-shared';
 import React from 'react';
+
+import { Html } from '@marapp/earth-shared';
 
 interface ILegendInfo {
   title: string;

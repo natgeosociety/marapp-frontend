@@ -17,14 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { DataListing, DefaultListItem } from 'components/data-listing';
-import { SidebarLayout } from 'layouts';
 import React, { useEffect, useState } from 'react';
-import { getAllPlaces } from 'services/places';
-import { encodeQueryToURL, setPage } from 'utils';
-import { PlaceContext } from 'utils/contexts';
+
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { DataListing, DefaultListItem } from '@app/components/data-listing';
+import { SidebarLayout } from '@app/layouts';
+import { getAllPlaces } from '@app/services/places';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { PlaceContext } from '@app/utils/contexts';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const PAGE_TYPE = setPage('Places');

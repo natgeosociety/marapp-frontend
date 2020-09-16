@@ -17,14 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { DataListing, DefaultListItem } from 'components/data-listing';
-import { SidebarLayout } from 'layouts';
 import React, { useEffect, useState } from 'react';
-import { getAllLayers } from 'services';
-import { encodeQueryToURL, setPage } from 'utils';
-import { LayerContext } from 'utils/contexts';
+
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { DataListing, DefaultListItem } from '@app/components/data-listing';
+import { SidebarLayout } from '@app/layouts';
+import { getAllLayers } from '@app/services';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { LayerContext } from '@app/utils/contexts';
 
 const LAYER_DETAIL_QUERY = { include: 'references', select: 'references.name,references.id' };
 const INIT_CURSOR_LOCATION = '-1';

@@ -18,12 +18,13 @@
 */
 
 import createAuth0Client, { Auth0Client } from '@auth0/auth0-spa-js';
-import { isAuthz, mapAuthzScopes, mapRoleGroups, SessionStorage } from '@marapp/earth-shared';
 import auth0 from 'config/auth0';
 import get from 'lodash/get';
 import qs from 'query-string';
 import React, { useContext, useEffect, useState } from 'react';
 import { routeToPage } from 'utils';
+
+import { isAuthz, mapAuthzScopes, mapRoleGroups, SessionStorage } from '@marapp/earth-shared';
 
 import { Auth0 } from './model';
 

@@ -17,12 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { ActionModal } from 'components/action-modal';
-import { ErrorMessages } from 'components/error-messages';
-import { LinkWithOrg } from 'components/link-with-org';
 import React, { useState } from 'react';
+
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { ActionModal } from '@app/components/action-modal';
+import { ErrorMessages } from '@app/components/error-messages';
+import { LinkWithOrg } from '@app/components/link-with-org';
 
 import { UserProps } from '../model';
 

@@ -17,9 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useAuth0 } from 'auth/auth0';
 import { Link } from 'gatsby';
 import React from 'react';
+
+import { useAuth0 } from '@app/auth/auth0';
 
 export const NotFound = (props) => {
   const { groups } = useAuth0();

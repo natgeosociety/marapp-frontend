@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-// Components
 import { setRouter } from 'modules/router/actions';
 import { connect } from 'react-redux';
 

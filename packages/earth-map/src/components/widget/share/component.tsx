@@ -17,8 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Share } from '@marapp/earth-shared';
 import React from 'react';
+
+import { Share } from '@marapp/earth-shared';
 
 import './styles.scss';
 

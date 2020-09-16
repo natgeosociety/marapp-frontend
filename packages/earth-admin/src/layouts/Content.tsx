@@ -17,12 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Spinner } from '@marapp/earth-shared';
-import { ErrorMessages } from 'components/error-messages';
-import { LinkWithOrg } from 'components/link-with-org';
-import { UserMenuComponent } from 'components/user-menu';
 import React from 'react';
 import Helmet from 'react-helmet';
+
+import { Spinner } from '@marapp/earth-shared';
+
+import { ErrorMessages } from '@app/components/error-messages';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { UserMenuComponent } from '@app/components/user-menu';
 
 import '../styles/app.scss';
 import { APP_NAME } from '../theme';

@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
-import { downloadFile } from 'utils';
+
+import { downloadFile } from '@app/utils';
 
 interface DownloadFileProps {
   data: any;

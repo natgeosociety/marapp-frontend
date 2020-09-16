@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import classnames from 'classnames';
 import Widget from 'components/widget';
 import TEMPLATES from 'components/widget/templates';
 import CONFIGS from 'components/widget/templates/configs';
@@ -27,8 +26,6 @@ import React from 'react';
 import { InView } from 'react-intersection-observer';
 
 import './styles.scss';
-
-// Components
 
 interface IWidgets {
   groups?: string[];

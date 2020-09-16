@@ -17,25 +17,26 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AsyncSelect, Spinner } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { Card } from 'components/card';
-import { ErrorMessages } from 'components/error-messages';
-import { HtmlEditor } from 'components/html-editor';
-import { Input } from 'components/input';
-import { JsonEditor } from 'components/json-editor';
-import { LinkWithOrg } from 'components/link-with-org';
 import { navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
-import { ContentLayout } from 'layouts';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
-import { addLayer, getAllLayers, getUniqueSlug } from 'services/layers';
-import { flattenArrayForSelect, flattenObjectForSelect } from 'utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from 'utils/validations';
 
-import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+import { AsyncSelect, Spinner } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { Card } from '@app/components/card';
+import { ErrorMessages } from '@app/components/error-messages';
+import { HtmlEditor } from '@app/components/html-editor';
+import { Input } from '@app/components/input';
+import { JsonEditor } from '@app/components/json-editor';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { ContentLayout } from '@app/layouts';
+import { addLayer, getAllLayers, getUniqueSlug } from '@app/services/layers';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
+import { flattenArrayForSelect, flattenObjectForSelect } from '@app/utils';
+import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 

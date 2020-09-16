@@ -17,12 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Card } from 'components/card';
-import { ContentLayout, SidebarLayout } from 'layouts';
 import React from 'react';
-import { getOrganizationStats } from 'services/organizations';
-import { setPage } from 'utils';
-import { useRequest } from 'utils/hooks';
+
+import { Card } from '@app/components/card';
+import { ContentLayout, SidebarLayout } from '@app/layouts';
+import { getOrganizationStats } from '@app/services/organizations';
+import { setPage } from '@app/utils';
+import { useRequest } from '@app/utils/hooks';
 
 import './styles.scss';
 

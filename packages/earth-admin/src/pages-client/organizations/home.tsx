@@ -17,12 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { Card } from 'components/card';
-import { LinkWithOrg } from 'components/link-with-org';
-import { ContentLayout } from 'layouts';
 import React from 'react';
+
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { Card } from '@app/components/card';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { ContentLayout } from '@app/layouts';
 
 export function OrganizationHome() {
   const { getPermissions } = useAuth0();

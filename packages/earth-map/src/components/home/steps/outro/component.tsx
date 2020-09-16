@@ -17,10 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Button } from '@marapp/earth-shared';
 import { APP_NAME } from 'config';
 import React from 'react';
 import { animated, Transition } from 'react-spring/renderprops';
+
+import { Button } from '@marapp/earth-shared';
 
 import './styles.scss';
 

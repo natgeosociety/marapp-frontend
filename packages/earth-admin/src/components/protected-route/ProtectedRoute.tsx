@@ -17,10 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Spinner } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
 import { navigate } from 'gatsby';
 import React, { FunctionComponent, useEffect } from 'react';
+
+import { Spinner } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
 
 interface IProps {
   path: string;

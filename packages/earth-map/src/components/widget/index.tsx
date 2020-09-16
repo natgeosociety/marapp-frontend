@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-// NEEDS TO BE STUPID DONT CONNECT REDUX
+// NEEDS TO BE DUMB COMPONENT DONT CONNECT REDUX
 import WidgetComponent from './component';
 
 export default WidgetComponent;

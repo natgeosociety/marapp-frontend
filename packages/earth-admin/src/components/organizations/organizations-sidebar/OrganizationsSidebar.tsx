@@ -1,10 +1,12 @@
-import { AuthzGuards } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { SidebarLayout } from 'layouts';
 import React, { useEffect, useState } from 'react';
-import { getAllOrganizations } from 'services/organizations';
-import { encodeQueryToURL, setPage } from 'utils';
-import { OrganizationContext } from 'utils/contexts';
+
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { SidebarLayout } from '@app/layouts';
+import { getAllOrganizations } from '@app/services/organizations';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { OrganizationContext } from '@app/utils/contexts';
 
 import { OrganizationList } from '../organization-list';
 

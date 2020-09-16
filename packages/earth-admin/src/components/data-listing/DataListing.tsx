@@ -17,10 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Spinner } from '@marapp/earth-shared';
 import List from '@researchgate/react-intersection-list';
-import { useAuth0 } from 'auth/auth0';
 import React from 'react';
+
+import { Spinner } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
 
 import { SearchBox } from './search-box';
 import './styles.scss';

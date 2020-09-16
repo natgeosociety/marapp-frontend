@@ -19,7 +19,8 @@
 
 import { Link } from 'gatsby';
 import React from 'react';
-import { Auth0Context } from 'utils/contexts';
+
+import { Auth0Context } from '@app/utils/contexts';
 
 interface IProps {
   to: string;

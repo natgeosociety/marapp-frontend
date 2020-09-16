@@ -26,7 +26,6 @@ import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
 import { debounce } from 'lodash';
 import { EPanels } from 'modules/sidebar/model';
 import React from 'react';
-import { APP_BASEMAPS } from 'theme';
 
 import './styles.scss';
 

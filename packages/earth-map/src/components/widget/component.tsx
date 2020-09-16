@@ -17,20 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Html, Spinner } from '@marapp/earth-shared';
 import classnames from 'classnames';
 import ModalComponent from 'components/modal';
 import { IWidgetConfig } from 'modules/widget/model';
 import React from 'react';
 import isEqual from 'react-fast-compare';
 
+import { Html, Spinner } from '@marapp/earth-shared';
+
 import Footer from './footer';
 import './styles.scss';
 import Toolbar from './toolbar';
-
-// Components
-
-// styles
 
 interface IWidgetTemplate {
   id: number | string;

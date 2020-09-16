@@ -17,17 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Icon } from '@marapp/earth-shared';
 import classnames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops';
 
+import { Icon } from '@marapp/earth-shared';
+
 import './styles.scss';
-
-// Components
-
-// styles
 
 const IndexCards: any = Keyframes.Trail({
   show: { transform: 'translate(0,0)', opacity: 1 },

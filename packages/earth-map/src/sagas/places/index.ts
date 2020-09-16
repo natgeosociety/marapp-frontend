@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { serializeFilters } from '@marapp/earth-shared';
 import { persistData } from 'modules/global/actions';
 import {
   nextPlacesPage,
@@ -30,6 +29,8 @@ import {
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { getGroup, getPlaces } from 'sagas/saga-utils';
 import { fetchPlaces } from 'services/places';
+
+import { serializeFilters } from '@marapp/earth-shared';
 
 import { LOCATION_QUERY } from '../model';
 

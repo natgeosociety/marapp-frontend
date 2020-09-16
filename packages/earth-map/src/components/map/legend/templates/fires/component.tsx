@@ -17,9 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Datepicker, Select } from '@marapp/earth-shared';
 import moment from 'moment';
 import React from 'react';
+
+import { Datepicker, Select } from '@marapp/earth-shared';
 
 import './styles.scss';
 

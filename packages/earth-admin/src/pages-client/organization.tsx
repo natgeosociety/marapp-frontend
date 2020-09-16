@@ -17,12 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { isValidGroup, Spinner } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { BASE_URL } from 'config';
 import { Link } from 'gatsby';
 import { JSHINT } from 'jshint';
 import React, { useEffect } from 'react';
+
+import { isValidGroup, Spinner } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { BASE_URL } from '@app/config';
 
 import './styles.scss';
 

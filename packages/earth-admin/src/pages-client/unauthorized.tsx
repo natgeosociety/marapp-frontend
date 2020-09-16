@@ -18,7 +18,8 @@
 */
 
 import React from 'react';
-import { Auth0Context } from 'utils/contexts';
+
+import { Auth0Context } from '@app/utils/contexts';
 
 export default function UnauthorizedPage(props) {
   return (

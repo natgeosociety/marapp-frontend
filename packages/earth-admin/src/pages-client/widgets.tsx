@@ -17,17 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from '@marapp/earth-shared';
 import { Router } from '@reach/router';
-import { useAuth0 } from 'auth/auth0';
-import { LinkWithOrg } from 'components/link-with-org';
-import { WidgetDetails, WidgetEdit, WidgetList } from 'components/widgets';
-import { ContentLayout, SidebarLayout } from 'layouts';
 import React, { useEffect, useState } from 'react';
-import { getAllWidgets, getWidget } from 'services/widgets';
-import { encodeQueryToURL, setPage } from 'utils';
-import { WidgetContext } from 'utils/contexts';
-import { useRequest } from 'utils/hooks';
+
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { WidgetDetails, WidgetEdit, WidgetList } from '@app/components/widgets';
+import { ContentLayout, SidebarLayout } from '@app/layouts';
+import { getAllWidgets, getWidget } from '@app/services/widgets';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { WidgetContext } from '@app/utils/contexts';
+import { useRequest } from '@app/utils/hooks';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const WIDGET_DETAIL_QUERY = {

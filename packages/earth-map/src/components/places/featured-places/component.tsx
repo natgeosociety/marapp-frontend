@@ -17,9 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Spinner } from '@marapp/earth-shared';
 import ListItem from 'components/list-item';
 import React from 'react';
+
+import { Spinner } from '@marapp/earth-shared';
 
 interface IFeaturedPlaces {
   featured?: {

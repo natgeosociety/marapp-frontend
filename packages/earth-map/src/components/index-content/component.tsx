@@ -17,16 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Spinner } from '@marapp/earth-shared';
 import Widgets from 'components/widgets';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
+import { Spinner } from '@marapp/earth-shared';
+
 import './styles.scss';
-
-// Components
-
-// styles
 
 interface ILIst {
   slug: string;

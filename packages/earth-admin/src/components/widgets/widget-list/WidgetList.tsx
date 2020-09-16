@@ -17,9 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { DataListing, DefaultListItem } from 'components/data-listing';
 import React from 'react';
-import { WidgetContext } from 'utils/contexts';
+
+import { DataListing, DefaultListItem } from '@app/components/data-listing';
+import { WidgetContext } from '@app/utils/contexts';
 
 export default function WidgetList() {
   return (

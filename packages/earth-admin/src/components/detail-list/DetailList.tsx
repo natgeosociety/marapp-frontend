@@ -18,8 +18,9 @@
 */
 
 import classNames from 'classnames';
-import { LinkWithOrg } from 'components/link-with-org';
 import React from 'react';
+
+import { LinkWithOrg } from '@app/components/link-with-org';
 
 interface DetailListProps {
   data: Array<{ id: string; name: string; type?: string }>;

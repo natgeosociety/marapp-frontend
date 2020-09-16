@@ -18,8 +18,9 @@
 */
 
 import { Router } from '@reach/router';
-import { OrganizationsSidebar } from 'components/organizations';
 import React from 'react';
+
+import { OrganizationsSidebar } from '@app/components/organizations';
 
 import { OrganizationDetails } from './details';
 import { OrganizationHome } from './home';

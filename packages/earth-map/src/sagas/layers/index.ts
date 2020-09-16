@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { serializeFilters } from '@marapp/earth-shared';
 import sortBy from 'lodash/sortBy';
 import { persistData } from 'modules/global/actions';
 import { setIndexesList } from 'modules/indexes/actions';
@@ -42,6 +41,8 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { flattenLayerConfig, getGroup, getLayers, onlyMatch } from 'sagas/saga-utils';
 import { fetchDataIndexes } from 'services/data-indexes';
 import { fetchLayers } from 'services/layers';
+
+import { serializeFilters } from '@marapp/earth-shared';
 
 import { DATA_INDEX_QUERY, LAYER_QUERY } from '../model';
 

@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { checkRole } from '@marapp/earth-shared';
 import { Auth0Context } from 'auth/auth0';
 import classNames from 'classnames';
 import DropdownComponent from 'components/dropdown';
@@ -27,8 +26,9 @@ import { EPanels } from 'modules/sidebar/model';
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'redux-first-router-link';
 import { fetchStats } from 'services/stats';
+import { APP_LOGO } from 'theme';
 
-import { APP_LOGO } from '../../theme';
+import { checkRole } from '@marapp/earth-shared';
 
 import './styles.scss';
 

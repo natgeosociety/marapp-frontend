@@ -17,10 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Button } from '@marapp/earth-shared';
 import ErrorTemplate from 'components/error-template';
 import React from 'react';
 import { replace } from 'redux-first-router';
+
+import { Button } from '@marapp/earth-shared';
 
 const ErrorPage = ({ resetStore }) => {
   return (

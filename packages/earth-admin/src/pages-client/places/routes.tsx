@@ -18,8 +18,9 @@
 */
 
 import { Router } from '@reach/router';
-import { PlacesSidebar } from 'components/places';
 import React from 'react';
+
+import { PlacesSidebar } from '@app/components/places';
 
 import { PlaceDetail } from './details';
 import { PlacesHome } from './home';

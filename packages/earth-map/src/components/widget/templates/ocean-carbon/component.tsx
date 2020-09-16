@@ -17,12 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Html } from '@marapp/earth-shared';
 import WidgetNoDataComponent from 'components/widget/no-data';
 import React from 'react';
 
-import { IWidgetTemplate } from '../model';
+import { Html } from '@marapp/earth-shared';
 
+import { IWidgetTemplate } from '../model';
 import './styles.scss';
 
 class OceanCarbon extends React.PureComponent<IWidgetTemplate, any> {

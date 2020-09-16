@@ -18,9 +18,10 @@
 */
 
 import classnames from 'classnames';
-import { ErrorMessages } from 'components/error-messages';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops';
+
+import { ErrorMessages } from '@app/components/error-messages';
 
 import { InlineCardOverlay } from './index';
 import './styles.scss';

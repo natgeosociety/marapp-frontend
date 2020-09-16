@@ -18,7 +18,7 @@
 */
 
 export const APP_NAME = 'UNBL';
-export const APP_LOGO = require('images/unbl_logo.svg');
+export const APP_LOGO = require('@app/images/unbl_logo.svg');
 
 export const APP_BASEMAPS = [
   {

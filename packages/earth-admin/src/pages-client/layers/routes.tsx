@@ -18,8 +18,9 @@
 */
 
 import { Router } from '@reach/router';
-import { LayerSidebar } from 'components/layers';
 import React from 'react';
+
+import { LayerSidebar } from '@app/components/layers';
 
 import { LayerDetail } from './details';
 import { LayersHome } from './home';

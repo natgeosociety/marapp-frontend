@@ -18,8 +18,9 @@
 */
 
 import { Router } from '@reach/router';
-import { DashboardSidebar } from 'components/dashboards';
 import React from 'react';
+
+import { DashboardSidebar } from '@app/components/dashboards';
 
 import { DashboardDetail } from './details';
 import { DashboardsHome } from './home';

@@ -17,15 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Spinner } from '@marapp/earth-shared';
-import { LinkWithOrg } from 'components/link-with-org';
-import { OrgSwitcher } from 'components/org-switcher';
-import { SidebarSelect } from 'components/sidebar-select';
-import { IAdminPage } from 'components/sidebar-select/model';
 import React from 'react';
 
-import { APP_LOGO, APP_NAME } from '../theme';
+import { Spinner } from '@marapp/earth-shared';
 
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { OrgSwitcher } from '@app/components/org-switcher';
+import { SidebarSelect } from '@app/components/sidebar-select';
+import { IAdminPage } from '@app/components/sidebar-select/model';
+
+import { APP_LOGO, APP_NAME } from '../theme';
 import './styles.scss';
 
 interface IProps {

@@ -18,9 +18,10 @@
 */
 
 import axios, { AxiosRequestConfig } from 'axios';
-import { GATSBY_API_URL } from 'config';
-import { addPlace, updatePlace } from 'services/places';
-import { deserializeData } from 'utils';
+
+import { GATSBY_API_URL } from '@app/config';
+import { addPlace, updatePlace } from '@app/services/places';
+import { deserializeData } from '@app/utils';
 
 const LayerAPIService = {
   request: (options: AxiosRequestConfig) => {

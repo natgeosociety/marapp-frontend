@@ -21,7 +21,6 @@ import { setIndexesSelected } from 'modules/indexes/actions';
 import { connect } from 'react-redux';
 
 import { setSidebarOpen } from '../../modules/sidebar/actions';
-
 import SidebarComponent from './component';
 
 export default connect(

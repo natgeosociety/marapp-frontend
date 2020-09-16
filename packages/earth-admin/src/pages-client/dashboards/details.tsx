@@ -13,25 +13,27 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AsyncSelect, AuthzGuards } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { ActionModal } from 'components/action-modal';
-import { Card } from 'components/card';
-import { DetailList } from 'components/detail-list';
-import { ErrorMessages } from 'components/error-messages';
-import { HtmlEditor } from 'components/html-editor';
-import { InlineEditCard } from 'components/inline-edit-card';
-import { Input } from 'components/input';
-import { LinkWithOrg } from 'components/link-with-org';
-import { Toggle } from 'components/toggle';
-import { ContentLayout } from 'layouts';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
-import { getAllWidgets, getDashboard, handleDashboardForm } from 'services';
-import { encodeQueryToURL, flattenArrayForSelect, formatDate } from 'utils';
-import { useRequest } from 'utils/hooks';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from 'utils/validations';
+
+import { AsyncSelect, AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { ActionModal } from '@app/components/action-modal';
+import { Card } from '@app/components/card';
+import { DetailList } from '@app/components/detail-list';
+import { ErrorMessages } from '@app/components/error-messages';
+import { HtmlEditor } from '@app/components/html-editor';
+import { InlineEditCard } from '@app/components/inline-edit-card';
+import { Input } from '@app/components/input';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { Toggle } from '@app/components/toggle';
+import { ContentLayout } from '@app/layouts';
+import { getAllWidgets, getDashboard, handleDashboardForm } from '@app/services';
+import { encodeQueryToURL, flattenArrayForSelect, formatDate } from '@app/utils';
+import { useRequest } from '@app/utils/hooks';
+import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 

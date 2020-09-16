@@ -14,26 +14,29 @@
 */
 
 import Collapse from '@kunukn/react-collapse';
-import { AsyncSelect, AuthzGuards } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
 import classnames from 'classnames';
-import { ActionModal } from 'components/action-modal';
-import { Card } from 'components/card';
-import { DetailList } from 'components/detail-list';
-import { ErrorMessages } from 'components/error-messages';
-import { HtmlEditor } from 'components/html-editor';
-import { InlineEditCard } from 'components/inline-edit-card';
-import { Input } from 'components/input';
-import { JsonEditor } from 'components/json-editor';
-import { LinkWithOrg } from 'components/link-with-org';
-import { Toggle } from 'components/toggle';
 import { JSHINT } from 'jshint';
-import { ContentLayout } from 'layouts';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, ErrorMessage, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
-import { getAllLayers, getLayer, handleLayerForm } from 'services/layers';
+
+import { AsyncSelect, AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { ActionModal } from '@app/components/action-modal';
+import { Card } from '@app/components/card';
+import { DetailList } from '@app/components/detail-list';
+import { ErrorMessages } from '@app/components/error-messages';
+import { HtmlEditor } from '@app/components/html-editor';
+import { InlineEditCard } from '@app/components/inline-edit-card';
+import { Input } from '@app/components/input';
+import { JsonEditor } from '@app/components/json-editor';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { Toggle } from '@app/components/toggle';
+import { ContentLayout } from '@app/layouts';
+import { getAllLayers, getLayer, handleLayerForm } from '@app/services/layers';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import {
   copyToClipboard,
   encodeQueryToURL,
@@ -41,11 +44,9 @@ import {
   flattenObjectForSelect,
   formatDate,
   getSelectValues,
-} from 'utils';
-import { useRequest } from 'utils/hooks';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from 'utils/validations';
-
-import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+} from '@app/utils';
+import { useRequest } from '@app/utils/hooks';
+import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 

@@ -17,18 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from '@marapp/earth-shared';
 import { Router } from '@reach/router';
-import { useAuth0 } from 'auth/auth0';
-import { LinkWithOrg } from 'components/link-with-org';
-import { UserDetails, UserEdit, UserList } from 'components/users';
-import { SidebarLayout } from 'layouts';
-import ContentLayout from 'layouts/Content';
 import React, { useEffect, useState } from 'react';
-import { getAllUsers, getUser } from 'services/users';
-import { encodeQueryToURL, setPage } from 'utils';
-import { UserContext } from 'utils/contexts';
-import { useRequest } from 'utils/hooks';
+
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { UserDetails, UserEdit, UserList } from '@app/components/users';
+import { SidebarLayout } from '@app/layouts';
+import ContentLayout from '@app/layouts/Content';
+import { getAllUsers, getUser } from '@app/services/users';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { UserContext } from '@app/utils/contexts';
+import { useRequest } from '@app/utils/hooks';
 
 const USER_DETAIL_QUERY = {
   include: 'groups',

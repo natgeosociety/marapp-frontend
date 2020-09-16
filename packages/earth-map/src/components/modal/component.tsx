@@ -23,10 +23,6 @@ import Modal from 'react-modal';
 
 import './styles.scss';
 
-// Components
-
-// Styles
-
 interface IModalComponent {
   isOpen: boolean;
   className?: string;

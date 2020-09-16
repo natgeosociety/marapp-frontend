@@ -17,19 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { ErrorMessages } from 'components/error-messages';
-import { HtmlEditor } from 'components/html-editor';
-import { JsonEditor } from 'components/json-editor';
-import { LinkWithOrg } from 'components/link-with-org';
-import { SearchInput } from 'components/search-input';
-import { WidgetProps } from 'components/widgets/model';
 import { navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { handleWidgetForm } from 'services';
-import { formatDate } from 'utils';
-import { Auth0Context } from 'utils/contexts';
+
+import { ErrorMessages } from '@app/components/error-messages';
+import { HtmlEditor } from '@app/components/html-editor';
+import { JsonEditor } from '@app/components/json-editor';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { SearchInput } from '@app/components/search-input';
+import { WidgetProps } from '@app/components/widgets/model';
+import { handleWidgetForm } from '@app/services';
+import { formatDate } from '@app/utils';
+import { Auth0Context } from '@app/utils/contexts';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 

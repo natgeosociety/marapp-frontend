@@ -22,8 +22,6 @@ import { connect } from 'react-redux';
 
 import IndexesComponent from './component';
 
-// Components
-
 export default connect(
   (state: any) => ({
     ...state.places,

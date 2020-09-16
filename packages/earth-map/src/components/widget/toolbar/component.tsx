@@ -23,7 +23,6 @@ import React, { PureComponent } from 'react';
 import { Tooltip } from 'vizzuality-components';
 
 import WidgetDownload from '../download';
-
 import './styles.scss';
 
 // Components

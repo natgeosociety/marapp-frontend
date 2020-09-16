@@ -17,10 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Modal } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
 import { navigate } from 'gatsby';
 import React from 'react';
+
+import { Modal } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
 import {
   deleteDashboards,
   deleteLayer,
@@ -28,7 +30,7 @@ import {
   deletePlace,
   deleteUser,
   deleteWidgets,
-} from 'services';
+} from '@app/services';
 
 interface IModalProps {
   id: string;

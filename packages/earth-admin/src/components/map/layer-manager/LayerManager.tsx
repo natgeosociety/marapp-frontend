@@ -20,7 +20,8 @@
 import { PluginMapboxGl } from 'layer-manager';
 import { Layer, LayerManager } from 'layer-manager/dist/components';
 import React, { useContext } from 'react';
-import { MapComponentContext } from 'utils/contexts';
+
+import { MapComponentContext } from '@app/utils/contexts';
 
 interface ManagerProps {
   layer: any;

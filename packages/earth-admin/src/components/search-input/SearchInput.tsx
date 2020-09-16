@@ -17,12 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { LinkWithOrg } from 'components/link-with-org';
 import { remove } from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
-import { getAllLayers, getAllWidgets, getAvailableGroups } from 'services';
-import { encodeQueryToURL } from 'utils';
-import { Auth0Context } from 'utils/contexts';
+
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { getAllLayers, getAllWidgets, getAvailableGroups } from '@app/services';
+import { encodeQueryToURL } from '@app/utils';
+import { Auth0Context } from '@app/utils/contexts';
 
 interface SearchInputProps {
   options: any[];

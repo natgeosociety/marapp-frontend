@@ -22,18 +22,20 @@ import createAuth0Client, {
   GetTokenSilentlyOptions,
   GetUserOptions,
 } from '@auth0/auth0-spa-js';
+import get from 'lodash/get';
+import qs from 'query-string';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+
 import {
   hasAccess,
   isAdminAuthz,
   mapAuthorizedRoleGroups,
   mapAuthzScopes,
 } from '@marapp/earth-shared';
-import { GATSBY_APP_AUTH0_NAMESPACE } from 'config';
-import get from 'lodash/get';
-import qs from 'query-string';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { routeToPage } from 'utils';
-import { Auth0Context } from 'utils/contexts';
+
+import { GATSBY_APP_AUTH0_NAMESPACE } from '@app/config';
+import { routeToPage } from '@app/utils';
+import { Auth0Context } from '@app/utils/contexts';
 
 // Auth0 will enforce namespacing when performing OIDC-conformant
 // login flows, meaning that any custom claims without HTTP/HTTPS

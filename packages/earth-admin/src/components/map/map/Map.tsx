@@ -17,17 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Map } from '@marapp/earth-shared';
-import MapControls from 'components/map/controls';
-import RecenterControl from 'components/map/controls/recenter';
-import ZoomControl from 'components/map/controls/zoom';
-import { GATSBY_APP_MAPBOX_TOKEN } from 'config';
 import React, { useContext, useEffect, useState } from 'react';
-import { MapComponentContext } from 'utils/contexts';
+
+import { Map } from '@marapp/earth-shared';
+
+import MapControls from '@app/components/map/controls';
+import RecenterControl from '@app/components/map/controls/recenter';
+import ZoomControl from '@app/components/map/controls/zoom';
+import { GATSBY_APP_MAPBOX_TOKEN } from '@app/config';
+import { MapComponentContext } from '@app/utils/contexts';
 
 import { LayerManagerComponent } from '../layer-manager';
 import { LAYER_DEFAULT, MAP_DEFAULT } from '../model';
-
 import './styles.scss';
 
 export default function MapComponent(props: { height?: string }) {

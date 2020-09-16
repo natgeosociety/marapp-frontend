@@ -17,11 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Icon, Spinner } from '@marapp/earth-shared';
 import classnames from 'classnames';
 import { SECTIONS } from 'components/place/constants';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
+
+import { Icon, Spinner } from '@marapp/earth-shared';
 
 // Components
 

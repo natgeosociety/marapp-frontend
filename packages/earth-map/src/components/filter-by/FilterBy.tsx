@@ -18,7 +18,7 @@
 */
 
 import classnames from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
 import { cleanFilters, countFilters } from 'utils/filters';
 
 import './styles.scss';

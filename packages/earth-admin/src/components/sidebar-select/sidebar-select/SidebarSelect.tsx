@@ -18,13 +18,13 @@
 */
 
 import classnames from 'classnames';
-import { DropdownComponent } from 'components/dropdown';
-import { SidebarItem } from 'components/sidebar-select';
 import React, { useState } from 'react';
-import { useDomWatcher } from 'utils/hooks';
+
+import { DropdownComponent } from '@app/components/dropdown';
+import { SidebarItem } from '@app/components/sidebar-select';
+import { useDomWatcher } from '@app/utils/hooks';
 
 import { ADMIN_PAGES, IAdminPage } from '../model';
-
 import './styles.scss';
 
 interface IProps {

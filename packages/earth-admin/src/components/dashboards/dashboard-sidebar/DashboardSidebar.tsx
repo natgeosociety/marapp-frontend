@@ -17,16 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AuthzGuards } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
-import { DataListing, DefaultListItem } from 'components/data-listing';
-import { SidebarLayout } from 'layouts';
 import React, { useEffect, useState } from 'react';
-import { getAllDashboards } from 'services';
-import { encodeQueryToURL, setPage } from 'utils';
-import { DashboardContext } from 'utils/contexts';
-const PAGE_TYPE = setPage('Dashboards');
 
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { DataListing, DefaultListItem } from '@app/components/data-listing';
+import { SidebarLayout } from '@app/layouts';
+import { getAllDashboards } from '@app/services';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { DashboardContext } from '@app/utils/contexts';
+
+const PAGE_TYPE = setPage('Dashboards');
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 
 export default function DashboardSidebar(props: any) {

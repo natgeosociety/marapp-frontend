@@ -25,8 +25,6 @@ import PlaceFilter from './filter';
 import './styles.scss';
 import PlaceSummary from './summary';
 
-// styles
-
 // Creates a keyframed spring
 const PlaceWrapper: any = Keyframes.Spring({
   open: { x: 0, opacity: 1, delay: 100 },

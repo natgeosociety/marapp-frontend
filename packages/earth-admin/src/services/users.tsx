@@ -18,7 +18,8 @@
 */
 
 import axios, { AxiosRequestConfig } from 'axios';
-import { GATSBY_API_URL } from 'config';
+
+import { GATSBY_API_URL } from '@app/config';
 
 import { deserializeData } from '../utils';
 

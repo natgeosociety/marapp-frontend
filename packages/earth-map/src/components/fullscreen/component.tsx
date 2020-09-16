@@ -17,8 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Fullscreen } from '@marapp/earth-shared';
 import React from 'react';
+
+import { Fullscreen } from '@marapp/earth-shared';
 
 interface IFullscreen {
   onClose: () => void;

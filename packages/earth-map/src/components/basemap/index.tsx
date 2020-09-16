@@ -23,10 +23,6 @@ import { connect } from 'react-redux';
 
 import BasemapComponent from './component';
 
-// Actions
-
-// Components
-
 export default connect(
   (state: any) => ({
     mapStyle: state.map.mapStyle,

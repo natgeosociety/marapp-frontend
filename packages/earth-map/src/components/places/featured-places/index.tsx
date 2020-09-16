@@ -17,8 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setIndexesList, setIndexesSelected } from 'modules/indexes/actions';
-import { setPlacesSearch } from 'modules/places/actions';
+import { setIndexesList } from 'modules/indexes/actions';
 import { setSidebarPanel } from 'modules/sidebar/actions';
 import { connect } from 'react-redux';
 
