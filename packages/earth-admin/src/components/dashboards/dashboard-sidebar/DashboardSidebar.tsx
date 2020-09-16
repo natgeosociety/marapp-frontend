@@ -18,42 +18,18 @@
 */
 
 import { AuthzGuards } from '@marapp/earth-shared';
-import { Router } from '@reach/router';
 import { useAuth0 } from 'auth/auth0';
-import { DashboardDetails, DashboardEdit, DashboardList } from 'components/dashboards';
-import { LinkWithOrg } from 'components/link-with-org';
-import { ContentLayout, SidebarLayout } from 'layouts';
+import { DataListing, DefaultListItem } from 'components/data-listing';
+import { SidebarLayout } from 'layouts';
 import React, { useEffect, useState } from 'react';
-import { getAllDashboards, getDashboard } from 'services/dashboards';
+import { getAllDashboards } from 'services';
 import { encodeQueryToURL, setPage } from 'utils';
 import { DashboardContext } from 'utils/contexts';
-import { useRequest } from 'utils/hooks';
+const PAGE_TYPE = setPage('Dashboards');
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 
-const DASHBOARD_DETAIL_QUERY = {
-  include: 'layers,widgets',
-  select: 'layers.id,layers.name,layers.type,widgets.id,widgets.name,widgets.type',
-  sort: 'layers.name,widgets.name',
-};
-const INIT_CURSOR_LOCATION = '-1';
-
-const PAGE_TYPE = setPage('Data Indexes');
-
-export default function DashboardsPage(props) {
-  return (
-    <Router>
-      <Page path="/">
-        <HomePage path="/" />
-        <DetailsPage path="/:page" />
-        <EditPage path="/:page/edit" newDashboard={false} />
-        <EditPage path="/new" newDashboard={true} />
-      </Page>
-    </Router>
-  );
-}
-
-function Sidebar(props: any) {
+export default function DashboardSidebar(props: any) {
   const [dashboards, setDashboards] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(20);
@@ -122,70 +98,21 @@ function Sidebar(props: any) {
       }}
     >
       <SidebarLayout page={PAGE_TYPE}>
-        <DashboardList />
+        <DataListing
+          childComponent={DefaultListItem}
+          data={dashboards}
+          categoryUrl={'dashboards'}
+          pageTitle="dashboards"
+          searchValueAction={handleSearchValueChange}
+          cursorAction={handleCursorChange}
+          isLoading={isLoading}
+          isNoMore={isNoMore}
+          totalResults={totalResults}
+          pageSize={pageSize}
+          searchValue={searchValue}
+          selectedItem={selectedItem}
+        />
       </SidebarLayout>
     </DashboardContext.Provider>
-  );
-}
-
-function Page(props: any) {
-  return (
-    <>
-      <Sidebar />
-      {props.children}
-    </>
-  );
-}
-
-function HomePage(props: any) {
-  const { getPermissions } = useAuth0();
-  const permissions = getPermissions(AuthzGuards.accessDashboardsGuard);
-  const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
-  return (
-    writePermissions && (
-      <ContentLayout>
-        <div className="ng-flex ng-align-right">
-          <LinkWithOrg className="ng-button ng-button-overlay" to="/dashboards/new">
-            add new dashboard
-          </LinkWithOrg>
-        </div>
-      </ContentLayout>
-    )
-  );
-}
-
-function DetailsPage(path: any) {
-  const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
-    ...DASHBOARD_DETAIL_QUERY,
-    ...{ group: selectedGroup },
-  });
-  const { isLoading, errors, data } = useRequest(() => getDashboard(encodedQuery), {
-    permissions: AuthzGuards.accessDashboardsGuard,
-    query: encodedQuery,
-  });
-
-  return (
-    <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
-      <DashboardDetails data={data} />
-    </ContentLayout>
-  );
-}
-
-function EditPage(path: any) {
-  const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
-    ...DASHBOARD_DETAIL_QUERY,
-    ...{ group: selectedGroup },
-  });
-  const { isLoading, errors, data } = useRequest(() => getDashboard(encodedQuery), {
-    permissions: AuthzGuards.writeDashboardsGuard,
-    skip: path.newDashboard,
-  });
-
-  return (
-    <ContentLayout errors={errors} backTo="/dashboards" isLoading={isLoading}>
-      <DashboardEdit data={data} newDashboard={path.newDashboard} />
-    </ContentLayout>
   );
 }

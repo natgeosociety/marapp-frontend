@@ -132,7 +132,6 @@ function HomePage(props: any) {
 function DetailsPage(path: any) {
   const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, { include: 'owners' });
   const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
-    permissions: AuthzGuards.accessOrganizationsGuard,
     query: encodedQuery,
   });
 
@@ -151,7 +150,6 @@ function DetailsPage(path: any) {
 function EditPage(path: any) {
   const encodedQuery = encodeQueryToURL(`organizations/${path.page}`, { include: 'owners' });
   const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
-    permissions: AuthzGuards.accessOrganizationsGuard,
     skip: path.newOrg,
   });
 

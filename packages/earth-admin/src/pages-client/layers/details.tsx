@@ -60,7 +60,6 @@ export function LayerDetail(path: any) {
     ...{ group: selectedGroup },
   });
   const { isLoading, data } = useRequest(() => getLayer(encodedQuery), {
-    permissions: AuthzGuards.writeLayersGuard,
     query: encodedQuery,
   });
 
@@ -130,7 +129,7 @@ export function LayerDetail(path: any) {
     try {
       setIsLoading && setIsLoading(true);
       await handleLayerForm(false, parsed, id, selectedGroup);
-      const res = await getLayer(encodedQuery);
+      const res: any = await getLayer(encodedQuery);
       setLayer(res.data);
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);

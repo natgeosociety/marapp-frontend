@@ -22,7 +22,7 @@ import { useAuth0 } from 'auth/auth0';
 import { ProtectedRoute } from 'components/protected-route';
 import { GATSBY_APP_BASE_URL } from 'config';
 import { navigate } from 'gatsby';
-import DashboardsPage from 'pages-client/dashboards';
+import DashboardsPage from 'pages-client/dashboards/routes';
 import Homepage from 'pages-client/homepage';
 import LayersPage from 'pages-client/layers/routes';
 import Organization from 'pages-client/organization';

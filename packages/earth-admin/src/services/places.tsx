@@ -40,7 +40,7 @@ const PlacesAPIService = {
         .request(options)
         .then((res) => resolve(res.data))
         .catch((error) => {
-          reject(error.response.data);
+          reject(error.response?.data);
         });
     });
   },

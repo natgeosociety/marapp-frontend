@@ -41,7 +41,6 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   const encodedQuery = encodeQueryToURL(`organizations/${props.page}`, { include: 'owners' });
 
   const { isLoading, errors, data } = useRequest(() => getOrganization(encodedQuery), {
-    permissions: AuthzGuards.accessOrganizationsGuard,
     query: encodedQuery,
   });
 

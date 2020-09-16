@@ -17,34 +17,23 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Layer } from '../layers/model';
-import { Widget } from '../widgets/model';
+import { Router } from '@reach/router';
+import { DashboardSidebar } from 'components/dashboards';
+import React from 'react';
 
-export interface DashboardContextProps {
-  handleSearchValueChange: (newValue: string) => void;
-  handleCursorChange: Function;
-  pageSize: number;
-  isLoading: boolean;
-  isNoMore: boolean;
-  searchValue?: string;
-  permissions?: any;
-  totalResults?: number;
-  nextCursor?: string;
-  dashboards: Dashboard[];
-  selectedItem?: string;
-}
+import { DashboardDetail } from './details';
+import { DashboardsHome } from './home';
+import { NewDashboard } from './new';
 
-export interface Dashboard {
-  id: string;
-  slug: string;
-  name: string;
-  description: string;
-  published: boolean;
-  layers?: string[] | Layer[];
-  widgets?: string[] | Widget[];
-}
-
-export interface DashboardProps {
-  data: Dashboard;
-  newDashboard?: boolean;
+export default function DashboardsPage(props) {
+  return (
+    <>
+      <DashboardSidebar />
+      <Router>
+        <DashboardsHome path="/" />
+        <NewDashboard path="/new" />
+        <DashboardDetail path="/:page" />
+      </Router>
+    </>
+  );
 }

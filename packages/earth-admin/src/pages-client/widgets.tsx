@@ -159,7 +159,6 @@ function DetailsPage(path: any) {
     ...{ group: selectedGroup },
   });
   const { isLoading, errors, data } = useRequest(() => getWidget(encodedQuery), {
-    permissions: AuthzGuards.accessWidgetsGuard,
     query: encodedQuery,
   });
 
@@ -177,7 +176,6 @@ function EditPage(path: any) {
     group: selectedGroup,
   });
   const { isLoading, errors, data } = useRequest(() => getWidget(encodedQuery), {
-    permissions: AuthzGuards.writeWidgetsGuard,
     skip: path.newWidget,
   });
 

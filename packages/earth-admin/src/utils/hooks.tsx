@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { ScopesEnum } from '@marapp/earth-shared';
 import { useEffect, useState } from 'react';
 
 interface IError {
@@ -32,7 +31,6 @@ interface IUseRequestReturn {
 }
 
 interface IUseRequestOptions {
-  permissions: ScopesEnum[][];
   query?: string;
   skip?: boolean;
 }
@@ -41,7 +39,7 @@ export function useRequest(
   resource: () => Promise<any>,
   options: IUseRequestOptions
 ): IUseRequestReturn {
-  const { permissions, skip, query } = options;
+  const { skip, query } = options;
   const [isLoading, setIsLoading] = useState(!skip);
   const [errors, setErrors] = useState<IError[]>([]);
   const [data, setData] = useState({});
