@@ -26,6 +26,7 @@ import { DownloadFile } from 'components/download-file';
 import { ContentLayout } from 'layouts';
 import { PlaceTypeEnum, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
 import { DetailList } from 'components/detail-list';
+import { ErrorBoundary } from 'components/error-boundary';
 
 interface IProps {
   path: string;
@@ -274,49 +275,51 @@ export function PlaceDetail(props: IProps) {
             {!!mapData && (
               <MapComponentContext.Provider value={mapData}>
                 <div className="ng-margin-medium-bottom ng-width-1-1">
-                  <InlineEditCard
-                    editButtonText="View and upload shape"
-                    onSubmit={onSubmit}
-                    validForm={formValid && !jsonError}
-                    render={({ setIsEditing, setIsLoading, setServerErrors }) => (
-                      <div className="ng-grid">
-                        <div className="ng-width-1-2">
-                          <MapComponent height="235px" />
-                          <DownloadFile data={geojson} fileName={slug} className="ng-align-right ng-margin-top">Download
+                  <ErrorBoundary>
+                    <InlineEditCard
+                      editButtonText="View and upload shape"
+                      onSubmit={onSubmit}
+                      validForm={formValid && !jsonError}
+                      render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                        <div className="ng-grid">
+                          <div className="ng-width-1-2">
+                            <MapComponent height="235px" />
+                            <DownloadFile data={geojson} fileName={slug} className="ng-align-right ng-margin-top">Download
                           GeoJSON</DownloadFile>
-                          <div className="ng-width-1-1 ng-margin-medium-top">
-                            <FakeJsonUpload
-                              name="geojson"
-                              label="Place shape*"
-                              ref={register({
-                                required: 'GeoJSON is required',
-                              })}
-                              onChange={(json) => {
-                                setGeojson(json);
-                                setJsonError(false);
-                              }}
-                              onError={(err) => setJsonError(true)} />
+                            <div className="ng-width-1-1 ng-margin-medium-top">
+                              <FakeJsonUpload
+                                name="geojson"
+                                label="Place shape*"
+                                ref={register({
+                                  required: 'GeoJSON is required',
+                                })}
+                                onChange={(json) => {
+                                  setGeojson(json);
+                                  setJsonError(false);
+                                }}
+                                onError={(err) => setJsonError(true)} />
+                            </div>
+                          </div>
+                          <div className="ng-width-1-2">
+                            {areaKm2 && <p className="ng-margin-bottom ng-margin-top-remove">
+                              <span
+                                className="ng-text-weight-bold ng-color-mdgray">Area ha:</span> {km2toHa(areaKm2)}
+                            </p>}
+                            {bbox2d && <p className="ng-margin-bottom ng-margin-top-remove">
+                              <span
+                                className="ng-text-weight-bold ng-color-mdgray">Area Bbox:</span> {formatArrayToParentheses(bbox2d, 'rounded', 2)}
+                            </p>}
+                            {centroid && <p className="ng-margin-bottom ng-margin-top-remove">
+                              <span
+                                className="ng-text-weight-bold ng-color-mdgray">Centroid:</span> {formatArrayToParentheses(centroid.geometry.coordinates, 'brackets', 1)}
+                            </p>}
                           </div>
                         </div>
-                        <div className="ng-width-1-2">
-                          {areaKm2 && <p className="ng-margin-bottom ng-margin-top-remove">
-                            <span
-                              className="ng-text-weight-bold ng-color-mdgray">Area ha:</span> {km2toHa(areaKm2)}
-                          </p>}
-                          {bbox2d && <p className="ng-margin-bottom ng-margin-top-remove">
-                            <span
-                              className="ng-text-weight-bold ng-color-mdgray">Area Bbox:</span> {formatArrayToParentheses(bbox2d, 'rounded', 2)}
-                          </p>}
-                          {centroid && <p className="ng-margin-bottom ng-margin-top-remove">
-                            <span
-                              className="ng-text-weight-bold ng-color-mdgray">Centroid:</span> {formatArrayToParentheses(centroid.geometry.coordinates, 'brackets', 1)}
-                          </p>}
-                        </div>
-                      </div>
-                    )}>
-                    <br />
-                    <MapComponent />
-                  </InlineEditCard>
+                      )}>
+                      <br />
+                      <MapComponent />
+                    </InlineEditCard>
+                  </ErrorBoundary>
                 </div>
               </MapComponentContext.Provider>
             )}
