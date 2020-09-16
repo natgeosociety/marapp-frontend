@@ -21,26 +21,25 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Router } from '@reach/router';
 
-import { WidgetContext } from 'utils/contexts';
 import { encodeQueryToURL, setPage } from 'utils';
+import { useInfiniteList } from 'utils/hooks';
 import { getAllWidgets, getWidget } from 'services/widgets';
 import { useRequest } from 'utils/hooks';
 
-import { WidgetList, WidgetDetails, WidgetEdit } from 'components/widgets';
+import { WidgetDetails, WidgetEdit } from 'components/widgets';
+import { DataListing, DefaultListItem } from 'components/data-listing';
 import { LinkWithOrg } from 'components/link-with-org';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { SidebarLayout, ContentLayout } from 'layouts';
 
-
+const PAGE_SIZE = 20;
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const WIDGET_DETAIL_QUERY = {
   include: 'layers',
   select: 'layers.id,layers.name,layers.type',
   sort: 'layers.name',
 };
-const INIT_CURSOR_LOCATION = '-1';
-
 const PAGE_TYPE = setPage('Widgets');
 
 export default function WidgetsPage( props ) {
@@ -57,77 +56,33 @@ export default function WidgetsPage( props ) {
 }
 
 function Sidebar( props: any ) {
-  const [widgets, setWidgets] = useState([]);
+  const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
-  const [pageSize, setPageSize] = useState(20);
-  const [pageCursor, setPageCursor] = useState('-1');
-  const [nextCursor, setNextCursor] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isNoMore, setIsNoMore] = useState(null);
-  const [totalResults, setTotalResults] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
 
-  const { selectedGroup, getPermissions } = useAuth0();
-
-  const permissions = getPermissions(AuthzGuards.accessWidgetsGuard);
-
-
-  const handleSearchValueChange = ( newValue: string ) => {
-    setPageCursor('-1');
-    setNextCursor(null);
-    setSearchValue(newValue);
-  };
-
-  const handleCursorChange = () => {
-    if (nextCursor) {
-      setPageCursor(nextCursor);
-    }
-  };
-
-  useEffect(() => {
-    async function setupWidgets() {
-      setIsLoading(true);
-
-      const query = {
-        search: searchValue,
-        sort: 'name',
-        page: { size: pageSize, cursor: pageCursor },
-        select: EXCLUDED_FIELDS,
-        group: selectedGroup,
-      };
-      const encodedQuery = encodeQueryToURL('widgets', query);
-      const res: any = await getAllWidgets(encodedQuery);
-
-      setTotalResults(res.total);
-
-      setWidgets(!nextCursor ? res.data : [...widgets, ...res.data]);
-      setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-      setIsNoMore(!res.pagination.nextCursor);
-      setIsLoading(false);
-    }
-
-    permissions && setupWidgets();
-  }, [pageCursor, searchValue]);
+  const getQuery = (pageIndex) => {
+    const query = {
+      search: searchValue,
+      sort: 'name',
+      page: { size: PAGE_SIZE, number: pageIndex },
+      select: EXCLUDED_FIELDS,
+      group: selectedGroup,
+    };
+    return encodeQueryToURL('widgets', query);
+  }
+  const { listProps, mutate } = useInfiniteList(getQuery, getAllWidgets);
 
   return (
-    <WidgetContext.Provider
-      value={{
-        handleSearchValueChange,
-        handleCursorChange,
-        isLoading,
-        isNoMore,
-        widgets,
-        nextCursor,
-        totalResults,
-        pageSize,
-        searchValue,
-        selectedItem,
-      }}
-    >
-      <SidebarLayout page={PAGE_TYPE}>
-        <WidgetList/>
-      </SidebarLayout>
-    </WidgetContext.Provider>
+    <SidebarLayout page={PAGE_TYPE}>
+      <DataListing
+        childComponent={DefaultListItem}
+        categoryUrl="widgets"
+        pageTitle="widgets"
+        searchValueAction={setSearchValue}
+        pageSize={PAGE_SIZE}
+        searchValue={searchValue}
+        {...listProps}
+      />
+    </SidebarLayout>
   );
 }
 

@@ -20,7 +20,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Router, } from '@reach/router';
-import { useSWRInfinite } from 'swr';
 
 import { encodeQueryToURL, setPage } from 'utils';
 import { useAuth0 } from 'auth/auth0';

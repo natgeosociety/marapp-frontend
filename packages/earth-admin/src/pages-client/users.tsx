@@ -21,19 +21,20 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Router } from '@reach/router';
 
-import { UserContext } from 'utils/contexts';
+import { DataListing, Auth0ListItem } from 'components/data-listing';
 import { LinkWithOrg } from 'components/link-with-org';
-import { UserList, UserEdit, UserDetails } from 'components/users';
+import { UserEdit, UserDetails } from 'components/users';
 import { encodeQueryToURL, setPage } from 'utils';
 import { getAllUsers, getUser } from 'services/users';
 import { AuthzGuards } from 'auth/permissions';
-import { useRequest } from 'utils/hooks';
+import { useRequest, useInfiniteList } from 'utils/hooks';
 
 
 import { useAuth0 } from 'auth/auth0';
 import { SidebarLayout } from 'layouts';
 import ContentLayout from 'layouts/Content';
 
+const PAGE_SIZE = 20;
 const USER_DETAIL_QUERY = {
   include: 'groups',
 };
@@ -54,64 +55,29 @@ export default function UsersPage( props ) {
   );
 }
 
-function Sidebar( props: any ) {
-  const [users, setUsers] = useState([]);
-  const [pageSize, setPageSize] = useState(10);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isNoMore, setIsNoMore] = useState(null);
-  const [totalResults, setTotalResults] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
+function Sidebar(props: any) {
+  const { selectedGroup } = useAuth0();
 
-  const { selectedGroup, getPermissions } = useAuth0();
-
-  const permissions = getPermissions(AuthzGuards.accessUsersGuard);
-
-  const handleCursorChange = () => {
-    setPageNumber(pageNumber + 1);
-  };
-
-  useEffect(() => {
-    async function setupUsers() {
-      setIsLoading(true);
-
-
-      const query = {
-        page: { size: pageSize, number: pageNumber },
-        group: selectedGroup,
-        include: 'groups',
-      };
-      const encodedQuery = encodeQueryToURL('users', query);
-      const res: any = await getAllUsers(encodedQuery);
-
-
-      const validUsers = res.data.filter(( item ) => item.id !== '|' && item.groups.length > 0);
-      setTotalResults(res.total);
-      setUsers([...users, ...validUsers]);
-      setIsNoMore(pageNumber === res.pagination.total);
-
-      setIsLoading(false);
-    }
-
-    permissions && setupUsers();
-  }, [pageNumber]);
+  const getQuery = (pageIndex) => {
+    const query = {
+      page: { size: PAGE_SIZE, number: pageIndex },
+      group: selectedGroup,
+      include: 'groups',
+    };
+    return encodeQueryToURL('users', query);
+  }
+  const { listProps, mutate } = useInfiniteList(getQuery, getAllUsers);
 
   return (
-    <UserContext.Provider
-      value={{
-        handleCursorChange,
-        isLoading,
-        isNoMore,
-        users,
-        totalResults,
-        pageSize,
-        selectedItem,
-      }}
-    >
-      <SidebarLayout page={PAGE_TYPE}>
-        <UserList/>
-      </SidebarLayout>
-    </UserContext.Provider>
+    <SidebarLayout page={PAGE_TYPE}>
+      <DataListing
+        childComponent={Auth0ListItem}
+        categoryUrl="users"
+        pageTitle="users"
+        pageSize={PAGE_SIZE}
+        {...listProps}
+      />
+    </SidebarLayout>
   );
 }
 

@@ -18,21 +18,55 @@
 */
 
 import * as React from 'react';
-import { Router, } from '@reach/router';
+import { useState } from 'react';
+import { Router } from '@reach/router';
 
-import { LayerSidebar } from 'components/layers';
+import { getAllLayers } from 'services';
+import { encodeQueryToURL, setPage } from 'utils';
+import { useAuth0 } from 'auth/auth0';
+import { useInfiniteList } from 'utils/hooks';
+import { SidebarLayout } from 'layouts';
+
+import { DataListing, DefaultListItem } from 'components/data-listing';
 import { NewLayer } from './new';
 import { LayersHome } from './home';
 import { LayerDetail } from './details';
 
+const PAGE_TYPE = setPage('Layers');
+const PAGE_SIZE = 20;
+
 export default function LayersPage(props) {
+  const { selectedGroup } = useAuth0();
+  const [searchValue, setSearchValue] = useState('');
+
+  const getQuery = (pageIndex) => {
+    const query = {
+      search: searchValue,
+      sort: 'name',
+      page: { size: PAGE_SIZE, number: pageIndex },
+      group: selectedGroup,
+    };
+    return encodeQueryToURL('layers', query);
+  }
+  const { listProps, mutate } = useInfiniteList(getQuery, getAllLayers);
+
   return (
     <>
-      <LayerSidebar />
+      <SidebarLayout page={PAGE_TYPE}>
+        <DataListing
+          childComponent={DefaultListItem}
+          categoryUrl="layers"
+          pageTitle="layers"
+          searchValueAction={setSearchValue}
+          pageSize={PAGE_SIZE}
+          searchValue={searchValue}
+          {...listProps}
+        />
+      </SidebarLayout>
       <Router>
         <LayersHome path="/" />
-        <NewLayer path="/new"/>
-        <LayerDetail path="/:page" />
+        <NewLayer path="/new" onDataChange={mutate} />
+        <LayerDetail path="/:page" onDataChange={mutate} />
       </Router>
     </>
   );
