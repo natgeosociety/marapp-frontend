@@ -19,6 +19,8 @@
 
 import * as React from 'react';
 import { useState, useContext } from 'react';
+import { noop } from 'lodash';
+
 import { UserEditProps } from '../model';
 import { useForm, Controller } from 'react-hook-form';
 import { LinkWithOrg } from 'components/link-with-org';
@@ -34,6 +36,7 @@ export default function UserEdit(props: UserEditProps) {
   const {
     data: {name, email, groups, id},
     newUser,
+    onDataChange = noop
   } = props;
 
   const {handleSubmit, register, errors, control, getValues, formState} = useForm({
@@ -48,6 +51,7 @@ export default function UserEdit(props: UserEditProps) {
 
     try {
       await handleUserForm(false, {groups: selectedGroups}, id || formData.email, selectedGroup);
+      onDataChange();
       await navigate(`/${selectedGroup}/users`);
     } catch (error) {
       setServerErrors(error.data.errors);

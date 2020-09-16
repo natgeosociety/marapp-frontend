@@ -18,8 +18,8 @@
 */
 
 import * as React from 'react';
-import { useEffect, useState } from 'react';
 import { Router } from '@reach/router';
+import useSWR from 'swr';
 
 import { DataListing, Auth0ListItem } from 'components/data-listing';
 import { LinkWithOrg } from 'components/link-with-org';
@@ -42,20 +42,6 @@ const USER_DETAIL_QUERY = {
 const PAGE_TYPE = setPage('Users');
 
 export default function UsersPage( props ) {
-  return (
-
-    <Router>
-      <Page path="/">
-        <HomePage path="/"/>
-        <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newUser={false}/>
-        <EditPage path="/new" newUser={true}/>
-      </Page>
-    </Router>
-  );
-}
-
-function Sidebar(props: any) {
   const { selectedGroup } = useAuth0();
 
   const getQuery = (pageIndex) => {
@@ -69,24 +55,24 @@ function Sidebar(props: any) {
   const { listProps, mutate } = useInfiniteList(getQuery, getAllUsers);
 
   return (
-    <SidebarLayout page={PAGE_TYPE}>
-      <DataListing
-        childComponent={Auth0ListItem}
-        categoryUrl="users"
-        pageTitle="users"
-        pageSize={PAGE_SIZE}
-        {...listProps}
-      />
-    </SidebarLayout>
-  );
-}
-
-function Page( props: any ) {
-  return (
     <>
-      <Sidebar/>
-      {props.children}
-    </>);
+      <SidebarLayout page={PAGE_TYPE}>
+        <DataListing
+          childComponent={Auth0ListItem}
+          categoryUrl="users"
+          pageTitle="users"
+          pageSize={PAGE_SIZE}
+          {...listProps}
+        />
+      </SidebarLayout>
+      <Router>
+        <HomePage path="/"/>
+        <DetailsPage path="/:page" onDataChange={mutate} />
+        <EditPage path="/:page/edit" newUser={false} onDataChange={mutate} />
+        <EditPage path="/new" newUser={true} onDataChange={mutate} />
+      </Router>
+    </>
+  );
 }
 
 function HomePage( props: any ) {
@@ -111,30 +97,36 @@ function DetailsPage( path: any ) {
     ...USER_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const { isLoading, errors, data } = useRequest(() => getUser(encodedQuery), {
-    query: encodedQuery,
-  });
+
+  const { data, error, mutate } = useSWR(
+    encodedQuery,
+    (url) => getUser(url).then((response: any) => response.data)
+  );
 
   return (
-    <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
+    <ContentLayout backTo="/users" isLoading={!data}>
       <UserDetails data={data}/>
     </ContentLayout>
   );
 }
 
-function EditPage( path: any ) {
+function EditPage( props: any ) {
   const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`users/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`users/${props.page}`, {
     ...USER_DETAIL_QUERY,
     ...{ group: selectedGroup },
   });
-  const { isLoading, errors, data } = useRequest(() => getUser(encodedQuery), {
-    skip: path.newUser,
-  });
+  const { data, error, mutate } = useSWR(
+    !props.newUser && encodedQuery,
+    (url) => getUser(url).then((response: any) => response.data)
+  );
 
   return (
-    <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
-      <UserEdit data={data} newUser={path.newUser}/>
+    <ContentLayout backTo="/users" isLoading={props.newUser ? false : !data}>
+      <UserEdit
+        data={data}
+        newUser={props.newUser}
+        onDataChange={props.onDataChange} />
     </ContentLayout>
   );
 }

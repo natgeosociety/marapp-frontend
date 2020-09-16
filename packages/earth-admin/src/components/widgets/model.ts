@@ -34,4 +34,5 @@ export interface Widget {
 export interface WidgetProps {
   data: Widget;
   newWidget?: boolean;
+  onDataChange?: () => {};
 }

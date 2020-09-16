@@ -20,6 +20,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Router } from '@reach/router';
+import useSWR from 'swr';
 
 import { encodeQueryToURL, setPage } from 'utils';
 import { useInfiniteList } from 'utils/hooks';
@@ -43,19 +44,6 @@ const WIDGET_DETAIL_QUERY = {
 const PAGE_TYPE = setPage('Widgets');
 
 export default function WidgetsPage( props ) {
-  return (
-    <Router>
-      <Page path="/">
-        <HomePage path="/"/>
-        <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newWidget={false}/>
-        <EditPage path="/new" newWidget={true}/>
-      </Page>
-    </Router>
-  );
-}
-
-function Sidebar( props: any ) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
 
@@ -72,26 +60,26 @@ function Sidebar( props: any ) {
   const { listProps, mutate } = useInfiniteList(getQuery, getAllWidgets);
 
   return (
-    <SidebarLayout page={PAGE_TYPE}>
-      <DataListing
-        childComponent={DefaultListItem}
-        categoryUrl="widgets"
-        pageTitle="widgets"
-        searchValueAction={setSearchValue}
-        pageSize={PAGE_SIZE}
-        searchValue={searchValue}
-        {...listProps}
-      />
-    </SidebarLayout>
-  );
-}
-
-function Page( props: any ) {
-  return (
     <>
-      <Sidebar/>
-      {props.children}
-    </>);
+      <SidebarLayout page={PAGE_TYPE}>
+        <DataListing
+          childComponent={DefaultListItem}
+          categoryUrl="widgets"
+          pageTitle="widgets"
+          searchValueAction={setSearchValue}
+          pageSize={PAGE_SIZE}
+          searchValue={searchValue}
+          {...listProps}
+        />
+      </SidebarLayout>
+      <Router>
+        <HomePage path="/"/>
+        <DetailsPage path="/:page" onDataChange={mutate} />
+        <EditPage path="/:page/edit" newWidget={false} onDataChange={mutate} />
+        <EditPage path="/new" newWidget={true} onDataChange={mutate} />
+      </Router>
+    </>
+  );
 }
 
 function HomePage( props: any ) {
@@ -109,39 +97,42 @@ function HomePage( props: any ) {
   ));
 }
 
-function DetailsPage( path: any ) {
+function DetailsPage( props: any ) {
   const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`widgets/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`widgets/${props.page}`, {
     ...WIDGET_DETAIL_QUERY,
     ...{ group: selectedGroup },
   });
-  const { isLoading, errors, data } = useRequest(() => getWidget(encodedQuery), {
-    query: encodedQuery,
-  });
+  const { data, error, mutate } = useSWR(
+    encodedQuery,
+    (url) => getWidget(url).then((response: any) => response.data)
+  );
 
   return (
-
-    <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
-      <WidgetDetails data={data}/>
+    <ContentLayout backTo="/widgets" isLoading={!data}>
+      <WidgetDetails data={data} />
     </ContentLayout>
 
   );
 }
 
-function EditPage( path: any ) {
+function EditPage( props: any ) {
   const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`widgets/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`widgets/${props.page}`, {
     ...WIDGET_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const { isLoading, errors, data } = useRequest(() => getWidget(encodedQuery), {
-    skip: path.newWidget,
-  });
+  const { data, error, mutate } = useSWR(
+    !props.newWidget && encodedQuery,
+    (url) => getWidget(url).then((response: any) => response.data)
+  );
 
   return (
-
-    <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
-      <WidgetEdit data={data} newWidget={path.newWidget}/>
+    <ContentLayout backTo="/widgets" isLoading={props.newWidget ? false : !data}>
+      <WidgetEdit
+        data={data || {}}
+        newWidget={props.newWidget}
+        onDataChange={props.onDataChange} />
     </ContentLayout>
 
 

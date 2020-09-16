@@ -31,4 +31,5 @@ export interface UserProps {
 export interface UserEditProps {
   data: User;
   newUser: boolean;
+  onDataChange?: () => {};
 }
