@@ -18,6 +18,7 @@
 */
 
 const path = require('path');
+const { alias, configPaths } = require('react-app-rewire-alias')
 
 module.exports = {
   webpack: function (config, env) {
@@ -61,5 +62,10 @@ module.exports = {
     });
 
     return config;
+  },
+  override: function (config) {
+    alias(configPaths())(config)
+
+    return config
   },
 };

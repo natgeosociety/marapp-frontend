@@ -37,6 +37,7 @@
     "babel-eslint": "10.1.0",
     "babel-loader": "8.1.0",
     "eslint": "^6.6.0",
+    "react-app-rewire-alias": "^0.1.6",
     "react-app-rewired": "^2.1.6",
     "react-scripts": "^3.4.1",
     "tslint-react": "^5.0.0",
