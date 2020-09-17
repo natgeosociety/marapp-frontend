@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { User } from 'auth/model';
 import { BASE_URL, ENABLE_PUBLIC_ACCESS } from 'config';
 import qs from 'query-string';
 import { NOT_FOUND } from 'redux-first-router';
@@ -24,74 +25,96 @@ import restoreScroll from 'redux-first-router-restore-scroll';
 
 const UNAUTHORIZED_PAGE = 'UNAUTHORIZED';
 const VERIFY_EMAIL = 'VERIFY_EMAIL';
-const fallbackRoute = ENABLE_PUBLIC_ACCESS ? null : UNAUTHORIZED_PAGE;
+
+/**
+ * Authenticated resolver.
+ * @param user
+ */
+const isAuthenticatedRequired = (user: User = {}): boolean => {
+  return !ENABLE_PUBLIC_ACCESS;
+};
+
+/**
+ * Authorized resolver.
+ * @param user
+ */
+const isAuthorizedRequired = (user: User = {}): boolean => {
+  if (!user.emailVerified) {
+    return true;
+  }
+  return !ENABLE_PUBLIC_ACCESS;
+};
+
+/**
+ * Fallback route resolver.
+ * @param user
+ */
+const fallbackRouteResolver = (user: User): string => {
+  if (user && !user?.emailVerified) {
+    return VERIFY_EMAIL;
+  }
+  if (!ENABLE_PUBLIC_ACCESS) {
+    return UNAUTHORIZED_PAGE;
+  }
+  return null;
+};
 
 export const ROUTES = {
   HOME: {
     path: '/',
     page: 'home',
-    authenticated: !ENABLE_PUBLIC_ACCESS,
-    authorized: !ENABLE_PUBLIC_ACCESS,
-    fallbackRoute,
-    verifyEmailRoute: VERIFY_EMAIL,
+    isAuthenticated: isAuthenticatedRequired,
+    isAuthorized: isAuthorizedRequired,
+    fallbackRoute: fallbackRouteResolver,
   },
   EARTH: {
     path: '/earth',
     page: 'earth',
-    publicAccess: ENABLE_PUBLIC_ACCESS,
-    authenticated: !ENABLE_PUBLIC_ACCESS,
-    authorized: !ENABLE_PUBLIC_ACCESS,
-    fallbackRoute,
-    verifyEmailRoute: VERIFY_EMAIL,
+    isAuthenticated: isAuthenticatedRequired,
+    isAuthorized: isAuthorizedRequired,
+    fallbackRoute: fallbackRouteResolver,
   },
   LOCATION: {
     path: '/earth/:organization/:slug',
     page: 'earth',
-    publicAccess: ENABLE_PUBLIC_ACCESS,
-    authenticated: !ENABLE_PUBLIC_ACCESS,
-    authorized: !ENABLE_PUBLIC_ACCESS,
-    fallbackRoute,
-    verifyEmailRoute: VERIFY_EMAIL,
+    isAuthenticated: isAuthenticatedRequired,
+    isAuthorized: isAuthorizedRequired,
+    fallbackRoute: fallbackRouteResolver,
   },
   CHANGE_EMAIL: {
     path: '/profile/change-email',
     page: 'change-email',
-    authenticated: true,
-    authorized: false,
-    fallbackRoute: null,
-    verifyEmailRoute: VERIFY_EMAIL,
+    isAuthenticated: () => true,
+    isAuthorized: () => false,
+    fallbackRoute: () => null,
   },
   ERROR: {
     path: '/error',
     page: 'error',
-    authenticated: false,
-    authorized: false,
-    fallbackRoute: null,
-    verifyEmailRoute: VERIFY_EMAIL,
+    isAuthenticated: () => false,
+    isAuthorized: () => false,
+    fallbackRoute: () => null,
   },
   [NOT_FOUND]: {
     path: '/404',
     page: 'not-found',
-    authenticated: false,
-    authorized: false,
-    fallbackRoute: null,
-    verifyEmailRoute: VERIFY_EMAIL,
+    isAuthenticated: () => false,
+    isAuthorized: () => false,
+    fallbackRoute: () => null,
   },
   [VERIFY_EMAIL]: {
     path: '/verify-email',
     page: 'verify-email',
-    authenticated: true,
-    authorized: false,
-    fallbackRoute: null,
-    verifyEmailRoute: null,
+    isAuthenticated: () => false,
+    isAuthorized: () => false,
+    fallbackRoute: () => null,
   },
   [UNAUTHORIZED_PAGE]: {
     path: '/unauthorized',
     page: 'unauthorized',
-    authenticated: true,
-    authorized: false,
-    fallbackRoute: null,
-    verifyEmailRoute: VERIFY_EMAIL,
+    isAuthenticated: () => true,
+    isAuthorized: () => false,
+    fallbackRoute: () => null,
   },
 };
 

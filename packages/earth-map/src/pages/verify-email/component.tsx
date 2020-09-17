@@ -21,7 +21,7 @@ import { useAuth0 } from 'auth/auth0';
 import { APP_NAME, ENABLE_PUBLIC_ACCESS } from 'config';
 import React from 'react';
 
-import { Button } from '@marapp/earth-components';
+import { Button } from '@marapp/earth-shared';
 
 import './styles.scss';
 

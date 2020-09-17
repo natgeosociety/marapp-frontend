@@ -25,22 +25,16 @@ import AuthenticatedPage from './authenticated';
 import AuthorizedPage from './authorized';
 
 const Main = ({ router }) => {
+  const { userData } = useAuth0();
   const { type, routesMap } = router;
-  const { verifiedEmail, email } = useAuth0();
-  const nonVerifiedEmail = email && !verifiedEmail;
-  const { page, authenticated, authorized, fallbackRoute, verifyEmailRoute } = routesMap[type];
-  const fallback = nonVerifiedEmail ? verifyEmailRoute : fallbackRoute;
+  const { page, isAuthenticated, isAuthorized, fallbackRoute } = routesMap[type];
 
   let Page;
-
   switch (true) {
-    case authenticated && authorized:
+    case isAuthenticated(userData) && isAuthorized(userData):
       Page = AuthorizedPage;
       break;
-    case authenticated:
-      Page = AuthenticatedPage;
-      break;
-    case nonVerifiedEmail:
+    case isAuthenticated(userData):
       Page = AuthenticatedPage;
       break;
     default:
@@ -51,31 +45,31 @@ const Main = ({ router }) => {
     <React.Fragment>
       {page === 'home' && (
         // @ts-ignore
-        <Page page="home" fallbackRoute={fallback} />
+        <Page page="home" fallbackRoute={fallbackRoute(userData)} />
       )}
       {page === 'earth' && (
         // @ts-ignore
-        <Page page="earth" fallbackRoute={fallback} />
+        <Page page="earth" fallbackRoute={fallbackRoute(userData)} />
       )}
       {page === 'experience' && (
         // @ts-ignore
-        <Page page="experience" fallbackRoute={fallback} />
+        <Page page="experience" fallbackRoute={fallbackRoute(userData)} />
       )}
       {page === 'change-email' && (
         // @ts-ignore
-        <Page page="change-email" fallbackRoute={fallback} />
+        <Page page="change-email" fallbackRoute={fallbackRoute(userData)} />
       )}
       {page === 'not-found' && (
         // @ts-ignore
-        <Page page="not-found" fallbackRoute={fallback} />
+        <Page page="not-found" fallbackRoute={fallbackRoute(userData)} />
       )}
       {page === 'error' && (
         // @ts-ignore
-        <Page page="error" fallbackRoute={fallback} />
+        <Page page="error" fallbackRoute={fallbackRoute(userData)} />
       )}
       {page === 'unauthorized' && (
         // @ts-ignore
-        <Page page="unauthorized" fallbackRoute={fallback} />
+        <Page page="unauthorized" fallbackRoute={fallbackRoute(userData)} />
       )}
       {page === 'verify-email' && (
         // @ts-ignore

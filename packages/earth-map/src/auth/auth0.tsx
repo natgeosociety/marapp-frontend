@@ -66,7 +66,6 @@ export const Auth0Provider = ({
   const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState('');
   const [userData, setUserData] = useState({});
-  const [verifiedEmail, setVerifiedEmail] = useState(false);
 
   const [groups, setGroups] = useState([]);
   const [roles, setRoles] = useState({});
@@ -125,9 +124,7 @@ export const Auth0Provider = ({
         allGroups: roleGroups,
       };
       setUserData(userData);
-
       setEmail(userData.email);
-      setVerifiedEmail(userData.emailVerified);
 
       const { user } = SessionStorage.getObject('ephemeral');
       const selected = user && user.group ? user.group : mapRoleGroups(roles, ['*']);
@@ -169,7 +166,6 @@ export const Auth0Provider = ({
         roles,
         permissions,
         selectedGroup,
-        verifiedEmail,
         login,
         logout,
         getUser,

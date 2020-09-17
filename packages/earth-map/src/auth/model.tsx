@@ -31,7 +31,6 @@ export interface Auth0 {
   isLoading?: boolean;
   email?: string;
   userData?: User;
-  verifiedEmail?: boolean;
   // TODO: rename this to selectedGroups
   selectedGroup?: string[];
   groups?: string[];
@@ -46,6 +45,8 @@ export interface Auth0 {
 
 export interface User {
   name?: string;
+  email?: string;
   picture?: string;
+  emailVerified?: boolean;
   allGroups?: string[];
 }
