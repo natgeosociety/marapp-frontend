@@ -23,7 +23,7 @@ import { useEffect } from 'react';
 import { useAuth0 } from 'auth/auth0';
 import AsyncPage from 'pages/main/async';
 
-const AuthenticatedPage = ({component: Component, verifyEmailRoute, redirect, ...rest}) => {
+const AuthenticatedPage = ({component: Component, fallbackRoute, redirect, ...rest}) => {
   const {isAuthenticated, login, verifiedEmail} = useAuth0();
 
   useEffect(() => {
@@ -34,8 +34,8 @@ const AuthenticatedPage = ({component: Component, verifyEmailRoute, redirect, ..
         // save target URL to redirect to after login;
         await login({appState: {targetUrl: target}});
       }
-      if (!verifiedEmail && verifyEmailRoute) {
-        redirect({type: verifyEmailRoute});
+      if (!verifiedEmail && fallbackRoute) {
+        redirect({type: fallbackRoute});
       }
     };
     fn();
