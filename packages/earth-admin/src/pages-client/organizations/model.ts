@@ -30,6 +30,7 @@ export interface OrganizationProps {
 
 export interface OrganizationDetailsProps {
   page: string;
+  onDataChange?: () => {};
 }
 
 export interface OrganizationEditProps {

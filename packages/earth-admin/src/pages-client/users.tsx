@@ -27,7 +27,7 @@ import { UserEdit, UserDetails } from 'components/users';
 import { encodeQueryToURL, setPage } from 'utils';
 import { getAllUsers, getUser } from 'services/users';
 import { AuthzGuards } from 'auth/permissions';
-import { useRequest, useInfiniteList } from 'utils/hooks';
+import { useInfiniteList } from 'utils/hooks';
 
 
 import { useAuth0 } from 'auth/auth0';

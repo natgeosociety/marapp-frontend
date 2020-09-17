@@ -25,7 +25,6 @@ import useSWR from 'swr';
 import { encodeQueryToURL, setPage } from 'utils';
 import { useInfiniteList } from 'utils/hooks';
 import { getAllWidgets, getWidget } from 'services/widgets';
-import { useRequest } from 'utils/hooks';
 
 import { WidgetDetails, WidgetEdit } from 'components/widgets';
 import { DataListing, DefaultListItem } from 'components/data-listing';

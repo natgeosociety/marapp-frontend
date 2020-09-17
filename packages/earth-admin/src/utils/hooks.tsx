@@ -26,53 +26,6 @@ interface IError {
   message: string;
 }
 
-interface IUseRequestReturn {
-  isLoading: boolean;
-  errors: IError[];
-  data: any;
-}
-
-interface IUseRequestOptions {
-  query?: string;
-  skip?: boolean;
-}
-
-export function useRequest(
-  resource: () => Promise<any>,
-  options: IUseRequestOptions
-): IUseRequestReturn {
-  const { skip, query } = options;
-  const [isLoading, setIsLoading] = useState(!skip);
-  const [errors, setErrors] = useState<IError[]>([]);
-  const [data, setData] = useState({});
-
-  useEffect(() => {
-    async function fetchResource() {
-      try {
-        setIsLoading(true);
-        const res = await resource();
-        setData(res.data);
-        setIsLoading(false);
-      } catch ({ data }) {
-        setErrors(data.errors);
-        setIsLoading(false);
-      }
-    }
-
-    if (skip) {
-      return;
-    }
-
-    fetchResource();
-  }, [query]);
-
-  return {
-    isLoading,
-    errors,
-    data,
-  };
-}
-
 export function useDomWatcher(ref, callback, skip) {
   useEffect(() => {
     if (skip) return;
