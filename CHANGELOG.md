@@ -1,3 +1,13 @@
+# [1.4.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.3.2...v1.4.0) (2020-09-17)
+
+
+### Features
+
+* **admin:** edit place generic error when "unknown" server error [EP-2470] ([11bfd3c](https://github.com/natgeosociety/marapp-frontend/commit/11bfd3c2fcbf77afeefa6708f8effbaae1732dee))
+* **admin:** new dashboard page admin UI [EP-2194] ([#143](https://github.com/natgeosociety/marapp-frontend/issues/143)) ([9438c64](https://github.com/natgeosociety/marapp-frontend/commit/9438c644a1a4a47800a4eb9b336fe059e2d9df3a))
+* **admin:** new detail/edit dashboard page uo [EP-2196] ([#145](https://github.com/natgeosociety/marapp-frontend/issues/145)) ([aded5c0](https://github.com/natgeosociety/marapp-frontend/commit/aded5c0e40b2dcd789ccfb6910a3786328595ef3))
+* **admin:** new place generic error when "unknown" server error [EP-2470] ([c80a2ff](https://github.com/natgeosociety/marapp-frontend/commit/c80a2ff0e8796a454200a82152ba7daad3c9a791))
+
 ## [1.3.2](https://github.com/natgeosociety/marapp-frontend/compare/v1.3.1...v1.3.2) (2020-09-10)
 
 
