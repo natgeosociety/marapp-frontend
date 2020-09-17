@@ -22,9 +22,9 @@ import React, { useState } from 'react';
 import { AuthzGuards } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { ActionModal } from '@app/components/action-modal';
 import { ErrorMessages } from '@app/components/error-messages';
 import { LinkWithOrg } from '@app/components/link-with-org';
+import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 
 import { UserProps } from '../model';
 
@@ -48,17 +48,15 @@ export default function UserDetails(props: UserProps) {
 
   return (
     <div className="marapp-qa-userdetails">
-      {showDeleteModal && (
-        <ActionModal
-          id={id}
-          navigateRoute={'users'}
-          name={name}
-          type="user"
-          toggleModal={handleDeleteToggle}
-          visibility={showDeleteModal}
-          error={handleDeleteError}
-        />
-      )}
+      <DeleteConfirmation
+        id={id}
+        navigateRoute={'users'}
+        name={name}
+        type="user"
+        toggleModal={handleDeleteToggle}
+        visibility={showDeleteModal}
+        error={handleDeleteError}
+      />
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
       </div>

@@ -39,6 +39,7 @@
     "react-dom": "^16.11.0",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^4.8.2",
+    "swr": "^0.3.2",
     "ts-jsonapi": "^2.1.2",
     "url-join": "^4.0.1"
   },

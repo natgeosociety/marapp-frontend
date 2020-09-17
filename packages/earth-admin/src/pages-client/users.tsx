@@ -18,20 +18,22 @@
 */
 
 import { Router } from '@reach/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import useSWR from 'swr';
 
 import { AuthzGuards } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
+import { Auth0ListItem, DataListing } from '@app/components/data-listing';
 import { LinkWithOrg } from '@app/components/link-with-org';
-import { UserDetails, UserEdit, UserList } from '@app/components/users';
+import { UserDetails, UserEdit } from '@app/components/users';
 import { SidebarLayout } from '@app/layouts';
 import ContentLayout from '@app/layouts/Content';
 import { getAllUsers, getUser } from '@app/services/users';
 import { encodeQueryToURL, setPage } from '@app/utils';
-import { UserContext } from '@app/utils/contexts';
-import { useRequest } from '@app/utils/hooks';
+import { useInfiniteList } from '@app/utils/hooks';
 
+const PAGE_SIZE = 20;
 const USER_DETAIL_QUERY = {
   include: 'groups',
 };
@@ -39,82 +41,35 @@ const USER_DETAIL_QUERY = {
 const PAGE_TYPE = setPage('Users');
 
 export default function UsersPage(props) {
-  return (
-    <Router>
-      <Page path="/">
-        <HomePage path="/" />
-        <DetailsPage path="/:page" />
-        <EditPage path="/:page/edit" newUser={false} />
-        <EditPage path="/new" newUser={true} />
-      </Page>
-    </Router>
-  );
-}
+  const { selectedGroup } = useAuth0();
 
-function Sidebar(props: any) {
-  const [users, setUsers] = useState([]);
-  const [pageSize, setPageSize] = useState(10);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isNoMore, setIsNoMore] = useState(null);
-  const [totalResults, setTotalResults] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  const { selectedGroup, getPermissions } = useAuth0();
-
-  const permissions = getPermissions(AuthzGuards.accessUsersGuard);
-
-  const handleCursorChange = () => {
-    setPageNumber(pageNumber + 1);
+  const getQuery = (pageIndex) => {
+    const query = {
+      page: { size: PAGE_SIZE, number: pageIndex },
+      group: selectedGroup,
+      include: 'groups',
+    };
+    return encodeQueryToURL('users', query);
   };
+  const { listProps, mutate } = useInfiniteList(getQuery, getAllUsers);
 
-  useEffect(() => {
-    async function setupUsers() {
-      setIsLoading(true);
-
-      const query = {
-        page: { size: pageSize, number: pageNumber },
-        group: selectedGroup,
-        include: 'groups',
-      };
-      const encodedQuery = encodeQueryToURL('users', query);
-      const res: any = await getAllUsers(encodedQuery);
-
-      const validUsers = res.data.filter((item) => item.id !== '|' && item.groups.length > 0);
-      setTotalResults(res.total);
-      setUsers([...users, ...validUsers]);
-      setIsNoMore(pageNumber === res.pagination.total);
-
-      setIsLoading(false);
-    }
-
-    permissions && setupUsers();
-  }, [pageNumber]);
-
-  return (
-    <UserContext.Provider
-      value={{
-        handleCursorChange,
-        isLoading,
-        isNoMore,
-        users,
-        totalResults,
-        pageSize,
-        selectedItem,
-      }}
-    >
-      <SidebarLayout page={PAGE_TYPE}>
-        <UserList />
-      </SidebarLayout>
-    </UserContext.Provider>
-  );
-}
-
-function Page(props: any) {
   return (
     <>
-      <Sidebar />
-      {props.children}
+      <SidebarLayout page={PAGE_TYPE}>
+        <DataListing
+          childComponent={Auth0ListItem}
+          categoryUrl="users"
+          pageTitle="users"
+          pageSize={PAGE_SIZE}
+          {...listProps}
+        />
+      </SidebarLayout>
+      <Router>
+        <HomePage path="/" />
+        <DetailsPage path="/:page" onDataChange={mutate} />
+        <EditPage path="/:page/edit" newUser={false} onDataChange={mutate} />
+        <EditPage path="/new" newUser={true} onDataChange={mutate} />
+      </Router>
     </>
   );
 }
@@ -142,30 +97,31 @@ function DetailsPage(path: any) {
     ...USER_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const { isLoading, errors, data } = useRequest(() => getUser(encodedQuery), {
-    query: encodedQuery,
-  });
+
+  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
+    getUser(url).then((response: any) => response.data)
+  );
 
   return (
-    <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
+    <ContentLayout backTo="/users" isLoading={!data}>
       <UserDetails data={data} />
     </ContentLayout>
   );
 }
 
-function EditPage(path: any) {
+function EditPage(props: any) {
   const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`users/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`users/${props.page}`, {
     ...USER_DETAIL_QUERY,
     ...{ group: selectedGroup },
   });
-  const { isLoading, errors, data } = useRequest(() => getUser(encodedQuery), {
-    skip: path.newUser,
-  });
+  const { data, error, mutate } = useSWR(!props.newUser && encodedQuery, (url) =>
+    getUser(url).then((response: any) => response.data)
+  );
 
   return (
-    <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
-      <UserEdit data={data} newUser={path.newUser} />
+    <ContentLayout backTo="/users" isLoading={props.newUser ? false : !data}>
+      <UserEdit data={data} newUser={props.newUser} onDataChange={props.onDataChange} />
     </ContentLayout>
   );
 }

@@ -18,22 +18,56 @@
 */
 
 import { Router } from '@reach/router';
-import React from 'react';
+import React, { useState } from 'react';
 
-import { DashboardSidebar } from '@app/components/dashboards';
+import { useAuth0 } from '@app/auth/auth0';
+import { DataListing, DefaultListItem } from '@app/components/data-listing';
+import { SidebarLayout } from '@app/layouts';
+import { getAllDashboards } from '@app/services';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { useInfiniteList } from '@app/utils/hooks';
 
 import { DashboardDetail } from './details';
 import { DashboardsHome } from './home';
 import { NewDashboard } from './new';
 
+const PAGE_TYPE = setPage('Dashboards');
+const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
+const PAGE_SIZE = 20;
+
 export default function DashboardsPage(props) {
+  const { selectedGroup } = useAuth0();
+  const [searchValue, setSearchValue] = useState('');
+
+  const getQuery = (pageIndex) => {
+    const query = {
+      search: searchValue,
+      sort: 'name',
+      page: { size: PAGE_SIZE, number: pageIndex },
+      select: EXCLUDED_FIELDS,
+      group: selectedGroup,
+    };
+    return encodeQueryToURL('dashboards', query);
+  };
+  const { listProps, mutate } = useInfiniteList(getQuery, getAllDashboards);
+
   return (
     <>
-      <DashboardSidebar />
+      <SidebarLayout page={PAGE_TYPE}>
+        <DataListing
+          childComponent={DefaultListItem}
+          categoryUrl="dashboards"
+          pageTitle="dashboards"
+          searchValueAction={setSearchValue}
+          pageSize={PAGE_SIZE}
+          searchValue={searchValue}
+          {...listProps}
+        />
+      </SidebarLayout>
       <Router>
         <DashboardsHome path="/" />
-        <NewDashboard path="/new" />
-        <DashboardDetail path="/:page" />
+        <NewDashboard path="/new" onDataChange={mutate} />
+        <DashboardDetail path="/:page" onDataChange={mutate} />
       </Router>
     </>
   );

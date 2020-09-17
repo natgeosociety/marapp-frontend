@@ -49,20 +49,6 @@ export interface Layer {
   references?: Layer[];
 }
 
-export interface LayerContextProps {
-  layers: Layer[];
-  handleSearchValueChange: (v: string) => void;
-  handleCursorChange: Function;
-  pageSize: number;
-  isLoading: boolean;
-  isNoMore: boolean;
-  searchValue?: string;
-  permissions?: any;
-  totalResults?: number;
-  nextCursor?: string;
-  selectedItem?: string;
-}
-
 export interface LayerProps {
   data: Layer;
   newLayer?: boolean;

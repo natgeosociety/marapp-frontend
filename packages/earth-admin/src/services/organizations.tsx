@@ -60,9 +60,9 @@ export const getOrganization = (organizationQuery: string) => {
   });
 };
 
-export const getOrganizationStats = async (group: string) => {
+export const getOrganizationStats = async (query: string) => {
   return OrganizationAPIService.request({
-    url: `/organizations/stats?group=${group}`,
+    url: query,
   });
 };
 

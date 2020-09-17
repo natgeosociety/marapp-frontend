@@ -16,15 +16,16 @@
 import Collapse from '@kunukn/react-collapse';
 import classnames from 'classnames';
 import { JSHINT } from 'jshint';
+import { noop } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, ErrorMessage, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
+import useSWR from 'swr';
 
 import { AsyncSelect, AuthzGuards } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { ActionModal } from '@app/components/action-modal';
 import { Card } from '@app/components/card';
 import { DetailList } from '@app/components/detail-list';
 import { ErrorMessages } from '@app/components/error-messages';
@@ -33,6 +34,7 @@ import { InlineEditCard } from '@app/components/inline-edit-card';
 import { Input } from '@app/components/input';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
+import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
 import { getAllLayers, getLayer, handleLayerForm } from '@app/services/layers';
@@ -45,26 +47,27 @@ import {
   formatDate,
   getSelectValues,
 } from '@app/utils';
-import { useRequest } from '@app/utils/hooks';
 import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 
 const LAYER_DETAIL_QUERY = { include: 'references', select: 'references.name,references.id' };
 
-export function LayerDetail(path: any) {
+export function LayerDetail(props: any) {
+  const { page, onDataChange = noop } = props;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
 
-  const encodedQuery = encodeQueryToURL(`layers/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`layers/${page}`, {
     ...LAYER_DETAIL_QUERY,
     ...{ group: selectedGroup },
   });
-  const { isLoading, data } = useRequest(() => getLayer(encodedQuery), {
-    query: encodedQuery,
-  });
 
-  const [layer, setLayer] = useState(data);
+  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
+    getLayer(url).then((res: any) => res.data)
+  );
+
+  const [layer, setLayer] = useState({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState();
@@ -94,7 +97,7 @@ export function LayerDetail(path: any) {
   } = layer;
 
   useEffect(() => {
-    setLayer(data);
+    data && setLayer(data);
   }, [data]);
 
   useEffect(() => {
@@ -128,14 +131,15 @@ export function LayerDetail(path: any) {
     };
 
     try {
-      setIsLoading && setIsLoading(true);
-      await handleLayerForm(false, parsed, id, selectedGroup);
-      const res: any = await getLayer(encodedQuery);
-      setLayer(res.data);
-      setIsLoading && setIsLoading(false);
+      // optimistic ui update
+      mutate({ ...data, ...parsed }, false);
       setIsEditing && setIsEditing(false);
+      await handleLayerForm(false, parsed, id, selectedGroup);
+      mutate();
+      onDataChange();
     } catch (error) {
-      setIsLoading && setIsLoading(false);
+      mutate({ ...data }, false);
+      setIsLoading && setIsLoading(false); // optimistic ui update
       setServerErrors && setServerErrors(error.data.errors);
     }
   }
@@ -161,17 +165,16 @@ export function LayerDetail(path: any) {
 
   return (
     !!layer && (
-      <ContentLayout backTo="/layers" isLoading={isLoading} className="marapp-qa-layerdetail">
-        {showDeleteModal && (
-          <ActionModal
-            id={id}
-            navigateRoute={'layers'}
-            name={name}
-            type="layer"
-            toggleModal={handleDeleteToggle}
-            visibility={showDeleteModal}
-          />
-        )}
+      <ContentLayout backTo="/layers" isLoading={!data} className="marapp-qa-layerdetail">
+        <DeleteConfirmation
+          id={id}
+          navigateRoute="layers"
+          name={name}
+          type="layer"
+          toggleModal={handleDeleteToggle}
+          onDelete={onDataChange}
+          visibility={showDeleteModal}
+        />
         <div className="ng-padding-medium-horizontal">
           <LinkWithOrg
             className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block"

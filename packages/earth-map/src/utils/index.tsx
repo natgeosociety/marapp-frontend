@@ -49,8 +49,3 @@ export const parseHintBold = (text: string = '') => {
       )
     );
 };
-
-/**
- * No operation function. Does nothing, but still useful
- */
-export const noop = (): void => {};

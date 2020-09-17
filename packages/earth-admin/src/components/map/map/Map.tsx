@@ -61,7 +61,7 @@ export default function MapComponent(props: { height?: string }) {
   };
 
   const handleMapLoad = (e) => {
-    setMapZoom(e.map.getZoom());
+    e.map && setMapZoom(e.map.getZoom());
   };
 
   const handleViewportChange = (e) => {

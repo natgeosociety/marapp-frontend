@@ -23,9 +23,9 @@ import renderHTML from 'react-render-html';
 import { AuthzGuards } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { ActionModal } from '@app/components/action-modal';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
+import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { formatDate } from '@app/utils';
 
 import { WidgetProps } from '../model';
@@ -48,16 +48,14 @@ export default function WidgetDetails(props: WidgetProps) {
 
   return (
     <div className="marapp-qa-widgetdetails">
-      {showDeleteModal && (
-        <ActionModal
-          id={id}
-          navigateRoute={'widgets'}
-          name={name}
-          type="widget"
-          toggleModal={handleDeleteToggle}
-          visibility={showDeleteModal}
-        />
-      )}
+      <DeleteConfirmation
+        id={id}
+        navigateRoute={'widgets'}
+        name={name}
+        type="widget"
+        toggleModal={handleDeleteToggle}
+        visibility={showDeleteModal}
+      />
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
         <div className="ng-flex ng-align-center ng-flex-center ng-text-center ng-center">

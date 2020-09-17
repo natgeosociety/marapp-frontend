@@ -17,6 +17,43 @@
   specific language governing permissions and limitations under the License.
 */
 
-import ActionModal from './ActionModal';
+import React from 'react';
 
-export { ActionModal };
+import { ErrorMessages } from '@app/components/error-messages';
+
+export class ErrorBoundary extends React.Component {
+  public static getDerivedStateFromError(error) {
+    return {
+      error,
+    };
+  }
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+    };
+  }
+
+  public componentDidCatch(error, errorInfo) {
+    console.error(error, errorInfo);
+  }
+
+  public render() {
+    const error = this.state.error;
+
+    if (error) {
+      return (
+        <ErrorMessages
+          errors={[
+            {
+              title: error.message,
+              detail: error.message,
+            },
+          ]}
+        />
+      );
+    }
+
+    return this.props.children;
+  }
+}

@@ -20,20 +20,6 @@
 import { Widget } from '../../components/widgets/model';
 import { Layer } from '../layers/model';
 
-export interface DashboardContextProps {
-  handleSearchValueChange: (newValue: string) => void;
-  handleCursorChange: Function;
-  pageSize: number;
-  isLoading: boolean;
-  isNoMore: boolean;
-  searchValue?: string;
-  permissions?: any;
-  totalResults?: number;
-  nextCursor?: string;
-  dashboards: Dashboard[];
-  selectedItem?: string;
-}
-
 export interface Dashboard {
   id: string;
   slug: string;

@@ -17,6 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-import OrganizationList from './OrganizationList';
-
-export { OrganizationList };
+export { ErrorBoundary } from './ErrorBoundary';

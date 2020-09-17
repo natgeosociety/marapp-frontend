@@ -18,6 +18,7 @@
 */
 
 import { navigate } from 'gatsby';
+import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -35,7 +36,13 @@ import { noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 import { PlaceTypeEnum } from './model';
 
-export function NewPlace(path: any) {
+interface IProps {
+  path: string;
+  onDataChange?: () => {};
+}
+
+export function NewPlace(props: IProps) {
+  const { onDataChange = noop } = props;
   const { getValues, register, watch, formState, errors, setValue } = useForm({
     mode: 'onChange',
   });
@@ -59,6 +66,7 @@ export function NewPlace(path: any) {
     try {
       setIsLoading(true);
       const response: any = await addPlace(parsed, selectedGroup);
+      onDataChange();
       await navigate(`/${selectedGroup}/places/${response.data.id}`);
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.

@@ -13,14 +13,15 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { noop } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
+import useSWR from 'swr';
 
 import { AsyncSelect, AuthzGuards } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { ActionModal } from '@app/components/action-modal';
 import { Card } from '@app/components/card';
 import { DetailList } from '@app/components/detail-list';
 import { ErrorMessages } from '@app/components/error-messages';
@@ -28,11 +29,11 @@ import { HtmlEditor } from '@app/components/html-editor';
 import { InlineEditCard } from '@app/components/inline-edit-card';
 import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
+import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
 import { getAllWidgets, getDashboard, handleDashboardForm } from '@app/services';
 import { encodeQueryToURL, flattenArrayForSelect, formatDate } from '@app/utils';
-import { useRequest } from '@app/utils/hooks';
 import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
@@ -43,20 +44,26 @@ const DASHBOARD_DETAIL_QUERY = {
   sort: 'layers.name,widgets.name',
 };
 
-export function DashboardDetail(path: any) {
+interface IProps {
+  path: string;
+  onDataChange?: () => {};
+}
+
+export function DashboardDetail(props: IProps) {
+  const { page, onDataChange = noop } = props;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
-  const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`dashboards/${page}`, {
     ...DASHBOARD_DETAIL_QUERY,
     ...{ group: selectedGroup },
   });
 
-  const { isLoading, data } = useRequest(() => getDashboard(encodedQuery), {
-    query: encodedQuery,
-  });
+  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
+    getDashboard(url).then((res: any) => res.data)
+  );
 
-  const [dashboard, setDashboard] = useState(data);
+  const [dashboard, setDashboard] = useState({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [serverErrors, setServerErrors] = useState();
 
@@ -73,7 +80,7 @@ export function DashboardDetail(path: any) {
   } = dashboard;
 
   useEffect(() => {
-    setDashboard(data);
+    data && setDashboard(data);
   }, [data]);
 
   const { getValues, register, formState, errors, control } = useForm({
@@ -96,13 +103,15 @@ export function DashboardDetail(path: any) {
     };
 
     try {
-      setIsLoading && setIsLoading(true);
-      await handleDashboardForm(false, parsed, id, selectedGroup);
-      const res: any = await getDashboard(encodedQuery);
-      setDashboard(res.data);
-      setIsLoading && setIsLoading(false);
+      // optimistic ui update
+      mutate({ ...data, ...parsed }, false);
       setIsEditing && setIsEditing(false);
+      await handleDashboardForm(false, parsed, id, selectedGroup);
+      mutate();
+      onDataChange();
     } catch (error) {
+      // undo optimistic ui update
+      mutate({ ...data }, false);
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data.errors);
     }
@@ -114,21 +123,16 @@ export function DashboardDetail(path: any) {
 
   return (
     !!dashboard && (
-      <ContentLayout
-        backTo="/dashboards"
-        isLoading={isLoading}
-        className="marapp-qa-dashboarddetail"
-      >
-        {showDeleteModal && (
-          <ActionModal
-            id={id}
-            navigateRoute={'dashboards'}
-            name={name}
-            type="dashboard"
-            toggleModal={handleDeleteToggle}
-            visibility={showDeleteModal}
-          />
-        )}
+      <ContentLayout backTo="/dashboards" isLoading={!data} className="marapp-qa-dashboarddetail">
+        <DeleteConfirmation
+          id={id}
+          navigateRoute={'dashboards'}
+          name={name}
+          type="dashboard"
+          toggleModal={handleDeleteToggle}
+          onDelete={onDataChange}
+          visibility={showDeleteModal}
+        />
         <div className="ng-padding-medium-horizontal">
           <LinkWithOrg
             className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block"
