@@ -17,6 +17,24 @@
   specific language governing permissions and limitations under the License.
 */
 
-import DashboardEdit from './DashboardEdit';
+import * as React from 'react';
+import { Router, } from '@reach/router';
 
-export { DashboardEdit };
+
+import { DashboardsHome } from './home';
+import { NewDashboard } from './new';
+import { DashboardDetail } from './details';
+import { DashboardSidebar } from 'components/dashboards';
+
+export default function DashboardsPage(props) {
+  return (
+    <>
+      <DashboardSidebar />
+      <Router>
+        <DashboardsHome path="/" />
+        <NewDashboard path="/new"/>
+        <DashboardDetail path="/:page"/>
+      </Router>
+    </>
+  );
+}

@@ -16,7 +16,4 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-
-export * from './dashboard-details';
-export * from './dashboard-edit';
-export * from './dashboard-list';
+export * from './dashboard-sidebar';
