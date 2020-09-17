@@ -138,7 +138,7 @@ export function* loadDataIndexes({ payload }) {
     });
 
     const widgets = indexes.reduce((acc, index) => {
-      return [...acc, ...(index.widgets || [])];
+      return [...acc, ...(index?.widgets || [])];
     }, []);
 
     const adaptedWidgets = widgets.map(setWidget);
