@@ -195,8 +195,8 @@ export const downloadFile = (data) => {
  * @param data
  * @param fieldName
  */
-export const flattenArrayForSelect = (data: {}[], fieldName: string): string[] => {
-  return !!data ? data.map(val => val[fieldName]) : data;
+export const flattenArrayForSelect = (data: Array<{}>, fieldName: string = 'value'): string[] => {
+  return !!data ? data.map((val) => val[fieldName]) : data;
 };
 
 /**
@@ -204,7 +204,7 @@ export const flattenArrayForSelect = (data: {}[], fieldName: string): string[] =
  * @param data
  * @param fieldName
  */
-export const flattenObjectForSelect = (data: {}, fieldName: string): string => {
+export const flattenObjectForSelect = (data: {}, fieldName: string = 'value'): string => {
   return !!data ? data[fieldName] : data;
 };
 
