@@ -22,8 +22,9 @@ import { useState, useEffect, useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
-import { formatDate } from 'utils';
+import { noop } from 'lodash';
 
+import { formatDate } from 'utils';
 import { handleWidgetForm } from 'services';
 
 import { WidgetProps } from 'components/widgets/model';
@@ -51,6 +52,7 @@ export default function WidgetEdit(props: WidgetProps) {
       config,
       metrics,
     },
+    onDataChange = noop,
     newWidget,
   } = props;
 
@@ -79,6 +81,7 @@ export default function WidgetEdit(props: WidgetProps) {
 
     try {
       await handleWidgetForm(props.newWidget, formData, id, selectedGroup);
+      onDataChange();
       await navigate(`/${selectedGroup}/widgets`);
     } catch (error) {
       setServerErrors(error.data.errors);

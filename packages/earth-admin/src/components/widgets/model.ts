@@ -34,18 +34,5 @@ export interface Widget {
 export interface WidgetProps {
   data: Widget;
   newWidget?: boolean;
-}
-
-export interface WidgetContextProps {
-  widgets: Widget[];
-  handleSearchValueChange?: (newValue: string) => void;
-  handleCursorChange?: Function;
-  pageSize?: number;
-  isLoading?: boolean;
-  isNoMore?: boolean;
-  searchValue?: string;
-  permissions?: any;
-  totalResults?: number;
-  nextCursor?: string;
-  selectedItem?: string;
+  onDataChange?: () => {};
 }

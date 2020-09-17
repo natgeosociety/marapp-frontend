@@ -18,21 +18,8 @@
 */
 
 import * as React from 'react';
-import { LayerContextProps } from 'components/layers/model';
-import { PlaceContextProps } from 'pages-client/places/model';
-import { UserContextProps } from 'components/users/model';
-import { OrganizationContextProps } from 'components/organizations/model';
-import { WidgetContextProps } from 'components/widgets/model';
-import { DashboardContextProps } from 'components/dashboards/model';
+
 import { Auth0 } from 'auth/model';
 
-export const PlaceContext = React.createContext<PlaceContextProps | null>(null);
-export const LayerContext = React.createContext<LayerContextProps | null>(null);
-export const UserContext = React.createContext<UserContextProps | null>(null);
-export const OrganizationContext = React.createContext<OrganizationContextProps | null>(null);
-export const WidgetContext = React.createContext<WidgetContextProps | null>(null);
-export const DashboardContext = React.createContext<DashboardContextProps | null>(null);
-
 export const Auth0Context = React.createContext<Auth0>({});
-
 export const MapComponentContext = React.createContext<any>({});

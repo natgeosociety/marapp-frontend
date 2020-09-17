@@ -20,123 +20,65 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Router } from '@reach/router';
+import useSWR from 'swr';
 
-import { WidgetContext } from 'utils/contexts';
 import { encodeQueryToURL, setPage } from 'utils';
+import { useInfiniteList } from 'utils/hooks';
 import { getAllWidgets, getWidget } from 'services/widgets';
-import { useRequest } from 'utils/hooks';
 
-import { WidgetList, WidgetDetails, WidgetEdit } from 'components/widgets';
+import { WidgetDetails, WidgetEdit } from 'components/widgets';
+import { DataListing, DefaultListItem } from 'components/data-listing';
 import { LinkWithOrg } from 'components/link-with-org';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { SidebarLayout, ContentLayout } from 'layouts';
 
-
+const PAGE_SIZE = 20;
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const WIDGET_DETAIL_QUERY = {
   include: 'layers',
   select: 'layers.id,layers.name,layers.type',
   sort: 'layers.name',
 };
-const INIT_CURSOR_LOCATION = '-1';
-
 const PAGE_TYPE = setPage('Widgets');
 
 export default function WidgetsPage( props ) {
-  return (
-    <Router>
-      <Page path="/">
-        <HomePage path="/"/>
-        <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newWidget={false}/>
-        <EditPage path="/new" newWidget={true}/>
-      </Page>
-    </Router>
-  );
-}
-
-function Sidebar( props: any ) {
-  const [widgets, setWidgets] = useState([]);
+  const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
-  const [pageSize, setPageSize] = useState(20);
-  const [pageCursor, setPageCursor] = useState('-1');
-  const [nextCursor, setNextCursor] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isNoMore, setIsNoMore] = useState(null);
-  const [totalResults, setTotalResults] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
 
-  const { selectedGroup, getPermissions } = useAuth0();
+  const getQuery = (pageIndex) => {
+    const query = {
+      search: searchValue,
+      sort: 'name',
+      page: { size: PAGE_SIZE, number: pageIndex },
+      select: EXCLUDED_FIELDS,
+      group: selectedGroup,
+    };
+    return encodeQueryToURL('widgets', query);
+  }
+  const { listProps, mutate } = useInfiniteList(getQuery, getAllWidgets);
 
-  const permissions = getPermissions(AuthzGuards.accessWidgetsGuard);
-
-
-  const handleSearchValueChange = ( newValue: string ) => {
-    setPageCursor('-1');
-    setNextCursor(null);
-    setSearchValue(newValue);
-  };
-
-  const handleCursorChange = () => {
-    if (nextCursor) {
-      setPageCursor(nextCursor);
-    }
-  };
-
-  useEffect(() => {
-    async function setupWidgets() {
-      setIsLoading(true);
-
-      const query = {
-        search: searchValue,
-        sort: 'name',
-        page: { size: pageSize, cursor: pageCursor },
-        select: EXCLUDED_FIELDS,
-        group: selectedGroup,
-      };
-      const encodedQuery = encodeQueryToURL('widgets', query);
-      const res: any = await getAllWidgets(encodedQuery);
-
-      setTotalResults(res.total);
-
-      setWidgets(!nextCursor ? res.data : [...widgets, ...res.data]);
-      setNextCursor(res.pagination.nextCursor ? res.pagination.nextCursor : null);
-      setIsNoMore(!res.pagination.nextCursor);
-      setIsLoading(false);
-    }
-
-    permissions && setupWidgets();
-  }, [pageCursor, searchValue]);
-
-  return (
-    <WidgetContext.Provider
-      value={{
-        handleSearchValueChange,
-        handleCursorChange,
-        isLoading,
-        isNoMore,
-        widgets,
-        nextCursor,
-        totalResults,
-        pageSize,
-        searchValue,
-        selectedItem,
-      }}
-    >
-      <SidebarLayout page={PAGE_TYPE}>
-        <WidgetList/>
-      </SidebarLayout>
-    </WidgetContext.Provider>
-  );
-}
-
-function Page( props: any ) {
   return (
     <>
-      <Sidebar/>
-      {props.children}
-    </>);
+      <SidebarLayout page={PAGE_TYPE}>
+        <DataListing
+          childComponent={DefaultListItem}
+          categoryUrl="widgets"
+          pageTitle="widgets"
+          searchValueAction={setSearchValue}
+          pageSize={PAGE_SIZE}
+          searchValue={searchValue}
+          {...listProps}
+        />
+      </SidebarLayout>
+      <Router>
+        <HomePage path="/"/>
+        <DetailsPage path="/:page" onDataChange={mutate} />
+        <EditPage path="/:page/edit" newWidget={false} onDataChange={mutate} />
+        <EditPage path="/new" newWidget={true} onDataChange={mutate} />
+      </Router>
+    </>
+  );
 }
 
 function HomePage( props: any ) {
@@ -154,39 +96,42 @@ function HomePage( props: any ) {
   ));
 }
 
-function DetailsPage( path: any ) {
+function DetailsPage( props: any ) {
   const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`widgets/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`widgets/${props.page}`, {
     ...WIDGET_DETAIL_QUERY,
     ...{ group: selectedGroup },
   });
-  const { isLoading, errors, data } = useRequest(() => getWidget(encodedQuery), {
-    query: encodedQuery,
-  });
+  const { data, error, mutate } = useSWR(
+    encodedQuery,
+    (url) => getWidget(url).then((response: any) => response.data)
+  );
 
   return (
-
-    <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
-      <WidgetDetails data={data}/>
+    <ContentLayout backTo="/widgets" isLoading={!data}>
+      <WidgetDetails data={data} />
     </ContentLayout>
 
   );
 }
 
-function EditPage( path: any ) {
+function EditPage( props: any ) {
   const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`widgets/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`widgets/${props.page}`, {
     ...WIDGET_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const { isLoading, errors, data } = useRequest(() => getWidget(encodedQuery), {
-    skip: path.newWidget,
-  });
+  const { data, error, mutate } = useSWR(
+    !props.newWidget && encodedQuery,
+    (url) => getWidget(url).then((response: any) => response.data)
+  );
 
   return (
-
-    <ContentLayout errors={errors} backTo="/widgets" isLoading={isLoading}>
-      <WidgetEdit data={data} newWidget={path.newWidget}/>
+    <ContentLayout backTo="/widgets" isLoading={props.newWidget ? false : !data}>
+      <WidgetEdit
+        data={data || {}}
+        newWidget={props.newWidget}
+        onDataChange={props.onDataChange} />
     </ContentLayout>
 
 

@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { groupBy, map } from 'lodash';
+import { groupBy, map, noop } from 'lodash';
+import useSWR from 'swr';
+
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { encodeQueryToURL, formatDate, km2toHa, formatArrayToParentheses } from 'utils';
 import { noSpecialCharsRule, noSpecialCharsOrSpaceRule, setupErrors } from 'utils/validations';
-import { useRequest } from 'utils/hooks';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from 'services';
 import { MapComponentContext } from 'utils/contexts';
 
 import { Metrics } from 'components/places';
 import { ErrorMessages } from 'components/error-messages';
-import { ActionModal } from 'components/action-modal';
+import { DeleteConfirmation } from 'components/modals/delete-confirmation';
 import { MapComponent } from 'components/map';
 import { InlineEditCard } from 'components/inline-edit-card';
 import { Toggle } from 'components/toggle';
@@ -22,27 +23,34 @@ import { Input } from 'components/input';
 import { LinkWithOrg } from 'components/link-with-org';
 import { DownloadFile } from 'components/download-file';
 
-
 import { ContentLayout } from 'layouts';
 import { PlaceTypeEnum, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
 import { DetailList } from 'components/detail-list';
+import { ErrorBoundary } from 'components/error-boundary';
 
-export function PlaceDetail(path: any) {
+interface IProps {
+  path: string;
+  page?: string;
+  onDataChange?: () => {};
+}
+
+export function PlaceDetail(props: IProps) {
+  const { page, onDataChange = noop } = props;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
   const metricsPermission = getPermissions(AuthzGuards.accessMetricsGuard);
   const writeMetricsPermission = getPermissions(AuthzGuards.writeMetricsGuard);
 
-  const encodedQuery = encodeQueryToURL(`locations/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`locations/${page}`, {
     ...PLACE_DETAIL_QUERY,
     group: selectedGroup,
   });
 
-  const { isLoading, data } = useRequest(() => getPlace(encodedQuery), {
-    query: encodedQuery,
-  });
+  const { data, error, mutate, revalidate } = useSWR(encodedQuery, (url) =>
+    getPlace(url).then((response: any) => response.data)
+  );
 
-  const [place, setPlace] = useState(data);
+  const [place, setPlace] = useState({});
   const [mapData, setMapData] = useState({});
   const [mappedIntersections, setMappedIntersections] = useState();
   const [geojsonValue, setGeojson] = useState(null);
@@ -53,7 +61,7 @@ export function PlaceDetail(path: any) {
   const [metricsLoading, setMetricsLoading] = useState(false);
 
   useEffect(() => {
-    setPlace(data);
+    data && setPlace(data);
   }, [data]);
 
   const {
@@ -62,7 +70,7 @@ export function PlaceDetail(path: any) {
   } = place;
 
 
-  const {getValues, register, formState, errors} = useForm({
+  const { getValues, register, formState, errors } = useForm({
     mode: 'onChange',
   });
 
@@ -89,15 +97,20 @@ export function PlaceDetail(path: any) {
     };
 
     try {
-      setIsLoading && setIsLoading(true);
-      await handlePlaceForm(false, parsed, id, selectedGroup);
-      const res = await getPlace(encodedQuery);
-      setPlace(res.data);
-      setIsLoading && setIsLoading(false);
+      // optimistic ui update
+      mutate({ ...data, ...parsed }, false);
+
       setIsEditing && setIsEditing(false);
+      await handlePlaceForm(false, parsed, id, selectedGroup);
+
+      revalidate();
+      onDataChange();
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
       const fallbackError =  [{ detail: 'Something went wrong. Please make sure the selected file is under 6MB.' }];
+
+      // undo optimistic ui update
+      mutate({ ...data }, false);
 
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error?.data.errors || fallbackError);
@@ -125,17 +138,16 @@ export function PlaceDetail(path: any) {
   }
 
   return !!place && (
-    <ContentLayout backTo="/places" isLoading={isLoading} className="marapp-qa-placesdetail">
-      {showDeleteModal && (
-        <ActionModal
-          id={id}
-          navigateRoute={'places'}
-          name={name}
-          type="place"
-          toggleModal={handleDeleteToggle}
-          visibility={showDeleteModal}
-        />
-      )}
+    <ContentLayout backTo="/places" isLoading={!data} className="marapp-qa-placesdetail">
+      <DeleteConfirmation
+        id={id}
+        navigateRoute="places"
+        type="place"
+        name={name}
+        toggleModal={handleDeleteToggle}
+        onDelete={onDataChange}
+        visibility={showDeleteModal}
+      />
       <div className="ng-padding-medium-horizontal">
         <LinkWithOrg className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block" to="/places">
           <i className="ng-icon ng-icon-directionleft"></i>
@@ -174,14 +186,14 @@ export function PlaceDetail(path: any) {
                   label="Featured"
                   value={featured}
                   className="ng-display-block"
-                  onChange={(e) => onSubmit(e)}
+                  onChange={onSubmit}
                   ref={register({})} />
                 <Toggle
                   name="published"
                   label="Published"
                   value={published}
                   className="ng-display-block"
-                  onChange={(e) => onSubmit(e)}
+                  onChange={onSubmit}
                   ref={register({})} />
               </Card>
             </div>
@@ -263,49 +275,51 @@ export function PlaceDetail(path: any) {
             {!!mapData && (
               <MapComponentContext.Provider value={mapData}>
                 <div className="ng-margin-medium-bottom ng-width-1-1">
-                  <InlineEditCard
-                    editButtonText="View and upload shape"
-                    onSubmit={onSubmit}
-                    validForm={formValid && !jsonError}
-                    render={({ setIsEditing, setIsLoading, setServerErrors }) => (
-                      <div className="ng-grid">
-                        <div className="ng-width-1-2">
-                          <MapComponent height="235px" />
-                          <DownloadFile data={geojson} fileName={slug} className="ng-align-right ng-margin-top">Download
+                  <ErrorBoundary>
+                    <InlineEditCard
+                      editButtonText="View and upload shape"
+                      onSubmit={onSubmit}
+                      validForm={formValid && !jsonError}
+                      render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                        <div className="ng-grid">
+                          <div className="ng-width-1-2">
+                            <MapComponent height="235px" />
+                            <DownloadFile data={geojson} fileName={slug} className="ng-align-right ng-margin-top">Download
                           GeoJSON</DownloadFile>
-                          <div className="ng-width-1-1 ng-margin-medium-top">
-                            <FakeJsonUpload
-                              name="geojson"
-                              label="Place shape*"
-                              ref={register({
-                                required: 'GeoJSON is required',
-                              })}
-                              onChange={(json) => {
-                                setGeojson(json);
-                                setJsonError(false);
-                              }}
-                              onError={(err) => setJsonError(true)} />
+                            <div className="ng-width-1-1 ng-margin-medium-top">
+                              <FakeJsonUpload
+                                name="geojson"
+                                label="Place shape*"
+                                ref={register({
+                                  required: 'GeoJSON is required',
+                                })}
+                                onChange={(json) => {
+                                  setGeojson(json);
+                                  setJsonError(false);
+                                }}
+                                onError={(err) => setJsonError(true)} />
+                            </div>
+                          </div>
+                          <div className="ng-width-1-2">
+                            {areaKm2 && <p className="ng-margin-bottom ng-margin-top-remove">
+                              <span
+                                className="ng-text-weight-bold ng-color-mdgray">Area ha:</span> {km2toHa(areaKm2)}
+                            </p>}
+                            {bbox2d && <p className="ng-margin-bottom ng-margin-top-remove">
+                              <span
+                                className="ng-text-weight-bold ng-color-mdgray">Area Bbox:</span> {formatArrayToParentheses(bbox2d, 'rounded', 2)}
+                            </p>}
+                            {centroid && <p className="ng-margin-bottom ng-margin-top-remove">
+                              <span
+                                className="ng-text-weight-bold ng-color-mdgray">Centroid:</span> {formatArrayToParentheses(centroid.geometry.coordinates, 'brackets', 1)}
+                            </p>}
                           </div>
                         </div>
-                        <div className="ng-width-1-2">
-                          {areaKm2 && <p className="ng-margin-bottom ng-margin-top-remove">
-                            <span
-                              className="ng-text-weight-bold ng-color-mdgray">Area ha:</span> {km2toHa(areaKm2)}
-                          </p>}
-                          {bbox2d && <p className="ng-margin-bottom ng-margin-top-remove">
-                            <span
-                              className="ng-text-weight-bold ng-color-mdgray">Area Bbox:</span> {formatArrayToParentheses(bbox2d, 'rounded', 2)}
-                          </p>}
-                          {centroid && <p className="ng-margin-bottom ng-margin-top-remove">
-                            <span
-                              className="ng-text-weight-bold ng-color-mdgray">Centroid:</span> {formatArrayToParentheses(centroid.geometry.coordinates, 'brackets', 1)}
-                          </p>}
-                        </div>
-                      </div>
-                    )}>
-                    <br />
-                    <MapComponent />
-                  </InlineEditCard>
+                      )}>
+                      <br />
+                      <MapComponent />
+                    </InlineEditCard>
+                  </ErrorBoundary>
                 </div>
               </MapComponentContext.Provider>
             )}
@@ -346,14 +360,14 @@ export function PlaceDetail(path: any) {
           <Card>
             <div className="">
               {mappedIntersections &&
-              map(mappedIntersections, (intersections: PlaceIntersection[], idx) => (
-                <DetailList
-                  key={idx}
-                  name={intersections[0].type}
-                  type='places'
-                  data={intersections}
-                />
-              ))}
+                map(mappedIntersections, (intersections: PlaceIntersection[], idx) => (
+                  <DetailList
+                    key={idx}
+                    name={intersections[0].type}
+                    type='places'
+                    data={intersections}
+                  />
+                ))}
             </div>
           </Card>
         </div>}

@@ -20,19 +20,47 @@
 import * as React from 'react';
 import { Router } from '@reach/router';
 
-import { OrganizationsSidebar } from 'components/organizations';
+import { useInfiniteList } from 'utils/hooks';
+import { useAuth0 } from 'auth/auth0';
+import { encodeQueryToURL, setPage } from 'utils';
+import { getAllOrganizations } from 'services/organizations';
+
+import { DataListing, Auth0ListItem } from 'components/data-listing';
+import { SidebarLayout } from 'layouts';
 import { OrganizationHome } from './home';
 import { OrganizationDetails } from './details';
 import { NewOrganization } from './new';
 
+const PAGE_SIZE = 20;
+const PAGE_TYPE = setPage('Organizations');
+
 export default function PlacesPage(props) {
+  const { selectedGroup } = useAuth0();
+
+  const getQuery = (pageIndex) => {
+    const query = {
+      page: { size: PAGE_SIZE, number: pageIndex },
+      group: selectedGroup,
+    };
+    return encodeQueryToURL('organizations', query);
+  }
+  const { listProps, mutate } = useInfiniteList(getQuery, getAllOrganizations);
+
   return (
     <>
-      <OrganizationsSidebar />
+      <SidebarLayout page={PAGE_TYPE}>
+        <DataListing
+          childComponent={Auth0ListItem}
+          categoryUrl="organizations"
+          pageTitle="ORGANIZATIONS"
+          pageSize={PAGE_SIZE}
+          {...listProps}
+        />
+      </SidebarLayout>
       <Router>
         <OrganizationHome path="/" />
-        <NewOrganization path="/new" />
-        <OrganizationDetails path="/:page" />
+        <NewOrganization path="/new" onDataChange={mutate} />
+        <OrganizationDetails path="/:page" onDataChange={mutate} />
       </Router>
     </>
   );

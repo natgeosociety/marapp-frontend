@@ -18,4 +18,3 @@
 */
 
 export * from './metrics';
-export * from './places-sidebar';

@@ -20,36 +20,40 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import useSWR from 'swr';
+import { noop } from 'lodash';
 
 import { OrganizationDetailsProps } from './model';
-import { useRequest } from 'utils/hooks';
 import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { setupErrors, validEmailRule, noSpecialCharsRule } from 'utils/validations';
 import { getOrganization, updateOrganization } from 'services/organizations';
 import { ContentLayout } from 'layouts';
 import { encodeQueryToURL } from 'utils';
-import { ActionModal } from 'components/action-modal';
+import { DeleteConfirmation } from 'components/modals/delete-confirmation';
 import { LinkWithOrg } from 'components/link-with-org';
 import { InlineEditCard } from 'components/inline-edit-card';
 import { Input } from 'components/input';
 
 export function OrganizationDetails(props: OrganizationDetailsProps) {
+  const {
+    page,
+    onDataChange = noop,
+  } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [localOrgData, setLocalOrgData] = useState(null);
+  const [localOrgData, setLocalOrgData] = useState({});
   const {getPermissions, selectedGroup} = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   const encodedQuery = encodeQueryToURL(`organizations/${props.page}`, {include: 'owners'});
 
-  const {isLoading, errors, data} = useRequest(() =>
-    getOrganization(encodedQuery), {
-    query: encodedQuery,
-  });
+  const { data, error, mutate } = useSWR(
+    encodedQuery,
+    (url) => getOrganization(url).then((res: any) => res.data)
+  );
 
   useEffect(() => {
-    setLocalOrgData(data);
+    data && setLocalOrgData(data);
   }, [data]);
-
 
   const {getValues, register, formState, errors: formErrors} = useForm({
     mode: 'onChange',
@@ -66,7 +70,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     e.preventDefault();
     const {owner, ...rest} = getValues();
 
-    const transformedFormData = {
+    const parsed = {
       ...rest,
       ...owner && {
         owners: [owner],
@@ -74,18 +78,19 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     };
 
     try {
-      setIsLoading(true);
-      const {data}: any = await updateOrganization(id, transformedFormData, selectedGroup);
+      mutate({ ...data, ...parsed }, false);
       setIsEditing(false);
-      setLocalOrgData(data);
-      setIsLoading(false);
+      await updateOrganization(id, parsed, selectedGroup);
+      mutate();
+      onDataChange();
     } catch (err) {
+      mutate({ ...data }, false);
       setIsLoading(false);
       setServerErrors(err.data.errors);
     }
   }
 
-  if (isLoading) {
+  if (!data) {
     return <ContentLayout isLoading/>;
   }
 
@@ -93,17 +98,16 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   const owner = owners && owners[0];
 
   return (
-    <ContentLayout errors={errors} backTo="/organizations">
-      {showDeleteModal && (
-        <ActionModal
-          id={id}
-          navigateRoute={'organizations'}
-          name={name}
-          type="organization"
-          toggleModal={handleDeleteToggle}
-          visibility={showDeleteModal}
-        />
-      )}
+    <ContentLayout backTo="/organizations">
+      <DeleteConfirmation
+        id={id}
+        navigateRoute={'organizations'}
+        name={name}
+        type="organization"
+        toggleModal={handleDeleteToggle}
+        onDelete={onDataChange}
+        visibility={showDeleteModal}
+      />
 
       <div className="marapp-qa-organizationdetails ng-padding-medium-horizontal">
         <LinkWithOrg className="ng-border-remove ng-margin-bottom ng-display-block" to="/organizations">

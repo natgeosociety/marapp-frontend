@@ -18,21 +18,58 @@
 */
 
 import * as React from 'react';
+import { useState } from 'react';
 import { Router, } from '@reach/router';
 
-import { PlacesSidebar } from 'components/places';
+import { encodeQueryToURL, setPage } from 'utils';
+import { useAuth0 } from 'auth/auth0';
+import { getAllPlaces } from 'services/places';
+import { useInfiniteList } from 'utils/hooks';
+
+import { SidebarLayout } from 'layouts';
+import { DataListing, DefaultListItem } from 'components/data-listing';
 import { PlacesHome } from './home';
 import { PlaceDetail } from './details';
 import { NewPlace } from './new';
 
-export default function PlacesPage(props) {
+const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
+const PAGE_TYPE = setPage('Places');
+const PAGE_SIZE = 20;
+
+export default function PlacesPage() {
+  const { selectedGroup } = useAuth0();
+  const [searchValue, setSearchValue] = useState('');
+
+  const getQuery = (pageIndex) => {
+    const query = {
+      search: searchValue,
+      sort: 'name',
+      page: { size: PAGE_SIZE, number: pageIndex },
+      select: EXCLUDED_FIELDS,
+      group: selectedGroup,
+    };
+    return encodeQueryToURL('locations', query);
+  }
+  const {listProps, mutate} = useInfiniteList(getQuery, getAllPlaces);
+
   return (
     <>
-      <PlacesSidebar />
+      <SidebarLayout page={PAGE_TYPE}>
+        <DataListing
+          childComponent={DefaultListItem}
+          categoryUrl="places"
+          pageTitle="places"
+          searchValueAction={setSearchValue}
+          pageSize={PAGE_SIZE}
+          searchValue={searchValue}
+          {...listProps}
+          // selectedItem={selectedItem}
+        />
+      </SidebarLayout>
       <Router>
         <PlacesHome path="/" />
-        <NewPlace path="/new" />
-        <PlaceDetail path="/:page" />
+        <NewPlace path="/new" onDataChange={mutate} />
+        <PlaceDetail path="/:page" onDataChange={mutate} />
       </Router>
     </>
   );

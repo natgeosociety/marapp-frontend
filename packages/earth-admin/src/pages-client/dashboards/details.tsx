@@ -17,19 +17,20 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import renderHTML from 'react-render-html';
 import { Controller, useForm } from 'react-hook-form';
+import useSWR from 'swr';
+import { noop } from 'lodash';
 
 import {
   encodeQueryToURL,
   formatDate,
   flattenArrayForSelect,
 } from 'utils';
-import { useRequest } from 'utils/hooks';
 
 import { noSpecialCharsRule, alphaNumericDashesRule, setupErrors } from 'utils/validations';
 
 import { AsyncSelect } from '@marapp/earth-components';
 import { LinkWithOrg } from 'components/link-with-org';
-import { ActionModal } from 'components/action-modal';
+import { DeleteConfirmation } from 'components/modals/delete-confirmation';
 import { Input } from 'components/input';
 import { InlineEditCard } from 'components/inline-edit-card';
 import { Card } from 'components/card';
@@ -42,7 +43,6 @@ import { useAuth0 } from 'auth/auth0';
 import { AuthzGuards } from 'auth/permissions';
 import { ContentLayout } from 'layouts';
 
-
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 import { getAllWidgets, getDashboard, handleDashboardForm } from 'services';
 
@@ -52,20 +52,30 @@ const DASHBOARD_DETAIL_QUERY = {
   sort: 'layers.name,widgets.name',
 };
 
-export function DashboardDetail(path: any) {
+interface IProps {
+  path: string;
+  onDataChange?: () => {};
+}
+
+export function DashboardDetail(props: IProps) {
+  const {
+    page,
+    onDataChange = noop,
+  } = props;
   const {getPermissions, selectedGroup} = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
-  const encodedQuery = encodeQueryToURL(`dashboards/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`dashboards/${page}`, {
     ...DASHBOARD_DETAIL_QUERY,
     ...{group: selectedGroup},
   });
 
-  const {isLoading, data} = useRequest(() => getDashboard(encodedQuery), {
-    query: encodedQuery,
-  });
+  const { data, error, mutate } = useSWR(
+    encodedQuery,
+    (url) => getDashboard(url).then((res: any) => res.data)
+  );
 
-  const [dashboard, setDashboard] = useState(data);
+  const [dashboard, setDashboard] = useState({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [serverErrors, setServerErrors] = useState();
 
@@ -74,7 +84,7 @@ export function DashboardDetail(path: any) {
   } = dashboard;
 
   useEffect(() => {
-    setDashboard(data);
+    data && setDashboard(data);
   }, [data]);
 
   const {getValues, register, formState, errors, control} = useForm({
@@ -97,13 +107,17 @@ export function DashboardDetail(path: any) {
     };
 
     try {
-      setIsLoading && setIsLoading(true);
-      await handleDashboardForm(false, parsed, id, selectedGroup);
-      const res = await getDashboard(encodedQuery);
-      setDashboard(res.data);
-      setIsLoading && setIsLoading(false);
+
+      // optimistic ui update
+      mutate({ ...data, ...parsed }, false);
       setIsEditing && setIsEditing(false);
+      await handleDashboardForm(false, parsed, id, selectedGroup);
+      mutate();
+      onDataChange();
     } catch (error) {
+
+      // undo optimistic ui update
+      mutate({ ...data }, false);
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data.errors);
     }
@@ -114,17 +128,16 @@ export function DashboardDetail(path: any) {
   }
 
   return !!dashboard && (
-    <ContentLayout backTo="/dashboards" isLoading={isLoading} className="marapp-qa-dashboarddetail">
-      {showDeleteModal && (
-        <ActionModal
-          id={id}
-          navigateRoute={'dashboards'}
-          name={name}
-          type="dashboard"
-          toggleModal={handleDeleteToggle}
-          visibility={showDeleteModal}
-        />
-      )}
+    <ContentLayout backTo="/dashboards" isLoading={!data} className="marapp-qa-dashboarddetail">
+      <DeleteConfirmation
+        id={id}
+        navigateRoute={'dashboards'}
+        name={name}
+        type="dashboard"
+        toggleModal={handleDeleteToggle}
+        onDelete={onDataChange}
+        visibility={showDeleteModal}
+      />
       <div className="ng-padding-medium-horizontal">
         <LinkWithOrg className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block"
                      to="/dashboards">
