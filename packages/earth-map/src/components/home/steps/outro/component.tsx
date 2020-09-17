@@ -17,11 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import {Transition, animated} from 'react-spring/renderprops'
-import { Button } from '@marapp/earth-components';
-
 import { APP_NAME } from 'config';
+import React from 'react';
+import { animated, Transition } from 'react-spring/renderprops';
+
+import { Button } from '@marapp/earth-shared';
 
 import './styles.scss';
 
@@ -31,11 +31,11 @@ export interface IOutro {
 }
 
 class OutroComponent extends React.PureComponent<IOutro> {
-  render() {
+  public render() {
     const { active } = this.props;
     return (
       <Transition
-        native
+        native={true}
         items={active}
         from={{ opacity: 0 }}
         enter={{ opacity: 1, delay: 900 }}

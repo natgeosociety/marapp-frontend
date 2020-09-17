@@ -17,14 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import { useEffect } from 'react';
-
 import { useAuth0 } from 'auth/auth0';
 import AsyncPage from 'pages/main/async';
+import React, { useEffect } from 'react';
 
-const AuthenticatedPage = ({component: Component, fallbackRoute, redirect, ...rest}) => {
-  const {isAuthenticated, login, verifiedEmail} = useAuth0();
+const AuthenticatedPage = ({ component: Component, fallbackRoute, redirect, ...rest }) => {
+  const { isAuthenticated, login, verifiedEmail } = useAuth0();
 
   useEffect(() => {
     const fn = async () => {
@@ -32,17 +30,17 @@ const AuthenticatedPage = ({component: Component, fallbackRoute, redirect, ...re
         // preserve path, query and hash params when redirecting;
         const target = window.location.href.replace(window.location.origin, '');
         // save target URL to redirect to after login;
-        await login({appState: {targetUrl: target}});
+        await login({ appState: { targetUrl: target } });
       }
       if (!verifiedEmail && fallbackRoute) {
-        redirect({type: fallbackRoute});
+        redirect({ type: fallbackRoute });
       }
     };
     fn();
   }, [isAuthenticated, login]);
 
   if (isAuthenticated) {
-    const render = props => <Component {...props} />;
+    const render = (props) => <Component {...props} />;
 
     return <AsyncPage render={render} {...rest} />;
   }

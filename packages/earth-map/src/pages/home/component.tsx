@@ -17,12 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Home from 'components/home';
 import React from 'react';
 
-import Home from 'components/home';
-
 class HomePage extends React.PureComponent {
-  render() {
+  public render() {
     return (
       <div className="marapp-qa-pagehome l-page">
         <div style={{ position: 'fixed', width: '80px', height: '100%', top: '0', left: '0' }} />

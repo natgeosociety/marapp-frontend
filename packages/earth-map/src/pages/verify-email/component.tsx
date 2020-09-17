@@ -17,15 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
+import { useAuth0 } from 'auth/auth0';
 import { APP_NAME, ENABLE_PUBLIC_ACCESS } from 'config';
+import React from 'react';
+
 import { Button } from '@marapp/earth-components';
 
 import './styles.scss';
-import { useAuth0 } from 'auth/auth0';
 
-const VerifyEmail = ({resetStore}) => {
-  const {logout} = useAuth0();
+const VerifyEmail = ({ resetStore }) => {
+  const { logout } = useAuth0();
 
   return (
     <div className="c-not-found marapp-qa-notfound">
@@ -33,18 +34,23 @@ const VerifyEmail = ({resetStore}) => {
         <h1 className="ng-text-display-l ng-color-primary">Confirm your email</h1>
         <h3 className="ng-text-display-m ng-color-ultraltgray">One last step needed. </h3>
         <p className="ng-text-edit-s">
-          Please follow the instructions in the message sent to your email account to complete the sign-up
-          process. <br/>
+          Please follow the instructions in the message sent to your email account to complete the
+          sign-up process. <br />
           You will be able to see content when an owner assigns you to an organization.
         </p>
         {ENABLE_PUBLIC_ACCESS && (
           <>
             <p>Until then you can still browse content as public user by logging out.</p>
-            <Button onClick={() => {
-              logout();
-            }} className="-light">
+            <Button
+              onClick={() => {
+                logout();
+              }}
+              className="-light"
+            >
               Browse {APP_NAME} as a public user
-            </Button></>)}
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );

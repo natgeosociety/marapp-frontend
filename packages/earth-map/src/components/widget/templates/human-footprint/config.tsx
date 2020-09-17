@@ -17,19 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
+import WidgetTooltip from 'components/widget/tooltip';
+import { replace } from 'components/widget/utils';
+import { format } from 'd3-format';
+import findLast from 'lodash/findLast';
+import { IPlace } from 'modules/places/model';
+import { IWidgetConfig } from 'modules/widget/model';
 import React from 'react';
 
+import { HumanFootprintMetric } from './model';
+
 // Utils
-import { format } from 'd3-format';
-import { replace } from 'components/widget/utils';
-import findLast from 'lodash/findLast';
 
 // Components
-import WidgetTooltip from 'components/widget/tooltip';
-
-import { IWidgetConfig } from 'modules/widget/model';
-import { IPlace } from 'modules/places/model';
-import { HumanFootprintMetric } from './model';
 
 interface HumanFootprintConfig {
   metric: HumanFootprintMetric;
@@ -61,7 +61,7 @@ export const CONFIG = {
 
     const change_type = mean_93 > mean_09 ? 'a decrease' : 'an increase';
 
-    const change_category_key = findLast(Object.keys(CATEGORIES), k => {
+    const change_category_key = findLast(Object.keys(CATEGORIES), (k) => {
       if (mean_09 === 0) {
         return 'no';
       }
@@ -72,7 +72,7 @@ export const CONFIG = {
     const change_category = CATEGORIES[change_category_key];
 
     return {
-      chart: legendConfig.items.map(l => {
+      chart: legendConfig.items.map((l) => {
         return {
           x: l.label,
           color: '#E62C90',
@@ -117,7 +117,7 @@ export const CONFIG = {
           domain: [0, 50],
           ticks: [0, 12.5, 25, 37.5, 50],
         },
-        unitFormat: value => {
+        unitFormat: (value) => {
           if (value % 1 !== 0) {
             return null;
           }
@@ -140,7 +140,7 @@ export const CONFIG = {
                 {
                   label: 'Score:',
                   key: 'y',
-                  format: value => `${format('.0f')(value)}`,
+                  format: (value) => `${format('.0f')(value)}`,
                 },
               ]}
             />

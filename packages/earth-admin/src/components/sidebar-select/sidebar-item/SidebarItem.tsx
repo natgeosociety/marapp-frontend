@@ -17,12 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useContext, useEffect, useState } from 'react';
 import classnames from 'classnames';
-import { Auth0Context } from 'utils/contexts';
-import { LinkWithOrg } from 'components/link-with-org';
+import React, { useContext, useEffect, useState } from 'react';
 
-export default function SidebarItem( props ) {
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { Auth0Context } from '@app/utils/contexts';
+
+export default function SidebarItem(props) {
   const [itemPermission, setItemPermission] = useState(false);
   const { item, selected } = props;
   const { getPermissions, selectedGroup } = useContext(Auth0Context);
@@ -36,17 +37,15 @@ export default function SidebarItem( props ) {
       <li
         className={classnames('marapp-qa-sidebaritem ng-ep-dropdown-category', {
           'ng-ep-dropdown-selected': selected,
-        })}>
+        })}
+      >
         <LinkWithOrg
           className="ng-display-block ng-border-remove"
           to={item.url}
           state={{ refresh: true }}
           key={item.key}
         >
-          <span
-            className="ng-display-block ng-dropdown-item">
-          {item.key}
-          </span>
+          <span className="ng-display-block ng-dropdown-item">{item.key}</span>
         </LinkWithOrg>
       </li>
     )

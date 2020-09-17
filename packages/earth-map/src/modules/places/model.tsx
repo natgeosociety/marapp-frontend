@@ -36,7 +36,7 @@ export interface IPlace {
   metrics?: LocationMetricsProps[] | string[];
   intersections?: LocationIntersection[] | string[];
   $searchHint?: {
-    [prop: string]: string
+    [prop: string]: string;
   };
 }
 

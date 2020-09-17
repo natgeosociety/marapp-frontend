@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import YearPickerLegendComponent from './year-picker';
 import YearDatePickerLegendComponent from './year-date-picker';
+import YearPickerLegendComponent from './year-picker';
 
 export default {
   yearpicker: YearPickerLegendComponent,

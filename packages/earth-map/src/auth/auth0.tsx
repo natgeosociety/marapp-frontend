@@ -17,16 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import { useState, useEffect, useContext } from 'react';
-import createAuth0Client from '@auth0/auth0-spa-js';
-import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
-import qs from 'query-string';
-import get from 'lodash/get';
-
-import { routeToPage, removeNestedGroups, mapAuthzScopes } from 'utils';
-import { Auth0 } from './model';
+import createAuth0Client, { Auth0Client } from '@auth0/auth0-spa-js';
 import auth0 from 'config/auth0';
+import get from 'lodash/get';
+import qs from 'query-string';
+import React, { useContext, useEffect, useState } from 'react';
+import { routeToPage } from 'utils';
+
+import { isAuthz, mapAuthzScopes, mapRoleGroups, SessionStorage } from '@marapp/earth-shared';
+
+import { Auth0 } from './model';
 
 // Auth0 will enforce namespacing when performing OIDC-conformant
 // login flows, meaning that any custom claims without HTTP/HTTPS
@@ -42,11 +42,8 @@ interface Auth0ProviderOptions {
   redirect_uri?: any;
   audience?: any;
   children: React.ReactElement;
-
   onRedirectCallback(targetUrl: any): void;
-
   onSuccessHook(params: any): void;
-
   onFailureHook(params: any): void;
 }
 
@@ -86,7 +83,6 @@ export const Auth0Provider = ({
       if (queryParams.code) {
         try {
           const { appState } = await auth0FromHook.handleRedirectCallback();
-
           onRedirectCallback({ targetUrl: appState.targetUrl });
         } catch (e) {
           // since we don't support IdP-Initiated Single Sign-On,
@@ -104,41 +100,38 @@ export const Auth0Provider = ({
       setIsAuthenticated(isAuthenticated);
 
       const accessToken = isAuthenticated ? await auth0FromHook.getTokenSilently() : null;
-
       onSuccessHook({ token: accessToken });
 
       const idToken = accessToken ? await auth0FromHook.getUser() : {};
 
-      const email = get(idToken, 'email', '');
-      const userName = get(idToken, 'name', '');
-      const userPicture = get(idToken, 'picture', '');
-      const emailVerified = get(idToken, 'email_verified', '');
-
-      setVerifiedEmail(emailVerified);
-
-      const groups = get(idToken, `${NAMESPACE}/groups`, []);
-
-      const nonNestedGroups = removeNestedGroups(groups);
-      setGroups(nonNestedGroups);
-
       const roles = get(idToken, `${NAMESPACE}/roles`, []);
       setRoles(mapAuthzScopes(roles));
+
+      const groups = get(idToken, `${NAMESPACE}/groups`);
+      const roleGroups = mapRoleGroups(roles, ['*']); // exclude special groups;
+      setGroups(roleGroups);
 
       const permissions = get(idToken, `${NAMESPACE}/permissions`, []);
       setPermissions(mapAuthzScopes(permissions));
 
-      const authorized = !!roles && roles.length > 0;
+      const authorized = isAuthz(roles);
       setIsAuthorized(authorized);
 
-      setEmail(email);
-      setUserData({ name: userName, picture: userPicture, allGroups: nonNestedGroups });
+      const userData = {
+        email: get(idToken, 'email', ''),
+        name: get(idToken, 'name', ''),
+        picture: get(idToken, 'picture', ''),
+        emailVerified: get(idToken, 'email_verified', false),
+        allGroups: roleGroups,
+      };
+      setUserData(userData);
 
-      const { user } = JSON.parse(sessionStorage.getItem('ephemeral')) || {};
-      if (user) {
-        setSelectedGroup(user.group);
-      } else if (!selectedGroup) {
-        setSelectedGroup(nonNestedGroups);
-      }
+      setEmail(userData.email);
+      setVerifiedEmail(userData.emailVerified);
+
+      const { user } = SessionStorage.getObject('ephemeral');
+      const selected = user && user.group ? user.group : mapRoleGroups(roles, ['*']);
+      setSelectedGroup(selected);
 
       setIsLoading(false);
     };
@@ -146,12 +139,12 @@ export const Auth0Provider = ({
   }, []); // eslint-disable-line
 
   const login = (options = {}) => {
-    sessionStorage.removeItem('ephemeral');
+    SessionStorage.remove('ephemeral');
     return client.loginWithRedirect(options);
   };
 
   const logout = (options = {}) => {
-    sessionStorage.removeItem('ephemeral');
+    SessionStorage.remove('ephemeral');
     // force the user to log out of their identity provider;
     return client.logout({ ...options, federated: true });
   };

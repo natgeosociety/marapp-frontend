@@ -17,16 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
+import WidgetTooltip from 'components/widget/tooltip';
+import { replace } from 'components/widget/utils';
+import { format } from 'd3-format';
+import findLast from 'lodash/findLast';
 import React from 'react';
+import { parseObject } from 'utils/widget';
 
 // Utils
-import { format } from 'd3-format';
-import { parseObject } from 'utils/widget';
-import { replace } from 'components/widget/utils';
-import findLast from 'lodash/findLast';
 
 // Components
-import WidgetTooltip from 'components/widget/tooltip';
 
 export const CONFIG = {
   parse: ({ rows }, params, widgetConfig, place) => {
@@ -45,14 +45,14 @@ export const CONFIG = {
       0.8: 'very high',
     };
 
-    const rounded = value => {
+    const rounded = (value) => {
       return Math.round(value * 100) / 100;
     };
 
     const data = rows[0];
     const yearData = parseObject(data.year_data);
 
-    const chart = Object.keys(yearData).map(k => {
+    const chart = Object.keys(yearData).map((k) => {
       return {
         year: k,
         unit: '%',
@@ -67,7 +67,7 @@ export const CONFIG = {
 
     const change_type = mean_1990 > mean_2015 ? 'a decrease' : 'an increase';
 
-    const change_category_key = findLast(Object.keys(categories), k => {
+    const change_category_key = findLast(Object.keys(categories), (k) => {
       // @ts-ignore
       return mean_2015 >= k;
     });
@@ -76,7 +76,7 @@ export const CONFIG = {
     const { sentence } = widgetConfig;
 
     return {
-      noData: chart.every(c => !c.percentage),
+      noData: chart.every((c) => !c.percentage),
       chart,
       template: replace(
         sentence[sentenceType],
@@ -140,7 +140,7 @@ export const CONFIG = {
           strokeDasharray: '6 6',
         },
 
-        unitFormat: value => {
+        unitFormat: (value) => {
           return format('.2f')(value);
         },
 
@@ -161,7 +161,7 @@ export const CONFIG = {
                 {
                   label: 'HDI:',
                   key: 'percentage',
-                  format: value => `${format('.2r')(value)}`,
+                  format: (value) => `${format('.2r')(value)}`,
                 },
               ]}
             />

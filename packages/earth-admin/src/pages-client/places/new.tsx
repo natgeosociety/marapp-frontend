@@ -17,25 +17,32 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState } from 'react';
 import { navigate } from 'gatsby';
+import { noop } from 'lodash';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Spinner } from '@marapp/earth-components';
 
-import { useAuth0 } from 'auth/auth0';
-import { addPlace, getUniqueSlug } from 'services/places';
+import { Spinner } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { Card } from '@app/components/card';
+import { ErrorMessages } from '@app/components/error-messages';
+import { FakeJsonUpload } from '@app/components/fake-json-upload';
+import { Input } from '@app/components/input';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { ContentLayout } from '@app/layouts';
+import { addPlace, getUniqueSlug } from '@app/services/places';
+import { noSpecialCharsRule, setupErrors } from '@app/utils/validations';
+
 import { PlaceTypeEnum } from './model';
-import { noSpecialCharsRule, setupErrors } from 'utils/validations';
 
-import { LinkWithOrg } from 'components/link-with-org';
-import { ErrorMessages } from 'components/error-messages';
-import { Card } from 'components/card';
-import { FakeJsonUpload } from 'components/fake-json-upload';
-import { Input } from 'components/input';
-import { ContentLayout } from 'layouts';
+interface IProps {
+  path: string;
+  onDataChange?: () => {};
+}
 
-export function NewPlace(path: any) {
+export function NewPlace(props: IProps) {
+  const { onDataChange = noop } = props;
   const { getValues, register, watch, formState, errors, setValue } = useForm({
     mode: 'onChange',
   });
@@ -55,14 +62,17 @@ export function NewPlace(path: any) {
     const parsed = {
       ...formData,
       geojson: geojsonValue,
-    }
+    };
     try {
       setIsLoading(true);
       const response: any = await addPlace(parsed, selectedGroup);
+      onDataChange();
       await navigate(`/${selectedGroup}/places/${response.data.id}`);
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
-      const fallbackError =  [{ detail: 'Something went wrong. Please make sure the selected file is under 6MB.' }];
+      const fallbackError = [
+        { detail: 'Something went wrong. Please make sure the selected file is under 6MB.' },
+      ];
 
       setIsLoading(false);
       setServerErrors(error?.data.errors || fallbackError);
@@ -76,7 +86,7 @@ export function NewPlace(path: any) {
     } catch (error) {
       setServerErrors(error.data.errors);
     }
-  }
+  };
 
   return (
     <ContentLayout backTo="/places" className="marapp-qa-placesnew">
@@ -96,9 +106,10 @@ export function NewPlace(path: any) {
               ref={register({
                 required: 'Place title is required',
                 validate: {
-                  noSpecialCharsRule: noSpecialCharsRule()
-                }
-              })} />
+                  noSpecialCharsRule: noSpecialCharsRule(),
+                },
+              })}
+            />
           </Card>
 
           <Card className="ng-margin-medium-bottom">
@@ -113,10 +124,7 @@ export function NewPlace(path: any) {
                 name="type"
               >
                 {Object.keys(PlaceTypeEnum).map((t, idx) => (
-                  <option
-                    key={idx}
-                    value={PlaceTypeEnum[t]}
-                  >
+                  <option key={idx} value={PlaceTypeEnum[t]}>
                     {PlaceTypeEnum[t]}
                   </option>
                 ))}
@@ -133,7 +141,8 @@ export function NewPlace(path: any) {
                   error={renderErrorFor('slug')}
                   ref={register({
                     required: 'Slug is required',
-                  })} />
+                  })}
+                />
               </div>
               <div>
                 <button
@@ -141,12 +150,12 @@ export function NewPlace(path: any) {
                   disabled={!watchName || !!errors.name}
                   title={watchName ? 'Generate slug' : 'Add a title first'}
                   className="marapp-qa-actiongenerateslug ng-button ng-button-secondary ng-button-large ng-pointer"
-                  style={{ marginTop: '36px' }}>
+                  style={{ marginTop: '36px' }}
+                >
                   Generate a slug name
                 </button>
               </div>
             </div>
-
           </Card>
 
           <Card className="ng-margin-medium-bottom">
@@ -161,28 +170,34 @@ export function NewPlace(path: any) {
                 setGeojson(json);
                 setJsonError(false);
               }}
-              onError={(err) => setJsonError(true)} />
+              onError={(err) => setJsonError(true)}
+            />
           </Card>
 
           {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}
 
-          {isLoading
-            ? <div className="ng-padding-large ng-position-relative"><Spinner /></div>
-            : (
-              <div className="ng-flex">
-                <button
-                  className="marapp-qa-actionsave ng-button ng-button-primary ng-button-large ng-margin-medium-right"
-                  onClick={onSubmit}
-                  disabled={!isValid || jsonError || !dirty}
-                >
-                  Save and view details
-                </button>
+          {isLoading ? (
+            <div className="ng-padding-large ng-position-relative">
+              <Spinner />
+            </div>
+          ) : (
+            <div className="ng-flex">
+              <button
+                className="marapp-qa-actionsave ng-button ng-button-primary ng-button-large ng-margin-medium-right"
+                onClick={onSubmit}
+                disabled={!isValid || jsonError || !dirty}
+              >
+                Save and view details
+              </button>
 
-                <LinkWithOrg className="marapp-qa-actionreturn ng-button ng-button-secondary ng-button-large" to="/places">
-                  Return to places home
-                </LinkWithOrg>
-              </div>
-            )}
+              <LinkWithOrg
+                className="marapp-qa-actionreturn ng-button ng-button-secondary ng-button-large"
+                to="/places"
+              >
+                Return to places home
+              </LinkWithOrg>
+            </div>
+          )}
         </form>
       </div>
     </ContentLayout>

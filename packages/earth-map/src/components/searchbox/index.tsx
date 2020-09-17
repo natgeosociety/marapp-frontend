@@ -17,12 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-
+import { setIndexesSelected } from 'modules/indexes/actions';
 import { setPlacesSearch } from 'modules/places/actions';
 import { setRouter } from 'modules/router/actions';
+import { connect } from 'react-redux';
+
 import SearchBoxComponent from './Searchbox';
-import { setIndexesSelected } from 'modules/indexes/actions';
 
 export default connect(
   (state: any) => ({

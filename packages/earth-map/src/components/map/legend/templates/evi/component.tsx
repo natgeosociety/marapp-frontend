@@ -17,21 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
+import React from 'react';
 
-import { Select } from '@marapp/earth-components';
+import { Select } from '@marapp/earth-shared';
 
 import './styles.scss';
 
 interface ILegendEVI {
-  activeLayer?: { slug: string; params: any; paramsConfig: any, source: any };
+  activeLayer?: { slug: string; params: any; paramsConfig: any; source: any };
   setLayerSettings?: (data: any) => void;
 }
 
 class LegendEVIComponent extends React.PureComponent<ILegendEVI> {
-  static propTypes = {};
+  public static propTypes = {};
 
-  onChange = value => {
+  public onChange = (value) => {
     const { activeLayer, setLayerSettings } = this.props;
 
     const { slug, params } = activeLayer;
@@ -47,15 +47,15 @@ class LegendEVIComponent extends React.PureComponent<ILegendEVI> {
     });
   };
 
-  render() {
+  public render() {
     const { activeLayer } = this.props;
     const { params, source, paramsConfig } = activeLayer;
-    const years = paramsConfig.find(p => p.key === 'year').items;
+    const years = paramsConfig.find((p) => p.key === 'year').items;
     const { year } = params;
 
     const options = Object.keys(years)
       .reverse()
-      .map(y => ({
+      .map((y) => ({
         label: y,
         value: years[y],
       }));

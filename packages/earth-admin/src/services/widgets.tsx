@@ -18,8 +18,10 @@
 */
 
 import axios, { AxiosRequestConfig } from 'axios';
+
+import { GATSBY_API_URL } from '@app/config';
+
 import { deserializeData } from '../utils';
-import { GATSBY_API_URL } from 'config';
 
 const WidgetAPIService = {
   request: (options: AxiosRequestConfig) => {
@@ -30,7 +32,7 @@ const WidgetAPIService = {
       transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
         data: data.data ? deserializeData(data) : data,
         pagination: data.meta ? data.meta.pagination : null,
-        total: data.meta ? data.meta.results : null
+        total: data.meta ? data.meta.results : null,
       })),
     });
 
@@ -44,16 +46,16 @@ const WidgetAPIService = {
 };
 
 export const getAllWidgets = async (widgetQuery: string) => {
-  return await WidgetAPIService.request({
+  return WidgetAPIService.request({
     url: widgetQuery,
   });
 };
 
 export const addWidget = async (widget, group: string) =>
-  await WidgetAPIService.request({ url: `/widgets?group=${group}`, method: 'post', data: widget });
+  WidgetAPIService.request({ url: `/widgets?group=${group}`, method: 'post', data: widget });
 
 export const getWidget = async (widgetQuery: string) => {
-  return await WidgetAPIService.request({
+  return WidgetAPIService.request({
     url: widgetQuery,
     method: 'get',
   });
@@ -68,7 +70,7 @@ export const updateWidget = async (widgetId: string, widget, group: string) => {
 };
 
 export const deleteWidgets = async (widgetID: string, group: string) => {
-  return await WidgetAPIService.request({
+  return WidgetAPIService.request({
     url: `/widgets/${widgetID}?group=${group}`,
     method: 'delete',
   });
@@ -79,4 +81,4 @@ export const handleWidgetForm = async (
   widget,
   widgetId: string,
   group: string
-) => (newWidget ? await addWidget(widget, group) : await updateWidget(widgetId, widget, group));
+) => (newWidget ? addWidget(widget, group) : updateWidget(widgetId, widget, group));

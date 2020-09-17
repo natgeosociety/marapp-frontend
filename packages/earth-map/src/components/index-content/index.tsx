@@ -19,7 +19,6 @@
 
 import { connect } from 'react-redux';
 
-// Components
 import IndexContentComponent from './component';
 
 export default connect((state: any) => ({

@@ -17,16 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import OrgSwitcher from './component';
-import { connect } from 'react-redux';
-import { setUserGroup } from 'modules/user/actions';
-import { resetPlacesFeatured, setPlacesSearch, resetPlace } from 'modules/places/actions';
-import { setLayersSearch } from 'modules/layers/actions';
-import { resetLayerCache } from 'modules/layers/actions';
-import { resetLayers } from 'modules/layers/actions';
-import { setSidebarPanel } from 'modules/sidebar/actions';
-import { resetMap } from 'modules/map/actions';
 import { setIndexesSelected } from 'modules/indexes/actions';
+import { resetLayerCache, resetLayers, setLayersSearch } from 'modules/layers/actions';
+import { resetMap } from 'modules/map/actions';
+import { resetPlace, resetPlacesFeatured, setPlacesSearch } from 'modules/places/actions';
+import { setSidebarPanel } from 'modules/sidebar/actions';
+import { setUserGroup } from 'modules/user/actions';
+import { connect } from 'react-redux';
+
+import OrgSwitcher from './component';
 
 export default connect(
   (state: any) => ({
@@ -43,6 +42,6 @@ export default connect(
     setIndexesSelected,
     setLayersSearch,
     setSidebarPanel,
-    resetLayers
+    resetLayers,
   }
 )(OrgSwitcher);

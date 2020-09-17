@@ -17,14 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import compose from 'lodash/fp/compose'
+import compose from 'lodash/fp/compose';
 
 /**
  * Receives an error message and returns a function that receives a valid flag.
  * Returns either the error message or the valid flag for react-hook-form to use
  */
-const maybeShowError = (errorMessage: string) =>
-  (valid: boolean): string | boolean => valid ? valid : errorMessage;
+const maybeShowError = (errorMessage: string) => (valid: boolean): string | boolean =>
+  valid ? valid : errorMessage;
 
 /**
  * Return true if value has any special characters in it
@@ -32,7 +32,7 @@ const maybeShowError = (errorMessage: string) =>
 const noSpecialChars = (value: string): boolean => {
   const regex = RegExp(/^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/);
   return regex.test(value);
-}
+};
 
 /**
  * Return true if value contains special characters or space.
@@ -40,7 +40,7 @@ const noSpecialChars = (value: string): boolean => {
 const noSpecialCharsOrSpace = (value: string): boolean => {
   const regex = RegExp('^[a-z0-9](-?[a-z0-9])*$');
   return regex.test(value);
-}
+};
 
 /**
  * Return true if email is not valid format
@@ -48,31 +48,28 @@ const noSpecialCharsOrSpace = (value: string): boolean => {
 const validEmail = (email: string): boolean => {
   const rule = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return rule.test(email.toLowerCase());
-}
+};
 
 const upperNumericDashes = (value: string): boolean => {
   const regex = RegExp('^[A-Z0-9](-?[A-Z0-9])*$');
   return regex.test(value);
-}
+};
 
 const alphaNumericDashes = (value: string): boolean => {
   const regex = RegExp(/^[a-z0-9](-?[a-z0-9])*$/gi);
   return regex.test(value);
-}
+};
 
 /**
  * Validation rules used by react-hook-form
  * Allow for message customization
  */
 
-export const noSpecialCharsRule = (
-  errorMessage: string = 'Special characters are not allowed'
-) => compose(maybeShowError(errorMessage), noSpecialChars);
+export const noSpecialCharsRule = (errorMessage: string = 'Special characters are not allowed') =>
+  compose(maybeShowError(errorMessage), noSpecialChars);
 
-
-export const validEmailRule = (
-  errorMessage: string = 'Please add a valid email address'
-) => compose(maybeShowError(errorMessage), validEmail);
+export const validEmailRule = (errorMessage: string = 'Please add a valid email address') =>
+  compose(maybeShowError(errorMessage), validEmail);
 
 export const upperNumericDashesRule = (
   errorMessage: string = 'Only upercase alphanumeric characters and hyphens allowed.'
@@ -86,15 +83,14 @@ export const noSpecialCharsOrSpaceRule = (
   errorMessage: string = 'Special characters or space are not allowed'
 ) => compose(maybeShowError(errorMessage), noSpecialCharsOrSpace);
 
-export const setupErrors = (errors, touched) =>
-  (field: string): string => {
-    const fieldErr: any = errors[field];
-    if (!fieldErr) {
-      return;
-    }
-
-    // render error only after user interacted with the field
-    if (touched[field] && fieldErr.message) {
-      return fieldErr.message;
-    }
+export const setupErrors = (errors, touched) => (field: string): string => {
+  const fieldErr: any = errors[field];
+  if (!fieldErr) {
+    return;
   }
+
+  // render error only after user interacted with the field
+  if (touched[field] && fieldErr.message) {
+    return fieldErr.message;
+  }
+};

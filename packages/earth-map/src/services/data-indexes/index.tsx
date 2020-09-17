@@ -17,12 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { AxiosInstance } from 'axios';
 import { setup } from 'axios-cache-adapter';
+import { API_URL } from 'config';
 import Jsona, { SwitchCaseJsonMapper, SwitchCaseModelMapper } from 'jsona';
 import { encodeQueryToURL } from 'utils/query';
-import { AxiosInstance } from 'axios';
-
-import { API_URL } from "config";
 
 /**
  * DataIndexes service class.
@@ -43,7 +42,7 @@ class DataIndexesService {
     });
   }
 
-  configure = () => {
+  public configure = () => {
     this.api = setup({ baseURL: API_URL });
   };
 
@@ -52,14 +51,14 @@ class DataIndexesService {
    * Creates an axios request based on type an options.
    * @param {string} path - The path of the request.
    */
-  request(path) {
+  public request(path) {
     return new Promise((resolve, reject) => {
       this.api
         .get(path)
-        .then(response => {
+        .then((response) => {
           resolve(this.dataFormatter.deserialize(response.data));
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });

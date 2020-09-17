@@ -17,15 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Store } from 'redux';
-
-import { setPlacesSearch } from 'modules/places/actions';
-import { setLayersSearch } from 'modules/layers/actions';
-import { setUserGroup } from 'modules/user/actions';
-import { setMapStyle } from 'modules/map/actions';
 import { setLastViewedPlace } from 'modules/global/actions';
-
+import { setLayersSearch } from 'modules/layers/actions';
+import { setMapStyle } from 'modules/map/actions';
+import { setPlacesSearch } from 'modules/places/actions';
 import { IPlace } from 'modules/places/model';
+import { setUserGroup } from 'modules/user/actions';
+import { Store } from 'redux';
 
 export interface IEphemeralState {
   places?: {

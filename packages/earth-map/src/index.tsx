@@ -17,19 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
+import 'core-js/stable';
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import TagManager from 'react-gtm-module';
-
 import 'styles/index.scss';
-import 'core-js/stable';
 
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 import { Auth0Provider } from './auth/auth0';
-import auth0 from './config/auth0';
+import { onFailureHook, onRedirectCallback, onSuccessHook } from './auth/hooks';
 import { GTM_TAG } from './config';
-import { onRedirectCallback, onSuccessHook, onFailureHook } from './auth/hooks';
+import auth0 from './config/auth0';
+import * as serviceWorker from './serviceWorker';
 
 if (GTM_TAG) {
   const tagManagerArgs = { gtmId: GTM_TAG };

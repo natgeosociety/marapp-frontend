@@ -17,9 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import LegendFiresComponent from './component';
-import { connect } from 'react-redux';
 import { setLayerSettings } from 'modules/layers/actions';
+import { connect } from 'react-redux';
+
+import LegendFiresComponent from './component';
 
 export default connect(null, {
   setLayerSettings,

@@ -17,9 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-
 import { setPlaceSelectedFilter } from 'modules/places/actions';
+import { connect } from 'react-redux';
 
 import PlacesComponent from './component';
 

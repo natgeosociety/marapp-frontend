@@ -17,68 +17,22 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useState, useEffect } from 'react';
-
-import { ScopesEnum } from 'auth/permissions';
-import { useAuth0 } from 'auth/auth0';
+import { add, compose } from 'lodash/fp';
+import { useEffect, useState } from 'react';
+import { useSWRInfinite } from 'swr';
 
 interface IError {
   details: string;
   message: string;
 }
 
-interface IUseRequestReturn {
-  isLoading: boolean;
-  errors: IError[];
-  data: any;
-}
-
-interface IUseRequestOptions {
-  query?: string;
-  skip?: boolean;
-}
-
-export function useRequest(
-  resource: () => Promise<any>,
-  options: IUseRequestOptions
-): IUseRequestReturn {
-  const { skip, query } = options;
-  const [isLoading, setIsLoading] = useState(!skip);
-  const [errors, setErrors] = useState<IError[]>([]);
-  const [data, setData] = useState({});
-
+export function useDomWatcher(ref, callback, skip) {
   useEffect(() => {
-    async function fetchResource() {
-      try {
-        setIsLoading(true);
-        const res = await resource();
-        setData(res.data);
-        setIsLoading(false);
-      } catch ({ data }) {
-        setErrors(data.errors);
-        setIsLoading(false);
-      }
-    }
-
     if (skip) {
       return;
     }
 
-    fetchResource();
-  }, [query]);
-
-  return {
-    isLoading,
-    errors,
-    data,
-  };
-}
-
-export function useDomWatcher(ref, callback, skip) {
-  useEffect(() => {
-    if (skip) return;
-
-    const handleClickOutside = event => {
+    const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
         callback && callback();
       }
@@ -91,3 +45,43 @@ export function useDomWatcher(ref, callback, skip) {
   }, [ref, skip]);
 }
 
+/**
+ * Custom hook that integrates useSWRInfinite with <DataListing /> component
+ * @param getQuery Function responsible for returning the api url
+ * @param fetcher Function queries the api
+ */
+export function useInfiniteList(
+  getQuery: (pageIndex: number) => string,
+  fetcher: (any) => Promise<any>
+) {
+  // Our api starts with page 1 instead of 0, so we increment the pageIndex
+  const offsetGetQuery = compose(getQuery, add(1));
+  const { data: response = [], error, isValidating, size, setSize, mutate } = useSWRInfinite(
+    offsetGetQuery,
+    fetcher
+  );
+
+  // Merge multiple page results into a single list of results
+  const items = response.reduce(
+    (acc: any, { data, ...rest }: any) => {
+      return {
+        data: acc.data.concat(data),
+        ...rest,
+      };
+    },
+    { data: [] }
+  );
+
+  return {
+    // props for <DataListing />
+    listProps: {
+      data: items.data,
+      cursorAction: () => setSize(size + 1),
+      isLoading: isValidating,
+      isNoMore: items.data.length >= items.total,
+      totalResults: items.total,
+    },
+    mutate,
+    error,
+  };
+}

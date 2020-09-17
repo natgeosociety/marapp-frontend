@@ -17,20 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-
-// Utils
+import WidgetTooltip from 'components/widget/tooltip';
+import { getColorFromPallete, replace } from 'components/widget/utils';
 import { format } from 'd3-format';
 import ceil from 'lodash/ceil';
-import { replace } from 'components/widget/utils';
-import { getColorFromPallete } from 'components/widget/utils';
+import { IPlace } from 'modules/places/model';
+import { IWidgetConfig } from 'modules/widget/model';
+import React from 'react';
+
+import { EviMetric } from './model';
+
+// Utils
 
 // Components
-import WidgetTooltip from 'components/widget/tooltip';
-
-import { IWidgetConfig } from 'modules/widget/model';
-import { IPlace } from 'modules/places/model';
-import { EviMetric } from './model';
 
 interface EviConfig {
   metric: EviMetric;
@@ -75,7 +74,7 @@ export const CONFIG = {
 
     const maxYAxis = Math.max.apply(
       Math,
-      year_data.map(function(year) {
+      year_data.map(function (year) {
         return year.norm;
       })
     );
@@ -85,7 +84,7 @@ export const CONFIG = {
     const ticks = generateTicks(0, roundedMaxYAxis);
 
     return {
-      chart: year_data.map(y => {
+      chart: year_data.map((y) => {
         return {
           year: y.year,
           value: `${format(eviFormat)(y.norm)}`,
@@ -94,7 +93,7 @@ export const CONFIG = {
         };
       }),
       template: replace(
-        sentence['default'],
+        sentence.default,
         {
           location: place.name,
           most_recent_year: eviLast.year,
@@ -133,7 +132,7 @@ export const CONFIG = {
           interval: 0,
         },
         yAxis: {
-          ticks: ticks,
+          ticks,
           domain: [0, roundedMaxYAxis],
           interval: 0,
         },
@@ -154,14 +153,14 @@ export const CONFIG = {
                 {
                   label: 'Value:',
                   key: 'value',
-                  format: value => {
+                  format: (value) => {
                     return `${format(eviFormat)(value)}`;
                   },
                 },
                 {
                   label: 'Mean:',
                   key: 'mean',
-                  format: value => {
+                  format: (value) => {
                     return `${format(eviFormat)(value)}`;
                   },
                 },
@@ -193,13 +192,13 @@ const evi_condition = (rg_start, rg_end, std_m1, std_m2, std_p1, std_p2, rg_slop
 };
 
 const evi_value = (year_data, norm_mean, std_m2, std_p2) => {
-  if (year_data['norm'] < norm_mean && year_data['norm'] >= std_m2) {
+  if (year_data.norm < norm_mean && year_data.norm >= std_m2) {
     return 'lower';
-  } else if (year_data['norm'] > norm_mean && year_data['norm'] <= std_p2) {
+  } else if (year_data.norm > norm_mean && year_data.norm <= std_p2) {
     return 'higher';
-  } else if (year_data['norm'] < norm_mean && year_data['norm'] < std_m2) {
+  } else if (year_data.norm < norm_mean && year_data.norm < std_m2) {
     return 'significantly lower';
-  } else if (year_data['norm'] > norm_mean && year_data['norm'] > std_p2) {
+  } else if (year_data.norm > norm_mean && year_data.norm > std_p2) {
     return 'significantly higher';
   } else {
     return 'equal';

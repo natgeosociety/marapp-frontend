@@ -17,15 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-
 import classNames from 'classnames';
-
-import createStage from './webgl/stage';
-import lightScene from './webgl/lights';
-import prepareGlobe from './webgl/globe';
+import React from 'react';
 
 import './styles.scss';
+import prepareGlobe from './webgl/globe';
+import lightScene from './webgl/lights';
+import createStage from './webgl/stage';
 
 const segments = 32;
 
@@ -40,7 +38,7 @@ interface IGlobe {
 }
 
 class GlobeComponent extends React.Component<IGlobe, any> {
-  static defaultProps = {
+  public static defaultProps = {
     visible: false,
     radius: 1.0,
     rotationSpeed: -0.05,
@@ -75,7 +73,7 @@ class GlobeComponent extends React.Component<IGlobe, any> {
     };
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     const { radius } = this.props;
 
     this.stage = createStage(this.rendererMount, this.renderer2dMount, this.props);
@@ -91,7 +89,7 @@ class GlobeComponent extends React.Component<IGlobe, any> {
     this.setVisibility(0);
   }
 
-  componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps) {
     const { visible } = this.props;
     const { visible: prevVisible } = prevProps;
 
@@ -100,12 +98,12 @@ class GlobeComponent extends React.Component<IGlobe, any> {
     }
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
     cancelAnimationFrame(this.animationId);
   }
 
-  setVisibility = delay => {
+  public setVisibility = (delay) => {
     const { visible } = this.props;
     const { scene } = this.stage;
 
@@ -121,7 +119,7 @@ class GlobeComponent extends React.Component<IGlobe, any> {
     }, delay);
   };
 
-  animate() {
+  public animate() {
     const { presentationMode, autoRotate } = this.props;
 
     const { controls, camera } = this.stage;
@@ -172,10 +170,7 @@ class GlobeComponent extends React.Component<IGlobe, any> {
     }
 
     // Light tracker creates dymanic ligthning as you move around the globe
-    const direction = lightTracker.position
-      .clone()
-      .sub(camera.position)
-      .normalize();
+    const direction = lightTracker.position.clone().sub(camera.position).normalize();
     lightTracker.position.copy(direction.clone().multiplyScalar(100));
 
     backlight.position.copy(lightTracker.position.clone());
@@ -185,13 +180,13 @@ class GlobeComponent extends React.Component<IGlobe, any> {
     this.animationId = requestAnimationFrame(this.animate);
   }
 
-  renderScene = () => {
+  public renderScene = () => {
     const { renderer, renderer2d, scene, camera } = this.stage;
     renderer.render(scene, camera);
     renderer2d.render(scene, camera);
   };
 
-  onResize = () => {
+  public onResize = () => {
     const { camera, renderer, renderer2d } = this.stage;
 
     camera.aspect = this.container.offsetWidth / this.container.offsetHeight;
@@ -200,12 +195,12 @@ class GlobeComponent extends React.Component<IGlobe, any> {
     renderer2d.setSize(this.container.offsetWidth, this.container.offsetHeight);
   };
 
-  render() {
+  public render() {
     const { presentationMode, styles } = this.props;
 
     return (
       <div
-        ref={r => {
+        ref={(r) => {
           this.container = r;
         }}
         className={classNames('marapp-qa-globe c-globe', {
@@ -215,7 +210,7 @@ class GlobeComponent extends React.Component<IGlobe, any> {
       >
         {/* 2d assets */}
         <div
-          ref={mount => {
+          ref={(mount) => {
             this.renderer2dMount = mount;
           }}
         />
@@ -229,7 +224,7 @@ class GlobeComponent extends React.Component<IGlobe, any> {
             top: 0,
             left: 0,
           }}
-          ref={mount => {
+          ref={(mount) => {
             this.rendererMount = mount;
           }}
         />

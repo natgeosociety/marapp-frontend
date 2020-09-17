@@ -17,21 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import classnames from 'classnames';
+import React from 'react';
 
 import './styles.scss';
 
 interface IZoomControl {
-  viewport: {zoom?: number; maxZoom?: number; minZoom?: number};
+  viewport: { zoom?: number; maxZoom?: number; minZoom?: number };
   className?: string;
   onClick: (zoom: number) => void;
   zoom?: number;
 }
 
 const ZoomControl = (props: IZoomControl) => {
-  const {className, viewport, onClick, zoom} = props;
-  const {maxZoom, minZoom} = viewport;
+  const { className, viewport, onClick, zoom } = props;
+  const { maxZoom, minZoom } = viewport;
 
   const classNames = classnames('marapp-qa-mapzoom c-zoom-control', {
     [className]: !!className,
@@ -64,7 +64,7 @@ const ZoomControl = (props: IZoomControl) => {
         disabled={zoom === maxZoom}
         onClick={increaseZoom}
       >
-        <i className="ng-body-color ng-icon-add"/>
+        <i className="ng-body-color ng-icon-add" />
       </button>
       <button
         className={zoomOutClass}
@@ -72,11 +72,10 @@ const ZoomControl = (props: IZoomControl) => {
         disabled={zoom === minZoom}
         onClick={decreaseZoom}
       >
-        <i className="ng-body-color ng-icon-remove"/>
+        <i className="ng-body-color ng-icon-remove" />
       </button>
     </div>
   );
-
 };
 
 export default ZoomControl;
