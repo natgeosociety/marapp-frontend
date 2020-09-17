@@ -17,7 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import ContentLayout, { UserProfileLayout } from './Content';
-import SidebarLayout from './Sidebar';
+import * as React from 'react';
+import { Router } from '@reach/router';
 
-export { ContentLayout, SidebarLayout, UserProfileLayout };
+import { UserProfileHome } from './home';
+
+export default function UserProfilePage(props) {
+  return (
+    <>
+      <Router>
+        <UserProfileHome path="/" />
+      </Router>
+    </>
+  );
+}

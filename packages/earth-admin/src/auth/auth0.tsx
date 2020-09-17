@@ -114,7 +114,8 @@ export const Auth0Provider = ({
         const idToken = await auth0FromHook.getUser();
 
         const roles = get(idToken, `${NAMESPACE}/roles`, []);
-        setRoles(mapAuthzScopes(roles));
+        const mappedRoles = mapAuthzScopes(roles);
+        setRoles(mappedRoles);
 
         const groups = get(idToken, `${NAMESPACE}/groups`);
         // special case where no groups and only super-admin role assigned;
@@ -134,6 +135,7 @@ export const Auth0Provider = ({
           name: get(idToken, 'name', ''),
           picture: get(idToken, 'picture', ''),
           allGroups: roleGroups,
+          roles: mappedRoles,
         };
         setUserData(userData);
 
