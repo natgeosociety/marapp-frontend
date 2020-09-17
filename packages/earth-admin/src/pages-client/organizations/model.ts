@@ -30,23 +30,10 @@ export interface OrganizationProps {
 
 export interface OrganizationDetailsProps {
   page: string;
+  onDataChange?: () => {};
 }
 
 export interface OrganizationEditProps {
   data: Organization;
   newOrg: boolean;
-}
-
-export interface OrganizationContextProps {
-  organizations: Organization[];
-  handleSearchValueChange?: (newValue: string) => void;
-  handleCursorChange?: Function;
-  pageSize?: number;
-  isLoading?: boolean;
-  isNoMore?: boolean;
-  searchValue?: string;
-  permissions?: any;
-  totalResults?: number;
-  nextCursor?: string;
-  selectedItem?: string;
 }

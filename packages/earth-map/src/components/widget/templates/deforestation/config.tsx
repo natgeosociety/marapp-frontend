@@ -17,20 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-
-// Utils
-import { format } from 'd3-format';
-import { calculateTotal, formatYearObject } from 'utils/widget';
-import { replace, formatKM2, formatPercentage } from 'components/widget/utils';
-
-// Components
 import WidgetTooltip from 'components/widget/tooltip';
-
-import { IWidgetConfig } from 'modules/widget/model';
+import { formatKM2, formatPercentage, replace } from 'components/widget/utils';
+import { format } from 'd3-format';
 import { IPlace } from 'modules/places/model';
+import { IWidgetConfig } from 'modules/widget/model';
+import React from 'react';
+import { calculateTotal, formatYearObject } from 'utils/widget';
 
 import { DeforestationMetric } from './model';
+
+// Utils
+
+// Components
 
 interface DeforestationConfig {
   metric: DeforestationMetric;
@@ -102,7 +101,7 @@ export const CONFIG = {
         },
         yTitle: 'km²',
         yAxis: {},
-        unitFormat: v => {
+        unitFormat: (v) => {
           return `${format(loss_total_format)(v)}`;
         },
         cartesianGrid: {
@@ -122,7 +121,7 @@ export const CONFIG = {
                 {
                   label: 'Loss:',
                   key: 'loss',
-                  format: value => {
+                  format: (value) => {
                     const f = formatKM2(value);
                     return `${format(f)(value)} km²`;
                   },

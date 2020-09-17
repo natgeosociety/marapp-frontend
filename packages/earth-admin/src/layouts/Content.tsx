@@ -19,14 +19,15 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import { LinkWithOrg } from 'components/link-with-org';
-import { UserMenuComponent } from 'components/user-menu';
-import { ErrorMessages } from 'components/error-messages';
-import { Spinner } from '@marapp/earth-components';
 
-import { APP_NAME, APP_LOGO } from '../theme';
+import { Spinner } from '@marapp/earth-shared';
+
+import { ErrorMessages } from '@app/components/error-messages';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { UserMenuComponent } from '@app/components/user-menu';
 
 import '../styles/app.scss';
+import { APP_NAME, APP_LOGO } from '../theme';
 
 interface ILayoutProps {
   children?: any;
@@ -42,7 +43,7 @@ interface IUnauthorizedProps {
 }
 
 const Unauthorized = (props: IUnauthorizedProps) => {
-  const {message} = props;
+  const { message } = props;
 
   return (
     <div className="ng-flex ng-flex-middle">
@@ -57,14 +58,16 @@ export default function ContentLayout(props: ILayoutProps) {
   return (
     <div className={`ng-flex ${props.className || ''}`}>
       <Helmet>
-        <link rel="icon"
-              href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="/>
+        <link
+          rel="icon"
+          href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+        />
         <title>{APP_NAME}</title>
       </Helmet>
       <div className="ng-page-container ng-background-gray-9">
-        <UserMenuComponent/>
+        <UserMenuComponent />
         <div className="ng-padding-large">
-          <Content {...props}/>
+          <Content {...props} />
         </div>
       </div>
     </div>
@@ -75,19 +78,21 @@ export function UserProfileLayout(props: ILayoutProps) {
   return (
     <div className={`ng-flex ${props.className || ''}`}>
       <Helmet>
-        <link rel="icon"
-              href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="/>
+        <link
+          rel="icon"
+          href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+        />
         <title>{APP_NAME}</title>
       </Helmet>
       <div className="ng-user-profile-container ng-background-gray-9">
         <div className="ng-margin-top ng-margin-left">
           <a href="/earth" className="ng-border-remove">
-            <img src={APP_LOGO} alt={APP_NAME} className="ng-margin-remove ng-display-block"/>
+            <img src={APP_LOGO} alt={APP_NAME} className="ng-margin-remove ng-display-block" />
           </a>
         </div>
-        <UserMenuComponent/>
+        <UserMenuComponent />
         <div className="ng-padding-large">
-          <Content {...props}/>
+          <Content {...props} />
         </div>
       </div>
     </div>
@@ -103,15 +108,15 @@ const Content = (props: ILayoutProps) => {
   } = props;
 
   if (isLoading) {
-    return <Spinner size="medium"/>;
+    return <Spinner size="medium" />;
   }
   if (!permission) {
-    return <Unauthorized message="You are not authorized to view this page"/>;
+    return <Unauthorized message="You are not authorized to view this page" />;
   }
   if (errors.length) {
     return (
       <div>
-        <ErrorMessages errors={errors}/>
+        <ErrorMessages errors={errors} />
         <LinkWithOrg className="ng-button" to={backTo}>
           Back
         </LinkWithOrg>

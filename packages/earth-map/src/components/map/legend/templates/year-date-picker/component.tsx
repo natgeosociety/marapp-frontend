@@ -17,13 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import {useEffect, useState} from 'react';
+import { getParams } from 'modules/layers/utils';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 
-import {Select, Datepicker} from '@marapp/earth-components';
-
-import {getParams} from 'modules/layers/utils';
+import { Datepicker, Select } from '@marapp/earth-shared';
 
 import './styles.scss';
 
@@ -44,7 +42,7 @@ interface ILegendYearDatePicker {
 interface ISelectedLayer {
   id?: string;
   paramsConfig?: { year?: string };
-  decodeConfig?: { values: any }
+  decodeConfig?: { values: any };
   source?: any;
 }
 
@@ -54,11 +52,11 @@ const YearDatePickerLegendComponent = (props: ILegendYearDatePicker) => {
   const [endDate, setEndDate] = useState(null);
   const [decodeValues, setDecodeValues] = useState({} as any);
 
-  const {layers, activeLayer} = props;
+  const { layers, activeLayer } = props;
 
-  const {references} = layers[0];
+  const { references } = layers[0];
 
-  const options = references.map(y => {
+  const options = references.map((y) => {
     return {
       label: y.name,
       value: y.id,
@@ -70,36 +68,32 @@ const YearDatePickerLegendComponent = (props: ILegendYearDatePicker) => {
   }, [references]);
 
   useEffect(() => {
-    const {decodeParams} = activeLayer;
+    const { decodeParams } = activeLayer;
 
     decodeParams &&
-    decodeParams.startDate &&
-    decodeParams.startDate !== startDate &&
-    setStartDate(decodeParams.startDate);
+      decodeParams.startDate &&
+      decodeParams.startDate !== startDate &&
+      setStartDate(decodeParams.startDate);
 
     decodeParams &&
-    decodeParams.trimEndDate &&
-    decodeParams.trimEndDate !== endDate &&
-    setEndDate(decodeParams.trimEndDate);
+      decodeParams.trimEndDate &&
+      decodeParams.trimEndDate !== endDate &&
+      setEndDate(decodeParams.trimEndDate);
   }, [activeLayer.decodeParams]);
 
   useEffect(() => {
-    const {activeLayer, setLayerTimelineCurrent} = props;
+    const { activeLayer, setLayerTimelineCurrent } = props;
 
     if (!!selectedLayer) {
-      const {slug} = activeLayer;
+      const { slug } = activeLayer;
 
-      const {
-        paramsConfig,
-        decodeConfig
-      } = selectedLayer;
-
+      const { paramsConfig, decodeConfig } = selectedLayer;
 
       setLayerTimelineCurrent({
         slug,
         current: selectedLayer.id,
-        year: parseInt(paramsConfig[0].year),
-        settings: selectedLayer
+        year: parseInt(paramsConfig[0].year, 10),
+        settings: selectedLayer,
       });
 
       const decodedValues = getParams(decodeConfig.values, {});
@@ -110,26 +104,23 @@ const YearDatePickerLegendComponent = (props: ILegendYearDatePicker) => {
     }
   }, [selectedLayer]);
 
-  const onChange = value => {
-    setSelectedLayer(references.filter(ref => ref.id === value)[0]);
+  const onChange = (value) => {
+    setSelectedLayer(references.filter((ref) => ref.id === value)[0]);
   };
 
   const onDateChange = (value, who) => {
-    const {activeLayer, setLayerTimelineCurrent} = props;
+    const { activeLayer, setLayerTimelineCurrent } = props;
 
-    const {slug, decodeParams} = activeLayer;
+    const { slug, decodeParams } = activeLayer;
 
-    const {
-      paramsConfig,
-      source
-    } = selectedLayer;
+    const { paramsConfig, source } = selectedLayer;
 
     setLayerTimelineCurrent({
       slug,
 
       current: selectedLayer.id,
 
-      year: parseInt(paramsConfig[0].year),
+      year: parseInt(paramsConfig[0].year, 10),
       settings: {
         ...source,
         ...{
@@ -148,8 +139,8 @@ const YearDatePickerLegendComponent = (props: ILegendYearDatePicker) => {
   return (
     !!startDate && (
       <div className="marapp-qa-legendyeardate c-legend-year-date">
-        <Select onChange={e => onChange(e)} options={options}/>
-        <br/>
+        <Select onChange={(e) => onChange(e)} options={options} />
+        <br />
 
         {!!startDate && (
           <Datepicker
@@ -159,12 +150,12 @@ const YearDatePickerLegendComponent = (props: ILegendYearDatePicker) => {
               numberOfMonths: 1,
               minDate: startDate < decodeValues.startDate ? startDate : decodeValues.startDate,
               maxDate: decodeValues.endDate,
-              isOutsideRange: d => d.isBefore(moment(startDate)),
+              isOutsideRange: (d) => d.isBefore(moment(startDate)),
               hideKeyboardShortcutsPanel: true,
               noBorder: true,
               readOnly: true,
             }}
-            onDateChange={date => onDateChange(date, 'startDate')}
+            onDateChange={(date) => onDateChange(date, 'startDate')}
           />
         )}
         <span>to</span>
@@ -176,12 +167,12 @@ const YearDatePickerLegendComponent = (props: ILegendYearDatePicker) => {
               numberOfMonths: 1,
               minDate: decodeValues.startDate,
               maxDate: endDate > decodeValues.endDate ? endDate : decodeValues.endDate,
-              isOutsideRange: d => d.isAfter(moment(endDate)) || d.isBefore(moment(startDate)),
+              isOutsideRange: (d) => d.isAfter(moment(endDate)) || d.isBefore(moment(startDate)),
               hideKeyboardShortcutsPanel: true,
               noBorder: true,
               readOnly: true,
             }}
-            onDateChange={date => onDateChange(date, 'trimEndDate')}
+            onDateChange={(date) => onDateChange(date, 'trimEndDate')}
           />
         )}
       </div>

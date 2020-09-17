@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import classnames from 'classnames';
+import React from 'react';
 
 import './styles.scss';
 
@@ -29,13 +29,13 @@ interface IZoomControl {
 }
 
 class ZoomControl extends React.PureComponent<IZoomControl, any> {
-  static propTypes = {};
+  public static propTypes = {};
 
-  static defaultProps = {
+  public static defaultProps = {
     className: null,
   };
 
-  increaseZoom = (e) => {
+  public increaseZoom = (e) => {
     e.stopPropagation();
     const { viewport, onClick } = this.props;
     const { zoom, maxZoom } = viewport;
@@ -43,7 +43,7 @@ class ZoomControl extends React.PureComponent<IZoomControl, any> {
     onClick(zoom === maxZoom ? zoom : zoom + 1);
   };
 
-  decreaseZoom = (e) => {
+  public decreaseZoom = (e) => {
     e.stopPropagation();
     const { viewport, onClick } = this.props;
     const { zoom, minZoom } = viewport;
@@ -51,7 +51,7 @@ class ZoomControl extends React.PureComponent<IZoomControl, any> {
     onClick(zoom === minZoom ? zoom : zoom - 1);
   };
 
-  render() {
+  public render() {
     const { className, viewport } = this.props;
     const { zoom, maxZoom, minZoom } = viewport;
 
@@ -74,7 +74,7 @@ class ZoomControl extends React.PureComponent<IZoomControl, any> {
           disabled={zoom === maxZoom}
           onClick={this.increaseZoom}
         >
-          <i className="ng-body-color ng-icon-add"></i>
+          <i className="ng-body-color ng-icon-add" />
         </button>
         <button
           className={zoomOutClass}
@@ -82,7 +82,7 @@ class ZoomControl extends React.PureComponent<IZoomControl, any> {
           disabled={zoom === minZoom}
           onClick={this.decreaseZoom}
         >
-          <i className="ng-body-color ng-icon-remove"></i>
+          <i className="ng-body-color ng-icon-remove" />
         </button>
       </div>
     );

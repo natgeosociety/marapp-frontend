@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import classnames from 'classnames';
+import React from 'react';
 
 import './styles.scss';
 
@@ -28,11 +28,11 @@ export interface IRecenter {
 }
 
 class RecenterControl extends React.PureComponent<IRecenter> {
-  static defaultProps = {
+  public static defaultProps = {
     className: null,
   };
 
-  render() {
+  public render() {
     const { className, onClick } = this.props;
 
     const classNames = classnames('marapp-qa-recentercontrol c-recenter-control', {
@@ -42,7 +42,7 @@ class RecenterControl extends React.PureComponent<IRecenter> {
     return (
       <div className={classNames}>
         <button type="button" className="recenter-control--btn" onClick={onClick}>
-          <i className="ng-body-color ng-icon-geolocate"></i>
+          <i className="ng-body-color ng-icon-geolocate" />
         </button>
       </div>
     );

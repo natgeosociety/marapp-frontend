@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import moment from 'moment';
+import React from 'react';
 
-import { Select, Datepicker } from '@marapp/earth-components';
+import { Datepicker, Select } from '@marapp/earth-shared';
 
 import './styles.scss';
 
@@ -35,9 +35,9 @@ interface ILegendFires {
 }
 
 class LegendFiresComponent extends React.PureComponent<ILegendFires> {
-  static propTypes = {};
+  public static propTypes = {};
 
-  generateYearValues = (start: number, end: number) => {
+  public generateYearValues = (start: number, end: number) => {
     let years = [];
     for (start; start <= end; start++) {
       years = [...years, ...[{ label: `${start}`, value: start }]];
@@ -46,7 +46,7 @@ class LegendFiresComponent extends React.PureComponent<ILegendFires> {
     return years.reverse();
   };
 
-  onChange = value => {
+  public onChange = (value) => {
     const { activeLayer, setLayerSettings } = this.props;
 
     const { slug, params, decodeParams } = activeLayer;
@@ -61,10 +61,7 @@ class LegendFiresComponent extends React.PureComponent<ILegendFires> {
         },
         decodeParams: {
           ...decodeParams,
-          startDate: moment
-            .utc(startDate)
-            .year(value)
-            .format('YYYY-MM-DD'),
+          startDate: moment.utc(startDate).year(value).format('YYYY-MM-DD'),
           endDate: moment
             .utc(trimEndDate || endDate)
             .year(value)
@@ -78,7 +75,7 @@ class LegendFiresComponent extends React.PureComponent<ILegendFires> {
     });
   };
 
-  onDateChange = (value, who) => {
+  public onDateChange = (value, who) => {
     const { activeLayer, setLayerSettings } = this.props;
 
     const { slug, decodeParams } = activeLayer;
@@ -97,11 +94,11 @@ class LegendFiresComponent extends React.PureComponent<ILegendFires> {
     });
   };
 
-  getYearFromString = (value: string) => {
+  public getYearFromString = (value: string) => {
     return moment(value, 'YYYY-MM-DD').year();
   };
 
-  render() {
+  public render() {
     const { activeLayer } = this.props;
 
     const { params, decodeParams, timelineParams } = activeLayer;
@@ -132,12 +129,12 @@ class LegendFiresComponent extends React.PureComponent<ILegendFires> {
             numberOfMonths: 1,
             minDate: min,
             maxDate: trim,
-            isOutsideRange: d => d.isAfter(moment(trim)) || d.isBefore(moment(min)),
+            isOutsideRange: (d) => d.isAfter(moment(trim)) || d.isBefore(moment(min)),
             hideKeyboardShortcutsPanel: true,
             noBorder: true,
             readOnly: true,
           }}
-          onDateChange={date => this.onDateChange(date, 'startDate')}
+          onDateChange={(date) => this.onDateChange(date, 'startDate')}
         />
         <span>to</span>
         <Datepicker
@@ -147,12 +144,12 @@ class LegendFiresComponent extends React.PureComponent<ILegendFires> {
             numberOfMonths: 1,
             minDate: startDate,
             maxDate: max,
-            isOutsideRange: d => d.isAfter(moment(max)) || d.isBefore(moment(startDate)),
+            isOutsideRange: (d) => d.isAfter(moment(max)) || d.isBefore(moment(startDate)),
             hideKeyboardShortcutsPanel: true,
             noBorder: true,
             readOnly: true,
           }}
-          onDateChange={date => this.onDateChange(date, 'trimEndDate')}
+          onDateChange={(date) => this.onDateChange(date, 'trimEndDate')}
         />
       </div>
     );

@@ -4,7 +4,6 @@
     "module": "commonjs",
     "lib": ["dom", "es2017"],
     "allowJs": true,
-    // "checkJs": true,
     "jsx": "react",
     "strict": true,
     "esModuleInterop": true,
@@ -12,9 +11,12 @@
     "emitDecoratorMetadata": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "baseUrl": "src",
     "noImplicitAny": false,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": ["*"]
+    }
   },
   "include": ["./src/**/*"]
 }

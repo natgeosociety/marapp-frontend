@@ -17,22 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Layer } from '../layers/model';
 import { Widget } from '../../components/widgets/model';
-
-export interface DashboardContextProps {
-  handleSearchValueChange: (newValue: string) => void;
-  handleCursorChange: Function;
-  pageSize: number;
-  isLoading: boolean;
-  isNoMore: boolean;
-  searchValue?: string;
-  permissions?: any;
-  totalResults?: number;
-  nextCursor?: string;
-  dashboards: Dashboard[];
-  selectedItem?: string;
-}
+import { Layer } from '../layers/model';
 
 export interface Dashboard {
   id: string;

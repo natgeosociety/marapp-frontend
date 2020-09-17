@@ -17,25 +17,30 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useContext, useEffect, useState } from 'react';
-import { encodeQueryToURL } from 'utils';
-import { getAllLayers, getAllWidgets, getAvailableGroups } from 'services';
-
 import { remove } from 'lodash';
-import { Auth0Context } from 'utils/contexts';
-import { LinkWithOrg } from 'components/link-with-org';
+import React, { useContext, useEffect, useState } from 'react';
+
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { getAllLayers, getAllWidgets, getAvailableGroups } from '@app/services';
+import { encodeQueryToURL } from '@app/utils';
+import { Auth0Context } from '@app/utils/contexts';
 
 interface SearchInputProps {
   options: any[];
   optionType: string;
   resultsLimit?: number;
   onChange?: (data) => void;
-  placeholder?: string
+  placeholder?: string;
 }
 
 export default function SearchInput(props: SearchInputProps) {
-  const { options, optionType, resultsLimit, onChange, placeholder = 'Search layers to add...' } = props;
+  const {
+    options,
+    optionType,
+    resultsLimit,
+    onChange,
+    placeholder = 'Search layers to add...',
+  } = props;
   const { selectedGroup } = useContext(Auth0Context);
 
   const [searchValue, setSearchValue] = useState('');
@@ -76,7 +81,8 @@ export default function SearchInput(props: SearchInputProps) {
       const res: any =
         optionType === 'layers'
           ? await getAllLayers(encodedOptionsQuery)
-          : optionType === 'userGroups' ? await getAvailableGroups(selectedGroup)
+          : optionType === 'userGroups'
+          ? await getAvailableGroups(selectedGroup)
           : await getAllWidgets(encodedOptionsQuery);
 
       setAvailableOptions(res.data);

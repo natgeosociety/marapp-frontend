@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { replace } from 'components/widget/utils';
 import findLast from 'lodash/findLast';
 
 // Utils
-import { replace } from 'components/widget/utils';
 
 const FAKE_DATA = {
   value: 16,
@@ -67,10 +67,10 @@ export const CONFIG = {
       },
     ];
 
-    const category = findLast(categories, c => value >= c.threshold) || categories[0];
+    const category = findLast(categories, (c) => value >= c.threshold) || categories[0];
 
     return {
-      chart: categories.map(c => ({
+      chart: categories.map((c) => ({
         ...c,
         selected: category.threshold === c.threshold,
       })),

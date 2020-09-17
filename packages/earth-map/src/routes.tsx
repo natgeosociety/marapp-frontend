@@ -17,11 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { BASE_URL, ENABLE_PUBLIC_ACCESS } from 'config';
 import qs from 'query-string';
 import { NOT_FOUND } from 'redux-first-router';
 import restoreScroll from 'redux-first-router-restore-scroll';
-
-import { BASE_URL, ENABLE_PUBLIC_ACCESS } from 'config';
 
 const UNAUTHORIZED_PAGE = 'UNAUTHORIZED';
 const fallbackRoute = ENABLE_PUBLIC_ACCESS ? null : UNAUTHORIZED_PAGE;
@@ -83,13 +82,13 @@ export const CONFIG = {
   location: 'router',
   querySerializer: {
     stringify: qs.stringify,
-    parse: url => {
+    parse: (url) => {
       return qs.parse(url, {
         arrayFormat: 'comma',
         parseNumbers: true,
         parseBooleans: true,
-      })
-    }
+      });
+    },
   },
   initialDispatch: false,
   restoreScroll: restoreScroll({

@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { IWidget } from '../widget/model';
 import { ILayer } from '../layers/model';
+import { IWidget } from '../widget/model';
 
 export interface IIndex {
   type: string;

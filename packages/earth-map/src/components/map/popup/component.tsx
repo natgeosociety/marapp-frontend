@@ -17,16 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-
 import isEmpty from 'lodash/isEmpty';
+import React from 'react';
 import isEqual from 'react-fast-compare';
-
 import { Popup } from 'react-map-gl';
 
-import LayerTemplate from './templates/layer';
-
 import './styles.scss';
+import LayerTemplate from './templates/layer';
 interface PopupComponentProps {
   popup: {};
   setMapInteractions: (p: any) => void;
@@ -35,7 +32,7 @@ interface PopupComponentProps {
 class PopupComponent extends React.PureComponent<PopupComponentProps> {
   private popup: any;
 
-  componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps) {
     const { popup } = this.props;
     const { popup: prevPopup } = prevProps;
 
@@ -47,13 +44,13 @@ class PopupComponent extends React.PureComponent<PopupComponentProps> {
     }
   }
 
-  onClose = (e) => {
+  public onClose = (e) => {
     e && e.stopPropagation();
     const { setMapInteractions } = this.props;
     setMapInteractions({});
   };
 
-  onClickOutside = (e) => {
+  public onClickOutside = (e) => {
     if (!this.popup) {
       return null;
     }
@@ -66,7 +63,7 @@ class PopupComponent extends React.PureComponent<PopupComponentProps> {
     }
   };
 
-  render() {
+  public render() {
     const { popup } = this.props;
 
     if (isEmpty(popup)) {

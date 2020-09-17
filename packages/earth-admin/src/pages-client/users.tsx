@@ -17,158 +17,111 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useEffect, useState } from 'react';
 import { Router } from '@reach/router';
+import React from 'react';
+import useSWR from 'swr';
 
-import { UserContext } from 'utils/contexts';
-import { LinkWithOrg } from 'components/link-with-org';
-import { UserList, UserEdit, UserDetails } from 'components/users';
-import { encodeQueryToURL, setPage } from 'utils';
-import { getAllUsers, getUser } from 'services/users';
-import { AuthzGuards } from 'auth/permissions';
-import { useRequest } from 'utils/hooks';
+import { AuthzGuards } from '@marapp/earth-shared';
 
+import { useAuth0 } from '@app/auth/auth0';
+import { Auth0ListItem, DataListing } from '@app/components/data-listing';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { UserDetails, UserEdit } from '@app/components/users';
+import { SidebarLayout } from '@app/layouts';
+import ContentLayout from '@app/layouts/Content';
+import { getAllUsers, getUser } from '@app/services/users';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { useInfiniteList } from '@app/utils/hooks';
 
-import { useAuth0 } from 'auth/auth0';
-import { SidebarLayout } from 'layouts';
-import ContentLayout from 'layouts/Content';
-
+const PAGE_SIZE = 20;
 const USER_DETAIL_QUERY = {
   include: 'groups',
 };
 
 const PAGE_TYPE = setPage('Users');
 
-export default function UsersPage( props ) {
-  return (
+export default function UsersPage(props) {
+  const { selectedGroup } = useAuth0();
 
-    <Router>
-      <Page path="/">
-        <HomePage path="/"/>
-        <DetailsPage path="/:page"/>
-        <EditPage path="/:page/edit" newUser={false}/>
-        <EditPage path="/new" newUser={true}/>
-      </Page>
-    </Router>
-  );
-}
-
-function Sidebar( props: any ) {
-  const [users, setUsers] = useState([]);
-  const [pageSize, setPageSize] = useState(10);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isNoMore, setIsNoMore] = useState(null);
-  const [totalResults, setTotalResults] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  const { selectedGroup, getPermissions } = useAuth0();
-
-  const permissions = getPermissions(AuthzGuards.accessUsersGuard);
-
-  const handleCursorChange = () => {
-    setPageNumber(pageNumber + 1);
+  const getQuery = (pageIndex) => {
+    const query = {
+      page: { size: PAGE_SIZE, number: pageIndex },
+      group: selectedGroup,
+      include: 'groups',
+    };
+    return encodeQueryToURL('users', query);
   };
+  const { listProps, mutate } = useInfiniteList(getQuery, getAllUsers);
 
-  useEffect(() => {
-    async function setupUsers() {
-      setIsLoading(true);
-
-
-      const query = {
-        page: { size: pageSize, number: pageNumber },
-        group: selectedGroup,
-        include: 'groups',
-      };
-      const encodedQuery = encodeQueryToURL('users', query);
-      const res: any = await getAllUsers(encodedQuery);
-
-
-      const validUsers = res.data.filter(( item ) => item.id !== '|' && item.groups.length > 0);
-      setTotalResults(res.total);
-      setUsers([...users, ...validUsers]);
-      setIsNoMore(pageNumber === res.pagination.total);
-
-      setIsLoading(false);
-    }
-
-    permissions && setupUsers();
-  }, [pageNumber]);
-
-  return (
-    <UserContext.Provider
-      value={{
-        handleCursorChange,
-        isLoading,
-        isNoMore,
-        users,
-        totalResults,
-        pageSize,
-        selectedItem,
-      }}
-    >
-      <SidebarLayout page={PAGE_TYPE}>
-        <UserList/>
-      </SidebarLayout>
-    </UserContext.Provider>
-  );
-}
-
-function Page( props: any ) {
   return (
     <>
-      <Sidebar/>
-      {props.children}
-    </>);
+      <SidebarLayout page={PAGE_TYPE}>
+        <DataListing
+          childComponent={Auth0ListItem}
+          categoryUrl="users"
+          pageTitle="users"
+          pageSize={PAGE_SIZE}
+          {...listProps}
+        />
+      </SidebarLayout>
+      <Router>
+        <HomePage path="/" />
+        <DetailsPage path="/:page" onDataChange={mutate} />
+        <EditPage path="/:page/edit" newUser={false} onDataChange={mutate} />
+        <EditPage path="/new" newUser={true} onDataChange={mutate} />
+      </Router>
+    </>
+  );
 }
 
-function HomePage( props: any ) {
+function HomePage(props: any) {
   const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessUsersGuard);
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
-  return (writePermissions && (
-    <ContentLayout>
-      <div className="ng-flex ng-align-right">
-        <LinkWithOrg className="ng-button ng-button-overlay" to="/users/new">
-          add new user
-        </LinkWithOrg>
-      </div>
-    </ContentLayout>
-  ));
+  return (
+    writePermissions && (
+      <ContentLayout>
+        <div className="ng-flex ng-align-right">
+          <LinkWithOrg className="ng-button ng-button-overlay" to="/users/new">
+            add new user
+          </LinkWithOrg>
+        </div>
+      </ContentLayout>
+    )
+  );
 }
 
-
-function DetailsPage( path: any ) {
+function DetailsPage(path: any) {
   const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`users/${path.page}`, {
     ...USER_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const { isLoading, errors, data } = useRequest(() => getUser(encodedQuery), {
-    query: encodedQuery,
-  });
+
+  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
+    getUser(url).then((response: any) => response.data)
+  );
 
   return (
-    <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
-      <UserDetails data={data}/>
+    <ContentLayout backTo="/users" isLoading={!data}>
+      <UserDetails data={data} />
     </ContentLayout>
   );
 }
 
-function EditPage( path: any ) {
+function EditPage(props: any) {
   const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`users/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`users/${props.page}`, {
     ...USER_DETAIL_QUERY,
     ...{ group: selectedGroup },
   });
-  const { isLoading, errors, data } = useRequest(() => getUser(encodedQuery), {
-    skip: path.newUser,
-  });
+  const { data, error, mutate } = useSWR(!props.newUser && encodedQuery, (url) =>
+    getUser(url).then((response: any) => response.data)
+  );
 
   return (
-    <ContentLayout errors={errors} backTo="/users" isLoading={isLoading}>
-      <UserEdit data={data} newUser={path.newUser}/>
+    <ContentLayout backTo="/users" isLoading={props.newUser ? false : !data}>
+      <UserEdit data={data} newUser={props.newUser} onDataChange={props.onDataChange} />
     </ContentLayout>
   );
 }

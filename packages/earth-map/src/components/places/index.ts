@@ -1,15 +1,15 @@
+import { setIndexesSelected } from 'modules/indexes/actions';
+import { resetMap } from 'modules/map/actions';
+import {
+  nextPlacesPage,
+  resetPlace,
+  setPlacesSearch,
+  setPlacesSearchOpen,
+} from 'modules/places/actions';
+import { setSidebarPanel, setSidebarPanelExpanded } from 'modules/sidebar/actions';
 import { connect } from 'react-redux';
 
 import Places from './Places';
-import { setSidebarPanel, setSidebarPanelExpanded } from 'modules/sidebar/actions';
-import {
-  resetPlace,
-  setPlacesSearch,
-  nextPlacesPage,
-  setPlacesSearchOpen,
-} from 'modules/places/actions';
-import { setIndexesSelected } from 'modules/indexes/actions';
-import { resetMap } from 'modules/map/actions';
 
 export default connect(
   (state: any) => ({

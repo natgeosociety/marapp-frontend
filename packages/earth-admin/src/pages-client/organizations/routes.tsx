@@ -17,22 +17,50 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import { Router } from '@reach/router';
+import React from 'react';
 
-import { OrganizationsSidebar } from 'components/organizations';
-import { OrganizationHome } from './home';
+import { useAuth0 } from '@app/auth/auth0';
+import { Auth0ListItem, DataListing } from '@app/components/data-listing';
+import { SidebarLayout } from '@app/layouts';
+import { getAllOrganizations } from '@app/services/organizations';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { useInfiniteList } from '@app/utils/hooks';
+
 import { OrganizationDetails } from './details';
+import { OrganizationHome } from './home';
 import { NewOrganization } from './new';
 
+const PAGE_SIZE = 20;
+const PAGE_TYPE = setPage('Organizations');
+
 export default function PlacesPage(props) {
+  const { selectedGroup } = useAuth0();
+
+  const getQuery = (pageIndex) => {
+    const query = {
+      page: { size: PAGE_SIZE, number: pageIndex },
+      group: selectedGroup,
+    };
+    return encodeQueryToURL('organizations', query);
+  };
+  const { listProps, mutate } = useInfiniteList(getQuery, getAllOrganizations);
+
   return (
     <>
-      <OrganizationsSidebar />
+      <SidebarLayout page={PAGE_TYPE}>
+        <DataListing
+          childComponent={Auth0ListItem}
+          categoryUrl="organizations"
+          pageTitle="ORGANIZATIONS"
+          pageSize={PAGE_SIZE}
+          {...listProps}
+        />
+      </SidebarLayout>
       <Router>
         <OrganizationHome path="/" />
-        <NewOrganization path="/new" />
-        <OrganizationDetails path="/:page" />
+        <NewOrganization path="/new" onDataChange={mutate} />
+        <OrganizationDetails path="/:page" onDataChange={mutate} />
       </Router>
     </>
   );

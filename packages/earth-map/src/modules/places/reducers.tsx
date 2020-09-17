@@ -36,15 +36,15 @@ export default {
       search: { ...state.search, ...payload },
     };
   },
-  [actions.setPlacesSearchOpen]: ((state, { payload }) => {
+  [actions.setPlacesSearchOpen]: (state, { payload }) => {
     return {
       ...state,
       search: {
         ...state.search,
         open: payload,
-      }
-    }
-  }),
+      },
+    };
+  },
   // deprecated?
   [actions.setPlacesSearchFilters]: (state, { payload }) => ({
     ...state,
@@ -60,26 +60,22 @@ export default {
   },
   [actions.setPlacesSearchAvailableFilters]: (state, { payload }) => {
     // Add label and parse boolean values to strings 'true'/'false'
-    const filtersWithLabels = payload.map(filter => ({
+    const filtersWithLabels = payload.map((filter) => ({
       ...filter,
       label: filter.value,
-      ...typeof filter.value === 'boolean' && {
-        label: filter.value
-          ? 'Yes'
-          : 'No',
-        value: filter.value
-          ? 'true'
-          : 'false'
-      }
-    }))
+      ...(typeof filter.value === 'boolean' && {
+        label: filter.value ? 'Yes' : 'No',
+        value: filter.value ? 'true' : 'false',
+      }),
+    }));
     const availableFilters = groupBy(sortBy(filtersWithLabels, 'value'), 'key');
     return {
       ...state,
       search: {
         ...state.search,
         availableFilters,
-      }
-    }
+      },
+    };
   },
   [actions.setPlacesSearchLoading]: (state, { payload }) => ({
     ...state,
@@ -118,12 +114,15 @@ export default {
     results: [],
     nextPageCursor: null,
   }),
-  [actions.resetPlace]: (state, { payload }) => payload?.keepCache ? {
-      ...initialState,
-      cache: {
-        ...state.cache
-      }
-    } : initialState,
+  [actions.resetPlace]: (state, { payload }) =>
+    payload?.keepCache
+      ? {
+          ...initialState,
+          cache: {
+            ...state.cache,
+          },
+        }
+      : initialState,
   [actions.resetPlacesFeatured]: (state, { payload }) => ({
     ...state,
     cache: {

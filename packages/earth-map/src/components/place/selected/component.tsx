@@ -17,13 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
 import classnames from 'classnames';
+import { SECTIONS } from 'components/place/constants';
 import isEmpty from 'lodash/isEmpty';
+import React from 'react';
+
+import { Icon, Spinner } from '@marapp/earth-shared';
 
 // Components
-import { Icon, Spinner } from '@marapp/earth-components';
-import { SECTIONS } from 'components/place/constants';
 
 interface IPlaceSelected {
   data?: { name: string };
@@ -33,22 +34,22 @@ interface IPlaceSelected {
 }
 
 class PlaceSelectedComponent extends React.PureComponent<IPlaceSelected> {
-  static propTypes = {};
+  public static propTypes = {};
 
-  onToggleOpen = () => {
+  public onToggleOpen = () => {
     const { selectedOpen, setPlaceSelectedOpen } = this.props;
 
     setPlaceSelectedOpen(!selectedOpen);
   };
 
-  render() {
+  public render() {
     const { data, loading, selectedOpen } = this.props;
     if (isEmpty(data)) {
       return null;
     }
 
     const { name } = data;
-    const relations = SECTIONS.some(s => data[s] && data[s].length);
+    const relations = SECTIONS.some((s) => data[s] && data[s].length);
 
     return (
       <div
@@ -70,9 +71,7 @@ class PlaceSelectedComponent extends React.PureComponent<IPlaceSelected> {
         )}
 
         {/* Spinner */}
-        {loading && (
-          <Spinner className="place--spinner" />
-        )}
+        {loading && <Spinner className="place--spinner" />}
       </div>
     );
   }

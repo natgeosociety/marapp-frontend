@@ -17,12 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
+import React from 'react';
 
-import { Select } from '@marapp/earth-components';
+import { Select } from '@marapp/earth-shared';
 
 const YearPickerLegendComponent = (props: any) => {
-  const onChange = value => {
+  const onChange = (value) => {
     const { activeLayer, setLayerGroupCurrent } = props;
 
     const { slug } = activeLayer;
@@ -36,7 +36,7 @@ const YearPickerLegendComponent = (props: any) => {
 
   const options =
     !!references &&
-    references.map(y => {
+    references.map((y) => {
       return {
         label: y.name,
         value: y.id,
@@ -45,7 +45,7 @@ const YearPickerLegendComponent = (props: any) => {
 
   return (
     <div className="marapp-qa-legendyear c-legend-evi">
-      <Select onChange={e => onChange(e)} options={options} />
+      <Select onChange={(e) => onChange(e)} options={options} />
     </div>
   );
 };

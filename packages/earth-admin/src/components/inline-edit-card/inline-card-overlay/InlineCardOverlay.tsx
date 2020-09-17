@@ -17,17 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-
 import React from 'react';
 import { createPortal } from 'react-dom';
+
 import './styles.scss';
-
-
 
 const InlineCardOverlay = () => {
   const portalRoot = typeof document !== `undefined` ? document.getElementById('portal') : null;
 
-  return createPortal(<div className="ng-inline-card-overlay"/>, portalRoot);
+  return createPortal(<div className="ng-inline-card-overlay" />, portalRoot);
 };
 
 export default InlineCardOverlay;

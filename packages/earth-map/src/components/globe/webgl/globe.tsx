@@ -17,55 +17,44 @@
   specific language governing permissions and limitations under the License.
 */
 
+import ATMOSPHERE from 'images/spinny-globe/atsmosphere.png';
+import GLOBE_SPECULAR from 'images/spinny-globe/Earth_Glossiness-minified.jpg';
+import GLOBE_BUMP from 'images/spinny-globe/Earth_NormalNRM-minified.jpg';
+import GLOBE_MAP from 'images/spinny-globe/equirectangular-basemap-02-min.png';
+import CLOUDS from 'images/spinny-globe/fair_clouds-min.jpg';
 import {
+  Color,
   Mesh,
+  MeshPhongMaterial,
+  RepeatWrapping,
+  // Utils
   SphereBufferGeometry,
   SphereGeometry,
-  MeshPhongMaterial,
-  // Utils
-  Color,
-  RepeatWrapping,
   TextureLoader,
 } from 'three';
 
-import GLOBE_MAP from 'images/spinny-globe/equirectangular-basemap-02-min.png';
-import GLOBE_BUMP from 'images/spinny-globe/Earth_NormalNRM-minified.jpg';
-import GLOBE_SPECULAR from 'images/spinny-globe/Earth_Glossiness-minified.jpg';
-import CLOUDS from 'images/spinny-globe/fair_clouds-min.jpg';
-import ATMOSPHERE from 'images/spinny-globe/atsmosphere.png';
-
 const TEXTURES = {
   globe: {
-    map: new TextureLoader().load(
-      GLOBE_MAP,
-    ),
-    bump: new TextureLoader().load(
-      GLOBE_BUMP,
-    ),
-    specular: new TextureLoader().load(
-      GLOBE_SPECULAR,
-    ),
+    map: new TextureLoader().load(GLOBE_MAP),
+    bump: new TextureLoader().load(GLOBE_BUMP),
+    specular: new TextureLoader().load(GLOBE_SPECULAR),
   },
-  clouds: new TextureLoader().load(
-    CLOUDS,
-  ),
-  atmosphere: new TextureLoader().load(
-    ATMOSPHERE,
-  ),
+  clouds: new TextureLoader().load(CLOUDS),
+  atmosphere: new TextureLoader().load(ATMOSPHERE),
 };
 
-const createClouds = ( radius, segments ) => {
+const createClouds = (radius, segments) => {
   return new Mesh(
     new SphereGeometry(radius + 0.01, segments, segments),
     new MeshPhongMaterial({
       transparent: true,
       alphaMap: TEXTURES.clouds,
       opacity: 0.8,
-    }),
+    })
   );
 };
 
-const createAtmosphere = ( radius, segments ) => {
+const createAtmosphere = (radius, segments) => {
   const tgeometry = new SphereBufferGeometry(radius + 0.02, segments, segments);
   const atmosphereAlpha = TEXTURES.atmosphere;
 
@@ -85,7 +74,7 @@ const createAtmosphere = ( radius, segments ) => {
   return new Mesh(tgeometry, tmaterial);
 };
 
-export default ( stage, radius, segments ) => {
+export default (stage, radius, segments) => {
   const { scene } = stage;
   const geometry = new SphereBufferGeometry(radius, segments, segments);
 

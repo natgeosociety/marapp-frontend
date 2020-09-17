@@ -18,7 +18,7 @@
 */
 
 export const APP_NAME = 'UNBL';
-export const APP_LOGO = require('images/unbl_logo.svg');
+export const APP_LOGO = require('@app/images/unbl_logo.svg');
 
 export const APP_BASEMAPS = [
   {
@@ -27,7 +27,6 @@ export const APP_BASEMAPS = [
     id: 'mapbox://styles/ngsmapbox-gf/ckbwix5xv165q1htdbvkrmxug',
   },
 ];
-
 
 export const SELECT_THEME = {
   borderRadius: 0,
@@ -39,7 +38,7 @@ export const SELECT_THEME = {
     neutral30: 'var(--marapp-gray-2)',
     neutral50: 'var(--marapp-gray-1)',
     neutral60: 'var(--marapp-gray-1)',
-    neutral80: 'var(--marapp-gray-8)'
+    neutral80: 'var(--marapp-gray-8)',
   },
 };
 
@@ -49,13 +48,13 @@ export const CUSTOM_STYLES = {
     boxShadow: 'none',
   }),
   placeholder: () => ({
-    color: 'var(--marapp-gray-5)'
+    color: 'var(--marapp-gray-5)',
   }),
   input: () => ({
-    boxShadow: 'none'
+    boxShadow: 'none',
   }),
   container: () => ({
-    boxShadow: 'none'
+    boxShadow: 'none',
   }),
   menu: () => ({
     border: '1px solid var(--marapp-gray-1)',
@@ -85,12 +84,12 @@ export const CUSTOM_STYLES = {
   singleValue: (provided, state) => ({
     ...provided,
     boxShadow: 'none',
-    color: 'var(---marapp-gray-2)'
+    color: 'var(---marapp-gray-2)',
   }),
   clearIndicator: () => ({
-    color: 'var(--marapp-gray-2)'
+    color: 'var(--marapp-gray-2)',
   }),
   dropdownIndicator: () => ({
-    color: 'var(--marapp-gray-2)'
-  })
+    color: 'var(--marapp-gray-2)',
+  }),
 };

@@ -17,21 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import ReactFullpage from '@fullpage/react-fullpage';
-// Components
-import Globe from '../globe';
-
 import { FULLPAGE_LICENSE } from 'config';
+import React from 'react';
 
-// Steps
+import Globe from '../globe';
 import OutroStep from './steps/outro';
-
-// styles
 import './styles.scss';
 
 class HomeComponent extends React.PureComponent {
-  render() {
+  public render() {
     return (
       <React.Fragment>
         <div className="c-landing marapp-qa-home">

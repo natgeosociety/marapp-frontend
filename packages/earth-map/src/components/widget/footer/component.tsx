@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
 import classnames from 'classnames';
+import React from 'react';
 
 interface IWidgetFooter {
   active: boolean;
@@ -29,12 +29,12 @@ interface IWidgetFooter {
 }
 
 class WidgetFooterComponent extends React.PureComponent<IWidgetFooter> {
-  onToggleLayer = () => {
+  public onToggleLayer = () => {
     const { active, onToggleLayer } = this.props;
     onToggleLayer(active);
   };
 
-  render() {
+  public render() {
     const { active } = this.props;
 
     return (
@@ -42,7 +42,7 @@ class WidgetFooterComponent extends React.PureComponent<IWidgetFooter> {
         <button
           className={classnames({
             'ng-button ng-button-secondary': true,
-            active: active,
+            active,
           })}
           onClick={this.onToggleLayer}
         >

@@ -36,20 +36,6 @@ export interface Place {
   intersections?: PlaceIntersection[] | string[];
 }
 
-export interface PlaceContextProps {
-  places: Place[];
-  handleSearchValueChange: (newValue: string) => void;
-  handleCursorChange: () => void;
-  pageSize: number;
-  isLoading: boolean;
-  isNoMore: boolean;
-  searchValue?: string;
-  permissions?: any;
-  totalResults?: number;
-  nextCursor?: string;
-  selectedItem?: string;
-}
-
 export enum PlaceTypeEnum {
   CONTINENT = 'Continent',
   COUNTRY = 'Country',
@@ -92,9 +78,8 @@ export interface PlaceIntersection {
   type?: 'country' | 'jurisdiction' | 'continent';
 }
 
-
 export const PLACE_DETAIL_QUERY = {
   include: 'metrics,intersections',
   select: 'intersections.id,intersections.name,intersections.type,-metrics.metric',
   sort: 'intersections.name,metrics.slug,-metrics.version',
-}
+};

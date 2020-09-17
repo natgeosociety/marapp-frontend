@@ -17,15 +17,25 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useState, useEffect, useContext, useCallback } from 'react';
-import createAuth0Client from '@auth0/auth0-spa-js';
-import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
-import qs from 'query-string';
+import createAuth0Client, {
+  Auth0Client,
+  GetTokenSilentlyOptions,
+  GetUserOptions,
+} from '@auth0/auth0-spa-js';
 import get from 'lodash/get';
+import qs from 'query-string';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
-import { routeToPage, removeNestedGroups, mapAuthzScopes, hasAccess } from 'utils';
-import { Auth0Context } from 'utils/contexts';
-import { GATSBY_APP_AUTH0_NAMESPACE } from 'config';
+import {
+  hasAccess,
+  isAdminAuthz,
+  mapAuthorizedRoleGroups,
+  mapAuthzScopes,
+} from '@marapp/earth-shared';
+
+import { GATSBY_APP_AUTH0_NAMESPACE } from '@app/config';
+import { routeToPage } from '@app/utils';
+import { Auth0Context } from '@app/utils/contexts';
 
 // Auth0 will enforce namespacing when performing OIDC-conformant
 // login flows, meaning that any custom claims without HTTP/HTTPS
@@ -36,11 +46,8 @@ export const useAuth0: any = () => useContext(Auth0Context);
 
 interface Auth0ProviderOptions {
   children: React.ReactElement;
-
   onRedirectCallback(targetUrl: string): void;
-
   onSuccessHook(params: any): void;
-
   onFailureHook(params: any): void;
 }
 
@@ -110,31 +117,30 @@ export const Auth0Provider = ({
         const mappedRoles = mapAuthzScopes(roles);
         setRoles(mappedRoles);
 
-        const isSuperAdmin = roles.find(role => role === '*:SuperAdmin');
-
-        const groups = get(idToken, `${NAMESPACE}/groups`, []);
-        const [defaultGroup] = groups;
-        const nonNestedGroups = removeNestedGroups(groups);
-        setGroups(isSuperAdmin ? ['*', ...nonNestedGroups] : nonNestedGroups);
+        const groups = get(idToken, `${NAMESPACE}/groups`);
+        // special case where no groups and only super-admin role assigned;
+        const roleGroups = mapAuthorizedRoleGroups(roles, ['*']).length
+          ? mapAuthorizedRoleGroups(roles, ['*'])
+          : mapAuthorizedRoleGroups(roles);
+        setGroups(roleGroups);
 
         const permissions = get(idToken, `${NAMESPACE}/permissions`, []);
-
         setPermissions(mapAuthzScopes(permissions));
 
-        const email = get(idToken, 'email', '');
-        const userName = get(idToken, 'name', '');
-        const userPicture = get(idToken, 'picture', '');
-
-        setUserData({ name: userName, picture: userPicture, allGroups: nonNestedGroups, email, roles: mappedRoles });
-
-        const authorized = !!roles.length;
+        const authorized = isAdminAuthz(roles);
         setIsAuthorized(authorized);
 
-        // Default group only used on <Homepage />
-        // will be overwritten by <Org /> with org comming from URL
-        if (!selectedGroup) {
-          setSelectedGroup((isSuperAdmin && !defaultGroup) ? '*' : defaultGroup);
-        }
+        const userData = {
+          email: get(idToken, 'email', ''),
+          name: get(idToken, 'name', ''),
+          picture: get(idToken, 'picture', ''),
+          allGroups: roleGroups,
+          roles: mappedRoles,
+        };
+        setUserData(userData);
+
+        const [selected] = roleGroups;
+        setSelectedGroup(selected);
       }
 
       // needed for the <Org/> to render and check if org is valid
@@ -143,22 +149,34 @@ export const Auth0Provider = ({
     initAuth0();
   }, []); // eslint-disable-line
 
-  const login = useCallback((options = {}) => {
-    return client.loginWithRedirect && client.loginWithRedirect(options);
-  }, [client]);
+  const login = useCallback(
+    (options = {}) => {
+      return client.loginWithRedirect && client.loginWithRedirect(options);
+    },
+    [client]
+  );
 
-  const logout = useCallback((options?: {}) => {
-    // force the user to log out of their identity provider;
-    return client.logout && client.logout({ ...options, federated: true });
-  }, [client]);
+  const logout = useCallback(
+    (options?: {}) => {
+      // force the user to log out of their identity provider;
+      return client.logout && client.logout({ ...options, federated: true });
+    },
+    [client]
+  );
 
-  const getUser = useCallback((options: GetUserOptions = {} as any) => {
-    return client.getUser && client.getUser(options);
-  }, [client]);
+  const getUser = useCallback(
+    (options: GetUserOptions = {} as any) => {
+      return client.getUser && client.getUser(options);
+    },
+    [client]
+  );
 
-  const getToken = useCallback((options: GetTokenSilentlyOptions = {} as any) => {
-    return client.getTokenSilently && client.getTokenSilently(options);
-  }, [client]);
+  const getToken = useCallback(
+    (options: GetTokenSilentlyOptions = {} as any) => {
+      return client.getTokenSilently && client.getTokenSilently(options);
+    },
+    [client]
+  );
 
   const getPermissions = (type: string[]) => {
     return hasAccess(permissions[selectedGroup], type) || hasAccess(permissions['*'], type);

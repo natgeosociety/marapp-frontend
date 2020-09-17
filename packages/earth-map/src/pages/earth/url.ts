@@ -19,7 +19,6 @@
 
 import { setIndexesSelected } from 'modules/indexes/actions';
 import { setLayersActive } from 'modules/layers/actions';
-import { setUserGroup } from 'modules/user/actions';
 
 export const URL_PROPS = [
   {

@@ -19,4 +19,4 @@
 
 export { DefaultListItem } from './default-list-item';
 export { Auth0ListItem } from './auth0-list-item';
-export { default as DataListing } from './DataListing'
+export { default as DataListing } from './DataListing';

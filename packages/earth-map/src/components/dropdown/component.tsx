@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { ReactNode, useContext, useState } from 'react';
+import React, { ReactNode } from 'react';
+import { animated, Keyframes } from 'react-spring/renderprops';
 
 import './styles.scss';
-import {Keyframes, animated} from 'react-spring/renderprops'
 
 interface IDropdownComponent {
   state?: string;
@@ -36,7 +36,7 @@ export default function DropdownComponent(props: IDropdownComponent) {
   const { state, children } = props;
 
   return (
-    <DropdownPanel native state={state}>
+    <DropdownPanel native={true} state={state}>
       {({ x, ...props }) => (
         <animated.ul
           className="marapp-qa-dropdown ng-ep-dropdown ng-section-background"

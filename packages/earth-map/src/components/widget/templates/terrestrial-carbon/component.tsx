@@ -17,20 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
+import WidgetNoDataComponent from 'components/widget/no-data';
 import React from 'react';
 
-import { Chart, Html } from '@marapp/earth-components';
-import WidgetNoDataComponent from 'components/widget/no-data';
-import { IWidgetTemplate } from '../model';
+import { Chart, Html } from '@marapp/earth-shared';
 
+import { IWidgetTemplate } from '../model';
 import './styles.scss';
 
 class TerrestrialCarbon extends React.PureComponent<IWidgetTemplate, any> {
-  static defaultProps = {
+  public static defaultProps = {
     collapsed: false,
   };
 
-  collapsed() {
+  public collapsed() {
     const { template } = this.props;
 
     return (
@@ -40,7 +40,7 @@ class TerrestrialCarbon extends React.PureComponent<IWidgetTemplate, any> {
     );
   }
 
-  expanded() {
+  public expanded() {
     const { chart, template, config, values } = this.props;
 
     return (
@@ -76,7 +76,7 @@ class TerrestrialCarbon extends React.PureComponent<IWidgetTemplate, any> {
     );
   }
 
-  render() {
+  public render() {
     const { collapsed, noData } = this.props;
 
     if (noData) {

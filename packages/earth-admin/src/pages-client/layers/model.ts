@@ -49,20 +49,6 @@ export interface Layer {
   references?: Layer[];
 }
 
-export interface LayerContextProps {
-  layers: Layer[];
-  handleSearchValueChange: (v: string) => void;
-  handleCursorChange: Function;
-  pageSize: number;
-  isLoading: boolean;
-  isNoMore: boolean;
-  searchValue?: string;
-  permissions?: any;
-  totalResults?: number;
-  nextCursor?: string;
-  selectedItem?: string;
-}
-
 export interface LayerProps {
   data: Layer;
   newLayer?: boolean;
@@ -81,7 +67,6 @@ export enum LayerCategory {
   SOCIO_ECONOMIC = 'Socio-Economic',
 }
 
-
 export const LAYER_CATEGORY_OPTIONS = [
   { value: 'Biodiversity', label: 'Biodiversity' },
   { value: 'Climate & Carbon', label: 'Climate & Carbon' },
@@ -92,21 +77,20 @@ export const LAYER_CATEGORY_OPTIONS = [
   { value: 'Natural Hazards', label: 'Natural Hazards' },
   { value: 'Protected Areas', label: 'Protected Areas' },
   { value: 'Restoration', label: 'Restoration' },
-  { value: 'Socio-Economic', label: 'Socio-Economic' }
-]
-
+  { value: 'Socio-Economic', label: 'Socio-Economic' },
+];
 
 export const LAYER_TYPE_OPTIONS = [
   { value: 'raster', label: 'raster' },
   { value: 'vector', label: 'vector' },
   { value: 'geojson', label: 'geojson' },
   { value: 'group', label: 'group' },
-  { value: 'video', label: 'video' }
-]
+  { value: 'video', label: 'video' },
+];
 
 export const LAYER_PROVIDER_OPTIONS = [
   { value: 'cartodb', label: 'cartodb' },
   { value: 'gee', label: 'gee' },
   { value: 'mapbox', label: 'mapbox' },
-  { value: 'leaflet', label: 'leaflet' }
-]
+  { value: 'leaflet', label: 'leaflet' },
+];

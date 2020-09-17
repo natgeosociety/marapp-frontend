@@ -17,13 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { replace } from 'components/widget/utils';
+import { format } from 'd3-format';
+import { IPlace } from 'modules/places/model';
+import { IWidgetConfig } from 'modules/widget/model';
 import React from 'react';
 
-import { format } from 'd3-format';
-import { replace } from 'components/widget/utils';
-
-import { IWidgetConfig } from 'modules/widget/model';
-import { IPlace } from 'modules/places/model';
 import { HumanImpactMetric } from './model';
 interface HumanImpactConfig {
   metric: HumanImpactMetric;
@@ -133,7 +132,7 @@ export const CONFIG = {
           ticks: [0, totalLengthDomain / 2, totalLengthDomain],
           interval: 0,
           allowDataOverflow: true,
-          tickFormatter: t => `${format(',.0r')(t)}km`,
+          tickFormatter: (t) => `${format(',.0r')(t)}km`,
         },
 
         yAxis: {
@@ -152,18 +151,18 @@ export const CONFIG = {
         margin: { left: 0, right: 65, top: 20, bottom: 0 },
         height: 200,
         width: 150,
-        unitFormat: t => `${format(',.0r')(t)}km`,
+        unitFormat: (t) => `${format(',.0r')(t)}km`,
 
         legend: {
           align: 'left',
           verticalAlign: 'middle',
           layout: 'vertical',
           width: 225,
-          content: properties => {
+          content: (properties) => {
             return (
               <div className="widget--legend" style={{ paddingRight: 50 }}>
                 <ul className="widget--legend-list">
-                  {legend.map(item => (
+                  {legend.map((item) => (
                     <li
                       key={`item-${item.label}`}
                       className="widget--legend-list-item --flex-column"

@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { ILayerRaw, ILayer } from 'modules/layers/model';
+import { ILayer, ILayerRaw } from 'modules/layers/model';
 
 /**
  * https://redux-saga.js.org/docs/api/#takepattern

@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
+import React from 'react';
 
 import noDataIMG from './no-data.svg';
 
@@ -26,7 +26,7 @@ interface IWidgetNoData {
 }
 
 class WidgetNoDataComponent extends React.PureComponent<IWidgetNoData> {
-  render() {
+  public render() {
     const { children } = this.props;
 
     return (

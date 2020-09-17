@@ -17,10 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-
-import { setPlacesSearch } from 'modules/places/actions';
 import { setIndexesSelected } from 'modules/indexes/actions';
+import { setPlacesSearch } from 'modules/places/actions';
+import { connect } from 'react-redux';
 
 import ListItem from './component';
 

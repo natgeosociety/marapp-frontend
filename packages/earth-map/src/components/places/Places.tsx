@@ -1,16 +1,15 @@
-import React from 'react';
-import { push } from 'redux-first-router';
-
-import FeaturedPlaces from 'components/places/featured-places';
+import BackToLocation from 'components/back-to-location';
+import FilterBy from 'components/filter-by';
 import IndexSidebar from 'components/index-sidebar';
+import InfiniteList from 'components/infinite-list';
 import LastViewedPlace from 'components/last-viewed-place';
 import ListItem from 'components/list-item';
-import { IPlace } from 'modules/places/model';
+import FeaturedPlaces from 'components/places/featured-places';
 import SearchBox from 'components/searchbox';
-import FilterBy from 'components/filter-by';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
-import BackToLocation from 'components/back-to-location';
-import InfiniteList from 'components/infinite-list';
+import { IPlace } from 'modules/places/model';
+import React from 'react';
+import { push } from 'redux-first-router';
 import { hasFilters } from 'utils/filters';
 
 interface IProps {
@@ -63,7 +62,7 @@ const Places = (props: IProps) => {
   const showBack = selected && panelExpanded && showResults;
   const onLocationPage = selected && panelExpanded && showResults;
   const onHomepage = !selected && showResults;
-  const showLastViewedPlace = lastViewedPlace && group.includes(lastViewedPlace.organization)
+  const showLastViewedPlace = lastViewedPlace && group.includes(lastViewedPlace.organization);
 
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -75,7 +74,7 @@ const Places = (props: IProps) => {
       setPlacesSearch({ search: locationName });
     }
     setSidebarPanelExpanded(false);
-  }
+  };
 
   const handleReset = () => {
     resetPlace({ keepCache: true });
@@ -97,48 +96,55 @@ const Places = (props: IProps) => {
             onChange={handleChange}
             onReset={handleReset}
             onFocus={() => setSidebarPanelExpanded(true)}
-            showClose={showX} />
+            showClose={showX}
+          />
           {showFilter && (
             <FilterBy
               open={search.open}
               onOpenToggle={setPlacesSearchOpen}
               onChange={setPlacesSearch}
-              data={search} />
+              data={search}
+            />
           )}
           {showBack && (
             <BackToLocation
               onClick={handleBack}
               location={locationName}
-              organization={locationOrganization} />
+              organization={locationOrganization}
+            />
           )}
         </>
-      }>
-      {(onLocationPage || onHomepage)
-        ? <InfiniteList
+      }
+    >
+      {onLocationPage || onHomepage ? (
+        <InfiniteList
           title="Search results"
           data={results}
           loading={search.loading}
           nextPageCursor={nextPageCursor}
-          onNextPage={nextPlacesPage}>
+          onNextPage={nextPlacesPage}
+        >
           {({ id, $searchHint, name, slug, organization, type }) => (
             <ListItem
               hint={$searchHint.name}
-              title={name} key={`${slug}-${organization}`}
+              title={name}
+              key={`${slug}-${organization}`}
               linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
-              organization={(group.length > 1) && organization}
-              labels={[type]} />
+              organization={group.length > 1 && organization}
+              labels={[type]}
+            />
           )}
         </InfiniteList>
-        : selected
-          ? <IndexSidebar />
-          : (
-            <>
-              {(showLastViewedPlace && <LastViewedPlace place={lastViewedPlace} />)}
-              <FeaturedPlaces />
-            </>
-          )}
+      ) : selected ? (
+        <IndexSidebar />
+      ) : (
+        <>
+          {showLastViewedPlace && <LastViewedPlace place={lastViewedPlace} />}
+          <FeaturedPlaces />
+        </>
+      )}
     </SidebarLayoutSearch>
-  )
-}
+  );
+};
 
 export default Places;

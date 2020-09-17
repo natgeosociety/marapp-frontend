@@ -18,7 +18,6 @@
 */
 
 import { select, takeLatest } from 'redux-saga/effects';
-
 import { getAll } from 'sagas/saga-utils';
 import { IEphemeralState } from 'store/ephemeral-state';
 

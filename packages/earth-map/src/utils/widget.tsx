@@ -17,22 +17,22 @@
   specific language governing permissions and limitations under the License.
 */
 
-import groupBy from 'lodash/groupBy';
+import concat from 'lodash/concat';
 import find from 'lodash/find';
+import forOwn from 'lodash/forOwn';
+import groupBy from 'lodash/groupBy';
+import maxBy from 'lodash/maxBy';
 import mean from 'lodash/mean';
 import meanBy from 'lodash/meanBy';
-import concat from 'lodash/concat';
-import orderBy from 'lodash/orderBy';
-import maxBy from 'lodash/maxBy';
 import minBy from 'lodash/minBy';
+import orderBy from 'lodash/orderBy';
 import upperCase from 'lodash/upperCase';
-import forOwn from 'lodash/forOwn';
 import moment from 'moment';
 
-export const parseObject = str => {
+export const parseObject = (str) => {
   const out = {};
   str = str.replace(/[{|}]/g, '').split(', ');
-  str.forEach(v => {
+  str.forEach((v) => {
     const [key, value] = v.split('=>');
     out[key] = parseFloat(value);
   });
@@ -48,9 +48,9 @@ export function getStats(data, startDate, endDate) {
   const DATA = data.year_isoweek;
   // @ts-ignore
   const latestYear = maxBy(DATA, 'year').year;
-  //todo this
+  // todo this
   const latestWeek = maxBy(
-    DATA.filter(d => d.year === latestYear),
+    DATA.filter((d) => d.year === latestYear),
     'isoweek'
     // @ts-ignore
   ).isoweek;
@@ -70,12 +70,12 @@ const getMeansData = (data, latest) => {
   // @ts-ignore
   const maxYear = maxBy(data, 'year').year;
   const grouped = groupBy(data, 'isoweek');
-  const centralMeans = Object.keys(grouped).map(d => {
+  const centralMeans = Object.keys(grouped).map((d) => {
     const weekData = grouped[d];
     return meanBy(weekData, 'value');
   });
-  const leftYears = data.filter(d => d.year !== maxYear);
-  const rightYears = data.filter(d => d.year !== minYear);
+  const leftYears = data.filter((d) => d.year !== maxYear);
+  const rightYears = data.filter((d) => d.year !== minYear);
   // @ts-ignore
   const leftMeans = meanData(getYearsObj(leftYears, -6));
   const rightMeans = meanData(getYearsObj(rightYears, 0, 6));
@@ -92,20 +92,20 @@ const getMeansData = (data, latest) => {
 
 const getStdDevData = (data, rawData) => {
   const stdDevs = [];
-  const centralMeans = data.map(d => d.mean);
+  const centralMeans = data.map((d) => d.mean);
   const groupedByYear = groupBy(rawData, 'year');
-  const meansFromGroup = Object.keys(groupedByYear).map(key =>
-    groupedByYear[key].map(d => d.value)
+  const meansFromGroup = Object.keys(groupedByYear).map((key) =>
+    groupedByYear[key].map((d) => d.value)
   );
   for (let i = 0; i < centralMeans.length; i += 1) {
-    meansFromGroup.forEach(m => {
+    meansFromGroup.forEach((m) => {
       const value = m[i] || 0;
       const some = value && centralMeans[i] ? (centralMeans[i] - value) ** 2 : null;
       stdDevs[i] = stdDevs[i] ? [...stdDevs[i], some] : [some];
     });
   }
-  const stdDev = mean(stdDevs.map(s => mean(s) ** 0.5));
-  return data.map(d =>
+  const stdDev = mean(stdDevs.map((s) => mean(s) ** 0.5));
+  return data.map((d) =>
     fillDescription({
       ...d,
       plusStdDev: [d.mean, d.mean + stdDev],
@@ -116,7 +116,7 @@ const getStdDevData = (data, rawData) => {
   );
 };
 
-const fillDescription = d => {
+const fillDescription = (d) => {
   const descriptions = [
     {
       text: 'Normal',
@@ -154,7 +154,7 @@ const translateMeans = (means, latestWeek) => {
 
 const getYearsObj = (data, startSlice, endSlice) => {
   const grouped = groupBy(data, 'year');
-  return Object.keys(grouped).map(key => ({
+  return Object.keys(grouped).map((key) => ({
     year: key,
     weeks: grouped[key].slice(
       startSlice < 0 ? grouped[key].length + startSlice : startSlice,
@@ -163,14 +163,14 @@ const getYearsObj = (data, startSlice, endSlice) => {
   }));
 };
 
-const meanData = data => {
+const meanData = (data) => {
   const means = [];
-  data.forEach(w => {
+  data.forEach((w) => {
     w.weeks.forEach((y, i) => {
       means[i] = means[i] ? [...means[i], y.value] : [y.value];
     });
   });
-  return means.map(w => mean(w));
+  return means.map((w) => mean(w));
 };
 
 const runningMean = (data, windowSize) => {
@@ -184,25 +184,17 @@ const runningMean = (data, windowSize) => {
   return smoothedMean;
 };
 
-const getDates = data =>
-  data.map(d => ({
+const getDates = (data) =>
+  data.map((d) => ({
     ...d,
-    date: moment()
-      .year(d.year)
-      .week(d.isoweek)
-      .format('YYYY-MM-DD'),
-    month: upperCase(
-      moment()
-        .year(d.year)
-        .week(d.isoweek)
-        .format('MMM')
-    ),
+    date: moment().year(d.year).week(d.isoweek).format('YYYY-MM-DD'),
+    month: upperCase(moment().year(d.year).week(d.isoweek).format('MMM')),
   }));
 
-export const formatYearObject = data => {
+export const formatYearObject = (data) => {
   const temp = [];
   forOwn(data, (value, key) => {
-    return temp.push({ loss: value, year: parseInt(key) });
+    return temp.push({ loss: value, year: parseInt(key, 10) });
   });
   return temp;
 };

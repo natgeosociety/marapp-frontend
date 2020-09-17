@@ -1,0 +1,115 @@
+---
+name: Chart
+menu: Components
+---
+import { PropsTable } from 'docz';
+import { Chart } from '@marapp/earth-shared';
+
+# Chart
+
+<PropsTable of={Chart} />
+
+## Usage
+
+The Chart component requires two properties, data and config.
+
+we are using re-charts as our visualisation backend.
+You can read more on whats possible to send in as a configuration
+here: [official documentation](http://recharts.org/en-US/api)
+
+We currently support areas, lines, bars and pies.
+
+### Example data
+
+```js
+const data = [
+    {
+      x: 'Protected',
+      y: 100,
+      color: 'blue',
+      percentage: 40,
+      unit: '%'
+    },
+    {
+      x: 'Unprotected',
+      y: 100,
+      color: 'red',
+      percentage: 60,
+      unit: '%',
+    }
+]
+```
+
+### Example config
+
+```js
+const config = {
+  type: 'pie',
+  margin: { top: 20, right: 0, left: 0, bottom: 0 },
+  xKey: "percentage",
+  yKeys: {
+    pies: {
+      y: {
+        cx: '40%',
+        cy: '50%',
+        dataKey: 'percentage',
+        nameKey: 'x',
+        innerRadius: '60%',
+        outerRadius: '80%'
+      }
+    }
+  },
+  tooltip: {
+    cursor: false
+  }
+}
+```
+
+
+```jsx
+<Chart
+  data={data}
+  config={config}
+/>
+```
+
+### Outputs
+
+<Chart
+  data={[
+    {
+      x: 'Protected',
+      y: 100,
+      color: 'blue',
+      percentage: 40,
+      unit: '%'
+    },
+    {
+      x: 'Unprotected',
+      y: 100,
+      color: 'red',
+      percentage: 60,
+      unit: '%',
+    }
+  ]}
+  config={{
+    type: 'pie',
+    margin: { top: 20, right: 0, left: 0, bottom: 0 },
+    xKey: "percentage",
+    yKeys: {
+      pies: {
+        y: {
+          cx: '40%',
+          cy: '50%',
+          dataKey: 'percentage',
+          nameKey: 'x',
+          innerRadius: '60%',
+          outerRadius: '80%'
+        }
+      }
+    },
+    tooltip: {
+      cursor: false
+    }
+  }}
+/>

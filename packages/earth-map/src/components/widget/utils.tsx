@@ -19,7 +19,7 @@
 
 import chroma from 'chroma-js';
 
-export const formatKM2 = v => {
+export const formatKM2 = (v) => {
   switch (true) {
     case v < 0.01: {
       return ',.4~f';
@@ -43,7 +43,7 @@ export const formatKM2 = v => {
   }
 };
 
-export const formatPercentage = v => {
+export const formatPercentage = (v) => {
   switch (true) {
     case v < 0.01: {
       return ',.3~%';
@@ -74,7 +74,7 @@ export const stringOrHtml = (originalStr, props) => {
  */
 export const substitution = (originalStr, params = {}, options = {}) => {
   let str = originalStr;
-  Object.keys(params).forEach(key => {
+  Object.keys(params).forEach((key) => {
     const p = stringOrHtml(params[key], options);
 
     str = str.replace(new RegExp(`{{${key}}}`, 'g'), p).replace(new RegExp(`{${key}}`, 'g'), p);
@@ -102,7 +102,7 @@ export const getColorFromPallete = (pattern, value, alpha = 1) => {
   const domain = [];
   const colors = [];
 
-  pattern.forEach(p => {
+  pattern.forEach((p) => {
     colors.push(p.color);
     domain.push(p.quantity);
   });
