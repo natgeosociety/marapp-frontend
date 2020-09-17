@@ -33,11 +33,9 @@ import { UserEditProps } from '../model';
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
 export default function UserEdit(props: UserEditProps) {
-  const {
-    data: { name, email, groups, id },
-    newUser,
-    onDataChange = noop,
-  } = props;
+  const { data, newUser, onDataChange = noop } = props;
+
+  const { name, email, groups, id } = data || {};
 
   const { handleSubmit, register, errors, control, getValues, formState } = useForm({
     mode: 'onChange',
