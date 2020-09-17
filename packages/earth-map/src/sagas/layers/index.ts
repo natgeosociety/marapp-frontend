@@ -136,9 +136,11 @@ export function* loadDataIndexes({ payload }) {
       ...DATA_INDEX_QUERY,
       ...{ group: group.toString() },
     });
+
     const widgets = indexes.reduce((acc, index) => {
-      return [...acc, ...index.widgets];
+      return [...acc, ...(index?.widgets || [])];
     }, []);
+
     const adaptedWidgets = widgets.map(setWidget);
     yield put(setWidgets(adaptedWidgets));
     yield put(
