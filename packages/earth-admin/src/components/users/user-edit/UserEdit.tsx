@@ -17,40 +17,40 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState, useContext } from 'react';
+import { navigate } from 'gatsby';
 import { noop } from 'lodash';
+import React, { useContext, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
+import { ErrorMessages } from '@app/components/error-messages';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { SearchInput } from '@app/components/search-input';
+import { handleUserForm } from '@app/services/users';
+import { Auth0Context } from '@app/utils/contexts';
 
 import { UserEditProps } from '../model';
-import { useForm, Controller } from 'react-hook-form';
-import { LinkWithOrg } from 'components/link-with-org';
-import { SearchInput } from 'components/search-input';
-import { ErrorMessages } from 'components/error-messages';
-import { handleUserForm } from 'services/users';
-import { Auth0Context } from 'utils/contexts';
-import { navigate } from 'gatsby';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
 export default function UserEdit(props: UserEditProps) {
   const {
-    data: {name, email, groups, id},
+    data: { name, email, groups, id },
     newUser,
-    onDataChange = noop
+    onDataChange = noop,
   } = props;
 
-  const {handleSubmit, register, errors, control, getValues, formState} = useForm({
+  const { handleSubmit, register, errors, control, getValues, formState } = useForm({
     mode: 'onChange',
   });
   const [serverErrors, setServerErrors] = useState(null);
   const [selectedGroups, setSelectedGroups] = useState([]);
-  const {selectedGroup} = useContext(Auth0Context);
+  const { selectedGroup } = useContext(Auth0Context);
 
   const onSubmit = async (values: any) => {
     const formData = getValues();
 
     try {
-      await handleUserForm(false, {groups: selectedGroups}, id || formData.email, selectedGroup);
+      await handleUserForm(false, { groups: selectedGroups }, id || formData.email, selectedGroup);
       onDataChange();
       await navigate(`/${selectedGroup}/users`);
     } catch (error) {
@@ -65,7 +65,10 @@ export default function UserEdit(props: UserEditProps) {
       </div>
 
       <div className="ng-padding-medium ng-background-ultradkgray">
-        <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="ng-form ng-form-dark ng-flex-column ng-width-4-5"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="ng-margin-medium-bottom ng-grid">
             <div className="ng-width-large-1-2 ng-width-1-1">
               <label className="ng-form-label" htmlFor="name">
@@ -78,7 +81,7 @@ export default function UserEdit(props: UserEditProps) {
                 defaultValue={name}
                 placeholder="User name"
                 className={INPUT_SIZE_CLASSNAME}
-                disabled
+                disabled={true}
               />
             </div>
             <div className="ng-width-large-1-2 ng-width-1-1">
@@ -114,7 +117,7 @@ export default function UserEdit(props: UserEditProps) {
             />
           </div>
 
-          {serverErrors && <ErrorMessages errors={serverErrors}/>}
+          {serverErrors && <ErrorMessages errors={serverErrors} />}
 
           <div className="ng-flex">
             <button
@@ -123,7 +126,10 @@ export default function UserEdit(props: UserEditProps) {
             >
               Save
             </button>
-            <LinkWithOrg className="marapp-qa-actioncancel ng-button ng-button-secondary" to="/users">
+            <LinkWithOrg
+              className="marapp-qa-actioncancel ng-button ng-button-secondary"
+              to="/users"
+            >
               Cancel
             </LinkWithOrg>
           </div>

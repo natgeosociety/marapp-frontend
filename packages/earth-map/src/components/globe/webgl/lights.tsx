@@ -21,9 +21,9 @@ import {
   AmbientLight,
   DirectionalLight,
   HemisphereLight,
-  SphereBufferGeometry,
-  MeshPhongMaterial,
   Mesh,
+  MeshPhongMaterial,
+  SphereBufferGeometry,
 } from 'three';
 
 const backlightTracker = (stage, earth, radius, segments) => {

@@ -1,18 +1,18 @@
-import React from 'react';
 import classNames from 'classnames';
+import React from 'react';
 
 import './styles.scss';
 
 interface IProps {
   value: boolean;
-  label: string
+  label: string;
   name: string;
   onChange: (e) => {};
   className?: string;
 }
 
 export const Toggle = React.forwardRef((props: IProps, ref: any) => {
-  const {className, value, label, onChange, name} = props;
+  const { className, value, label, onChange, name } = props;
 
   const classes = classNames({
     '-active': value === true,
@@ -25,7 +25,10 @@ export const Toggle = React.forwardRef((props: IProps, ref: any) => {
   };
 
   return (
-    <label htmlFor={name} className="marapp-qa-toggle ng-c-cursor-pointer ng-flex ng-text-weight-regular">
+    <label
+      htmlFor={name}
+      className="marapp-qa-toggle ng-c-cursor-pointer ng-flex ng-text-weight-regular"
+    >
       <span className={classes}>
         <input
           onClick={handleClick}
@@ -33,12 +36,12 @@ export const Toggle = React.forwardRef((props: IProps, ref: any) => {
           id={name}
           name={name}
           checked={value}
-          type='checkbox'
-          readOnly
+          type="checkbox"
+          readOnly={true}
         />
-        <span/>
+        <span />
       </span>
       {label}
-    </label>);
+    </label>
+  );
 });
-

@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import Fuse from 'fuse.js';
+import React from 'react';
 
 interface IFilter {
   children?: any;
@@ -28,6 +28,11 @@ interface IFilter {
 }
 
 class FilterComponent extends React.Component<IFilter, any> {
+  public static defaultProps = {
+    items: [],
+    keys: [],
+    filter: '',
+  };
   private fuse: any;
 
   constructor(props) {
@@ -46,13 +51,7 @@ class FilterComponent extends React.Component<IFilter, any> {
     });
   }
 
-  public static defaultProps = {
-    items: [],
-    keys: [],
-    filter: '',
-  };
-
-  render() {
+  public render() {
     const { filter, items } = this.props;
     const filteredItems = filter && filter.length > 0 ? this.fuse.search(filter) : items;
     return this.props.children({ items: filteredItems });

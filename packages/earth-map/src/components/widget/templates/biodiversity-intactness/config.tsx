@@ -17,21 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-
-// Utils
-import { format } from 'd3-format';
+import WidgetTooltip from 'components/widget/tooltip';
 import { replace } from 'components/widget/utils';
+import { format } from 'd3-format';
 import groupBy from 'lodash/groupBy';
 import sumBy from 'lodash/sumBy';
-
-// Components
-import WidgetTooltip from 'components/widget/tooltip';
+import { IPlace } from 'modules/places/model';
+import { IWidgetConfig } from 'modules/widget/model';
+import React from 'react';
 
 import { BiodiversityIntactnessMetric } from './model';
 
-import { IWidgetConfig } from 'modules/widget/model';
-import { IPlace } from 'modules/places/model';
+// Utils
+
+// Components
 
 interface BioConfig {
   metric: BiodiversityIntactnessMetric;
@@ -54,7 +53,7 @@ export const CONFIG = {
     // Get values
     const values = [];
     const percentileScale = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
-    percentileScale.forEach(sc => {
+    percentileScale.forEach((sc) => {
       return values.push({
         key: `percentile_${sc}`,
         value: metric[`percentile_${sc}`],
@@ -78,21 +77,21 @@ export const CONFIG = {
 
     function getValues(arr) {
       return arr.reduce((acc, v) => {
-        return acc + values.find(v2 => v2.key === v).value;
+        return acc + values.find((v2) => v2.key === v).value;
       }, 0);
     }
 
     function getPercValues(arr) {
       const value = arr.reduce((acc, v) => {
-        return acc + values.find(v2 => v2.key === v).value;
+        return acc + values.find((v2) => v2.key === v).value;
       }, 0);
 
       return value / sum;
     }
     return {
-      noData: values.every(v => !v.value),
+      noData: values.every((v) => !v.value),
       chart: legendConfig.items
-        .map(l => {
+        .map((l) => {
           return {
             x: l.label,
             area: getValues(l.keys),
@@ -109,7 +108,7 @@ export const CONFIG = {
           location: place.name,
           year: 2015,
           int_perc: `${format('.2r')(int_perc)}%`,
-          change_category: mode_ints.find(mi => mi.show).text,
+          change_category: mode_ints.find((mi) => mi.show).text,
         },
         {},
         {
@@ -136,16 +135,16 @@ export const CONFIG = {
           align: 'left',
           verticalAlign: 'middle',
           layout: 'vertical',
-          content: properties => {
+          content: (properties) => {
             const { payload } = properties;
-            const groups = groupBy(payload, p => p.payload.category);
+            const groups = groupBy(payload, (p) => p.payload.category);
 
             return (
               <div className="widget--legend">
-                {Object.keys(groups).map(g => (
+                {Object.keys(groups).map((g) => (
                   <div key={g} className="widget--legend-group">
                     <ul className="widget--legend-list">
-                      {groups[g].map(item => (
+                      {groups[g].map((item) => (
                         <li key={`item-${item.color}`} className="widget--legend-list-item">
                           <span
                             className="widget--legend-list-item-square"
@@ -184,12 +183,12 @@ export const CONFIG = {
                 {
                   label: 'Area:',
                   key: 'area',
-                  format: value => `${format(',.0f')(value)}km²`,
+                  format: (value) => `${format(',.0f')(value)}km²`,
                 },
                 {
                   label: 'Percentage:',
                   key: 'percentage',
-                  format: value => `${format('.2%')(value)}`,
+                  format: (value) => `${format('.2%')(value)}`,
                 },
               ]}
             />

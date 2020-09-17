@@ -33,15 +33,13 @@ export const media = {
             id: 1,
             title: 'The expedition team',
             description: 'Warming up after a cold night in the wilderness.',
-            src:
-              '/file.jpg',
+            src: '/file.jpg',
           },
           {
             id: 2,
             title: 'The expedition team',
             description: 'Preparing mokoro canoes for their journey down the Okavago.',
-            src:
-              '/file.jpg',
+            src: '/file.jpg',
           },
         ],
       },
@@ -56,8 +54,7 @@ export const media = {
         type: 'video',
         title: 'testing',
         description: 'testing description',
-        src:
-          '/file.mov',
+        src: '/file.mov',
       },
     },
     {
@@ -83,8 +80,7 @@ export const media = {
             id: 3,
             title: 'The expedition team',
             description: 'Transporting scientific equipment down the river.',
-            src:
-              '/file.jpg',
+            src: '/file.jpg',
           },
         ],
       },
@@ -102,8 +98,7 @@ export const media = {
             id: 3,
             title: 'The expedition team',
             description: 'Transporting scientific equipment down the river.',
-            src:
-              '/file.jpg',
+            src: '/file.jpg',
           },
         ],
       },

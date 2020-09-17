@@ -17,21 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useEffect, useState } from 'react';
 import { Router } from '@reach/router';
+import React, { useState } from 'react';
 import useSWR from 'swr';
 
-import { encodeQueryToURL, setPage } from 'utils';
-import { useInfiniteList } from 'utils/hooks';
-import { getAllWidgets, getWidget } from 'services/widgets';
+import { AuthzGuards } from '@marapp/earth-shared';
 
-import { WidgetDetails, WidgetEdit } from 'components/widgets';
-import { DataListing, DefaultListItem } from 'components/data-listing';
-import { LinkWithOrg } from 'components/link-with-org';
-import { useAuth0 } from 'auth/auth0';
-import { AuthzGuards } from 'auth/permissions';
-import { SidebarLayout, ContentLayout } from 'layouts';
+import { useAuth0 } from '@app/auth/auth0';
+import { DataListing, DefaultListItem } from '@app/components/data-listing';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { WidgetDetails, WidgetEdit } from '@app/components/widgets';
+import { ContentLayout, SidebarLayout } from '@app/layouts';
+import { getAllWidgets, getWidget } from '@app/services/widgets';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { useInfiniteList } from '@app/utils/hooks';
 
 const PAGE_SIZE = 20;
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
@@ -42,7 +41,7 @@ const WIDGET_DETAIL_QUERY = {
 };
 const PAGE_TYPE = setPage('Widgets');
 
-export default function WidgetsPage( props ) {
+export default function WidgetsPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
 
@@ -55,7 +54,7 @@ export default function WidgetsPage( props ) {
       group: selectedGroup,
     };
     return encodeQueryToURL('widgets', query);
-  }
+  };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllWidgets);
 
   return (
@@ -72,7 +71,7 @@ export default function WidgetsPage( props ) {
         />
       </SidebarLayout>
       <Router>
-        <HomePage path="/"/>
+        <HomePage path="/" />
         <DetailsPage path="/:page" onDataChange={mutate} />
         <EditPage path="/:page/edit" newWidget={false} onDataChange={mutate} />
         <EditPage path="/new" newWidget={true} onDataChange={mutate} />
@@ -81,59 +80,53 @@ export default function WidgetsPage( props ) {
   );
 }
 
-function HomePage( props: any ) {
+function HomePage(props: any) {
   const { getPermissions } = useAuth0();
   const permissions = getPermissions(AuthzGuards.accessWidgetsGuard);
   const writePermissions = getPermissions(AuthzGuards.writeWidgetsGuard);
-  return (writePermissions && (
-    <ContentLayout>
-      <div className="ng-flex ng-align-right">
-        <LinkWithOrg className="ng-button ng-button-overlay" to="/widgets/new">
-          add new widget
-        </LinkWithOrg>
-      </div>
-    </ContentLayout>
-  ));
+  return (
+    writePermissions && (
+      <ContentLayout>
+        <div className="ng-flex ng-align-right">
+          <LinkWithOrg className="ng-button ng-button-overlay" to="/widgets/new">
+            add new widget
+          </LinkWithOrg>
+        </div>
+      </ContentLayout>
+    )
+  );
 }
 
-function DetailsPage( props: any ) {
+function DetailsPage(props: any) {
   const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`widgets/${props.page}`, {
     ...WIDGET_DETAIL_QUERY,
     ...{ group: selectedGroup },
   });
-  const { data, error, mutate } = useSWR(
-    encodedQuery,
-    (url) => getWidget(url).then((response: any) => response.data)
+  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
+    getWidget(url).then((response: any) => response.data)
   );
 
   return (
     <ContentLayout backTo="/widgets" isLoading={!data}>
       <WidgetDetails data={data} />
     </ContentLayout>
-
   );
 }
 
-function EditPage( props: any ) {
+function EditPage(props: any) {
   const { selectedGroup } = useAuth0();
   const encodedQuery = encodeQueryToURL(`widgets/${props.page}`, {
     ...WIDGET_DETAIL_QUERY,
     group: selectedGroup,
   });
-  const { data, error, mutate } = useSWR(
-    !props.newWidget && encodedQuery,
-    (url) => getWidget(url).then((response: any) => response.data)
+  const { data, error, mutate } = useSWR(!props.newWidget && encodedQuery, (url) =>
+    getWidget(url).then((response: any) => response.data)
   );
 
   return (
     <ContentLayout backTo="/widgets" isLoading={props.newWidget ? false : !data}>
-      <WidgetEdit
-        data={data || {}}
-        newWidget={props.newWidget}
-        onDataChange={props.onDataChange} />
+      <WidgetEdit data={data || {}} newWidget={props.newWidget} onDataChange={props.onDataChange} />
     </ContentLayout>
-
-
   );
 }

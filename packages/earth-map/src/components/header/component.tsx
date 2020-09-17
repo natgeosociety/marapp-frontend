@@ -17,18 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useContext, useState, useEffect } from 'react';
-import { remove } from 'lodash';
-import classNames from 'classnames';
-import Link from 'redux-first-router-link';
-
 import { Auth0Context } from 'auth/auth0';
+import classNames from 'classnames';
 import DropdownComponent from 'components/dropdown';
-import { EPanels } from 'modules/sidebar/model';
-import { checkRole, getAvailableOrgs } from 'utils';
-import { APP_LOGO } from '../../theme';
 import { ADMIN_URL, APP_NAME } from 'config';
+import { remove } from 'lodash';
+import { EPanels } from 'modules/sidebar/model';
+import React, { useContext, useEffect, useState } from 'react';
+import Link from 'redux-first-router-link';
 import { fetchStats } from 'services/stats';
+import { APP_LOGO } from 'theme';
+
+import { checkRole } from '@marapp/earth-shared';
 
 import './styles.scss';
 
@@ -36,7 +36,7 @@ interface IProps {
   group?: string[];
   resetPlace?: Function;
   setPlacesSearch?: Function;
-  resetPlacesFeatured?: Function
+  resetPlacesFeatured?: Function;
   setIndexesSelected?: Function;
   resetMap?: Function;
   resetLayerCache?: Function;
@@ -50,7 +50,8 @@ const Header = (props: IProps) => {
   const {
     roles,
     userData: { allGroups },
-    isAuthenticated
+    isAuthenticated,
+    groups,
   } = useContext(Auth0Context);
   const {
     group,
@@ -63,22 +64,22 @@ const Header = (props: IProps) => {
     setPlacesSearch,
     setLayersSearch,
     setSidebarPanel,
-    resetLayers
+    resetLayers,
   } = props;
   const hasMultipleGroups = allGroups.length > 1;
   const allInitiallySelected = group.length === allGroups.length;
   const [selectedGroups, setSelectedGroups] = useState(allInitiallySelected ? [] : group);
   const [dropdownState, setDropdownState] = useState('close');
-  const [availableOrgs, setAvailableOrgs] = useState(getAvailableOrgs(roles).map(role => ({ name: role, layers: 'N/A', locations: 'N/A' })));
+  const [availableGroups, setAvailableGroups] = useState(
+    groups.map((group) => ({ name: group, layers: 'N/A', locations: 'N/A' }))
+  );
 
   useEffect(() => {
-    
     (async () => {
       try {
-        const response: any = await fetchStats({ group: getAvailableOrgs(roles).join(',') });
-        setAvailableOrgs(response.data);
-      }
-      catch (err) {
+        const response: any = await fetchStats({ group: groups.join(',') });
+        setAvailableGroups(response.data);
+      } catch (err) {
         console.error(err);
       }
     })();
@@ -130,7 +131,6 @@ const Header = (props: IProps) => {
   };
 
   return (
-
     <div className="marapp-qa-header ng-padding-medium-horizontal ng-ep-background-dark ng-flex ng-flex-middle ng-position-relative ng-padding-bottom ng-padding-small-top">
       <Link
         className="ng-border-remove"
@@ -147,7 +147,7 @@ const Header = (props: IProps) => {
       </Link>
       {isAuthenticated && (
         <>
-          <span className="ng-ep-kicker"></span>
+          <span className="ng-ep-kicker" />
 
           <span className="ng-text-display-s ng-text-weight-regular ng-body-color ng-margin-remove ng-display-block ng-org-name">
             map view
@@ -164,7 +164,9 @@ const Header = (props: IProps) => {
                 'ng-icon-directiondown': dropdownState !== 'open',
               })}
             />
-            {selectedGroups.length > 0 && <span className="ng-org-badge">{selectedGroups.length}</span>}
+            {selectedGroups.length > 0 && (
+              <span className="ng-org-badge">{selectedGroups.length}</span>
+            )}
           </div>
 
           <DropdownComponent state={dropdownState}>
@@ -173,7 +175,7 @@ const Header = (props: IProps) => {
             </li>
             <li className="marapp-qa-orglist ng-form ng-form-dark">
               <div className="ng-padding-medium-horizontal ng-padding-top">
-                {availableOrgs.map((g, i) => (
+                {availableGroups.map((g, i) => (
                   <label
                     htmlFor={g.name}
                     className={classNames('ng-padding-bottom ng-flex', {
@@ -195,8 +197,7 @@ const Header = (props: IProps) => {
                     <div>
                       {g.name}
                       <span className="ng-display-block ng-color-mdgray">
-                        Places ({g.locations})
-                        <strong className="ng-icon-bullet"></strong>
+                        Places ({g.locations})<strong className="ng-icon-bullet" />
                         Layers ({g.layers})
                       </span>
                     </div>
@@ -216,7 +217,7 @@ const Header = (props: IProps) => {
                 )
             )}
           </DropdownComponent>
-        </> 
+        </>
       )}
     </div>
   );

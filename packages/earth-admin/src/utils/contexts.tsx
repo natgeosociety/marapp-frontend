@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
+import React from 'react';
 
-import { Auth0 } from 'auth/model';
+import { Auth0 } from '@app/auth/model';
 
 export const Auth0Context = React.createContext<Auth0>({});
 export const MapComponentContext = React.createContext<any>({});

@@ -17,34 +17,34 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { put, call, select, takeLatest, all } from 'redux-saga/effects';
-import { replace } from 'redux-first-router';
 import sortBy from 'lodash/sortBy';
-import { serializeFilters } from '@marapp/earth-components';
-
-import { fetchDataIndexes } from 'services/data-indexes';
-import { DATA_INDEX_QUERY } from '../model';
-import { IIndex } from 'modules/indexes/model';
-import { IWidget } from 'modules/widget/model';
-import { setSidebarPanel } from 'modules/sidebar/actions';
-import { EPanels } from 'modules/sidebar/model';
-import { setWidgets, setWidgetsLoading, setWidgetsError } from 'modules/widgets/actions';
+import { persistData } from 'modules/global/actions';
 import { setIndexesList } from 'modules/indexes/actions';
+import { IIndex } from 'modules/indexes/model';
 import {
-  setLayersActive,
-  setLayersSearch,
-  setLayersLoading,
-  setLayersSearchResults,
-  setLayersSearchAvailableFilters,
-  resetLayersResults,
   nextLayersPage,
+  resetLayersResults,
+  setLayersActive,
+  setLayersLoading,
+  setLayersSearch,
+  setLayersSearchAvailableFilters,
+  setLayersSearchResults,
   setListActiveLayers,
 } from 'modules/layers/actions';
-import { persistData } from 'modules/global/actions';
-import { getGroup, getLayers, onlyMatch, flattenLayerConfig } from 'sagas/saga-utils';
-import { fetchLayers } from 'services/layers';
-import { LAYER_QUERY } from '../model';
 import { ILayer } from 'modules/layers/model';
+import { setSidebarPanel } from 'modules/sidebar/actions';
+import { EPanels } from 'modules/sidebar/model';
+import { IWidget } from 'modules/widget/model';
+import { setWidgets, setWidgetsError, setWidgetsLoading } from 'modules/widgets/actions';
+import { replace } from 'redux-first-router';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { flattenLayerConfig, getGroup, getLayers, onlyMatch } from 'sagas/saga-utils';
+import { fetchDataIndexes } from 'services/data-indexes';
+import { fetchLayers } from 'services/layers';
+
+import { serializeFilters } from '@marapp/earth-shared';
+
+import { DATA_INDEX_QUERY, LAYER_QUERY } from '../model';
 
 export default function* layers() {
   // @ts-ignore
@@ -164,7 +164,7 @@ export function* loadDataIndexes({ payload }) {
 function setWidget(widget: IWidget) {
   const decoratedLayers: ILayer[] = widget.layers.map(flattenLayerConfig);
 
-  const adaptedWidget = { ...widget, ...widget.config, ...{layers: decoratedLayers} };
+  const adaptedWidget = { ...widget, ...widget.config, ...{ layers: decoratedLayers } };
 
   return adaptedWidget;
 }

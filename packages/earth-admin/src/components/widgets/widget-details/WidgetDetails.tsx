@@ -17,18 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import renderHTML from 'react-render-html';
 
-import { formatDate } from 'utils';
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { JsonEditor } from '@app/components/json-editor';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
+import { formatDate } from '@app/utils';
 
 import { WidgetProps } from '../model';
-import { DeleteConfirmation } from 'components/modals/delete-confirmation';
-import { JsonEditor } from 'components/json-editor';
-import { LinkWithOrg } from 'components/link-with-org';
-import { useAuth0 } from 'auth/auth0';
-import { AuthzGuards } from 'auth/permissions';
 
 export default function WidgetDetails(props: WidgetProps) {
   const {
@@ -62,7 +62,7 @@ export default function WidgetDetails(props: WidgetProps) {
           <span className="ng-padding-horizontal">
             Published
             <br />
-            <i className={`ng-icon-${publishIcon}`}></i>
+            <i className={`ng-icon-${publishIcon}`} />
           </span>
         </div>
       </div>
@@ -130,7 +130,10 @@ export default function WidgetDetails(props: WidgetProps) {
       </div>
       {writePermissions && (
         <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
-          <button className="marapp-qa-actiondelete ng-button ng-button-primary" onClick={handleDeleteToggle}>
+          <button
+            className="marapp-qa-actiondelete ng-button ng-button-primary"
+            onClick={handleDeleteToggle}
+          >
             Delete widget
           </button>
         </div>

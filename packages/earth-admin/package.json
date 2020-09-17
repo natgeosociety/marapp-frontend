@@ -8,7 +8,7 @@
     "build": "gatsby build --prefix-paths",
     "serve": "gatsby serve --prefix-paths --port 8000",
     "clean": "gatsby clean",
-    "lint": "tslint -p tsconfig.json",
+    "lint": "tslint -p tsconfig.json --fix",
     "test": "jest --runInBand --passWithNoTests",
     "typecheck": "tsc --emitDeclarationOnly"
   },
@@ -17,7 +17,7 @@
     "@ckeditor/ckeditor5-build-classic": "^16.0.0",
     "@ckeditor/ckeditor5-react": "^2.1.0",
     "@loadable/component": "^5.10.3",
-    "@marapp/earth-components": "*",
+    "@marapp/earth-shared": "*",
     "@types/loadable__component": "^5.10.0",
     "@types/lodash": "^4.14.146",
     "@types/node": "^12.12.6",

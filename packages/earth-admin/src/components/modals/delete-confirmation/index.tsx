@@ -18,5 +18,3 @@
 */
 
 export { DeleteConfirmation } from './DeleteConfirmation';
-
-

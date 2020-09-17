@@ -17,14 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import { navigate } from 'gatsby';
 import { noop } from 'lodash';
+import React from 'react';
 
-import { deleteDashboards, deleteLayer, deletePlace, deleteWidgets, deleteUser, deleteOrganization } from 'services';
-import { useAuth0 } from 'auth/auth0';
+import { Modal } from '@marapp/earth-shared';
 
-import { Modal } from '@marapp/earth-components';
+import { useAuth0 } from '@app/auth/auth0';
+import {
+  deleteDashboards,
+  deleteLayer,
+  deleteOrganization,
+  deletePlace,
+  deleteUser,
+  deleteWidgets,
+} from '@app/services';
 
 interface IProps {
   id: string;
@@ -87,8 +94,7 @@ export const DeleteConfirmation = (props: IProps) => {
       await navigate(`/${selectedGroup}/${navigateRoute}`, {
         state: { refresh: true },
       });
-    }
-    catch (err) {
+    } catch (err) {
       error && error(err);
     }
 
@@ -100,19 +106,26 @@ export const DeleteConfirmation = (props: IProps) => {
   };
 
   return (
-    <Modal isOpen={visibility} onRequestClose={handleModalToggle} className="marapp-qa-DeleteConfirmation ng-text-center">
+    <Modal
+      isOpen={visibility}
+      onRequestClose={handleModalToggle}
+      className="marapp-qa-DeleteConfirmation ng-text-center"
+    >
       <h4 className="ng-text-display-s ng-margin-bottom">Delete {name}</h4>
       <p className="ng-space-wrap">Are you sure you want to permanently delete this {type}?</p>
       <div className="ng-flex ng-flex-center">
         <button
-          autoFocus
+          autoFocus={true}
           tabIndex={0}
           className="marapp-qa-actioncancel ng-button ng-button-secondary ng-margin-medium-right"
           onClick={handleModalToggle}
         >
           Cancel
         </button>
-        <button className="marapp-qa-actiondelete ng-button ng-button-primary" onClick={(e) => handleDelete(e)}>
+        <button
+          className="marapp-qa-actiondelete ng-button ng-button-primary"
+          onClick={(e) => handleDelete(e)}
+        >
           Delete
         </button>
       </div>{' '}

@@ -17,14 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState } from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
-
-import 'codemirror/addon/lint/lint';
 import 'codemirror/addon/lint/javascript-lint';
 import 'codemirror/addon/lint/json-lint';
+import 'codemirror/addon/lint/lint';
 import 'codemirror/mode/javascript/javascript';
+import React, { useState } from 'react';
+import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 import './styles.scss';
 
@@ -48,7 +46,7 @@ export default function JsonEditor(props: JsonEditorProps) {
   };
 
   return (
-    <div className="marapp-qa-jsoneditor" onBlur={handleBlur} >
+    <div className="marapp-qa-jsoneditor" onBlur={handleBlur}>
       <CodeMirror
         value={JSON.stringify(json, null, 2)}
         options={{
@@ -59,7 +57,7 @@ export default function JsonEditor(props: JsonEditorProps) {
           lineNumbers: true,
           lint: true,
           lineWrapping: true,
-          readOnly: readOnly,
+          readOnly,
         }}
         onChange={handleChange}
       />

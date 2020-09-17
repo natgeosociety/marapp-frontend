@@ -17,18 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import { Router } from '@reach/router';
+import React from 'react';
 
-import { useInfiniteList } from 'utils/hooks';
-import { useAuth0 } from 'auth/auth0';
-import { encodeQueryToURL, setPage } from 'utils';
-import { getAllOrganizations } from 'services/organizations';
+import { useAuth0 } from '@app/auth/auth0';
+import { Auth0ListItem, DataListing } from '@app/components/data-listing';
+import { SidebarLayout } from '@app/layouts';
+import { getAllOrganizations } from '@app/services/organizations';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { useInfiniteList } from '@app/utils/hooks';
 
-import { DataListing, Auth0ListItem } from 'components/data-listing';
-import { SidebarLayout } from 'layouts';
-import { OrganizationHome } from './home';
 import { OrganizationDetails } from './details';
+import { OrganizationHome } from './home';
 import { NewOrganization } from './new';
 
 const PAGE_SIZE = 20;
@@ -43,7 +43,7 @@ export default function PlacesPage(props) {
       group: selectedGroup,
     };
     return encodeQueryToURL('organizations', query);
-  }
+  };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllOrganizations);
 
   return (

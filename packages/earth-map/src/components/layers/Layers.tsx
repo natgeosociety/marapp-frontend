@@ -17,18 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import { debounce } from 'lodash';
-
-import { APP_BASEMAPS } from 'theme';
-
-import SearchBox from 'components/searchbox';
-import FilterBy from 'components/filter-by';
-import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
-import ListItem from 'components/list-item';
 import BackToLocation from 'components/back-to-location';
+import FilterBy from 'components/filter-by';
 import InfiniteList from 'components/infinite-list';
+import ListItem from 'components/list-item';
+import SearchBox from 'components/searchbox';
+import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
+import { debounce } from 'lodash';
 import { EPanels } from 'modules/sidebar/model';
+import React from 'react';
 
 import './styles.scss';
 
@@ -119,7 +116,7 @@ const Layers = (props: IProps) => {
       filters: {},
       open: false,
     });
-  }
+  };
 
   const onLabels = () => {
     const { mapLabels, setMapLabels } = props;
@@ -148,62 +145,76 @@ const Layers = (props: IProps) => {
             onChange={handleChange}
             onReset={handleReset}
             onFocus={() => setSidebarPanelExpanded(true)}
-            showClose={showX} />
+            showClose={showX}
+          />
           {showFilter && (
             <FilterBy
               open={search.open}
               onOpenToggle={setLayersSearchOpen}
               onChange={setLayersSearch}
-              data={search} />
+              data={search}
+            />
           )}
           {showBack && (
             <BackToLocation
               onClick={handleBack}
               location={locationName}
-              organization={locationOrganization} />
+              organization={locationOrganization}
+            />
           )}
         </>
-      }>
+      }
+    >
       {(!selected || panelExpanded) && (
         <>
           {listActive.length > 0 && (
             <div className="marapp-qa-activelayers ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
               <div className="ng-flex ng-flex-space-between ng-flex-align-items-baseline ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top">
-                <h2 className="ng-text-display-s ng-body-color ng-margin-remove">Selected Layers</h2>
-                <a className="marapp-qa-deselectlayers" onClick={() => resetLayersActive()}>deselect all</a>
+                <h2 className="ng-text-display-s ng-body-color ng-margin-remove">
+                  Selected Layers
+                </h2>
+                <a className="marapp-qa-deselectlayers" onClick={() => resetLayersActive()}>
+                  deselect all
+                </a>
               </div>
               {listActive.map((layer) => {
                 return (
                   <ListItem
-                    active
+                    active={true}
                     title={layer.name}
                     key={`${layer.slug}-${layer.organization}`}
                     onClick={debounce(() => onToggleLayer(layer), 200)}
-                    organization={(group.length > 1) && layer.organization}
-                    labels={layer.category} />
-                )
+                    organization={group.length > 1 && layer.organization}
+                    labels={layer.category}
+                  />
+                );
               })}
             </div>
           )}
           <div className="marapp-qa-other ng-section-background ng-position-relative ng-padding-medium-bottom">
-            <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Other</h2>
+            <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
+              Other
+            </h2>
             <ListItem
               title="Labels"
               active={mapLabels}
               key="labels"
-              onClick={debounce(onLabels, 200)} />
+              onClick={debounce(onLabels, 200)}
+            />
             <ListItem
               title="Roads"
               active={mapRoads}
               key="roads"
-              onClick={debounce(onRoads, 200)} />
+              onClick={debounce(onRoads, 200)}
+            />
           </div>
           <InfiniteList
             title="Widget layers"
             data={layers.results}
             loading={loading}
             nextPageCursor={nextPageCursor}
-            onNextPage={nextLayersPage}>
+            onNextPage={nextLayersPage}
+          >
             {(layer) => (
               <ListItem
                 hint={layer.$searchHint.name}
@@ -211,14 +222,15 @@ const Layers = (props: IProps) => {
                 active={!!listActive.find((x) => x.slug === layer.slug)}
                 key={`${layer.slug}-${layer.organization}`}
                 onClick={debounce(() => onToggleLayer(layer), 200)}
-                organization={(group.length > 1) && layer.organization}
-                labels={layer.category} />
+                organization={group.length > 1 && layer.organization}
+                labels={layer.category}
+              />
             )}
           </InfiniteList>
         </>
       )}
     </SidebarLayoutSearch>
   );
-}
+};
 
 export default Layers;

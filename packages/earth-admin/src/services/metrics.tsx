@@ -18,8 +18,9 @@
 */
 
 import axios, { AxiosRequestConfig } from 'axios';
-import { deserializeData } from 'utils';
-import { GATSBY_API_URL } from 'config';
+
+import { GATSBY_API_URL } from '@app/config';
+import { deserializeData } from '@app/utils';
 
 interface ResponseSuccess {
   operationId?: string;

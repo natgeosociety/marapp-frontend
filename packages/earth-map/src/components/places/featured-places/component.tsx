@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import { Spinner } from '@marapp/earth-components';
-
 import ListItem from 'components/list-item';
+import React from 'react';
+
+import { Spinner } from '@marapp/earth-shared';
 
 interface IFeaturedPlaces {
   featured?: {
@@ -35,7 +35,9 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
 
   return (
     <div className="marapp-qa-featuredplaces ng-section-background ng-position-relative ng-padding-medium-bottom">
-      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Featured places</h2>
+      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
+        Featured places
+      </h2>
       <div>
         {!featured?.data.length && !featured?.meta && (
           <div className="ng-padding-large ng-position-relative">
@@ -48,10 +50,12 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
 
             return (
               <ListItem
-                title={name} key={`${slug}-${organization}`}
+                title={name}
+                key={`${slug}-${organization}`}
                 linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
-                organization={(group.length > 1) && organization}
-                labels={[type]} />
+                organization={group.length > 1 && organization}
+                labels={[type]}
+              />
             );
           })}
       </div>

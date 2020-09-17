@@ -17,8 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
 import classnames from 'classnames';
+import React from 'react';
+
 import './styles.scss';
 
 interface IMapControls {
@@ -27,7 +28,7 @@ interface IMapControls {
 }
 
 class MapControls extends React.PureComponent<IMapControls> {
-  render() {
+  public render() {
     const { customClass, children } = this.props;
     const classNames = classnames('marapp-qa-mapcontrols', 'c-map-controls', {
       [customClass]: !!customClass,

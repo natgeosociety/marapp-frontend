@@ -17,13 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useContext } from 'react';
-
-import { LayerManager, Layer } from 'layer-manager/dist/components';
-
-import { MapComponentContext } from 'utils/contexts';
 import { PluginMapboxGl } from 'layer-manager';
+import { Layer, LayerManager } from 'layer-manager/dist/components';
+import React, { useContext } from 'react';
+
+import { MapComponentContext } from '@app/utils/contexts';
 
 interface ManagerProps {
   layer: any;

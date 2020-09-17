@@ -17,23 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState, useEffect, useContext } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 import { navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
 import { noop } from 'lodash';
+import React, { useContext, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
-import { formatDate } from 'utils';
-import { handleWidgetForm } from 'services';
-
-import { WidgetProps } from 'components/widgets/model';
-import { JsonEditor } from 'components/json-editor';
-import { HtmlEditor } from 'components/html-editor';
-import { ErrorMessages } from 'components/error-messages';
-import { SearchInput } from 'components/search-input';
-import { LinkWithOrg } from 'components/link-with-org';
-import { Auth0Context } from 'utils/contexts';
+import { ErrorMessages } from '@app/components/error-messages';
+import { HtmlEditor } from '@app/components/html-editor';
+import { JsonEditor } from '@app/components/json-editor';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { SearchInput } from '@app/components/search-input';
+import { WidgetProps } from '@app/components/widgets/model';
+import { handleWidgetForm } from '@app/services';
+import { formatDate } from '@app/utils';
+import { Auth0Context } from '@app/utils/contexts';
 
 const INPUT_SIZE_CLASSNAME = 'ng-width-1-1 ng-form-large';
 
@@ -56,7 +54,7 @@ export default function WidgetEdit(props: WidgetProps) {
     newWidget,
   } = props;
 
-  const {getValues, register, formState, triggerValidation, control} = useForm({
+  const { getValues, register, formState, triggerValidation, control } = useForm({
     mode: 'onChange',
     defaultValues: {
       config: config || {},
@@ -67,7 +65,7 @@ export default function WidgetEdit(props: WidgetProps) {
   const [widgetConfig, setWidgetConfig] = useState({});
   const [jsonError, setJsonError] = useState(false);
 
-  const {selectedGroup} = useContext(Auth0Context);
+  const { selectedGroup } = useContext(Auth0Context);
 
   useEffect(() => {
     setWidgetConfig(newWidget ? {} : config);
@@ -106,7 +104,9 @@ export default function WidgetEdit(props: WidgetProps) {
   return (
     <div className="marapp-qa-widgetedit">
       <div className="ng-flex ng-flex-space-between">
-        <h2 className="ng-text-display-m ng-c-flex-grow-1">{newWidget ? 'Add Widget' : `Edit Widget - ${name}`}</h2>
+        <h2 className="ng-text-display-m ng-c-flex-grow-1">
+          {newWidget ? 'Add Widget' : `Edit Widget - ${name}`}
+        </h2>
 
         <span>
           Last updated at: {formatDate(updatedAt)}; Created at: {formatDate(createdAt)}
@@ -156,7 +156,7 @@ export default function WidgetEdit(props: WidgetProps) {
                 name="description"
                 control={control}
                 defaultValue={description}
-                as={<HtmlEditor html={description}/>}
+                as={<HtmlEditor html={description} />}
               />
             </div>
           </div>
@@ -172,7 +172,7 @@ export default function WidgetEdit(props: WidgetProps) {
                 control={control}
                 defaultValue={widgetConfig}
                 onChange={(widgetConfig) => handleJsonChange(widgetConfig)}
-                as={<JsonEditor json={widgetConfig}/>}
+                as={<JsonEditor json={widgetConfig} />}
               />
             </div>
           )}
@@ -197,7 +197,7 @@ export default function WidgetEdit(props: WidgetProps) {
               name="layers"
               control={control}
               valueName={id}
-              as={<SearchInput options={layers} optionType="layers"/>}
+              as={<SearchInput options={layers} optionType="layers" />}
             />
           </div>
 
@@ -213,7 +213,7 @@ export default function WidgetEdit(props: WidgetProps) {
             <label htmlFor="published">Published?</label>
           </div>
 
-          {serverErrors && <ErrorMessages errors={serverErrors}/>}
+          {serverErrors && <ErrorMessages errors={serverErrors} />}
           <div className="ng-flex">
             <button
               className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-medium-right"
@@ -223,7 +223,10 @@ export default function WidgetEdit(props: WidgetProps) {
               Save
             </button>
 
-            <LinkWithOrg className="marapp-qa-actioncancel ng-button ng-button-secondary" to="/widgets">
+            <LinkWithOrg
+              className="marapp-qa-actioncancel ng-button ng-button-secondary"
+              to="/widgets"
+            >
               Cancel
             </LinkWithOrg>
           </div>

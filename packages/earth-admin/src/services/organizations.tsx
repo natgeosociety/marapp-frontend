@@ -18,8 +18,10 @@
 */
 
 import axios, { AxiosRequestConfig } from 'axios';
+
+import { GATSBY_API_URL } from '@app/config';
+
 import { deserializeData } from '../utils';
-import { GATSBY_API_URL } from 'config';
 
 const OrganizationAPIService = {
   request: (options: AxiosRequestConfig) => {
@@ -30,7 +32,7 @@ const OrganizationAPIService = {
       transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
         data: data.data ? deserializeData(data) : data,
         pagination: data.meta ? data.meta.pagination : null,
-        total: data.meta ? data.meta.results : null
+        total: data.meta ? data.meta.results : null,
       })),
     });
 
@@ -46,7 +48,7 @@ const OrganizationAPIService = {
 };
 
 export const getAllOrganizations = async (organizationQuery: string) => {
-  return await OrganizationAPIService.request({
+  return OrganizationAPIService.request({
     url: organizationQuery,
   });
 };
@@ -59,13 +61,13 @@ export const getOrganization = (organizationQuery: string) => {
 };
 
 export const getOrganizationStats = async (query: string) => {
-  return await OrganizationAPIService.request({
+  return OrganizationAPIService.request({
     url: query,
-  })
-}
+  });
+};
 
 export const updateOrganization = async (organizationID: string, organization, group: string) => {
-  return await OrganizationAPIService.request({
+  return OrganizationAPIService.request({
     url: `/organizations/${organizationID}?group=${group}&include=owners`,
     method: 'put',
     data: organization,
@@ -73,7 +75,7 @@ export const updateOrganization = async (organizationID: string, organization, g
 };
 
 export const addOrganization = async (request, group: string) => {
-  return await OrganizationAPIService.request({
+  return OrganizationAPIService.request({
     url: `/organizations?group=${group}`,
     method: 'post',
     data: request,
@@ -81,7 +83,7 @@ export const addOrganization = async (request, group: string) => {
 };
 
 export const deleteOrganization = async (organizationId) => {
-  return await OrganizationAPIService.request({
+  return OrganizationAPIService.request({
     url: `/organizations/${organizationId}`,
     method: 'delete',
   });

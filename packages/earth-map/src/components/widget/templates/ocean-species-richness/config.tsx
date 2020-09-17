@@ -17,14 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
+import WidgetTooltip from 'components/widget/tooltip';
+import { formatKM2, formatPercentage, replace } from 'components/widget/utils';
+import { format } from 'd3-format';
 import React from 'react';
 
 // Utils
-import { format } from 'd3-format';
-import { replace, formatKM2, formatPercentage } from 'components/widget/utils';
 
 // Components
-import WidgetTooltip from 'components/widget/tooltip';
 
 const COLORS = {
   10: '#030676',
@@ -53,12 +53,12 @@ export const CONFIG = {
     const { sentence } = widgetConfig;
 
     const chart = Object.keys(data)
-      .filter(k => k.includes('_percentile'))
-      .map(k => {
+      .filter((k) => k.includes('_percentile'))
+      .map((k) => {
         const percentile = k.split('_')[1];
         return {
-          percentile: parseInt(percentile),
-          km2: parseInt(data[k]),
+          percentile: parseInt(percentile, 10),
+          km2: parseInt(data[k], 10),
           color: COLORS[percentile],
         };
       })
@@ -93,12 +93,12 @@ export const CONFIG = {
             strokeWidth: 1,
           },
           tick: { fontSize: 11, fill: '#FFF', fontWeight: 500 },
-          tickFormatter: value => `${format(formatPercentage(value / 100))(value / 100)}`,
+          tickFormatter: (value) => `${format(formatPercentage(value / 100))(value / 100)}`,
           interval: 0,
         },
         yTitle: 'km²',
         yAxis: {},
-        unitFormat: v => {
+        unitFormat: (v) => {
           return `${format(formatKM2(v))(v)}`;
         },
         cartesianGrid: {
@@ -117,12 +117,12 @@ export const CONFIG = {
                 {
                   label: 'Percentile:',
                   key: 'percentile',
-                  format: value => `${format(formatPercentage(value / 100))(value / 100)}`,
+                  format: (value) => `${format(formatPercentage(value / 100))(value / 100)}`,
                 },
                 {
                   label: 'Value:',
                   key: 'km2',
-                  format: value => `${format(formatKM2(value))(value)} km²`,
+                  format: (value) => `${format(formatKM2(value))(value)} km²`,
                 },
               ]}
             />

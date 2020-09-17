@@ -17,31 +17,30 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { select, takeLatest, delay, put, call, cancelled } from 'redux-saga/effects';
 import groupBy from 'lodash/groupBy';
-import { replace } from 'redux-first-router';
-
-// Services
-import { fetchPlace } from 'services/places';
-
-// Actions
+import { persistData, setLastViewedPlace } from 'modules/global/actions';
 import { setMap } from 'modules/map/actions';
 import { setMetrics, setMetricsLoading } from 'modules/metrics/actions';
-import { setSidebarPanelExpanded } from 'modules/sidebar/actions';
 import {
   setPlaceData,
-  setPlaceSelectedOpen,
   setPlaceSelectedFilter,
+  setPlaceSelectedOpen,
   setPlaceSelectedSearch,
-  setPlacesLoading,
   setPlacesError,
+  setPlacesLoading,
   setPlacesSearch,
 } from 'modules/places/actions';
-import { setLastViewedPlace, persistData } from 'modules/global/actions';
-
 import { IPlace } from 'modules/places/model';
+import { setSidebarPanelExpanded } from 'modules/sidebar/actions';
+import { replace } from 'redux-first-router';
+import { call, cancelled, delay, put, select, takeLatest } from 'redux-saga/effects';
 import { loadDataIndexes } from 'sagas/layers';
 import { ignoreRedirectsTo } from 'sagas/saga-utils';
+import { fetchPlace } from 'services/places';
+
+// Services
+
+// Actions
 
 // TODO : EP-1817 refactoring
 let PREV_SLUG = null;

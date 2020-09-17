@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 import { groupBy, sortBy } from 'lodash';
+import { flattenLayerConfig } from 'sagas/saga-utils';
 
 import * as actions from './actions';
 import initialState from './initial-state';
-import { flattenLayerConfig } from 'sagas/saga-utils';
 
 export default {
   [actions.setLayersLoading]: (state, { payload }) => ({
@@ -47,14 +47,14 @@ export default {
   [actions.toggleLayer]: (state, { payload }) => {
     const { listActive } = state;
     const layer = payload;
-    const newActiveLayers = (listActive.find(x => x.slug === layer.slug))
-      ? listActive.filter(x => x.slug !== layer.slug)
+    const newActiveLayers = listActive.find((x) => x.slug === layer.slug)
+      ? listActive.filter((x) => x.slug !== layer.slug)
       : [...listActive, layer];
 
     return {
       ...state,
-      active: newActiveLayers.map(x => x.slug),
-      listActive: newActiveLayers ,
+      active: newActiveLayers.map((x) => x.slug),
+      listActive: newActiveLayers,
     };
   },
   [actions.setLayerOrder]: (state, { payload }) => {
@@ -130,7 +130,7 @@ export default {
       ...oldSettings,
       [slug]: {
         ...oldSettings[slug],
-        params: { year: year },
+        params: { year },
         decodeParams: payload.settings.decodeConfig,
         timelineParams: payload.settings.timelineConfig,
         current,
@@ -176,26 +176,22 @@ export default {
   // exactly the same code from actions.setPlacesSearchAvailableFilters
   [actions.setLayersSearchAvailableFilters]: (state, { payload }) => {
     // Add label and parse boolean values to strings 'true'/'false'
-    const filtersWithLabels = payload.map(filter => ({
+    const filtersWithLabels = payload.map((filter) => ({
       ...filter,
       label: filter.value,
-      ...typeof filter.value === 'boolean' && {
-        label: filter.value
-          ? 'Yes'
-          : 'No',
-        value: filter.value
-          ? 'true'
-          : 'false'
-      }
-    }))
+      ...(typeof filter.value === 'boolean' && {
+        label: filter.value ? 'Yes' : 'No',
+        value: filter.value ? 'true' : 'false',
+      }),
+    }));
     const availableFilters = groupBy(sortBy(filtersWithLabels, 'value'), 'key');
     return {
       ...state,
       search: {
         ...state.search,
         availableFilters,
-      }
-    }
+      },
+    };
   },
   [actions.setLayersSearchResults]: (state, { payload }) => {
     const { results, nextPageCursor } = payload;

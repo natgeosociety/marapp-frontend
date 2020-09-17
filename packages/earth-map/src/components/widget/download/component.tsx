@@ -18,7 +18,6 @@
 */
 
 import React from 'react';
-
 import { Tooltip } from 'vizzuality-components';
 
 interface IMetric {

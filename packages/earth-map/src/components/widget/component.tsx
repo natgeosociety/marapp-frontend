@@ -17,20 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
 import classnames from 'classnames';
-
+import ModalComponent from 'components/modal';
+import { IWidgetConfig } from 'modules/widget/model';
+import React from 'react';
 import isEqual from 'react-fast-compare';
 
-// Components
-import { Html, Spinner } from '@marapp/earth-components';
-import ModalComponent from 'components/modal';
-import Toolbar from './toolbar';
-import Footer from './footer';
+import { Html, Spinner } from '@marapp/earth-shared';
 
-// styles
+import Footer from './footer';
 import './styles.scss';
-import { IWidgetConfig } from 'modules/widget/model';
+import Toolbar from './toolbar';
 
 interface IWidgetTemplate {
   id: number | string;
@@ -85,7 +82,7 @@ interface IWidgetState {
 }
 
 class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
-  static defaultProps = {
+  public static defaultProps = {
     className: '',
     subtitle: '',
     config: {},
@@ -128,11 +125,11 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
     };
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     this.fetchWidget();
   }
 
-  componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps) {
     const { params: prevParams } = prevProps;
     const { params: nextParams } = this.props;
 
@@ -141,7 +138,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
     }
   }
 
-  onInfo = () => {
+  public onInfo = () => {
     const { activeInfo } = this.state;
 
     this.setState({
@@ -151,7 +148,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
     });
   };
 
-  onDownload = () => {
+  public onDownload = () => {
     const { activeDownload } = this.state;
 
     this.setState({
@@ -161,7 +158,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
     });
   };
 
-  onShare = () => {
+  public onShare = () => {
     const { activeShare } = this.state;
 
     this.setState({
@@ -171,7 +168,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
     });
   };
 
-  fetchWidget = () => {
+  public fetchWidget = () => {
     const { config, parse, params, widgetConfig, place, metric = {} } = this.props;
 
     if (!config) {
@@ -185,7 +182,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
     });
   };
 
-  onChangeParams = (params) => {
+  public onChangeParams = (params) => {
     this.setState({
       params: {
         ...this.state.params,
@@ -194,7 +191,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
     });
   };
 
-  render() {
+  public render() {
     const {
       // GLOBAL
       id,

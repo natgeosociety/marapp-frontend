@@ -17,20 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-
 import { format } from 'd3-format';
 import moment from 'moment';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 
 import './styles.scss';
 
 class LayerPopupComponent extends PureComponent<any, any> {
-  static propTypes = {
+  public static propTypes = {
     activeInteractiveLayers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
 
-  formatValue = (config, data) => {
+  public formatValue = (config, data) => {
     const { column, format: format_str, prefix, suffix, type } = config;
     let value = data[column];
 
@@ -59,7 +58,7 @@ class LayerPopupComponent extends PureComponent<any, any> {
     return `${prefix} ${value} ${suffix}`;
   };
 
-  render() {
+  public render() {
     const { activeInteractiveLayer, activeInteractiveLayers } = this.props;
     const { name, data } = activeInteractiveLayer;
     const { interactionConfig } = activeInteractiveLayer.config || activeInteractiveLayer;

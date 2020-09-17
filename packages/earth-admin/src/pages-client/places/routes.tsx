@@ -17,19 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState } from 'react';
-import { Router, } from '@reach/router';
+import { Router } from '@reach/router';
+import React, { useState } from 'react';
 
-import { encodeQueryToURL, setPage } from 'utils';
-import { useAuth0 } from 'auth/auth0';
-import { getAllPlaces } from 'services/places';
-import { useInfiniteList } from 'utils/hooks';
+import { useAuth0 } from '@app/auth/auth0';
+import { DataListing, DefaultListItem } from '@app/components/data-listing';
+import { SidebarLayout } from '@app/layouts';
+import { getAllPlaces } from '@app/services/places';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { useInfiniteList } from '@app/utils/hooks';
 
-import { SidebarLayout } from 'layouts';
-import { DataListing, DefaultListItem } from 'components/data-listing';
-import { PlacesHome } from './home';
 import { PlaceDetail } from './details';
+import { PlacesHome } from './home';
 import { NewPlace } from './new';
 
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
@@ -49,8 +48,8 @@ export default function PlacesPage() {
       group: selectedGroup,
     };
     return encodeQueryToURL('locations', query);
-  }
-  const {listProps, mutate} = useInfiniteList(getQuery, getAllPlaces);
+  };
+  const { listProps, mutate } = useInfiniteList(getQuery, getAllPlaces);
 
   return (
     <>

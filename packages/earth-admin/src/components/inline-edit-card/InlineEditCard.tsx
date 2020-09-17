@@ -17,13 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { ReactNode, useEffect, useState } from 'react';
 import classnames from 'classnames';
+import React, { ReactNode, useState } from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops';
-import { InlineCardOverlay } from './index';
 
+import { ErrorMessages } from '@app/components/error-messages';
+
+import { InlineCardOverlay } from './index';
 import './styles.scss';
-import { ErrorMessages } from 'components/error-messages';
 
 interface IOptionsBag {
   isEditing: boolean;
@@ -35,26 +36,33 @@ interface IOptionsBag {
 }
 
 export interface InlineCardProps {
-  children: ReactNode,
+  children: ReactNode;
   render?: (optionsBag: IOptionsBag) => React.ReactNode;
-  editButtonText?: string,
-  onSubmit?: (e: any, setIsEditing: (value: boolean) => void,
-              setIsLoading: (value: boolean) => void,
-              setServerErrors: (value: boolean) => void) => void,
+  editButtonText?: string;
+  onSubmit?: (
+    e: any,
+    setIsEditing: (value: boolean) => void,
+    setIsLoading: (value: boolean) => void,
+    setServerErrors: (value: boolean) => void
+  ) => void;
   submitButtonText?: string;
   cancelButtonText?: string;
   validForm?: boolean;
 }
 
 const Card: any = Keyframes.Spring({
-  close: [{x: 1}],
-  open: [{x: 1.01}, {x: 1}],
+  close: [{ x: 1 }],
+  open: [{ x: 1.01 }, { x: 1 }],
 });
 
 export default function InlineEditCard(props: InlineCardProps) {
   const {
-    children, render, editButtonText = 'edit', onSubmit,
-    submitButtonText = 'Save', cancelButtonText = 'Cancel',
+    children,
+    render,
+    editButtonText = 'edit',
+    onSubmit,
+    submitButtonText = 'Save',
+    cancelButtonText = 'Cancel',
     validForm,
   } = props;
 
@@ -76,55 +84,69 @@ export default function InlineEditCard(props: InlineCardProps) {
   const handleCancel = () => {
     setIsEditing(false);
     setServerErrors(false);
-  }
+  };
 
   const renderEditable = () => (
     <>
       {render(optionsBag)}
-      {serverErrors && <ErrorMessages errors={serverErrors}/>}
-      <InlineCardOverlay/>
+      {serverErrors && <ErrorMessages errors={serverErrors} />}
+      <InlineCardOverlay />
       <div className="ng-margin-medium-top">
-        <button className="marapp-qa-actionsaveinline ng-button ng-button-primary ng-margin-right"
-                disabled={!validForm}
-                onClick={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}>{submitButtonText}
+        <button
+          className="marapp-qa-actionsaveinline ng-button ng-button-primary ng-margin-right"
+          disabled={!validForm}
+          onClick={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}
+        >
+          {submitButtonText}
         </button>
-        <button className="marapp-qa-actioncancelinline ng-button ng-button-secondary"
-                onClick={handleCancel}>{cancelButtonText}
+        <button
+          className="marapp-qa-actioncancelinline ng-button ng-button-secondary"
+          onClick={handleCancel}
+        >
+          {cancelButtonText}
         </button>
       </div>
     </>
   );
 
-
-  const renderDefault = () => (<>
-    {render && (
-      <button className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
-              onClick={(e) => setIsEditing(true)}>{editButtonText}</button>
-    )}
-    {children}
-  </>);
+  const renderDefault = () => (
+    <>
+      {render && (
+        <button
+          className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
+          onClick={(e) => setIsEditing(true)}
+        >
+          {editButtonText}
+        </button>
+      )}
+      {children}
+    </>
+  );
 
   return (
-    <Card native state={state}>
-      {({x, ...props}) => (
+    <Card native={true} state={state}>
+      {({ x, ...props }) => (
         <animated.div
-          className={classnames('marapp-qa-inlineeditcard ng-padding-medium ng-inline-card ng-shadow-small ng-background-ultradkgray', {
-            'ng-inline-card-editing': isEditing,
-            'ng-inline-card-loading': isLoading,
-          })}
+          className={classnames(
+            'marapp-qa-inlineeditcard ng-padding-medium ng-inline-card ng-shadow-small ng-background-ultradkgray',
+            {
+              'ng-inline-card-editing': isEditing,
+              'ng-inline-card-loading': isLoading,
+            }
+          )}
           style={{
-            transform: x
-              .interpolate(x => `scale(${x})`),
+            transform: x.interpolate((x) => `scale(${x})`),
             ...props,
           }}
         >
           {isEditing ? renderEditable() : renderDefault()}
-          {isLoading && <div className="ng-inline-card-spinner"><i className="ng-icon-spinner ng-icon-spin"/></div>}
+          {isLoading && (
+            <div className="ng-inline-card-spinner">
+              <i className="ng-icon-spinner ng-icon-spin" />
+            </div>
+          )}
         </animated.div>
       )}
     </Card>
-
   );
-};
-
-
+}

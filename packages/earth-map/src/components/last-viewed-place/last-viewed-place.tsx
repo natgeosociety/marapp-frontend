@@ -17,26 +17,29 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-
 import ListItem from 'components/list-item';
 import { IPlace } from 'modules/places/model';
+import React from 'react';
 
 interface IProps {
   place: IPlace;
-};
+}
 
 export const LastViewedPlace = ({ place }: IProps) => {
   const { name, slug, id, organization, type } = place;
 
   return (
     <div className="marapp-qa-lastviewedplace ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
-      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">Last viewed place</h2>
+      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
+        Last viewed place
+      </h2>
       <ListItem
-        title={name} key={`${slug}-${organization}`}
+        title={name}
+        key={`${slug}-${organization}`}
         linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
         organization={organization}
-        labels={[type]} />
+        labels={[type]}
+      />
     </div>
-  )
+  );
 };

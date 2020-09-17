@@ -17,20 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState } from 'react';
 import { Router } from '@reach/router';
+import React, { useState } from 'react';
 
-import { useAuth0 } from 'auth/auth0';
-import { encodeQueryToURL, setPage } from 'utils';
-import { useInfiniteList } from 'utils/hooks';
-import { getAllDashboards } from 'services';
+import { useAuth0 } from '@app/auth/auth0';
+import { DataListing, DefaultListItem } from '@app/components/data-listing';
+import { SidebarLayout } from '@app/layouts';
+import { getAllDashboards } from '@app/services';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { useInfiniteList } from '@app/utils/hooks';
 
+import { DashboardDetail } from './details';
 import { DashboardsHome } from './home';
 import { NewDashboard } from './new';
-import { DashboardDetail } from './details';
-import { SidebarLayout } from 'layouts';
-import { DataListing, DefaultListItem } from 'components/data-listing';
 
 const PAGE_TYPE = setPage('Dashboards');
 const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
@@ -49,7 +48,7 @@ export default function DashboardsPage(props) {
       group: selectedGroup,
     };
     return encodeQueryToURL('dashboards', query);
-  }
+  };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllDashboards);
 
   return (
@@ -68,7 +67,7 @@ export default function DashboardsPage(props) {
       <Router>
         <DashboardsHome path="/" />
         <NewDashboard path="/new" onDataChange={mutate} />
-        <DashboardDetail path="/:page" onDataChange={mutate}/>
+        <DashboardDetail path="/:page" onDataChange={mutate} />
       </Router>
     </>
   );

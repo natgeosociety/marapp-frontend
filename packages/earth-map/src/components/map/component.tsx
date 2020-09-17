@@ -17,30 +17,30 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
 import axios from 'axios';
 import classnames from 'classnames';
-import debounce from 'lodash/debounce';
-import isEqual from 'react-fast-compare';
-
-import { Map } from '@marapp/earth-components';
-import { APP_ABOUT } from 'theme';
+import { UserMenuComponent } from 'components/user-menu';
 import { API_URL, MAPBOX_TOKEN } from 'config';
+import experienceIMG from 'images/pins/experience-marker.svg';
+import debounce from 'lodash/debounce';
+import React from 'react';
+import isEqual from 'react-fast-compare';
+import { APP_ABOUT } from 'theme';
 
-// Components
+import { Map } from '@marapp/earth-shared';
+
+import BasemapComponent from '../basemap';
+import MapControls from './controls';
+import RecenterControl from './controls/recenter';
+import ZoomControl from './controls/zoom';
 import LayerManager from './layer-manager';
 import Legend from './legend';
 import Popup from './popup';
-import MapControls from './controls';
-import ZoomControl from './controls/zoom';
-import RecenterControl from './controls/recenter';
+import './styles.scss';
 
-import experienceIMG from 'images/pins/experience-marker.svg';
+// Components
 
 // Styles
-import './styles.scss';
-import BasemapComponent from '../basemap';
-import { UserMenuComponent } from 'components/user-menu';
 
 const CUSTOM_IMAGES = [{ id: 'experience-marker', src: experienceIMG }];
 
@@ -61,18 +61,18 @@ interface IMap {
 }
 
 class MapComponent extends React.Component<IMap> {
-  static defaultProps = {
+  public static defaultProps = {
     bounds: {},
     mapLabels: true,
     mapRoads: true,
   };
-  onViewportChange = debounce((viewport) => {
+  public onViewportChange = debounce((viewport) => {
     const { setMapViewport } = this.props;
     setMapViewport(viewport);
   }, 250);
   private map: any;
 
-  componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps) {
     const { mapLabels, mapRoads, interactions, viewport, setMapViewport } = this.props;
     const {
       mapLabels: prevMapLabels,
@@ -114,7 +114,7 @@ class MapComponent extends React.Component<IMap> {
     }
   }
 
-  onZoomChange = (zoom) => {
+  public onZoomChange = (zoom) => {
     const { setMapViewport } = this.props;
 
     setMapViewport({
@@ -123,7 +123,7 @@ class MapComponent extends React.Component<IMap> {
     });
   };
 
-  onRecenterChange = () => {
+  public onRecenterChange = () => {
     const { bounds, setMapBounds } = this.props;
 
     setMapBounds(null);
@@ -133,7 +133,7 @@ class MapComponent extends React.Component<IMap> {
     });
   };
 
-  onStyleLoad = () => {
+  public onStyleLoad = () => {
     this.setLabels();
     this.setRoads();
 
@@ -141,14 +141,14 @@ class MapComponent extends React.Component<IMap> {
     this.setCustomImages();
   };
 
-  onReady = ({ map }) => {
+  public onReady = ({ map }) => {
     this.map = map;
 
     // Listeners
     this.map.on('style.load', this.onStyleLoad);
   };
 
-  onClick = (e) => {
+  public onClick = (e) => {
     const { setMapInteractions } = this.props;
 
     if (e.features && e.features.length && !e.target.classList.contains('mapbox-prevent-click')) {
@@ -160,7 +160,7 @@ class MapComponent extends React.Component<IMap> {
     }
   };
 
-  onHover = (e) => {
+  public onHover = (e) => {
     const { setMapHoverInteractions } = this.props;
 
     if (e.features && e.features.length) {
@@ -171,7 +171,7 @@ class MapComponent extends React.Component<IMap> {
     }
   };
 
-  onTransformRequest = (url, resourceType) => {
+  public onTransformRequest = (url, resourceType) => {
     if (resourceType === 'Source' && url.includes(API_URL)) {
       return {
         url,
@@ -180,7 +180,7 @@ class MapComponent extends React.Component<IMap> {
     }
   };
 
-  setLabels = () => {
+  public setLabels = () => {
     const LABELS_GROUP = ['labels'];
     const LABELS_IGNORE_GROUP = 'road labels';
 
@@ -213,7 +213,7 @@ class MapComponent extends React.Component<IMap> {
     });
   };
 
-  setRoads = () => {
+  public setRoads = () => {
     const ROADS_GROUP = ['roads', 'bridges', 'tunnels', 'road labels'];
 
     const { mapRoads } = this.props;
@@ -242,7 +242,7 @@ class MapComponent extends React.Component<IMap> {
     });
   };
 
-  setCustomImages = () => {
+  public setCustomImages = () => {
     CUSTOM_IMAGES.forEach(({ id, src }) => {
       const img = new Image();
       img.src = src;
@@ -252,7 +252,7 @@ class MapComponent extends React.Component<IMap> {
     });
   };
 
-  render() {
+  public render() {
     const {
       open,
       mapStyle,

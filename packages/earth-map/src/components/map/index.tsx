@@ -17,15 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-import {
-  setMapViewport,
-  setMapBounds,
-  setMapInteractions,
-  setMapHoverInteractions,
-} from 'modules/map/actions';
 import { setFullscreen } from 'modules/fullscreen/actions';
 import { getActiveInteractiveLayersIds } from 'modules/layers/selectors';
+import {
+  setMapBounds,
+  setMapHoverInteractions,
+  setMapInteractions,
+  setMapViewport,
+} from 'modules/map/actions';
+import { connect } from 'react-redux';
 
 import MapComponent from './component';
 

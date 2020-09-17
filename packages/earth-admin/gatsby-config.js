@@ -19,14 +19,14 @@
 
 const path = require('path');
 
-const GATSBY_ACTIVE_ENV = process.env.GATSBY_ACTIVE_ENV || '.env'
+const GATSBY_ACTIVE_ENV = process.env.GATSBY_ACTIVE_ENV || '.env';
 
 require('dotenv').config({ path: GATSBY_ACTIVE_ENV });
 
 module.exports = {
   pathPrefix: process.env.GATSBY_APP_BASE_URL,
   siteMetadata: {
-    siteName: 'Admin'
+    siteName: 'Admin',
   },
   plugins: [
     'gatsby-plugin-typescript',
@@ -34,8 +34,8 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-create-client-paths',
       options: {
-        prefixes: ['/*']
-      }
+        prefixes: ['/*'],
+      },
     },
     {
       resolve: `gatsby-plugin-portal`,
@@ -47,18 +47,19 @@ module.exports = {
     {
       resolve: `gatsby-plugin-root-import`,
       options: {
-        root: path.join(__dirname, 'src'),
-        pages: path.join(__dirname, 'src/pages'),
-        'pages-client': path.join(__dirname, 'src/pages-client'),
-        components: path.join(__dirname, 'src/components'),
-        images: path.join(__dirname, 'src/images'),
-        layouts: path.join(__dirname, 'src/layouts'),
-        utils: path.join(__dirname, 'src/utils'),
-        auth: path.join(__dirname, 'src/auth'),
-        config: path.join(__dirname, 'src/config'),
-        services: path.join(__dirname, 'src/services'),
-        styles: path.join(__dirname, 'src/styles')
-      }
-    }
-  ]
+        '@app/auth': path.join(__dirname, 'src/auth'),
+        '@app/components': path.join(__dirname, 'src/components'),
+        '@app/config': path.join(__dirname, 'src/config'),
+        '@app/fonts': path.join(__dirname, 'src/fonts'),
+        '@app/images': path.join(__dirname, 'src/images'),
+        '@app/layouts': path.join(__dirname, 'src/layouts'),
+        '@app/pages': path.join(__dirname, 'src/pages'),
+        '@app/pages-client': path.join(__dirname, 'src/pages-client'),
+        '@app/services': path.join(__dirname, 'src/services'),
+        '@app/utils': path.join(__dirname, 'src/utils'),
+        '@app/theme': path.join(__dirname, 'src/theme'),
+        'styles': path.join(__dirname, 'src/styles'),
+      },
+    },
+  ],
 };

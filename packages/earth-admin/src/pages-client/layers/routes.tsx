@@ -17,20 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState } from 'react';
 import { Router } from '@reach/router';
+import React, { useState } from 'react';
 
-import { getAllLayers } from 'services';
-import { encodeQueryToURL, setPage } from 'utils';
-import { useAuth0 } from 'auth/auth0';
-import { useInfiniteList } from 'utils/hooks';
-import { SidebarLayout } from 'layouts';
+import { useAuth0 } from '@app/auth/auth0';
+import { DataListing, DefaultListItem } from '@app/components/data-listing';
+import { SidebarLayout } from '@app/layouts';
+import { getAllLayers } from '@app/services';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { useInfiniteList } from '@app/utils/hooks';
 
-import { DataListing, DefaultListItem } from 'components/data-listing';
-import { NewLayer } from './new';
-import { LayersHome } from './home';
 import { LayerDetail } from './details';
+import { LayersHome } from './home';
+import { NewLayer } from './new';
 
 const PAGE_TYPE = setPage('Layers');
 const PAGE_SIZE = 20;
@@ -47,7 +46,7 @@ export default function LayersPage(props) {
       group: selectedGroup,
     };
     return encodeQueryToURL('layers', query);
-  }
+  };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllLayers);
 
   return (

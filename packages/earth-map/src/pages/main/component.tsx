@@ -19,9 +19,9 @@
 
 import React from 'react';
 
+import AsyncPage from './async';
 import AuthenticatedPage from './authenticated';
 import AuthorizedPage from './authorized';
-import AsyncPage from './async';
 
 const Main = ({ router }) => {
   const { type, routesMap } = router;

@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Layer } from '../layers/model';
 import { Widget } from '../../components/widgets/model';
+import { Layer } from '../layers/model';
 
 export interface Dashboard {
   id: string;

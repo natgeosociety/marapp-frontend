@@ -17,15 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-import { setSidebarOpen } from 'modules/sidebar/actions';
-import { resetPlace, setPlacesSearch } from 'modules/places/actions';
 import { setIndexesSelected } from 'modules/indexes/actions';
-import { resetMap } from 'modules/map/actions';
 import { resetLayers } from 'modules/layers/actions';
+import { resetMap } from 'modules/map/actions';
+import { resetPlace, setPlacesSearch } from 'modules/places/actions';
+import { setSidebarOpen } from 'modules/sidebar/actions';
+import { connect } from 'react-redux';
 
 import SidebarComponent from './component';
-
 
 export default connect(
   (state: any) => ({
