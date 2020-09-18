@@ -20,6 +20,7 @@
 import { navigate } from 'gatsby';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { noop } from 'lodash';
 
 import { Spinner } from '@marapp/earth-shared';
 
@@ -37,7 +38,13 @@ import {
   validEmailRule,
 } from '@app/utils/validations';
 
-export function NewOrganization(props) {
+interface IProps {
+  path?: string;
+  onDataChange?: () => {};
+}
+
+export function NewOrganization(props: IProps) {
+  const { onDataChange = noop } = props;
   const [serverErrors, setServerErrors] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { selectedGroup } = useContext(Auth0Context);
@@ -58,6 +65,7 @@ export function NewOrganization(props) {
         },
         selectedGroup
       );
+      onDataChange();
       await navigate(`/${selectedGroup}/organizations/${data.id}`);
     } catch (error) {
       setIsLoading(false);

@@ -19,6 +19,7 @@
 
 import React, { useState } from 'react';
 import renderHTML from 'react-render-html';
+import { noop } from 'lodash';
 
 import { AuthzGuards } from '@marapp/earth-shared';
 
@@ -33,6 +34,7 @@ import { WidgetProps } from '../model';
 export default function WidgetDetails(props: WidgetProps) {
   const {
     data: { id, name, createdAt, updatedAt, published, description, slug, config, metrics, layers },
+    onDataChange = noop,
   } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -54,6 +56,7 @@ export default function WidgetDetails(props: WidgetProps) {
         name={name}
         type="widget"
         toggleModal={handleDeleteToggle}
+        onDelete={onDataChange}
         visibility={showDeleteModal}
       />
       <div className="ng-flex ng-flex-space-between">

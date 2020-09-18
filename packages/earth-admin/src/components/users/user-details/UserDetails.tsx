@@ -18,6 +18,7 @@
 */
 
 import React, { useState } from 'react';
+import { noop } from 'lodash';
 
 import { AuthzGuards } from '@marapp/earth-shared';
 
@@ -31,6 +32,7 @@ import { UserProps } from '../model';
 export default function UserDetails(props: UserProps) {
   const {
     data: { name, email, groups, id },
+    onDataChange = noop,
   } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
@@ -55,6 +57,7 @@ export default function UserDetails(props: UserProps) {
         type="user"
         toggleModal={handleDeleteToggle}
         visibility={showDeleteModal}
+        onDelete={onDataChange}
         error={handleDeleteError}
       />
       <div className="ng-flex ng-flex-space-between">

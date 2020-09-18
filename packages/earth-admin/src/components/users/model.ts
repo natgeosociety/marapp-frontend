@@ -26,6 +26,7 @@ export interface User {
 
 export interface UserProps {
   data: User;
+  onDataChange?: () => {};
 }
 
 export interface UserEditProps {

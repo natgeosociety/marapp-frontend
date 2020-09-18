@@ -33,7 +33,7 @@ import { getAllUsers, getUser } from '@app/services/users';
 import { encodeQueryToURL, setPage } from '@app/utils';
 import { useInfiniteList } from '@app/utils/hooks';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 const USER_DETAIL_QUERY = {
   include: 'groups',
 };
@@ -91,9 +91,9 @@ function HomePage(props: any) {
   );
 }
 
-function DetailsPage(path: any) {
+function DetailsPage(props: any) {
   const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`users/${path.page}`, {
+  const encodedQuery = encodeQueryToURL(`users/${props.page}`, {
     ...USER_DETAIL_QUERY,
     group: selectedGroup,
   });
@@ -104,7 +104,7 @@ function DetailsPage(path: any) {
 
   return (
     <ContentLayout backTo="/users" isLoading={!data}>
-      <UserDetails data={data} />
+      <UserDetails data={data} onDataChange={props.onDataChange} />
     </ContentLayout>
   );
 }
