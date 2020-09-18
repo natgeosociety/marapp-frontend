@@ -33,7 +33,6 @@ import PlacesPage from '@app/pages-client/places/routes';
 import UnauthorizedPage from '@app/pages-client/unauthorized';
 import UsersPage from '@app/pages-client/users';
 import WidgetsPage from '@app/pages-client/widgets';
-import UserProfilePage from '@app/pages-client/user-profile/routes';
 
 /**
  * All admin pages are client side pages only because the /:org makes them dinamic
@@ -51,7 +50,6 @@ export default function IndexPage() {
         <UsersPage path="/users/*" />
         <OrganizationsPage path="/organizations/*" />
       </ProtectedRoute>
-      <ProtectedRoute path="/user-profile" component={UserProfilePage} />
       <UnauthorizedPage path="/unauthorized" />
     </Router>
   );

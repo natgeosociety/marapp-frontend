@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { InlineCardOverlay } from './inline-card-overlay';
-import InlineEditCard from './InlineEditCard';
+import ErrorMessages from './ErrorMessages';
 
-export { InlineEditCard, InlineCardOverlay };
+export default ErrorMessages;
+export { ErrorMessages };

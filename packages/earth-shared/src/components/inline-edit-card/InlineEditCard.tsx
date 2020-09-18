@@ -21,7 +21,7 @@ import classnames from 'classnames';
 import React, { ReactNode, useState } from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops';
 
-import { ErrorMessages } from '@app/components/error-messages';
+import { ErrorMessages } from '@marapp/earth-shared';
 
 import { InlineCardOverlay } from './index';
 import './styles.scss';

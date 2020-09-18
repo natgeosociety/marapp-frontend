@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import ContentLayout, { UserProfileLayout } from './Content';
+import ContentLayout from './Content';
 import SidebarLayout from './Sidebar';
 
-export { ContentLayout, SidebarLayout, UserProfileLayout };
+export { ContentLayout, SidebarLayout };

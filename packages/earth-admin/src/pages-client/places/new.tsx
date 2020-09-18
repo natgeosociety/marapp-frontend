@@ -22,11 +22,10 @@ import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Spinner } from '@marapp/earth-shared';
+import { Spinner, ErrorMessages } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
-import { ErrorMessages } from '@app/components/error-messages';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
 import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';

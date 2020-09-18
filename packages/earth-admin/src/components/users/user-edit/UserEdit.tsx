@@ -22,7 +22,7 @@ import { noop } from 'lodash';
 import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { ErrorMessages } from '@app/components/error-messages';
+import { ErrorMessages } from '@marapp/earth-shared';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { SearchInput } from '@app/components/search-input';
 import { handleUserForm } from '@app/services/users';

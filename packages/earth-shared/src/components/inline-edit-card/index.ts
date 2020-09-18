@@ -17,17 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { Router } from '@reach/router';
+import { InlineCardOverlay } from './inline-card-overlay';
+import InlineEditCard from './InlineEditCard';
 
-import { UserProfileHome } from './home';
-
-export default function UserProfilePage(props) {
-  return (
-    <>
-      <Router>
-        <UserProfileHome path="/" />
-      </Router>
-    </>
-  );
-}
+export default InlineEditCard;
+export { InlineEditCard, InlineCardOverlay };

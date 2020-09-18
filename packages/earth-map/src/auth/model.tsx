@@ -45,6 +45,8 @@ export interface Auth0 {
 
 export interface User {
   name?: string;
+  email?: string;
   picture?: string;
   allGroups?: string[];
+  roles?: { [key: string]: any };
 }

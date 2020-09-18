@@ -22,16 +22,14 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 
-import { AuthzGuards } from '@marapp/earth-shared';
+import { AuthzGuards, ErrorMessages, InlineEditCard } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
 import { DetailList } from '@app/components/detail-list';
 import { DownloadFile } from '@app/components/download-file';
 import { ErrorBoundary } from '@app/components/error-boundary';
-import { ErrorMessages } from '@app/components/error-messages';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
-import { InlineEditCard } from '@app/components/inline-edit-card';
 import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { MapComponent } from '@app/components/map';
