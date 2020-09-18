@@ -103,15 +103,13 @@ export function DashboardDetail(props: IProps) {
     };
 
     try {
-      // optimistic ui update
-      mutate({ ...data, ...parsed }, false);
-      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(true);
       await handleDashboardForm(false, parsed, id, selectedGroup);
       mutate();
+      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(false);
       onDataChange();
     } catch (error) {
-      // undo optimistic ui update
-      mutate({ ...data }, false);
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data.errors);
     }

@@ -75,14 +75,14 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     };
 
     try {
-      mutate({ ...data, ...parsed }, false);
-      setIsEditing(false);
+      setIsLoading && setIsLoading(true);
       await updateOrganization(id, parsed, selectedGroup);
       mutate();
+      setIsLoading && setIsLoading(false);
+      setIsEditing && setIsEditing(false);
       onDataChange();
     } catch (err) {
-      mutate({ ...data }, false);
-      setIsLoading(false);
+      setIsLoading && setIsLoading(false);
       setServerErrors(err.data.errors);
     }
   }
