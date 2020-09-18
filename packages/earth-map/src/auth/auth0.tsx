@@ -104,7 +104,8 @@ export const Auth0Provider = ({
       const idToken = accessToken ? await auth0FromHook.getUser() : {};
 
       const roles = get(idToken, `${NAMESPACE}/roles`, []);
-      setRoles(mapAuthzScopes(roles));
+      const mappedRoles = mapAuthzScopes(roles);
+      setRoles(mappedRoles);
 
       const groups = get(idToken, `${NAMESPACE}/groups`);
       const roleGroups = mapRoleGroups(roles, ['*']); // exclude special groups;
@@ -121,6 +122,7 @@ export const Auth0Provider = ({
         name: get(idToken, 'name', ''),
         picture: get(idToken, 'picture', ''),
         allGroups: roleGroups,
+        roles: mappedRoles,
       };
       setEmail(userData.email);
       setUserData(userData);

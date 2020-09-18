@@ -54,6 +54,13 @@ export const ROUTES = {
     authorized: false,
     fallbackRoute: null,
   },
+  PROFILE: {
+    path: '/profile',
+    page: 'profile',
+    authenticated: true,
+    authorized: false,
+    fallbackRoute: null,
+  },
   ERROR: {
     path: '/error',
     page: 'error',

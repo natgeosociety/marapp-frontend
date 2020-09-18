@@ -36,3 +36,5 @@ export { default as SlickNextArrow } from './slick/arrows/next';
 export { default as Spinner } from './spinner';
 export { default as Tooltip } from './tooltip';
 export { default as AsyncSelect } from './multiselect';
+export { InlineEditCard } from './inline-edit-card';
+export { ErrorMessages } from './error-messages';

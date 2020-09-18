@@ -17,36 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
-import {
-  BaseLoginOptions,
-  GetTokenWithPopupOptions,
-  GetUserOptions,
-  LogoutOptions,
-} from '@auth0/auth0-spa-js';
+import React from 'react';
 
-export interface Auth0 {
-  domain?: any;
-  isAuthenticated?: boolean;
-  isAuthorized?: boolean;
-  isLoading?: boolean;
-  email?: string;
-  userData?: User;
-  // TODO: rename this to selectedGroups
-  selectedGroup?: string[];
-  groups?: string[];
-  roles?: { [key: string]: any };
-  permissions?: { [key: string]: any };
-  logout?(o?: LogoutOptions): void;
-  login?(o?: BaseLoginOptions): void;
-  getUser?(o?: GetUserOptions): void;
-  getToken?(o?: GetTokenWithPopupOptions): void;
-  setupUserOrg?(org: string): void;
-}
+import { ErrorMessageProps } from './model';
 
-export interface User {
-  name?: string;
-  email?: string;
-  picture?: string;
-  allGroups?: string[];
-  roles?: { [key: string]: any };
+export default function ErrorMessages(props: ErrorMessageProps) {
+  const { errors } = props;
+  return (
+    <div className="marapp-qa-errormessages ng-form-error-block ng-margin-medium-bottom">
+      {errors.map((error, index) => (
+        <div key={index}>
+          <span>{error.detail}</span>
+        </div>
+      ))}
+    </div>
+  );
 }

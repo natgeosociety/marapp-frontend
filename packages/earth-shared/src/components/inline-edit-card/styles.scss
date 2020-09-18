@@ -16,37 +16,37 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
+@import '~styles/config';
 
-import {
-  BaseLoginOptions,
-  GetTokenWithPopupOptions,
-  GetUserOptions,
-  LogoutOptions,
-} from '@auth0/auth0-spa-js';
-
-export interface Auth0 {
-  domain?: any;
-  isAuthenticated?: boolean;
-  isAuthorized?: boolean;
-  isLoading?: boolean;
-  email?: string;
-  userData?: User;
-  // TODO: rename this to selectedGroups
-  selectedGroup?: string[];
-  groups?: string[];
-  roles?: { [key: string]: any };
-  permissions?: { [key: string]: any };
-  logout?(o?: LogoutOptions): void;
-  login?(o?: BaseLoginOptions): void;
-  getUser?(o?: GetUserOptions): void;
-  getToken?(o?: GetTokenWithPopupOptions): void;
-  setupUserOrg?(org: string): void;
+.ng-inline-card {
+  box-sizing: border-box;
+  height: 100%;
+  position: relative;
+  &.ng-inline-card-editing {
+    background: $marapp-gray-7;
+    z-index: 1011;
+  }
 }
 
-export interface User {
-  name?: string;
-  email?: string;
-  picture?: string;
-  allGroups?: string[];
-  roles?: { [key: string]: any };
+.ng-edit-card-button {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.ng-inline-card-loading * {
+  pointer-events: none;
+}
+
+
+.ng-inline-card-spinner {
+  align-items: center;
+  background: rgba(#000, .8);
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
