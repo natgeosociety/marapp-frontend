@@ -109,7 +109,7 @@ function DetailsPage(props: any) {
 
   return (
     <ContentLayout backTo="/widgets" isLoading={!data}>
-      <WidgetDetails data={data} />
+      <WidgetDetails data={data} onDataChange={props.onDataChange} />
     </ContentLayout>
   );
 }
