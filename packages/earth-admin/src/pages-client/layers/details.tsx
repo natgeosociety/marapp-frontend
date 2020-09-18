@@ -23,14 +23,12 @@ import renderHTML from 'react-render-html';
 import Select from 'react-select';
 import useSWR from 'swr';
 
-import { AsyncSelect, AuthzGuards } from '@marapp/earth-shared';
+import { AsyncSelect, AuthzGuards, ErrorMessages, InlineEditCard } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
 import { DetailList } from '@app/components/detail-list';
-import { ErrorMessages } from '@app/components/error-messages';
 import { HtmlEditor } from '@app/components/html-editor';
-import { InlineEditCard } from '@app/components/inline-edit-card';
 import { Input } from '@app/components/input';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';

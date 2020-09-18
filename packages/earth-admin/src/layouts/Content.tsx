@@ -20,9 +20,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 
-import { Spinner } from '@marapp/earth-shared';
+import { Spinner, ErrorMessages } from '@marapp/earth-shared';
 
-import { ErrorMessages } from '@app/components/error-messages';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { UserMenuComponent } from '@app/components/user-menu';
 
@@ -65,31 +64,6 @@ export default function ContentLayout(props: ILayoutProps) {
         <title>{APP_NAME}</title>
       </Helmet>
       <div className="ng-page-container ng-background-gray-9">
-        <UserMenuComponent />
-        <div className="ng-padding-large">
-          <Content {...props} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function UserProfileLayout(props: ILayoutProps) {
-  return (
-    <div className={`ng-flex ${props.className || ''}`}>
-      <Helmet>
-        <link
-          rel="icon"
-          href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
-        />
-        <title>{APP_NAME}</title>
-      </Helmet>
-      <div className="ng-user-profile-container ng-background-gray-9">
-        <div className="ng-margin-top ng-margin-left">
-          <a href="/earth" className="ng-border-remove">
-            <img src={APP_LOGO} alt={APP_NAME} className="ng-margin-remove ng-display-block" />
-          </a>
-        </div>
         <UserMenuComponent />
         <div className="ng-padding-large">
           <Content {...props} />

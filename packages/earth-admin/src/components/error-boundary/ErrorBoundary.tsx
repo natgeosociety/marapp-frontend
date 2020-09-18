@@ -19,7 +19,7 @@
 
 import React from 'react';
 
-import { ErrorMessages } from '@app/components/error-messages';
+import { ErrorMessages } from '@marapp/earth-shared';
 
 export class ErrorBoundary extends React.Component {
   public static getDerivedStateFromError(error) {
