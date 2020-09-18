@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.4.0...v1.4.1) (2020-09-18)
+
+
+### Bug Fixes
+
+* **admin:** Error for missing provider and type is displayed when trying to save a layer [EP-2860] ([#152](https://github.com/natgeosociety/marapp-frontend/issues/152)) ([05bae8f](https://github.com/natgeosociety/marapp-frontend/commit/05bae8f50d9e1176ffd018093c3eb8b097e38771))
+
 # [1.4.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.3.2...v1.4.0) (2020-09-17)
 
 
