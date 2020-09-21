@@ -125,22 +125,17 @@ export function PlaceDetail(props: IProps) {
     };
 
     try {
-      // optimistic ui update
-      mutate({ ...data, ...parsed }, false);
-
-      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(true);
       await handlePlaceForm(false, parsed, id, selectedGroup);
-
       revalidate();
+      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(false);
       onDataChange();
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
       const fallbackError = [
         { detail: 'Something went wrong. Please make sure the selected file is under 6MB.' },
       ];
-
-      // undo optimistic ui update
-      mutate({ ...data }, false);
 
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error?.data.errors || fallbackError);
