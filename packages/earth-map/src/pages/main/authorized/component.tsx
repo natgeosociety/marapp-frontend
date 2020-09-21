@@ -31,12 +31,12 @@ const AuthorizedPage = ({ component: Component, fallbackRoute, redirect, ...rest
         const target = window.location.href.replace(window.location.origin, '');
         // save target URL to redirect to after login;
         await login({ appState: { targetUrl: target } });
-      } else if (!isAuthorized) {
+      } else if (!isAuthorized && fallbackRoute) {
         redirect({ type: fallbackRoute });
       }
     };
     fn();
-  });
+  }, [isAuthenticated, isAuthorized, login]);
 
   if (isAuthenticated && isAuthorized) {
     const render = (props) => <Component {...props} />;

@@ -18,8 +18,9 @@
 */
 
 import { connect } from 'react-redux';
-import { redirect } from 'redux-first-router';
 
-import AuthenticatedComponent from './component';
+import VerifyEmail from './component';
 
-export default connect(null, { redirect })(AuthenticatedComponent);
+export default connect(null, (dispatch) => ({
+  resetStore: () => dispatch({ type: 'GLOBAL/resetStore' }),
+}))(VerifyEmail);
