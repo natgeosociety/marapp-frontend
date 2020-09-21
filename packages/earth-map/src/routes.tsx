@@ -89,9 +89,9 @@ export const ROUTES = {
   PROFILE: {
     path: '/profile',
     page: 'profile',
-    authenticated: true,
-    authorized: false,
-    fallbackRoute: null,
+    isAuthRequired: stubFalse,
+    isAuthzRequired: stubFalse,
+    fallbackRouteResolver: noop,
   },
   ERROR: {
     path: '/error',

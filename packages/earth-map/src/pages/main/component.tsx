@@ -32,10 +32,10 @@ const Main = ({ router }) => {
 
   let Page;
   switch (true) {
-    case isAuthRequired(context) && isAuthzRequired(context):
+    case isAuthRequired && isAuthRequired(context) && isAuthzRequired(context):
       Page = AuthorizedPage;
       break;
-    case isAuthRequired(context) || (isAuthenticated && !isEmailVerified):
+    case (isAuthRequired && isAuthRequired(context)) || (isAuthenticated && !isEmailVerified):
       Page = AuthenticatedPage;
       break;
     default:
@@ -62,7 +62,7 @@ const Main = ({ router }) => {
       )}
       {page === 'profile' && (
         // @ts-ignore
-        <Page page="profile" fallbackRoute={fallbackRoute} />
+        <Page page="profile" fallbackRoute={fallbackRouteResolver(context)} />
       )}
       {page === 'not-found' && (
         // @ts-ignore

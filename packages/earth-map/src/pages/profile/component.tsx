@@ -17,6 +17,8 @@ export function ProfileComponent(props: any) {
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
 
+  const userRoles = Object.keys(userData.roles);
+
   useEffect(() => {
     (async () => {
       const profile: any = await fetchProfile();
@@ -148,43 +150,45 @@ export function ProfileComponent(props: any) {
                 </InlineEditCard>
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
-                <InlineEditCard
-                // render={({setIsEditing, setIsLoading, setServerErrors}) => (
-                //   <>
-                //     <div className="ng-margin-medium-bottom">
-                //       <p className="ng-text-weight-bold ng-margin-remove ng-color-mdgray ng-text-uppercase">Organizations</p>
-                //       <div className="ng-grid ng-margin-top">
-                //         <div className="ng-width-1-2 ng-text-weight-bold">Organization name</div>
-                //         <div className="ng-width-1-2 ng-text-weight-bold">Role</div>
-                //         {Object.keys(userData.roles).map(org => (
-                //           <>
-                //             <div className="ng-width-1-2 ng-margin-top">{org}</div>
-                //             <div className="ng-width-1-2 ng-margin-top">{userData.roles[org].join(', ')}</div>
-                //           </>
-                //         ))}
-                //       </div>
-                //     </div>
-                //   </>
-                // )}>
-                >
-                  <div className="ng-margin-medium-bottom">
-                    <p className="ng-text-weight-bold ng-margin-remove ng-color-mdgray ng-text-uppercase">
-                      Organizations
-                    </p>
-                    <div className="ng-grid ng-margin-top">
-                      <div className="ng-width-1-2 ng-text-weight-bold">Organization name</div>
-                      <div className="ng-width-1-2 ng-text-weight-bold">Role</div>
-                      {Object.keys(userData.roles).map((org) => (
-                        <>
-                          <div className="ng-width-1-2 ng-margin-top">{org}</div>
-                          <div className="ng-width-1-2 ng-margin-top">
-                            {userData.roles[org].join(', ')}
-                          </div>
-                        </>
-                      ))}
+                {userRoles.length > 0 && (
+                  <InlineEditCard
+                  // render={({setIsEditing, setIsLoading, setServerErrors}) => (
+                  //   <>
+                  //     <div className="ng-margin-medium-bottom">
+                  //       <p className="ng-text-weight-bold ng-margin-remove ng-color-mdgray ng-text-uppercase">Organizations</p>
+                  //       <div className="ng-grid ng-margin-top">
+                  //         <div className="ng-width-1-2 ng-text-weight-bold">Organization name</div>
+                  //         <div className="ng-width-1-2 ng-text-weight-bold">Role</div>
+                  //         {userRoles.map(org => (
+                  //           <>
+                  //             <div className="ng-width-1-2 ng-margin-top">{org}</div>
+                  //             <div className="ng-width-1-2 ng-margin-top">{userData.roles[org].join(', ')}</div>
+                  //           </>
+                  //         ))}
+                  //       </div>
+                  //     </div>
+                  //   </>
+                  // )}>
+                  >
+                    <div className="ng-margin-medium-bottom">
+                      <p className="ng-text-weight-bold ng-margin-remove ng-color-mdgray ng-text-uppercase">
+                        Organizations
+                      </p>
+                      <div className="ng-grid ng-margin-top">
+                        <div className="ng-width-1-2 ng-text-weight-bold">Organization name</div>
+                        <div className="ng-width-1-2 ng-text-weight-bold">Role</div>
+                        {userRoles.map((org) => (
+                          <>
+                            <div className="ng-width-1-2 ng-margin-top">{org}</div>
+                            <div className="ng-width-1-2 ng-margin-top">
+                              {userData.roles[org].join(', ')}
+                            </div>
+                          </>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </InlineEditCard>
+                  </InlineEditCard>
+                )}
               </div>
             </div>
           </form>
