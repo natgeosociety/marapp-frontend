@@ -39,7 +39,7 @@ export const isSuperAdmin = (roles: string[], sep: string = ':'): boolean => {
  * @param roles
  */
 export const isAuthz = (roles: string[]): boolean => {
-  return roles && roles.length > 1;
+  return roles && roles.length > 0;
 };
 
 /**

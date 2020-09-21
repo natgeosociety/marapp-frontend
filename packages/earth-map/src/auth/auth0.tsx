@@ -64,6 +64,7 @@ export const Auth0Provider = ({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [email, setEmail] = useState('');
   const [userData, setUserData] = useState({});
 
@@ -113,6 +114,9 @@ export const Auth0Provider = ({
       const permissions = get(idToken, `${NAMESPACE}/permissions`, []);
       setPermissions(mapAuthzScopes(permissions));
 
+      const emailVerified = get(idToken, 'email_verified', false);
+      setIsEmailVerified(emailVerified);
+
       const authorized = isAuthz(roles);
       setIsAuthorized(authorized);
 
@@ -120,7 +124,6 @@ export const Auth0Provider = ({
         email: get(idToken, 'email', ''),
         name: get(idToken, 'name', ''),
         picture: get(idToken, 'picture', ''),
-        emailVerified: get(idToken, 'email_verified', false),
         allGroups: roleGroups,
       };
       setUserData(userData);
@@ -160,6 +163,7 @@ export const Auth0Provider = ({
         isLoading,
         isAuthenticated,
         isAuthorized,
+        isEmailVerified,
         email,
         userData,
         groups,

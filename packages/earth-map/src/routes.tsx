@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { User } from 'auth/model';
 import { BASE_URL, ENABLE_PUBLIC_ACCESS } from 'config';
+import { noop, stubFalse, stubTrue } from 'lodash';
 import qs from 'query-string';
 import { NOT_FOUND } from 'redux-first-router';
 import restoreScroll from 'redux-first-router-restore-scroll';
@@ -28,93 +28,91 @@ const VERIFY_EMAIL = 'VERIFY_EMAIL';
 
 /**
  * Authenticated resolver.
- * @param user
+ * @param context
  */
-const isAuthenticatedRequired = (user: User = {}): boolean => {
+const isAuthRequired = (context: any = {}): boolean => {
   return !ENABLE_PUBLIC_ACCESS;
 };
 
 /**
  * Authorized resolver.
- * @param user
+ * @param context
  */
-const isAuthorizedRequired = (user: User = {}): boolean => {
-  if (!user.emailVerified) {
-    return true;
-  }
+const isAuthzRequired = (context: any = {}): boolean => {
   return !ENABLE_PUBLIC_ACCESS;
 };
 
 /**
  * Fallback route resolver.
- * @param user
+ * @param context
  */
-const fallbackRouteResolver = (user: User): string => {
-  if (user && !user?.emailVerified) {
-    return VERIFY_EMAIL;
+const fallbackRouteResolver = (context: any = {}): string => {
+  switch (true) {
+    case !context.isEmailVerified:
+      return VERIFY_EMAIL;
+    case !ENABLE_PUBLIC_ACCESS:
+      return UNAUTHORIZED_PAGE;
+    default:
+      return null;
   }
-  if (!ENABLE_PUBLIC_ACCESS) {
-    return UNAUTHORIZED_PAGE;
-  }
-  return null;
 };
 
 export const ROUTES = {
   HOME: {
     path: '/',
     page: 'home',
-    isAuthenticated: isAuthenticatedRequired,
-    isAuthorized: isAuthorizedRequired,
-    fallbackRoute: fallbackRouteResolver,
+    isAuthRequired,
+    isAuthzRequired,
+    fallbackRouteResolver,
   },
   EARTH: {
     path: '/earth',
     page: 'earth',
-    isAuthenticated: isAuthenticatedRequired,
-    isAuthorized: isAuthorizedRequired,
-    fallbackRoute: fallbackRouteResolver,
+    isAuthRequired,
+    isAuthzRequired,
+    fallbackRouteResolver,
   },
   LOCATION: {
     path: '/earth/:organization/:slug',
     page: 'earth',
-    isAuthenticated: isAuthenticatedRequired,
-    isAuthorized: isAuthorizedRequired,
-    fallbackRoute: fallbackRouteResolver,
+    isAuthRequired,
+    isAuthzRequired,
+    fallbackRouteResolver,
   },
   CHANGE_EMAIL: {
     path: '/profile/change-email',
     page: 'change-email',
-    isAuthenticated: () => true,
-    isAuthorized: () => false,
-    fallbackRoute: () => null,
+    isAuthRequired: stubTrue,
+    isAuthzRequired: stubFalse,
+    fallbackRouteResolver: noop,
   },
   ERROR: {
     path: '/error',
     page: 'error',
-    isAuthenticated: () => false,
-    isAuthorized: () => false,
-    fallbackRoute: () => null,
+    isAuthRequired: stubFalse,
+    isAuthzRequired: stubFalse,
+    fallbackRouteResolver: noop,
   },
   [NOT_FOUND]: {
     path: '/404',
     page: 'not-found',
-    isAuthenticated: () => false,
-    isAuthorized: () => false,
-    fallbackRoute: () => null,
+    isAuthRequired: stubFalse,
+    isAuthzRequired: stubFalse,
+    fallbackRouteResolver: noop,
   },
   [VERIFY_EMAIL]: {
     path: '/verify-email',
     page: 'verify-email',
-    isAuthenticated: () => false,
-    isAuthorized: () => false,
-    fallbackRoute: () => null,
+    isAuthRequired: stubFalse,
+    isAuthzRequired: stubFalse,
+    fallbackRouteResolver: noop,
   },
   [UNAUTHORIZED_PAGE]: {
     path: '/unauthorized',
     page: 'unauthorized',
-    isAuthenticated: () => true,
-    isAuthorized: () => false,
-    fallbackRoute: () => null,
+    isAuthRequired: stubTrue,
+    isAuthzRequired: stubFalse,
+    fallbackRouteResolver: noop,
   },
 };
 

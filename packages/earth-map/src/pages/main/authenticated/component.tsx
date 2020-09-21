@@ -22,7 +22,7 @@ import AsyncPage from 'pages/main/async';
 import React, { useEffect } from 'react';
 
 const AuthenticatedPage = ({ component: Component, fallbackRoute, redirect, ...rest }) => {
-  const { isAuthenticated, login } = useAuth0();
+  const { isAuthenticated, isEmailVerified, login } = useAuth0();
 
   useEffect(() => {
     const fn = async () => {
@@ -31,10 +31,12 @@ const AuthenticatedPage = ({ component: Component, fallbackRoute, redirect, ...r
         const target = window.location.href.replace(window.location.origin, '');
         // save target URL to redirect to after login;
         await login({ appState: { targetUrl: target } });
+      } else if (!isEmailVerified && fallbackRoute) {
+        redirect({ type: fallbackRoute });
       }
     };
     fn();
-  }, [isAuthenticated, login]);
+  }, [isAuthenticated, isEmailVerified, login]);
 
   if (isAuthenticated) {
     const render = (props) => <Component {...props} />;
