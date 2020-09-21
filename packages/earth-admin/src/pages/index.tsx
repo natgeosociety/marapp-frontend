@@ -32,7 +32,7 @@ import OrganizationsPage from '@app/pages-client/organizations/routes';
 import PlacesPage from '@app/pages-client/places/routes';
 import UnauthorizedPage from '@app/pages-client/unauthorized';
 import UsersPage from '@app/pages-client/users';
-import WidgetsPage from '@app/pages-client/widgets';
+import WidgetsPage from '@app/pages-client/widgets/routes';
 
 /**
  * All admin pages are client side pages only because the /:org makes them dinamic

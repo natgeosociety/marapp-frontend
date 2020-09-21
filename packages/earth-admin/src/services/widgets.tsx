@@ -82,3 +82,8 @@ export const handleWidgetForm = async (
   widgetId: string,
   group: string
 ) => (newWidget ? addWidget(widget, group) : updateWidget(widgetId, widget, group));
+
+export const getUniqueSlug = async (keyword: string, group: string, type: string = 'counter') =>
+  WidgetAPIService.request({
+    url: `/widgets/slug?keyword=${keyword}&group=${group}&type=${type}`,
+  });

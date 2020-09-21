@@ -26,27 +26,26 @@ import { Card } from '@app/components/card';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 
-export function PlacesHome(props: any) {
+export function WidgetsHome(props: any) {
   const { getPermissions } = useAuth0();
-  const permissions = getPermissions(AuthzGuards.accessPlacesGuard);
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
 
   return (
     writePermissions && (
-      <ContentLayout className="marapp-qa-placeshome">
+      <ContentLayout className="marapp-qa-widgetshome">
         {writePermissions && (
           <>
-            <h1 className="ng-text-display-m ng-margin-medium-bottom">PLACES</h1>
+            <h1 className="ng-text-display-m ng-margin-medium-bottom">WIDGETS</h1>
             <div className="ng-grid">
               <div className="ng-width-1-2">
                 <Card>
-                  <p>Search a place to view and edit details, or start creating a new place.</p>
+                  <p>Search a widget to view and edit details, or start creating a new widget.</p>
                   <div className="ng-flex ng-flex-center">
                     <LinkWithOrg
                       className="marapp-qa-actioncreate ng-button ng-button-secondary"
-                      to="places/new"
+                      to="widgets/new"
                     >
-                      Create new place
+                      Create a new widget
                     </LinkWithOrg>
                   </div>
                 </Card>
