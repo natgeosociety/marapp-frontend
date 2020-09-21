@@ -129,15 +129,14 @@ export function LayerDetail(props: any) {
     };
 
     try {
-      // optimistic ui update
-      mutate({ ...data, ...parsed }, false);
-      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(true);
       await handleLayerForm(false, parsed, id, selectedGroup);
       mutate();
+      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(false);
       onDataChange();
     } catch (error) {
-      mutate({ ...data }, false);
-      setIsLoading && setIsLoading(false); // optimistic ui update
+      setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data.errors);
     }
   }
