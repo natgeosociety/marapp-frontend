@@ -55,12 +55,6 @@ body {
   width: calc(100% - #{$sidebar-width});
 }
 
-.ng-user-profile-container {
-  height: 100vh;
-  overflow-y: auto;
-  width: 100%;
-}
-
 .ng-space-wrap {
   white-space: normal;
 }

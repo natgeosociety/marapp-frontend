@@ -1,18 +1,39 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { Auth0Context } from 'auth/auth0';
 import { UserMenuComponent } from 'components/user-menu';
 
 import { InlineEditCard } from '@marapp/earth-shared';
 // import { Input } from '@app/components/input';
+import { fetchProfile } from 'services/users';
 
 import Link from 'redux-first-router-link';
 import { APP_LOGO } from 'theme';
 
+import { Spinner } from '@marapp/earth-shared';
+
 export function ProfileComponent(props: any) {
   const { userData } = useContext(Auth0Context);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userName, setUserName] = useState('');
 
-  return (
+  useEffect(() => {
+    (async () => {
+      const profile: any = await fetchProfile();
+
+      setUserName(
+        profile.firstName && profile.lastName
+          ? `${profile.firstName} ${profile.lastName}`
+          : profile.name
+      );
+
+      setIsLoading(false);
+    })();
+  }, []);
+
+  return isLoading ? (
+    <Spinner size="large" />
+  ) : (
     <div className={`l-page ng-flex marapp-qa-user-profile ng-ep-background-gray-9`}>
       <Link
         className="ng-border-remove"
@@ -59,7 +80,7 @@ export function ProfileComponent(props: any) {
                     <p className="ng-text-weight-bold ng-margin-remove ng-color-mdgray ng-text-uppercase">
                       Name
                     </p>
-                    <p className="ng-margin-remove">{userData.name}</p>
+                    <p className="ng-margin-remove">{userName}</p>
                   </div>
                 </InlineEditCard>
               </div>
