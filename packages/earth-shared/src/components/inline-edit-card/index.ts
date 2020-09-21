@@ -20,4 +20,5 @@
 import { InlineCardOverlay } from './inline-card-overlay';
 import InlineEditCard from './InlineEditCard';
 
+export default InlineEditCard;
 export { InlineEditCard, InlineCardOverlay };

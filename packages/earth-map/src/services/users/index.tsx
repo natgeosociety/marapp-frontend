@@ -69,4 +69,9 @@ export function changeEmailConfirmation(options = {}) {
   return service.request(widgetsQuery);
 }
 
+export function fetchProfile(options = {}) {
+  const profileQuery = encodeQueryToURL(`/users/profile`, options);
+  return service.request(profileQuery);
+}
+
 export default service;

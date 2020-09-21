@@ -20,14 +20,13 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 
-import { Spinner } from '@marapp/earth-shared';
+import { Spinner, ErrorMessages } from '@marapp/earth-shared';
 
-import { ErrorMessages } from '@app/components/error-messages';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { UserMenuComponent } from '@app/components/user-menu';
 
 import '../styles/app.scss';
-import { APP_NAME } from '../theme';
+import { APP_NAME, APP_LOGO } from '../theme';
 
 interface ILayoutProps {
   children?: any;

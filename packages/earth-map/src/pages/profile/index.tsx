@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import ErrorMessages from './ErrorMessages';
+import { ProfileComponent } from './component';
 
-export { ErrorMessages };
+export default ProfileComponent;

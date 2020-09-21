@@ -20,12 +20,12 @@
 import { navigate } from 'gatsby';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { noop } from 'lodash';
 
-import { AsyncSelect, Spinner } from '@marapp/earth-shared';
+import { AsyncSelect, Spinner, ErrorMessages } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
-import { ErrorMessages } from '@app/components/error-messages';
 import { HtmlEditor } from '@app/components/html-editor';
 import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
@@ -37,9 +37,14 @@ import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/ut
 
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 
-export function NewDashboard() {
-  const { selectedGroup } = useAuth0();
+interface IProps {
+  path?: string;
+  onDataChange?: () => {};
+}
 
+export function NewDashboard(props: IProps) {
+  const { onDataChange = noop } = props;
+  const { selectedGroup } = useAuth0();
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
     mode: 'onChange',
   });
@@ -64,6 +69,7 @@ export function NewDashboard() {
     try {
       setIsLoading(true);
       const response: any = await addDashboard(parsed, selectedGroup);
+      onDataChange();
       await navigate(`/${selectedGroup}/dashboards/${response.data.id}`);
     } catch (error) {
       setIsLoading(false);

@@ -22,10 +22,9 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 
-import { AuthzGuards } from '@marapp/earth-shared';
+import { AuthzGuards, InlineEditCard } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { InlineEditCard } from '@app/components/inline-edit-card';
 import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
@@ -75,14 +74,14 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     };
 
     try {
-      mutate({ ...data, ...parsed }, false);
-      setIsEditing(false);
+      setIsLoading && setIsLoading(true);
       await updateOrganization(id, parsed, selectedGroup);
       mutate();
+      setIsLoading && setIsLoading(false);
+      setIsEditing && setIsEditing(false);
       onDataChange();
     } catch (err) {
-      mutate({ ...data }, false);
-      setIsLoading(false);
+      setIsLoading && setIsLoading(false);
       setServerErrors(err.data.errors);
     }
   }

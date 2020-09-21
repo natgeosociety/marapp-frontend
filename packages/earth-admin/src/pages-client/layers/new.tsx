@@ -22,12 +22,12 @@ import { JSHINT } from 'jshint';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
+import { noop } from 'lodash';
 
-import { AsyncSelect, Spinner } from '@marapp/earth-shared';
+import { AsyncSelect, Spinner, ErrorMessages } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
-import { ErrorMessages } from '@app/components/error-messages';
 import { HtmlEditor } from '@app/components/html-editor';
 import { Input } from '@app/components/input';
 import { JsonEditor } from '@app/components/json-editor';
@@ -40,7 +40,13 @@ import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/ut
 
 import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 
-export function NewLayer() {
+interface IProps {
+  path?: string;
+  onDataChange?: () => {};
+}
+
+export function NewLayer(props: IProps) {
+  const { onDataChange = noop } = props;
   const { selectedGroup } = useAuth0();
 
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
@@ -75,6 +81,7 @@ export function NewLayer() {
     try {
       setIsLoading(true);
       const response: any = await addLayer(parsed, selectedGroup);
+      onDataChange();
       await navigate(`/${selectedGroup}/layers/${response.data.id}`);
     } catch (error) {
       setIsLoading(false);

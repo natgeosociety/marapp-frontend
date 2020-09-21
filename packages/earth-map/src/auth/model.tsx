@@ -49,4 +49,5 @@ export interface User {
   email?: string;
   picture?: string;
   allGroups?: string[];
+  roles?: { [key: string]: any };
 }

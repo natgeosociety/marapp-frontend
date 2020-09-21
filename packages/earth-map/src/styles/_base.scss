@@ -44,6 +44,12 @@ body {
   position: relative;
 }
 
+.ng-user-profile-container {
+  height: 100vh;
+  overflow-y: auto;
+  width: 100%;
+}
+
 //custom scrollbar
 body {
   scrollbar-width: thin;
