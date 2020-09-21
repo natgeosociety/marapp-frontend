@@ -17,14 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 export interface Widget {
-  id: string;
-  slug: string;
-  name: string;
-  description: string;
-  category: string[];
-  config: object;
-  published: boolean;
-  metrics: string[];
+  id?: string;
+  slug?: string;
+  name?: string;
+  description?: string;
+  category?: string[];
+  config?: object;
+  published?: boolean;
+  metrics?: string[];
   createdAt?: Date;
   updatedAt?: Date;
   version?: number;
@@ -34,5 +34,6 @@ export interface Widget {
 export interface WidgetProps {
   data: Widget;
   newWidget?: boolean;
+  page?: string;
   onDataChange?: () => {};
 }

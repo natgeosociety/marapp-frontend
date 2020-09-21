@@ -26,6 +26,7 @@ import useSWR from 'swr';
 import { AsyncSelect, AuthzGuards, ErrorMessages, InlineEditCard } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
+import { Widget, WidgetProps } from './model';
 import { Card } from '@app/components/card';
 import { DetailList } from '@app/components/detail-list';
 import { HtmlEditor } from '@app/components/html-editor';
@@ -54,7 +55,7 @@ const WIDGET_DETAIL_QUERY = {
   sort: 'layers.name',
 };
 
-export function WidgetsDetail(props: any) {
+export function WidgetsDetail(props: WidgetProps) {
   const { page, onDataChange = noop } = props;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
@@ -68,11 +69,11 @@ export function WidgetsDetail(props: any) {
     getWidget(url).then((res: any) => res.data)
   );
 
-  const [widget, setWidget] = useState({});
+  const [widget, setWidget] = useState<Widget>({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [jsonError, setJsonError] = useState(false);
-  const [serverErrors, setServerErrors] = useState();
-  const [widgetConfig, setWidgetConfig] = useState();
+  const [serverErrors, setServerErrors] = useState(null);
+  const [widgetConfig, setWidgetConfig] = useState(null);
   const [widgetCategory, setWidgetCategory] = useState(null);
   const [collapseJson, setCollapseJson] = useState(false);
   const [copySuccess, setCopySuccess] = useState('');
@@ -112,26 +113,22 @@ export function WidgetsDetail(props: any) {
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
     const formData = getValues();
-    const { type, category, provider, references } = formData;
+    const { layers } = formData;
 
     const parsed = {
       ...formData,
-      // ...(category && { category: flattenArrayForSelect(category, 'value') }),
-      // ...(type && { type: flattenObjectForSelect(type, 'value') }),
-      // ...(provider && { provider: flattenObjectForSelect(provider, 'value') }),
-      // ...(references && { references: flattenArrayForSelect(references, 'id') }),
+      ...(layers && { layers: flattenArrayForSelect(layers, 'id') }),
     };
 
     try {
-      // optimistic ui update
-      mutate({ ...data, ...parsed }, false);
-      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(true);
       await handleWidgetForm(false, parsed, id, selectedGroup);
-      mutate();
+      await mutate();
       onDataChange();
+      setIsLoading && setIsLoading(false);
+      setIsEditing && setIsEditing(false);
     } catch (error) {
-      mutate({ ...data }, false);
-      setIsLoading && setIsLoading(false); // optimistic ui update
+      setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data.errors);
     }
   }
@@ -307,14 +304,14 @@ export function WidgetsDetail(props: any) {
                       <div className="ng-margin-medium-bottom">
                         <label htmlFor="provider">Widget Layers</label>
                         <Controller
-                          name="references"
+                          name="layers"
                           type="layers"
-                          className="marapp-qa-references"
+                          className="marapp-qa-layers"
                           control={control}
                           getOptionLabel={(option) => option.name}
                           getOptionValue={(option) => option.id}
                           loadFunction={getAllLayers}
-                          // defaultValue={references}
+                          defaultValue={layers}
                           selectedGroup={selectedGroup}
                           as={AsyncSelect}
                           onChange={([e]) => e}
