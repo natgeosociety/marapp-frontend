@@ -48,6 +48,14 @@ body {
   height: 100vh;
   overflow-y: auto;
   width: 100%;
+
+  .user-profile-title {
+    letter-spacing: 3.36px;
+  }
+
+  .user-profile-section-title {
+    letter-spacing: 2.6px;
+  }
 }
 
 //custom scrollbar

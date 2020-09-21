@@ -48,7 +48,7 @@ export function ProfileComponent(props: any) {
       <UserMenuComponent />
       <div className="ng-user-profile-container">
         <div className="ng-padding-large">
-          <h1 className="ng-text-display-m ng-margin-medium-bottom ng-text-center ng-ep-text-gray-1">
+          <h1 className="ng-margin-medium-bottom ng-text-center ng-text-uppercase ng-ep-text-gray-1 ng-text-display-m user-profile-title">
             Manage your account
           </h1>
           <form className="ng-form ng-form-dark">
@@ -78,12 +78,10 @@ export function ProfileComponent(props: any) {
                 //   </>
                 // )}>
                 >
-                  <div className="ng-margin-medium-bottom">
-                    <p className="ng-text-weight-bold ng-margin-remove ng-color-mdgray ng-text-uppercase">
-                      Name
-                    </p>
-                    <p className="ng-margin-remove">{userName}</p>
-                  </div>
+                  <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                    Name
+                  </h3>
+                  <p className="ng-margin-remove">{userName}</p>
                 </InlineEditCard>
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
@@ -109,12 +107,10 @@ export function ProfileComponent(props: any) {
                 //   </>
                 // )}>
                 >
-                  <div className="ng-margin-medium-bottom">
-                    <p className="ng-text-weight-bold ng-margin-remove ng-color-mdgray ng-text-uppercase">
-                      Email
-                    </p>
-                    <p className="ng-margin-remove">{userData.email}</p>
-                  </div>
+                  <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                    Email
+                  </h3>
+                  <p className="ng-margin-remove">{userData.email}</p>
                 </InlineEditCard>
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
@@ -133,20 +129,18 @@ export function ProfileComponent(props: any) {
                 //   </>
                 // )}>
                 >
-                  <div className="ng-margin-medium-bottom">
-                    <p className="ng-text-weight-bold ng-margin-remove ng-color-mdgray ng-text-uppercase">
-                      Password reset
-                    </p>
-                    <p className="ng-margin-remove">
-                      We'll send you an email to reset your password.
-                      <br />
-                      Be sure to check your spam folder if you do not receive the email in a few
-                      minutes.
-                    </p>
-                    <button className="ng-button ng-button-secondary ng-margin-top" disabled>
-                      Send reset email
-                    </button>
-                  </div>
+                  <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                    Password reset
+                  </h3>
+                  <p className="ng-margin-remove">
+                    We'll send you an email to reset your password.
+                    <br />
+                    Be sure to check your spam folder if you do not receive the email in a few
+                    minutes.
+                  </p>
+                  <button className="ng-button ng-button-secondary ng-margin-top" disabled>
+                    Send reset email
+                  </button>
                 </InlineEditCard>
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
@@ -170,22 +164,20 @@ export function ProfileComponent(props: any) {
                   //   </>
                   // )}>
                   >
-                    <div className="ng-margin-medium-bottom">
-                      <p className="ng-text-weight-bold ng-margin-remove ng-color-mdgray ng-text-uppercase">
-                        Organizations
-                      </p>
-                      <div className="ng-grid ng-margin-top">
-                        <div className="ng-width-1-2 ng-text-weight-bold">Organization name</div>
-                        <div className="ng-width-1-2 ng-text-weight-bold">Role</div>
-                        {userRoles.map((org) => (
-                          <>
-                            <div className="ng-width-1-2 ng-margin-top">{org}</div>
-                            <div className="ng-width-1-2 ng-margin-top">
-                              {userData.roles[org].join(', ')}
-                            </div>
-                          </>
-                        ))}
-                      </div>
+                    <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                      Organizations
+                    </h3>
+                    <div className="ng-grid ng-margin-top">
+                      <div className="ng-width-1-2 ng-text-weight-bold">Organization name</div>
+                      <div className="ng-width-1-2 ng-text-weight-bold">Role</div>
+                      {userRoles.map((org) => (
+                        <>
+                          <div className="ng-width-1-2 ng-margin-top">{org}</div>
+                          <div className="ng-width-1-2 ng-margin-top">
+                            {userData.roles[org].join(', ')}
+                          </div>
+                        </>
+                      ))}
                     </div>
                   </InlineEditCard>
                 )}
