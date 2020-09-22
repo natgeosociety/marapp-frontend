@@ -56,7 +56,8 @@ const WIDGET_DETAIL_QUERY = {
 };
 
 export function WidgetsDetail(props: WidgetProps) {
-  const { page, onDataChange = noop } = props;
+  const { page, onDataChange = noop, groupedFilters = {} } = props;
+  const { metrics = [] } = groupedFilters;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
 
@@ -90,7 +91,7 @@ export function WidgetsDetail(props: WidgetProps) {
     layers,
     published,
     config,
-    metrics,
+    metrics: selectedMetrics,
     version,
   } = widget;
 
@@ -113,11 +114,12 @@ export function WidgetsDetail(props: WidgetProps) {
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
     const formData = getValues();
-    const { layers } = formData;
+    const { layers, metrics } = formData;
 
     const parsed = {
       ...formData,
       ...(layers && { layers: flattenArrayForSelect(layers, 'id') }),
+      ...(metrics && { metrics: [metrics] }),
     };
 
     try {
@@ -348,9 +350,31 @@ export function WidgetsDetail(props: WidgetProps) {
                 </InlineEditCard>
               </div>
               <div className="ng-width-1-2">
-                <InlineEditCard>
+                <InlineEditCard
+                  onSubmit={onSubmit}
+                  validForm={isValid}
+                  render={() => (
+                    <>
+                      <label htmlFor="metrics-select">Metric Slug:</label>
+                      <select
+                        id="metrics-select"
+                        name="metrics"
+                        className="ng-width-1-1 ng-form-large"
+                        defaultValue={selectedMetrics}
+                        ref={register({
+                          required: true,
+                        })}
+                      >
+                        {metrics.map((m) => (
+                          <option value={m.value}>{m.value}</option>
+                        ))}
+                      </select>
+                    </>
+                  )}
+                >
                   <div>
                     <p className="ng-text-weight-bold ng-margin-small-bottom">Metric Slug</p>
+                    <div className="ng-margin-remove ng-padding-left">{selectedMetrics}</div>
                   </div>
                 </InlineEditCard>
               </div>

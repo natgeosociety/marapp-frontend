@@ -19,6 +19,8 @@
 
 import { Router } from '@reach/router';
 import React, { useState } from 'react';
+import useSWR from 'swr';
+import { groupBy } from 'lodash';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { DataListing, DefaultListItem } from '@app/components/data-listing';
@@ -51,6 +53,23 @@ export default function DashboardsPage(props) {
   };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllWidgets);
 
+  // Fetch filters from /management/widgets api.
+  // Can't reuse the above request because it's using search param and
+  // it might not return filters
+  // TODO: create a custom hook for reuse on multiple pages
+  const metricsQuery = {
+    select: EXCLUDED_FIELDS,
+    page: { size: 1, number: 1 },
+    group: selectedGroup,
+  };
+  const { data: groupedFilters } = useSWR(
+    encodeQueryToURL('widgets', metricsQuery),
+    async (url) => {
+      const { filters }: any = await getAllWidgets(url);
+      return groupBy(filters, 'key');
+    }
+  );
+
   return (
     <>
       <SidebarLayout page={PAGE_TYPE}>
@@ -66,8 +85,8 @@ export default function DashboardsPage(props) {
       </SidebarLayout>
       <Router>
         <WidgetsHome path="/" />
-        <NewWidget path="/new" onDataChange={mutate} />
-        <WidgetsDetail path="/:page" onDataChange={mutate} />
+        <NewWidget path="/new" onDataChange={mutate} groupedFilters={groupedFilters} />
+        <WidgetsDetail path="/:page" onDataChange={mutate} groupedFilters={groupedFilters} />
       </Router>
     </>
   );

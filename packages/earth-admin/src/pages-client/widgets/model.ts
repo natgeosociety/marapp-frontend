@@ -36,4 +36,5 @@ export interface WidgetProps {
   newWidget?: boolean;
   page?: string;
   onDataChange?: () => {};
+  groupedFilters?: any;
 }

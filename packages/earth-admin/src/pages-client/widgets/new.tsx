@@ -33,9 +33,8 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 import { JsonEditor } from '@app/components/json-editor';
 import { ContentLayout } from '@app/layouts';
 import { addWidget, getUniqueSlug } from '@app/services/widgets';
-import { getAllWidgets } from '@app/services/widgets';
-import { getAllMetrics } from '@app/services/metrics';
-import { flattenArrayForSelect, flattenObjectForSelect } from '@app/utils';
+import { getAllLayers } from '@app/services/layers';
+import { flattenArrayForSelect } from '@app/utils';
 import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
@@ -43,10 +42,12 @@ import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 interface IProps {
   path?: string;
   onDataChange?: () => {};
+  groupedFilters?: any;
 }
 
 export function NewWidget(props: IProps) {
-  const { onDataChange = noop } = props;
+  const { onDataChange = noop, groupedFilters = {} } = props;
+  const { metrics = [] } = groupedFilters;
   const { selectedGroup } = useAuth0();
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
     mode: 'onChange',
@@ -69,7 +70,7 @@ export function NewWidget(props: IProps) {
     const parsed = {
       ...values,
       ...(!!layers && { layers: flattenArrayForSelect(layers, 'id') }),
-      ...(!!metrics && { metrics: flattenObjectForSelect(metrics, 'id') }),
+      ...(!!metrics && { metrics: [metrics] }),
       ...(!!layerConfig && { config: layerConfig }),
     };
 
@@ -190,7 +191,7 @@ export function NewWidget(props: IProps) {
                   control={control}
                   getOptionLabel={(option) => option.name}
                   getOptionValue={(option) => option.id}
-                  loadFunction={getAllWidgets}
+                  loadFunction={getAllLayers}
                   selectedGroup={selectedGroup}
                   as={AsyncSelect}
                   isClearable={true}
@@ -208,28 +209,19 @@ export function NewWidget(props: IProps) {
             </div>
             <div className="ng-width-1-2">
               <Card>
-                <label htmlFor="provider">Metric Slug:</label>
-                <Controller
+                <label htmlFor="metrics-select">Metric Slug:</label>
+                <select
+                  id="metrics-select"
                   name="metrics"
-                  type="metrics"
-                  className="marapp-qa-widgets"
-                  control={control}
-                  getOptionLabel={(option) => option.name}
-                  getOptionValue={(option) => option.id}
-                  loadFunction={getAllMetrics}
-                  selectedGroup={selectedGroup}
-                  as={AsyncSelect}
-                  isClearable={true}
-                  isSearchable={true}
-                  isMulti={false}
-                  closeMenuOnSelect={false}
-                  placeholder="Select widgets"
-                  styles={CUSTOM_STYLES}
-                  theme={(theme) => ({
-                    ...theme,
-                    ...SELECT_THEME,
+                  className="ng-width-1-1 ng-form-large"
+                  ref={register({
+                    required: true,
                   })}
-                />
+                >
+                  {metrics.map((m) => (
+                    <option value={m.value}>{m.value}</option>
+                  ))}
+                </select>
               </Card>
             </div>
           </div>
