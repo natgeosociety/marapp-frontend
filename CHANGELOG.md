@@ -1,3 +1,21 @@
+# [1.5.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.4.1...v1.5.0) (2020-09-22)
+
+
+### Bug Fixes
+
+* handle email-verified for authenticated users ([d0c9aae](https://github.com/natgeosociety/marapp-frontend/commit/d0c9aae594d16229524d924675d621ff2bc733b1))
+* handle fallback route at router level logic ([e28001b](https://github.com/natgeosociety/marapp-frontend/commit/e28001b6d48cc77b1222716db99a0894fe7c3f95))
+* **admin:** Add new user is not working [EP-2863] ([#153](https://github.com/natgeosociety/marapp-frontend/issues/153)) ([1d83987](https://github.com/natgeosociety/marapp-frontend/commit/1d839872a476a8f940b7a159c1ae091d56f8d71e))
+* **admin:** Error for missing provider and type is displayed when trying to save a layer [EP-2860] ([#152](https://github.com/natgeosociety/marapp-frontend/issues/152)) ([55eff94](https://github.com/natgeosociety/marapp-frontend/commit/55eff94351f731ddc396450beb48549fecbb3315))
+* **map:** dashboards with no widgets fix [EP-2859] ([#151](https://github.com/natgeosociety/marapp-frontend/issues/151)) ([60141fb](https://github.com/natgeosociety/marapp-frontend/commit/60141fbfac02caf4efcda220b3fe42cf08d09a5b))
+
+
+### Features
+
+* **admin:** post sign up page [EP-2179] ([1463f31](https://github.com/natgeosociety/marapp-frontend/commit/1463f31239bde44521a228b58e934ab77d3fdada))
+* **admin:** Update sidebar items when data changes [EP-2472] ([4a13cae](https://github.com/natgeosociety/marapp-frontend/commit/4a13caef5d7c0f2de38bbfcdf54a0869c7a0d20b))
+* user profile [EP2585] ([c737e07](https://github.com/natgeosociety/marapp-frontend/commit/c737e0747e25853f3d7c41f1334d111361f2617e))
+
 ## [1.4.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.4.0...v1.4.1) (2020-09-18)
 
 
