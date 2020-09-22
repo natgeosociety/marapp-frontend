@@ -20,11 +20,10 @@
 import get from 'lodash/get';
 import omitBy from 'lodash/omitBy';
 import qs from 'query-string';
-
 import { createSelector } from 'reselect';
 
-const state = state => state;
-const router = state => state.router;
+const state = (state) => state;
+const router = (state) => state.router;
 
 const urlProps = (state, props) => props.urlProps;
 
@@ -67,7 +66,7 @@ export const getUrl = createSelector(
   [router, urlProps, getUrlFromParams],
   (_router, _urlProps, _urlParams) => {
     const params = omitBy(_urlParams, (value, key) => {
-      const { required } = _urlProps.find(up => up.value === key);
+      const { required } = _urlProps.find((up) => up.value === key);
       if (required) {
         return typeof value === 'undefined';
       }

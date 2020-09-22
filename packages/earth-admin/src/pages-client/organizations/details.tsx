@@ -17,45 +17,45 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { noop } from 'lodash';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import useSWR from 'swr';
+
+import { AuthzGuards, InlineEditCard } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { Input } from '@app/components/input';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
+import { ContentLayout } from '@app/layouts';
+import { getOrganization, updateOrganization } from '@app/services/organizations';
+import { encodeQueryToURL } from '@app/utils';
+import { noSpecialCharsRule, setupErrors, validEmailRule } from '@app/utils/validations';
 
 import { OrganizationDetailsProps } from './model';
-import { useRequest } from 'utils/hooks';
-import { useAuth0 } from 'auth/auth0';
-import { AuthzGuards } from 'auth/permissions';
-import { setupErrors, validEmailRule, noSpecialCharsRule } from 'utils/validations';
-import { getOrganization, updateOrganization } from 'services/organizations';
-import { ContentLayout } from 'layouts';
-import { encodeQueryToURL } from 'utils';
-import { ActionModal } from 'components/action-modal';
-import { LinkWithOrg } from 'components/link-with-org';
-import { InlineEditCard } from 'components/inline-edit-card';
-import { Input } from 'components/input';
 
 export function OrganizationDetails(props: OrganizationDetailsProps) {
+  const { page, onDataChange = noop } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [localOrgData, setLocalOrgData] = useState(null);
-  const {getPermissions, selectedGroup} = useAuth0();
+  const [localOrgData, setLocalOrgData] = useState({});
+  const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
-  const encodedQuery = encodeQueryToURL(`organizations/${props.page}`, {include: 'owners'});
+  const encodedQuery = encodeQueryToURL(`organizations/${props.page}`, { include: 'owners' });
 
-  const {isLoading, errors, data} = useRequest(() =>
-    getOrganization(encodedQuery), {
-    query: encodedQuery,
-  });
+  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
+    getOrganization(url).then((res: any) => res.data)
+  );
 
   useEffect(() => {
-    setLocalOrgData(data);
+    data && setLocalOrgData(data);
   }, [data]);
 
-
-  const {getValues, register, formState, errors: formErrors} = useForm({
+  const { getValues, register, formState, errors: formErrors } = useForm({
     mode: 'onChange',
   });
 
-  const {touched} = formState;
+  const { touched } = formState;
   const renderErrorFor = setupErrors(formErrors, touched);
 
   function handleDeleteToggle() {
@@ -64,50 +64,53 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
 
   async function onSubmit(e, setIsEditing, setIsLoading, setServerErrors) {
     e.preventDefault();
-    const {owner, ...rest} = getValues();
+    const { owner, ...rest } = getValues();
 
-    const transformedFormData = {
+    const parsed = {
       ...rest,
-      ...owner && {
+      ...(owner && {
         owners: [owner],
-      },
+      }),
     };
 
     try {
-      setIsLoading(true);
-      const {data}: any = await updateOrganization(id, transformedFormData, selectedGroup);
-      setIsEditing(false);
-      setLocalOrgData(data);
-      setIsLoading(false);
+      setIsLoading && setIsLoading(true);
+      await updateOrganization(id, parsed, selectedGroup);
+      mutate();
+      setIsLoading && setIsLoading(false);
+      setIsEditing && setIsEditing(false);
+      onDataChange();
     } catch (err) {
-      setIsLoading(false);
+      setIsLoading && setIsLoading(false);
       setServerErrors(err.data.errors);
     }
   }
 
-  if (isLoading) {
-    return <ContentLayout isLoading/>;
+  if (!data) {
+    return <ContentLayout isLoading={true} />;
   }
 
-  const {name, owners, slug, id} = localOrgData;
+  const { name, owners, slug, id } = localOrgData;
   const owner = owners && owners[0];
 
   return (
-    <ContentLayout errors={errors} backTo="/organizations">
-      {showDeleteModal && (
-        <ActionModal
-          id={id}
-          navigateRoute={'organizations'}
-          name={name}
-          type="organization"
-          toggleModal={handleDeleteToggle}
-          visibility={showDeleteModal}
-        />
-      )}
+    <ContentLayout backTo="/organizations">
+      <DeleteConfirmation
+        id={id}
+        navigateRoute={'organizations'}
+        name={name}
+        type="organization"
+        toggleModal={handleDeleteToggle}
+        onDelete={onDataChange}
+        visibility={showDeleteModal}
+      />
 
       <div className="marapp-qa-organizationdetails ng-padding-medium-horizontal">
-        <LinkWithOrg className="ng-border-remove ng-margin-bottom ng-display-block" to="/organizations">
-          <i className="ng-icon ng-icon-directionleft"></i>
+        <LinkWithOrg
+          className="ng-border-remove ng-margin-bottom ng-display-block"
+          to="/organizations"
+        >
+          <i className="ng-icon ng-icon-directionleft" />
           return to organizations home
         </LinkWithOrg>
 
@@ -129,11 +132,15 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                       ref={register({
                         required: 'Organization name is required',
                         validate: {
-                          noSpecialCharsRule: noSpecialCharsRule('Organization name can not contain special characters'),
+                          noSpecialCharsRule: noSpecialCharsRule(
+                            'Organization name can not contain special characters'
+                          ),
                         },
-                      })}/>
+                      })}
+                    />
                   </>
-                )}>
+                )}
+              >
                 <h1 className="ng-text-display-m ng-margin-remove">{name}</h1>
               </InlineEditCard>
             </div>
@@ -157,9 +164,11 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                         validate: {
                           validEmailRule: validEmailRule(),
                         },
-                      })}/>
+                      })}
+                    />
                   </>
-                )}>
+                )}
+              >
                 <div className="ng-margin-medium-bottom">
                   <p className="ng-text-weight-bold ng-margin-remove">Owner</p>
                   <p className="ng-margin-remove ng-padding-left">{owner}</p>
@@ -175,7 +184,9 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                 <div>
                   <p className="ng-text-weight-bold ng-margin-remove">Slug</p>
                   <p className="ng-margin-remove ng-padding-left">{slug}</p>
-                  <small className="ng-text-muted">The slug name cannot be edited after creation</small>
+                  <small className="ng-text-muted">
+                    The slug name cannot be edited after creation
+                  </small>
                 </div>
               </InlineEditCard>
             </div>
@@ -186,13 +197,15 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
       <div>
         {writePermissions && (
           <div className="ng-padding-medium ultradkgray ng-text-right">
-            <button className="marapp-qa-actiondelete ng-button ng-button-secondary" onClick={handleDeleteToggle}>
+            <button
+              className="marapp-qa-actiondelete ng-button ng-button-secondary"
+              onClick={handleDeleteToggle}
+            >
               Delete organization
             </button>
           </div>
         )}
       </div>
-
     </ContentLayout>
   );
-};
+}

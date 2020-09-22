@@ -17,12 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-
-import {Transition, animated} from 'react-spring/renderprops'
+import React from 'react';
+import { animated, Transition } from 'react-spring/renderprops';
 
 import IndexContent from '../index-content';
-
 import './styles.scss';
 
 interface IndexSidebar {
@@ -34,28 +32,28 @@ interface IndexSidebar {
 }
 
 class IndexSidebarComponent extends React.Component<IndexSidebar> {
-  static defaultProps = {
+  public static defaultProps = {
     selected: null,
   };
 
-  onClose = () => {
+  public onClose = () => {
     const { setIndexesSelected } = this.props;
     setIndexesSelected('');
   };
 
-  render() {
+  public render() {
     const { selected, open } = this.props;
     const state = open ? 'open' : 'close';
 
     return (
       <Transition
-        native
+        native={true}
         items={!!selected}
         from={{ x: 100, opacity: 0 }}
         enter={{ x: 0, opacity: 1, visibility: 'visible', delay: 0 }}
         leave={[{ x: 100 }, { visibility: 'hidden', immediate: true }]}
       >
-        {show =>
+        {(show) =>
           show &&
           (({ x, ...props }) => (
             <animated.div

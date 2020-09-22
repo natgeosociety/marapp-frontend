@@ -617,9 +617,9 @@ They enable developers to set up the app name, logo and basemaps, with the use o
 #### Generating icons
 
 Marapp uses a default icon font. If you want to customize the icons used, you need to add the icon set svgs in
-`@marap/earth-components` in the folder `src/icon-font/icons `and run the command `yarn build-icons`. This generates a compiled folder in icon-font/ with a icon-font.scss
+`@marap/earth-shared` in the folder `src/icon-font/icons `and run the command `yarn build-icons`. This generates a compiled folder in icon-font/ with a icon-font.scss
 stylesheet. Include that scss file in `index.scss` file and the app will use your custom icons
-(`@import "~@marapp/earth-components/src/icon-font/compiled/icon-font";`).
+(`@import "~@marapp/earth-shared/src/icon-font/compiled/icon-font";`).
 
 
 ## Learn More

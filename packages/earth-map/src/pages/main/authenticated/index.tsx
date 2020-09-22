@@ -17,6 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { connect } from 'react-redux';
+import { redirect } from 'redux-first-router';
+
 import AuthenticatedComponent from './component';
 
-export default AuthenticatedComponent;
+export default connect(null, { redirect })(AuthenticatedComponent);

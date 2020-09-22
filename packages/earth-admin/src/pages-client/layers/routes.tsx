@@ -17,22 +17,55 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { Router, } from '@reach/router';
+import { Router } from '@reach/router';
+import React, { useState } from 'react';
 
-import { LayerSidebar } from 'components/layers';
-import { NewLayer } from './new';
-import { LayersHome } from './home';
+import { useAuth0 } from '@app/auth/auth0';
+import { DataListing, DefaultListItem } from '@app/components/data-listing';
+import { SidebarLayout } from '@app/layouts';
+import { getAllLayers } from '@app/services';
+import { encodeQueryToURL, setPage } from '@app/utils';
+import { useInfiniteList } from '@app/utils/hooks';
+
 import { LayerDetail } from './details';
+import { LayersHome } from './home';
+import { NewLayer } from './new';
+
+const PAGE_TYPE = setPage('Layers');
+const PAGE_SIZE = 20;
 
 export default function LayersPage(props) {
+  const { selectedGroup } = useAuth0();
+  const [searchValue, setSearchValue] = useState('');
+
+  const getQuery = (pageIndex) => {
+    const query = {
+      search: searchValue,
+      sort: 'name',
+      page: { size: PAGE_SIZE, number: pageIndex },
+      group: selectedGroup,
+    };
+    return encodeQueryToURL('layers', query);
+  };
+  const { listProps, mutate } = useInfiniteList(getQuery, getAllLayers);
+
   return (
     <>
-      <LayerSidebar />
+      <SidebarLayout page={PAGE_TYPE}>
+        <DataListing
+          childComponent={DefaultListItem}
+          categoryUrl="layers"
+          pageTitle="layers"
+          searchValueAction={setSearchValue}
+          pageSize={PAGE_SIZE}
+          searchValue={searchValue}
+          {...listProps}
+        />
+      </SidebarLayout>
       <Router>
         <LayersHome path="/" />
-        <NewLayer path="/new"/>
-        <LayerDetail path="/:page" />
+        <NewLayer path="/new" onDataChange={mutate} />
+        <LayerDetail path="/:page" onDataChange={mutate} />
       </Router>
     </>
   );

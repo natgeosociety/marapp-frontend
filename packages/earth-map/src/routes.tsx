@@ -17,64 +17,109 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { BASE_URL, ENABLE_PUBLIC_ACCESS } from 'config';
+import { noop, stubFalse, stubTrue } from 'lodash';
 import qs from 'query-string';
 import { NOT_FOUND } from 'redux-first-router';
 import restoreScroll from 'redux-first-router-restore-scroll';
 
-import { BASE_URL, ENABLE_PUBLIC_ACCESS } from 'config';
-
 const UNAUTHORIZED_PAGE = 'UNAUTHORIZED';
-const fallbackRoute = ENABLE_PUBLIC_ACCESS ? null : UNAUTHORIZED_PAGE;
+const VERIFY_EMAIL = 'VERIFY_EMAIL';
+
+/**
+ * Authenticated resolver.
+ * @param context
+ */
+const isAuthRequired = (context: any = {}): boolean => {
+  return !ENABLE_PUBLIC_ACCESS;
+};
+
+/**
+ * Authorized resolver.
+ * @param context
+ */
+const isAuthzRequired = (context: any = {}): boolean => {
+  return !ENABLE_PUBLIC_ACCESS;
+};
+
+/**
+ * Fallback route resolver.
+ * @param context
+ */
+const fallbackRouteResolver = (context: any = {}): string => {
+  switch (true) {
+    case !context.isEmailVerified:
+      return VERIFY_EMAIL;
+    case !ENABLE_PUBLIC_ACCESS:
+      return UNAUTHORIZED_PAGE;
+    default:
+      return null;
+  }
+};
 
 export const ROUTES = {
   HOME: {
     path: '/',
     page: 'home',
-    authenticated: !ENABLE_PUBLIC_ACCESS,
-    authorized: !ENABLE_PUBLIC_ACCESS,
-    fallbackRoute,
+    isAuthRequired,
+    isAuthzRequired,
+    fallbackRouteResolver,
   },
   EARTH: {
     path: '/earth',
     page: 'earth',
-    authenticated: !ENABLE_PUBLIC_ACCESS,
-    authorized: !ENABLE_PUBLIC_ACCESS,
-    fallbackRoute,
+    isAuthRequired,
+    isAuthzRequired,
+    fallbackRouteResolver,
   },
   LOCATION: {
     path: '/earth/:organization/:slug',
     page: 'earth',
-    authenticated: !ENABLE_PUBLIC_ACCESS,
-    authorized: !ENABLE_PUBLIC_ACCESS,
-    fallbackRoute,
+    isAuthRequired,
+    isAuthzRequired,
+    fallbackRouteResolver,
   },
   CHANGE_EMAIL: {
     path: '/profile/change-email',
     page: 'change-email',
-    authenticated: true,
-    authorized: false,
-    fallbackRoute: null,
+    isAuthRequired: stubTrue,
+    isAuthzRequired: stubFalse,
+    fallbackRouteResolver: noop,
+  },
+  PROFILE: {
+    path: '/profile',
+    page: 'profile',
+    isAuthRequired: stubFalse,
+    isAuthzRequired: stubFalse,
+    fallbackRouteResolver: noop,
   },
   ERROR: {
     path: '/error',
     page: 'error',
-    authenticated: false,
-    authorized: false,
-    fallbackRoute: null,
+    isAuthRequired: stubFalse,
+    isAuthzRequired: stubFalse,
+    fallbackRouteResolver: noop,
   },
   [NOT_FOUND]: {
     path: '/404',
     page: 'not-found',
-    authenticated: false,
-    authorized: false,
-    fallbackRoute: null,
+    isAuthRequired: stubFalse,
+    isAuthzRequired: stubFalse,
+    fallbackRouteResolver: noop,
+  },
+  [VERIFY_EMAIL]: {
+    path: '/verify-email',
+    page: 'verify-email',
+    isAuthRequired: stubFalse,
+    isAuthzRequired: stubFalse,
+    fallbackRouteResolver: noop,
   },
   [UNAUTHORIZED_PAGE]: {
     path: '/unauthorized',
     page: 'unauthorized',
-    authenticated: true,
-    authorized: false,
-    fallbackRoute: null,
+    isAuthRequired: stubTrue,
+    isAuthzRequired: stubFalse,
+    fallbackRouteResolver: noop,
   },
 };
 
@@ -83,13 +128,13 @@ export const CONFIG = {
   location: 'router',
   querySerializer: {
     stringify: qs.stringify,
-    parse: url => {
+    parse: (url) => {
       return qs.parse(url, {
         arrayFormat: 'comma',
         parseNumbers: true,
         parseBooleans: true,
-      })
-    }
+      });
+    },
   },
   initialDispatch: false,
   restoreScroll: restoreScroll({

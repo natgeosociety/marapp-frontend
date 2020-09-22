@@ -17,11 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
+import {
+  BaseLoginOptions,
+  GetTokenWithPopupOptions,
+  GetUserOptions,
+  LogoutOptions,
+} from '@auth0/auth0-spa-js';
+
 export interface Auth0 {
   domain?: any;
   isAuthenticated?: boolean;
   isAuthorized?: boolean;
   isLoading?: boolean;
+  isEmailVerified?: boolean;
   email?: string;
   userData?: User;
   // TODO: rename this to selectedGroups
@@ -29,15 +37,17 @@ export interface Auth0 {
   groups?: string[];
   roles?: { [key: string]: any };
   permissions?: { [key: string]: any };
-  logout?(o?): void;
-  login?(o?): void;
-  getUser?(o?): void;
-  getToken?(o?): void;
+  logout?(o?: LogoutOptions): void;
+  login?(o?: BaseLoginOptions): void;
+  getUser?(o?: GetUserOptions): void;
+  getToken?(o?: GetTokenWithPopupOptions): void;
   setupUserOrg?(org: string): void;
 }
 
 export interface User {
   name?: string;
+  email?: string;
   picture?: string;
   allGroups?: string[];
+  roles?: { [key: string]: any };
 }

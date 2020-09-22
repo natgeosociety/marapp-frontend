@@ -17,10 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
 import classnames from 'classnames';
-
-import { noop } from 'utils';
+import { noop } from 'lodash';
+import React from 'react';
 
 import './styles.scss';
 
@@ -43,14 +42,7 @@ interface ISearchbox {
 }
 
 const SearchBox = (props: ISearchbox) => {
-  const {
-    value,
-    placeholder,
-    onChange = noop,
-    onReset = noop,
-    onFocus = noop,
-    showClose,
-  } = props;
+  const { value, placeholder, onChange = noop, onReset = noop, onFocus = noop, showClose } = props;
 
   const searchBoxClasses = classnames(
     'ng-c-input-container',
@@ -79,7 +71,7 @@ const SearchBox = (props: ISearchbox) => {
         />
         {showClose && (
           <div className="marapp-qa-searchboxclear ng-c-cursor-pointer" onClick={onReset}>
-            <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close ng-display-block"></i>
+            <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close ng-display-block" />
           </div>
         )}
       </div>

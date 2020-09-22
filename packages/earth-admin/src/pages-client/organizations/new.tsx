@@ -17,23 +17,33 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState, useContext } from 'react';
 import { navigate } from 'gatsby';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Spinner } from '@marapp/earth-components';
+import { noop } from 'lodash';
 
-import { AuthzGuards } from 'auth/permissions';
-import { Auth0Context } from 'utils/contexts';
-import { addOrganization } from 'services/organizations';
-import { setupErrors, noSpecialCharsRule, upperNumericDashesRule, validEmailRule } from 'utils/validations';
-import { ContentLayout } from 'layouts';
-import { LinkWithOrg } from 'components/link-with-org';
-import { ErrorMessages } from 'components/error-messages';
-import { Card } from 'components/card';
-import { Input } from 'components/input';
+import { Spinner, ErrorMessages } from '@marapp/earth-shared';
 
-export function NewOrganization(props) {
+import { Card } from '@app/components/card';
+import { Input } from '@app/components/input';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { ContentLayout } from '@app/layouts';
+import { addOrganization } from '@app/services/organizations';
+import { Auth0Context } from '@app/utils/contexts';
+import {
+  noSpecialCharsRule,
+  setupErrors,
+  upperNumericDashesRule,
+  validEmailRule,
+} from '@app/utils/validations';
+
+interface IProps {
+  path?: string;
+  onDataChange?: () => {};
+}
+
+export function NewOrganization(props: IProps) {
+  const { onDataChange = noop } = props;
   const [serverErrors, setServerErrors] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { selectedGroup } = useContext(Auth0Context);
@@ -46,11 +56,15 @@ export function NewOrganization(props) {
   const onSubmit = async (values: any) => {
     try {
       setIsLoading(true);
-      const { data }: any = await addOrganization({
-        name: values.name,
-        slug: values.slug,
-        owners: [].concat(values.owners)
-      }, selectedGroup);
+      const { data }: any = await addOrganization(
+        {
+          name: values.name,
+          slug: values.slug,
+          owners: [].concat(values.owners),
+        },
+        selectedGroup
+      );
+      onDataChange();
       await navigate(`/${selectedGroup}/organizations/${data.id}`);
     } catch (error) {
       setIsLoading(false);
@@ -65,7 +79,10 @@ export function NewOrganization(props) {
           <h2 className="ng-text-display-m">Add organization</h2>
         </div>
 
-        <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="ng-form ng-form-dark ng-flex-column ng-width-4-5"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Card className="ng-margin-medium-bottom">
             <Input
               name="name"
@@ -78,9 +95,12 @@ export function NewOrganization(props) {
               ref={register({
                 required: 'Organization name is required',
                 validate: {
-                  noSpecialCharsRule: noSpecialCharsRule('Organization name can not contain special characters')
-                }
-              })} />
+                  noSpecialCharsRule: noSpecialCharsRule(
+                    'Organization name can not contain special characters'
+                  ),
+                },
+              })}
+            />
           </Card>
 
           <Card className="ng-margin-medium-bottom">
@@ -94,9 +114,10 @@ export function NewOrganization(props) {
               ref={register({
                 required: 'Slug name is required',
                 validate: {
-                  upperNumericDashesRule: upperNumericDashesRule()
-                }
-              })} />
+                  upperNumericDashesRule: upperNumericDashesRule(),
+                },
+              })}
+            />
           </Card>
 
           <Card className="ng-margin-medium-bottom">
@@ -111,31 +132,33 @@ export function NewOrganization(props) {
               ref={register({
                 required: 'Please add an owners email',
                 validate: {
-                  validEmailRule: validEmailRule()
-                }
-              })} />
+                  validEmailRule: validEmailRule(),
+                },
+              })}
+            />
           </Card>
 
           {serverErrors && <ErrorMessages errors={serverErrors} />}
 
-          {isLoading
-            ? <div className="ng-padding-large ng-position-relative"><Spinner /></div>
-            : (
-              <div className="ng-flex">
-                <button
-                  className="ng-button ng-button-primary ng-margin-medium-right"
-                  disabled={!isValid}
-                >
-                  Save and view details
-            </button>
-                <LinkWithOrg className="ng-button ng-button-secondary" to="/organizations">
-                  return to organizations home
-            </LinkWithOrg>
-              </div>
-            )
-          }
+          {isLoading ? (
+            <div className="ng-padding-large ng-position-relative">
+              <Spinner />
+            </div>
+          ) : (
+            <div className="ng-flex">
+              <button
+                className="ng-button ng-button-primary ng-margin-medium-right"
+                disabled={!isValid}
+              >
+                Save and view details
+              </button>
+              <LinkWithOrg className="ng-button ng-button-secondary" to="/organizations">
+                return to organizations home
+              </LinkWithOrg>
+            </div>
+          )}
         </form>
       </div>
     </ContentLayout>
-  )
+  );
 }

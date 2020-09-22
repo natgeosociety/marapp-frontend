@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
+import React from 'react';
 
-import { Html } from '@marapp/earth-components';
+import { Html } from '@marapp/earth-shared';
 
 interface ILegendInfo {
   title: string;
@@ -27,7 +27,7 @@ interface ILegendInfo {
 }
 
 class LegendInfoComponent extends React.Component<ILegendInfo> {
-  render() {
+  public render() {
     const { title, description } = this.props;
 
     return (

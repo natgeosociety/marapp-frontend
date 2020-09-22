@@ -18,5 +18,5 @@
 */
 
 export default {
-  group: null
+  group: null,
 };

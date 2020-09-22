@@ -17,36 +17,39 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useState } from 'react';
 import { navigate } from 'gatsby';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { noop } from 'lodash';
 
-import { Spinner, AsyncSelect } from '@marapp/earth-components';
-import { useAuth0 } from 'auth/auth0';
+import { AsyncSelect, Spinner, ErrorMessages } from '@marapp/earth-shared';
 
-import { getUniqueSlug, addDashboard } from 'services/dashboards';
-import { getAllWidgets } from 'services/widgets';
-import { noSpecialCharsRule, alphaNumericDashesRule, setupErrors } from 'utils/validations';
-import { flattenArrayForSelect } from 'utils';
-
-import { LinkWithOrg } from 'components/link-with-org';
-import { ErrorMessages } from 'components/error-messages';
-import { Card } from 'components/card';
-import { Input } from 'components/input';
-import { HtmlEditor } from 'components/html-editor';
-import { ContentLayout } from 'layouts';
+import { useAuth0 } from '@app/auth/auth0';
+import { Card } from '@app/components/card';
+import { HtmlEditor } from '@app/components/html-editor';
+import { Input } from '@app/components/input';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { ContentLayout } from '@app/layouts';
+import { addDashboard, getUniqueSlug } from '@app/services/dashboards';
+import { getAllWidgets } from '@app/services/widgets';
+import { flattenArrayForSelect } from '@app/utils';
+import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 
+interface IProps {
+  path?: string;
+  onDataChange?: () => {};
+}
 
-export function NewDashboard() {
-  const {selectedGroup} = useAuth0();
-
-  const {register, watch, formState, errors, setValue, control, handleSubmit} = useForm({
+export function NewDashboard(props: IProps) {
+  const { onDataChange = noop } = props;
+  const { selectedGroup } = useAuth0();
+  const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
     mode: 'onChange',
   });
 
-  const {touched, dirty, isValid} = formState;
+  const { touched, dirty, isValid } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   const watchName = watch('name');
@@ -55,18 +58,18 @@ export function NewDashboard() {
   const [serverErrors, setServerErrors] = useState([]);
   const [widgets, setWidgets] = useState();
 
-
   const onSubmit = async (values: any) => {
     const { widgets } = values;
 
     const parsed = {
       ...values,
-      ...(!!widgets && {widgets: flattenArrayForSelect(widgets, 'id')}),
+      ...(!!widgets && { widgets: flattenArrayForSelect(widgets, 'id') }),
     };
 
     try {
       setIsLoading(true);
-      const response = await addDashboard(parsed, selectedGroup);
+      const response: any = await addDashboard(parsed, selectedGroup);
+      onDataChange();
       await navigate(`/${selectedGroup}/dashboards/${response.data.id}`);
     } catch (error) {
       setIsLoading(false);
@@ -77,13 +80,12 @@ export function NewDashboard() {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const {data}: any = await getUniqueSlug(watchName, selectedGroup);
+      const { data }: any = await getUniqueSlug(watchName, selectedGroup);
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);
     }
   };
-
 
   return (
     <ContentLayout backTo="/dashboards" className="marapp-qa-newdashboard">
@@ -105,7 +107,8 @@ export function NewDashboard() {
                 validate: {
                   noSpecialCharsRule: noSpecialCharsRule(),
                 },
-              })}/>
+              })}
+            />
           </Card>
 
           <Card className="ng-margin-medium-bottom">
@@ -122,7 +125,8 @@ export function NewDashboard() {
                     validate: {
                       alphaNumericDashesRule: alphaNumericDashesRule(),
                     },
-                  })}/>
+                  })}
+                />
               </div>
               <div>
                 <button
@@ -130,7 +134,8 @@ export function NewDashboard() {
                   disabled={!watchName || !!errors.name}
                   title={watchName ? 'Generate slug' : 'Add a title first'}
                   className="ng-button ng-button-secondary ng-button-large ng-pointer marapp-qa-actiongenerateslug"
-                  style={{marginTop: '36px'}}>
+                  style={{ marginTop: '36px' }}
+                >
                   Generate a slug name
                 </button>
               </div>
@@ -147,7 +152,7 @@ export function NewDashboard() {
                 className="marapp-qa-description"
                 name="description"
                 control={control}
-                as={<HtmlEditor html=""/>}
+                as={<HtmlEditor html="" />}
               />
             </div>
           </Card>
@@ -155,47 +160,53 @@ export function NewDashboard() {
           <Card className="ng-margin-medium-bottom">
             <div className="ng-width-1-1">
               <label htmlFor="provider">Included Widgets:</label>
-              <Controller name="widgets"
-                          type="widgets"
-                          className="marapp-qa-widgets"
-                          control={control}
-                          getOptionLabel={option => option.name}
-                          getOptionValue={option => option.id}
-                          loadFunction={getAllWidgets}
-                          defaultValue={widgets}
-                          selectedGroup={selectedGroup}
-                          as={AsyncSelect}
-                          isClearable
-                          isSearchable
-                          isMulti
-                          closeMenuOnSelect={false}
-                          placeholder="Select widgets"
-                          styles={CUSTOM_STYLES}
-                          theme={theme => ({
-                            ...theme,
-                            ...SELECT_THEME,
-                          })}
+              <Controller
+                name="widgets"
+                type="widgets"
+                className="marapp-qa-widgets"
+                control={control}
+                getOptionLabel={(option) => option.name}
+                getOptionValue={(option) => option.id}
+                loadFunction={getAllWidgets}
+                defaultValue={widgets}
+                selectedGroup={selectedGroup}
+                as={AsyncSelect}
+                isClearable={true}
+                isSearchable={true}
+                isMulti={true}
+                closeMenuOnSelect={false}
+                placeholder="Select widgets"
+                styles={CUSTOM_STYLES}
+                theme={(theme) => ({
+                  ...theme,
+                  ...SELECT_THEME,
+                })}
               />
             </div>
           </Card>
 
-          {!!serverErrors.length && <ErrorMessages errors={serverErrors}/>}
-          {isLoading
-            ? <div className="ng-padding-large ng-position-relative"><Spinner/></div>
-            : (
-              <div className="ng-flex">
-                <button
-                  className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
-                  disabled={!isValid || !dirty}
-                >
-                  Save and view details
-                </button>
+          {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}
+          {isLoading ? (
+            <div className="ng-padding-large ng-position-relative">
+              <Spinner />
+            </div>
+          ) : (
+            <div className="ng-flex">
+              <button
+                className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
+                disabled={!isValid || !dirty}
+              >
+                Save and view details
+              </button>
 
-                <LinkWithOrg className="ng-button ng-button-secondary ng-button-large marapp-qa-back" to="/dashboards">
-                  Return to dashboards home
-                </LinkWithOrg>
-              </div>
-            )}
+              <LinkWithOrg
+                className="ng-button ng-button-secondary ng-button-large marapp-qa-back"
+                to="/dashboards"
+              >
+                Return to dashboards home
+              </LinkWithOrg>
+            </div>
+          )}
         </form>
       </div>
     </ContentLayout>

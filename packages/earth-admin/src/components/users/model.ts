@@ -26,23 +26,11 @@ export interface User {
 
 export interface UserProps {
   data: User;
+  onDataChange?: () => {};
 }
 
 export interface UserEditProps {
   data: User;
   newUser: boolean;
-}
-
-export interface UserContextProps {
-  users: User[];
-  handleSearchValueChange?: (newValue: string) => void;
-  handleCursorChange?: Function;
-  pageSize?: number;
-  isLoading?: boolean;
-  isNoMore?: boolean;
-  searchValue?: string;
-  permissions?: any;
-  totalResults?: number;
-  nextCursor?: string;
-  selectedItem?: string;
+  onDataChange?: () => {};
 }

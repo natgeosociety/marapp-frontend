@@ -17,11 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import { useEffect } from 'react';
-
 import { useAuth0 } from 'auth/auth0';
 import AsyncPage from 'pages/main/async';
+import React, { useEffect } from 'react';
 
 const AuthorizedPage = ({ component: Component, fallbackRoute, redirect, ...rest }) => {
   const { isAuthenticated, isAuthorized, login } = useAuth0();
@@ -30,18 +28,18 @@ const AuthorizedPage = ({ component: Component, fallbackRoute, redirect, ...rest
     const fn = async () => {
       if (!isAuthenticated) {
         // preserve path, query and hash params when redirecting;
-        const target = window.location.href.replace(window.location.origin, '')
+        const target = window.location.href.replace(window.location.origin, '');
         // save target URL to redirect to after login;
         await login({ appState: { targetUrl: target } });
-      } else if (!isAuthorized) {
+      } else if (!isAuthorized && fallbackRoute) {
         redirect({ type: fallbackRoute });
       }
     };
     fn();
-  });
+  }, [isAuthenticated, isAuthorized, login]);
 
   if (isAuthenticated && isAuthorized) {
-    const render = props => <Component {...props} />;
+    const render = (props) => <Component {...props} />;
 
     return <AsyncPage render={render} {...rest} />;
   }

@@ -17,26 +17,28 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import renderHTML from 'react-render-html';
+import { noop } from 'lodash';
 
-import { formatDate } from 'utils';
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { JsonEditor } from '@app/components/json-editor';
+import { LinkWithOrg } from '@app/components/link-with-org';
+import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
+import { formatDate } from '@app/utils';
 
 import { WidgetProps } from '../model';
-import { ActionModal } from 'components/action-modal';
-import { JsonEditor } from 'components/json-editor';
-import { LinkWithOrg } from 'components/link-with-org';
-import { useAuth0 } from 'auth/auth0';
-import { AuthzGuards } from 'auth/permissions';
 
 export default function WidgetDetails(props: WidgetProps) {
   const {
-    data: {id, name, createdAt, updatedAt, published, description, slug, config, metrics, layers},
+    data: { id, name, createdAt, updatedAt, published, description, slug, config, metrics, layers },
+    onDataChange = noop,
   } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const {getPermissions} = useAuth0();
+  const { getPermissions } = useAuth0();
 
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
@@ -48,23 +50,22 @@ export default function WidgetDetails(props: WidgetProps) {
 
   return (
     <div className="marapp-qa-widgetdetails">
-      {showDeleteModal && (
-        <ActionModal
-          id={id}
-          navigateRoute={'widgets'}
-          name={name}
-          type="widget"
-          toggleModal={handleDeleteToggle}
-          visibility={showDeleteModal}
-        />
-      )}
+      <DeleteConfirmation
+        id={id}
+        navigateRoute={'widgets'}
+        name={name}
+        type="widget"
+        toggleModal={handleDeleteToggle}
+        onDelete={onDataChange}
+        visibility={showDeleteModal}
+      />
       <div className="ng-flex ng-flex-space-between">
         <h2 className="ng-text-display-m ng-c-flex-grow-1">{name}</h2>
         <div className="ng-flex ng-align-center ng-flex-center ng-text-center ng-center">
           <span className="ng-padding-horizontal">
             Published
-            <br/>
-            <i className={`ng-icon-${publishIcon}`}></i>
+            <br />
+            <i className={`ng-icon-${publishIcon}`} />
           </span>
         </div>
       </div>
@@ -92,7 +93,7 @@ export default function WidgetDetails(props: WidgetProps) {
           {slug || '-'}
         </p>
 
-        {!!config && <JsonEditor json={config} readOnly={true}/>}
+        {!!config && <JsonEditor json={config} readOnly={true} />}
 
         <p>
           <span className="ng-text-weight-medium">Metric slug: </span>
@@ -132,7 +133,10 @@ export default function WidgetDetails(props: WidgetProps) {
       </div>
       {writePermissions && (
         <div className="ng-padding-medium ng-background-ultradkgray ng-text-right">
-          <button className="marapp-qa-actiondelete ng-button ng-button-primary" onClick={handleDeleteToggle}>
+          <button
+            className="marapp-qa-actiondelete ng-button ng-button-primary"
+            onClick={handleDeleteToggle}
+          >
             Delete widget
           </button>
         </div>

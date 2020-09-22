@@ -17,11 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-import EarthComponent from './component';
-
-import { setMapInteractions } from 'modules/map/actions';
 import { setFullscreen } from 'modules/fullscreen/actions';
+import { setMapInteractions } from 'modules/map/actions';
+import { connect } from 'react-redux';
+
+import EarthComponent from './component';
 
 export default connect(
   (state: any) => ({

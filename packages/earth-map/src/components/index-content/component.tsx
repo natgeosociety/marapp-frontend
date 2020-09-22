@@ -17,15 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-
-import isEmpty from 'lodash/isEmpty';
-
-// Components
-import { Spinner } from '@marapp/earth-components';
 import Widgets from 'components/widgets';
+import isEmpty from 'lodash/isEmpty';
+import React from 'react';
 
-// styles
+import { Spinner } from '@marapp/earth-shared';
+
 import './styles.scss';
 
 interface ILIst {
@@ -44,7 +41,7 @@ interface IIndexContent {
 }
 
 class IndexContentComponent extends React.PureComponent<IIndexContent> {
-  render() {
+  public render() {
     const { place, selected, widgets, list, metricsLoading, widgetsLoading } = this.props;
 
     if (isEmpty(place)) {
@@ -53,9 +50,7 @@ class IndexContentComponent extends React.PureComponent<IIndexContent> {
 
     return (
       <div>
-        {widgetsLoading && metricsLoading && (
-          <Spinner />
-        )}
+        {widgetsLoading && metricsLoading && <Spinner />}
 
         {!widgetsLoading && !metricsLoading && (
           <React.Fragment>

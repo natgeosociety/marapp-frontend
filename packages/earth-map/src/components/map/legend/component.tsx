@@ -17,33 +17,28 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-
-import debounce from 'lodash/debounce';
-
-import { Keyframes, animated } from 'react-spring/renderprops';
-
 import Modal from 'components/modal';
-
+import debounce from 'lodash/debounce';
+import React from 'react';
+import { animated, Keyframes } from 'react-spring/renderprops';
 import {
   Legend,
-  LegendListItem,
-  LegendItemTypes,
-  LegendItemToolbar,
   LegendItemButtonInfo,
   LegendItemButtonOpacity,
-  LegendItemButtonVisibility,
   LegendItemButtonRemove,
+  LegendItemButtonVisibility,
   LegendItemTimeStep,
+  LegendItemToolbar,
+  LegendItemTypes,
+  LegendListItem,
 } from 'vizzuality-components';
 
 import LegendInfo from './legend-info';
 import LegendItemGroup from './legend-item-group';
-
+import './styles.scss';
 import TEMPLATES from './templates';
 
 // styles
-import './styles.scss';
 
 // Creates a spring with predefined animation slots
 const LegendWrapper: any = Keyframes.Spring({
@@ -66,43 +61,40 @@ interface ILegend {
 }
 
 class LegendComponent extends React.PureComponent<ILegend> {
-  onChangeOpacity = debounce((l, opacity, slug) => {
+  public onChangeOpacity = debounce((l, opacity, slug) => {
     const { setLayerOpacity } = this.props;
     setLayerOpacity({ slug, dataset: { id: l.dataset }, opacity });
   }, 250);
 
-  onChangeInfo = (info, slug) => {
+  public onRemoveLayer = debounce((layer) => {
+    const { toggleLayer } = this.props;
+    toggleLayer(layer);
+  }, 250);
+
+  public onChangeInfo = (info, slug) => {
     const { setLayerInfo } = this.props;
     setLayerInfo({ slug, info });
   };
 
-  onChangeVisibility = (l, visibility, slug) => {
+  public onChangeVisibility = (l, visibility, slug) => {
     const { setLayerVisibility } = this.props;
     setLayerVisibility({ slug, dataset: { id: l.dataset }, visibility });
   };
 
-  onChangeOrder = datasetIds => {
-    const {setLayerOrder} = this.props;
-    setLayerOrder({datasetIds});
+  public onChangeOrder = (datasetIds) => {
+    const { setLayerOrder } = this.props;
+    setLayerOrder({ datasetIds });
   };
 
-  onChangeCurrent = (l, current, slug) => {
+  public onChangeCurrent = (l, current, slug) => {
     const { setLayerGroupCurrent } = this.props;
 
     setLayerGroupCurrent({ slug, current });
   };
 
-  onRemoveLayer = debounce((layer) => {
-    const { toggleLayer } = this.props;
-    toggleLayer(layer);
-  }, 250);
-
-  onChangeLayerDate = (dates, layer) => {
+  public onChangeLayerDate = (dates, layer) => {
     const { setLayerSettings } = this.props;
-    const {
-      slug,
-       decodeConfig ,
-    } = layer;
+    const { slug, decodeConfig } = layer;
 
     setLayerSettings({
       slug,
@@ -124,28 +116,30 @@ class LegendComponent extends React.PureComponent<ILegend> {
     });
   };
 
-  getState = () => {
+  public getState = () => {
     const { open, selected } = this.props;
     if (open) {
-      if (!!selected) return 'openW';
+      if (!!selected) {
+        return 'openW';
+      }
       return 'open';
     } else {
       return 'close';
     }
   };
 
-  render() {
+  public render() {
     const { layerGroups } = this.props;
 
     const state = this.getState();
 
     return (
-      <LegendWrapper native state={state}>
+      <LegendWrapper native={true} state={state}>
         {({ x, ...props }) => (
           <animated.div
             className="c-legend"
             style={{
-              transform: x.interpolate(x => `translate3d(${x}px,0,0)`),
+              transform: x.interpolate((x) => `translate3d(${x}px,0,0)`),
               ...props,
             }}
           >
@@ -171,14 +165,14 @@ class LegendComponent extends React.PureComponent<ILegend> {
                         <LegendItemButtonRemove />
                       </LegendItemToolbar>
                     }
-                    onChangeInfo={l => this.onChangeInfo(true, layerGroup.slug)}
+                    onChangeInfo={(l) => this.onChangeInfo(true, layerGroup.slug)}
                     onChangeVisibility={(l, visibility) =>
                       this.onChangeVisibility(l, visibility, layerGroup.slug)
                     }
                     onChangeOpacity={(l, opacity) =>
                       this.onChangeOpacity(l, opacity, layerGroup.slug)
                     }
-                    onRemoveLayer={l => {
+                    onRemoveLayer={(l) => {
                       this.onRemoveLayer(l);
                     }}
                   >
@@ -195,20 +189,22 @@ class LegendComponent extends React.PureComponent<ILegend> {
                     />
 
                     <LegendItemTypes />
-                    {!!layerGroup.layers[0].decodeParams && <LegendItemTimeStep
-                      defaultStyles={{
-                        handleStyle: {
-                          backgroundColor: 'white',
-                          borderRadius: '50%',
-                          boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.29)',
-                          border: '0px',
-                          zIndex: 2,
-                        },
-                        railStyle: { backgroundColor: '#d6d6d9' },
-                        dotStyle: { visibility: 'hidden', border: '0px' },
-                      }}
-                      handleChange={this.onChangeLayerDate}
-                    />}
+                    {!!layerGroup.layers[0].decodeParams && (
+                      <LegendItemTimeStep
+                        defaultStyles={{
+                          handleStyle: {
+                            backgroundColor: 'white',
+                            borderRadius: '50%',
+                            boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.29)',
+                            border: '0px',
+                            zIndex: 2,
+                          },
+                          railStyle: { backgroundColor: '#d6d6d9' },
+                          dotStyle: { visibility: 'hidden', border: '0px' },
+                        }}
+                        handleChange={this.onChangeLayerDate}
+                      />
+                    )}
 
                     <Modal
                       isOpen={!!layerGroup.info}

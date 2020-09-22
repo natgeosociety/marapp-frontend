@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
 import { Link } from 'gatsby';
+import React from 'react';
 
-import { useAuth0 } from 'auth/auth0';
+import { useAuth0 } from '@app/auth/auth0';
 
 export const NotFound = (props) => {
   const { groups } = useAuth0();
@@ -33,13 +33,15 @@ export const NotFound = (props) => {
           <>
             <h6>Please select a valid one:</h6>
             <ul>
-              {groups.map(g => (
-                <li><Link to={`/${g}`}>{g}</Link></li>
+              {groups.map((g) => (
+                <li>
+                  <Link to={`/${g}`}>{g}</Link>
+                </li>
               ))}
             </ul>
           </>
         )}
       </div>
     </div>
-  )
-}
+  );
+};

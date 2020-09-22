@@ -18,9 +18,10 @@
 */
 
 import axios, { AxiosRequestConfig } from 'axios';
-import { deserializeData } from 'utils';
-import { GATSBY_API_URL } from 'config';
-import { addPlace, updatePlace } from 'services/places';
+
+import { GATSBY_API_URL } from '@app/config';
+import { addPlace, updatePlace } from '@app/services/places';
+import { deserializeData } from '@app/utils';
 
 const LayerAPIService = {
   request: (options: AxiosRequestConfig) => {
@@ -45,10 +46,10 @@ const LayerAPIService = {
 };
 
 export const getAllLayers = async (layerQuery: string) =>
-  await LayerAPIService.request({url: layerQuery});
+  LayerAPIService.request({ url: layerQuery });
 
 export const addLayer = async (layer, group: string) =>
-  await LayerAPIService.request({url: `/layers?group=${group}`, method: 'post', data: layer});
+  LayerAPIService.request({ url: `/layers?group=${group}`, method: 'post', data: layer });
 
 export const getLayer = (layerQuery: string) =>
   LayerAPIService.request({
@@ -57,27 +58,22 @@ export const getLayer = (layerQuery: string) =>
   });
 
 export const updateLayer = async (layerId: string, layer, group: string) =>
-  await LayerAPIService.request({
+  LayerAPIService.request({
     url: `/layers/${layerId}?group=${group}`,
     method: 'put',
     data: layer,
   });
 
 export const deleteLayer = async (layerId: string, group: string) =>
-  await LayerAPIService.request({
+  LayerAPIService.request({
     url: `/layers/${layerId}?group=${group}`,
     method: 'delete',
   });
 
 export const handleLayerForm = async (newLayer: boolean, layer, layerId: string, group: string) =>
-  newLayer ? await addLayer(layer, group) : await updateLayer(layerId, layer, group);
+  newLayer ? addLayer(layer, group) : updateLayer(layerId, layer, group);
 
-
-export const getUniqueSlug = async (
-  keyword: string,
-  group: string,
-  type: string = 'counter',
-) =>
-  await LayerAPIService.request({
+export const getUniqueSlug = async (keyword: string, group: string, type: string = 'counter') =>
+  LayerAPIService.request({
     url: `/layers/slug?keyword=${keyword}&group=${group}&type=${type}`,
   });

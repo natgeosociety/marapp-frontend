@@ -34,7 +34,9 @@ const ErrorTemplate = (props: IProps) => (
       <div className="not-found--status">{props.type}</div>
       <div className="not-found--text">{props.message}</div>
       <div className="not-found--links">
-        {props.ctaDescription && <div className="not-found--links--title">{props.ctaDescription}</div>}
+        {props.ctaDescription && (
+          <div className="not-found--links--title">{props.ctaDescription}</div>
+        )}
         {props.children}
       </div>
     </div>

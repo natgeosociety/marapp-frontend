@@ -24,26 +24,26 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
         rules: [
           {
             test: /@auth0/,
-            use: loaders.null()
+            use: loaders.null(),
           },
           {
             test: /@auth0-spa-js/,
-            use: loaders.null()
+            use: loaders.null(),
           },
           {
             test: /codemirror/,
-            use: loaders.null()
+            use: loaders.null(),
           },
           {
             test: /ckeditor5-react/,
-            use: loaders.null()
+            use: loaders.null(),
           },
           {
             test: /ckeditor5-build-classic/,
-            use: loaders.null()
-          }
-        ]
-      }
+            use: loaders.null(),
+          },
+        ],
+      },
     });
   }
 };

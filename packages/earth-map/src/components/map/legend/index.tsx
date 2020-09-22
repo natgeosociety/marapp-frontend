@@ -17,18 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
 import {
-  setLayerInfo,
-  setLayerOrder,
-  setLayerOpacity,
-  setLayerVisibility,
   setLayerGroupCurrent,
+  setLayerInfo,
+  setLayerOpacity,
+  setLayerOrder,
   setLayerSettings,
+  setLayerVisibility,
   toggleLayer,
 } from 'modules/layers/actions';
-
 import { getLegendLayers } from 'modules/layers/selectors';
+import { connect } from 'react-redux';
 
 import LegendComponent from './component';
 

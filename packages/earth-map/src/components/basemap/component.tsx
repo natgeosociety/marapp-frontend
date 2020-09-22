@@ -18,8 +18,9 @@
 */
 
 import React from 'react';
-import { APP_BASEMAPS } from '../../theme';
-import { Layer } from '@marapp/earth-components';
+import { APP_BASEMAPS } from 'theme';
+
+import { Layer } from '@marapp/earth-shared';
 
 import './styles.scss';
 
@@ -37,7 +38,7 @@ interface IBasemap {
 }
 
 class BasemapComponent extends React.PureComponent<IBasemap> {
-  onBasemap = ({ id }) => {
+  public onBasemap = ({ id }) => {
     const { mapStyle, setMapStyle, persistData } = this.props;
     if (mapStyle !== id) {
       setMapStyle(id);
@@ -45,7 +46,7 @@ class BasemapComponent extends React.PureComponent<IBasemap> {
     }
   };
 
-  render() {
+  public render() {
     const { mapStyle } = this.props;
 
     return (

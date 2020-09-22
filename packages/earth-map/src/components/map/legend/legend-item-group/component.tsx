@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
+import React from 'react';
 
 // styles
 import './styles.scss';
@@ -28,22 +28,22 @@ interface ILegendItemGroupComponent {
 }
 
 class LegendItemGroupComponent extends React.PureComponent<ILegendItemGroupComponent> {
-  static propTypes = {};
+  public static propTypes = {};
 
-  static defaultProps = {
+  public static defaultProps = {
     activeLayer: {},
   };
 
-  onChangeCurrent = e => {
-    const {activeLayer, onChangeCurrent} = this.props;
+  public onChangeCurrent = (e) => {
+    const { activeLayer, onChangeCurrent } = this.props;
     onChangeCurrent(activeLayer, e.currentTarget.value);
   };
 
-  render() {
-    const {activeLayer} = this.props;
+  public render() {
+    const { activeLayer } = this.props;
 
-    const {id, current, source, references} = activeLayer;
-    const {type} = source;
+    const { id, current, source, references } = activeLayer;
+    const { type } = source;
 
     if (type !== 'group') {
       return null;
@@ -55,7 +55,7 @@ class LegendItemGroupComponent extends React.PureComponent<ILegendItemGroupCompo
 
     return (
       <div className="marapp-qa-layergroup c-legend-item-group">
-        {references.map(l => {
+        {references.map((l) => {
           const currentActive = current || references[0].id;
           const checked = currentActive === l.id;
 
@@ -71,7 +71,7 @@ class LegendItemGroupComponent extends React.PureComponent<ILegendItemGroupCompo
               />
 
               <label htmlFor={`layer-group-${l.id}`}>
-                <span className="legend-item-group--symbol"/>
+                <span className="legend-item-group--symbol" />
                 <span className="legend-item-group--name">{l.name}</span>
               </label>
             </div>

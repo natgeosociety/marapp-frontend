@@ -17,12 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { AxiosInstance } from 'axios';
 import { setup } from 'axios-cache-adapter';
+import { API_URL } from 'config';
 import Jsona, { SwitchCaseJsonMapper, SwitchCaseModelMapper } from 'jsona';
 import { encodeQueryToURL } from 'utils/query';
-import { AxiosInstance } from 'axios';
-
-import { API_URL } from "config";
 
 /**
  * Places service class.
@@ -44,7 +43,7 @@ class PlacesService {
     });
   }
 
-  configure = () => {
+  public configure = () => {
     this.api = setup({ baseURL: API_URL });
   };
 
@@ -53,18 +52,18 @@ class PlacesService {
    * Creates an axios request based on type an options.
    * @param {string} path - The path of the request.
    */
-  request(path) {
+  public request(path) {
     return new Promise((resolve, reject) => {
       this.api
         .get(path)
-        .then(response => {
+        .then((response) => {
           const result = this.dataFormatter.deserialize(response.data);
           resolve({
             data: result,
             meta: response.data.meta,
           });
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });

@@ -17,31 +17,30 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as React from 'react';
-import { useState, useEffect, useContext } from 'react';
+import React, { useContext, useState } from 'react';
+
+import { AuthzGuards } from '@marapp/earth-shared';
+
+import { useAuth0 } from '@app/auth/auth0';
+import { calculateForPlace } from '@app/services';
+import { Auth0Context } from '@app/utils/contexts';
 
 import { PlaceMetricsProps } from '../../../pages-client/places/model';
-import { calculateForPlace } from 'services';
-import { AuthzGuards } from 'auth/permissions';
-import { useAuth0 } from 'auth/auth0';
-
 import './styles.scss';
-import { Auth0Context } from 'utils/contexts';
 
 export default function Metrics(props: PlaceMetricsProps) {
   const {
-    data: {slug, version, location},
-    handlers: {handleServerErrors},
+    data: { slug, version, location },
+    handlers: { handleServerErrors },
   } = props;
 
   const [loading, setLoading] = useState(false);
 
-  const {selectedGroup} = useContext(Auth0Context);
+  const { selectedGroup } = useContext(Auth0Context);
 
-  const {getPermissions} = useAuth0();
+  const { getPermissions } = useAuth0();
 
   const writePermission = getPermissions(AuthzGuards.writeMetricsGuard);
-
 
   async function handleCalculateSingle(e: MouseEvent, placeID: string, metricId: string) {
     e.preventDefault();
@@ -49,7 +48,7 @@ export default function Metrics(props: PlaceMetricsProps) {
     try {
       handleServerErrors(false);
       await calculateForPlace(placeID, metricId, selectedGroup);
-      setLoading(true)
+      setLoading(true);
     } catch (error) {
       handleServerErrors(error.data.errors);
     }
@@ -57,11 +56,12 @@ export default function Metrics(props: PlaceMetricsProps) {
 
   return (
     <div className="marapp-qa-placemetrics ng-width-1-4 ng-padding-small">
-      <div style={{"minHeight": '50px'}} className="ng-padding-medium-horizontal ng-padding-vertical ng-background-dkgray ng-height-1-1 ng-flex ng-flex-space-between">
+      <div
+        style={{ minHeight: '50px' }}
+        className="ng-padding-medium-horizontal ng-padding-vertical ng-background-dkgray ng-height-1-1 ng-flex ng-flex-space-between"
+      >
         <div className="ng-flex-middle ng-flex">
-                <span>
-              {slug}
-            </span>
+          <span>{slug}</span>
         </div>
         <div className="ng-position-relative ng-flex ng-flex-column ng-flex-space-between ng-text-center">
           {writePermission && (
@@ -70,13 +70,12 @@ export default function Metrics(props: PlaceMetricsProps) {
               className="marapp-qa-actionrecalculate ng-icon-button ng-recalculate-metrics"
               onClick={(e) => handleCalculateSingle(e, location, slug)}
             >
-              <span className="ng-icon ng-icon-reload"/>
+              <span className="ng-icon ng-icon-reload" />
             </button>
           )}
           <span>v{version}</span>
         </div>
       </div>
-
     </div>
   );
 }

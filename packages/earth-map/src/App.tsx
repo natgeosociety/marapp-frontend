@@ -19,11 +19,12 @@
 
 import React, { useContext } from 'react';
 import { Provider } from 'react-redux';
-import initStore from './store';
 
-import Main from './pages/main';
+import { Spinner } from '@marapp/earth-shared';
+
 import { Auth0Context, useAuth0 } from './auth/auth0';
-import { Spinner } from '@marapp/earth-components';
+import Main from './pages/main';
+import initStore from './store';
 
 const App = () => {
   const { isLoading } = useAuth0();
@@ -31,10 +32,9 @@ const App = () => {
 
   const initialState = {
     user: {
-      group: selectedGroup
+      group: selectedGroup,
     },
   };
-
 
   if (!isLoading) {
     // TODO: move initStore outside of render
@@ -48,9 +48,7 @@ const App = () => {
     );
   }
 
-  return (
-    <Spinner size="large" />
-  );
+  return <Spinner size="large" />;
 };
 
 export default App;

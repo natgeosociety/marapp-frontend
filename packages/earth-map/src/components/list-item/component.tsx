@@ -17,11 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Toggle from 'components/toggle';
 import React from 'react';
 import Link from 'redux-first-router-link';
-
 import { parseHintBold } from 'utils';
-import Toggle from 'components/toggle';
 
 import './style.scss';
 
@@ -59,9 +58,7 @@ const ListItem = (props: IProps) => {
 
   const showToggle = typeof active !== 'undefined';
 
-  const Wrapper = linkTo
-    ? Link
-    : 'div'
+  const Wrapper = linkTo ? Link : 'div';
 
   // Default click action. Can be overritten by passing onClick prop
   const onClickIndex = () => {
@@ -75,7 +72,8 @@ const ListItem = (props: IProps) => {
   return (
     <Wrapper
       to={linkTo}
-      onClick={onClick || onClickIndex} key={key}
+      onClick={onClick || onClickIndex}
+      key={key}
       className="marapp-qa-listitem ng-list-item ng-padding-small-vertical ng-padding-medium-horizontal ng-cursor-pointer"
     >
       {showToggle && <Toggle className="ng-margin-right" active={active} />}
@@ -83,7 +81,8 @@ const ListItem = (props: IProps) => {
         <span className="ng-display-block ng-list-item-title">{parseHintBold(hint || title)}</span>
         {organization && (
           <span className="ng-color-mdgray" key={`${organization}`}>
-            {organization}<strong className="ng-icon-bullet" />
+            {organization}
+            <strong className="ng-icon-bullet" />
           </span>
         )}
         {labels?.map((label, i, all) => {
@@ -93,11 +92,11 @@ const ListItem = (props: IProps) => {
               {label}
               {!last && ', '}
             </span>
-          )
+          );
         })}
       </div>
     </Wrapper>
-  )
+  );
 };
 
 export default ListItem;

@@ -1,6 +1,25 @@
-import * as React from 'react';
-import { useState } from 'react';
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import { JSHINT } from 'jshint';
+import { noop } from 'lodash';
+import React, { useState } from 'react';
 
 interface IProps {
   name: string;
@@ -9,15 +28,8 @@ interface IProps {
   onError?: (err: any) => void;
 }
 
-const noop = () => {};
-
 export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
-  const {
-    name,
-    label,
-    onChange = noop,
-    onError = noop,
-  } = props;
+  const { name, label, onChange = noop, onError = noop } = props;
   const [error, setError] = useState('');
   const id = `input-${name}`;
 
@@ -29,8 +41,8 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
         setError('');
       }
     } catch (err) {
-      onError(err)
-      setError('Invalid GeoJSON file')
+      onError(err);
+      setError('Invalid GeoJSON file');
     }
   };
 
@@ -42,8 +54,8 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
     }
 
     const json = await file.text();
-    handleJsonChange(json)
-  }
+    handleJsonChange(json);
+  };
 
   return (
     <div className="marapp-qa-fakejsonupload ng-flex-inline ng-flex-column">
@@ -54,10 +66,9 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
         id={id}
         name={name}
         onChange={handleUpload}
-        ref={ref} />
-      {error && (
-        <div className="ng-form-error-block">{error}</div>
-      )}
+        ref={ref}
+      />
+      {error && <div className="ng-form-error-block">{error}</div>}
     </div>
-  )
+  );
 });

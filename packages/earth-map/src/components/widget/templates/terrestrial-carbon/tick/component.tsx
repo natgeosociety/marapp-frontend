@@ -19,7 +19,7 @@
 
 import React from 'react';
 
-const Tick = props => {
+const Tick = (props) => {
   const { x, y, payload } = props;
 
   return (

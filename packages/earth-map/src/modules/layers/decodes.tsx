@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-//todo remove this, take from layer config
+// todo remove this, take from layer config
 
 const decodes = {
   treeCoverLoss: `

@@ -17,23 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-
-import moment from 'moment';
-
-import sumBy from 'lodash/sumBy';
+import WidgetTooltip from 'components/widget/tooltip';
+import { formatKM2, replace } from 'components/widget/utils';
 import { format } from 'd3-format';
+import sumBy from 'lodash/sumBy';
+import { IPlace } from 'modules/places/model';
+import { IWidgetConfig } from 'modules/widget/model';
+import moment from 'moment';
+import React from 'react';
+import { getStats } from 'utils/widget';
+
+import { FireMetric } from './model';
 
 // Components
-import WidgetTooltip from 'components/widget/tooltip';
 
 // Helpers
-import { getStats } from 'utils/widget';
-import { replace, formatKM2 } from 'components/widget/utils';
-
-import { IWidgetConfig } from 'modules/widget/model';
-import { IPlace } from 'modules/places/model';
-import { FireMetric } from './model';
 
 interface FireConfig {
   metric: FireMetric;
@@ -62,7 +60,7 @@ export const CONFIG = {
         {
           location: place.name,
           total: `${format(formatKM2(total))(total)} km²`,
-          weeks: chart.filter(d => d.value > d.plusStdDev[1]).length,
+          weeks: chart.filter((d) => d.value > d.plusStdDev[1]).length,
           annualMean: `${format(formatKM2(mean))(mean)} km²`,
         },
         {},
@@ -145,7 +143,7 @@ export const CONFIG = {
         xAxis: {
           tickCount: 12,
           interval: 4,
-          tickFormatter: t => moment(t).format('MMM'),
+          tickFormatter: (t) => moment(t).format('MMM'),
         },
 
         yTitle: 'km²',
@@ -159,7 +157,7 @@ export const CONFIG = {
           strokeDasharray: '6 6',
         },
 
-        unitFormat: value => `${format(formatKM2(value))(value)}`,
+        unitFormat: (value) => `${format(formatKM2(value))(value)}`,
 
         tooltip: {
           cursor: {
@@ -178,7 +176,7 @@ export const CONFIG = {
                   key: 'value',
                   label: 'Area:',
                   suffix: ' km² burned',
-                  format: value => format(formatKM2(value))(value),
+                  format: (value) => format(formatKM2(value))(value),
                 },
                 { key: 'date', label: 'Date:' },
               ]}

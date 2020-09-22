@@ -29,7 +29,7 @@ const GOOGLE_FORM_EAE = 'entry.870898483';
 const GOOGLE_FORM_TERMS = 'entry.1348777197';
 
 class RequestAccessService {
-  sendMessage(data) {
+  public sendMessage(data) {
     const formData = new FormData();
 
     formData.append(GOOGLE_FORM_USER_EMAIL, data.userEmail);
@@ -48,7 +48,7 @@ class RequestAccessService {
         'Content-Type': 'application/json',
       },
       body: formData,
-    }).catch(error => {
+    }).catch((error) => {
       console.log('Request failure: ', error);
     });
   }
