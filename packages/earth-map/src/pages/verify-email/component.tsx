@@ -21,34 +21,42 @@ import { useAuth0 } from 'auth/auth0';
 import { APP_NAME, ENABLE_PUBLIC_ACCESS } from 'config';
 import React from 'react';
 
-import { Button } from '@marapp/earth-shared';
-
 import './styles.scss';
 
-const VerifyEmail = ({ resetStore }) => {
+const VerifyEmail = () => {
   const { logout } = useAuth0();
 
   return (
     <div className="c-not-found marapp-qa-notfound">
       <div className="not-found--container">
-        <h1 className="ng-text-display-l ng-color-primary">Confirm your email</h1>
-        <h3 className="ng-text-display-m ng-color-ultraltgray">One last step needed. </h3>
-        <p className="ng-text-edit-s">
+        <h1 className="ng-text-display-l ng-color-ultraltgray ng-margin-medium-bottom">
+          Verify Your Email
+        </h1>
+        <h3 className="ng-text-edit-s ng-color-ultraltgray ng-margin-small-bottom">
+          One last step required.
+        </h3>
+        <p className="ng-margin-medium-bottom">
           Please follow the instructions in the message sent to your email account to complete the
-          sign-up process. <br />
-          You will be able to see content when an owner assigns you to an organization.
+          sign-up process. You will be able to see content when an owner assigns you to an
+          organization.
         </p>
         {ENABLE_PUBLIC_ACCESS && (
           <>
-            <p>Until then you can still browse content as public user by logging out.</p>
-            <Button
+            <p className="ng-margin-medium-bottom">
+              Until then you can still browse content as public user by signing out. You may also
+              learn more about our product{' '}
+              <a href="https://github.com/natgeosociety/marapp-frontend/blob/master/ABOUT.md">
+                here.
+              </a>
+            </p>
+            <button
+              className="ng-button ng-button-primary"
               onClick={() => {
                 logout();
               }}
-              className="-light"
             >
               Browse {APP_NAME} as a public user
-            </Button>
+            </button>
           </>
         )}
       </div>

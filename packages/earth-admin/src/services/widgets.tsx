@@ -32,6 +32,7 @@ const WidgetAPIService = {
       transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
         data: data.data ? deserializeData(data) : data,
         pagination: data.meta ? data.meta.pagination : null,
+        filters: data.meta ? data.meta.filters : null,
         total: data.meta ? data.meta.results : null,
       })),
     });
@@ -40,7 +41,13 @@ const WidgetAPIService = {
       instance
         .request(options)
         .then((res) => resolve(res.data))
-        .catch((error) => reject(error.response.data));
+        .catch((error) => {
+          if (error.data) {
+            reject(error.response.data);
+          } else {
+            reject(error);
+          }
+        });
     });
   },
 };
@@ -82,3 +89,8 @@ export const handleWidgetForm = async (
   widgetId: string,
   group: string
 ) => (newWidget ? addWidget(widget, group) : updateWidget(widgetId, widget, group));
+
+export const getUniqueSlug = async (keyword: string, group: string, type: string = 'counter') =>
+  WidgetAPIService.request({
+    url: `/widgets/slug?keyword=${keyword}&group=${group}&type=${type}`,
+  });
