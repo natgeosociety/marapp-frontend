@@ -21,7 +21,7 @@ import React, { useState, useEffect } from 'react';
 import { navigate } from 'gatsby';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { AuthzGuards, InlineEditCard } from '@marapp/earth-shared';
+import { AuthzGuards } from '@marapp/earth-shared';
 
 import Creatable from 'react-select/creatable';
 import Select from 'react-select';
@@ -175,7 +175,7 @@ export function UsersHome(props: any) {
           <>
             <div className="ng-grid">
               <div className="ng-width-1-1 ng-margin-bottom">
-                <InlineEditCard submitButtonText="Add users">
+                <Card>
                   <div className="ng-grid">
                     <div className="ng-width-1-1">
                       <p className="ng-text-weight-bold">Add users to {selectedGroup}:</p>
@@ -249,6 +249,7 @@ export function UsersHome(props: any) {
                           <button
                             onClick={addUsersHandler}
                             className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
+                            disabled={!inviteUsersWatcher?.length}
                           >
                             Add users
                           </button>
@@ -263,7 +264,7 @@ export function UsersHome(props: any) {
                       )}
                     </div>
                   </div>
-                </InlineEditCard>
+                </Card>
               </div>
               <div className="ng-width-1-1 ng-margin-top">
                 <Card>

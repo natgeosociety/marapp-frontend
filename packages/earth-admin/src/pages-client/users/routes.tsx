@@ -30,12 +30,9 @@ import { Card } from '@app/components/card';
 import { UsersHome } from './home';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Auth0ListItem, DataListing } from '@app/components/data-listing';
-import { LinkWithOrg } from '@app/components/link-with-org';
 import { UserDetails, UserEdit } from '@app/components/users';
 import ContentLayout from '@app/layouts/Content';
-import { getAllUsers, getUser } from '@app/services/users';
-import { useInfiniteList } from '@app/utils/hooks';
+import { getUser } from '@app/services/users';
 
 const PAGE_TYPE = setPage('Users');
 const USER_DETAIL_QUERY = {
