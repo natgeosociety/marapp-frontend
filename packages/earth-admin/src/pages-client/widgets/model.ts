@@ -16,7 +16,25 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
+export interface Widget {
+  id?: string;
+  slug?: string;
+  name?: string;
+  description?: string;
+  category?: string[];
+  config?: object;
+  published?: boolean;
+  metrics?: string[];
+  createdAt?: Date;
+  updatedAt?: Date;
+  version?: number;
+  layers?: string[];
+}
 
-import WidgetDetails from './WidgetDetails';
-
-export { WidgetDetails };
+export interface WidgetProps {
+  data: Widget;
+  newWidget?: boolean;
+  page?: string;
+  onDataChange?: () => {};
+  groupedFilters?: any;
+}
