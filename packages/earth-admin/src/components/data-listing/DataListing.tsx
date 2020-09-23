@@ -28,23 +28,26 @@ import { SearchBox } from './search-box';
 import './styles.scss';
 
 interface DataListingProps {
-  data: any;
   categoryUrl: string;
   childComponent: React.ElementType;
   pageSize: number;
-  totalResults: number;
   selectedItem?: string;
   pageTitle?: string;
   searchValueAction?: (val: string) => void;
-  cursorAction?: () => void;
-  isLoading: boolean;
-  isNoMore?: boolean;
   searchValue?: string;
+
+  // useInfiniteListProps
+  data: any;
+  totalResults: number;
+  onIntersection?: () => void;
+  isLoading: boolean;
+  awaitMore: boolean;
+  isNoMore: boolean;
 }
 
 const DataListing = (props: DataListingProps) => {
   const {
-    cursorAction,
+    onIntersection,
     data,
     isLoading,
     isNoMore,
@@ -56,13 +59,14 @@ const DataListing = (props: DataListingProps) => {
     pageSize,
     totalResults,
     selectedItem,
+    awaitMore,
     ...otherProps
   } = props;
   const { selectedGroup } = useAuth0();
 
-  const PAGE_SIZE = pageSize;
-  const hasNextPage = data.length >= PAGE_SIZE;
-  const awaitMore = !isLoading && hasNextPage && !isNoMore;
+  // const PAGE_SIZE = pageSize;
+  // const hasNextPage = data.length >= PAGE_SIZE;
+  // const awaitMore = !isLoading && hasNextPage && !isNoMore;
 
   const renderItem = (index) => {
     const item = data[index];
@@ -77,9 +81,9 @@ const DataListing = (props: DataListingProps) => {
     );
   };
 
-  const onIntersection = (size, pageSize) => {
-    cursorAction();
-  };
+  // const onIntersection = (size, pageSize) => {
+  //   cursorAction();
+  // };
 
   return (
     <>
@@ -103,7 +107,7 @@ const DataListing = (props: DataListingProps) => {
         <div>
           <List
             awaitMore={awaitMore}
-            pageSize={PAGE_SIZE}
+            pageSize={pageSize}
             itemCount={data.length}
             renderItem={renderItem}
             onIntersection={onIntersection}

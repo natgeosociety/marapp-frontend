@@ -71,14 +71,17 @@ export function useInfiniteList(
     },
     { data: [] }
   );
+  const isNoMore = items.data.length >= items.total;
+  const awaitMore = !isValidating && !isNoMore;
 
   return {
     // props for <DataListing />
     listProps: {
       data: items.data,
-      cursorAction: () => setSize(size + 1),
+      onIntersection: () => setSize(size + 1),
       isLoading: isValidating,
-      isNoMore: items.data.length >= items.total,
+      awaitMore,
+      isNoMore,
       totalResults: items.total,
     },
     mutate,
