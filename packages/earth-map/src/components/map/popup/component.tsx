@@ -82,11 +82,11 @@ class PopupComponent extends React.PureComponent<PopupComponentProps> {
         <div className="c-map-popup">
           <button
             key="close-button"
-            className="map-popup--close mapbox-prevent-click"
+            className="map-popup--close"
             type="button"
             onClick={this.onClose}
           >
-            <i className="ng-icon-close" />
+            <i className="ng-icon-close mapbox-prevent-click" />
           </button>
 
           <LayerTemplate />
