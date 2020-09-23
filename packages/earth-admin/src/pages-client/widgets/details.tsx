@@ -43,7 +43,6 @@ import {
   copyToClipboard,
   encodeQueryToURL,
   flattenArrayForSelect,
-  flattenObjectForSelect,
   formatDate,
   getSelectValues,
 } from '@app/utils';
@@ -119,7 +118,7 @@ export function WidgetsDetail(props: WidgetProps) {
     const parsed = {
       ...formData,
       ...(layers && { layers: flattenArrayForSelect(layers, 'id') }),
-      ...(metrics && { metrics: [metrics] }),
+      ...(metrics && { metrics: [metrics.value] }),
     };
 
     try {
@@ -319,7 +318,6 @@ export function WidgetsDetail(props: WidgetProps) {
                           onChange={([e]) => e}
                           isClearable={true}
                           isSearchable={true}
-                          isMulti={true}
                           styles={CUSTOM_STYLES}
                           theme={(theme) => ({
                             ...theme,
@@ -355,20 +353,29 @@ export function WidgetsDetail(props: WidgetProps) {
                   validForm={isValid}
                   render={() => (
                     <>
-                      <label htmlFor="metrics-select">Metric Slug:</label>
-                      <select
-                        id="metrics-select"
+                      <label htmlFor="metrics-select">Metric Slug*</label>
+                      <Controller
+                        as={Select}
+                        control={control}
+                        className="marapp-qa-metricslug"
                         name="metrics"
-                        className="ng-width-1-1 ng-form-large"
-                        defaultValue={selectedMetrics}
-                        ref={register({
-                          required: true,
+                        options={metrics.map((m) => ({
+                          value: m.value,
+                          label: m.value,
+                        }))}
+                        defaultValue={{
+                          value: selectedMetrics[0],
+                          label: selectedMetrics[0],
+                        }}
+                        placeholder="Select metric slug"
+                        styles={CUSTOM_STYLES}
+                        error={renderErrorFor('metrics')}
+                        theme={(theme) => ({
+                          ...theme,
+                          ...SELECT_THEME,
                         })}
-                      >
-                        {metrics.map((m) => (
-                          <option value={m.value}>{m.value}</option>
-                        ))}
-                      </select>
+                        rules={{ required: true }}
+                      />
                     </>
                   )}
                 >

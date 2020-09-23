@@ -22,6 +22,7 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { noop } from 'lodash';
 import { JSHINT } from 'jshint';
+import Select from 'react-select';
 
 import { AsyncSelect, Spinner, ErrorMessages } from '@marapp/earth-shared';
 
@@ -70,7 +71,7 @@ export function NewWidget(props: IProps) {
     const parsed = {
       ...values,
       ...(!!layers && { layers: flattenArrayForSelect(layers, 'id') }),
-      ...(!!metrics && { metrics: [metrics] }),
+      ...(!!metrics && { metrics: [metrics.value] }),
       ...(!!layerConfig && { config: layerConfig }),
     };
 
@@ -196,7 +197,6 @@ export function NewWidget(props: IProps) {
                   as={AsyncSelect}
                   isClearable={true}
                   isSearchable={true}
-                  isMulti={true}
                   closeMenuOnSelect={false}
                   placeholder="Select layers"
                   styles={CUSTOM_STYLES}
@@ -209,19 +209,25 @@ export function NewWidget(props: IProps) {
             </div>
             <div className="ng-width-1-2">
               <Card>
-                <label htmlFor="metrics-select">Metric Slug:</label>
-                <select
-                  id="metrics-select"
+                <label htmlFor="metrics-select">Metric Slug*</label>
+                <Controller
+                  as={Select}
+                  control={control}
+                  className="marapp-qa-metricslug"
                   name="metrics"
-                  className="ng-width-1-1 ng-form-large"
-                  ref={register({
-                    required: true,
+                  options={metrics.map((m) => ({
+                    value: m.value,
+                    label: m.value,
+                  }))}
+                  placeholder="Select metric slug"
+                  styles={CUSTOM_STYLES}
+                  error={renderErrorFor('metrics')}
+                  theme={(theme) => ({
+                    ...theme,
+                    ...SELECT_THEME,
                   })}
-                >
-                  {metrics.map((m) => (
-                    <option value={m.value}>{m.value}</option>
-                  ))}
-                </select>
+                  rules={{ required: true }}
+                />
               </Card>
             </div>
           </div>
