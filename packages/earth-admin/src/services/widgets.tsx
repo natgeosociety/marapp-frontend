@@ -42,7 +42,7 @@ const WidgetAPIService = {
         .request(options)
         .then((res) => resolve(res.data))
         .catch((error) => {
-          if (error.data) {
+          if (error.response) {
             reject(error.response.data);
           } else {
             reject(error);
