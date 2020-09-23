@@ -41,7 +41,13 @@ const WidgetAPIService = {
       instance
         .request(options)
         .then((res) => resolve(res.data))
-        .catch((error) => reject(error.response.data));
+        .catch((error) => {
+          if (error.data) {
+            reject(error.response.data);
+          } else {
+            reject(error);
+          }
+        });
     });
   },
 };

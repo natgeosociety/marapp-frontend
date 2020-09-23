@@ -39,13 +39,7 @@ import { ContentLayout } from '@app/layouts';
 import { getWidget, handleWidgetForm } from '@app/services/widgets';
 import { getAllLayers } from '@app/services/layers';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
-import {
-  copyToClipboard,
-  encodeQueryToURL,
-  flattenArrayForSelect,
-  formatDate,
-  getSelectValues,
-} from '@app/utils';
+import { copyToClipboard, encodeQueryToURL, flattenObjectForSelect, formatDate } from '@app/utils';
 import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 const WIDGET_DETAIL_QUERY = {
@@ -74,7 +68,6 @@ export function WidgetsDetail(props: WidgetProps) {
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
   const [widgetConfig, setWidgetConfig] = useState(null);
-  const [widgetCategory, setWidgetCategory] = useState(null);
   const [collapseJson, setCollapseJson] = useState(false);
   const [copySuccess, setCopySuccess] = useState('');
   const textAreaRef = useRef(null);
@@ -100,7 +93,6 @@ export function WidgetsDetail(props: WidgetProps) {
 
   useEffect(() => {
     config && setWidgetConfig(config);
-    category && setWidgetCategory(getSelectValues(LAYER_CATEGORY_OPTIONS, category));
   }, [widget]);
 
   const { getValues, register, formState, errors, control } = useForm({
@@ -117,7 +109,7 @@ export function WidgetsDetail(props: WidgetProps) {
 
     const parsed = {
       ...formData,
-      ...(layers && { layers: flattenArrayForSelect(layers, 'id') }),
+      ...(layers && { layers: flattenObjectForSelect(layers, 'id') }),
       ...(metrics && { metrics: [metrics.value] }),
     };
 

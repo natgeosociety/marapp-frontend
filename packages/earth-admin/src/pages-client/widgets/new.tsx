@@ -35,7 +35,7 @@ import { JsonEditor } from '@app/components/json-editor';
 import { ContentLayout } from '@app/layouts';
 import { addWidget, getUniqueSlug } from '@app/services/widgets';
 import { getAllLayers } from '@app/services/layers';
-import { flattenArrayForSelect } from '@app/utils';
+import { flattenObjectForSelect } from '@app/utils';
 import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
@@ -70,7 +70,7 @@ export function NewWidget(props: IProps) {
 
     const parsed = {
       ...values,
-      ...(!!layers && { layers: flattenArrayForSelect(layers, 'id') }),
+      ...(!!layers && { layers: flattenObjectForSelect(layers, 'id') }),
       ...(!!metrics && { metrics: [metrics.value] }),
       ...(!!layerConfig && { config: layerConfig }),
     };
