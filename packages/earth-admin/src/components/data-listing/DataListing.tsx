@@ -56,6 +56,7 @@ const DataListing = (props: DataListingProps) => {
     pageSize,
     totalResults,
     selectedItem,
+    ...otherProps
   } = props;
   const { selectedGroup } = useAuth0();
 
@@ -106,6 +107,7 @@ const DataListing = (props: DataListingProps) => {
             itemCount={data.length}
             renderItem={renderItem}
             onIntersection={onIntersection}
+            {...otherProps}
           />
           {!searchValue && isNoMore && (
             <div className=" ng-text-center">
