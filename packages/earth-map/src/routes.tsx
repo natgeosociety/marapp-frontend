@@ -89,7 +89,7 @@ export const ROUTES = {
   PROFILE: {
     path: '/profile',
     page: 'profile',
-    isAuthRequired,
+    isAuthRequired: stubTrue,
     isAuthzRequired: stubFalse,
     fallbackRouteResolver: noop,
   },
