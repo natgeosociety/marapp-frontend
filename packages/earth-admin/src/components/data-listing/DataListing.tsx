@@ -64,10 +64,6 @@ const DataListing = (props: DataListingProps) => {
   } = props;
   const { selectedGroup } = useAuth0();
 
-  // const PAGE_SIZE = pageSize;
-  // const hasNextPage = data.length >= PAGE_SIZE;
-  // const awaitMore = !isLoading && hasNextPage && !isNoMore;
-
   const renderItem = (index) => {
     const item = data[index];
     return (
@@ -80,10 +76,6 @@ const DataListing = (props: DataListingProps) => {
       </div>
     );
   };
-
-  // const onIntersection = (size, pageSize) => {
-  //   cursorAction();
-  // };
 
   return (
     <>
