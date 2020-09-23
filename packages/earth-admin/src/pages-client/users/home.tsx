@@ -46,9 +46,6 @@ export function UsersHome(props: any) {
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
 
-  const [users, setUsers] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
   const [isLoadingInviteUsers, setIsLoadingInviteUsers] = useState(false);
   const [availableGroups, setAvailableGroups] = useState([]);
   const [serverErrors, setServerErrors] = useState([]);
@@ -63,19 +60,11 @@ export function UsersHome(props: any) {
     return encodeQueryToURL('users', query);
   };
 
-  const {
-    register,
-    watch,
-    formState,
-    errors,
-    setValue,
-    control,
-    handleSubmit,
-    getValues,
-    reset,
-  } = useForm({
+  const { watch, setValue, control, getValues } = useForm({
     mode: 'onChange',
   });
+
+  const inviteUsersWatcher = watch('users');
 
   useEffect(() => {
     (async () => {
@@ -88,18 +77,6 @@ export function UsersHome(props: any) {
       );
     })();
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      const usersResponse: any = await getAllUsers(getQuery(currentPage));
-      setUsers([...users, ...usersResponse.data]);
-      setIsLoading(false);
-    })();
-  }, [currentPage]);
-
-  const hasNextPage = users.length >= PAGE_SIZE;
-  const awaitMore = !isLoading && hasNextPage;
 
   const customStylesUsers = {
     ...CUSTOM_STYLES,
@@ -119,10 +96,22 @@ export function UsersHome(props: any) {
       ...provided,
       color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
     }),
+    control: (provided, state) => {
+      return {
+        ...provided,
+        minHeight: '55px',
+      };
+    },
   };
 
   const customStylesRoles = {
     ...CUSTOM_STYLES,
+    control: (provided, state) => {
+      return {
+        ...provided,
+        minHeight: '55px',
+      };
+    },
   };
 
   const addUsersHandler = async () => {
@@ -177,7 +166,7 @@ export function UsersHome(props: any) {
     setUsersFeedback([]);
   };
 
-  const { listProps, mutate } = useInfiniteList(getQuery, getAllUsers);
+  const { listProps: userListProps, mutate } = useInfiniteList(getQuery, getAllUsers);
 
   return (
     writePermissions && (
@@ -196,6 +185,7 @@ export function UsersHome(props: any) {
                         name="users"
                         type="users"
                         className="marapp-qa-invite-users"
+                        defaultValue={[]}
                         control={control}
                         selectedGroup={selectedGroup}
                         as={Creatable}
@@ -257,15 +247,15 @@ export function UsersHome(props: any) {
                       ) : (
                         <>
                           <button
-                            className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
                             onClick={addUsersHandler}
+                            className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
                           >
                             Add users
                           </button>
                           <button
                             className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
                             onClick={cancelUsersHandler}
-                            disabled={!formState.dirty}
+                            disabled={!inviteUsersWatcher?.length}
                           >
                             cancel
                           </button>
@@ -285,23 +275,24 @@ export function UsersHome(props: any) {
                       </tr>
                     </thead>
                     <List
+                      awaitMore={userListProps.awaitMore}
+                      itemCount={userListProps.data.length}
+                      pageSize={PAGE_SIZE}
+                      onIntersection={userListProps.onIntersection}
                       itemsRenderer={(items, ref) => (
                         <tbody className="list" ref={ref}>
                           {items}
                           <tr>
                             <td className="ng-border-remove" colSpan={2}>
                               <div className="ng-padding-medium ng-position-relative">
-                                {isLoading && <Spinner size="small" />}
+                                {userListProps.isLoading && <Spinner size="small" />}
                               </div>
                             </td>
                           </tr>
                         </tbody>
                       )}
-                      awaitMore={awaitMore}
-                      pageSize={PAGE_SIZE}
-                      itemCount={users.length}
                       renderItem={(index) => {
-                        const user = users[index];
+                        const user = userListProps.data[index];
                         return (
                           <tr
                             className="ng-c-cursor-pointer"
@@ -313,9 +304,6 @@ export function UsersHome(props: any) {
                             </td>
                           </tr>
                         );
-                      }}
-                      onIntersection={() => {
-                        setCurrentPage(currentPage + 1);
                       }}
                     />
                   </table>
