@@ -28,22 +28,19 @@ import Select from 'react-select';
 
 import { ContentLayout } from '@app/layouts';
 import { Card } from '@app/components/card';
-import { LinkWithOrg } from 'components/link-with-org';
 import { Controller, useForm } from 'react-hook-form';
 import { getAllUsers, addUsers } from '@app/services/users';
-import { encodeQueryToURL, setPage } from '@app/utils';
+import { encodeQueryToURL } from '@app/utils';
 import { getAvailableGroups } from '@app/services';
 import List from '@researchgate/react-intersection-list';
 import { Spinner } from '@marapp/earth-shared';
 import { ErrorMessages } from '@marapp/earth-shared';
 import { validEmail } from '@app/utils/validations';
+import { useInfiniteList } from '@app/utils/hooks';
 
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 
 const PAGE_SIZE = 10;
-const USER_DETAIL_QUERY = {
-  include: 'groups',
-};
 
 export function UsersHome(props: any) {
   const { getPermissions, selectedGroup } = useAuth0();
@@ -54,7 +51,6 @@ export function UsersHome(props: any) {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingInviteUsers, setIsLoadingInviteUsers] = useState(false);
   const [availableGroups, setAvailableGroups] = useState([]);
-  // const [selectedUsers, setSelectedUsers] = useState([]);
   const [serverErrors, setServerErrors] = useState([]);
   const [usersFeedback, setUsersFeedback] = useState([]);
 
@@ -66,22 +62,6 @@ export function UsersHome(props: any) {
     };
     return encodeQueryToURL('users', query);
   };
-
-  useEffect(() => {
-    (async () => {
-      const groupsResponse: any = await getAvailableGroups(selectedGroup);
-      setAvailableGroups(groupsResponse.data.map((item) => ({ label: item.name, value: item.id })));
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      const usersResponse: any = await getAllUsers(getQuery(currentPage));
-      setUsers([...users, ...usersResponse.data]);
-      setIsLoading(false);
-    })();
-  }, [currentPage]);
 
   const {
     register,
@@ -97,10 +77,29 @@ export function UsersHome(props: any) {
     mode: 'onChange',
   });
 
+  useEffect(() => {
+    (async () => {
+      const groupsResponse: any = await getAvailableGroups(selectedGroup);
+      const groups = groupsResponse.data.map((item) => ({ label: item.name, value: item.id }));
+      setAvailableGroups(groups);
+      setValue(
+        'role',
+        groups.find((group) => group.label.includes('VIEWER'))
+      );
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      setIsLoading(true);
+      const usersResponse: any = await getAllUsers(getQuery(currentPage));
+      setUsers([...users, ...usersResponse.data]);
+      setIsLoading(false);
+    })();
+  }, [currentPage]);
+
   const hasNextPage = users.length >= PAGE_SIZE;
   const awaitMore = !isLoading && hasNextPage;
-
-  const [openAddUsers, setOpenAddUsers] = useState(false);
 
   const customStylesUsers = {
     ...CUSTOM_STYLES,
@@ -121,6 +120,7 @@ export function UsersHome(props: any) {
       color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
     }),
   };
+
   const customStylesRoles = {
     ...CUSTOM_STYLES,
   };
@@ -141,20 +141,18 @@ export function UsersHome(props: any) {
         selectedGroup
       );
 
-      const errors = [];
+      const feedback = [];
 
       const feedbackUsers = result.data.map((item) => {
         const hasError = !!item.error;
         const hasSuccess = !!item.success;
 
-        // if (hasError) {
-        errors.push({
+        feedback.push({
           hasError,
           hasSuccess,
           title: item.email,
           detail: item.error,
         });
-        // }
 
         return {
           label: item.email,
@@ -165,7 +163,7 @@ export function UsersHome(props: any) {
       });
 
       setValue('users', feedbackUsers);
-      setUsersFeedback(errors);
+      setUsersFeedback(feedback);
     } catch (err) {
       setServerErrors(err.data?.errors || err.data);
     }
@@ -179,6 +177,8 @@ export function UsersHome(props: any) {
     setUsersFeedback([]);
   };
 
+  const { listProps, mutate } = useInfiniteList(getQuery, getAllUsers);
+
   return (
     writePermissions && (
       <ContentLayout className="marapp-qa-usershome">
@@ -186,59 +186,7 @@ export function UsersHome(props: any) {
           <>
             <div className="ng-grid">
               <div className="ng-width-1-1 ng-margin-bottom">
-                <InlineEditCard
-                  submitButtonText="Add users"
-                  // render={() => {
-                  // return (
-                  //   <>
-                  //     <div className="ng-grid">
-                  //       <div className="ng-width-1-1">
-                  //         <p className="ng-text-weight-bold">Add users to { selectedGroup }:</p>
-                  //       </div>
-                  //       <div className="ng-width-10-12">
-                  //         <Controller name="widgets"
-                  //                     type="widgets"
-                  //                     className="marapp-qa-widgets"
-                  //                     control={control}
-                  //                     // getOptionLabel={option => option.name}
-                  //                     // getOptionValue={option => option.id}
-                  //                     // onCreateOption={(e) => console.log(e)}
-                  //                     // loadFunction={}
-                  //                     // defaultValue={users}
-                  //                     selectedGroup={selectedGroup}
-                  //                     as={Creatable}
-                  //                     // isCreatable
-                  //                     // isClearable
-                  //                     // isSearchable
-                  //                     isMulti
-                  //                     // isSearchable={false}
-                  //                     // closeMenuOnSelect={false}
-                  //                     placeholder="Enter user emails to submit invite"
-                  //                     styles={CUSTOM_STYLES}
-                  //                     theme={theme => ({
-                  //                         ...theme,
-                  //                         ...SELECT_THEME,
-                  //                     })}
-                  //         />
-                  //       </div>
-                  //       <div className="ng-width-2-12 ng-margin-bottom ng-padding-remove">
-                  //         <Controller as={Select} control={control} className="marapp-qa-provider"
-                  //                 name="provider"
-                  //                 options={[{name: 'Viewer'}, 'Admin', 'Editor']}
-                  //                 isSearchable
-                  //                 // placeholder="Select layer provider"
-                  //                 styles={CUSTOM_STYLES}
-                  //                 theme={theme => ({
-                  //                   ...theme,
-                  //                   ...SELECT_THEME,
-                  //                 })}
-                  //                 rules={{required: true}}/>
-                  //       </div>
-                  //     </div>
-                  //   </>
-                  // )
-                  // }}
-                >
+                <InlineEditCard submitButtonText="Add users">
                   <div className="ng-grid">
                     <div className="ng-width-1-1">
                       <p className="ng-text-weight-bold">Add users to {selectedGroup}:</p>
@@ -249,28 +197,11 @@ export function UsersHome(props: any) {
                         type="users"
                         className="marapp-qa-invite-users"
                         control={control}
-                        // getOptionLabel={option => option.name}
-                        // getOptionValue={option => option.id}
-                        // onCreateOption={(value) => {
-                        //   if (validEmail(value)) {
-                        //     setSelectedUsers([...selectedUsers, value]);
-                        //   }
-                        //   // console.log('**', value, validEmail(value));
-                        //   // return validEmail(value) ? undefined : false;
-                        // }}
-                        // loadFunction={}
-                        // defaultValue={users}
                         selectedGroup={selectedGroup}
-                        // defaultValue={{label: 'Viewer', value: 'Viewer', hasError: true}}
                         as={Creatable}
                         formatCreateLabel={(value) => `${value}`}
                         isValidNewOption={(value) => validEmail(value)}
-                        // isCreatable
-                        // isClearable
-                        // isSearchable
                         isMulti
-                        // isSearchable={false}
-                        // closeMenuOnSelect={false}
                         placeholder="Enter user emails to submit invite"
                         styles={customStylesUsers}
                         theme={(theme) => ({
