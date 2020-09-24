@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.6.0...v1.7.0) (2020-09-24)
+
+
+### Features
+
+* generic user profile [EP-2502] ([07dbe36](https://github.com/natgeosociety/marapp-frontend/commit/07dbe368426ae41836962db26419377641029506))
+
 # [1.6.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.5.0...v1.6.0) (2020-09-24)
 
 
