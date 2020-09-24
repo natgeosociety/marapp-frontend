@@ -57,11 +57,15 @@ export default function UserMenuComponent() {
 
   return (
     <div className="marapp-qa-useraccount ng-user-account" ref={menuRef}>
-      <button className="ng-unstyled" onClick={(e) => toggleDrop(e)}>
-        {userData.picture && (
-          <img className="ng-user-profile" src={userData.picture} alt={userData.name} />
+      <button
+        className="ng-user-profile ng-background-ultraltgray ng-color-black"
+        onClick={(e) => toggleDrop(e)}
+      >
+        {isAuthenticated ? (
+          <i className="ng-icon-account" />
+        ) : (
+          <i className="ng-icon-account-outline" />
         )}
-        {!userData.picture && <i className="ng-icon-menu" />}
       </button>
       <Dropdown native={true} state={`${showDrop}`}>
         {({ x, ...props }) => (
