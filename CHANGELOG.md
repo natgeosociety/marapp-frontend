@@ -1,3 +1,17 @@
+# [1.6.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.5.0...v1.6.0) (2020-09-24)
+
+
+### Bug Fixes
+
+* **admin:** Display slug error validation [EP-2915] ([cfc9148](https://github.com/natgeosociety/marapp-frontend/commit/cfc9148fb734b9ec11d82d8a7672df89fdda0db2))
+* **map:** close popup correct target [EP-2484] ([#162](https://github.com/natgeosociety/marapp-frontend/issues/162)) ([a86550e](https://github.com/natgeosociety/marapp-frontend/commit/a86550e0b38af4109c5aded1ad8defac46d90cba))
+* **map:** handle empty layer references ([#167](https://github.com/natgeosociety/marapp-frontend/issues/167)) ([ff7a5d1](https://github.com/natgeosociety/marapp-frontend/commit/ff7a5d11baa4f26508a78d89a0524a24153004c9))
+
+
+### Features
+
+* **admin:** Redesigned Widgets [EP-2204] ([5e59e12](https://github.com/natgeosociety/marapp-frontend/commit/5e59e12a656068d5db88693a90641a423d65e643))
+
 # [1.5.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.4.1...v1.5.0) (2020-09-22)
 
 
