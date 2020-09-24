@@ -67,6 +67,8 @@ export function UsersHome(props: any) {
   const inviteUsersWatcher = watch('users');
 
   useEffect(() => {
+    mutate();
+
     (async () => {
       const groupsResponse: any = await getAvailableGroups(selectedGroup);
       const groups = groupsResponse.data.map((item) => ({ label: item.name, value: item.id }));
@@ -153,6 +155,8 @@ export function UsersHome(props: any) {
 
       setValue('users', feedbackUsers);
       setUsersFeedback(feedback);
+
+      mutate();
     } catch (err) {
       setServerErrors(err.data?.errors || err.data);
     }
@@ -254,7 +258,7 @@ export function UsersHome(props: any) {
                             Add users
                           </button>
                           <button
-                            className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
+                            className="ng-button ng-button-secondary ng-button-large ng-margin-medium-right marapp-qa-actioncancel"
                             onClick={cancelUsersHandler}
                             disabled={!inviteUsersWatcher?.length}
                           >

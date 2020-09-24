@@ -52,13 +52,15 @@ export function useDomWatcher(ref, callback, skip) {
  */
 export function useInfiniteList(
   getQuery: (pageIndex: number) => string,
-  fetcher: (any) => Promise<any>
+  fetcher: (any) => Promise<any>,
+  options: object = {}
 ) {
   // Our api starts with page 1 instead of 0, so we increment the pageIndex
   const offsetGetQuery = compose(getQuery, add(1));
   const { data: response = [], error, isValidating, size, setSize, mutate } = useSWRInfinite(
     offsetGetQuery,
-    fetcher
+    fetcher,
+    options
   );
 
   // Merge multiple page results into a single list of results
