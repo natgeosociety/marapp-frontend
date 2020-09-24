@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
+import classnames from 'classnames';
 import React, { useContext, useState } from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops';
 
@@ -58,11 +59,12 @@ export default function UserMenuComponent() {
         className="ng-user-profile ng-background-ultraltgray ng-color-black"
         onClick={(e) => toggleDrop(e)}
       >
-        {isAuthenticated ? (
-          <i className="ng-icon-account" />
-        ) : (
-          <i className="ng-icon-account-outline" />
-        )}
+        <i
+          className={classnames({
+            'ng-icon-account': isAuthenticated,
+            'ng-icon-account-outline': !isAuthenticated,
+          })}
+        />
       </button>
       <Dropdown native={true} state={`${showDrop}`}>
         {({ x, ...props }) => (
