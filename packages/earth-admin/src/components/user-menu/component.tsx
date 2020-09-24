@@ -33,7 +33,7 @@ const Dropdown: any = Keyframes.Spring({
 export default function UserMenuComponent() {
   const [showDrop, setShowDrop] = useState(false);
 
-  const { userData, logout } = useContext(Auth0Context);
+  const { userData, logout, isAuthenticated } = useContext(Auth0Context);
 
   const menuRef = React.useRef(null);
 
@@ -54,11 +54,15 @@ export default function UserMenuComponent() {
 
   return (
     <div className="marapp-qa-useraccount ng-user-account" ref={menuRef}>
-      <button className="ng-unstyled" onClick={(e) => toggleDrop(e)}>
-        {userData.picture && (
-          <img className="ng-user-profile" src={userData.picture} alt={userData.name} />
+      <button
+        className="ng-user-profile ng-background-ultraltgray ng-color-black"
+        onClick={(e) => toggleDrop(e)}
+      >
+        {isAuthenticated ? (
+          <i className="ng-icon-account" />
+        ) : (
+          <i className="ng-icon-account-outline" />
         )}
-        {!userData.picture && <i className="ng-icon ng-icon-user" />}
       </button>
       <Dropdown native={true} state={`${showDrop}`}>
         {({ x, ...props }) => (
