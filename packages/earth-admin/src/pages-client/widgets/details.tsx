@@ -26,7 +26,6 @@ import useSWR from 'swr';
 import { AsyncSelect, AuthzGuards, ErrorMessages, InlineEditCard } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Widget, WidgetProps } from './model';
 import { Card } from '@app/components/card';
 import { DetailList } from '@app/components/detail-list';
 import { HtmlEditor } from '@app/components/html-editor';
@@ -36,11 +35,13 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
-import { getWidget, handleWidgetForm } from '@app/services/widgets';
 import { getAllLayers } from '@app/services/layers';
+import { getWidget, handleWidgetForm } from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { copyToClipboard, encodeQueryToURL, flattenObjectForSelect, formatDate } from '@app/utils';
 import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
+
+import { Widget, WidgetProps } from './model';
 
 const WIDGET_DETAIL_QUERY = {
   include: 'layers',

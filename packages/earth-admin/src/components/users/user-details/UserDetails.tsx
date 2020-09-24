@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useState } from 'react';
 import { noop } from 'lodash';
+import React, { useState } from 'react';
 
 import { AuthzGuards, ErrorMessages } from '@marapp/earth-shared';
 

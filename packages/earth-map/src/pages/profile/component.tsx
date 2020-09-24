@@ -1,16 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
-
 import { Auth0Context } from 'auth/auth0';
 import { UserMenuComponent } from 'components/user-menu';
-
-import { InlineEditCard } from '@marapp/earth-shared';
+import React, { useContext, useEffect, useState } from 'react';
+import Link from 'redux-first-router-link';
 // import { Input } from '@app/components/input';
 import { fetchProfile } from 'services/users';
-
-import Link from 'redux-first-router-link';
 import { APP_LOGO } from 'theme';
 
-import { Spinner } from '@marapp/earth-shared';
+import { InlineEditCard, Spinner } from '@marapp/earth-shared';
 
 export function ProfileComponent(props: any) {
   const { userData } = useContext(Auth0Context);
@@ -138,7 +134,7 @@ export function ProfileComponent(props: any) {
                     Be sure to check your spam folder if you do not receive the email in a few
                     minutes.
                   </p>
-                  <button className="ng-button ng-button-secondary ng-margin-top" disabled>
+                  <button className="ng-button ng-button-secondary ng-margin-top" disabled={true}>
                     Send reset email
                   </button>
                 </InlineEditCard>

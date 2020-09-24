@@ -17,22 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { Router } from '@reach/router';
 import * as React from 'react';
 import useSWR from 'swr';
 
-import { Router } from '@reach/router';
-
+import { useAuth0 } from '@app/auth/auth0';
+import { Card } from '@app/components/card';
+import { UserDetails, UserEdit } from '@app/components/users';
 import { SidebarLayout } from '@app/layouts';
+import ContentLayout from '@app/layouts/Content';
 import { getOrganizationStats } from '@app/services/organizations';
+import { getUser } from '@app/services/users';
 import { encodeQueryToURL, setPage } from '@app/utils';
 
-import { Card } from '@app/components/card';
 import { UsersHome } from './home';
-
-import { useAuth0 } from '@app/auth/auth0';
-import { UserDetails, UserEdit } from '@app/components/users';
-import ContentLayout from '@app/layouts/Content';
-import { getUser } from '@app/services/users';
 
 const PAGE_TYPE = setPage('Users');
 const USER_DETAIL_QUERY = {

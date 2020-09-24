@@ -17,26 +17,23 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useState, useEffect } from 'react';
+import List from '@researchgate/react-intersection-list';
 import { navigate } from 'gatsby';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import Select from 'react-select';
+import Creatable from 'react-select/creatable';
+
+import { AuthzGuards, ErrorMessages, Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { AuthzGuards } from '@marapp/earth-shared';
-
-import Creatable from 'react-select/creatable';
-import Select from 'react-select';
-
-import { ContentLayout } from '@app/layouts';
 import { Card } from '@app/components/card';
-import { Controller, useForm } from 'react-hook-form';
-import { getAllUsers, addUsers } from '@app/services/users';
-import { encodeQueryToURL } from '@app/utils';
+import { ContentLayout } from '@app/layouts';
 import { getAvailableGroups } from '@app/services';
-import List from '@researchgate/react-intersection-list';
-import { Spinner } from '@marapp/earth-shared';
-import { ErrorMessages } from '@marapp/earth-shared';
-import { validEmail } from '@app/utils/validations';
+import { addUsers, getAllUsers } from '@app/services/users';
+import { encodeQueryToURL } from '@app/utils';
 import { useInfiniteList } from '@app/utils/hooks';
+import { validEmail } from '@app/utils/validations';
 
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 
@@ -195,7 +192,7 @@ export function UsersHome(props: any) {
                         as={Creatable}
                         formatCreateLabel={(value) => `${value}`}
                         isValidNewOption={(value) => validEmail(value)}
-                        isMulti
+                        isMulti={true}
                         placeholder="Enter user emails to submit invite"
                         styles={customStylesUsers}
                         theme={(theme) => ({

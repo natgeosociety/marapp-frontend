@@ -19,12 +19,12 @@
 
 import { navigate } from 'gatsby';
 import { JSHINT } from 'jshint';
+import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
-import { noop } from 'lodash';
 
-import { AsyncSelect, Spinner, ErrorMessages } from '@marapp/earth-shared';
+import { AsyncSelect, ErrorMessages, Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';

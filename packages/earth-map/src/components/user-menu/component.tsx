@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import classnames from 'classnames';
 import { Auth0Context } from 'auth/auth0';
+import classnames from 'classnames';
 import React, { useContext, useState } from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops';
 import useDomWatcher from 'utils/hooks';

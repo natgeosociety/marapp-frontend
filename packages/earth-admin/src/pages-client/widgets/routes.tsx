@@ -18,9 +18,9 @@
 */
 
 import { Router } from '@reach/router';
+import { groupBy } from 'lodash';
 import React, { useState } from 'react';
 import useSWR from 'swr';
-import { groupBy } from 'lodash';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { DataListing, DefaultListItem } from '@app/components/data-listing';

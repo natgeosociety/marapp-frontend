@@ -19,7 +19,7 @@ import { Controller, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
 import useSWR from 'swr';
 
-import { AsyncSelect, AuthzGuards, InlineEditCard, ErrorMessages } from '@marapp/earth-shared';
+import { AsyncSelect, AuthzGuards, ErrorMessages, InlineEditCard } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';

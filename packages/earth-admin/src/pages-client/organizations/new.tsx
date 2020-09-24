@@ -18,11 +18,11 @@
 */
 
 import { navigate } from 'gatsby';
+import { noop } from 'lodash';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { noop } from 'lodash';
 
-import { Spinner, ErrorMessages } from '@marapp/earth-shared';
+import { ErrorMessages, Spinner } from '@marapp/earth-shared';
 
 import { Card } from '@app/components/card';
 import { Input } from '@app/components/input';

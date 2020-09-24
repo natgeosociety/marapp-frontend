@@ -18,23 +18,23 @@
 */
 
 import { navigate } from 'gatsby';
+import { JSHINT } from 'jshint';
+import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { noop } from 'lodash';
-import { JSHINT } from 'jshint';
 import Select from 'react-select';
 
-import { AsyncSelect, Spinner, ErrorMessages } from '@marapp/earth-shared';
+import { AsyncSelect, ErrorMessages, Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
 import { HtmlEditor } from '@app/components/html-editor';
 import { Input } from '@app/components/input';
-import { LinkWithOrg } from '@app/components/link-with-org';
 import { JsonEditor } from '@app/components/json-editor';
+import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { addWidget, getUniqueSlug } from '@app/services/widgets';
 import { getAllLayers } from '@app/services/layers';
+import { addWidget, getUniqueSlug } from '@app/services/widgets';
 import { flattenObjectForSelect } from '@app/utils';
 import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
 
