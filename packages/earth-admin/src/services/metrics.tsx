@@ -83,3 +83,9 @@ export const calculateForPlace = async (
     },
   });
 };
+
+export const getAllMetrics = async (query: string) => {
+  return MetricAPIService.request({
+    url: query,
+  });
+};
