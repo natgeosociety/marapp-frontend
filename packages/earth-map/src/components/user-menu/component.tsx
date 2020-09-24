@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
+import classnames from 'classnames';
 import { Auth0Context } from 'auth/auth0';
 import React, { useContext, useState } from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops';
@@ -57,11 +58,16 @@ export default function UserMenuComponent() {
 
   return (
     <div className="marapp-qa-useraccount ng-user-account" ref={menuRef}>
-      <button className="ng-unstyled" onClick={(e) => toggleDrop(e)}>
-        {userData.picture && (
-          <img className="ng-user-profile" src={userData.picture} alt={userData.name} />
-        )}
-        {!userData.picture && <i className="ng-icon-menu" />}
+      <button
+        className="ng-user-profile ng-background-ultraltgray ng-color-black"
+        onClick={(e) => toggleDrop(e)}
+      >
+        <i
+          className={classnames({
+            'ng-icon-account': isAuthenticated,
+            'ng-icon-account-outline': !isAuthenticated,
+          })}
+        />
       </button>
       <Dropdown native={true} state={`${showDrop}`}>
         {({ x, ...props }) => (

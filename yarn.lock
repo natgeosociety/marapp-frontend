@@ -2743,10 +2743,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@natgeosociety/marapp-uikit@^1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@natgeosociety/marapp-uikit/-/marapp-uikit-1.0.8.tgz#cdd72cee945f59328e42a12f33891a0be622e178"
-  integrity sha512-KaM+haRVuLwfqaegtKONTjBbxT3uxdjxwlp6COR0ymxci9cmOSQ5QrUD6Jr/HlnSRElx4gft0ArnfvFg3/+RJw==
+"@natgeosociety/marapp-uikit@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@natgeosociety/marapp-uikit/-/marapp-uikit-1.0.10.tgz#39034d9cb3df41aa87db2d2190ad482597277257"
+  integrity sha512-NRIl75Gnexz/txP6FwSd0+FsRHfO+l4/WGSaN1H+oex0oq4Tjl6HygW4HZ8cwpSbZJfeDMNMr8CWlXTrZ1ra2w==
   dependencies:
     countup.js "1.8.5"
     jquery "2.2.1"

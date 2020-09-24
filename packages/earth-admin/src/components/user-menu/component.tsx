@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
+import classnames from 'classnames';
 import React, { useContext, useState } from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops';
 
@@ -33,7 +34,7 @@ const Dropdown: any = Keyframes.Spring({
 export default function UserMenuComponent() {
   const [showDrop, setShowDrop] = useState(false);
 
-  const { userData, logout } = useContext(Auth0Context);
+  const { userData, logout, isAuthenticated } = useContext(Auth0Context);
 
   const menuRef = React.useRef(null);
 
@@ -54,11 +55,16 @@ export default function UserMenuComponent() {
 
   return (
     <div className="marapp-qa-useraccount ng-user-account" ref={menuRef}>
-      <button className="ng-unstyled" onClick={(e) => toggleDrop(e)}>
-        {userData.picture && (
-          <img className="ng-user-profile" src={userData.picture} alt={userData.name} />
-        )}
-        {!userData.picture && <i className="ng-icon ng-icon-user" />}
+      <button
+        className="ng-user-profile ng-background-ultraltgray ng-color-black"
+        onClick={(e) => toggleDrop(e)}
+      >
+        <i
+          className={classnames({
+            'ng-icon-account': isAuthenticated,
+            'ng-icon-account-outline': !isAuthenticated,
+          })}
+        />
       </button>
       <Dropdown native={true} state={`${showDrop}`}>
         {({ x, ...props }) => (
