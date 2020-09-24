@@ -62,7 +62,7 @@ export const onlyMatch = (actionToMatch: string | Function, payload: any): Funct
 export const flattenLayerConfig = (layer: ILayerRaw) => {
   const adaptedLayer = flattenEachLayerConfig(layer);
 
-  if (!!adaptedLayer?.references.length) {
+  if (!!adaptedLayer?.references?.length) {
     const adaptedReferences = layer.references.map(flattenEachLayerConfig);
 
     return {
