@@ -53,10 +53,10 @@ export const getAllUsers = async (userQuery: string) => {
   });
 };
 
-export const addUser = async (request, group: string) => {
+export const addUsers = async (request, group: string) => {
   return UserAPIService.request({
     url: `/users?group=${group}`,
-    method: 'post',
+    method: 'put',
     data: request,
   });
 };
@@ -91,5 +91,5 @@ export const deleteUser = async (userID: string, group: string) => {
 };
 
 export const handleUserForm = async (newUser: boolean, user, userID: string, group: string) => {
-  newUser ? await addUser(user, group) : await updateUser(userID, user, group);
+  newUser ? await addUsers(user, group) : await updateUser(userID, user, group);
 };
