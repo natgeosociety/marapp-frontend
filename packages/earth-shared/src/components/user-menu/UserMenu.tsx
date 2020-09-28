@@ -17,47 +17,45 @@
   specific language governing permissions and limitations under the License.
 */
 
+import React, { useState, useRef } from 'react';
 import classnames from 'classnames';
-import React, { useContext, useState } from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops';
+import { compose } from 'lodash/fp';
 
-import { Auth0Context } from '@app/utils/contexts';
-import { useDomWatcher } from '@app/utils/hooks';
+import { useDomWatcher } from '@marapp/earth-shared';
 
 import './styles.scss';
 
+// TODO Replace this with a propper dropdown component
 const Dropdown: any = Keyframes.Spring({
   false: { x: `-100vh` },
   true: { x: '0vh' },
 });
 
-export default function UserMenuComponent() {
+interface IProps {
+  isAuthenticated: boolean;
+  onLogin: () => {};
+  onLogout: () => {};
+  selected?: string;
+}
+
+export const UserMenu = (props: IProps) => {
+  const { isAuthenticated = false, onLogin, onLogout, selected } = props;
   const [showDrop, setShowDrop] = useState(false);
+  const menuRef = useRef(null);
 
-  const { userData, logout, isAuthenticated } = useContext(Auth0Context);
-
-  const menuRef = React.useRef(null);
-
-  const handleClickOutside = () => {
-    setShowDrop(false);
-  };
-
-  useDomWatcher(menuRef, handleClickOutside, !showDrop);
+  useDomWatcher(menuRef, () => setShowDrop(false), !showDrop);
 
   const toggleDrop = (e) => {
     e.preventDefault();
     setShowDrop(!showDrop);
   };
 
-  const handleLogout = () => {
-    logout();
-  };
-
   return (
     <div className="marapp-qa-useraccount ng-user-account" ref={menuRef}>
       <button
         className="ng-user-profile ng-background-ultraltgray ng-color-black"
-        onClick={(e) => toggleDrop(e)}
+        onClick={toggleDrop}
       >
         <i
           className={classnames({
@@ -75,16 +73,37 @@ export default function UserMenuComponent() {
             }}
           >
             <ul className="ng-user-profile-dropdown">
-              <li>ACCOUNT</li>
-              <li className="ng-user-profile-signout">
-                <a className="marapp-qa-actionsignout" onClick={handleLogout}>
-                  Sign Out
-                </a>
+              <li>
+                <h4 className="ng-text-display-s ng-margin-remove">ACCOUNT</h4>
               </li>
+              {isAuthenticated ? (
+                <>
+                  <li
+                    className={classnames({
+                      selected: selected === 'profile',
+                    })}
+                  >
+                    {/* TODO User router navigation where possible */}
+                    <a href="/profile">Profile</a>
+                  </li>
+
+                  <li>
+                    <hr className="ng-margin-remove" />
+                  </li>
+
+                  <li className="marapp-qa-signout">
+                    <a onClick={compose(onLogout, toggleDrop)}>Sign Out</a>
+                  </li>
+                </>
+              ) : (
+                <li className="marapp-qa-signin">
+                  <a onClick={compose(onLogin, toggleDrop)}>Sign in</a>
+                </li>
+              )}
             </ul>
           </animated.div>
         )}
       </Dropdown>
     </div>
   );
-}
+};

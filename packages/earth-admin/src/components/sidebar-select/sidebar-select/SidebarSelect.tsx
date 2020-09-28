@@ -20,9 +20,10 @@
 import classnames from 'classnames';
 import React, { useState } from 'react';
 
+import { useDomWatcher } from '@marapp/earth-shared';
+
 import { DropdownComponent } from '@app/components/dropdown';
 import { SidebarItem } from '@app/components/sidebar-select';
-import { useDomWatcher } from '@app/utils/hooks';
 
 import { ADMIN_PAGES, IAdminPage } from '../model';
 import './styles.scss';

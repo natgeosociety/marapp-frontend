@@ -38,3 +38,4 @@ export { default as Tooltip } from './tooltip';
 export { default as AsyncSelect } from './multiselect';
 export { InlineEditCard } from './inline-edit-card';
 export { ErrorMessages } from './error-messages';
+export { UserMenu } from './user-menu';

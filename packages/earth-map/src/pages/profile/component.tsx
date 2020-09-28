@@ -1,15 +1,18 @@
 import { Auth0Context } from 'auth/auth0';
-import { UserMenuComponent } from 'components/user-menu';
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'redux-first-router-link';
-// import { Input } from '@app/components/input';
 import { fetchProfile } from 'services/users';
 import { APP_LOGO } from 'theme';
 
-import { InlineEditCard, Spinner } from '@marapp/earth-shared';
+import { InlineEditCard, Spinner, UserMenu } from '@marapp/earth-shared';
 
-export function ProfileComponent(props: any) {
-  const { userData } = useContext(Auth0Context);
+interface IProps {
+  page: string;
+}
+
+export function ProfileComponent(props: IProps) {
+  const { page } = props;
+  const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
 
@@ -41,7 +44,14 @@ export function ProfileComponent(props: any) {
       >
         <img src={APP_LOGO} className="ng-display-block ng-margin" />
       </Link>
-      <UserMenuComponent />
+
+      <UserMenu
+        selected={page}
+        isAuthenticated={isAuthenticated}
+        onLogin={login}
+        onLogout={logout}
+      />
+
       <div className="ng-user-profile-container">
         <div className="ng-padding-large">
           <h1 className="ng-margin-medium-bottom ng-text-center ng-text-uppercase ng-ep-text-gray-1 ng-text-display-m user-profile-title">
