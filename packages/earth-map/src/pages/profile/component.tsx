@@ -6,7 +6,12 @@ import { APP_LOGO } from 'theme';
 
 import { InlineEditCard, Spinner, UserMenu } from '@marapp/earth-shared';
 
-export function ProfileComponent(props: any) {
+interface IProps {
+  page: string;
+}
+
+export function ProfileComponent(props: IProps) {
+  const { page } = props;
   const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
@@ -40,7 +45,12 @@ export function ProfileComponent(props: any) {
         <img src={APP_LOGO} className="ng-display-block ng-margin" />
       </Link>
 
-      <UserMenu isAuthenticated={isAuthenticated} onLogin={login} onLogout={logout} />
+      <UserMenu
+        selected={page}
+        isAuthenticated={isAuthenticated}
+        onLogin={login}
+        onLogout={logout}
+      />
 
       <div className="ng-user-profile-container">
         <div className="ng-padding-large">

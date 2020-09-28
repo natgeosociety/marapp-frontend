@@ -20,6 +20,7 @@
 import React, { useState, useRef } from 'react';
 import classnames from 'classnames';
 import { animated, Keyframes } from 'react-spring/renderprops';
+import { compose } from 'lodash/fp';
 
 import { useDomWatcher } from '@marapp/earth-shared';
 
@@ -35,10 +36,11 @@ interface IProps {
   isAuthenticated: boolean;
   onLogin: () => {};
   onLogout: () => {};
+  selected?: string;
 }
 
 export const UserMenu = (props: IProps) => {
-  const { isAuthenticated = false, onLogin, onLogout } = props;
+  const { isAuthenticated = false, onLogin, onLogout, selected } = props;
   const [showDrop, setShowDrop] = useState(false);
   const menuRef = useRef(null);
 
@@ -71,19 +73,31 @@ export const UserMenu = (props: IProps) => {
             }}
           >
             <ul className="ng-user-profile-dropdown">
-              <li>ACCOUNT</li>
+              <li>
+                <h4 className="ng-text-display-s ng-margin-remove">ACCOUNT</h4>
+              </li>
               {isAuthenticated ? (
                 <>
-                  <li className="marapp-qa-user-profile ng-user-profile">
+                  <li
+                    className={classnames({
+                      selected: selected === 'profile',
+                    })}
+                  >
+                    {/* TODO User router navigation where possible */}
                     <a href="/profile">Profile</a>
                   </li>
-                  <li className="marapp-qa-signout ng-user-profile-signout">
-                    <a onClick={onLogout}>Sign Out</a>
+
+                  <li>
+                    <hr className="ng-margin-remove" />
+                  </li>
+
+                  <li className="marapp-qa-signout">
+                    <a onClick={compose(onLogout, toggleDrop)}>Sign Out</a>
                   </li>
                 </>
               ) : (
-                <li className="marapp-qa-signin ng-user-profile-signin">
-                  <a onClick={onLogin}>Sign in</a>
+                <li className="marapp-qa-signin">
+                  <a onClick={compose(onLogin, toggleDrop)}>Sign in</a>
                 </li>
               )}
             </ul>

@@ -53,6 +53,7 @@ interface IMap {
   setMapBounds?: (data: any) => void;
   setMapHoverInteractions?: (data: any) => void;
   open?: any;
+  page?: string;
   activeInteractiveLayersIds?: any;
 }
 
@@ -255,6 +256,7 @@ class MapComponent extends React.Component<IMap> {
       viewport,
       bounds,
       mapboxConfig,
+      page,
       activeInteractiveLayersIds,
     } = this.props;
 
@@ -265,7 +267,8 @@ class MapComponent extends React.Component<IMap> {
           '-open': open,
         })}
       >
-        <UserMenuWrapper />
+        <UserMenuWrapper selected={page} />
+
         <Map
           mapboxApiAccessToken={MAPBOX_TOKEN}
           // Attributtes
@@ -314,10 +317,18 @@ class MapComponent extends React.Component<IMap> {
 
 // TODO Remove UserMenuWrapper after refactoring MapComponent to be a functional component
 // This only exists to make use of 'useContext()' inside of it
-function UserMenuWrapper() {
+function UserMenuWrapper(props) {
+  const { selected } = props;
   const { logout, login, isAuthenticated } = useContext(Auth0Context);
 
-  return <UserMenu isAuthenticated={isAuthenticated} onLogin={login} onLogout={logout} />;
+  return (
+    <UserMenu
+      selected={selected}
+      isAuthenticated={isAuthenticated}
+      onLogin={login}
+      onLogout={logout}
+    />
+  );
 }
 
 export default MapComponent;
