@@ -17,6 +17,23 @@
   specific language governing permissions and limitations under the License.
 */
 
-import UserMenuComponent from './component';
+import { useEffect } from 'react';
 
-export { UserMenuComponent };
+export function useDomWatcher(ref: React.RefObject<any>, callback: () => {}, skip?: boolean) {
+  useEffect(() => {
+    if (skip) {
+      return;
+    }
+
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        callback && callback();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [ref, skip]);
+}

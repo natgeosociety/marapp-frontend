@@ -19,16 +19,16 @@
 
 import axios from 'axios';
 import classnames from 'classnames';
-import { UserMenuComponent } from 'components/user-menu';
 import { API_URL, MAPBOX_TOKEN } from 'config';
 import experienceIMG from 'images/pins/experience-marker.svg';
 import debounce from 'lodash/debounce';
-import React from 'react';
+import React, { useContext } from 'react';
 import isEqual from 'react-fast-compare';
 import { APP_ABOUT } from 'theme';
 
-import { Map } from '@marapp/earth-shared';
+import { Map, UserMenu } from '@marapp/earth-shared';
 
+import { Auth0Context } from 'auth/auth0';
 import BasemapComponent from '../basemap';
 import MapControls from './controls';
 import RecenterControl from './controls/recenter';
@@ -37,10 +37,6 @@ import LayerManager from './layer-manager';
 import Legend from './legend';
 import Popup from './popup';
 import './styles.scss';
-
-// Components
-
-// Styles
 
 const CUSTOM_IMAGES = [{ id: 'experience-marker', src: experienceIMG }];
 
@@ -269,7 +265,7 @@ class MapComponent extends React.Component<IMap> {
           '-open': open,
         })}
       >
-        <UserMenuComponent />
+        <UserMenuWrapper />
         <Map
           mapboxApiAccessToken={MAPBOX_TOKEN}
           // Attributtes
@@ -314,6 +310,14 @@ class MapComponent extends React.Component<IMap> {
       </div>
     );
   }
+}
+
+// TODO Remove UserMenuWrapper after refactoring MapComponent to be a functional component
+// This only exists to make use of 'useContext()' inside of it
+function UserMenuWrapper() {
+  const { logout, login, isAuthenticated } = useContext(Auth0Context);
+
+  return <UserMenu isAuthenticated={isAuthenticated} onLogin={login} onLogout={logout} />;
 }
 
 export default MapComponent;

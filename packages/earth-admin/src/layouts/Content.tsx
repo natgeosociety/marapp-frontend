@@ -17,13 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import Helmet from 'react-helmet';
 
-import { ErrorMessages, Spinner } from '@marapp/earth-shared';
+import { ErrorMessages, Spinner, UserMenu } from '@marapp/earth-shared';
 
+import { Auth0Context } from '@app/utils/contexts';
 import { LinkWithOrg } from '@app/components/link-with-org';
-import { UserMenuComponent } from '@app/components/user-menu';
 
 import '../styles/app.scss';
 import { APP_LOGO, APP_NAME } from '../theme';
@@ -54,6 +54,8 @@ const Unauthorized = (props: IUnauthorizedProps) => {
 };
 
 export default function ContentLayout(props: ILayoutProps) {
+  const { logout, login, isAuthenticated } = useContext(Auth0Context);
+
   return (
     <div className={`ng-flex ${props.className || ''}`}>
       <Helmet>
@@ -64,7 +66,7 @@ export default function ContentLayout(props: ILayoutProps) {
         <title>{APP_NAME}</title>
       </Helmet>
       <div className="ng-page-container ng-background-gray-9">
-        <UserMenuComponent />
+        <UserMenu isAuthenticated={isAuthenticated} onLogin={login} onLogout={logout} />
         <div className="ng-padding-large">
           <Content {...props} />
         </div>
