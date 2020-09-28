@@ -18,7 +18,7 @@
 */
 
 import classnames from 'classnames';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops';
 
 import { ErrorMessages } from '@marapp/earth-shared';
@@ -72,6 +72,10 @@ export default function InlineEditCard(props: InlineCardProps) {
 
   const state = isEditing ? 'open' : 'close';
 
+  useEffect(() => {
+    console.log(isEditing, 'card editable?');
+  });
+
   const optionsBag: IOptionsBag = {
     isEditing,
     isLoading,
@@ -81,9 +85,20 @@ export default function InlineEditCard(props: InlineCardProps) {
     setServerErrors,
   };
 
+  const handleKeyPress = (e) => {
+    console.log('clicky');
+    // e.preventDefault();
+    // e.stopPropagation();
+  };
+
   const handleCancel = () => {
     setIsEditing(false);
     setServerErrors(false);
+  };
+
+  const coco = (e) => {
+    console.log('submit button');
+    // onSubmit(e, setIsEditing, setIsLoading, setServerErrors)
   };
 
   const renderEditable = () => (
@@ -95,7 +110,8 @@ export default function InlineEditCard(props: InlineCardProps) {
         <button
           className="marapp-qa-actionsaveinline ng-button ng-button-primary ng-margin-right"
           disabled={!validForm}
-          onClick={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}
+          onKeyPress={handleKeyPress}
+          onClick={(e) => coco(e)}
         >
           {submitButtonText}
         </button>
@@ -114,7 +130,8 @@ export default function InlineEditCard(props: InlineCardProps) {
       {render && (
         <button
           className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
-          onClick={(e) => setIsEditing(true)}
+          onKeyPress={handleKeyPress}
+          // onClick={(e) => setIsEditing(true)}
         >
           {editButtonText}
         </button>

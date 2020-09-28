@@ -115,6 +115,7 @@ export function PlaceDetail(props: IProps) {
   }, [isValid]);
 
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
+    console.log('submit');
     e.preventDefault();
 
     const formData = getValues();
