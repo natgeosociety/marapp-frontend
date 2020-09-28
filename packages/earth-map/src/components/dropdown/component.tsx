@@ -28,8 +28,8 @@ interface IDropdownComponent {
 }
 
 const DropdownPanel: any = Keyframes.Spring({
-  close: { x: -1000, delay: 0 },
-  open: { x: 0, from: { x: 0 } },
+  close: { x: `-100vh`, delay: 0 },
+  open: { x: '0vh', from: { x: 0 } },
 });
 
 export default function DropdownComponent(props: IDropdownComponent) {
@@ -41,7 +41,7 @@ export default function DropdownComponent(props: IDropdownComponent) {
         <animated.ul
           className="marapp-qa-dropdown ng-ep-dropdown ng-section-background"
           style={{
-            transform: x.interpolate((x) => `translate3d(0,${x}px,0)`),
+            transform: x.interpolate((x) => `translate3d(0,${x},0)`),
             ...props,
           }}
         >
