@@ -23,9 +23,9 @@ import InfiniteList from 'components/infinite-list';
 import ListItem from 'components/list-item';
 import SearchBox from 'components/searchbox';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
-import { debounce } from 'lodash';
+import { debounce, sortBy } from 'lodash';
 import { EPanels } from 'modules/sidebar/model';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './styles.scss';
 
@@ -92,10 +92,16 @@ const Layers = (props: IProps) => {
   } = props;
 
   const { loading, search, listActive, nextPageCursor } = layers;
+  const [sortedLayers, setSortedLayers] = useState([]);
+
   const hasSearchTerm = !!search.search;
   const showX = hasSearchTerm;
   const showFilter = !selected || panelExpanded;
   const showBack = selected && panelExpanded;
+
+  useEffect(() => {
+    setSortedLayers(sortBy(listActive, 'name'));
+  }, [listActive]);
 
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -177,7 +183,7 @@ const Layers = (props: IProps) => {
                   deselect all
                 </a>
               </div>
-              {listActive.map((layer) => {
+              {sortedLayers.map((layer) => {
                 return (
                   <ListItem
                     active={true}

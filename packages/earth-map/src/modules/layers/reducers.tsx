@@ -49,7 +49,7 @@ export default {
     const layer = payload;
     const newActiveLayers = listActive.find((x) => x.slug === layer.slug)
       ? listActive.filter((x) => x.slug !== layer.slug)
-      : [...listActive, layer];
+      : [layer, ...listActive];
 
     return {
       ...state,
@@ -58,12 +58,21 @@ export default {
     };
   },
   [actions.setLayerOrder]: (state, { payload }) => {
-    const { active } = state;
+    const { active, listActive } = state;
     const { datasetIds } = payload;
 
     const activeFiltered = active.filter((a) => !datasetIds.includes(a));
 
-    return { ...state, active: [...datasetIds, ...activeFiltered] };
+    const activeSlugs = [...datasetIds, ...activeFiltered];
+    const listActiveFiltered = activeSlugs.map((slug: string) =>
+      listActive.find((layer) => layer.slug === slug)
+    );
+
+    return {
+      ...state,
+      active: activeSlugs,
+      listActive: listActiveFiltered,
+    };
   },
   [actions.setLayerOpacity]: (state, { payload }) => {
     const oldSettings = state.settings;
