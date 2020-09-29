@@ -100,6 +100,7 @@ export default function InlineEditCard(props: InlineCardProps) {
           {submitButtonText}
         </button>
         <button
+          type="button"
           className="marapp-qa-actioncancelinline ng-button ng-button-secondary"
           onClick={handleCancel}
         >
@@ -113,6 +114,7 @@ export default function InlineEditCard(props: InlineCardProps) {
     <>
       {render && (
         <button
+          type="button"
           className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
           onClick={(e) => setIsEditing(true)}
         >
