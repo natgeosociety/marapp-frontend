@@ -113,35 +113,32 @@ export function LayerDetail(props: any) {
   const { touched, dirty, isValid } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
-  async function onSubmit(e) {
-    console.log('submit??');
+  async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
 
-    return false;
+    const formData = getValues();
 
-    // const formData = getValues();
-    //
-    // const { type, category, provider, references } = formData;
-    //
-    // const parsed = {
-    //   ...formData,
-    //   ...(category && { category: flattenArrayForSelect(category, 'value') }),
-    //   ...(type && { type: flattenObjectForSelect(type, 'value') }),
-    //   ...(provider && { provider: flattenObjectForSelect(provider, 'value') }),
-    //   ...(references && { references: flattenArrayForSelect(references, 'id') }),
-    // };
-    //
-    // try {
-    //   setIsLoading && setIsLoading(true);
-    //   await handleLayerForm(false, parsed, id, selectedGroup);
-    //   mutate();
-    //   setIsEditing && setIsEditing(false);
-    //   setIsLoading && setIsLoading(false);
-    //   onDataChange();
-    // } catch (error) {
-    //   setIsLoading && setIsLoading(false);
-    //   setServerErrors && setServerErrors(error.data.errors);
-    // }
+    const { type, category, provider, references } = formData;
+
+    const parsed = {
+      ...formData,
+      ...(category && { category: flattenArrayForSelect(category, 'value') }),
+      ...(type && { type: flattenObjectForSelect(type, 'value') }),
+      ...(provider && { provider: flattenObjectForSelect(provider, 'value') }),
+      ...(references && { references: flattenArrayForSelect(references, 'id') }),
+    };
+
+    try {
+      setIsLoading && setIsLoading(true);
+      await handleLayerForm(false, parsed, id, selectedGroup);
+      mutate();
+      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(false);
+      onDataChange();
+    } catch (error) {
+      setIsLoading && setIsLoading(false);
+      setServerErrors && setServerErrors(error.data.errors);
+    }
   }
 
   const handleJsonChange = (json) => {
@@ -166,15 +163,15 @@ export function LayerDetail(props: any) {
   return (
     !!layer && (
       <ContentLayout backTo="/layers" isLoading={!data} className="marapp-qa-layerdetail">
-        {/*<DeleteConfirmation*/}
-        {/*  id={id}*/}
-        {/*  navigateRoute="layers"*/}
-        {/*  name={name}*/}
-        {/*  type="layer"*/}
-        {/*  toggleModal={handleDeleteToggle}*/}
-        {/*  onDelete={onDataChange}*/}
-        {/*  visibility={showDeleteModal}*/}
-        {/*/>*/}
+        <DeleteConfirmation
+          id={id}
+          navigateRoute="layers"
+          name={name}
+          type="layer"
+          toggleModal={handleDeleteToggle}
+          onDelete={onDataChange}
+          visibility={showDeleteModal}
+        />
         <div className="ng-padding-medium-horizontal">
           <LinkWithOrg
             className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block"
@@ -186,44 +183,30 @@ export function LayerDetail(props: any) {
           <form className="ng-form ng-form-dark ng-flex-column">
             <div className="ng-grid">
               <div className="ng-width-3-4">
-                {/*<InlineEditCard*/}
-                {/*  onSubmit={onSubmit}*/}
-                {/*  validForm={isValid}*/}
-                {/*  render={({ setIsEditing, setIsLoading, setServerErrors }) => (*/}
-                {/*    <>*/}
-                {/*      <Input*/}
-                {/*        name="name"*/}
-                {/*        placeholder="Layer title"*/}
-                {/*        label="Title*"*/}
-                {/*        defaultValue={name}*/}
-                {/*        className="ng-display-block"*/}
-                {/*        error={renderErrorFor('name')}*/}
-                {/*        ref={register({*/}
-                {/*          required: 'Layer title is required',*/}
-                {/*          validate: {*/}
-                {/*            noSpecialCharsRule: noSpecialCharsRule(),*/}
-                {/*          },*/}
-                {/*        })}*/}
-                {/*      />*/}
-                {/*    </>*/}
-                {/*  )}*/}
-                {/*>*/}
-                <Input
-                  name="name"
-                  placeholder="Layer title"
-                  label="Title*"
-                  defaultValue={name}
-                  className="ng-display-block"
-                  error={renderErrorFor('name')}
-                  ref={register({
-                    required: 'Layer title is required',
-                    validate: {
-                      noSpecialCharsRule: noSpecialCharsRule(),
-                    },
-                  })}
-                />
-                {/*<h1 className="ng-text-display-m ng-margin-remove">{name}</h1>*/}
-                {/*</InlineEditCard>*/}
+                <InlineEditCard
+                  onSubmit={onSubmit}
+                  validForm={isValid}
+                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                    <>
+                      <Input
+                        name="name"
+                        placeholder="Layer title"
+                        label="Title*"
+                        defaultValue={name}
+                        className="ng-display-block"
+                        error={renderErrorFor('name')}
+                        ref={register({
+                          required: 'Layer title is required',
+                          validate: {
+                            noSpecialCharsRule: noSpecialCharsRule(),
+                          },
+                        })}
+                      />
+                    </>
+                  )}
+                >
+                  <h1 className="ng-text-display-m ng-margin-remove">{name}</h1>
+                </InlineEditCard>
               </div>
               <div className="ng-width-1-4">
                 <Card>
@@ -248,85 +231,69 @@ export function LayerDetail(props: any) {
             </div>
             <div className="ng-grid">
               <div className="ng-width-1-2">
-                {/*<InlineEditCard*/}
-                {/*  onSubmit={onSubmit}*/}
-                {/*  validForm={isValid}*/}
-                {/*  render={({ setIsEditing, setIsLoading, setServerErrors }) => (*/}
-                {/*    <>*/}
-                {/*      <div className="ng-margin-medium-bottom">*/}
-                {/*        <Input*/}
-                {/*          name="slug"*/}
-                {/*          placeholder="Layer slug"*/}
-                {/*          label="Slug*"*/}
-                {/*          defaultValue={slug}*/}
-                {/*          className="ng-display-block marapp-qa-inputslug"*/}
-                {/*          error={renderErrorFor('slug')}*/}
-                {/*          ref={register({*/}
-                {/*            required: 'Layer slug is required',*/}
-                {/*            validate: {*/}
-                {/*              alphaNumericDashesRule: alphaNumericDashesRule(),*/}
-                {/*            },*/}
-                {/*          })}*/}
-                {/*        />*/}
-                {/*      </div>*/}
-                {/*      <div>*/}
-                {/*        <label htmlFor="category">Layer category</label>*/}
-                {/*        <Controller*/}
-                {/*          as={Select}*/}
-                {/*          control={control}*/}
-                {/*          className="marapp-qa-category"*/}
-                {/*          name="category"*/}
-                {/*          options={LAYER_CATEGORY_OPTIONS}*/}
-                {/*          defaultValue={layerCategory}*/}
-                {/*          isSearchable={true}*/}
-                {/*          isMulti={true}*/}
-                {/*          placeholder="Select layer category"*/}
-                {/*          styles={CUSTOM_STYLES}*/}
-                {/*          error={renderErrorFor('category')}*/}
-                {/*          theme={(theme) => ({*/}
-                {/*            ...theme,*/}
-                {/*            ...SELECT_THEME,*/}
-                {/*          })}*/}
-                {/*          rules={{ required: true }}*/}
-                {/*        />*/}
-                {/*        <div className="ng-form-error-block">*/}
-                {/*          <ErrorMessage*/}
-                {/*            errors={errors}*/}
-                {/*            name="category"*/}
-                {/*            message="Layer category cannot be empty"*/}
-                {/*          />*/}
-                {/*        </div>*/}
-                {/*      </div>*/}
-                {/*    </>*/}
-                {/*  )}*/}
-                {/*>*/}
-                <div className="ng-margin-medium-bottom">
-                  <div className="ng-margin-medium-bottom">
-                    <Input
-                      name="slug"
-                      placeholder="Layer slug"
-                      label="Slug*"
-                      defaultValue={slug}
-                      className="ng-display-block marapp-qa-inputslug"
-                      // error={renderErrorFor('slug')}
-                      // ref={register({
-                      //   required: 'Layer slug is required',
-                      //   validate: {
-                      //     alphaNumericDashesRule: alphaNumericDashesRule(),
-                      //   },
-                      // })}
-                    />
-                  </div>
-                  <p className="ng-text-weight-bold ng-margin-remove">Layer slug</p>
-                  <p className="ng-margin-remove ng-padding-left">{slug}</p>
-                </div>
-                <div>
-                  <p className="ng-text-weight-bold ng-margin-remove">Layer category</p>
-                  {category && (
-                    <p className="ng-margin-remove ng-padding-left">{category.join(', ')}</p>
+                <InlineEditCard
+                  onSubmit={onSubmit}
+                  validForm={isValid}
+                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                    <>
+                      <div className="ng-margin-medium-bottom">
+                        <Input
+                          name="slug"
+                          placeholder="Layer slug"
+                          label="Slug*"
+                          defaultValue={slug}
+                          className="ng-display-block marapp-qa-inputslug"
+                          error={renderErrorFor('slug')}
+                          ref={register({
+                            required: 'Layer slug is required',
+                            validate: {
+                              alphaNumericDashesRule: alphaNumericDashesRule(),
+                            },
+                          })}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="category">Layer category</label>
+                        <Controller
+                          as={Select}
+                          control={control}
+                          className="marapp-qa-category"
+                          name="category"
+                          options={LAYER_CATEGORY_OPTIONS}
+                          defaultValue={layerCategory}
+                          isSearchable={true}
+                          isMulti={true}
+                          placeholder="Select layer category"
+                          styles={CUSTOM_STYLES}
+                          error={renderErrorFor('category')}
+                          theme={(theme) => ({
+                            ...theme,
+                            ...SELECT_THEME,
+                          })}
+                          rules={{ required: true }}
+                        />
+                        <div className="ng-form-error-block">
+                          <ErrorMessage
+                            errors={errors}
+                            name="category"
+                            message="Layer category cannot be empty"
+                          />
+                        </div>
+                      </div>
+                    </>
                   )}
-                </div>
-                {/*</InlineEditCard>*/}
+                >
+                  <div className="ng-margin-medium-bottom">
+                    <p className="ng-text-weight-bold ng-margin-remove">Layer slug</p>
+                    <p className="ng-margin-remove ng-padding-left">{slug}</p>
+                  </div>
+                  <div>
+                    <p className="ng-text-weight-bold ng-margin-remove">Layer category</p>
+                    {category && (
+                      <p className="ng-margin-remove ng-padding-left">{category.join(', ')}</p>
+                    )}
+                  </div>
+                </InlineEditCard>
               </div>
               <div className="ng-width-1-2">
                 <Card>
@@ -352,7 +319,7 @@ export function LayerDetail(props: any) {
                 <InlineEditCard
                   onSubmit={onSubmit}
                   validForm={isValid}
-                  render={({}) => (
+                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <label className="ng-form-label" htmlFor="description">
                         Layer description
@@ -376,184 +343,184 @@ export function LayerDetail(props: any) {
                 </InlineEditCard>
               </div>
             </div>
-            {/*<div className="ng-grid">*/}
-            {/*  <div className="ng-width-1-1">*/}
-            {/*    <InlineEditCard*/}
-            {/*      onSubmit={onSubmit}*/}
-            {/*      validForm={isValid}*/}
-            {/*      render={({ setIsEditing, setIsLoading, setServerErrors }) => (*/}
-            {/*        <>*/}
-            {/*          <div>*/}
-            {/*            <label htmlFor="type">Layer provider</label>*/}
-            {/*            <Controller*/}
-            {/*              as={Select}*/}
-            {/*              control={control}*/}
-            {/*              className="marapp-qa-provider"*/}
-            {/*              name="provider"*/}
-            {/*              options={LAYER_PROVIDER_OPTIONS}*/}
-            {/*              defaultValue={layerProvider}*/}
-            {/*              isSearchable={true}*/}
-            {/*              placeholder="Select layer provider"*/}
-            {/*              styles={CUSTOM_STYLES}*/}
-            {/*              theme={(theme) => ({*/}
-            {/*                ...theme,*/}
-            {/*                ...SELECT_THEME,*/}
-            {/*              })}*/}
-            {/*              rules={{ required: true }}*/}
-            {/*            />*/}
-            {/*          </div>*/}
-            {/*          <div>*/}
-            {/*            <label htmlFor="type">Layer type</label>*/}
-            {/*            <Controller*/}
-            {/*              as={Select}*/}
-            {/*              control={control}*/}
-            {/*              className="marapp-qa-type"*/}
-            {/*              name="type"*/}
-            {/*              options={LAYER_TYPE_OPTIONS}*/}
-            {/*              defaultValue={layerType}*/}
-            {/*              isSearchable={true}*/}
-            {/*              placeholder="Select layer type"*/}
-            {/*              styles={CUSTOM_STYLES}*/}
-            {/*              theme={(theme) => ({*/}
-            {/*                ...theme,*/}
-            {/*                ...SELECT_THEME,*/}
-            {/*              })}*/}
-            {/*              rules={{ required: true }}*/}
-            {/*            />*/}
-            {/*          </div>*/}
-            {/*        </>*/}
-            {/*      )}*/}
-            {/*    >*/}
-            {/*      <div className="ng-margin-medium-bottom">*/}
-            {/*        <p className="ng-text-weight-bold ng-margin-remove">Layer provider</p>*/}
-            {/*        <p className="ng-margin-remove ng-padding-left">{provider}</p>*/}
-            {/*      </div>*/}
-            {/*      <div>*/}
-            {/*        <p className="ng-text-weight-bold ng-margin-remove">Later type</p>*/}
-            {/*        <p className="ng-margin-remove ng-padding-left">{type}</p>*/}
-            {/*      </div>*/}
-            {/*    </InlineEditCard>*/}
-            {/*  </div>*/}
-            {/*</div>*/}
-            {/*<div className="ng-grid">*/}
-            {/*  <div className="ng-width-1-1">*/}
-            {/*    <InlineEditCard*/}
-            {/*      onSubmit={onSubmit}*/}
-            {/*      validForm={!jsonError}*/}
-            {/*      render={({ setIsEditing, setIsLoading, setServerErrors }) => (*/}
-            {/*        <>*/}
-            {/*          <div className="ng-margin-medium-bottom">*/}
-            {/*            <label htmlFor="config">Layer Config</label>*/}
-            {/*            <Controller*/}
-            {/*              name="config"*/}
-            {/*              control={control}*/}
-            {/*              defaultValue={layerConfig}*/}
-            {/*              onChange={handleJsonChange}*/}
-            {/*              as={<JsonEditor json={layerConfig} />}*/}
-            {/*            />*/}
-            {/*          </div>*/}
-            {/*        </>*/}
-            {/*      )}*/}
-            {/*    >*/}
-            {/*      <div className="ng-margin-medium-bottom">*/}
-            {/*        {config && (*/}
-            {/*          <div>*/}
-            {/*            <p className="ng-flex">*/}
-            {/*              <span className="ng-text-weight-medium">Layer config</span>*/}
-            {/*              <span>*/}
-            {/*                <i*/}
-            {/*                  onClick={(e) => copyToClipboard(e, textAreaRef, setCopySuccess)}*/}
-            {/*                  className="ng-icon ng-icon-layers ng-c-cursor-pointer ng-margin-small-horizontal"*/}
-            {/*                />*/}
-            {/*                <span className="ng-text-weight-normal">{copySuccess}</span>*/}
-            {/*              </span>*/}
-            {/*            </p>*/}
+            <div className="ng-grid">
+              <div className="ng-width-1-1">
+                <InlineEditCard
+                  onSubmit={onSubmit}
+                  validForm={isValid}
+                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                    <>
+                      <div>
+                        <label htmlFor="type">Layer provider</label>
+                        <Controller
+                          as={Select}
+                          control={control}
+                          className="marapp-qa-provider"
+                          name="provider"
+                          options={LAYER_PROVIDER_OPTIONS}
+                          defaultValue={layerProvider}
+                          isSearchable={true}
+                          placeholder="Select layer provider"
+                          styles={CUSTOM_STYLES}
+                          theme={(theme) => ({
+                            ...theme,
+                            ...SELECT_THEME,
+                          })}
+                          rules={{ required: true }}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="type">Layer type</label>
+                        <Controller
+                          as={Select}
+                          control={control}
+                          className="marapp-qa-type"
+                          name="type"
+                          options={LAYER_TYPE_OPTIONS}
+                          defaultValue={layerType}
+                          isSearchable={true}
+                          placeholder="Select layer type"
+                          styles={CUSTOM_STYLES}
+                          theme={(theme) => ({
+                            ...theme,
+                            ...SELECT_THEME,
+                          })}
+                          rules={{ required: true }}
+                        />
+                      </div>
+                    </>
+                  )}
+                >
+                  <div className="ng-margin-medium-bottom">
+                    <p className="ng-text-weight-bold ng-margin-remove">Layer provider</p>
+                    <p className="ng-margin-remove ng-padding-left">{provider}</p>
+                  </div>
+                  <div>
+                    <p className="ng-text-weight-bold ng-margin-remove">Later type</p>
+                    <p className="ng-margin-remove ng-padding-left">{type}</p>
+                  </div>
+                </InlineEditCard>
+              </div>
+            </div>
+            <div className="ng-grid">
+              <div className="ng-width-1-1">
+                <InlineEditCard
+                  onSubmit={onSubmit}
+                  validForm={!jsonError}
+                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                    <>
+                      <div className="ng-margin-medium-bottom">
+                        <label htmlFor="config">Layer Config</label>
+                        <Controller
+                          name="config"
+                          control={control}
+                          defaultValue={layerConfig}
+                          onChange={handleJsonChange}
+                          as={<JsonEditor json={layerConfig} />}
+                        />
+                      </div>
+                    </>
+                  )}
+                >
+                  <div className="ng-margin-medium-bottom">
+                    {config && (
+                      <div>
+                        <p className="ng-flex">
+                          <span className="ng-text-weight-medium">Layer config</span>
+                          <span>
+                            <i
+                              onClick={(e) => copyToClipboard(e, textAreaRef, setCopySuccess)}
+                              className="ng-icon ng-icon-layers ng-c-cursor-pointer ng-margin-small-horizontal"
+                            />
+                            <span className="ng-text-weight-normal">{copySuccess}</span>
+                          </span>
+                        </p>
 
-            {/*            <Collapse addState={true} isOpen={collapseJson} collapseHeight="100px">*/}
-            {/*              <JsonEditor json={config} readOnly={true} />*/}
-            {/*            </Collapse>*/}
-            {/*            <div className="ng-flex ng-flex-center">*/}
-            {/*              <i*/}
-            {/*                onClick={(e) => setCollapseJson(!collapseJson)}*/}
-            {/*                className={classnames({*/}
-            {/*                  'ng-icon ng-c-cursor-pointer': true,*/}
-            {/*                  'ng-icon-directionup': collapseJson,*/}
-            {/*                  'ng-icon-directiondown': !collapseJson,*/}
-            {/*                })}*/}
-            {/*              />*/}
-            {/*            </div>*/}
-            {/*          </div>*/}
-            {/*        )}*/}
-            {/*      </div>*/}
-            {/*    </InlineEditCard>*/}
-            {/*  </div>*/}
-            {/*</div>*/}
-            {/*<div className="ng-grid">*/}
-            {/*  <div className="ng-width-1-1">*/}
-            {/*    <InlineEditCard*/}
-            {/*      onSubmit={onSubmit}*/}
-            {/*      validForm={isValid}*/}
-            {/*      render={({ setIsEditing, setIsLoading, setServerErrors }) => (*/}
-            {/*        <>*/}
-            {/*          <div className="ng-margin-medium-bottom">*/}
-            {/*            <label htmlFor="provider">Included layers:</label>*/}
-            {/*            <Controller*/}
-            {/*              name="references"*/}
-            {/*              type="layers"*/}
-            {/*              className="marapp-qa-references"*/}
-            {/*              control={control}*/}
-            {/*              getOptionLabel={(option) => option.name}*/}
-            {/*              getOptionValue={(option) => option.id}*/}
-            {/*              loadFunction={getAllLayers}*/}
-            {/*              defaultValue={references}*/}
-            {/*              selectedGroup={selectedGroup}*/}
-            {/*              as={AsyncSelect}*/}
-            {/*              onChange={([e]) => e}*/}
-            {/*              isClearable={true}*/}
-            {/*              isSearchable={true}*/}
-            {/*              isMulti={true}*/}
-            {/*              styles={CUSTOM_STYLES}*/}
-            {/*              theme={(theme) => ({*/}
-            {/*                ...theme,*/}
-            {/*                ...SELECT_THEME,*/}
-            {/*              })}*/}
-            {/*              closeMenuOnSelect={false}*/}
-            {/*              placeholder="Select layers"*/}
-            {/*            />*/}
-            {/*          </div>*/}
-            {/*        </>*/}
-            {/*      )}*/}
-            {/*    >*/}
-            {/*      <div className="ng-margin-medium-bottom">*/}
-            {/*        {!!references ? (*/}
-            {/*          <DetailList*/}
-            {/*            data={references}*/}
-            {/*            name="Layer References"*/}
-            {/*            type="layers"*/}
-            {/*            className="ng-flex-column ng-flex-top"*/}
-            {/*          />*/}
-            {/*        ) : (*/}
-            {/*          <div>*/}
-            {/*            <p className="ng-text-weight-bold ng-margin-small-bottom">*/}
-            {/*              Layer references*/}
-            {/*            </p>*/}
-            {/*            <span className="ng-padding-left">No layer references</span>*/}
-            {/*          </div>*/}
-            {/*        )}*/}
-            {/*      </div>*/}
-            {/*    </InlineEditCard>*/}
-            {/*  </div>*/}
-            {/*</div>*/}
+                        <Collapse addState={true} isOpen={collapseJson} collapseHeight="100px">
+                          <JsonEditor json={config} readOnly={true} />
+                        </Collapse>
+                        <div className="ng-flex ng-flex-center">
+                          <i
+                            onClick={(e) => setCollapseJson(!collapseJson)}
+                            className={classnames({
+                              'ng-icon ng-c-cursor-pointer': true,
+                              'ng-icon-directionup': collapseJson,
+                              'ng-icon-directiondown': !collapseJson,
+                            })}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </InlineEditCard>
+              </div>
+            </div>
+            <div className="ng-grid">
+              <div className="ng-width-1-1">
+                <InlineEditCard
+                  onSubmit={onSubmit}
+                  validForm={isValid}
+                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                    <>
+                      <div className="ng-margin-medium-bottom">
+                        <label htmlFor="provider">Included layers:</label>
+                        <Controller
+                          name="references"
+                          type="layers"
+                          className="marapp-qa-references"
+                          control={control}
+                          getOptionLabel={(option) => option.name}
+                          getOptionValue={(option) => option.id}
+                          loadFunction={getAllLayers}
+                          defaultValue={references}
+                          selectedGroup={selectedGroup}
+                          as={AsyncSelect}
+                          onChange={([e]) => e}
+                          isClearable={true}
+                          isSearchable={true}
+                          isMulti={true}
+                          styles={CUSTOM_STYLES}
+                          theme={(theme) => ({
+                            ...theme,
+                            ...SELECT_THEME,
+                          })}
+                          closeMenuOnSelect={false}
+                          placeholder="Select layers"
+                        />
+                      </div>
+                    </>
+                  )}
+                >
+                  <div className="ng-margin-medium-bottom">
+                    {!!references ? (
+                      <DetailList
+                        data={references}
+                        name="Layer References"
+                        type="layers"
+                        className="ng-flex-column ng-flex-top"
+                      />
+                    ) : (
+                      <div>
+                        <p className="ng-text-weight-bold ng-margin-small-bottom">
+                          Layer references
+                        </p>
+                        <span className="ng-padding-left">No layer references</span>
+                      </div>
+                    )}
+                  </div>
+                </InlineEditCard>
+              </div>
+            </div>
             {serverErrors && <ErrorMessages key={id} errors={serverErrors} />}
           </form>
           {/*hidden input to store config needed for copy to clipboard function*/}
-          {/*<input*/}
-          {/*  type="text"*/}
-          {/*  ref={textAreaRef}*/}
-          {/*  value={JSON.stringify(config)}*/}
-          {/*  readOnly={true}*/}
-          {/*  style={{ position: 'absolute', left: '-10000px', top: '-10000px' }}*/}
-          {/*/>*/}
+          <input
+            type="text"
+            ref={textAreaRef}
+            value={JSON.stringify(config)}
+            readOnly={true}
+            style={{ position: 'absolute', left: '-10000px', top: '-10000px' }}
+          />
           {writePermissions && (
             <div className="ng-text-right ng-margin-medium-top">
               <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
