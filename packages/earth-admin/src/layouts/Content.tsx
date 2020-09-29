@@ -70,7 +70,7 @@ export default function ContentLayout(props: ILayoutProps) {
           isAuthenticated={isAuthenticated}
           onLogin={login}
           onLogout={logout}
-          onSignUp={login.bind({}, { initialScreen: 'signUp' })}
+          onSignUp={() => login({ initialScreen: 'signUp' })}
         />
         <div className="ng-padding-large">
           <Content {...props} />

@@ -327,7 +327,7 @@ function UserMenuWrapper(props) {
       isAuthenticated={isAuthenticated}
       onLogin={login}
       onLogout={logout}
-      onSignUp={login.bind(this, { initialScreen: 'signUp' })}
+      onSignUp={() => login({ initialScreen: 'signUp' })}
     />
   );
 }
