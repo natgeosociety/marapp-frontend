@@ -96,9 +96,18 @@ export const UserMenu = (props: IProps) => {
                   </li>
                 </>
               ) : (
-                <li className="marapp-qa-signin">
-                  <a onClick={compose(onLogin, toggleDrop)}>Sign in</a>
-                </li>
+                <>
+                  <li className="marapp-qa-signin">
+                    <a onClick={compose(onLogin, toggleDrop)}>Sign in</a>
+                  </li>
+                  <li className="marapp-qa-signup">
+                    <a
+                      onClick={compose(onLogin.bind(this, { initialScreen: 'signUp' }), toggleDrop)}
+                    >
+                      Sign up
+                    </a>
+                  </li>
+                </>
               )}
             </ul>
           </animated.div>
