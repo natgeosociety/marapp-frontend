@@ -66,7 +66,12 @@ export default function ContentLayout(props: ILayoutProps) {
         <title>{APP_NAME}</title>
       </Helmet>
       <div className="ng-page-container ng-background-gray-9">
-        <UserMenu isAuthenticated={isAuthenticated} onLogin={login} onLogout={logout} />
+        <UserMenu
+          isAuthenticated={isAuthenticated}
+          onLogin={login}
+          onLogout={logout}
+          onSignUp={login.bind({}, { initialScreen: 'signUp' })}
+        />
         <div className="ng-padding-large">
           <Content {...props} />
         </div>

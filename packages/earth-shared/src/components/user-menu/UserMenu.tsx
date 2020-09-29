@@ -36,11 +36,12 @@ interface IProps {
   isAuthenticated: boolean;
   onLogin: () => {};
   onLogout: () => {};
+  onSignUp: () => {};
   selected?: string;
 }
 
 export const UserMenu = (props: IProps) => {
-  const { isAuthenticated = false, onLogin, onLogout, selected } = props;
+  const { isAuthenticated = false, onLogin, onLogout, onSignUp, selected } = props;
   const [showDrop, setShowDrop] = useState(false);
   const menuRef = useRef(null);
 
@@ -101,11 +102,7 @@ export const UserMenu = (props: IProps) => {
                     <a onClick={compose(onLogin, toggleDrop)}>Sign in</a>
                   </li>
                   <li className="marapp-qa-signup">
-                    <a
-                      onClick={compose(onLogin.bind(this, { initialScreen: 'signUp' }), toggleDrop)}
-                    >
-                      Sign up
-                    </a>
+                    <a onClick={compose(onSignUp, toggleDrop)}>Sign up</a>
                   </li>
                 </>
               )}
