@@ -92,16 +92,13 @@ const Layers = (props: IProps) => {
   } = props;
 
   const { loading, search, listActive, nextPageCursor } = layers;
-  const [sortedLayers, setSortedLayers] = useState([]);
 
   const hasSearchTerm = !!search.search;
   const showX = hasSearchTerm;
   const showFilter = !selected || panelExpanded;
   const showBack = selected && panelExpanded;
 
-  useEffect(() => {
-    setSortedLayers(sortBy(listActive, 'name'));
-  }, [listActive]);
+  const sortedLayers = sortBy(listActive, 'name');
 
   const handleChange = (e) => {
     const newValue = e.target.value;
