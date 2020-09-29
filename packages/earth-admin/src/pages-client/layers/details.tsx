@@ -197,7 +197,6 @@ export function LayerDetail(props: any) {
                         error={renderErrorFor('name')}
                         ref={register({
                           required: 'Layer title is required',
-                          validate: {},
                         })}
                       />
                     </>

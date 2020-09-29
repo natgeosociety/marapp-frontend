@@ -153,7 +153,6 @@ export function DashboardDetail(props: IProps) {
                         error={renderErrorFor('name')}
                         ref={register({
                           required: 'Dashboard title is required',
-                          validate: {},
                         })}
                       />
                     </>

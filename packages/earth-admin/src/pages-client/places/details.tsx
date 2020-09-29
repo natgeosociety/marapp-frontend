@@ -199,7 +199,6 @@ export function PlaceDetail(props: IProps) {
                         error={renderErrorFor('name')}
                         ref={register({
                           required: 'Place title is required',
-                          validate: {},
                         })}
                       />
                     </>

@@ -183,7 +183,6 @@ export function WidgetsDetail(props: WidgetProps) {
                         error={renderErrorFor('name')}
                         ref={register({
                           required: 'Widget title is required',
-                          validate: {},
                         })}
                       />
                     </>

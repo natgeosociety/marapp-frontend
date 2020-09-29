@@ -89,7 +89,6 @@ export function NewOrganization(props: IProps) {
               error={renderErrorFor('name')}
               ref={register({
                 required: 'Organization name is required',
-                validate: {},
               })}
             />
           </Card>
