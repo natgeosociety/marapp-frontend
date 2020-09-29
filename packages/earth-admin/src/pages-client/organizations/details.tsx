@@ -31,7 +31,7 @@ import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { ContentLayout } from '@app/layouts';
 import { getOrganization, updateOrganization } from '@app/services/organizations';
 import { encodeQueryToURL } from '@app/utils';
-import { noSpecialCharsRule, setupErrors, validEmailRule } from '@app/utils/validations';
+import { setupErrors, validEmailRule } from '@app/utils/validations';
 
 import { OrganizationDetailsProps } from './model';
 
@@ -131,11 +131,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                       defaultValue={name}
                       ref={register({
                         required: 'Organization name is required',
-                        validate: {
-                          noSpecialCharsRule: noSpecialCharsRule(
-                            'Organization name can not contain special characters'
-                          ),
-                        },
+                        validate: {},
                       })}
                     />
                   </>

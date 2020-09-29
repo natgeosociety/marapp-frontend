@@ -24,6 +24,7 @@ import { useSWRInfinite } from 'swr';
  * Custom hook that integrates useSWRInfinite with <DataListing /> component
  * @param getQuery Function responsible for returning the api url
  * @param fetcher Function queries the api
+ * @param options
  */
 export function useInfiniteList(
   getQuery: (pageIndex: number) => string,

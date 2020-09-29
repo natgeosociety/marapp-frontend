@@ -30,8 +30,8 @@ import { FakeJsonUpload } from '@app/components/fake-json-upload';
 import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { addPlace, getUniqueSlug } from '@app/services/places';
-import { noSpecialCharsRule, setupErrors } from '@app/utils/validations';
+import { addPlace, getPlaceSlug } from '@app/services/places';
+import { setupErrors } from '@app/utils/validations';
 
 import { PlaceTypeEnum } from './model';
 
@@ -80,7 +80,7 @@ export function NewPlace(props: IProps) {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getUniqueSlug(watchName, selectedGroup);
+      const { data }: any = await getPlaceSlug(watchName, selectedGroup);
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);
@@ -104,9 +104,7 @@ export function NewPlace(props: IProps) {
               error={renderErrorFor('name')}
               ref={register({
                 required: 'Place title is required',
-                validate: {
-                  noSpecialCharsRule: noSpecialCharsRule(),
-                },
+                validate: {},
               })}
             />
           </Card>

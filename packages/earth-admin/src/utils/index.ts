@@ -53,7 +53,7 @@ export const deserializeData = (data) => DeserializerService.deserialize(data);
  * Url encode
  */
 export const encodeQueryToURL = (baseUrl: string, query: { [key: string]: any } = {}): string =>
-  [baseUrl, decodeURIComponent(queryStringEncode(query))].join('?');
+  [baseUrl, queryStringEncode(query)].join('?');
 
 /**
  * Strip numbers

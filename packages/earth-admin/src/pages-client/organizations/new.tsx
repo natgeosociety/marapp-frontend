@@ -30,12 +30,7 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 import { addOrganization } from '@app/services/organizations';
 import { Auth0Context } from '@app/utils/contexts';
-import {
-  noSpecialCharsRule,
-  setupErrors,
-  upperNumericDashesRule,
-  validEmailRule,
-} from '@app/utils/validations';
+import { setupErrors, upperNumericDashesRule, validEmailRule } from '@app/utils/validations';
 
 interface IProps {
   path?: string;
@@ -94,11 +89,7 @@ export function NewOrganization(props: IProps) {
               error={renderErrorFor('name')}
               ref={register({
                 required: 'Organization name is required',
-                validate: {
-                  noSpecialCharsRule: noSpecialCharsRule(
-                    'Organization name can not contain special characters'
-                  ),
-                },
+                validate: {},
               })}
             />
           </Card>

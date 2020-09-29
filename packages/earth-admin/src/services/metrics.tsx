@@ -20,7 +20,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
 import { GATSBY_API_URL } from '@app/config';
-import { deserializeData } from '@app/utils';
+import { deserializeData, encodeQueryToURL } from '@app/utils';
 
 interface ResponseSuccess {
   operationId?: string;
@@ -60,32 +60,29 @@ const MetricAPIService = {
 export const calculateAllForPlace = async (
   placeId: string,
   selectedGroup: string
-): Promise<ResponseSuccess | ResponseError> => {
-  return MetricAPIService.request({
-    url: `/metrics/${placeId}/action?group=${selectedGroup}`,
+): Promise<ResponseSuccess | ResponseError> =>
+  MetricAPIService.request({
+    url: encodeQueryToURL(`/metrics/${placeId}/action`, { group: selectedGroup }),
     method: 'post',
     params: {
       operationType: 'calculate',
     },
   });
-};
 
 export const calculateForPlace = async (
   placeID: string,
   metricId: string,
   selectedGroup: string
-): Promise<ResponseSuccess | ResponseError> => {
-  return MetricAPIService.request({
-    url: `/metrics/${placeID}/${metricId}/action?group=${selectedGroup}`,
+): Promise<ResponseSuccess | ResponseError> =>
+  MetricAPIService.request({
+    url: encodeQueryToURL(`/metrics/${placeID}/${metricId}/action`, { group: selectedGroup }),
     method: 'post',
     params: {
       operationType: 'calculate',
     },
   });
-};
 
-export const getAllMetrics = async (query: string) => {
-  return MetricAPIService.request({
+export const getAllMetrics = async (query: string) =>
+  MetricAPIService.request({
     url: query,
   });
-};
