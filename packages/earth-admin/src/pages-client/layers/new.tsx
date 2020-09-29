@@ -131,7 +131,6 @@ export function NewLayer(props: IProps) {
               error={renderErrorFor('name')}
               ref={register({
                 required: 'Layer title is required',
-                validate: {},
               })}
             />
           </Card>

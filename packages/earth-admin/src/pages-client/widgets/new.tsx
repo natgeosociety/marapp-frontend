@@ -127,7 +127,6 @@ export function NewWidget(props: IProps) {
               error={renderErrorFor('name')}
               ref={register({
                 required: 'Widget title is required',
-                validate: {},
               })}
             />
           </Card>

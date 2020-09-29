@@ -131,7 +131,6 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                       defaultValue={name}
                       ref={register({
                         required: 'Organization name is required',
-                        validate: {},
                       })}
                     />
                   </>

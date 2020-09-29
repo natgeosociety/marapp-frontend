@@ -103,7 +103,6 @@ export function NewDashboard(props: IProps) {
               error={renderErrorFor('name')}
               ref={register({
                 required: 'Dashboard title is required',
-                validate: {},
               })}
             />
           </Card>
