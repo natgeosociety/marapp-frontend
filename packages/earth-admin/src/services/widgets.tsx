@@ -21,7 +21,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 import { GATSBY_API_URL } from '@app/config';
 
-import { deserializeData } from '../utils';
+import { deserializeData, encodeQueryToURL } from '../utils';
 
 const WidgetAPIService = {
   request: (options: AxiosRequestConfig) => {
@@ -52,36 +52,36 @@ const WidgetAPIService = {
   },
 };
 
-export const getAllWidgets = async (widgetQuery: string) => {
-  return WidgetAPIService.request({
+export const getAllWidgets = async (widgetQuery: string) =>
+  WidgetAPIService.request({
     url: widgetQuery,
   });
-};
 
 export const addWidget = async (widget, group: string) =>
-  WidgetAPIService.request({ url: `/widgets?group=${group}`, method: 'post', data: widget });
+  WidgetAPIService.request({
+    url: encodeQueryToURL('/widgets', { group }),
+    method: 'post',
+    data: widget,
+  });
 
-export const getWidget = async (widgetQuery: string) => {
-  return WidgetAPIService.request({
+export const getWidget = async (widgetQuery: string) =>
+  WidgetAPIService.request({
     url: widgetQuery,
     method: 'get',
   });
-};
 
-export const updateWidget = async (widgetId: string, widget, group: string) => {
-  await WidgetAPIService.request({
-    url: `/widgets/${widgetId}?group=${group}`,
+export const updateWidget = async (widgetId: string, widget, group: string) =>
+  WidgetAPIService.request({
+    url: encodeQueryToURL(`/widgets/${widgetId}`, { group }),
     method: 'put',
     data: widget,
   });
-};
 
-export const deleteWidgets = async (widgetID: string, group: string) => {
-  return WidgetAPIService.request({
-    url: `/widgets/${widgetID}?group=${group}`,
+export const deleteWidgets = async (widgetID: string, group: string) =>
+  WidgetAPIService.request({
+    url: encodeQueryToURL(`/widgets/${widgetID}`, { group }),
     method: 'delete',
   });
-};
 
 export const handleWidgetForm = async (
   newWidget: boolean,
@@ -90,7 +90,7 @@ export const handleWidgetForm = async (
   group: string
 ) => (newWidget ? addWidget(widget, group) : updateWidget(widgetId, widget, group));
 
-export const getUniqueSlug = async (keyword: string, group: string, type: string = 'counter') =>
+export const getWidgetSlug = async (keyword: string, group: string, type: string = 'counter') =>
   WidgetAPIService.request({
-    url: `/widgets/slug?keyword=${keyword}&group=${group}&type=${type}`,
+    url: encodeQueryToURL('/widgets/slug', { keyword, group, type }),
   });

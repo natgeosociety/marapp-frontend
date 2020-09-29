@@ -33,7 +33,7 @@ import { Input } from '@app/components/input';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { addLayer, getAllLayers, getUniqueSlug } from '@app/services/layers';
+import { addLayer, getAllLayers, getLayerSlug } from '@app/services/layers';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenArrayForSelect, flattenObjectForSelect } from '@app/utils';
 import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
@@ -92,7 +92,7 @@ export function NewLayer(props: IProps) {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getUniqueSlug(watchName, selectedGroup);
+      const { data }: any = await getLayerSlug(watchName, selectedGroup);
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);

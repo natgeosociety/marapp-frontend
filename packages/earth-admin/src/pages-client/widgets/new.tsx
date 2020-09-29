@@ -34,7 +34,7 @@ import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 import { getAllLayers } from '@app/services/layers';
-import { addWidget, getUniqueSlug } from '@app/services/widgets';
+import { addWidget, getWidgetSlug } from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenObjectForSelect } from '@app/utils';
 import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
@@ -88,7 +88,7 @@ export function NewWidget(props: IProps) {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getUniqueSlug(watchName, selectedGroup);
+      const { data }: any = await getWidgetSlug(watchName, selectedGroup);
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);
