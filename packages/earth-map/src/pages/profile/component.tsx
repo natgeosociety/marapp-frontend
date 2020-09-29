@@ -50,6 +50,7 @@ export function ProfileComponent(props: IProps) {
         isAuthenticated={isAuthenticated}
         onLogin={login}
         onLogout={logout}
+        onSignUp={() => login({ initialScreen: 'signUp' })}
       />
 
       <div className="ng-user-profile-container">
