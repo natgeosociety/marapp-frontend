@@ -31,10 +31,9 @@ import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
 import { getAllWidgets, getDashboard, handleDashboardForm } from '@app/services';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { encodeQueryToURL, flattenArrayForSelect, formatDate } from '@app/utils';
 import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
-
-import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 
 const DASHBOARD_DETAIL_QUERY = {
   include: 'layers,widgets',

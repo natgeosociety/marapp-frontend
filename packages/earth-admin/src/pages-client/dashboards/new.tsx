@@ -32,10 +32,9 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 import { addDashboard, getUniqueSlug } from '@app/services/dashboards';
 import { getAllWidgets } from '@app/services/widgets';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenArrayForSelect } from '@app/utils';
 import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
-
-import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 
 interface IProps {
   path?: string;

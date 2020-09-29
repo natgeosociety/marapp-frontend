@@ -22,8 +22,8 @@ import Helmet from 'react-helmet';
 
 import { ErrorMessages, Spinner, UserMenu } from '@marapp/earth-shared';
 
-import { Auth0Context } from '@app/utils/contexts';
 import { LinkWithOrg } from '@app/components/link-with-org';
+import { Auth0Context } from '@app/utils/contexts';
 
 import '../styles/app.scss';
 import { APP_LOGO, APP_NAME } from '../theme';

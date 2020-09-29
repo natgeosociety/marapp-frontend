@@ -35,10 +35,9 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 import { getAllLayers } from '@app/services/layers';
 import { addWidget, getUniqueSlug } from '@app/services/widgets';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenObjectForSelect } from '@app/utils';
 import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
-
-import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 
 interface IProps {
   path?: string;

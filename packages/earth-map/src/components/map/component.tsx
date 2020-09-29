@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { Auth0Context } from 'auth/auth0';
 import axios from 'axios';
 import classnames from 'classnames';
 import { API_URL, MAPBOX_TOKEN } from 'config';
@@ -28,7 +29,6 @@ import { APP_ABOUT } from 'theme';
 
 import { Map, UserMenu } from '@marapp/earth-shared';
 
-import { Auth0Context } from 'auth/auth0';
 import BasemapComponent from '../basemap';
 import MapControls from './controls';
 import RecenterControl from './controls/recenter';
