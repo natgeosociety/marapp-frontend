@@ -32,9 +32,9 @@ import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
 import { getAllWidgets, getDashboard, handleDashboardForm } from '@app/services';
 import { encodeQueryToURL, flattenArrayForSelect, formatDate } from '@app/utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
+import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
-import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 
 const DASHBOARD_DETAIL_QUERY = {
   include: 'layers,widgets',
@@ -154,9 +154,7 @@ export function DashboardDetail(props: IProps) {
                         error={renderErrorFor('name')}
                         ref={register({
                           required: 'Dashboard title is required',
-                          validate: {
-                            noSpecialCharsRule: noSpecialCharsRule(),
-                          },
+                          validate: {},
                         })}
                       />
                     </>

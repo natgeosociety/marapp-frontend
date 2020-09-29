@@ -36,9 +36,9 @@ import { ContentLayout } from '@app/layouts';
 import { getAllLayers } from '@app/services/layers';
 import { addWidget, getUniqueSlug } from '@app/services/widgets';
 import { flattenObjectForSelect } from '@app/utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
+import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
-import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 
 interface IProps {
   path?: string;
@@ -128,9 +128,7 @@ export function NewWidget(props: IProps) {
               error={renderErrorFor('name')}
               ref={register({
                 required: 'Widget title is required',
-                validate: {
-                  noSpecialCharsRule: noSpecialCharsRule(),
-                },
+                validate: {},
               })}
             />
           </Card>

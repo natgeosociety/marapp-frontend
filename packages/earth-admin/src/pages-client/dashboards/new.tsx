@@ -33,9 +33,9 @@ import { ContentLayout } from '@app/layouts';
 import { addDashboard, getUniqueSlug } from '@app/services/dashboards';
 import { getAllWidgets } from '@app/services/widgets';
 import { flattenArrayForSelect } from '@app/utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
+import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
-import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 
 interface IProps {
   path?: string;
@@ -104,9 +104,7 @@ export function NewDashboard(props: IProps) {
               error={renderErrorFor('name')}
               ref={register({
                 required: 'Dashboard title is required',
-                validate: {
-                  noSpecialCharsRule: noSpecialCharsRule(),
-                },
+                validate: {},
               })}
             />
           </Card>

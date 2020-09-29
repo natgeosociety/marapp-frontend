@@ -36,7 +36,7 @@ import { ContentLayout } from '@app/layouts';
 import { addLayer, getAllLayers, getUniqueSlug } from '@app/services/layers';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenArrayForSelect, flattenObjectForSelect } from '@app/utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
+import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 
@@ -131,9 +131,7 @@ export function NewLayer(props: IProps) {
               error={renderErrorFor('name')}
               ref={register({
                 required: 'Layer title is required',
-                validate: {
-                  noSpecialCharsRule: noSpecialCharsRule(),
-                },
+                validate: {},
               })}
             />
           </Card>
