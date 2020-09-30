@@ -91,7 +91,7 @@ const NotFound = (props: ILayoutProps) => {
           <Card>
             <p>
               The {errorPage} you are looking for could not be retrieved or doesn't exist. Return to{' '}
-              {errorPage}s dashboard, search for {errorPage}s, or create a new {errorPage}.
+              {errorPage}s home, search for {errorPage}s, or create a new {errorPage}.
             </p>
             <div className="ng-flex ng-flex-center">
               <LinkWithOrg
