@@ -55,16 +55,22 @@
   }
 
   .ng-ep-dropdown {
-    top: 100%
+    top: 100%;
+    box-shadow: none;
   }
 
   .ng-option {
-    line-height: 50px;
-    height: 50px;
+    line-height: 45px;
+    height: 45px;
     color: white;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    border-top: 1px solid $marapp-gray-8;
+
+    &:first-child {
+      border-top: 0;
+    }
 
     &.selected {
       background-color: rgba($marapp-gray-1, .1);

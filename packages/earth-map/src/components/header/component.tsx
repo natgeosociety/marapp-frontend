@@ -187,13 +187,18 @@ const Header = (props: IProps) => {
       defaultValue="map-view"
       checkedCount={selectedGroups.length}
       renderDropdown={isAuthenticated}
-      onChange={console.log}
+      onChange={(g) => window.location.assign(`${ADMIN_URL}${g}`)}
     >
       <Option value="map-view">Map View</Option>
       {orgCheckBoxes}
-      <Option value="one">This is a test</Option>
-      <Option value="two">This is a really long text option on two rows</Option>
-      <Option value="three">This is a test</Option>
+      {Object.keys(roles).map(
+        (g, i) =>
+          checkRole(roles[g]) && (
+            <Option value={g} key={i}>
+              {g} - ADMIN
+            </Option>
+          )
+      )}
     </AppContextSwitcher>
   );
 
