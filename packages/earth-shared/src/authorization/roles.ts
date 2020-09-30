@@ -30,8 +30,8 @@ enum RoleEnum {
  * @param roles
  * @param sep
  */
-export const isSuperAdmin = (roles: string[], sep: string = ':'): boolean => {
-  return !!roles.find((r: string) => r === ['*', RoleEnum.SUPER_ADMIN].join(sep));
+export const isSuperAdmin = (roles: string[] & object, sep: string = ':'): boolean => {
+  return roles['*'] || !!roles.find((r: string) => r === ['*', RoleEnum.SUPER_ADMIN].join(sep));
 };
 
 /**
