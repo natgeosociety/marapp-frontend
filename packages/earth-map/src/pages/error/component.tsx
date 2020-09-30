@@ -16,12 +16,10 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-
-import ErrorTemplate from 'components/error-template';
 import React from 'react';
 import { replace } from 'redux-first-router';
 
-import { Button } from '@marapp/earth-shared';
+import { Button, ErrorTemplate } from '@marapp/earth-shared';
 
 const ErrorPage = ({ resetStore }) => {
   return (

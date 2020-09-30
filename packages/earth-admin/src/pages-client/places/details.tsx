@@ -164,7 +164,13 @@ export function PlaceDetail(props: IProps) {
 
   return (
     !!place && (
-      <ContentLayout backTo="/places" isLoading={!data} className="marapp-qa-placesdetail">
+      <ContentLayout
+        backTo="/places"
+        isLoading={!data && !error}
+        errorPage="place"
+        errors={error?.data?.errors}
+        className="marapp-qa-placesdetail"
+      >
         <DeleteConfirmation
           id={id}
           navigateRoute="places"

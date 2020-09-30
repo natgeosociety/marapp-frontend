@@ -94,7 +94,13 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   const owner = owners && owners[0];
 
   return (
-    <ContentLayout backTo="/organizations">
+    <ContentLayout
+      backTo="/organizations"
+      isLoading={!data && !error}
+      errorPage="organization"
+      errors={error?.data?.errors}
+      className="marapp-qa-organizationdetail"
+    >
       <DeleteConfirmation
         id={id}
         navigateRoute={'organizations'}

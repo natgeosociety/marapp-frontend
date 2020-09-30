@@ -35,7 +35,7 @@ const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const PAGE_TYPE = setPage('Places');
 const PAGE_SIZE = 20;
 
-export default function PlacesPage() {
+export default function PlacesPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
 

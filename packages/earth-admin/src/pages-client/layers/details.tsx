@@ -162,7 +162,13 @@ export function LayerDetail(props: any) {
 
   return (
     !!layer && (
-      <ContentLayout backTo="/layers" isLoading={!data} className="marapp-qa-layerdetail">
+      <ContentLayout
+        backTo="/layers"
+        isLoading={!data && !error}
+        errorPage="layer"
+        errors={error?.data?.errors}
+        className="marapp-qa-layerdetail"
+      >
         <DeleteConfirmation
           id={id}
           navigateRoute="layers"

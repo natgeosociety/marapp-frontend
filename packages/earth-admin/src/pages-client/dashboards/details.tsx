@@ -118,7 +118,13 @@ export function DashboardDetail(props: IProps) {
 
   return (
     !!dashboard && (
-      <ContentLayout backTo="/dashboards" isLoading={!data} className="marapp-qa-dashboarddetail">
+      <ContentLayout
+        backTo="/dashboards"
+        isLoading={!data && !error}
+        errorPage="dashboard"
+        errors={error?.data?.errors}
+        className="marapp-qa-dashboarddetail"
+      >
         <DeleteConfirmation
           id={id}
           navigateRoute={'dashboards'}

@@ -148,7 +148,13 @@ export function WidgetsDetail(props: WidgetProps) {
 
   return (
     !!widget && (
-      <ContentLayout backTo="/widget" isLoading={!data} className="marapp-qa-widgetdetail">
+      <ContentLayout
+        backTo="/widget"
+        isLoading={!data && !error}
+        errorPage="widget"
+        errors={error?.data?.errors}
+        className="marapp-qa-widgetdetail"
+      >
         <DeleteConfirmation
           id={id}
           navigateRoute="widgets"
