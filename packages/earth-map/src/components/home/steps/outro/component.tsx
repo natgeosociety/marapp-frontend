@@ -49,7 +49,7 @@ class OutroComponent extends React.PureComponent<IOutro> {
                 <p className="landing-outro--text">Start Exploring</p>
                 <h3 className="landing-outro--title">{APP_NAME}</h3>
                 <Button className="ng-button ng-button-primary" link={{ to: '/earth' }}>
-                  Launch {APP_NAME}
+                  Launch Map
                 </Button>
               </div>
             </animated.div>
