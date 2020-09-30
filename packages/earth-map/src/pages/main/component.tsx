@@ -23,12 +23,18 @@ import React from 'react';
 import AsyncPage from './async';
 import AuthenticatedPage from './authenticated';
 import AuthorizedPage from './authorized';
+import { ADMIN_URL } from 'config';
+import { isSuperAdmin } from '@marapp/earth-shared';
 
 const Main = ({ router }) => {
-  const { isAuthenticated, isEmailVerified } = useAuth0();
+  const { isAuthenticated, isEmailVerified, userData } = useAuth0();
   const { type, routesMap } = router;
   const { page, isAuthRequired, isAuthzRequired, fallbackRouteResolver } = routesMap[type];
   const context = { isEmailVerified };
+
+  if (userData.allGroups.length === 0 && isSuperAdmin(userData.roles)) {
+    window.location.assign(ADMIN_URL);
+  }
 
   let Page;
   switch (true) {
