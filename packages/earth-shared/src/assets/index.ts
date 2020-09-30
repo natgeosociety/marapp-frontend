@@ -17,9 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './components';
-export * from './authorization';
-export * from './services';
-export * from './utils';
-export * from './hooks';
-export * from './assets';
+export const favicon = require('./favicon.ico');
