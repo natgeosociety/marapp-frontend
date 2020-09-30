@@ -63,7 +63,12 @@ export function PlaceDetail(props: IProps) {
   });
 
   const { data, error, mutate, revalidate } = useSWR(encodedQuery, (url) =>
-    getPlace(url).then((response: any) => response.data)
+    getPlace(url)
+      .then((response: any) => response.data)
+      .catch((error) => {
+        setRecordError(error.data.errors);
+        return [];
+      })
   );
 
   const [place, setPlace] = useState({});
@@ -72,6 +77,7 @@ export function PlaceDetail(props: IProps) {
   const [geojsonValue, setGeojson] = useState(null);
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState();
+  const [recordError, setRecordError] = useState();
   const [formValid, setFormValid] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [metricsLoading, setMetricsLoading] = useState(false);
@@ -164,7 +170,13 @@ export function PlaceDetail(props: IProps) {
 
   return (
     !!place && (
-      <ContentLayout backTo="/places" isLoading={!data} className="marapp-qa-placesdetail">
+      <ContentLayout
+        backTo="/places"
+        isLoading={!data}
+        errorPage="place"
+        errors={recordError}
+        className="marapp-qa-placesdetail"
+      >
         <DeleteConfirmation
           id={id}
           navigateRoute="places"

@@ -58,12 +58,18 @@ export function DashboardDetail(props: IProps) {
   });
 
   const { data, error, mutate } = useSWR(encodedQuery, (url) =>
-    getDashboard(url).then((res: any) => res.data)
+    getDashboard(url)
+      .then((res: any) => res.data)
+      .catch((error) => {
+        setRecordError(error.data.errors);
+        return [];
+      })
   );
 
   const [dashboard, setDashboard] = useState({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [serverErrors, setServerErrors] = useState();
+  const [recordError, setRecordError] = useState();
 
   const {
     id,
@@ -119,7 +125,13 @@ export function DashboardDetail(props: IProps) {
 
   return (
     !!dashboard && (
-      <ContentLayout backTo="/dashboards" isLoading={!data} className="marapp-qa-dashboarddetail">
+      <ContentLayout
+        backTo="/dashboards"
+        isLoading={!data}
+        errorPage="dashboard"
+        errors={recordError}
+        className="marapp-qa-dashboarddetail"
+      >
         <DeleteConfirmation
           id={id}
           navigateRoute={'dashboards'}
