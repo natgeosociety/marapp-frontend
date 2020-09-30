@@ -28,9 +28,9 @@ import Link from 'redux-first-router-link';
 import { fetchStats } from 'services/stats';
 import { APP_LOGO } from 'theme';
 
-import { checkRole } from '@marapp/earth-shared';
+import { checkRole, AppContextSwitcher } from '@marapp/earth-shared';
 
-import './styles.scss';
+const { Option } = AppContextSwitcher;
 
 interface IProps {
   group?: string[];
@@ -129,6 +129,73 @@ const Header = (props: IProps) => {
       filters: {},
     });
   };
+
+  const logo = (
+    <Link
+      className="ng-border-remove"
+      to={{
+        type: 'EARTH',
+      }}
+    >
+      <img
+        src={APP_LOGO}
+        alt={APP_NAME}
+        className="ng-margin-remove ng-display-block"
+        onClick={handleResetLocation}
+      />
+    </Link>
+  );
+  const orgCheckBoxes = (
+    <li className="marapp-qa-orglist ng-form ng-form-dark">
+      <div className="ng-padding-medium-horizontal ng-padding-top">
+        {availableGroups.map((g, i) => (
+          <label
+            htmlFor={g.name}
+            className={classNames('ng-padding-bottom ng-flex', {
+              'ng-c-cursor-pointer': hasMultipleGroups,
+            })}
+            key={i}
+          >
+            {hasMultipleGroups && (
+              <input
+                className="ng-checkbox-input ng-flex-item-none ng-margin-top-remove"
+                type="checkbox"
+                id={g.name}
+                value={g.name}
+                checked={!!selectedGroups.find((x) => x === g.name)}
+                name={g.name}
+                onChange={(e) => onOrgChange(e)}
+              />
+            )}
+            <div>
+              {g.name}
+              <span className="ng-display-block ng-color-mdgray">
+                Places ({g.locations})<strong className="ng-icon-bullet" />
+                Layers ({g.layers})
+              </span>
+            </div>
+          </label>
+        ))}
+      </div>
+    </li>
+  );
+
+  return (
+    <AppContextSwitcher
+      logo={logo}
+      label="Map View"
+      defaultValue="map-view"
+      checkedCount={selectedGroups.length}
+      renderDropdown={isAuthenticated}
+      onChange={console.log}
+    >
+      <Option value="map-view">Map View</Option>
+      {orgCheckBoxes}
+      <Option value="one">This is a test</Option>
+      <Option value="two">This is a really long text option on two rows</Option>
+      <Option value="three">This is a test</Option>
+    </AppContextSwitcher>
+  );
 
   return (
     <div className="marapp-qa-header ng-padding-medium-horizontal ng-ep-background-dark ng-flex ng-flex-middle ng-position-relative ng-padding-bottom ng-padding-small-top">
