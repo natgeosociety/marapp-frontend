@@ -62,19 +62,13 @@ export function LayerDetail(props: any) {
   });
 
   const { data, error, mutate } = useSWR(encodedQuery, (url) =>
-    getLayer(url)
-      .then((res: any) => res.data)
-      .catch((error) => {
-        setRecordError(error.data.errors);
-        return [];
-      })
+    getLayer(url).then((res: any) => res.data)
   );
 
   const [layer, setLayer] = useState({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState();
-  const [recordError, setRecordError] = useState();
   const [layerConfig, setLayerConfig] = useState();
   const [layerCategory, setLayerCategory] = useState(null);
   const [layerType, setLayerType] = useState(null);
@@ -170,9 +164,9 @@ export function LayerDetail(props: any) {
     !!layer && (
       <ContentLayout
         backTo="/layers"
-        isLoading={!data}
+        isLoading={!data && !error}
         errorPage="layer"
-        errors={recordError}
+        errors={error?.data?.errors}
         className="marapp-qa-layerdetail"
       >
         <DeleteConfirmation

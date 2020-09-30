@@ -61,19 +61,13 @@ export function WidgetsDetail(props: WidgetProps) {
   });
 
   const { data, error, mutate } = useSWR(encodedQuery, (url) =>
-    getWidget(url)
-      .then((res: any) => res.data)
-      .catch((error) => {
-        setRecordError(error.data.errors);
-        return [];
-      })
+    getWidget(url).then((res: any) => res.data)
   );
 
   const [widget, setWidget] = useState<Widget>({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
-  const [recordError, setRecordError] = useState();
   const [widgetConfig, setWidgetConfig] = useState(null);
   const [collapseJson, setCollapseJson] = useState(false);
   const [copySuccess, setCopySuccess] = useState('');
@@ -156,9 +150,9 @@ export function WidgetsDetail(props: WidgetProps) {
     !!widget && (
       <ContentLayout
         backTo="/widget"
-        isLoading={!data}
+        isLoading={!data && !error}
         errorPage="widget"
-        errors={recordError}
+        errors={error?.data?.errors}
         className="marapp-qa-widgetdetail"
       >
         <DeleteConfirmation

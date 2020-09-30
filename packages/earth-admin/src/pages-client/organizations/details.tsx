@@ -39,18 +39,12 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   const { page, onDataChange = noop } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [localOrgData, setLocalOrgData] = useState({});
-  const [recordError, setRecordError] = useState();
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   const encodedQuery = encodeQueryToURL(`organizations/${props.page}`, { include: 'owners' });
 
   const { data, error, mutate } = useSWR(encodedQuery, (url) =>
-    getOrganization(url)
-      .then((res: any) => res.data)
-      .catch((error) => {
-        setRecordError(error.data.errors);
-        return [];
-      })
+    getOrganization(url).then((res: any) => res.data)
   );
 
   useEffect(() => {
@@ -102,9 +96,9 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   return (
     <ContentLayout
       backTo="/organizations"
-      isLoading={!data}
+      isLoading={!data && !error}
       errorPage="organization"
-      errors={recordError}
+      errors={error?.data?.errors}
       className="marapp-qa-organizationdetail"
     >
       <DeleteConfirmation
