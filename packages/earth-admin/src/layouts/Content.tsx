@@ -26,6 +26,7 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 import { Auth0Context } from '@app/utils/contexts';
 
 import '../styles/app.scss';
+import { favicon } from '@marapp/earth-shared';
 import { APP_LOGO, APP_NAME } from '../theme';
 
 interface ILayoutProps {
@@ -59,10 +60,7 @@ export default function ContentLayout(props: ILayoutProps) {
   return (
     <div className={`ng-flex ${props.className || ''}`}>
       <Helmet>
-        <link
-          rel="icon"
-          href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
-        />
+        <link rel="icon" href={favicon} />
         <title>{APP_NAME}</title>
       </Helmet>
       <div className="ng-page-container ng-background-gray-9">
