@@ -30,12 +30,11 @@ import { HtmlEditor } from '@app/components/html-editor';
 import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { addDashboard, getUniqueSlug } from '@app/services/dashboards';
+import { addDashboard, getDashboardSlug } from '@app/services/dashboards';
 import { getAllWidgets } from '@app/services/widgets';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenArrayForSelect } from '@app/utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
-
-import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 interface IProps {
   path?: string;
@@ -80,7 +79,7 @@ export function NewDashboard(props: IProps) {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getUniqueSlug(watchName, selectedGroup);
+      const { data }: any = await getDashboardSlug(watchName, selectedGroup);
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);
@@ -104,9 +103,6 @@ export function NewDashboard(props: IProps) {
               error={renderErrorFor('name')}
               ref={register({
                 required: 'Dashboard title is required',
-                validate: {
-                  noSpecialCharsRule: noSpecialCharsRule(),
-                },
               })}
             />
           </Card>

@@ -34,6 +34,7 @@ interface IEarth {
   setFullscreen?: (p: { data: {}; open: boolean }) => void;
   setMapInteractions?: (p: {}) => void;
   panel?: EPanels;
+  page?: string;
   layersPanel?: boolean;
   selected?: string;
 }
@@ -61,7 +62,7 @@ class EarthPage extends React.Component<IEarth> {
         </Sidebar>
 
         <div className="l-content">
-          <Map />
+          <Map page={this.props.page} />
           <Place />
         </div>
       </main>

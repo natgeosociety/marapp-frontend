@@ -45,7 +45,7 @@ import {
   formatDate,
   getSelectValues,
 } from '@app/utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
+import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 
@@ -203,9 +203,6 @@ export function LayerDetail(props: any) {
                         error={renderErrorFor('name')}
                         ref={register({
                           required: 'Layer title is required',
-                          validate: {
-                            noSpecialCharsRule: noSpecialCharsRule(),
-                          },
                         })}
                       />
                     </>

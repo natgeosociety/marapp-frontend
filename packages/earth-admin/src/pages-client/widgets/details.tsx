@@ -18,7 +18,7 @@ import classnames from 'classnames';
 import { JSHINT } from 'jshint';
 import { noop } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import { Controller, ErrorMessage, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
 import useSWR from 'swr';
@@ -39,7 +39,7 @@ import { getAllLayers } from '@app/services/layers';
 import { getWidget, handleWidgetForm } from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { copyToClipboard, encodeQueryToURL, flattenObjectForSelect, formatDate } from '@app/utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
+import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 import { Widget, WidgetProps } from './model';
 
@@ -189,9 +189,6 @@ export function WidgetsDetail(props: WidgetProps) {
                         error={renderErrorFor('name')}
                         ref={register({
                           required: 'Widget title is required',
-                          validate: {
-                            noSpecialCharsRule: noSpecialCharsRule(),
-                          },
                         })}
                       />
                     </>

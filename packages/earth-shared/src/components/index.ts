@@ -39,3 +39,4 @@ export { default as AsyncSelect } from './multiselect';
 export { InlineEditCard } from './inline-edit-card';
 export { ErrorMessages } from './error-messages';
 export { default as ErrorTemplate } from './error-template';
+export { UserMenu } from './user-menu';

@@ -17,6 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-import UserMenuComponent from './component';
-
-export { UserMenuComponent };
+export const favicon = require('./favicon.ico');
