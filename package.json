@@ -9,7 +9,7 @@
     "test": "CI=true lerna run test --stream",
     "clean": "rm -fr node_modules && rm -fr packages/*/node_modules",
     "typecheck": "lerna run typecheck --stream",
-    "prettify": "prettier --write 'packages/*/src/**/*.{js,jsx,ts,tsx,json}'",
+    "prettify": "prettier --write '{packages/*/src/**/*,support/**/*}.{js,jsx,ts,tsx,json,html}'",
     "lint": "lerna run lint",
     "serverless:deploy": "serverless deploy --verbose"
   },
@@ -111,7 +111,7 @@
     }
   },
   "lint-staged": {
-    "packages/*/src/**/*.{js,jsx,ts,tsx,json}": [
+    "{packages/*/src/**/*,support/**/*}.{js,jsx,ts,tsx,json,html}": [
       "prettier --write",
       "git add"
     ]
