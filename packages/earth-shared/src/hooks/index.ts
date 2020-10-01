@@ -17,9 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-export function useDomWatcher(ref: React.RefObject<any>, callback: () => {}, skip?: boolean) {
+export function useDomWatcher(callback: () => {}, skip?: boolean): React.RefObject<any> {
+  const ref: React.RefObject<any> = useRef();
+
   useEffect(() => {
     if (skip) {
       return;
@@ -35,5 +37,7 @@ export function useDomWatcher(ref: React.RefObject<any>, callback: () => {}, ski
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [ref, skip]);
+  }, [skip]);
+
+  return ref;
 }

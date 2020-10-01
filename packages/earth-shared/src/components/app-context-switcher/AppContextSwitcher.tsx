@@ -2,6 +2,8 @@ import React, { useState, Children, cloneElement } from 'react';
 import classnames from 'classnames';
 import { noop } from 'lodash';
 
+import { useDomWatcher } from '@marapp/earth-shared';
+
 import './styles.scss';
 
 import { Option } from './Option';
@@ -30,11 +32,17 @@ const AppContextSwitcher = (props: IProps) => {
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen(!isOpen);
+  const closeDropdown = () => setIsOpen(false);
+
+  const closeOnClickOutside = useDomWatcher(toggleDropdown, !isOpen);
 
   return (
-    <div className="marapp-qa-context-switcher ng-app-context-switcher ng-padding-medium-horizontal ng-ep-background-dark ng-flex ng-position-relative ng-padding-small-top">
+    <div
+      ref={closeOnClickOutside}
+      className="marapp-qa-context-switcher ng-app-context-switcher ng-padding-medium-horizontal ng-ep-background-dark ng-flex ng-position-relative ng-padding-small-top"
+    >
       {logo && (
-        <div className="logo-container marapp-qa-logo">
+        <div className="logo-container marapp-qa-logo" onClick={closeDropdown}>
           {logo}
           {renderDropdown && <span className="ng-margin-small-horizontal ng-color-white">|</span>}
         </div>
@@ -60,24 +68,27 @@ const AppContextSwitcher = (props: IProps) => {
           </div>
 
           {isOpen && (
-            <ul className="marapp-qa-dropdown ng-ep-dropdown ng-ep-background-dark">
-              {Children.map(children, (child: any) => {
-                const isOptionElement = child.props.value;
-                const selected = child.props.value === selectedValue;
-                return isOptionElement
-                  ? cloneElement(child, {
-                      selected,
-                      onClick: (value: any) => {
-                        if (!selected) {
-                          setSelectedValue(value);
-                          onChange(value);
-                        }
-                        toggleDropdown();
-                      },
-                    })
-                  : child;
-              })}
-            </ul>
+            <>
+              <div className="overlay" onClick={closeDropdown} />
+              <ul className="marapp-qa-dropdown ng-ep-dropdown ng-ep-background-dark">
+                {Children.map(children, (child: any) => {
+                  const isOptionElement = child.props.value;
+                  const selected = child.props.value === selectedValue;
+                  return isOptionElement
+                    ? cloneElement(child, {
+                        selected,
+                        onClick: (value: any) => {
+                          if (!selected) {
+                            setSelectedValue(value);
+                            onChange(value);
+                          }
+                          closeDropdown();
+                        },
+                      })
+                    : child;
+                })}
+              </ul>
+            </>
           )}
         </>
       )}

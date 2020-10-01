@@ -33,8 +33,6 @@ interface IProps {
 }
 
 const SidebarSelect = (props: IProps) => {
-  const selectRef = React.useRef(null);
-
   const [dropdownState, setDropdownState] = useState('close');
   const currentPage = !!props.path ? props.path[0].key : 'Choose a page';
 
@@ -46,7 +44,7 @@ const SidebarSelect = (props: IProps) => {
     setDropdownState('close');
   };
 
-  useDomWatcher(selectRef, handleClickOutside, dropdownState === 'close');
+  const selectRef = useDomWatcher(handleClickOutside, dropdownState === 'close');
 
   return (
     <div className="marapp-qa-sidebarselect ng-padding-medium-horizontal ng-form ng-form-dark">
