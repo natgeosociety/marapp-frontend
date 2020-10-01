@@ -17,17 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useContext } from 'react';
 import { navigate } from 'gatsby';
+import React, { useContext } from 'react';
 import urljoin from 'url-join';
 
-import { Spinner, AppContextSwitcher } from '@marapp/earth-shared';
+import { AppContextSwitcher, Spinner } from '@marapp/earth-shared';
 
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { SidebarSelect } from '@app/components/sidebar-select';
 import { IAdminPage } from '@app/components/sidebar-select/model';
-import { Auth0Context } from '@app/utils/contexts';
 import { MAP_PATH } from '@app/config';
+import { Auth0Context } from '@app/utils/contexts';
 
 import { APP_LOGO, APP_NAME } from '../theme';
 import './styles.scss';
