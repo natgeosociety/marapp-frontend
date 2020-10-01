@@ -149,7 +149,7 @@ export function WidgetsDetail(props: WidgetProps) {
   return (
     !!widget && (
       <ContentLayout
-        backTo="/widget"
+        backTo="/widgets"
         isLoading={!data && !error}
         errorPage="widget"
         errors={error?.data?.errors}
