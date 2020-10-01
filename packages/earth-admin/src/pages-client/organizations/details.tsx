@@ -86,10 +86,6 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     }
   }
 
-  if (!data) {
-    return <ContentLayout isLoading={true} />;
-  }
-
   const { name, owners, slug, id } = localOrgData;
   const owner = owners && owners[0];
 

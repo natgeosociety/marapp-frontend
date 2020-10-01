@@ -106,7 +106,12 @@ function DetailsPage(props: any) {
   );
 
   return (
-    <ContentLayout backTo="/users" isLoading={!data}>
+    <ContentLayout
+      backTo="/users"
+      isLoading={!data && !error}
+      errors={error?.data?.errors}
+      errorPage="user"
+    >
       <UserDetails data={data} onDataChange={props.onDataChange} />
     </ContentLayout>
   );
