@@ -19,6 +19,7 @@
 
 import React, { useContext } from 'react';
 import { navigate } from 'gatsby';
+import urljoin from 'url-join';
 
 import { Spinner, AppContextSwitcher } from '@marapp/earth-shared';
 
@@ -57,7 +58,7 @@ const SidebarLayout = (props: IProps) => {
           defaultValue={selectedGroup}
           onChange={(selectedValue) => {
             if (selectedValue === 'map-view') {
-              window.location.assign(`${MAP_PATH}/earth`);
+              window.location.assign(urljoin(MAP_PATH, 'earth'));
             } else {
               navigate(`/${selectedValue}`);
             }

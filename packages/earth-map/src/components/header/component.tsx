@@ -192,7 +192,7 @@ const Header = (props: IProps) => {
       <Option value="map-view">Map View</Option>
       {orgCheckBoxes}
       {Object.keys(roles).map(
-        (g, i) =>
+        (g) =>
           checkRole(roles[g]) && (
             <Option value={g} key={g}>
               {g} - ADMIN
