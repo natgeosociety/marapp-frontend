@@ -24,7 +24,7 @@ const AppContextSwitcher = (props: IProps) => {
     logo,
     defaultValue,
     checkedCount = 0,
-    renderDropdown = false,
+    renderDropdown = true,
     children,
     onChange = noop,
   } = props;
@@ -39,7 +39,7 @@ const AppContextSwitcher = (props: IProps) => {
   return (
     <div
       ref={closeOnClickOutside}
-      className="marapp-qa-context-switcher ng-app-context-switcher ng-padding-medium-horizontal ng-ep-background-dark ng-flex ng-position-relative ng-padding-small-top"
+      className="marapp-qa-context-switcher ng-app-context-switcher ng-padding-medium-horizontal ng-flex ng-position-relative ng-padding-small-top"
     >
       {logo && (
         <div className="logo-container marapp-qa-logo" onClick={closeDropdown}>
@@ -70,7 +70,7 @@ const AppContextSwitcher = (props: IProps) => {
           {isOpen && (
             <>
               <div className="overlay" onClick={closeDropdown} />
-              <ul className="marapp-qa-dropdown ng-ep-dropdown ng-ep-background-dark">
+              <ul className="marapp-qa-dropdown ng-ep-dropdown">
                 {Children.map(children, (child: any) => {
                   const isOptionElement = child.props.value;
                   const selected = child.props.value === selectedValue;

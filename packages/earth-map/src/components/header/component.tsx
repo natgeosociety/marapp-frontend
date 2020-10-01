@@ -194,7 +194,7 @@ const Header = (props: IProps) => {
       {Object.keys(roles).map(
         (g, i) =>
           checkRole(roles[g]) && (
-            <Option value={g} key={i}>
+            <Option value={g} key={g}>
               {g} - ADMIN
             </Option>
           )

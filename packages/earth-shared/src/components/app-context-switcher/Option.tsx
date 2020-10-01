@@ -14,12 +14,9 @@ export const Option = (props: IProps) => {
   return (
     <li
       title={children}
-      className={classnames(
-        'ng-option ng-cursor-pointer ng-text-display-s ng-padding-medium-horizontal',
-        {
-          selected: selected,
-        }
-      )}
+      className={classnames('ng-option ng-text-display-s ng-padding-medium-horizontal', {
+        selected: selected,
+      })}
       onClick={() => onClick(value)}
     >
       {children}

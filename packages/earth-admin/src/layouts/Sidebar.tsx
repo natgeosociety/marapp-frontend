@@ -17,17 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
+import React, { useContext } from 'react';
+import { navigate } from 'gatsby';
 
-import { Spinner } from '@marapp/earth-shared';
+import { Spinner, AppContextSwitcher } from '@marapp/earth-shared';
 
 import { LinkWithOrg } from '@app/components/link-with-org';
-import { OrgSwitcher } from '@app/components/org-switcher';
 import { SidebarSelect } from '@app/components/sidebar-select';
 import { IAdminPage } from '@app/components/sidebar-select/model';
+import { Auth0Context } from '@app/utils/contexts';
 
 import { APP_LOGO, APP_NAME } from '../theme';
 import './styles.scss';
+
+const { Option } = AppContextSwitcher;
 
 interface IProps {
   isLoading?: boolean;
@@ -36,21 +39,38 @@ interface IProps {
 }
 
 const SidebarLayout = (props: IProps) => {
+  const { groups } = useContext(Auth0Context);
+
+  const logo = (
+    <LinkWithOrg to="/" className="ng-border-remove">
+      <img src={APP_LOGO} alt={APP_NAME} className="ng-margin-remove ng-display-block" />
+    </LinkWithOrg>
+  );
+
   return (
     <div className="ng-sidebar ng-flex ng-flex-column ng-flex-top ng-shadow-medium">
-      <div className="ng-shadow-large ng-background-dkgray">
-        <nav className="ng-padding-medium-top ng-sidebar-header">
-          <div className="ng-padding-medium-horizontal ng-ep-background-dark ng-margin-bottom ng-flex ng-flex-middle ng-position-relative">
-            <LinkWithOrg to="/" className="ng-border-remove">
-              <img src={APP_LOGO} alt={APP_NAME} className="ng-margin-remove ng-display-block" />
-            </LinkWithOrg>
-            <span className="ng-margin-small-horizontal ng-color-white">|</span>
-            <OrgSwitcher />
-          </div>
-        </nav>
+      <div className="ng-sidebar-header ng-shadow-large ng-background-dkgray ng-padding-bottom">
+        <AppContextSwitcher
+          logo={logo}
+          label="Map View"
+          onChange={(g) => {
+            if (g === 'map-view') {
+              window.location.assign('/');
+            } else {
+              navigate(`/${g}`);
+            }
+          }}
+        >
+          <Option value="map-view">Map View</Option>
+          {!!groups &&
+            groups.map((g) => (
+              <Option value={g} key={g}>
+                {g}
+              </Option>
+            ))}
+        </AppContextSwitcher>
         <SidebarSelect path={props.page} />
       </div>
-      <div className="ng-position-relative ng-padding-horizontal ng-padding-top ng-background-dkgray" />
       {props.isLoading ? (
         <div className="ng-position-relative ng-margin-large">
           <Spinner />

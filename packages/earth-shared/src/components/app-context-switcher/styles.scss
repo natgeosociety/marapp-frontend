@@ -21,6 +21,7 @@
 
 .ng-app-context-switcher {
   user-select: none;
+  background-color: $marapp-gray-7;
 
   .logo-container {
     height: 50px;
@@ -57,6 +58,8 @@
   .ng-ep-dropdown {
     top: 100%;
     box-shadow: none;
+    background-color: $marapp-gray-7;
+    margin: 0;
   }
 
   .ng-option {
@@ -67,6 +70,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     border-top: 1px solid $marapp-gray-8;
+    cursor: pointer;
 
     &:first-child {
       border-top: 0;
