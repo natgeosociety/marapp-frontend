@@ -28,9 +28,9 @@ import Link from 'redux-first-router-link';
 import { fetchStats } from 'services/stats';
 import { APP_LOGO } from 'theme';
 
-import { checkRole } from '@marapp/earth-shared';
+import { checkRole, AppContextSwitcher } from '@marapp/earth-shared';
 
-import './styles.scss';
+const { Option } = AppContextSwitcher;
 
 interface IProps {
   group?: string[];
@@ -130,96 +130,76 @@ const Header = (props: IProps) => {
     });
   };
 
-  return (
-    <div className="marapp-qa-header ng-padding-medium-horizontal ng-ep-background-dark ng-flex ng-flex-middle ng-position-relative ng-padding-bottom ng-padding-small-top">
-      <Link
-        className="ng-border-remove"
-        to={{
-          type: 'EARTH',
-        }}
-      >
-        <img
-          src={APP_LOGO}
-          alt={APP_NAME}
-          className="ng-margin-remove ng-display-block"
-          onClick={handleResetLocation}
-        />
-      </Link>
-      {isAuthenticated && (
-        <>
-          <span className="ng-ep-kicker" />
-
-          <span className="ng-text-display-s ng-text-weight-regular ng-body-color ng-margin-remove ng-display-block ng-org-name">
-            map view
-          </span>
-
-          <div
-            onClick={handleDropdownToggle}
-            className="marapp-qa-orgtogglebutton ng-padding ng-c-cursor-pointer ng-position-relative"
+  const logo = (
+    <Link
+      className="ng-border-remove"
+      to={{
+        type: 'EARTH',
+      }}
+    >
+      <img
+        src={APP_LOGO}
+        alt={APP_NAME}
+        className="ng-margin-remove ng-display-block"
+        onClick={handleResetLocation}
+      />
+    </Link>
+  );
+  const orgCheckBoxes = (
+    <li className="marapp-qa-orglist ng-form ng-form-dark">
+      <div className="ng-padding-medium-horizontal ng-padding-top">
+        {availableGroups.map((g, i) => (
+          <label
+            htmlFor={g.name}
+            className={classNames('ng-padding-bottom ng-flex', {
+              'ng-c-cursor-pointer': hasMultipleGroups,
+            })}
+            key={i}
           >
-            <i
-              className={classNames({
-                'ng-body-color': true,
-                'ng-icon-directionup': dropdownState === 'open',
-                'ng-icon-directiondown': dropdownState !== 'open',
-              })}
-            />
-            {selectedGroups.length > 0 && (
-              <span className="ng-org-badge">{selectedGroups.length}</span>
+            {hasMultipleGroups && (
+              <input
+                className="ng-checkbox-input ng-flex-item-none ng-margin-top-remove"
+                type="checkbox"
+                id={g.name}
+                value={g.name}
+                checked={!!selectedGroups.find((x) => x === g.name)}
+                name={g.name}
+                onChange={(e) => onOrgChange(e)}
+              />
             )}
-          </div>
+            <div>
+              {g.name}
+              <span className="ng-display-block ng-color-mdgray">
+                Places ({g.locations})<strong className="ng-icon-bullet" />
+                Layers ({g.layers})
+              </span>
+            </div>
+          </label>
+        ))}
+      </div>
+    </li>
+  );
 
-          <DropdownComponent state={dropdownState}>
-            <li className="ng-ep-dropdown-category ng-ep-dropdown-selected">
-              <span className="ng-dropdown-item">MAP VIEW</span>
-            </li>
-            <li className="marapp-qa-orglist ng-form ng-form-dark">
-              <div className="ng-padding-medium-horizontal ng-padding-top">
-                {availableGroups.map((g, i) => (
-                  <label
-                    htmlFor={g.name}
-                    className={classNames('ng-padding-bottom ng-flex', {
-                      'ng-c-cursor-pointer': hasMultipleGroups,
-                    })}
-                    key={i}
-                  >
-                    {hasMultipleGroups && (
-                      <input
-                        className="ng-checkbox-input ng-flex-item-none ng-margin-top-remove"
-                        type="checkbox"
-                        id={g.name}
-                        value={g.name}
-                        checked={!!selectedGroups.find((x) => x === g.name)}
-                        name={g.name}
-                        onChange={(e) => onOrgChange(e)}
-                      />
-                    )}
-                    <div>
-                      {g.name}
-                      <span className="ng-display-block ng-color-mdgray">
-                        Places ({g.locations})<strong className="ng-icon-bullet" />
-                        Layers ({g.layers})
-                      </span>
-                    </div>
-                  </label>
-                ))}
-              </div>
-            </li>
-
-            {Object.keys(roles).map(
-              (g, i) =>
-                checkRole(roles[g]) && (
-                  <li className="marapp-qa-adminlink ng-ep-dropdown-category" key={i}>
-                    <a href={`${ADMIN_URL}${g}`} className="ng-c-cursor-pointer ng-dropdown-item">
-                      {g} - ADMIN
-                    </a>
-                  </li>
-                )
-            )}
-          </DropdownComponent>
-        </>
+  return (
+    <AppContextSwitcher
+      logo={logo}
+      label="Map View"
+      defaultValue="map-view"
+      checkedCount={selectedGroups.length}
+      renderDropdown={isAuthenticated}
+      onChange={(g) => window.location.assign(`${ADMIN_URL}${g}`)}
+    >
+      <Option value="map-view">Map View</Option>
+      {orgCheckBoxes}
+      {Object.keys(roles).map(
+        (g, i) =>
+          checkRole(roles[g]) && (
+            <Option value={g} key={g}>
+              {g} - ADMIN
+            </Option>
+          )
       )}
-    </div>
+    </AppContextSwitcher>
   );
 };
 

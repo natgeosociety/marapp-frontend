@@ -17,6 +17,5 @@
   specific language governing permissions and limitations under the License.
 */
 
-import OrgSwitcher from './OrgSwitcher';
-
-export { OrgSwitcher };
+export { AppContextSwitcher } from './AppContextSwitcher';
+export { Option } from './Option';

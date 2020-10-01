@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import classnames from 'classnames';
 import { animated, Keyframes } from 'react-spring/renderprops';
 import { compose } from 'lodash/fp';
@@ -43,9 +43,8 @@ interface IProps {
 export const UserMenu = (props: IProps) => {
   const { isAuthenticated = false, onLogin, onLogout, onSignUp, selected } = props;
   const [showDrop, setShowDrop] = useState(false);
-  const menuRef = useRef(null);
 
-  useDomWatcher(menuRef, () => setShowDrop(false), !showDrop);
+  const menuRef = useDomWatcher(() => setShowDrop(false), !showDrop);
 
   const toggleDrop = (e) => {
     e.preventDefault();

@@ -17,25 +17,28 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import '~styles/config';
+import React from 'react';
+import classnames from 'classnames';
 
-.ng-c-tooltip.tooltip-bottom {
-  -webkit-box-flex: 1;
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  .ng-c-tooltip-content {
-    background: $marapp-gray-7;
-    border: 0;
-    box-shadow: 0 1px 1px 0 rgba($marapp-gray-100, 0.5);
-    color: $marapp-gray-1;
-    &:after {
-      display: none;
-    }
-  }
-  .ng-org-name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+interface IProps {
+  value: any;
+  selected: boolean;
+  onClick: (value: any) => {};
+  children?: any;
 }
+
+export const Option = (props: IProps) => {
+  const { value, selected, onClick, children } = props;
+
+  return (
+    <li
+      title={children}
+      className={classnames('ng-option ng-text-display-s ng-padding-medium-horizontal', {
+        selected: selected,
+      })}
+      onClick={() => onClick(value)}
+    >
+      {children}
+    </li>
+  );
+};

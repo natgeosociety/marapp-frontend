@@ -1,0 +1,104 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
+@import '~styles/config';
+
+.ng-app-context-switcher {
+  user-select: none;
+  background-color: $marapp-gray-7;
+
+  .logo-container {
+    height: 50px;
+    max-width: 160px;
+    overflow: hidden;
+    flex: 0 0 auto;
+
+    a {
+      display: flex;
+      height: 100%;
+      justify-content: center;
+    }
+
+    img {
+      display: block;
+      max-height: 100%;
+    }
+  }
+
+  .ng-org-badge {
+    background: $marapp-gray-1;
+    border-radius: 50%;
+    color: $marapp-gray-100;
+    height: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    position: absolute;
+    top: 0;
+    right: -5px;
+    text-align: center;
+    width: 20px;
+  }
+
+  .ng-ep-dropdown {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    top: 100%;
+    box-shadow: none;
+    background-color: $marapp-gray-7;
+    padding: 0 !important;
+    margin: 0;
+  }
+
+  .ng-option {
+    line-height: 45px;
+    height: 45px;
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-top: 1px solid $marapp-gray-8;
+    cursor: pointer;
+
+    &:first-child {
+      border-top: 0;
+    }
+
+    &.selected {
+      background-color: rgba($marapp-gray-1, .1);
+      border-left: 2px solid $marapp-primary-color;
+    }
+
+    &:hover {
+      background-color: rgba($marapp-gray-1, .1);
+    }
+  }
+
+  .overlay {
+    position: fixed;
+    z-index: -1;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($marapp-gray-9, .65);
+  }
+
+}
