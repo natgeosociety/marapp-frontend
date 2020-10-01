@@ -44,35 +44,31 @@ class IndexContentComponent extends React.PureComponent<IIndexContent> {
   public render() {
     const { place, selected, widgets, list, metricsLoading, widgetsLoading } = this.props;
 
-    if (isEmpty(place)) {
-      return null;
+    if (isEmpty(place) || metricsLoading || widgetsLoading) {
+      return <Spinner />;
     }
 
     return (
       <div>
-        {widgetsLoading && metricsLoading && <Spinner />}
+        <React.Fragment>
+          <div className="index-content--section marapp-qa-indexcontent">
+            <Widgets
+              place={place}
+              slugs={widgets.map((w) => {
+                const { slug } = w;
 
-        {!widgetsLoading && !metricsLoading && (
-          <React.Fragment>
-            <div className="index-content--section marapp-qa-indexcontent">
-              <Widgets
-                place={place}
-                slugs={widgets.map((w) => {
-                  const { slug } = w;
-
-                  if (slug) {
-                    return {
-                      slug,
-                      collapsed: false,
-                      box: true,
-                    };
-                  }
-                  return null;
-                })}
-              />
-            </div>
-          </React.Fragment>
-        )}
+                if (slug) {
+                  return {
+                    slug,
+                    collapsed: false,
+                    box: true,
+                  };
+                }
+                return null;
+              })}
+            />
+          </div>
+        </React.Fragment>
       </div>
     );
   }
