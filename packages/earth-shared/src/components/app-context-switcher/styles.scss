@@ -56,9 +56,15 @@
   }
 
   .ng-ep-dropdown {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    z-index: 100;
     top: 100%;
     box-shadow: none;
     background-color: $marapp-gray-7;
+    padding: 0 !important;
     margin: 0;
   }
 

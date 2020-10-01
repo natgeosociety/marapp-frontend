@@ -39,7 +39,7 @@ interface IProps {
 }
 
 const SidebarLayout = (props: IProps) => {
-  const { groups } = useContext(Auth0Context);
+  const { groups, selectedGroup } = useContext(Auth0Context);
 
   const logo = (
     <LinkWithOrg to="/" className="ng-border-remove">
@@ -53,6 +53,7 @@ const SidebarLayout = (props: IProps) => {
         <AppContextSwitcher
           logo={logo}
           label="Map View"
+          defaultValue={selectedGroup}
           onChange={(g) => {
             if (g === 'map-view') {
               window.location.assign('/');
