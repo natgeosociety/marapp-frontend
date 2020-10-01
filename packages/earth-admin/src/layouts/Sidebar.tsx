@@ -26,6 +26,7 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 import { SidebarSelect } from '@app/components/sidebar-select';
 import { IAdminPage } from '@app/components/sidebar-select/model';
 import { Auth0Context } from '@app/utils/contexts';
+import { MAP_PATH } from '@app/config';
 
 import { APP_LOGO, APP_NAME } from '../theme';
 import './styles.scss';
@@ -54,11 +55,11 @@ const SidebarLayout = (props: IProps) => {
           logo={logo}
           label="Map View"
           defaultValue={selectedGroup}
-          onChange={(g) => {
-            if (g === 'map-view') {
-              window.location.assign('/');
+          onChange={(selectedValue) => {
+            if (selectedValue === 'map-view') {
+              window.location.assign(`${MAP_PATH}/earth`);
             } else {
-              navigate(`/${g}`);
+              navigate(`/${selectedValue}`);
             }
           }}
         >
