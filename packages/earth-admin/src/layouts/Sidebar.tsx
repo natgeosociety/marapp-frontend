@@ -57,7 +57,7 @@ const SidebarLayout = (props: IProps) => {
           defaultValue={selectedGroup}
           onChange={(selectedValue) => {
             if (selectedValue === 'map-view') {
-              window.location.assign(`${MAP_PATH}/earth`);
+              window.location.assign(`${MAP_PATH}earth`);
             } else {
               navigate(`/${selectedValue}`);
             }

@@ -91,6 +91,9 @@ const AppContextSwitcher = (props: IProps) => {
               <div className="overlay" onClick={closeDropdown} />
               <ul className="marapp-qa-dropdown ng-ep-dropdown">
                 {Children.map(children, (child: any) => {
+                  if (!child) {
+                    return;
+                  }
                   const isOptionElement = child.props.value;
                   const selected = child.props.value === selectedValue;
                   return isOptionElement
