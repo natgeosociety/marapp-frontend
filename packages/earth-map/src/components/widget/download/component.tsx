@@ -42,7 +42,7 @@ const WidgetDownload = (props: IMetric) => {
   const csvBlobUrl = downloadCSVFile(metric);
 
   return (
-    <div className="ng-position-relative" ref={closeOnClickOutside}>
+    <div className="ng-position-relative marapp-qa-downloaddropdown" ref={closeOnClickOutside}>
       <Tooltip
         placement="top"
         overlay={<span>Download metric</span>}
@@ -50,7 +50,7 @@ const WidgetDownload = (props: IMetric) => {
         mouseLeaveDelay={0}
       >
         <i
-          className={classNames('ng-c-cursor-pointer ng-dropdown-button', {
+          className={classNames('ng-c-cursor-pointer ng-dropdown-button marapp-qa-actiondownload', {
             'ng-icon-angle-down ng-dropdown-button-open': showDropdown,
             'ng-icon-angle-up': !showDropdown,
           })}
@@ -67,7 +67,7 @@ const WidgetDownload = (props: IMetric) => {
             <a
               href={csvBlobUrl}
               download={`${slug}.csv`}
-              className="ng-border-remove ng-display-block"
+              className="ng-border-remove ng-display-block marapp-qa-actioncsv"
             >
               CSV
             </a>
@@ -76,7 +76,7 @@ const WidgetDownload = (props: IMetric) => {
             <a
               href={blobUrl}
               download={`${slug}.json`}
-              className="ng-border-remove ng-display-block"
+              className="ng-border-remove ng-display-block marapp-qa-actionjson"
             >
               JSON
             </a>
