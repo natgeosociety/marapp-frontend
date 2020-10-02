@@ -21,7 +21,11 @@
 
 .ng-app-context-switcher {
   user-select: none;
-  background-color: $marapp-gray-7;
+  z-index: 2;
+
+  > div {
+    background-color: $marapp-gray-7;
+  }
 
   .logo-container {
     height: 50px;
@@ -65,6 +69,8 @@
     background-color: $marapp-gray-7;
     padding: 0 !important;
     margin: 0;
+    max-height: calc(100vh - 55px);
+    overflow: auto;
   }
 
   .ng-option {

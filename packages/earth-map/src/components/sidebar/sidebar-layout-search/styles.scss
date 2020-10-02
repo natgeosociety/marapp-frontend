@@ -24,6 +24,11 @@
     line-height: 100%;
   }
 
+  .scroll-container {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+
   .ng-c-text-body {
     font-family: $marapp-secondary-font, Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -36,12 +41,5 @@
     &.is-focused {
       border-color: $marapp-gray-0;
     }
-  }
-
-  .ng-sticky-top {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    box-shadow: $shadow-large;
   }
 }
