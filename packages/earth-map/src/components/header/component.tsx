@@ -28,7 +28,7 @@ import Link from 'redux-first-router-link';
 import { fetchStats } from 'services/stats';
 import { APP_LOGO } from 'theme';
 
-import { checkRole, AppContextSwitcher } from '@marapp/earth-shared';
+import { AppContextSwitcher, checkRole } from '@marapp/earth-shared';
 
 const { Option } = AppContextSwitcher;
 

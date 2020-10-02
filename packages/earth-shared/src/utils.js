@@ -17,6 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 import queryStringEncode from 'query-string-encode';
+import flatten from 'flat';
+import { Parser } from 'json2csv';
 
 /**
  * Serialize filters in the format
@@ -40,3 +42,25 @@ export const serializeFilters = (filters, filterSep = ',', valueSep = ';') => {
  */
 export const encodeQueryToURL = (baseUrl, query) =>
   [baseUrl, decodeURIComponent(queryStringEncode(query))].join('?');
+
+/**
+ * Download json file
+ * @param data
+ * @returns {string}
+ */
+export const downloadJSONFile = (data) => {
+  const encoded = JSON.stringify(data);
+  const jsonBlob = new Blob([encoded]);
+  return URL.createObjectURL(jsonBlob);
+};
+
+/**
+ * Downalod csv file
+ * @param data
+ */
+export const downloadCSVFile = (data) => {
+  const json2csvParser = new Parser();
+  const csv = json2csvParser.parse(flatten(data));
+  const csvBlob = new Blob([csv]);
+  return URL.createObjectURL(csvBlob);
+};

@@ -20,14 +20,13 @@
 import React, { useContext } from 'react';
 import Helmet from 'react-helmet';
 
-import { Spinner, UserMenu } from '@marapp/earth-shared';
+import { favicon, Spinner, UserMenu } from '@marapp/earth-shared';
 
 import { Card } from '@app/components/card';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { Auth0Context } from '@app/utils/contexts';
 
 import '../styles/app.scss';
-import { favicon } from '@marapp/earth-shared';
 import { APP_LOGO, APP_NAME } from '../theme';
 
 interface ILayoutProps {
