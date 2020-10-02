@@ -51,8 +51,8 @@ const WidgetDownload = (props: IMetric) => {
       >
         <i
           className={classNames('ng-c-cursor-pointer ng-dropdown-button marapp-qa-actiondownload', {
-            'ng-icon-angle-down ng-dropdown-button-open': showDropdown,
-            'ng-icon-angle-up': !showDropdown,
+            'ng-icon-angle-up ng-dropdown-button-open': showDropdown,
+            'ng-icon-angle-down': !showDropdown,
           })}
           onClick={(e) => setShowDropdown(!showDropdown)}
         />
