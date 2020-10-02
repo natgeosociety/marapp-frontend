@@ -21,7 +21,11 @@
 
 .ng-app-context-switcher {
   user-select: none;
-  background-color: $marapp-gray-7;
+  z-index: 2;
+
+  > div {
+    background-color: $marapp-gray-7;
+  }
 
   .logo-container {
     height: 50px;

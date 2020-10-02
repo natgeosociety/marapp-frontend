@@ -58,62 +58,64 @@ const AppContextSwitcher = (props: IProps) => {
   return (
     <div
       ref={closeOnClickOutside}
-      className="marapp-qa-context-switcher ng-app-context-switcher ng-padding-medium-horizontal ng-flex ng-position-relative ng-padding-small-top"
+      className="marapp-qa-context-switcher ng-app-context-switcher  ng-position-relative"
     >
-      {logo && (
-        <div className="logo-container marapp-qa-logo" onClick={closeDropdown}>
-          {logo}
-          {renderDropdown && <span className="ng-margin-small-horizontal ng-color-white">|</span>}
-        </div>
-      )}
-
-      {renderDropdown && (
-        <>
-          <div
-            onClick={toggleDropdown}
-            className="ng-c-cursor-pointer ng-flex ng-flex-middle ng-padding-horizontal ng-position-relative"
-          >
-            <div className="ng-text-display-s ng-text-weight-regular ng-color-white ng-margin-remove ng-org-name ng-padding-right">
-              {label}
-            </div>
-            <i
-              className={classnames({
-                'ng-icon ng-color-white': true,
-                'ng-icon-directionup': isOpen,
-                'ng-icon-directiondown': !isOpen,
-              })}
-            />
-            {checkedCount > 0 && <span className="ng-org-badge">{checkedCount}</span>}
+      <div className="ng-flex ng-padding-medium-horizontal ng-padding-small-top">
+        {logo && (
+          <div className="logo-container marapp-qa-logo" onClick={closeDropdown}>
+            {logo}
+            {renderDropdown && <span className="ng-margin-small-horizontal ng-color-white">|</span>}
           </div>
+        )}
 
-          {isOpen && (
-            <>
-              <div className="overlay" onClick={closeDropdown} />
-              <ul className="marapp-qa-dropdown ng-ep-dropdown">
-                {Children.map(children, (child: any) => {
-                  if (!child) {
-                    return;
-                  }
-                  const isOptionElement = child.props.value;
-                  const selected = child.props.value === selectedValue;
-                  return isOptionElement
-                    ? cloneElement(child, {
-                        selected,
-                        onClick: (value: any) => {
-                          if (!selected) {
-                            setSelectedValue(value);
-                            onChange(value);
-                          }
-                          closeDropdown();
-                        },
-                      })
-                    : child;
+        {renderDropdown && (
+          <>
+            <div
+              onClick={toggleDropdown}
+              className="ng-c-cursor-pointer ng-flex ng-flex-middle ng-padding-horizontal ng-position-relative"
+            >
+              <div className="ng-text-display-s ng-text-weight-regular ng-color-white ng-margin-remove ng-org-name ng-padding-right">
+                {label}
+              </div>
+              <i
+                className={classnames({
+                  'ng-icon ng-color-white': true,
+                  'ng-icon-directionup': isOpen,
+                  'ng-icon-directiondown': !isOpen,
                 })}
-              </ul>
-            </>
-          )}
-        </>
-      )}
+              />
+              {checkedCount > 0 && <span className="ng-org-badge">{checkedCount}</span>}
+            </div>
+
+            {isOpen && (
+              <>
+                <div className="overlay" onClick={closeDropdown} />
+                <ul className="marapp-qa-dropdown ng-ep-dropdown">
+                  {Children.map(children, (child: any) => {
+                    if (!child) {
+                      return;
+                    }
+                    const isOptionElement = child.props.value;
+                    const selected = child.props.value === selectedValue;
+                    return isOptionElement
+                      ? cloneElement(child, {
+                          selected,
+                          onClick: (value: any) => {
+                            if (!selected) {
+                              setSelectedValue(value);
+                              onChange(value);
+                            }
+                            closeDropdown();
+                          },
+                        })
+                      : child;
+                  })}
+                </ul>
+              </>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };
