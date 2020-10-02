@@ -45,14 +45,16 @@ const Organization = (props: IProps) => {
 
   // Important check for valid ORG and sets it on the context.
   // Happens everytime org changes (runtime/refresh)
+  const allowSuperAdminGroup = isSuperAdmin(userData.roles);
+
   useEffect(() => {
-    if (org && isValidGroup(groups, org, isSuperAdmin(userData.roles))) {
+    if (org && (isValidGroup(groups, org), allowSuperAdminGroup)) {
       setupUserOrg(org);
       setIsLoading(false);
     }
   }, [groups, org]);
 
-  if (!org || !isValidGroup(groups, org, isSuperAdmin(userData.roles))) {
+  if (!org || !isValidGroup(groups, org, allowSuperAdminGroup)) {
     return <OrgSwitcherPage groups={groups} />;
   }
 
