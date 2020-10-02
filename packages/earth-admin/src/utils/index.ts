@@ -105,12 +105,6 @@ export const formatArrayToParentheses = (
   }
 };
 
-export const downloadFile = (data): string => {
-  const encoded = JSON.stringify(data);
-  const jsonBlob = new Blob([encoded]);
-  return URL.createObjectURL(jsonBlob);
-};
-
 /**
  * Flattens object array returned from multiselect to work with api
  * @param data

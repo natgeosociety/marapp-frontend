@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
 
-import { downloadFile } from '@app/utils';
+import { downloadFile } from '@marapp/earth-shared';
 
 interface DownloadFileProps {
   data: any;
