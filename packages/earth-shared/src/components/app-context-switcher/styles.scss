@@ -69,6 +69,8 @@
     background-color: $marapp-gray-7;
     padding: 0 !important;
     margin: 0;
+    max-height: calc(100vh - 55px);
+    overflow: auto;
   }
 
   .ng-option {
