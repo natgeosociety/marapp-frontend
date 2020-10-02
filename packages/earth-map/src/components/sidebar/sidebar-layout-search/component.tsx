@@ -1,4 +1,3 @@
-import Header from 'components/header';
 import { Tab, Tabs } from 'components/tabs';
 import React from 'react';
 
@@ -14,7 +13,6 @@ interface IProps {
 const SidebarLayoutSearch = (props: IProps) => (
   <div style={{ height: '100%', overflow: 'auto' }}>
     <div className="ng-sticky-top ng-margin-bottom">
-      <Header />
       <Tabs
         value={props.panel}
         onChange={props.setSidebarPanel}
