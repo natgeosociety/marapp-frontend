@@ -27,7 +27,7 @@ import React, { useContext } from 'react';
 import isEqual from 'react-fast-compare';
 import { APP_ABOUT } from 'theme';
 
-import { Map, UserMenu } from '@marapp/earth-shared';
+import { Map, UserMenu, Spinner } from '@marapp/earth-shared';
 
 import BasemapComponent from '../basemap';
 import MapControls from './controls';
@@ -57,7 +57,12 @@ interface IMap {
   activeInteractiveLayersIds?: any;
 }
 
-class MapComponent extends React.Component<IMap> {
+interface IMapState {
+  isLoadingTiles?: boolean;
+  loadingTilesIntervalRef?: NodeJS.Timeout;
+}
+
+class MapComponent extends React.Component<IMap, IMapState> {
   public static defaultProps = {
     bounds: {},
     mapLabels: true,
@@ -68,6 +73,32 @@ class MapComponent extends React.Component<IMap> {
     setMapViewport(viewport);
   }, 250);
   private map: any;
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoadingTiles: false,
+    };
+  }
+
+  public componentDidMount() {
+    const loadingTilesIntervalRef = setInterval(() => {
+      const isLoadingTiles = !this.map.areTilesLoaded();
+
+      if (isLoadingTiles !== this.state.isLoadingTiles) {
+        this.setState({ isLoadingTiles });
+      }
+    }, 100);
+
+    this.setState({
+      loadingTilesIntervalRef,
+    });
+  }
+
+  public componentWillUnmount() {
+    clearInterval(this.state.loadingTilesIntervalRef);
+  }
 
   public componentDidUpdate(prevProps) {
     const { mapLabels, mapRoads, interactions, viewport, setMapViewport } = this.props;
@@ -304,6 +335,7 @@ class MapComponent extends React.Component<IMap> {
         <Legend />
 
         <MapControls>
+          {this.state.isLoadingTiles && <Spinner size="small" position="relative" />}
           <BasemapComponent />
           <div>
             <RecenterControl onClick={this.onRecenterChange} />
