@@ -21,7 +21,7 @@ import { Link } from 'gatsby';
 import { JSHINT } from 'jshint';
 import React, { useEffect } from 'react';
 
-import { isValidGroup, Spinner } from '@marapp/earth-shared';
+import { isValidGroup, isSuperAdmin, Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { BASE_URL } from '@app/config';
@@ -35,7 +35,7 @@ interface IProps {
 
 const Organization = (props: IProps) => {
   const { org, children } = props;
-  const { isLoading, groups, setupUserOrg, setIsLoading } = useAuth0();
+  const { isLoading, groups, setupUserOrg, setIsLoading, userData } = useAuth0();
 
   // CodeMirror is not working without window.JSHINT
   useEffect(() => {
@@ -45,14 +45,16 @@ const Organization = (props: IProps) => {
 
   // Important check for valid ORG and sets it on the context.
   // Happens everytime org changes (runtime/refresh)
+  const allowSuperAdminGroup = isSuperAdmin(userData.roles);
+
   useEffect(() => {
-    if (org && isValidGroup(groups, org)) {
+    if (org && isValidGroup(groups, org, allowSuperAdminGroup)) {
       setupUserOrg(org);
       setIsLoading(false);
     }
   }, [groups, org]);
 
-  if (!org || !isValidGroup(groups, org)) {
+  if (!org || !isValidGroup(groups, org, allowSuperAdminGroup)) {
     return <OrgSwitcherPage groups={groups} />;
   }
 
