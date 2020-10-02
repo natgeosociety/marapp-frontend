@@ -58,7 +58,7 @@ const WidgetDownload = (props: IMetric) => {
         />
       </Tooltip>
 
-      <div className={classNames('ng-ep-dropdown', { 'ng-display-block': showDropdown })}>
+      <div className={classNames('ng-ep-download-dropdown', { 'ng-display-block': showDropdown })}>
         <p className="ng-text-display-s ng-padding-medium-horizontal ng-padding-vertical ng-margin-remove">
           Download metric as a:
         </p>
