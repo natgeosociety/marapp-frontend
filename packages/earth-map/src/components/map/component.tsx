@@ -59,6 +59,7 @@ interface IMap {
 
 interface IMapState {
   isLoadingTiles?: boolean;
+  loadingTilesIntervalRef?: NodeJS.Timeout;
 }
 
 class MapComponent extends React.Component<IMap, IMapState> {
@@ -82,11 +83,21 @@ class MapComponent extends React.Component<IMap, IMapState> {
   }
 
   public componentDidMount() {
-    setInterval(() => {
-      this.setState({
-        isLoadingTiles: !this.map.areTilesLoaded(),
-      });
+    const loadingTilesIntervalRef = setInterval(() => {
+      const isLoadingTiles = !this.map.areTilesLoaded();
+
+      if (isLoadingTiles !== this.state.isLoadingTiles) {
+        this.setState({ isLoadingTiles });
+      }
     }, 100);
+
+    this.setState({
+      loadingTilesIntervalRef,
+    });
+  }
+
+  public componentWillUnmount() {
+    clearInterval(this.state.loadingTilesIntervalRef);
   }
 
   public componentDidUpdate(prevProps) {
