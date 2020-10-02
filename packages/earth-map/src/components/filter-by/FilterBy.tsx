@@ -56,7 +56,7 @@ const FilterBy = (props: IProps) => {
   const openToggle = () => onOpenToggle(!open);
 
   return (
-    <div className="marapp-qa-filterby ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
+    <div className="ng-filter-by marapp-qa-filterby ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
       <div className="ng-flex search-title">
         <h2
           className="marapp-qa-filterbyopen ng-text-display-s ng-body-color ng-margin-bottom ng-margin-small-right ng-c-cursor-pointer"

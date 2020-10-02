@@ -24,7 +24,6 @@ interface IProps {
   locationOrganization?: string;
   lastViewedPlace?: IPlace;
   nextPlacesPage?: () => void;
-  setSidebarPanel?: (value: any) => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
   resetPlace?: (value: any) => {};
@@ -50,7 +49,6 @@ const Places = (props: IProps) => {
     resetMap,
     setIndexesSelected,
     setPlacesSearch,
-    setSidebarPanel,
     setSidebarPanelExpanded,
     setPlacesSearchOpen,
   } = props;
@@ -86,8 +84,6 @@ const Places = (props: IProps) => {
 
   return (
     <SidebarLayoutSearch
-      panel={panel}
-      setSidebarPanel={setSidebarPanel}
       fixedContent={
         <>
           <SearchBox

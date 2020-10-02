@@ -138,8 +138,6 @@ const Layers = (props: IProps) => {
 
   return (
     <SidebarLayoutSearch
-      panel={panel}
-      setSidebarPanel={setSidebarPanel}
       fixedContent={
         <>
           <SearchBox
