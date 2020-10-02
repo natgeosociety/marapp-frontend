@@ -18,6 +18,7 @@
 */
 import React from 'react';
 
+import { Tab, Tabs } from 'components/tabs';
 import Header from 'components/header';
 import Fullscreen from 'components/fullscreen';
 import Layers from 'components/layers';
@@ -34,6 +35,7 @@ import { URL_PROPS } from './url';
 interface IEarth {
   setFullscreen?: (p: { data: {}; open: boolean }) => void;
   setMapInteractions?: (p: {}) => void;
+  setSidebarPanel?: () => void;
   panel?: EPanels;
   page?: string;
   layersPanel?: boolean;
@@ -42,7 +44,7 @@ interface IEarth {
 
 class EarthPage extends React.Component<IEarth> {
   public render() {
-    const { setFullscreen, setMapInteractions, selected, panel } = this.props;
+    const { setFullscreen, setMapInteractions, setSidebarPanel, selected, panel } = this.props;
 
     return (
       <main className="l-page marapp-qa-pageearth" role="main">
@@ -59,6 +61,14 @@ class EarthPage extends React.Component<IEarth> {
 
         <Sidebar>
           <Header />
+          <Tabs
+            value={panel}
+            onChange={setSidebarPanel}
+            className="ng-padding-medium-horizontal ng-padding-bottom ng-ep-background-dark"
+          >
+            <Tab label="Places" value="places" />
+            <Tab label="Layers" value="layers" />
+          </Tabs>
           {panel === EPanels.PLACES && <Places selected={!!selected} />}
           {panel === EPanels.LAYERS && <Layers selected={!!selected} />}
         </Sidebar>

@@ -27,7 +27,6 @@ export default connect(
     resetPlace,
     setPlacesSearch,
     setIndexesSelected,
-    setSidebarPanel,
     nextPlacesPage,
     setSidebarPanelExpanded,
     setPlacesSearchOpen,

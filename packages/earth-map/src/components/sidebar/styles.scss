@@ -22,7 +22,8 @@
 .c-sidebar {
   box-shadow: 0 0 5px 0 $marapp-gray-9;
   position: absolute;
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 375px;
   top: 0;
   bottom: 0;

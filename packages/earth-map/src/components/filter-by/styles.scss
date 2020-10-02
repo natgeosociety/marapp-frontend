@@ -20,6 +20,10 @@
 @import '~styles/config';
 @import '~styles/mixins';
 
+.ng-filter-by {
+  flex: 0 0 auto;
+}
+
 .with-count {
   display: flex;
 
