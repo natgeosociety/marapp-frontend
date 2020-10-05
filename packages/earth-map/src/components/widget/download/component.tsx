@@ -43,20 +43,15 @@ const WidgetDownload = (props: IMetric) => {
 
   return (
     <div className="ng-position-relative marapp-qa-downloaddropdown" ref={closeOnClickOutside}>
-      <Tooltip
-        placement="top"
-        overlay={<span>Download metric</span>}
-        overlayClassName="c-rc-tooltip -default"
-        mouseLeaveDelay={0}
-      >
-        <i
-          className={classNames('ng-c-cursor-pointer ng-dropdown-button marapp-qa-actiondownload', {
-            'ng-icon-angle-up ng-dropdown-button-open': showDropdown,
-            'ng-icon-angle-down': !showDropdown,
-          })}
-          onClick={(e) => setShowDropdown(!showDropdown)}
-        />
-      </Tooltip>
+      <i
+        className={classNames(
+          'ng-c-cursor-pointer ng-toolbar-button ng-icon-download-outline marapp-qa-actiondownload',
+          {
+            'ng-dropdown-button-open': showDropdown,
+          }
+        )}
+        onClick={(e) => setShowDropdown(!showDropdown)}
+      />
 
       <div className={classNames('ng-ep-download-dropdown', { 'ng-display-block': showDropdown })}>
         <p className="ng-text-display-s ng-padding-medium-horizontal ng-padding-vertical ng-margin-remove">

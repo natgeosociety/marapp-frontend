@@ -16,18 +16,17 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-import React from 'react';
-
-import { Tab, Tabs } from 'components/tabs';
-import Header from 'components/header';
 import Fullscreen from 'components/fullscreen';
+import Header from 'components/header';
 import Layers from 'components/layers';
 import Map from 'components/map';
 import Place from 'components/place';
 import Places from 'components/places';
 import Sidebar from 'components/sidebar';
+import { Tab, Tabs } from 'components/tabs';
 import Url from 'components/url';
 import { EPanels } from 'modules/sidebar/model';
+import React from 'react';
 import { Icons as VizzIcons } from 'vizzuality-components';
 
 import { URL_PROPS } from './url';

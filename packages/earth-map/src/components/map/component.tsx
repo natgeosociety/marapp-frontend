@@ -27,7 +27,7 @@ import React, { useContext } from 'react';
 import isEqual from 'react-fast-compare';
 import { APP_ABOUT } from 'theme';
 
-import { Map, UserMenu, Spinner } from '@marapp/earth-shared';
+import { Map, Spinner, UserMenu } from '@marapp/earth-shared';
 
 import BasemapComponent from '../basemap';
 import MapControls from './controls';
