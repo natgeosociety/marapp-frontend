@@ -30,4 +30,8 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.075);
     border-radius: 20px;
   }
+  &.ng-toolbar-button-open, &:active {
+    background: $marapp-gray-1;
+    color: $marapp-gray-9;
+  }
 }
