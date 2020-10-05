@@ -28,10 +28,6 @@ import {
   setPlacesLoading,
 } from '../../modules/places/actions';
 
-// Services
-
-// Actions
-
 export default function* earth() {
   yield takeLatest('HOME', toHome);
 }
