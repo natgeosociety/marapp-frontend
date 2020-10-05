@@ -32,7 +32,7 @@ export interface IWidget {
   version: number;
   layers: ILayer[];
   config: any;
-
+  organization: string;
   widgetConfig: IWidgetConfig;
 }
 

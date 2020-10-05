@@ -26,8 +26,6 @@ import layers from 'sagas/layers';
 import location from 'sagas/location';
 import places from 'sagas/places';
 
-// Sagas
-
 export default function* root() {
   yield all([
     fork(home),
