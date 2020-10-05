@@ -184,7 +184,7 @@ const Header = (props: IProps) => {
     <AppContextSwitcher
       logo={logo}
       label="Map View"
-      defaultValue="map-view"
+      value="map-view"
       checkedCount={selectedGroups.length}
       renderDropdown={isAuthenticated}
       onChange={(g) => window.location.assign(`${ADMIN_URL}${g}`)}
