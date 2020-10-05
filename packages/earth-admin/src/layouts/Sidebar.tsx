@@ -54,7 +54,7 @@ const SidebarLayout = (props: IProps) => {
       <div className="ng-sidebar-header ng-shadow-large ng-background-dkgray ng-padding-bottom">
         <AppContextSwitcher
           logo={logo}
-          label="Map View"
+          label={selectedGroup}
           defaultValue={selectedGroup}
           onChange={(selectedValue) => {
             if (selectedValue === 'map-view') {
