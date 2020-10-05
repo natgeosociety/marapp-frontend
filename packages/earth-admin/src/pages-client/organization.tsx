@@ -21,7 +21,7 @@ import { Link } from 'gatsby';
 import { JSHINT } from 'jshint';
 import React, { useEffect } from 'react';
 
-import { isValidGroup, isSuperAdmin, Spinner } from '@marapp/earth-shared';
+import { isSuperAdmin, isValidGroup, Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { BASE_URL } from '@app/config';

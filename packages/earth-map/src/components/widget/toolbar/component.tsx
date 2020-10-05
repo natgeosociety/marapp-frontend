@@ -56,25 +56,23 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
         className={`marapp-qa-widgettoolbar c-widget-toolbar ng-flex
          ng-flex-middle ng-margin-left ${classNames}`}
       >
-        <div className="ng-margin-right">
-          <Tooltip
-            placement="top"
-            overlay={<span>Info</span>}
-            overlayClassName="c-rc-tooltip -default"
-            mouseLeaveDelay={0}
-          >
-            <button
-              className={classnames({
-                '-active': !!activeInfo,
-              })}
-              type="button"
-              onClick={onInfo}
-            >
-              <i className="ng-icon-info-circle" />
-            </button>
-          </Tooltip>
-        </div>
         <WidgetDownload data={data} />
+        <Tooltip
+          placement="top"
+          overlay={<span>Info</span>}
+          overlayClassName="c-rc-tooltip -default"
+          mouseLeaveDelay={0}
+        >
+          <button
+            className={classnames('ng-toolbar-button', {
+              '-active': !!activeInfo,
+            })}
+            type="button"
+            onClick={onInfo}
+          >
+            <i className="ng-icon-info-circle" />
+          </button>
+        </Tooltip>
       </div>
     );
   }
