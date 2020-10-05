@@ -30,7 +30,7 @@ import { Option } from './Option';
 interface IProps {
   label: string;
   logo?: React.ReactNode;
-  defaultValue?: string;
+  value?: any;
   checkedCount?: number;
   renderDropdown?: boolean;
   children?: React.ReactChildren | Array<React.ReactChildren>;
@@ -41,14 +41,13 @@ const AppContextSwitcher = (props: IProps) => {
   const {
     label,
     logo,
-    defaultValue,
+    value,
     checkedCount = 0,
     renderDropdown = true,
     children,
     onChange = noop,
   } = props;
 
-  const [selectedValue, setSelectedValue] = useState(defaultValue);
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen(!isOpen);
   const closeDropdown = () => setIsOpen(false);
@@ -96,13 +95,12 @@ const AppContextSwitcher = (props: IProps) => {
                       return;
                     }
                     const isOptionElement = child.props.value;
-                    const selected = child.props.value === selectedValue;
+                    const selected = child.props.value === value;
                     return isOptionElement
                       ? cloneElement(child, {
                           selected,
                           onClick: (value: any) => {
                             if (!selected) {
-                              setSelectedValue(value);
                               onChange(value);
                             }
                             closeDropdown();
