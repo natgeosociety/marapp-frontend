@@ -48,7 +48,7 @@ export default function JsonEditor(props: JsonEditorProps) {
   return (
     <div className="marapp-qa-jsoneditor" onBlur={handleBlur}>
       <CodeMirror
-        value={JSON.stringify(json, null, 2)}
+        value={json ? JSON.stringify(json, null, 2) : null}
         options={{
           mode: 'javascript',
           json: true,
