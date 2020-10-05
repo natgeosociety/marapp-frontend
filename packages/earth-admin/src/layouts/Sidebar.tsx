@@ -55,7 +55,7 @@ const SidebarLayout = (props: IProps) => {
         <AppContextSwitcher
           logo={logo}
           label={selectedGroup}
-          defaultValue={selectedGroup}
+          value={selectedGroup}
           onChange={(selectedValue) => {
             if (selectedValue === 'map-view') {
               window.location.assign(urljoin(MAP_PATH, 'earth'));
