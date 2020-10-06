@@ -47,14 +47,16 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
   };
 
   const handleUpload = async (e) => {
+    const reader = new FileReader();
+
     const file = e.target.files[0];
 
     if (!file) {
       return;
     }
 
-    const json = await file.text();
-    handleJsonChange(json);
+    reader.readAsText(file);
+    reader.onload = () => handleJsonChange(reader.result);
   };
 
   return (
