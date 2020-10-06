@@ -56,6 +56,7 @@ export function UsersHome(props: any) {
     };
     return encodeQueryToURL('users', query);
   };
+  const { listProps: userListProps, mutate } = useInfiniteList(getQuery, getAllUsers);
 
   const { watch, setValue, control, getValues } = useForm({
     mode: 'onChange',
@@ -64,7 +65,10 @@ export function UsersHome(props: any) {
   const inviteUsersWatcher = watch('users');
 
   useEffect(() => {
-    mutate();
+    // refetch the latest data on mount
+    if (userListProps.data.length) {
+      mutate();
+    }
 
     (async () => {
       const groupsResponse: any = await getAvailableGroups(selectedGroup);
@@ -166,8 +170,6 @@ export function UsersHome(props: any) {
     setServerErrors([]);
     setUsersFeedback([]);
   };
-
-  const { listProps: userListProps, mutate } = useInfiniteList(getQuery, getAllUsers);
 
   return (
     writePermissions && (
@@ -297,6 +299,7 @@ export function UsersHome(props: any) {
                         const user = userListProps.data[index];
                         return (
                           <tr
+                            key={user.email}
                             className="ng-c-cursor-pointer"
                             onClick={() => navigate(`/${selectedGroup}/users/${user.email}`)}
                           >
