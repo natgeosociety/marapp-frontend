@@ -53,31 +53,35 @@ const WidgetDownload = (props: IMetric) => {
         onClick={(e) => setShowDropdown(!showDropdown)}
       />
 
-      <div className={classNames('ng-ep-download-dropdown', { 'ng-display-block': showDropdown })}>
-        <p className="ng-text-display-s ng-padding-medium-horizontal ng-padding-vertical ng-margin-remove">
-          Download metric as a:
-        </p>
-        <ul className="marapp-qa-dropdown">
-          <li>
-            <a
-              href={csvBlobUrl}
-              download={`${slug}.csv`}
-              className="ng-border-remove ng-display-block marapp-qa-actioncsv"
-            >
-              CSV
-            </a>
-          </li>
-          <li>
-            <a
-              href={blobUrl}
-              download={`${slug}.json`}
-              className="ng-border-remove ng-display-block marapp-qa-actionjson"
-            >
-              JSON
-            </a>
-          </li>
-        </ul>
-      </div>
+      {metric && (
+        <div
+          className={classNames('ng-ep-download-dropdown', { 'ng-display-block': showDropdown })}
+        >
+          <p className="ng-text-display-s ng-padding-medium-horizontal ng-padding-vertical ng-margin-remove">
+            Download metric as a:
+          </p>
+          <ul className="marapp-qa-dropdown">
+            <li>
+              <a
+                href={csvBlobUrl}
+                download={`${slug}.csv`}
+                className="ng-border-remove ng-display-block marapp-qa-actioncsv"
+              >
+                CSV
+              </a>
+            </li>
+            <li>
+              <a
+                href={blobUrl}
+                download={`${slug}.json`}
+                className="ng-border-remove ng-display-block marapp-qa-actionjson"
+              >
+                JSON
+              </a>
+            </li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
