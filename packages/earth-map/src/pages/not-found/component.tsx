@@ -30,7 +30,7 @@ const NotFound = ({ resetStore }) => {
           <Button
             onClick={() => {
               resetStore();
-              replace('/');
+              replace('/earth');
             }}
             className="-light -fullwidth"
           >
