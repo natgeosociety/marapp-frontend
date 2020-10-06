@@ -67,14 +67,14 @@ $marapp-gray-9: #hex;
 
 $marapp-gray-100: #hex;
 ```
-#####Fonts
+##### Fonts
 Font files should be added in `src/fonts` (woff & woff2 files). Then you must declare a font-face inside `src/styles/fonts`.
 Those fonts will then be declared as `$marapp-primary-font` and `$marapp-secondary-font`.
 
-#####Primary color
+##### Primary color
 This is the theme color. Some examples of usage: buttons, radio buttons, selected dropdown items.
 
-#####The grays
+##### The grays
 In order to customize the look and feel of the app, we provide a set of variables that are used inside the scss files.
 These can be overwritten by changing the variable value.
 
