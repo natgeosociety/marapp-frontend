@@ -224,16 +224,15 @@ export function UsersHome(props: any) {
                     {serverErrors.length > 0 && <ErrorMessages errors={serverErrors} />}
                     {usersFeedback.length > 0 && (
                       <div className="ng-width-1-1 ng-margin-bottom">
-                        {usersFeedback.map((error) =>
-                          error.hasSuccess ? (
+                        {usersFeedback.map((item) =>
+                          item.hasSuccess ? (
                             <p className="ng-margin-remove">
-                              The email, {error.title} has been invited.
+                              The email, {item.title} has been invited.
                             </p>
                           ) : (
-                            error.hasError && (
+                            item.hasError && (
                               <p className="ng-margin-remove">
-                                The email, {error.title} is unavailable. Please enter a new email to
-                                add users to your organization.
+                                The email, {item.title} is unavailable. Details: {item.detail}
                               </p>
                             )
                           )
