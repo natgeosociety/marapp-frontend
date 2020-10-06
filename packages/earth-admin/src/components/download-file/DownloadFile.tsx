@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
 
-import { downloadFile } from '@marapp/earth-shared';
+import { downloadJSONFile } from '@marapp/earth-shared';
 
 interface DownloadFileProps {
   data: any;
@@ -13,9 +13,11 @@ interface DownloadFileProps {
 export const DownloadFile = (props: DownloadFileProps) => {
   const { data, fileName, children, className } = props;
 
+  const blobUrl = downloadJSONFile(data);
+
   return (
     <a
-      href={downloadFile(data)}
+      href={blobUrl}
       download={`${fileName}.json`}
       className={classnames(
         'marapp-qa-downloadfile ng-button ng-button-link ng-text-transform-remove',
