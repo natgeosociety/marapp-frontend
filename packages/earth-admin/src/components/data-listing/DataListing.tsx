@@ -96,7 +96,7 @@ const DataListing = (props: DataListingProps) => {
           </div>
         )}
 
-        <div>
+        <div className="ng-results-container">
           <List
             awaitMore={awaitMore}
             pageSize={pageSize}
