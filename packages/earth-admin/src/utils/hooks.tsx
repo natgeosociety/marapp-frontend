@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { add, compose } from 'lodash/fp';
+import { add, compose, noop } from 'lodash/fp';
 import { useSWRInfinite } from 'swr';
 
 /**
@@ -33,11 +33,15 @@ export function useInfiniteList(
 ) {
   // Our api starts with page 1 instead of 0, so we increment the pageIndex
   const offsetGetQuery = compose(getQuery, add(1));
-  const { data: response = [], error, isValidating, size, setSize, mutate } = useSWRInfinite(
-    offsetGetQuery,
-    fetcher,
-    options
-  );
+  const {
+    data: response = [],
+    error,
+    isValidating,
+    size,
+    setSize,
+    mutate,
+    revalidate,
+  } = useSWRInfinite(offsetGetQuery, fetcher, options);
 
   // Merge multiple page results into a single list of results
   const items = response.reduce(
@@ -52,17 +56,22 @@ export function useInfiniteList(
   const isNoMore = items.data.length >= items.total;
   const awaitMore = !isValidating && !isNoMore;
 
-  return {
+  const returnValues = {
     // props for <DataListing />
     listProps: {
       data: items.data,
-      onIntersection: () => setSize(size + 1),
+      // TODO: find out why onIntersection is called even if awaitMore=false
+      // Even though onIntersection will fire, it will be a noop
+      onIntersection: awaitMore ? () => setSize(size + 1) : noop,
       isLoading: isValidating,
       awaitMore,
       isNoMore,
       totalResults: items.total,
     },
+    revalidate,
     mutate,
     error,
   };
+
+  return returnValues;
 }
