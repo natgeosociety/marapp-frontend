@@ -34,10 +34,6 @@ import { serializeFilters } from '@marapp/earth-shared';
 
 import { LOCATION_QUERY } from '../model';
 
-// Services
-
-// Actions
-
 export default function* places() {
   yield all([takeLatest(setPlacesSearch, searchPlaces), takeLatest(nextPlacesPage, nextPage)]);
 }
