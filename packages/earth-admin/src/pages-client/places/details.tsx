@@ -319,6 +319,7 @@ export function PlaceDetail(props: IProps) {
                       <InlineEditCard
                         editButtonText="View and upload shape"
                         onSubmit={onSubmit}
+                        submitButtonText="Update Shape"
                         validForm={formValid && !jsonError}
                         render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                           <div className="ng-grid">
