@@ -16,7 +16,6 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-import { compose } from 'lodash/fp';
 import React from 'react';
 
 import { Button, ErrorTemplate } from '@marapp/earth-shared';
