@@ -21,12 +21,12 @@ import React from 'react';
 
 import { Button, ErrorTemplate } from '@marapp/earth-shared';
 
-const ErrorPage = ({ resetStore, returnToHome }) => {
+const ErrorPage = ({ returnToHome }) => {
   return (
     <ErrorTemplate type="Error" message="Sorry, something went wrong.">
       <ul className="not-found--links--list">
         <li>
-          <Button onClick={compose(returnToHome, resetStore)} className="-light -fullwidth">
+          <Button onClick={returnToHome} className="-light -fullwidth">
             Home
           </Button>
         </li>

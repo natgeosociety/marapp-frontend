@@ -17,17 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { compose } from 'lodash/fp';
 import React from 'react';
 
 import { Button, ErrorTemplate } from '@marapp/earth-shared';
 
-const NotFound = ({ returnToHome, resetStore }) => {
+const NotFound = ({ returnToHome }) => {
   return (
     <ErrorTemplate type="404" message="Sorry we couldn't find that page.">
       <ul className="not-found--links--list">
         <li>
-          <Button className="-light -fullwidth" onClick={compose(returnToHome, resetStore)}>
+          <Button className="-light -fullwidth" onClick={returnToHome}>
             Home
           </Button>
         </li>
