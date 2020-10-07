@@ -22,7 +22,18 @@ import classnames from 'classnames';
 
 import './styles.scss';
 
-class DatepickerInput extends PureComponent {
+interface DatepickerInputProps {
+  onFocus?: (e) => {};
+  onBlur?: (e) => {};
+  onClick?: (e) => {};
+  value?: any;
+}
+
+interface DatepickerInputState {
+  focus?: boolean;
+}
+
+class DatepickerInput extends PureComponent<DatepickerInputProps, DatepickerInputState> {
   state = {
     focus: false,
   };

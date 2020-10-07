@@ -19,7 +19,6 @@
 
 import React, { PureComponent } from 'react';
 import { createPortal } from 'react-dom';
-import PropTypes from 'prop-types';
 import ReactDatePicker, { CalendarContainer } from 'react-datepicker';
 import classnames from 'classnames';
 
@@ -27,7 +26,15 @@ import Input from './input';
 
 import './styles.scss';
 
-class Datepicker extends PureComponent {
+interface DatepickerProps {
+  onDateChange: () => {};
+  className?: string;
+  settings?: { minDate; maxDate };
+  theme?: string;
+  date?: any;
+}
+
+class Datepicker extends PureComponent<DatepickerProps> {
   // renderCalendarHeader = ({
   //   date,
   //   changeYear,
@@ -92,6 +99,7 @@ class Datepicker extends PureComponent {
   //     </div>
   //   );
   // };
+  private ref: any;
 
   renderCalendarContainer = ({ children }) => {
     return createPortal(<CalendarContainer>{children}</CalendarContainer>, document.body);
@@ -142,13 +150,5 @@ class Datepicker extends PureComponent {
     );
   }
 }
-
-Datepicker.propTypes = {
-  className: PropTypes.string,
-  theme: PropTypes.string,
-  date: PropTypes.object,
-  onDateChange: PropTypes.func.isRequired,
-  settings: PropTypes.object,
-};
 
 export default Datepicker;

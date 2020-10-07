@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import HTMLComponent from './component';
+import HTMLComponent from './Html';
 
 export default HTMLComponent;

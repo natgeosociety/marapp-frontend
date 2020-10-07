@@ -27,7 +27,12 @@ import renderHTML from 'react-render-html';
 // Styles
 import './styles.scss';
 
-class HTML extends React.Component {
+interface HTMLProps {
+  html: string;
+  className?: string;
+}
+
+class HTML extends React.Component<HTMLProps> {
   static propTypes = {
     html: PropTypes.string.isRequired,
     className: PropTypes.string,

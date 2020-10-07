@@ -19,49 +19,56 @@
 
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import ReactPlayer from 'react-player';
 
 // Animations
-import { Transition } from 'react-spring/renderprops';
+import { Spring, Transition } from 'react-spring/renderprops';
 
-import { Panorama } from '@marapp/earth-shared';
+import { Spinner } from '@marapp/earth-shared';
 
-import ShortDescription from '../short-description';
+import ShortDescription from '../short-description/ShortDescription';
 
-class Photo360 extends PureComponent {
-  static propTypes = {
-    data: PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      files: PropTypes.arrayOf(PropTypes.object).isRequired,
-    }).isRequired,
-    onClose: PropTypes.func,
-  };
+interface VideoProps {
+  data: { title: string; description: string; src: string };
+  onClose?: () => {};
+}
 
+interface VideoState {
+  playing: boolean;
+  fullDescription: boolean;
+  loading: boolean;
+  progress: number;
+}
+
+class Video extends PureComponent<VideoProps, VideoState> {
   state = {
-    index: 0,
+    playing: true,
     fullDescription: false,
-    ready: false,
+    loading: true,
+    progress: 0,
   };
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ ready: true });
-    }, 500);
-  }
+  onReady = () => {
+    this.setState({ loading: false });
+  };
+
+  onError = () => {
+    this.setState({ loading: false });
+  };
 
   render() {
-    const { index, fullDescription, ready } = this.state;
     const {
-      data: { files },
+      data: { title, description, src },
       onClose,
     } = this.props;
-    const { title, description } = files[index];
+    const { playing, loading, fullDescription } = this.state;
 
     return (
       <Fragment>
         <header className="fullscreen--header">
           <div className="fullscreen--header-content">
             {/* HEADER */}
+            {/* @ts-ignore*/}
             <Transition
               delay={750}
               from={{ y: 16, opacity: 0 }}
@@ -77,7 +84,6 @@ class Photo360 extends PureComponent {
                   }}
                 >
                   <h4>{title}</h4>
-
                   <ShortDescription
                     text={description}
                     fullDescription={fullDescription}
@@ -88,6 +94,7 @@ class Photo360 extends PureComponent {
             </Transition>
 
             {/* CLOSE BUTTON */}
+            {/* @ts-ignore*/}
             <Transition
               delay={500}
               from={{ opacity: 0, scale: 0.5 }}
@@ -122,15 +129,34 @@ class Photo360 extends PureComponent {
         </header>
 
         <div className="fullscreen--content">
-          {ready && (
-            <div className="fullscreen--content-360">
-              <Panorama files={files} />
-            </div>
-          )}
+          {/* @ts-ignore*/}
+          {loading && <Spinner position="absolute" className="fullscreen--spinner" />}
+
+          <Spring delay={1000} from={{ opacity: 0 }} to={{ opacity: 1 }}>
+            {(props) => (
+              <div className="fullscreen--content-video" style={props}>
+                <ReactPlayer
+                  url={src}
+                  playing={playing}
+                  onReady={this.onReady}
+                  onError={this.onError}
+                  config={{
+                    youtube: {
+                      playerVars: {
+                        controls: 0,
+                        showinfo: 1,
+                        rel: 0,
+                      },
+                    },
+                  }}
+                />
+              </div>
+            )}
+          </Spring>
         </div>
       </Fragment>
     );
   }
 }
 
-export default Photo360;
+export default Video;

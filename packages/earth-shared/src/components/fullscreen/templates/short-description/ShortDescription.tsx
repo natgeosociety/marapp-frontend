@@ -19,7 +19,14 @@
 
 import React, { PureComponent, Fragment } from 'react';
 
-class ShortDescription extends PureComponent {
+interface ShortDescriptionProps {
+  text?: string;
+  fullDescription?: boolean;
+  maxLength?: number;
+  onToggleDescription: () => void;
+}
+
+class ShortDescription extends PureComponent<ShortDescriptionProps> {
   static defaultProps = {
     text: '',
     fullDescription: false,

@@ -18,6 +18,6 @@
 */
 
 // Components
-import LayerComponent from './component';
+import LayerComponent from './Layer';
 
 export default LayerComponent;

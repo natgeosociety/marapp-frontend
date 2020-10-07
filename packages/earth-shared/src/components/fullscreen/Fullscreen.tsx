@@ -18,7 +18,6 @@
 */
 
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 
 // Animations
 import { Transition } from 'react-spring/renderprops';
@@ -28,15 +27,12 @@ import Templates from './templates';
 // Styles
 import './styles.scss';
 
-class Fullscreen extends PureComponent {
-  static propTypes = {
-    open: PropTypes.bool.isRequired,
-    data: PropTypes.shape({
-      type: PropTypes.string,
-      properties: PropTypes.object,
-    }).isRequired,
-  };
+interface FullscreenProps {
+  open: boolean;
+  data: { type: string; properties: {} };
+}
 
+class Fullscreen extends PureComponent<FullscreenProps> {
   render() {
     const { open, data } = this.props;
 
@@ -54,6 +50,7 @@ class Fullscreen extends PureComponent {
           (({ height, y, ...props }) => (
             <div
               className="c-fullscreen marapp-qa-fullscreen"
+              // @ts-ignore
               style={{
                 height: `${height}%`,
                 transform: `translate(0, ${y}%)`,

@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import FullscreenComponent from './component';
+import FullscreenComponent from './Fullscreen';
 
 export default FullscreenComponent;

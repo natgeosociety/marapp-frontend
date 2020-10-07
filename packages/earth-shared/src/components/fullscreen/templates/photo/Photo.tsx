@@ -24,21 +24,30 @@ import classnames from 'classnames';
 // Animations
 import { Transition } from 'react-spring/renderprops';
 
-import { Spinner, Icon, Slick, SlickNextArrow, SlickPrevArrow } from '@marapp/earth-shared';
+import { Spinner, Slick, SlickNextArrow, SlickPrevArrow } from '@marapp/earth-shared';
 
-import ShortDescription from '../short-description';
+import ShortDescription from '../short-description/ShortDescription';
 
-class Photo extends PureComponent {
-  static propTypes = {
-    data: PropTypes.shape({}).isRequired,
-    onClose: PropTypes.func,
-  };
+interface PhotoProps {
+  data: { title: string; description: string; files: any };
+  onClose?: () => {};
+}
 
+interface PhotoState {
+  index: number;
+  fullDescription: boolean;
+  loading: boolean;
+}
+
+class Photo extends PureComponent<PhotoProps, PhotoState> {
   state = {
     index: 0,
     fullDescription: false,
     loading: true,
   };
+  private timeout: any;
+  private slider: any;
+  private sliderThumb: any;
 
   componentWillMount() {
     const { data } = this.props;
@@ -50,7 +59,7 @@ class Photo extends PureComponent {
     }
 
     // Preload images
-    files.forEach((f) => {
+    files.forEach((f: any) => {
       const image = new Image();
       image.src = f.src;
       image.onload = () => {
@@ -173,7 +182,7 @@ class Photo extends PureComponent {
                             <div key={image.id} className="thumbnails--item">
                               <div
                                 role="button"
-                                tabIndex="-1"
+                                tabIndex={-1}
                                 className={classnames({
                                   'thumbnails--button': true,
                                   '-active': index === i,
@@ -197,6 +206,7 @@ class Photo extends PureComponent {
             )}
 
             {/* CLOSE BUTTON */}
+            {/* @ts-ignore*/}
             <Transition
               delay={500}
               from={{ opacity: 0, scale: 0.5 }}
@@ -232,6 +242,7 @@ class Photo extends PureComponent {
 
         {/* SLICK CAROUSEL */}
         <div className="fullscreen--content fullscreen--content-image">
+          {/* @ts-ignore*/}
           {loading && <Spinner position="absolute" className="fullscreen--spinner" />}
 
           <Transition

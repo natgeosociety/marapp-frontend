@@ -24,17 +24,18 @@ import classnames from 'classnames';
 // styles
 import './styles.scss';
 
-class LayerComponent extends PureComponent {
-  static propTypes = {
-    slug: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    background: PropTypes.string,
-    dark: PropTypes.bool,
-    active: PropTypes.bool,
-    onClick: PropTypes.func.isRequired,
-    onClickInfo: PropTypes.func,
-  };
+interface LayerProps {
+  slug: string;
+  name: string;
+  onClick: () => {};
+  background?: string;
+  dark?: boolean;
+  active?: boolean;
+  onClickInfo?: (e) => {};
+  category?: string;
+}
 
+class LayerComponent extends PureComponent<LayerProps> {
   static defaultProps = {
     background: '',
     active: false,
@@ -53,7 +54,7 @@ class LayerComponent extends PureComponent {
           '-active': active,
         })}
         role="button"
-        tabIndex="-1"
+        tabIndex={-1}
         onClick={onClick}
       >
         {!background && (
@@ -70,7 +71,7 @@ class LayerComponent extends PureComponent {
         </div>
 
         {!!onClickInfo && (
-          <button type="button" className="layers--item-info" onClickInfo={onClickInfo}>
+          <button type="button" className="layers--item-info" onClick={onClickInfo}>
             <i className="ng-icon-info-circle" />
           </button>
         )}
