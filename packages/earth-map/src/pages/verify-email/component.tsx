@@ -20,7 +20,6 @@
 import { useAuth0 } from 'auth/auth0';
 import { APP_NAME, ENABLE_PUBLIC_ACCESS } from 'config';
 import React from 'react';
-import { replace } from 'redux-first-router';
 
 import './styles.scss';
 
@@ -50,13 +49,7 @@ const VerifyEmail = () => {
                 here.
               </a>
             </p>
-            <button
-              className="ng-button ng-button-primary"
-              onClick={() => {
-                logout();
-                replace('/earth');
-              }}
-            >
+            <button className="ng-button ng-button-primary" onClick={() => logout()}>
               Browse {APP_NAME} as a public user
             </button>
           </>

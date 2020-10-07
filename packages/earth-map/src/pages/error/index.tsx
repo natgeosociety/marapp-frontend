@@ -23,4 +23,7 @@ import ErrorPageComponent from './component';
 
 export default connect(null, (dispatch) => ({
   resetStore: () => dispatch({ type: 'GLOBAL/resetStore' }),
+  returnToHome: () => {
+    dispatch({ type: 'EARTH' });
+  },
 }))(ErrorPageComponent);

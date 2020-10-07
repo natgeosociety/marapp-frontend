@@ -17,23 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { compose } from 'lodash/fp';
 import React from 'react';
-import { replace } from 'redux-first-router';
 
 import { Button, ErrorTemplate } from '@marapp/earth-shared';
 
-const NotFound = ({ resetStore }) => {
+const NotFound = ({ returnToHome, resetStore }) => {
   return (
     <ErrorTemplate type="404" message="Sorry we couldn't find that page.">
       <ul className="not-found--links--list">
         <li>
-          <Button
-            onClick={() => {
-              resetStore();
-              replace('/earth');
-            }}
-            className="-light -fullwidth"
-          >
+          <Button className="-light -fullwidth" onClick={compose(returnToHome, resetStore)}>
             Home
           </Button>
         </li>
