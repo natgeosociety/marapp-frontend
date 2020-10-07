@@ -88,6 +88,8 @@ export function UsersHome(props: any) {
         ...provided,
         color: state.data.hasError
           ? 'red'
+          : state.data.skipped
+          ? 'orange'
           : state.data.hasSuccess
           ? 'green'
           : 'var(--marapp-gray-9)',
@@ -97,7 +99,7 @@ export function UsersHome(props: any) {
     },
     multiValueRemove: (provided, state) => ({
       ...provided,
-      color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
+      color: state.data.hasError ? 'red' : state.data.skipped ? 'orange' : 'var(--marapp-gray-9)',
     }),
     control: (provided, state) => {
       return {
@@ -124,6 +126,35 @@ export function UsersHome(props: any) {
 
     const { users, role } = getValues();
 
+    const processUsersFeedback = (data, isSccess) => {
+      const feedback = [];
+
+      const feedbackUsers = data.map((item) => {
+        const skipped = item.status === 409;
+        const hasError = !!item.error && !skipped;
+        const hasSuccess = isSccess && (item.status === 200 || skipped);
+
+        feedback.push({
+          hasError,
+          hasSuccess,
+          title: item.email,
+          detail: item.error,
+          skipped,
+        });
+
+        return {
+          label: item.email,
+          value: item.email,
+          hasError,
+          hasSuccess,
+          skipped,
+        };
+      });
+
+      setValue('users', feedbackUsers);
+      setUsersFeedback(feedback);
+    };
+
     try {
       const result: any = await addUsers(
         {
@@ -133,33 +164,14 @@ export function UsersHome(props: any) {
         selectedGroup
       );
 
-      const feedback = [];
-
-      const feedbackUsers = result.data.map((item) => {
-        const hasError = !!item.error;
-        const hasSuccess = !!item.success;
-
-        feedback.push({
-          hasError,
-          hasSuccess,
-          title: item.email,
-          detail: item.error,
-        });
-
-        return {
-          label: item.email,
-          value: item.email,
-          hasError,
-          hasSuccess,
-        };
-      });
-
-      setValue('users', feedbackUsers);
-      setUsersFeedback(feedback);
+      processUsersFeedback(result.data, true);
 
       mutate();
     } catch (err) {
-      setServerErrors(err.data?.errors || err.data);
+      const errors = err.data?.errors;
+
+      processUsersFeedback(errors ? [] : err.data, false);
+      setServerErrors(errors || err.data);
     }
 
     setIsLoadingInviteUsers(false);
@@ -224,16 +236,19 @@ export function UsersHome(props: any) {
                     {serverErrors.length > 0 && <ErrorMessages errors={serverErrors} />}
                     {usersFeedback.length > 0 && (
                       <div className="ng-width-1-1 ng-margin-bottom">
-                        {usersFeedback.map((error) =>
-                          error.hasSuccess ? (
+                        {usersFeedback.map((item) =>
+                          item.skipped ? (
                             <p className="ng-margin-remove">
-                              The email, {error.title} has been invited.
+                              The email, {item.title} already exists.
+                            </p>
+                          ) : item.hasSuccess ? (
+                            <p className="ng-margin-remove">
+                              The email, {item.title} has been invited.
                             </p>
                           ) : (
-                            error.hasError && (
+                            item.hasError && (
                               <p className="ng-margin-remove">
-                                The email, {error.title} is unavailable. Please enter a new email to
-                                add users to your organization.
+                                The email, {item.title} is unavailable. Details: {item.detail}
                               </p>
                             )
                           )
