@@ -59,8 +59,10 @@ function* loadPlaces() {
   // PLACES
   const places: IPlace[] = yield all({
     featured: call(fetchPlaces, {
-      ...LOCATION_QUERY,
-      ...{ filter: 'featured==true', group: group.toString() },
+      select: 'slug,name,id,organization,type',
+      page: { size: 100 },
+      filter: 'featured==true',
+      group: group.toString(),
     }),
   });
 
