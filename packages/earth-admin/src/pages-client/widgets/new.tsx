@@ -69,7 +69,7 @@ export function NewWidget(props: IProps) {
 
     const parsed = {
       ...values,
-      ...(!!layers && { layers: flattenObjectForSelect(layers, 'id') }),
+      ...(!!layers && { layers: [flattenObjectForSelect(layers, 'id')] }),
       ...(!!metrics && { metrics: [metrics.value] }),
       ...(!!layerConfig && { config: layerConfig }),
     };
@@ -180,7 +180,7 @@ export function NewWidget(props: IProps) {
           <div className="ng-grid ng-flex-top ng-margin-medium-bottom">
             <div className="ng-width-1-2">
               <Card className="ng-margin-medium-bottom">
-                <label htmlFor="provider">Widget Layers:</label>
+                <label htmlFor="provider">Widget Layer(s):</label>
                 <Controller
                   name="layers"
                   type="layers"
@@ -194,7 +194,7 @@ export function NewWidget(props: IProps) {
                   isClearable={true}
                   isSearchable={true}
                   closeMenuOnSelect={false}
-                  placeholder="Select layers"
+                  placeholder="Select layer(s)"
                   styles={CUSTOM_STYLES}
                   theme={(theme) => ({
                     ...theme,

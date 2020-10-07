@@ -110,7 +110,7 @@ export function WidgetsDetail(props: WidgetProps) {
 
     const parsed = {
       ...formData,
-      ...(layers && { layers: flattenObjectForSelect(layers, 'id') }),
+      ...(layers && { layers: [flattenObjectForSelect(layers, 'id')] }),
       ...(metrics && { metrics: [metrics.value] }),
     };
 
@@ -299,7 +299,7 @@ export function WidgetsDetail(props: WidgetProps) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <div className="ng-margin-medium-bottom">
-                        <label htmlFor="provider">Widget Layers</label>
+                        <label htmlFor="provider">Widget Layer(s)</label>
                         <Controller
                           name="layers"
                           type="layers"
@@ -320,7 +320,7 @@ export function WidgetsDetail(props: WidgetProps) {
                             ...SELECT_THEME,
                           })}
                           closeMenuOnSelect={false}
-                          placeholder="Select layers"
+                          placeholder="Select layer(s)"
                         />
                       </div>
                     </>
@@ -330,13 +330,15 @@ export function WidgetsDetail(props: WidgetProps) {
                     {!!layers ? (
                       <DetailList
                         data={layers}
-                        name="Widget Layers"
+                        name="Widget Layer(s)"
                         type="layers"
                         className="ng-flex-column ng-flex-top"
                       />
                     ) : (
                       <div>
-                        <p className="ng-text-weight-bold ng-margin-small-bottom">Widget Layers</p>
+                        <p className="ng-text-weight-bold ng-margin-small-bottom">
+                          Widget Layer(s)
+                        </p>
                         <span className="ng-padding-left">No layer references</span>
                       </div>
                     )}
