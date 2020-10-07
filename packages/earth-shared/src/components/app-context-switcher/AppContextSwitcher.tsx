@@ -71,7 +71,7 @@ const AppContextSwitcher = (props: IProps) => {
           <>
             <div
               onClick={toggleDropdown}
-              className="ng-c-cursor-pointer ng-flex ng-flex-middle ng-padding-horizontal ng-position-relative"
+              className="ng-c-cursor-pointer ng-flex ng-flex-middle ng-padding-medium-left ng-padding-right ng-position-relative"
             >
               <div className="ng-text-display-s ng-text-weight-regular ng-color-white ng-margin-remove ng-org-name ng-padding-right">
                 {label}
