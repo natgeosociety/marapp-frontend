@@ -19,7 +19,6 @@
 
 import { useAuth0 } from 'auth/auth0';
 import React from 'react';
-import { replace } from 'redux-first-router';
 
 import { Button, ErrorTemplate } from '@marapp/earth-shared';
 
@@ -30,13 +29,7 @@ const Unauthorized = () => {
     <ErrorTemplate type="403" message="You don’t have permission to access this page.">
       <ul className="not-found--links--list">
         <li>
-          <Button
-            onClick={() => {
-              logout();
-              replace('/earth');
-            }}
-            className="-light -fullwidth"
-          >
+          <Button onClick={logout} className="-light -fullwidth">
             Log out
           </Button>
         </li>
