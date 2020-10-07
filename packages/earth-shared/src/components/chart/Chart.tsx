@@ -18,7 +18,6 @@
 */
 
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import maxBy from 'lodash/maxBy';
@@ -45,15 +44,36 @@ import ChartTick from './tick';
 
 import './styles.scss';
 
-class Chart extends PureComponent {
-  static propTypes = {
-    data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    config: PropTypes.shape({}).isRequired,
-    className: PropTypes.string,
-    handleMouseMove: PropTypes.func,
-    handleMouseLeave: PropTypes.func,
-  };
+interface ChartConfig {
+  xTitle: string;
+  yTitle: string;
+  margin: { top: number; right: number; left: number; bottom: number };
+  padding: { top: number; right: number; left: number; bottom: number };
+  type: string;
+  xKey: string;
+  yKeys: any;
+  xAxis: string;
+  yAxis: string;
+  cartesianGrid: string;
+  gradients: string;
+  height: string;
+  patterns: string;
+  tooltip: string;
+  layout: string;
+  legend: string;
+  unit: string;
+  unitFormat: (v: any) => {};
+}
 
+interface ChartProps {
+  data: {}[];
+  config: ChartConfig;
+  className?: string;
+  handleMouseMove?: () => {};
+  handleMouseLeave?: () => {};
+}
+
+class Chart extends PureComponent<ChartProps> {
   static defaultProps = {
     className: '',
     handleMouseMove: null,
@@ -208,7 +228,7 @@ class Chart extends PureComponent {
                     {!!bars[key].label && <Label {...bars[key].label} />}
 
                     {bars[key].itemColor &&
-                      data.map((item) => <Cell key={`c_${item.color}`} fill={item.color} />)}
+                      data.map((item: any) => <Cell key={`c_${item.color}`} fill={item.color} />)}
                   </Bar>
                 ))}
 

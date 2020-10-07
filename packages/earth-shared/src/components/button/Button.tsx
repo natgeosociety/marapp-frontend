@@ -18,7 +18,6 @@
 */
 
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import Link from 'redux-first-router-link';
@@ -26,18 +25,23 @@ import Link from 'redux-first-router-link';
 // styles
 import './styles.scss';
 
-class Button extends PureComponent {
-  static propTypes = {
-    link: PropTypes.shape({}),
-    style: PropTypes.shape({}),
-    className: PropTypes.string,
-    onMouseDown: PropTypes.func,
-    onMouseUp: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    onTouchStart: PropTypes.func,
-    onTouchEnd: PropTypes.func,
-  };
+interface ButtonProps {
+  link?: {};
+  style?: {};
+  className?: string;
+  onMouseDown?: (e) => {};
+  onMouseUp?: (e) => {};
+  onMouseLeave?: (e) => {};
+  onTouchStart?: (e) => {};
+  onTouchEnd?: (e) => {};
+}
 
+interface ButtonState {
+  rippleStyle?: {};
+  rippleIsVisible?: boolean;
+}
+
+class Button extends PureComponent<ButtonProps, ButtonState> {
   static defaultProps = {
     link: null,
     style: {},
@@ -53,6 +57,8 @@ class Button extends PureComponent {
     rippleStyle: {},
     rippleIsVisible: false,
   };
+  private ripple: any;
+  private button: any;
 
   constructor(props) {
     super(props);
@@ -154,7 +160,7 @@ class Button extends PureComponent {
     });
   }
 
-  hideRipple() {
+  hideRipple(e) {
     this.setState({
       rippleIsVisible: false,
     });

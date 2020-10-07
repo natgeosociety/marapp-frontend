@@ -18,18 +18,17 @@
 */
 
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 
 // Styles
 import './styles.scss';
 
-class Tooltip extends PureComponent {
-  static propTypes = {
-    payload: PropTypes.arrayOf(PropTypes.shape({})),
-    settings: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    hideZeros: PropTypes.bool,
-  };
+interface TooltipProps {
+  settings: any[];
+  payload?: any[];
+  hideZeros?: boolean;
+}
 
+class Tooltip extends PureComponent<TooltipProps> {
   static defaultProps = {
     payload: [],
     hideZeros: false,

@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import TooltipComponent from './component';
+import ChartComponent from './Chart';
 
-export default TooltipComponent;
+export default ChartComponent;

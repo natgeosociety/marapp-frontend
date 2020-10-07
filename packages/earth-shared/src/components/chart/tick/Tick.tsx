@@ -18,20 +18,22 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 
-class Tick extends React.Component {
-  static propTypes = {
-    x: PropTypes.number,
-    y: PropTypes.number,
-    payload: PropTypes.shape({}),
-    dataMax: PropTypes.number,
-    unit: PropTypes.string.isRequired,
-    unitFormat: PropTypes.func.isRequired,
-    fill: PropTypes.string.isRequired,
-    backgroundColor: PropTypes.string,
-  };
+interface TickProps {
+  unit: string;
+  unitFormat: (v: any) => {};
+  fill: string;
+  x?: number;
+  y?: number;
+  fontWeight: number;
+  payload?: { value: any };
+  dataMax?: number;
+  backgroundColor?: string;
+}
 
+interface TickState {}
+
+class Tick extends React.Component<TickProps, TickState> {
   static defaultProps = {
     x: 0,
     y: 0,
@@ -44,7 +46,7 @@ class Tick extends React.Component {
 
     const tickValue = payload && payload.value;
     const formattedTick = typeof tickValue !== 'undefined' ? unitFormat(tickValue) : 0;
-    const tick = tickValue >= dataMax ? `${formattedTick}${unit}` : formattedTick;
+    const tick: any = tickValue >= dataMax ? `${formattedTick}${unit}` : formattedTick;
 
     return (
       <g transform={`translate(${x},${y})`}>

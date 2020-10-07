@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import ChartComponent from './component';
+import ButtonComponent from './Button';
 
-export default ChartComponent;
+export default ButtonComponent;

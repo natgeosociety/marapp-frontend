@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import ButtonComponent from './component';
+import TooltipComponent from './Tooltip';
 
-export default ButtonComponent;
+export default TooltipComponent;
