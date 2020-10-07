@@ -49,6 +49,7 @@ export const CUSTOM_STYLES = {
   }),
   placeholder: () => ({
     color: 'var(--marapp-gray-5)',
+    position: 'absolute',
   }),
   input: () => ({
     boxShadow: 'none',
