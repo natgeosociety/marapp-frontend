@@ -19,6 +19,7 @@
 
 import { useAuth0 } from 'auth/auth0';
 import React from 'react';
+import { replace } from 'redux-first-router';
 
 import { Button, ErrorTemplate } from '@marapp/earth-shared';
 
@@ -32,6 +33,7 @@ const Unauthorized = () => {
           <Button
             onClick={() => {
               logout();
+              replace('/earth');
             }}
             className="-light -fullwidth"
           >
