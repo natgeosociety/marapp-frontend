@@ -62,6 +62,7 @@ function* loadPlaces() {
       select: 'slug,name,id,organization,type',
       page: { size: 100 },
       filter: 'featured==true',
+      sort: 'name',
       group: group.toString(),
     }),
   });
