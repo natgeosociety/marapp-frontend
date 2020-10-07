@@ -36,14 +36,16 @@ export function ProfileComponent(props: IProps) {
     <Spinner size="large" />
   ) : (
     <div className={`l-page ng-flex marapp-qa-user-profile ng-ep-background-gray-9`}>
-      <Link
-        className="ng-border-remove"
-        to={{
-          type: 'EARTH',
-        }}
-      >
-        <img src={APP_LOGO} className="ng-display-block ng-margin" />
-      </Link>
+      <div>
+        <Link
+          className="ng-border-remove"
+          to={{
+            type: 'EARTH',
+          }}
+        >
+          <img src={APP_LOGO} className="ng-margin" />
+        </Link>
+      </div>
 
       <UserMenu
         selected={page}
