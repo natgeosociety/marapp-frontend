@@ -25,7 +25,7 @@ import { Auth0ListItem, DataListing } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
 import { getAllOrganizations } from '@app/services/organizations';
 import { encodeQueryToURL, setPage } from '@app/utils';
-import { useInfiniteList } from '@app/utils/hooks';
+import { useInfiniteListPaged } from '@app/utils/hooks';
 
 import { OrganizationDetails } from './details';
 import { OrganizationHome } from './home';
@@ -40,11 +40,12 @@ export default function PlacesPage(props) {
   const getQuery = (pageIndex) => {
     const query = {
       page: { size: PAGE_SIZE, number: pageIndex },
+      select: 'name,slug',
       group: selectedGroup,
     };
     return encodeQueryToURL('organizations', query);
   };
-  const { listProps, mutate } = useInfiniteList(getQuery, getAllOrganizations);
+  const { listProps, mutate } = useInfiniteListPaged(getQuery, getAllOrganizations);
 
   return (
     <>

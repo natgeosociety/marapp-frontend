@@ -32,19 +32,18 @@ import { DashboardsHome } from './home';
 import { NewDashboard } from './new';
 
 const PAGE_TYPE = setPage('Dashboards');
-const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const PAGE_SIZE = 20;
 
 export default function DashboardsPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
 
-  const getQuery = (pageIndex) => {
+  const getQuery = (cursor) => {
     const query = {
       search: searchValue,
       sort: 'name',
-      page: { size: PAGE_SIZE, number: pageIndex },
-      select: EXCLUDED_FIELDS,
+      page: { size: PAGE_SIZE, cursor },
+      select: 'name,slug',
       group: selectedGroup,
     };
     return encodeQueryToURL('dashboards', query);

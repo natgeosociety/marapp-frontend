@@ -32,7 +32,7 @@ import { ContentLayout } from '@app/layouts';
 import { getAvailableGroups } from '@app/services';
 import { addUsers, getAllUsers } from '@app/services/users';
 import { encodeQueryToURL } from '@app/utils';
-import { useInfiniteList } from '@app/utils/hooks';
+import { useInfiniteListPaged } from '@app/utils/hooks';
 import { validEmail } from '@app/utils/validations';
 
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
@@ -56,7 +56,7 @@ export function UsersHome(props: any) {
     };
     return encodeQueryToURL('users', query);
   };
-  const { listProps: userListProps, mutate } = useInfiniteList(getQuery, getAllUsers);
+  const { listProps: userListProps, mutate } = useInfiniteListPaged(getQuery, getAllUsers);
 
   const { watch, setValue, control, getValues } = useForm({
     mode: 'onChange',
