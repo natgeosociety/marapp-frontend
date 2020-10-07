@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import MarkdownComponent from './Markdown';
+import Map from './Map';
 
-export default MarkdownComponent;
+export default Map;

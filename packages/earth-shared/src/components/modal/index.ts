@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import ModalComponent from './component';
+import ModalComponent from './Modal';
 
 export default ModalComponent;

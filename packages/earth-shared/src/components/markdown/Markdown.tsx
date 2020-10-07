@@ -18,18 +18,17 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import ReactMarkdown from 'react-markdown';
 
 // Styles
 import './styles.scss';
 
-class Markdown extends React.Component {
-  static propTypes = {
-    source: PropTypes.string.isRequired,
-  };
+interface MarkdownProps {
+  source: string;
+}
 
+class Markdown extends React.Component<MarkdownProps> {
   render() {
     return (
       <div className="c-markdown marapp-qa-markdown">

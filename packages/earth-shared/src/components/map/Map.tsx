@@ -38,58 +38,53 @@ const DEFAULT_VIEWPORT = {
   lng: 0,
 };
 
-class Map extends Component {
-  events = {};
+interface MapProps {
+  /** A function that returns the map instance */
+  children?: (c: any) => {};
 
-  static propTypes = {
-    /** A function that returns the map instance */
-    children: PropTypes.func,
+  /** Custom css class for styling */
+  customClass?: string;
 
-    /** Custom css class for styling */
-    customClass: PropTypes.string,
+  /** An object that defines the viewport
+   * @see https://uber.github.io/react-map-gl/#/Documentation/api-reference/interactive-map?section=initialization
+   */
+  viewport?: {};
 
-    /** An object that defines the viewport
-     * @see https://uber.github.io/react-map-gl/#/Documentation/api-reference/interactive-map?section=initialization
-     */
-    viewport: PropTypes.shape({}),
+  /** An object that defines the bounds */
+  bounds?: { bbox?: any[]; options?: {} };
 
-    /** An object that defines the bounds */
-    bounds: PropTypes.shape({
-      bbox: PropTypes.array,
-      options: PropTypes.shape({}),
-    }),
+  /** A boolean that allows panning */
+  dragPan?: boolean;
 
-    /** A boolean that allows panning */
-    dragPan: PropTypes.bool,
+  /** A boolean that allows rotating */
+  dragRotate?: boolean;
 
-    /** A boolean that allows rotating */
-    dragRotate: PropTypes.bool,
+  /** A boolean that allows zooming */
+  scrollZoom?: boolean;
 
-    /** A boolean that allows zooming */
-    scrollZoom: PropTypes.bool,
+  /** A boolean that allows zooming */
+  touchZoom?: boolean;
 
-    /** A boolean that allows zooming */
-    touchZoom: PropTypes.bool,
+  /** A boolean that allows touch rotating */
+  touchRotate?: boolean;
 
-    /** A boolean that allows touch rotating */
-    touchRotate: PropTypes.bool,
+  /** A boolean that allows double click zooming */
+  doubleClickZoom?: boolean;
 
-    /** A boolean that allows double click zooming */
-    doubleClickZoom: PropTypes.bool,
+  /** A function that exposes when the map is ready. It returns and object with the `this.map` and `this.mapContainer` reference. */
+  onReady?: (m: { map?: any; mapContainer?: any }) => {};
 
-    /** A function that exposes when the map is ready. It returns and object with the `this.map` and `this.mapContainer` reference. */
-    onReady: PropTypes.func,
+  /** A function that exposes when the map is loaded. It returns and object with the `this.map` and `this.mapContainer` reference. */
+  onLoad?: (m: { map?: any; mapContainer?: any }) => {};
 
-    /** A function that exposes when the map is loaded. It returns and object with the `this.map` and `this.mapContainer` reference. */
-    onLoad: PropTypes.func,
+  /** A function that exposes the viewport */
+  onViewportChange?: (v: any) => {};
 
-    /** A function that exposes the viewport */
-    onViewportChange: PropTypes.func,
+  /** A function that exposes the viewport */
+  getCursor: () => {};
+}
 
-    /** A function that exposes the viewport */
-    getCursor: PropTypes.func,
-  };
-
+class Map extends Component<MapProps> {
   static defaultProps = {
     children: null,
     customClass: null,
@@ -107,7 +102,7 @@ class Map extends Component {
       return 'grab';
     },
   };
-
+  events = {};
   state = {
     viewport: {
       ...DEFAULT_VIEWPORT,
@@ -116,6 +111,8 @@ class Map extends Component {
     flying: false,
     loaded: false,
   };
+  private map: any;
+  private mapContainer: any;
 
   componentDidMount() {
     const { bounds, onReady } = this.props;
