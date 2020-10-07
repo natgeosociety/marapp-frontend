@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import LegendGroupComponent from './component';
+import LegendGroupComponent from './LegendGroup';
 
 export default LegendGroupComponent;

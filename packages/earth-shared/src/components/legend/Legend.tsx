@@ -18,7 +18,6 @@
 */
 
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 
 import debounce from 'lodash/debounce';
 
@@ -37,25 +36,26 @@ import LegendGroup from './legend-group';
 // styles
 import './styles.scss';
 
-class LegendComponent extends PureComponent {
-  static propTypes = {
-    list: PropTypes.arrayOf(PropTypes.object).isRequired,
-    active: PropTypes.arrayOf(PropTypes.object).isRequired,
-    setLayerVisibility: PropTypes.func.isRequired,
-    setLayerOrder: PropTypes.func.isRequired,
-    setLayerOpacity: PropTypes.func.isRequired,
-    setLayerGroupActive: PropTypes.func,
-  };
+interface LegendProps {
+  list: [];
+  active: [];
+  setLayerVisibility: (l: { slug?: string; dataset?: { id?: any }; visibility?: any }) => {};
+  setLayerOrder: (d: {}) => {};
+  setLayerOpacity: (l: { slug?: string; dataset?: { id?: any }; opacity?: any }) => {};
+  setLayerGroupActive?: (l: any) => {};
+  layerGroups?: any;
+}
+
+class LegendComponent extends PureComponent<LegendProps> {
+  onChangeOpacity = debounce((l, opacity, slug) => {
+    const { setLayerOpacity } = this.props;
+    setLayerOpacity({ slug, dataset: { id: l.dataset }, opacity });
+  }, 250);
 
   onChangeVisibility = (l, visibility, slug) => {
     const { setLayerVisibility } = this.props;
     setLayerVisibility({ slug, dataset: { id: l.dataset }, visibility });
   };
-
-  onChangeOpacity = debounce((l, opacity, slug) => {
-    const { setLayerOpacity } = this.props;
-    setLayerOpacity({ slug, dataset: { id: l.dataset }, opacity });
-  }, 250);
 
   onChangeOrder = (datasetIds) => {
     const { setLayerOrder } = this.props;

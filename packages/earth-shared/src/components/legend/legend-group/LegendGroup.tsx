@@ -38,7 +38,13 @@ const MONTHS = [
   'December',
 ];
 
-class LegendGroup extends PureComponent {
+interface LegendGroupProps {
+  layerConfig: { active?: any; layers?: any };
+  onChangeLayer: (l: { slug?: string; active?: any }) => {};
+  slug?: string;
+}
+
+class LegendGroup extends PureComponent<LegendGroupProps> {
   static propTypes = {
     layerConfig: PropTypes.shape({}).isRequired,
     onChangeLayer: PropTypes.func.isRequired,
