@@ -17,4 +17,32 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { default } from './ErrorTemplate';
+import React from 'react';
+import classnames from 'classnames';
+
+import './styles.scss';
+
+interface SpinnerProps {
+  position?: string;
+  className?: string;
+  size?: string;
+}
+
+const Spinner = (props: SpinnerProps) => {
+  const { position, className, size = 'small' } = props;
+  const classNames = classnames('marapp-qa-spinner', 'c-spinner', {
+    [`-${position}`]: true,
+    [className]: !!className,
+    [size]: !!size,
+  });
+
+  return (
+    <div className={classNames}>
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>
+  );
+};
+
+export default Spinner;

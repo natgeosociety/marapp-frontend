@@ -17,4 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { default } from './ErrorTemplate';
+import Tooltip from './Tooltip';
+
+export default Tooltip;

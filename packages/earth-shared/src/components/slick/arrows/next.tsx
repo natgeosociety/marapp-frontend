@@ -17,4 +17,30 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { default } from './ErrorTemplate';
+import React, { PureComponent } from 'react';
+
+interface NextArrowProps {
+  className?: string;
+  style?: {};
+  onClick?: (e) => {};
+}
+
+class NextArrow extends PureComponent<NextArrowProps> {
+  static defaultProps = {
+    className: '',
+    style: {},
+    onClick: null,
+  };
+
+  render() {
+    const { className, style, onClick } = this.props;
+
+    return (
+      <div className={className} role="button" tabIndex="-1" style={{ ...style }} onClick={onClick}>
+        <i className="ng-icon-directionright" />
+      </div>
+    );
+  }
+}
+
+export default NextArrow;

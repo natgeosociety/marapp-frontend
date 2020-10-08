@@ -17,4 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { default } from './ErrorTemplate';
+import ShareComponent from './Share';
+
+export default ShareComponent;

@@ -17,4 +17,25 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { default } from './ErrorTemplate';
+import React from 'react';
+
+import ReactMarkdown from 'react-markdown';
+
+// Styles
+import './styles.scss';
+
+interface MarkdownProps {
+  source: string;
+}
+
+class Markdown extends React.Component<MarkdownProps> {
+  render() {
+    return (
+      <div className="c-markdown marapp-qa-markdown">
+        <ReactMarkdown {...this.props} />
+      </div>
+    );
+  }
+}
+
+export default Markdown;

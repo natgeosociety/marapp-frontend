@@ -17,4 +17,38 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { default } from './ErrorTemplate';
+import React from 'react';
+
+import classnames from 'classnames';
+
+import renderHTML from 'react-render-html';
+
+// Styles
+import './styles.scss';
+
+interface HTMLProps {
+  html: string;
+  className?: string;
+}
+
+class HTML extends React.Component<HTMLProps> {
+  static defaultProps = {
+    className: '',
+  };
+
+  render() {
+    const { html, className } = this.props;
+
+    return (
+      <div
+        className={classnames('marapp-qa-html', 'c-html', {
+          [className]: !!className,
+        })}
+      >
+        {renderHTML(html)}
+      </div>
+    );
+  }
+}
+
+export default HTML;

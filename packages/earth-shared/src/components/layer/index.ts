@@ -17,4 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { default } from './ErrorTemplate';
+// Components
+import LayerComponent from './Layer';
+
+export default LayerComponent;
