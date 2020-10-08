@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.8.0...v1.8.1) (2020-10-08)
+
+
+### Bug Fixes
+
+* **admin:** update label for roles on user views ([#219](https://github.com/natgeosociety/marapp-frontend/issues/219)) ([#221](https://github.com/natgeosociety/marapp-frontend/issues/221)) ([6f2571b](https://github.com/natgeosociety/marapp-frontend/commit/6f2571bb3e8c7f0dd72713432595cbfd4a9ff0f7))
+
 # [1.8.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.7.0...v1.8.0) (2020-10-08)
 
 
