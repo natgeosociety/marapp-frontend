@@ -100,7 +100,7 @@ export default function UserEdit(props: UserEditProps) {
           </div>
 
           <div className="ng-margin-medium-bottom">
-            <label htmlFor="role">User groups*</label>
+            <label htmlFor="role">User roles*</label>
             <Controller
               name="groups"
               control={control}

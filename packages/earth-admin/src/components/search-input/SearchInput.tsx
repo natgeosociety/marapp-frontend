@@ -22,7 +22,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { getAllLayers, getAllWidgets, getAvailableGroups } from '@app/services';
-import { encodeQueryToURL } from '@app/utils';
+import { encodeQueryToURL, normalizeGroupName } from '@app/utils';
 import { Auth0Context } from '@app/utils/contexts';
 
 interface SearchInputProps {
@@ -67,6 +67,11 @@ export default function SearchInput(props: SearchInputProps) {
     }
   });
 
+  const processGroupNames = (result: any): any => ({
+    ...result,
+    data: result.data.map((item) => ({ ...item, name: normalizeGroupName(item.name) })),
+  });
+
   useEffect(() => {
     clearTimeout(timer);
 
@@ -82,7 +87,7 @@ export default function SearchInput(props: SearchInputProps) {
         optionType === 'layers'
           ? await getAllLayers(encodedOptionsQuery)
           : optionType === 'userGroups'
-          ? await getAvailableGroups(selectedGroup)
+          ? processGroupNames(await getAvailableGroups(selectedGroup))
           : await getAllWidgets(encodedOptionsQuery);
 
       setAvailableOptions(res.data);
@@ -147,7 +152,7 @@ export default function SearchInput(props: SearchInputProps) {
               key={option.id}
               className="ng-margin-medium-right"
             >
-              {option.name}
+              {optionType === 'userGroups' ? normalizeGroupName(option.name) : option.name}
               <span
                 className="ng-padding-left ng-icon-hover"
                 onClick={(e) => handleChange(e, option)}

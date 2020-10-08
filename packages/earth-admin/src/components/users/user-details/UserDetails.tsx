@@ -23,6 +23,7 @@ import React, { useState } from 'react';
 import { AuthzGuards, ErrorMessages } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
+import { normalizeGroupName } from '@app/utils';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 
@@ -73,8 +74,8 @@ export default function UserDetails(props: UserProps) {
           <span className="ng-text-weight-medium">Name: </span> {name || '-'}
         </p>
         <p>
-          <span className="ng-text-weight-medium">Groups:</span>{' '}
-          {groups.map((group) => group.name).join(', ') || '-'}
+          <span className="ng-text-weight-medium">Roles:</span>{' '}
+          {groups.map((group) => normalizeGroupName(group.name)).join(', ') || '-'}
         </p>
       </div>
       <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
