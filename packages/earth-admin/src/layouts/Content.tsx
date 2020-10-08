@@ -17,16 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import Helmet from 'react-helmet';
 
-import { Spinner, ErrorMessages } from '@marapp/earth-shared';
+import { favicon, Spinner, UserMenu } from '@marapp/earth-shared';
 
+import { Card } from '@app/components/card';
 import { LinkWithOrg } from '@app/components/link-with-org';
-import { UserMenuComponent } from '@app/components/user-menu';
+import { Auth0Context } from '@app/utils/contexts';
 
 import '../styles/app.scss';
-import { APP_NAME, APP_LOGO } from '../theme';
+import { APP_LOGO, APP_NAME } from '../theme';
 
 interface ILayoutProps {
   children?: any;
@@ -35,6 +36,7 @@ interface ILayoutProps {
   backTo?: string;
   isLoading?: boolean;
   className?: string;
+  errorPage?: string;
 }
 
 interface IUnauthorizedProps {
@@ -54,17 +56,21 @@ const Unauthorized = (props: IUnauthorizedProps) => {
 };
 
 export default function ContentLayout(props: ILayoutProps) {
+  const { logout, login, isAuthenticated } = useContext(Auth0Context);
+
   return (
     <div className={`ng-flex ${props.className || ''}`}>
       <Helmet>
-        <link
-          rel="icon"
-          href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
-        />
+        <link rel="icon" href={favicon} />
         <title>{APP_NAME}</title>
       </Helmet>
       <div className="ng-page-container ng-background-gray-9">
-        <UserMenuComponent />
+        <UserMenu
+          isAuthenticated={isAuthenticated}
+          onLogin={login}
+          onLogout={logout}
+          onSignUp={() => login({ initialScreen: 'signUp' })}
+        />
         <div className="ng-padding-large">
           <Content {...props} />
         </div>
@@ -73,11 +79,38 @@ export default function ContentLayout(props: ILayoutProps) {
   );
 }
 
+const NotFound = (props: ILayoutProps) => {
+  const { backTo = '/', errorPage } = props;
+
+  return (
+    <div className="marapp-qa-recorderror">
+      <h1 className="ng-text-display-m ng-margin-medium-bottom ng-form-error-block">OOPS!</h1>
+      <div className="ng-grid">
+        <div className="ng-width-1-2">
+          <Card>
+            <p>
+              The {errorPage} you are looking for could not be retrieved or doesn't exist. Return to{' '}
+              {errorPage}s home, search for {errorPage}s, or create a new {errorPage}.
+            </p>
+            <div className="ng-flex ng-flex-center">
+              <LinkWithOrg
+                className="ng-button ng-button-secondary marapp-qa-actionreturn"
+                to={backTo}
+              >
+                Return to {errorPage}s home
+              </LinkWithOrg>
+            </div>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Content = (props: ILayoutProps) => {
   const {
     permission = true, // backwards compatibility, permission moves to errors array
     errors = [],
-    backTo = '/',
     isLoading,
   } = props;
 
@@ -87,15 +120,9 @@ const Content = (props: ILayoutProps) => {
   if (!permission) {
     return <Unauthorized message="You are not authorized to view this page" />;
   }
+
   if (errors.length) {
-    return (
-      <div>
-        <ErrorMessages errors={errors} />
-        <LinkWithOrg className="ng-button" to={backTo}>
-          Back
-        </LinkWithOrg>
-      </div>
-    );
+    return <NotFound {...props} />;
   }
 
   return <div className="ng-margin-medium-top">{props.children}</div>;

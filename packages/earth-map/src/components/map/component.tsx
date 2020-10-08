@@ -17,17 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { Auth0Context } from 'auth/auth0';
 import axios from 'axios';
 import classnames from 'classnames';
-import { UserMenuComponent } from 'components/user-menu';
 import { API_URL, MAPBOX_TOKEN } from 'config';
 import experienceIMG from 'images/pins/experience-marker.svg';
 import debounce from 'lodash/debounce';
-import React from 'react';
+import React, { useContext } from 'react';
 import isEqual from 'react-fast-compare';
 import { APP_ABOUT } from 'theme';
 
-import { Map } from '@marapp/earth-shared';
+import { Map, Spinner, UserMenu } from '@marapp/earth-shared';
 
 import BasemapComponent from '../basemap';
 import MapControls from './controls';
@@ -37,10 +37,6 @@ import LayerManager from './layer-manager';
 import Legend from './legend';
 import Popup from './popup';
 import './styles.scss';
-
-// Components
-
-// Styles
 
 const CUSTOM_IMAGES = [{ id: 'experience-marker', src: experienceIMG }];
 
@@ -57,10 +53,16 @@ interface IMap {
   setMapBounds?: (data: any) => void;
   setMapHoverInteractions?: (data: any) => void;
   open?: any;
+  page?: string;
   activeInteractiveLayersIds?: any;
 }
 
-class MapComponent extends React.Component<IMap> {
+interface IMapState {
+  isLoadingTiles?: boolean;
+  loadingTilesIntervalRef?: NodeJS.Timeout;
+}
+
+class MapComponent extends React.Component<IMap, IMapState> {
   public static defaultProps = {
     bounds: {},
     mapLabels: true,
@@ -71,6 +73,32 @@ class MapComponent extends React.Component<IMap> {
     setMapViewport(viewport);
   }, 250);
   private map: any;
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoadingTiles: false,
+    };
+  }
+
+  public componentDidMount() {
+    const loadingTilesIntervalRef = setInterval(() => {
+      const isLoadingTiles = !this.map.areTilesLoaded();
+
+      if (isLoadingTiles !== this.state.isLoadingTiles) {
+        this.setState({ isLoadingTiles });
+      }
+    }, 100);
+
+    this.setState({
+      loadingTilesIntervalRef,
+    });
+  }
+
+  public componentWillUnmount() {
+    clearInterval(this.state.loadingTilesIntervalRef);
+  }
 
   public componentDidUpdate(prevProps) {
     const { mapLabels, mapRoads, interactions, viewport, setMapViewport } = this.props;
@@ -259,6 +287,7 @@ class MapComponent extends React.Component<IMap> {
       viewport,
       bounds,
       mapboxConfig,
+      page,
       activeInteractiveLayersIds,
     } = this.props;
 
@@ -269,7 +298,8 @@ class MapComponent extends React.Component<IMap> {
           '-open': open,
         })}
       >
-        <UserMenuComponent />
+        <UserMenuWrapper selected={page} />
+
         <Map
           mapboxApiAccessToken={MAPBOX_TOKEN}
           // Attributtes
@@ -305,6 +335,7 @@ class MapComponent extends React.Component<IMap> {
         <Legend />
 
         <MapControls>
+          {this.state.isLoadingTiles && <Spinner size="small" position="relative" />}
           <BasemapComponent />
           <div>
             <RecenterControl onClick={this.onRecenterChange} />
@@ -314,6 +345,23 @@ class MapComponent extends React.Component<IMap> {
       </div>
     );
   }
+}
+
+// TODO Remove UserMenuWrapper after refactoring MapComponent to be a functional component
+// This only exists to make use of 'useContext()' inside of it
+function UserMenuWrapper(props) {
+  const { selected } = props;
+  const { logout, login, isAuthenticated } = useContext(Auth0Context);
+
+  return (
+    <UserMenu
+      selected={selected}
+      isAuthenticated={isAuthenticated}
+      onLogin={login}
+      onLogout={logout}
+      onSignUp={() => login({ initialScreen: 'signUp' })}
+    />
+  );
 }
 
 export default MapComponent;

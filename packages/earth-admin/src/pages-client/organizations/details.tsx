@@ -31,7 +31,7 @@ import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { ContentLayout } from '@app/layouts';
 import { getOrganization, updateOrganization } from '@app/services/organizations';
 import { encodeQueryToURL } from '@app/utils';
-import { noSpecialCharsRule, setupErrors, validEmailRule } from '@app/utils/validations';
+import { setupErrors, validEmailRule } from '@app/utils/validations';
 
 import { OrganizationDetailsProps } from './model';
 
@@ -86,15 +86,17 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     }
   }
 
-  if (!data) {
-    return <ContentLayout isLoading={true} />;
-  }
-
   const { name, owners, slug, id } = localOrgData;
   const owner = owners && owners[0];
 
   return (
-    <ContentLayout backTo="/organizations">
+    <ContentLayout
+      backTo="/organizations"
+      isLoading={!data && !error}
+      errorPage="organization"
+      errors={error?.data?.errors}
+      className="marapp-qa-organizationdetail"
+    >
       <DeleteConfirmation
         id={id}
         navigateRoute={'organizations'}
@@ -131,11 +133,6 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                       defaultValue={name}
                       ref={register({
                         required: 'Organization name is required',
-                        validate: {
-                          noSpecialCharsRule: noSpecialCharsRule(
-                            'Organization name can not contain special characters'
-                          ),
-                        },
                       })}
                     />
                   </>

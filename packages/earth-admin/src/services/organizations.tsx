@@ -21,7 +21,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 import { GATSBY_API_URL } from '@app/config';
 
-import { deserializeData } from '../utils';
+import { deserializeData, encodeQueryToURL } from '../utils';
 
 const OrganizationAPIService = {
   request: (options: AxiosRequestConfig) => {
@@ -47,44 +47,38 @@ const OrganizationAPIService = {
   },
 };
 
-export const getAllOrganizations = async (organizationQuery: string) => {
-  return OrganizationAPIService.request({
+export const getAllOrganizations = async (organizationQuery: string) =>
+  OrganizationAPIService.request({
     url: organizationQuery,
   });
-};
 
-export const getOrganization = (organizationQuery: string) => {
-  return OrganizationAPIService.request({
+export const getOrganization = (organizationQuery: string) =>
+  OrganizationAPIService.request({
     url: organizationQuery,
     method: 'get',
   });
-};
 
-export const getOrganizationStats = async (query: string) => {
-  return OrganizationAPIService.request({
+export const getOrganizationStats = async (query: string) =>
+  OrganizationAPIService.request({
     url: query,
   });
-};
 
-export const updateOrganization = async (organizationID: string, organization, group: string) => {
-  return OrganizationAPIService.request({
-    url: `/organizations/${organizationID}?group=${group}&include=owners`,
+export const updateOrganization = async (organizationID: string, organization, group: string) =>
+  OrganizationAPIService.request({
+    url: encodeQueryToURL(`/organizations/${organizationID}`, { group, include: 'owners' }),
     method: 'put',
     data: organization,
   });
-};
 
-export const addOrganization = async (request, group: string) => {
-  return OrganizationAPIService.request({
-    url: `/organizations?group=${group}`,
+export const addOrganization = async (request, group: string) =>
+  OrganizationAPIService.request({
+    url: encodeQueryToURL('/organizations', { group }),
     method: 'post',
     data: request,
   });
-};
 
-export const deleteOrganization = async (organizationId) => {
-  return OrganizationAPIService.request({
-    url: `/organizations/${organizationId}`,
+export const deleteOrganization = async (organizationId) =>
+  OrganizationAPIService.request({
+    url: encodeQueryToURL(`/organizations/${organizationId}`),
     method: 'delete',
   });
-};

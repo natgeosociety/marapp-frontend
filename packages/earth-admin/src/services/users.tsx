@@ -21,7 +21,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 import { GATSBY_API_URL } from '@app/config';
 
-import { deserializeData } from '../utils';
+import { deserializeData, encodeQueryToURL } from '../utils';
 
 const UserAPIService = {
   request: (options: AxiosRequestConfig) => {
@@ -47,49 +47,43 @@ const UserAPIService = {
   },
 };
 
-export const getAllUsers = async (userQuery: string) => {
-  return UserAPIService.request({
+export const getAllUsers = async (userQuery: string) =>
+  UserAPIService.request({
     url: userQuery,
   });
-};
 
-export const addUser = async (request, group: string) => {
-  return UserAPIService.request({
-    url: `/users?group=${group}`,
-    method: 'post',
+export const addUsers = async (request, group: string) =>
+  UserAPIService.request({
+    url: encodeQueryToURL('/users', { group }),
+    method: 'put',
     data: request,
   });
-};
 
-export const getUser = (userQuery: string) => {
-  return UserAPIService.request({
+export const getUser = (userQuery: string) =>
+  UserAPIService.request({
     url: userQuery,
     method: 'get',
   });
-};
 
-export const getAvailableGroups = async (group: string) => {
-  return UserAPIService.request({
-    url: `/users/groups?group=${group}`,
+export const getAvailableGroups = async (group: string) =>
+  UserAPIService.request({
+    url: encodeQueryToURL('/users/groups', { group }),
     method: 'get',
   });
-};
 
-export const updateUser = async (userID: string, user, group: string) => {
-  return UserAPIService.request({
-    url: `/users/${userID}?group=${group}`,
+export const updateUser = async (userID: string, user, group: string) =>
+  UserAPIService.request({
+    url: encodeQueryToURL(`/users/${userID}`, { group }),
     method: 'put',
     data: user,
   });
-};
 
-export const deleteUser = async (userID: string, group: string) => {
-  return UserAPIService.request({
-    url: `/users/${userID}?group=${group}`,
+export const deleteUser = async (userID: string, group: string) =>
+  UserAPIService.request({
+    url: encodeQueryToURL(`/users/${userID}`, { group }),
     method: 'delete',
   });
-};
 
 export const handleUserForm = async (newUser: boolean, user, userID: string, group: string) => {
-  newUser ? await addUser(user, group) : await updateUser(userID, user, group);
+  newUser ? await addUsers(user, group) : await updateUser(userID, user, group);
 };

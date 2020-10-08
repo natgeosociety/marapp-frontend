@@ -19,6 +19,8 @@
 
 import Widgets from 'components/widgets';
 import isEmpty from 'lodash/isEmpty';
+import sortBy from 'lodash/sortBy';
+import { IWidget } from 'modules/widget/model';
 import React from 'react';
 
 import { Spinner } from '@marapp/earth-shared';
@@ -44,35 +46,28 @@ class IndexContentComponent extends React.PureComponent<IIndexContent> {
   public render() {
     const { place, selected, widgets, list, metricsLoading, widgetsLoading } = this.props;
 
-    if (isEmpty(place)) {
-      return null;
+    if (isEmpty(place) || metricsLoading || widgetsLoading) {
+      return <Spinner />;
     }
 
     return (
       <div>
-        {widgetsLoading && metricsLoading && <Spinner />}
-
-        {!widgetsLoading && !metricsLoading && (
-          <React.Fragment>
-            <div className="index-content--section marapp-qa-indexcontent">
-              <Widgets
-                place={place}
-                slugs={widgets.map((w) => {
-                  const { slug } = w;
-
-                  if (slug) {
-                    return {
-                      slug,
-                      collapsed: false,
-                      box: true,
-                    };
-                  }
-                  return null;
+        <React.Fragment>
+          <div className="index-content--section marapp-qa-indexcontent">
+            <Widgets
+              place={place}
+              slugs={sortBy(widgets, ['organization', 'name'])
+                .filter((w: IWidget) => !!w.slug)
+                .map((w: IWidget) => {
+                  return {
+                    slug: w.slug,
+                    collapsed: false,
+                    box: true,
+                  };
                 })}
-              />
-            </div>
-          </React.Fragment>
-        )}
+            />
+          </div>
+        </React.Fragment>
       </div>
     );
   }

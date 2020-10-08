@@ -53,7 +53,7 @@ export const deserializeData = (data) => DeserializerService.deserialize(data);
  * Url encode
  */
 export const encodeQueryToURL = (baseUrl: string, query: { [key: string]: any } = {}): string =>
-  [baseUrl, decodeURIComponent(queryStringEncode(query))].join('?');
+  [baseUrl, queryStringEncode(query)].join('?');
 
 /**
  * Strip numbers
@@ -103,12 +103,6 @@ export const formatArrayToParentheses = (
   if (formatNo === 2) {
     return `${first}${array.slice(0, 2).toString()}${last} ,${first}${array.slice(2, 4)}${last}`;
   }
-};
-
-export const downloadFile = (data): string => {
-  const encoded = JSON.stringify(data);
-  const jsonBlob = new Blob([encoded]);
-  return URL.createObjectURL(jsonBlob);
 };
 
 /**

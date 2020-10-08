@@ -28,6 +28,7 @@ interface IProps {
   path: string;
   component: FunctionComponent<any>;
   children?: any;
+  exact?: boolean;
 }
 
 /**

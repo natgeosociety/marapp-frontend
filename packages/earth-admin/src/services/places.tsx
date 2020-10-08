@@ -21,7 +21,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 import { GATSBY_API_URL } from '@app/config';
 
-import { deserializeData } from '../utils';
+import { deserializeData, encodeQueryToURL } from '../utils';
 
 const PlacesAPIService = {
   request: (options: AxiosRequestConfig) => {
@@ -47,47 +47,42 @@ const PlacesAPIService = {
   },
 };
 
-export const getAllPlaces = async (placeQuery: string) => {
-  return PlacesAPIService.request({
+export const getAllPlaces = async (placeQuery: string) =>
+  PlacesAPIService.request({
     url: placeQuery,
   });
-};
 
-export const addPlace = async (request, group: string) => {
-  return PlacesAPIService.request({
-    url: `/locations?group=${group}`,
+export const addPlace = async (request, group: string) =>
+  PlacesAPIService.request({
+    url: encodeQueryToURL('/locations', { group }),
     method: 'post',
     data: request,
   });
-};
 
-export const getPlace = (placeQuery: string) => {
-  return PlacesAPIService.request({
+export const getPlace = (placeQuery: string) =>
+  PlacesAPIService.request({
     url: placeQuery,
     method: 'get',
   });
-};
 
-export const updatePlace = async (placeID: string, place, group: string) => {
-  return PlacesAPIService.request({
-    url: `/locations/${placeID}?group=${group}`,
+export const updatePlace = async (placeID: string, place, group: string) =>
+  PlacesAPIService.request({
+    url: encodeQueryToURL(`/locations/${placeID}`, { group }),
     method: 'put',
     data: place,
   });
-};
 
-export const deletePlace = async (placeID: string, group: string) => {
-  return PlacesAPIService.request({
-    url: `/locations/${placeID}?group=${group}`,
+export const deletePlace = async (placeID: string, group: string) =>
+  PlacesAPIService.request({
+    url: encodeQueryToURL(`/locations/${placeID}`, { group }),
     method: 'delete',
   });
-};
 
 export const handlePlaceForm = async (newPlace: boolean, place, placeID: string, group: string) => {
   newPlace ? await addPlace(place, group) : await updatePlace(placeID, place, group);
 };
 
-export const getUniqueSlug = async (keyword: string, group: string, type: string = 'counter') =>
+export const getPlaceSlug = async (keyword: string, group: string, type: string = 'counter') =>
   PlacesAPIService.request({
-    url: `/locations/slug?keyword=${keyword}&group=${group}&type=${type}`,
+    url: encodeQueryToURL('/locations/slug', { keyword, group, type }),
   });

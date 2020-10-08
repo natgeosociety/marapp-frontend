@@ -45,7 +45,7 @@ import {
   formatDate,
   getSelectValues,
 } from '@app/utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
+import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 
@@ -162,7 +162,13 @@ export function LayerDetail(props: any) {
 
   return (
     !!layer && (
-      <ContentLayout backTo="/layers" isLoading={!data} className="marapp-qa-layerdetail">
+      <ContentLayout
+        backTo="/layers"
+        isLoading={!data && !error}
+        errorPage="layer"
+        errors={error?.data?.errors}
+        className="marapp-qa-layerdetail"
+      >
         <DeleteConfirmation
           id={id}
           navigateRoute="layers"
@@ -197,9 +203,6 @@ export function LayerDetail(props: any) {
                         error={renderErrorFor('name')}
                         ref={register({
                           required: 'Layer title is required',
-                          validate: {
-                            noSpecialCharsRule: noSpecialCharsRule(),
-                          },
                         })}
                       />
                     </>

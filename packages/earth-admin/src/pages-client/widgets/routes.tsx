@@ -18,9 +18,9 @@
 */
 
 import { Router } from '@reach/router';
+import { groupBy } from 'lodash';
 import React, { useState } from 'react';
 import useSWR from 'swr';
-import { groupBy } from 'lodash';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { DataListing, DefaultListItem } from '@app/components/data-listing';
@@ -34,19 +34,18 @@ import { WidgetsHome } from './home';
 import { NewWidget } from './new';
 
 const PAGE_TYPE = setPage('Widgets');
-const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const PAGE_SIZE = 20;
 
 export default function DashboardsPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
 
-  const getQuery = (pageIndex) => {
+  const getQuery = (cursor) => {
     const query = {
       search: searchValue,
       sort: 'name',
-      page: { size: PAGE_SIZE, number: pageIndex },
-      select: EXCLUDED_FIELDS,
+      page: { size: PAGE_SIZE, cursor },
+      select: 'name,slug',
       group: selectedGroup,
     };
     return encodeQueryToURL('widgets', query);
@@ -58,7 +57,7 @@ export default function DashboardsPage(props) {
   // it might not return filters
   // TODO: create a custom hook for reuse on multiple pages
   const metricsQuery = {
-    select: EXCLUDED_FIELDS,
+    select: 'name,slug',
     page: { size: 1, number: 1 },
     group: selectedGroup,
   };

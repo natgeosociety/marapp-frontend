@@ -24,6 +24,7 @@ import React, { useEffect } from 'react';
 import { useAuth0 } from '@app/auth/auth0';
 import { ProtectedRoute } from '@app/components/protected-route';
 import { GATSBY_APP_BASE_URL } from '@app/config';
+import NotFound from '@app/pages-client/404';
 import DashboardsPage from '@app/pages-client/dashboards/routes';
 import Homepage from '@app/pages-client/homepage';
 import LayersPage from '@app/pages-client/layers/routes';
@@ -31,7 +32,7 @@ import Organization from '@app/pages-client/organization';
 import OrganizationsPage from '@app/pages-client/organizations/routes';
 import PlacesPage from '@app/pages-client/places/routes';
 import UnauthorizedPage from '@app/pages-client/unauthorized';
-import UsersPage from '@app/pages-client/users';
+import UsersPage from '@app/pages-client/users/routes';
 import WidgetsPage from '@app/pages-client/widgets/routes';
 
 /**
@@ -40,17 +41,18 @@ import WidgetsPage from '@app/pages-client/widgets/routes';
 export default function IndexPage() {
   return (
     <Router basepath={GATSBY_APP_BASE_URL}>
-      <ProtectedRoute path="/" component={RedirectToOrgHomepage} />
-      <ProtectedRoute path="/:org" component={Organization}>
-        <Homepage path="/" />
-        <PlacesPage path="/places/*" />
-        <DashboardsPage path="/dashboards/*" />
-        <LayersPage path="/layers/*" />
-        <WidgetsPage path="/widgets/*" />
-        <UsersPage path="/users/*" />
-        <OrganizationsPage path="/organizations/*" />
+      <ProtectedRoute exact={true} path="/" component={RedirectToOrgHomepage} />
+      <ProtectedRoute exact={true} path="/:org" component={Organization}>
+        <Homepage exact={true} path="/" />
+        <PlacesPage exact={true} path="/places/*" />
+        <DashboardsPage exact={true} path="/dashboards/*" />
+        <LayersPage exact={true} path="/layers/*" />
+        <WidgetsPage exact={true} path="/widgets/*" />
+        <UsersPage exact={true} path="/users/*" />
+        <OrganizationsPage exact={true} path="/organizations/*" />
+        <NotFound default={true} />
       </ProtectedRoute>
-      <UnauthorizedPage path="/unauthorized" />
+      <UnauthorizedPage exact={true} path="/unauthorized" />
     </Router>
   );
 }

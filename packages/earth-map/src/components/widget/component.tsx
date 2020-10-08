@@ -252,7 +252,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
         <div className="widget--container ng-padding-large-vertical ng-padding-medium-horizontal">
           {/* HEADER */}
           {header && (
-            <header className="ng-flex ng-flex-space-between ng-padding-medium-bottom">
+            <header className="ng-flex ng-flex-middle ng-flex-space-between ng-padding-medium-bottom">
               <div className="widget--header-title">
                 <h4 className="ng-text-display-s ng-body-color ng-margin-remove">
                   {showOrgLabel && `${organization} -`} {name}

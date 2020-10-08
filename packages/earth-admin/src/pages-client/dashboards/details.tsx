@@ -19,7 +19,7 @@ import { Controller, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
 import useSWR from 'swr';
 
-import { AsyncSelect, AuthzGuards, InlineEditCard, ErrorMessages } from '@marapp/earth-shared';
+import { AsyncSelect, AuthzGuards, ErrorMessages, InlineEditCard } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
@@ -31,10 +31,9 @@ import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
 import { getAllWidgets, getDashboard, handleDashboardForm } from '@app/services';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { encodeQueryToURL, flattenArrayForSelect, formatDate } from '@app/utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
-
-import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 const DASHBOARD_DETAIL_QUERY = {
   include: 'layers,widgets',
@@ -119,7 +118,13 @@ export function DashboardDetail(props: IProps) {
 
   return (
     !!dashboard && (
-      <ContentLayout backTo="/dashboards" isLoading={!data} className="marapp-qa-dashboarddetail">
+      <ContentLayout
+        backTo="/dashboards"
+        isLoading={!data && !error}
+        errorPage="dashboard"
+        errors={error?.data?.errors}
+        className="marapp-qa-dashboarddetail"
+      >
         <DeleteConfirmation
           id={id}
           navigateRoute={'dashboards'}
@@ -154,9 +159,6 @@ export function DashboardDetail(props: IProps) {
                         error={renderErrorFor('name')}
                         ref={register({
                           required: 'Dashboard title is required',
-                          validate: {
-                            noSpecialCharsRule: noSpecialCharsRule(),
-                          },
                         })}
                       />
                     </>

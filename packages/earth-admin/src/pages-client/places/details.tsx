@@ -40,7 +40,7 @@ import { ContentLayout } from '@app/layouts';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from '@app/services';
 import { encodeQueryToURL, formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
 import { MapComponentContext } from '@app/utils/contexts';
-import { noSpecialCharsOrSpaceRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
+import { noSpecialCharsOrSpaceRule, setupErrors } from '@app/utils/validations';
 
 import { PLACE_DETAIL_QUERY, PlaceIntersection, PlaceTypeEnum } from './model';
 
@@ -164,7 +164,13 @@ export function PlaceDetail(props: IProps) {
 
   return (
     !!place && (
-      <ContentLayout backTo="/places" isLoading={!data} className="marapp-qa-placesdetail">
+      <ContentLayout
+        backTo="/places"
+        isLoading={!data && !error}
+        errorPage="place"
+        errors={error?.data?.errors}
+        className="marapp-qa-placesdetail"
+      >
         <DeleteConfirmation
           id={id}
           navigateRoute="places"
@@ -199,9 +205,6 @@ export function PlaceDetail(props: IProps) {
                         error={renderErrorFor('name')}
                         ref={register({
                           required: 'Place title is required',
-                          validate: {
-                            noSpecialCharsRule: noSpecialCharsRule(),
-                          },
                         })}
                       />
                     </>
@@ -316,6 +319,7 @@ export function PlaceDetail(props: IProps) {
                       <InlineEditCard
                         editButtonText="View and upload shape"
                         onSubmit={onSubmit}
+                        submitButtonText="Update Shape"
                         validForm={formValid && !jsonError}
                         render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                           <div className="ng-grid">

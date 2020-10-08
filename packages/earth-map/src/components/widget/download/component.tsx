@@ -17,34 +17,71 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
+import classNames from 'classnames';
+import React, { useState } from 'react';
 import { Tooltip } from 'vizzuality-components';
+
+import { downloadCSVFile, downloadJSONFile, useDomWatcher } from '@marapp/earth-shared';
+
+import './styles.scss';
 
 interface IMetric {
   data: { metric: {}; slug: string };
 }
 
 const WidgetDownload = (props: IMetric) => {
+  const [showDropdown, setShowDropdown] = useState(false);
+
   const {
     data: { metric, slug },
   } = props;
 
-  const stringifiedMetric = JSON.stringify(metric);
-  const jsonBlob = new Blob([stringifiedMetric]);
-  const blobUrl = URL.createObjectURL(jsonBlob);
+  const closeOnClickOutside = useDomWatcher(setShowDropdown, !showDropdown);
+
+  const blobUrl = downloadJSONFile(metric);
+  const csvBlobUrl = downloadCSVFile(metric);
 
   return (
-    <div>
-      <Tooltip
-        placement="top"
-        overlay={<span>Download</span>}
-        overlayClassName="c-rc-tooltip -default"
-        mouseLeaveDelay={0}
-      >
-        <a href={blobUrl} download={`${slug}.json`} className="ng-border-remove">
-          <i className="ng-icon-download-circle" />
-        </a>
-      </Tooltip>
+    <div className="ng-position-relative marapp-qa-downloaddropdown" ref={closeOnClickOutside}>
+      <i
+        className={classNames(
+          'ng-c-cursor-pointer ng-toolbar-button ng-icon-download-outline marapp-qa-actiondownload',
+          {
+            'ng-toolbar-button-open': showDropdown,
+          }
+        )}
+        onClick={(e) => setShowDropdown(!showDropdown)}
+      />
+
+      {metric && (
+        <div
+          className={classNames('ng-ep-download-dropdown', { 'ng-display-block': showDropdown })}
+        >
+          <p className="ng-text-display-s ng-padding-medium-horizontal ng-padding-vertical ng-margin-remove">
+            Download metric as a:
+          </p>
+          <ul className="marapp-qa-dropdown">
+            <li>
+              <a
+                href={csvBlobUrl}
+                download={`${slug}.csv`}
+                className="ng-border-remove ng-display-block marapp-qa-actioncsv"
+              >
+                CSV
+              </a>
+            </li>
+            <li>
+              <a
+                href={blobUrl}
+                download={`${slug}.json`}
+                className="ng-border-remove ng-display-block marapp-qa-actionjson"
+              >
+                JSON
+              </a>
+            </li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 };

@@ -20,8 +20,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
 import { GATSBY_API_URL } from '@app/config';
-import { addPlace, updatePlace } from '@app/services/places';
-import { deserializeData } from '@app/utils';
+import { deserializeData, encodeQueryToURL } from '@app/utils';
 
 const LayerAPIService = {
   request: (options: AxiosRequestConfig) => {
@@ -49,7 +48,11 @@ export const getAllLayers = async (layerQuery: string) =>
   LayerAPIService.request({ url: layerQuery });
 
 export const addLayer = async (layer, group: string) =>
-  LayerAPIService.request({ url: `/layers?group=${group}`, method: 'post', data: layer });
+  LayerAPIService.request({
+    url: encodeQueryToURL('/layers', { group }),
+    method: 'post',
+    data: layer,
+  });
 
 export const getLayer = (layerQuery: string) =>
   LayerAPIService.request({
@@ -59,21 +62,21 @@ export const getLayer = (layerQuery: string) =>
 
 export const updateLayer = async (layerId: string, layer, group: string) =>
   LayerAPIService.request({
-    url: `/layers/${layerId}?group=${group}`,
+    url: encodeQueryToURL(`/layers/${layerId}`, { group }),
     method: 'put',
     data: layer,
   });
 
 export const deleteLayer = async (layerId: string, group: string) =>
   LayerAPIService.request({
-    url: `/layers/${layerId}?group=${group}`,
+    url: encodeQueryToURL(`/layers/${layerId}`, { group }),
     method: 'delete',
   });
 
 export const handleLayerForm = async (newLayer: boolean, layer, layerId: string, group: string) =>
   newLayer ? addLayer(layer, group) : updateLayer(layerId, layer, group);
 
-export const getUniqueSlug = async (keyword: string, group: string, type: string = 'counter') =>
+export const getLayerSlug = async (keyword: string, group: string, type: string = 'counter') =>
   LayerAPIService.request({
-    url: `/layers/slug?keyword=${keyword}&group=${group}&type=${type}`,
+    url: encodeQueryToURL('/layers/slug', { keyword, group, type }),
   });

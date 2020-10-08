@@ -23,9 +23,9 @@ import InfiniteList from 'components/infinite-list';
 import ListItem from 'components/list-item';
 import SearchBox from 'components/searchbox';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
-import { debounce } from 'lodash';
+import { debounce, sortBy } from 'lodash';
 import { EPanels } from 'modules/sidebar/model';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './styles.scss';
 
@@ -92,10 +92,13 @@ const Layers = (props: IProps) => {
   } = props;
 
   const { loading, search, listActive, nextPageCursor } = layers;
+
   const hasSearchTerm = !!search.search;
   const showX = hasSearchTerm;
   const showFilter = !selected || panelExpanded;
   const showBack = selected && panelExpanded;
+
+  const sortedLayers = sortBy(listActive, 'name');
 
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -135,8 +138,6 @@ const Layers = (props: IProps) => {
 
   return (
     <SidebarLayoutSearch
-      panel={panel}
-      setSidebarPanel={setSidebarPanel}
       fixedContent={
         <>
           <SearchBox
@@ -167,30 +168,6 @@ const Layers = (props: IProps) => {
     >
       {(!selected || panelExpanded) && (
         <>
-          {listActive.length > 0 && (
-            <div className="marapp-qa-activelayers ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
-              <div className="ng-flex ng-flex-space-between ng-flex-align-items-baseline ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top">
-                <h2 className="ng-text-display-s ng-body-color ng-margin-remove">
-                  Selected Layers
-                </h2>
-                <a className="marapp-qa-deselectlayers" onClick={() => resetLayersActive()}>
-                  deselect all
-                </a>
-              </div>
-              {listActive.map((layer) => {
-                return (
-                  <ListItem
-                    active={true}
-                    title={layer.name}
-                    key={`${layer.slug}-${layer.organization}`}
-                    onClick={debounce(() => onToggleLayer(layer), 200)}
-                    organization={group.length > 1 && layer.organization}
-                    labels={layer.category}
-                  />
-                );
-              })}
-            </div>
-          )}
           <div className="marapp-qa-other ng-section-background ng-position-relative ng-padding-medium-bottom">
             <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
               Other

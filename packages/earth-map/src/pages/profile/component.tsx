@@ -1,19 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
-
 import { Auth0Context } from 'auth/auth0';
-import { UserMenuComponent } from 'components/user-menu';
-
-import { InlineEditCard } from '@marapp/earth-shared';
-// import { Input } from '@app/components/input';
-import { fetchProfile } from 'services/users';
-
+import React, { useContext, useEffect, useState } from 'react';
 import Link from 'redux-first-router-link';
+import { fetchProfile } from 'services/users';
 import { APP_LOGO } from 'theme';
 
-import { Spinner } from '@marapp/earth-shared';
+import { InlineEditCard, Spinner, UserMenu } from '@marapp/earth-shared';
 
-export function ProfileComponent(props: any) {
-  const { userData } = useContext(Auth0Context);
+interface IProps {
+  page: string;
+}
+
+export function ProfileComponent(props: IProps) {
+  const { page } = props;
+  const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
 
@@ -37,15 +36,25 @@ export function ProfileComponent(props: any) {
     <Spinner size="large" />
   ) : (
     <div className={`l-page ng-flex marapp-qa-user-profile ng-ep-background-gray-9`}>
-      <Link
-        className="ng-border-remove"
-        to={{
-          type: 'EARTH',
-        }}
-      >
-        <img src={APP_LOGO} className="ng-display-block ng-margin" />
-      </Link>
-      <UserMenuComponent />
+      <div>
+        <Link
+          className="ng-border-remove"
+          to={{
+            type: 'EARTH',
+          }}
+        >
+          <img src={APP_LOGO} className="ng-margin" />
+        </Link>
+      </div>
+
+      <UserMenu
+        selected={page}
+        isAuthenticated={isAuthenticated}
+        onLogin={login}
+        onLogout={logout}
+        onSignUp={() => login({ initialScreen: 'signUp' })}
+      />
+
       <div className="ng-user-profile-container">
         <div className="ng-padding-large">
           <h1 className="ng-margin-medium-bottom ng-text-center ng-text-uppercase ng-ep-text-gray-1 ng-text-display-m user-profile-title">
@@ -138,7 +147,7 @@ export function ProfileComponent(props: any) {
                     Be sure to check your spam folder if you do not receive the email in a few
                     minutes.
                   </p>
-                  <button className="ng-button ng-button-secondary ng-margin-top" disabled>
+                  <button className="ng-button ng-button-secondary ng-margin-top" disabled={true}>
                     Send reset email
                   </button>
                 </InlineEditCard>

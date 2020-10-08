@@ -18,27 +18,26 @@
 */
 
 import { navigate } from 'gatsby';
+import { JSHINT } from 'jshint';
+import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { noop } from 'lodash';
-import { JSHINT } from 'jshint';
 import Select from 'react-select';
 
-import { AsyncSelect, Spinner, ErrorMessages } from '@marapp/earth-shared';
+import { AsyncSelect, ErrorMessages, Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
 import { HtmlEditor } from '@app/components/html-editor';
 import { Input } from '@app/components/input';
-import { LinkWithOrg } from '@app/components/link-with-org';
 import { JsonEditor } from '@app/components/json-editor';
+import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { addWidget, getUniqueSlug } from '@app/services/widgets';
 import { getAllLayers } from '@app/services/layers';
+import { addWidget, getWidgetSlug } from '@app/services/widgets';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenObjectForSelect } from '@app/utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
-
-import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 interface IProps {
   path?: string;
@@ -70,7 +69,7 @@ export function NewWidget(props: IProps) {
 
     const parsed = {
       ...values,
-      ...(!!layers && { layers: flattenObjectForSelect(layers, 'id') }),
+      ...(!!layers && { layers: [flattenObjectForSelect(layers, 'id')] }),
       ...(!!metrics && { metrics: [metrics.value] }),
       ...(!!layerConfig && { config: layerConfig }),
     };
@@ -89,7 +88,7 @@ export function NewWidget(props: IProps) {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getUniqueSlug(watchName, selectedGroup);
+      const { data }: any = await getWidgetSlug(watchName, selectedGroup);
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);
@@ -128,9 +127,6 @@ export function NewWidget(props: IProps) {
               error={renderErrorFor('name')}
               ref={register({
                 required: 'Widget title is required',
-                validate: {
-                  noSpecialCharsRule: noSpecialCharsRule(),
-                },
               })}
             />
           </Card>
@@ -184,7 +180,7 @@ export function NewWidget(props: IProps) {
           <div className="ng-grid ng-flex-top ng-margin-medium-bottom">
             <div className="ng-width-1-2">
               <Card className="ng-margin-medium-bottom">
-                <label htmlFor="provider">Widget Layers:</label>
+                <label htmlFor="provider">Widget Layer(s):</label>
                 <Controller
                   name="layers"
                   type="layers"
@@ -198,7 +194,7 @@ export function NewWidget(props: IProps) {
                   isClearable={true}
                   isSearchable={true}
                   closeMenuOnSelect={false}
-                  placeholder="Select layers"
+                  placeholder="Select layer(s)"
                   styles={CUSTOM_STYLES}
                   theme={(theme) => ({
                     ...theme,

@@ -17,24 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import ErrorTemplate from 'components/error-template';
 import React from 'react';
-import { replace } from 'redux-first-router';
 
-import { Button } from '@marapp/earth-shared';
+import { Button, ErrorTemplate } from '@marapp/earth-shared';
 
-const NotFound = ({ resetStore }) => {
+const NotFound = ({ returnToHome }) => {
   return (
     <ErrorTemplate type="404" message="Sorry we couldn't find that page.">
       <ul className="not-found--links--list">
         <li>
-          <Button
-            onClick={() => {
-              resetStore();
-              replace('/');
-            }}
-            className="-light -fullwidth"
-          >
+          <Button className="-light -fullwidth" onClick={returnToHome}>
             Home
           </Button>
         </li>

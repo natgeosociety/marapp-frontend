@@ -21,7 +21,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 import { GATSBY_API_URL } from '@app/config';
 
-import { deserializeData } from '../utils';
+import { deserializeData, encodeQueryToURL } from '../utils';
 
 const DashboardAPIService = {
   request: (options: AxiosRequestConfig) => {
@@ -45,40 +45,36 @@ const DashboardAPIService = {
   },
 };
 
-export const getAllDashboards = async (dashboardQuery: string) => {
-  return DashboardAPIService.request({
+export const getAllDashboards = async (dashboardQuery: string) =>
+  DashboardAPIService.request({
     url: dashboardQuery,
   });
-};
 
 export const addDashboard = async (dashboard, group: string) =>
   DashboardAPIService.request({
-    url: `/dashboards?group=${group}`,
+    url: encodeQueryToURL('/dashboards', { group }),
     method: 'post',
     data: dashboard,
   });
 
-export const getDashboard = async (dashboardQuery: string) => {
-  return DashboardAPIService.request({
+export const getDashboard = async (dashboardQuery: string) =>
+  DashboardAPIService.request({
     url: dashboardQuery,
     method: 'get',
   });
-};
 
-export const updateDashboard = async (dashboardId: string, dashboard, group: string) => {
-  await DashboardAPIService.request({
-    url: `/dashboards/${dashboardId}?group=${group}`,
+export const updateDashboard = async (dashboardId: string, dashboard, group: string) =>
+  DashboardAPIService.request({
+    url: encodeQueryToURL(`/dashboards/${dashboardId}`, { group }),
     method: 'put',
     data: dashboard,
   });
-};
 
-export const deleteDashboards = async (dashboardId: string, group: string) => {
-  return DashboardAPIService.request({
-    url: `/dashboards/${dashboardId}?group=${group}`,
+export const deleteDashboards = async (dashboardId: string, group: string) =>
+  DashboardAPIService.request({
+    url: encodeQueryToURL(`/dashboards/${dashboardId}`, { group }),
     method: 'delete',
   });
-};
 
 export const handleDashboardForm = async (
   newDashboard: boolean,
@@ -88,7 +84,7 @@ export const handleDashboardForm = async (
 ) =>
   newDashboard ? addDashboard(dashboard, group) : updateDashboard(dashboardId, dashboard, group);
 
-export const getUniqueSlug = async (keyword: string, group: string, type: string = 'counter') =>
+export const getDashboardSlug = async (keyword: string, group: string, type: string = 'counter') =>
   DashboardAPIService.request({
-    url: `/dashboards/slug?keyword=${keyword}&group=${group}&type=${type}`,
+    url: encodeQueryToURL('/dashboards/slug', { keyword, group, type }),
   });

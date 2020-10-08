@@ -31,20 +31,19 @@ import { PlaceDetail } from './details';
 import { PlacesHome } from './home';
 import { NewPlace } from './new';
 
-const EXCLUDED_FIELDS = '-geojson,-bbox2d,-centroid';
 const PAGE_TYPE = setPage('Places');
 const PAGE_SIZE = 20;
 
-export default function PlacesPage() {
+export default function PlacesPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
 
-  const getQuery = (pageIndex) => {
+  const getQuery = (cursor) => {
     const query = {
       search: searchValue,
       sort: 'name',
-      page: { size: PAGE_SIZE, number: pageIndex },
-      select: EXCLUDED_FIELDS,
+      page: { size: PAGE_SIZE, cursor },
+      select: 'name,slug',
       group: selectedGroup,
     };
     return encodeQueryToURL('locations', query);

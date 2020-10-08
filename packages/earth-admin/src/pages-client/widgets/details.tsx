@@ -18,7 +18,7 @@ import classnames from 'classnames';
 import { JSHINT } from 'jshint';
 import { noop } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import { Controller, ErrorMessage, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
 import useSWR from 'swr';
@@ -26,7 +26,6 @@ import useSWR from 'swr';
 import { AsyncSelect, AuthzGuards, ErrorMessages, InlineEditCard } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Widget, WidgetProps } from './model';
 import { Card } from '@app/components/card';
 import { DetailList } from '@app/components/detail-list';
 import { HtmlEditor } from '@app/components/html-editor';
@@ -36,11 +35,13 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
-import { getWidget, handleWidgetForm } from '@app/services/widgets';
 import { getAllLayers } from '@app/services/layers';
+import { getWidget, handleWidgetForm } from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { copyToClipboard, encodeQueryToURL, flattenObjectForSelect, formatDate } from '@app/utils';
-import { alphaNumericDashesRule, noSpecialCharsRule, setupErrors } from '@app/utils/validations';
+import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
+
+import { Widget, WidgetProps } from './model';
 
 const WIDGET_DETAIL_QUERY = {
   include: 'layers',
@@ -109,7 +110,7 @@ export function WidgetsDetail(props: WidgetProps) {
 
     const parsed = {
       ...formData,
-      ...(layers && { layers: flattenObjectForSelect(layers, 'id') }),
+      ...(layers && { layers: [flattenObjectForSelect(layers, 'id')] }),
       ...(metrics && { metrics: [metrics.value] }),
     };
 
@@ -147,7 +148,13 @@ export function WidgetsDetail(props: WidgetProps) {
 
   return (
     !!widget && (
-      <ContentLayout backTo="/widget" isLoading={!data} className="marapp-qa-widgetdetail">
+      <ContentLayout
+        backTo="/widgets"
+        isLoading={!data && !error}
+        errorPage="widget"
+        errors={error?.data?.errors}
+        className="marapp-qa-widgetdetail"
+      >
         <DeleteConfirmation
           id={id}
           navigateRoute="widgets"
@@ -182,9 +189,6 @@ export function WidgetsDetail(props: WidgetProps) {
                         error={renderErrorFor('name')}
                         ref={register({
                           required: 'Widget title is required',
-                          validate: {
-                            noSpecialCharsRule: noSpecialCharsRule(),
-                          },
                         })}
                       />
                     </>
@@ -295,7 +299,7 @@ export function WidgetsDetail(props: WidgetProps) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <div className="ng-margin-medium-bottom">
-                        <label htmlFor="provider">Widget Layers</label>
+                        <label htmlFor="provider">Widget Layer(s)</label>
                         <Controller
                           name="layers"
                           type="layers"
@@ -316,7 +320,7 @@ export function WidgetsDetail(props: WidgetProps) {
                             ...SELECT_THEME,
                           })}
                           closeMenuOnSelect={false}
-                          placeholder="Select layers"
+                          placeholder="Select layer(s)"
                         />
                       </div>
                     </>
@@ -326,13 +330,15 @@ export function WidgetsDetail(props: WidgetProps) {
                     {!!layers ? (
                       <DetailList
                         data={layers}
-                        name="Widget Layers"
+                        name="Widget Layer(s)"
                         type="layers"
                         className="ng-flex-column ng-flex-top"
                       />
                     ) : (
                       <div>
-                        <p className="ng-text-weight-bold ng-margin-small-bottom">Widget Layers</p>
+                        <p className="ng-text-weight-bold ng-margin-small-bottom">
+                          Widget Layer(s)
+                        </p>
                         <span className="ng-padding-left">No layer references</span>
                       </div>
                     )}

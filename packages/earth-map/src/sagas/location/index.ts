@@ -38,11 +38,6 @@ import { loadDataIndexes } from 'sagas/layers';
 import { ignoreRedirectsTo } from 'sagas/saga-utils';
 import { fetchPlace } from 'services/places';
 
-// Services
-
-// Actions
-
-// TODO : EP-1817 refactoring
 let PREV_SLUG = null;
 const ignoreRedirectsToLocation = ignoreRedirectsTo('LOCATION');
 

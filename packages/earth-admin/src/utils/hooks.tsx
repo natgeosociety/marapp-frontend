@@ -17,52 +17,125 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { add, compose } from 'lodash/fp';
-import { useEffect, useState } from 'react';
+import { noop } from 'lodash/fp';
 import { useSWRInfinite } from 'swr';
-
-interface IError {
-  details: string;
-  message: string;
-}
-
-export function useDomWatcher(ref, callback, skip) {
-  useEffect(() => {
-    if (skip) {
-      return;
-    }
-
-    const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        callback && callback();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [ref, skip]);
-}
 
 /**
  * Custom hook that integrates useSWRInfinite with <DataListing /> component
  * @param getQuery Function responsible for returning the api url
  * @param fetcher Function queries the api
+ * @param options
  */
 export function useInfiniteList(
-  getQuery: (pageIndex: number) => string,
-  fetcher: (any) => Promise<any>
+  getQuery: (cursor: number | string) => string,
+  fetcher: (any) => Promise<any>,
+  options: object = {}
 ) {
-  // Our api starts with page 1 instead of 0, so we increment the pageIndex
-  const offsetGetQuery = compose(getQuery, add(1));
-  const { data: response = [], error, isValidating, size, setSize, mutate } = useSWRInfinite(
-    offsetGetQuery,
-    fetcher
-  );
+  const wrappedQuery = (pageIndex: number, previousPageData: any): string => {
+    // reached the end
+    if (previousPageData && !previousPageData.data) {
+      return null;
+    }
+    const cursor = pageIndex === 0 ? -1 : previousPageData.pagination.nextCursor;
 
-  // Merge multiple page results into a single list of results
-  const items = response.reduce(
+    return getQuery(cursor);
+  };
+  const {
+    data: response = [],
+    error,
+    isValidating,
+    size,
+    setSize,
+    mutate,
+    revalidate,
+  } = useSWRInfinite(wrappedQuery, fetcher, options);
+
+  const items = mergePages(response);
+  const [firstPage] = response;
+  const lastPage = response[response.length - 1];
+  const totalResults = firstPage?.total;
+  const isNoMore = !lastPage?.pagination.nextCursor;
+  const awaitMore = !isValidating && !isNoMore;
+
+  const returnValues = {
+    // props for <DataListing />
+    listProps: {
+      data: items.data,
+      // TODO: find out why onIntersection is called even if awaitMore=false
+      // Even though onIntersection will fire, it will be a noop
+      onIntersection: awaitMore ? () => setSize(size + 1) : noop,
+      isLoading: isValidating,
+      awaitMore,
+      isNoMore,
+      totalResults,
+    },
+    revalidate,
+    mutate,
+    error,
+  };
+
+  return returnValues;
+}
+
+export function useInfiniteListPaged(
+  getQuery: (pageIndex: number) => string,
+  fetcher: (any) => Promise<any>,
+  options: object = {}
+) {
+  const wrappedQuery = (pageIndex: number): string => {
+    const offsetPageIndex = pageIndex + 1;
+    return getQuery(offsetPageIndex);
+  };
+  const {
+    data: response = [],
+    error,
+    isValidating,
+    size,
+    setSize,
+    mutate,
+    revalidate,
+  } = useSWRInfinite(wrappedQuery, fetcher, options);
+
+  const items = mergePages(response);
+  const isNoMore = items.data.length >= items.total;
+  const totalResults = items.total;
+  const awaitMore = !isValidating && !isNoMore;
+
+  const returnValues = {
+    // props for <DataListing />
+    listProps: {
+      data: items.data,
+      // TODO: find out why onIntersection is called even if awaitMore=false
+      // Even though onIntersection will fire, it will be a noop
+      onIntersection: awaitMore ? () => setSize(size + 1) : noop,
+      isLoading: isValidating,
+      awaitMore,
+      isNoMore,
+      totalResults,
+    },
+    revalidate,
+    mutate,
+    error,
+  };
+
+  return returnValues;
+}
+
+interface IMergedResults {
+  data: any[];
+  pagination?: {
+    size: number;
+    total: number;
+    nextCursor?: string;
+  };
+  total?: number;
+}
+
+/**
+ * Merge multiple page results into a single list of results
+ */
+export function mergePages(pagedResponse: any[]): IMergedResults {
+  return pagedResponse.reduce(
     (acc: any, { data, ...rest }: any) => {
       return {
         data: acc.data.concat(data),
@@ -71,17 +144,4 @@ export function useInfiniteList(
     },
     { data: [] }
   );
-
-  return {
-    // props for <DataListing />
-    listProps: {
-      data: items.data,
-      cursorAction: () => setSize(size + 1),
-      isLoading: isValidating,
-      isNoMore: items.data.length >= items.total,
-      totalResults: items.total,
-    },
-    mutate,
-    error,
-  };
 }
