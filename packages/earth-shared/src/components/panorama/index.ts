@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import Panorama from './component';
+import Panorama from './Panorama';
 
 export default Panorama;

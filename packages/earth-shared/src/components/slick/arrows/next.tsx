@@ -18,15 +18,14 @@
 */
 
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 
-class NextArrow extends PureComponent {
-  static propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.shape({}),
-    onClick: PropTypes.func,
-  };
+interface NextArrowProps {
+  className?: string;
+  style?: {};
+  onClick?: (e) => {};
+}
 
+class NextArrow extends PureComponent<NextArrowProps> {
   static defaultProps = {
     className: '',
     style: {},

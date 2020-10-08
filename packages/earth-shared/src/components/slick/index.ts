@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import Slick from './component';
+import Slick from './Slick';
 
 export default Slick;

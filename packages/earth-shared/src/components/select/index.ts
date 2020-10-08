@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import SelectComponent from './component';
+import SelectComponent from './Select';
 
 export default SelectComponent;

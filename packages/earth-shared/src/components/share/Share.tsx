@@ -18,7 +18,6 @@
 */
 
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Iframe
@@ -30,20 +29,29 @@ import { Button } from '@marapp/earth-shared';
 // Styles
 import './styles.scss';
 
-class ShareComponent extends PureComponent {
-  static propTypes = {
-    title: PropTypes.string,
-    link: PropTypes.string,
-    embed: PropTypes.string,
-    className: PropTypes.string,
-  };
+interface ShareProps {
+  title?: string;
+  link?: string;
+  embed?: string;
+  className?: string;
+}
 
+interface ShareState {
+  tab?: any;
+  copied?: boolean;
+  width?: string;
+  height?: string;
+}
+
+class ShareComponent extends PureComponent<ShareProps, ShareState> {
   static defaultProps = {
     title: '',
     link: '',
     embed: '',
     className: '',
   };
+  private timeout: any;
+  private input: any;
 
   constructor(props) {
     super(props);

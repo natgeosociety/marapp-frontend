@@ -18,20 +18,21 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Styles
 import './styles.scss';
 
-class Select extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    value: PropTypes.string,
-    options: PropTypes.arrayOf(PropTypes.shape({})),
-    onChange: PropTypes.func,
-  };
+interface SelectProps {
+  className?: string;
+  value?: string;
+  options?: any[];
+  onChange?: (v: any) => {};
+}
 
+interface SelectState {}
+
+class Select extends React.Component<SelectProps, SelectState> {
   state = {
     value: this.props.value || this.props.options[0].value,
   };

@@ -17,46 +17,33 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import classnames from 'classnames';
-
-import Slider from 'react-slick';
+import PropTypes from 'prop-types';
 
 import './styles.scss';
 
-class Slick extends PureComponent {
-  static propTypes = {
-    settings: PropTypes.shape({}).isRequired,
-    onReady: PropTypes.func,
-  };
-
-  static defaultProps = { onReady: () => null };
-
-  componentDidMount() {
-    const { onReady } = this.props;
-    onReady(this.slider);
-  }
-
-  render() {
-    const { settings, children } = this.props;
-
-    const { dots } = settings;
-
-    return (
-      <Slider
-        className={classnames('marapp-qa-slick', 'c-slick', {
-          '--with-dots': dots,
-        })}
-        {...settings}
-        ref={(slider) => {
-          this.slider = slider;
-        }}
-      >
-        {children}
-      </Slider>
-    );
-  }
+interface SpinnerProps {
+  position?: string;
+  className?: string;
+  size?: string;
 }
 
-export default Slick;
+const Spinner = (props: SpinnerProps) => {
+  const { position, className, size = 'small' } = props;
+  const classNames = classnames('marapp-qa-spinner', 'c-spinner', {
+    [`-${position}`]: true,
+    [className]: !!className,
+    [size]: !!size,
+  });
+
+  return (
+    <div className={classNames}>
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>
+  );
+};
+
+export default Spinner;

@@ -19,22 +19,27 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import isEqual from 'lodash/isEqual';
 
 import PhotoSphereViewer from 'photo-sphere-viewer';
 
 // Styles
 import './styles.scss';
 
-class Panorama extends Component {
-  static propTypes = {
-    files: PropTypes.arrayOf(PropTypes.object).isRequired,
-    options: PropTypes.shape({}),
-  };
+interface PanoramaProps {
+  files: any[];
+  options?: {};
+}
 
+interface PanoramaState {
+  index: number;
+}
+
+class Panorama extends Component<PanoramaProps, PanoramaState> {
   state = {
     index: 0,
   };
+  private viewer: any;
+  private container: any;
 
   componentDidMount() {
     const { files, options } = this.props;

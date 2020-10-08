@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import ShareComponent from './component';
+import ShareComponent from './Share';
 
 export default ShareComponent;

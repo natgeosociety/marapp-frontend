@@ -17,23 +17,22 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import * as classNames from 'classnames';
-import PropTypes from 'prop-types';
+import React, { ReactNode } from 'react';
+import classNames from 'classnames';
+
+interface TooltipProps {
+  placement?: string;
+  children?: ReactNode;
+  trigger?: ReactNode;
+  animated?: boolean;
+  contentClass?: string;
+  triggerClass?: string;
+  onOpen?: () => {};
+  onClose?: () => {};
+}
 
 // todo: handle responsive exceptions, eg change placement if there is no space available
-class Tooltip extends React.Component {
-  static propTypes = {
-    placement: PropTypes.string,
-    children: PropTypes.node,
-    trigger: PropTypes.node,
-    animated: PropTypes.bool,
-    contentClass: PropTypes.string,
-    triggerClass: PropTypes.string,
-    onOpen: PropTypes.func,
-    onClose: PropTypes.func,
-  };
-
+class Tooltip extends React.Component<TooltipProps> {
   static defaultProps = {
     placement: 'bottom',
     children: 'Default tooltip content',

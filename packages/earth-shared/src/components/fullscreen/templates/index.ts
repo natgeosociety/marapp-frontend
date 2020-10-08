@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import Photo from './photo';
-import Video from './video';
-import Photo360 from './360';
+import Photo from './photo/Photo';
+import Video from './video/Video';
+import Photo360 from './360/Photo360';
 
 export default {
   photo: Photo, // Fallback to support Cesium legacy

@@ -34,6 +34,7 @@ interface ButtonProps {
   onMouseLeave?: (e) => {};
   onTouchStart?: (e) => {};
   onTouchEnd?: (e) => {};
+  onClick?: (e) => {};
 }
 
 interface ButtonState {

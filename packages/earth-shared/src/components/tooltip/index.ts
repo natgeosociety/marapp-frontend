@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import Tooltip from './component';
+import Tooltip from './Tooltip';
 
 export default Tooltip;
