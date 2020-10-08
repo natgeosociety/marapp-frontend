@@ -58,7 +58,7 @@ const SearchBox = (props: ISearchbox) => {
   );
 
   return (
-    <div className="marapp-qa-searchbox ng-padding-medium ng-flex ng-ep-background-dark ng-padding-top-remove">
+    <div className="marapp-qa-searchbox ng-padding-medium ng-ep-background-dark ng-padding-top-remove">
       <div className={searchBoxClasses}>
         <i className="ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal" />
         <input
