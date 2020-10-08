@@ -21,14 +21,14 @@ interface Storage {
   get(key: string): string;
   getObject(key: string, defaultValue?: any): any;
   remove(key: string): void;
-  add(key: string, value: string): string;
+  add(key: string, value: string): void;
 }
 
 class SessionStorage implements Storage {
   constructor() {}
 
-  add(key: string, value: string): string {
-    return '';
+  add(key: string, value: string): void {
+    return sessionStorage.setItem(key, value);
   }
 
   get(key: string): string {
@@ -46,7 +46,7 @@ class SessionStorage implements Storage {
   }
 
   remove(key: string): void {
-    sessionStorage.removeItem(key);
+    return sessionStorage.removeItem(key);
   }
 }
 
