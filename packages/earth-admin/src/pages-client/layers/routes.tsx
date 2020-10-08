@@ -49,6 +49,7 @@ export default function LayersPage(props) {
     return encodeQueryToURL('layers', query);
   };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllLayers);
+  const selectedItem = props['*'];
 
   return (
     <>
@@ -60,6 +61,7 @@ export default function LayersPage(props) {
           searchValueAction={setSearchValue}
           pageSize={PAGE_SIZE}
           searchValue={searchValue}
+          selectedItem={selectedItem}
           {...listProps}
         />
       </SidebarLayout>

@@ -49,6 +49,7 @@ export default function PlacesPage(props) {
     return encodeQueryToURL('locations', query);
   };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllPlaces);
+  const selectedItem = props['*'];
 
   return (
     <>
@@ -60,8 +61,8 @@ export default function PlacesPage(props) {
           searchValueAction={setSearchValue}
           pageSize={PAGE_SIZE}
           searchValue={searchValue}
+          selectedItem={selectedItem}
           {...listProps}
-          // selectedItem={selectedItem}
         />
       </SidebarLayout>
       <Router>

@@ -25,11 +25,11 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 interface DataListProps {
   categoryUrl: string;
   item: { name: string; id: string; slug: string };
-  selectedItem: string;
+  selected: boolean;
 }
 
 const DefaultListItem = (props: DataListProps) => {
-  const { categoryUrl, item, selectedItem } = props;
+  const { categoryUrl, item, selected } = props;
 
   return (
     <LinkWithOrg
@@ -37,7 +37,7 @@ const DefaultListItem = (props: DataListProps) => {
       className={classnames(
         'marapp-qa-listitem ng-data-link ng-display-block ng-padding-medium-horizontal ng-padding-small-vertical',
         {
-          'ng-data-link-selected': selectedItem === item.id,
+          'ng-data-link-selected': selected,
         }
       )}
     >

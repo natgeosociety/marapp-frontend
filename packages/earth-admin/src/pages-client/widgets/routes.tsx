@@ -68,6 +68,7 @@ export default function DashboardsPage(props) {
       return groupBy(filters, 'key');
     }
   );
+  const selectedItem = props['*'];
 
   return (
     <>
@@ -79,6 +80,7 @@ export default function DashboardsPage(props) {
           searchValueAction={setSearchValue}
           pageSize={PAGE_SIZE}
           searchValue={searchValue}
+          selectedItem={selectedItem}
           {...listProps}
         />
       </SidebarLayout>

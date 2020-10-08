@@ -21,7 +21,7 @@ import { Router } from '@reach/router';
 import React from 'react';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Auth0ListItem, DataListing } from '@app/components/data-listing';
+import { DataListing, DefaultListItem } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
 import { getAllOrganizations } from '@app/services/organizations';
 import { encodeQueryToURL, setPage } from '@app/utils';
@@ -46,15 +46,17 @@ export default function PlacesPage(props) {
     return encodeQueryToURL('organizations', query);
   };
   const { listProps, mutate } = useInfiniteListPaged(getQuery, getAllOrganizations);
+  const selectedItem = props['*'];
 
   return (
     <>
       <SidebarLayout page={PAGE_TYPE}>
         <DataListing
-          childComponent={Auth0ListItem}
+          childComponent={DefaultListItem}
           categoryUrl="organizations"
           pageTitle="ORGANIZATIONS"
           pageSize={PAGE_SIZE}
+          selectedItem={selectedItem}
           {...listProps}
         />
       </SidebarLayout>

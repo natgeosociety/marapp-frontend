@@ -49,6 +49,7 @@ export default function DashboardsPage(props) {
     return encodeQueryToURL('dashboards', query);
   };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllDashboards);
+  const selectedItem = props['*'];
 
   return (
     <>
@@ -59,6 +60,7 @@ export default function DashboardsPage(props) {
           pageTitle="dashboards"
           searchValueAction={setSearchValue}
           pageSize={PAGE_SIZE}
+          selectedItem={selectedItem}
           searchValue={searchValue}
           {...listProps}
         />
