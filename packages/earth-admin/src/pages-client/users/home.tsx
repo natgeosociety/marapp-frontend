@@ -198,6 +198,16 @@ export function UsersHome(props: any) {
     setUsersFeedback([]);
   };
 
+  const appendEmailToUsersList = (email: string): void => {
+    setValue('users', [
+      ...inviteUsersWatcher,
+      {
+        label: email,
+        value: email,
+      },
+    ]);
+  };
+
   return (
     writePermissions && (
       <ContentLayout className="marapp-qa-usershome">
@@ -225,27 +235,18 @@ export function UsersHome(props: any) {
                         placeholder="Enter existing emails to add users to this organization"
                         onKeyDown={(e) => {
                           const value = e.target.value;
+
                           if (e.key === ' ' && validEmail(value)) {
-                            setValue('users', [
-                              ...inviteUsersWatcher,
-                              {
-                                label: value,
-                                value,
-                              },
-                            ]);
+                            appendEmailToUsersList(value);
                           }
                         }}
                         onBlur={([e]) => {
                           e.preventDefault();
+
                           const value = e.target.value;
+
                           if (value && validEmail(value)) {
-                            setValue('users', [
-                              ...inviteUsersWatcher,
-                              {
-                                label: value,
-                                value,
-                              },
-                            ]);
+                            appendEmailToUsersList(value);
                           }
                         }}
                         styles={customStylesUsers}
