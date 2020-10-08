@@ -82,7 +82,7 @@ export function UsersHome(props: any) {
       setAvailableGroups(groups);
       setValue(
         'role',
-        groups.find((group) => group.label.includes('VIEWER'))
+        groups.find((group) => group.label.includes('Viewer'))
       );
     })();
   }, []);
@@ -113,6 +113,15 @@ export function UsersHome(props: any) {
         minHeight: '55px',
       };
     },
+    menu: () => ({
+      display: 'none',
+    }),
+    dropdownIndicator: () => ({
+      display: 'none',
+    }),
+    indicatorSeparator: () => ({
+      display: 'none',
+    }),
   };
 
   const customStylesRoles = {
@@ -214,6 +223,31 @@ export function UsersHome(props: any) {
                         isValidNewOption={(value) => validEmail(value)}
                         isMulti={true}
                         placeholder="Enter existing emails to add users to this organization"
+                        onKeyDown={(e) => {
+                          const value = e.target.value;
+                          if (e.key === ' ' && validEmail(value)) {
+                            setValue('users', [
+                              ...inviteUsersWatcher,
+                              {
+                                label: value,
+                                value,
+                              },
+                            ]);
+                          }
+                        }}
+                        onBlur={([e]) => {
+                          e.preventDefault();
+                          const value = e.target.value;
+                          if (value && validEmail(value)) {
+                            setValue('users', [
+                              ...inviteUsersWatcher,
+                              {
+                                label: value,
+                                value,
+                              },
+                            ]);
+                          }
+                        }}
                         styles={customStylesUsers}
                         theme={(theme) => ({
                           ...theme,
