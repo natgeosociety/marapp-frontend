@@ -45,6 +45,8 @@ ReactDOM.render(
     onRedirectCallback={onRedirectCallback}
     onSuccessHook={onSuccessHook}
     onFailureHook={onFailureHook}
+    useRefreshTokens={true}
+    cacheLocation={'localstorage'}
   >
     <App />
   </Auth0Provider>,

@@ -42,6 +42,8 @@ interface Auth0ProviderOptions {
   redirect_uri?: any;
   audience?: any;
   children: React.ReactElement;
+  useRefreshTokens?: boolean;
+  cacheLocation?: 'memory' | 'localstorage';
   onRedirectCallback(targetUrl: any): void;
   onSuccessHook(params: any): void;
   onFailureHook(params: any): void;
@@ -140,6 +142,11 @@ export const Auth0Provider = ({
     initAuth0();
   }, []); // eslint-disable-line
 
+  /**
+   * Logging-in will automatically request the offline_access scope and store the resulting
+   * refresh token.
+   * @param options
+   */
   const login = (options = {}) => {
     SessionStorage.remove('ephemeral');
     return client.loginWithRedirect(options);
@@ -151,12 +158,17 @@ export const Auth0Provider = ({
     return client.logout({ ...options, federated: true });
   };
 
-  const getUser = (options = {}) => {
-    return client.getUser(options);
-  };
-
+  /**
+   * Silently refreshing the access token will use the /token endpoint with ‘refresh_token’
+   * grant and the refresh token from the cache.
+   * @param options
+   */
   const getToken = (options = {}) => {
     return client.getTokenSilently(options);
+  };
+
+  const getUser = (options = {}) => {
+    return client.getUser(options);
   };
 
   return (
