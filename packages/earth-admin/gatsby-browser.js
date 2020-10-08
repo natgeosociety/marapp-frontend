@@ -31,6 +31,8 @@ export const wrapRootElement = ({ element }) => (
     onRedirectCallback={onRedirectCallback}
     onSuccessHook={onSuccessHook}
     onFailureHook={onFailureHook}
+    useRefreshTokens={true}
+    cacheLocation={'localstorage'}
   >
     {element}
   </Auth0Provider>

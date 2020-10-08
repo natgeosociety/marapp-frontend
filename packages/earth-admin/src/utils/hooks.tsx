@@ -122,7 +122,7 @@ export function useInfiniteListPaged(
 }
 
 interface IMergedResults {
-  data: Array<any>;
+  data: any[];
   pagination?: {
     size: number;
     total: number;
@@ -134,7 +134,7 @@ interface IMergedResults {
 /**
  * Merge multiple page results into a single list of results
  */
-export function mergePages(pagedResponse: Array<any>): IMergedResults {
+export function mergePages(pagedResponse: any[]): IMergedResults {
   return pagedResponse.reduce(
     (acc: any, { data, ...rest }: any) => {
       return {
