@@ -18,7 +18,6 @@
 */
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 import PhotoSphereViewer from 'photo-sphere-viewer';
 

@@ -18,7 +18,6 @@
 */
 
 import React, { Fragment, PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Animations
@@ -182,7 +181,7 @@ class Photo extends PureComponent<PhotoProps, PhotoState> {
                             <div key={image.id} className="thumbnails--item">
                               <div
                                 role="button"
-                                tabIndex={-1}
+                                tabIndex="-1"
                                 className={classnames({
                                   'thumbnails--button': true,
                                   '-active': index === i,

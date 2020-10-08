@@ -18,7 +18,6 @@
 */
 
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import Slider from 'react-slick';
@@ -26,8 +25,8 @@ import Slider from 'react-slick';
 import './styles.scss';
 
 interface SlickProps {
-  settings: { dots?: any };
-  onReady?: (s: any) => {};
+  settings: any;
+  onReady?: (s: any) => void;
 }
 
 class Slick extends PureComponent<SlickProps> {

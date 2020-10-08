@@ -17,8 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent, ReactNode } from 'react';
 import classnames from 'classnames';
 
 // Components
@@ -27,19 +26,17 @@ import Modal from 'react-modal';
 // Styles
 import './styles.scss';
 
-class ModalComponent extends PureComponent {
-  static propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    className: PropTypes.string,
-    // Content
-    children: PropTypes.node.isRequired,
-    header: PropTypes.node,
-    // Func
-    showCloseButton: PropTypes.bool,
-    onAfterOpen: PropTypes.func,
-    onRequestClose: PropTypes.func.isRequired,
-  };
+interface ModalProps {
+  isOpen: boolean;
+  children: ReactNode;
+  onRequestClose: () => {};
+  className: string;
+  header: ReactNode;
+  showCloseButton: boolean;
+  onAfterOpen: () => {};
+}
 
+class ModalComponent extends PureComponent<ModalProps> {
   static defaultProps = {
     className: '',
     header: null,

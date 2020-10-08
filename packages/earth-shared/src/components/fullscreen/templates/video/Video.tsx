@@ -18,7 +18,6 @@
 */
 
 import React, { Fragment, PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
 
 // Animations

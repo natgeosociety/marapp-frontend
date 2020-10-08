@@ -18,7 +18,6 @@
 */
 
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 
 // styles
 import './styles.scss';
@@ -45,11 +44,6 @@ interface LegendGroupProps {
 }
 
 class LegendGroup extends PureComponent<LegendGroupProps> {
-  static propTypes = {
-    layerConfig: PropTypes.shape({}).isRequired,
-    onChangeLayer: PropTypes.func.isRequired,
-  };
-
   onChange = (e) => {
     const { slug, onChangeLayer } = this.props;
     const { value } = e.currentTarget;

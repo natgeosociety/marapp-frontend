@@ -18,7 +18,6 @@
 */
 
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // styles
@@ -54,7 +53,7 @@ class LayerComponent extends PureComponent<LayerProps> {
           '-active': active,
         })}
         role="button"
-        tabIndex={-1}
+        tabIndex="-1"
         onClick={onClick}
       >
         {!background && (
