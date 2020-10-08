@@ -20,7 +20,6 @@
 import List from '@researchgate/react-intersection-list';
 import { navigate } from 'gatsby';
 import React, { useEffect, useState } from 'react';
-import { capitalize } from 'lodash/fp';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 import Creatable from 'react-select/creatable';
@@ -32,7 +31,7 @@ import { Card } from '@app/components/card';
 import { ContentLayout } from '@app/layouts';
 import { getAvailableGroups } from '@app/services';
 import { addUsers, getAllUsers } from '@app/services/users';
-import { encodeQueryToURL } from '@app/utils';
+import { encodeQueryToURL, normalizeGroupName } from '@app/utils';
 import { useInfiniteListPaged } from '@app/utils/hooks';
 import { validEmail } from '@app/utils/validations';
 
@@ -48,8 +47,6 @@ export function UsersHome(props: any) {
   const [availableGroups, setAvailableGroups] = useState([]);
   const [serverErrors, setServerErrors] = useState([]);
   const [usersFeedback, setUsersFeedback] = useState([]);
-
-  const normalizeGroupName = (groupName: string): string => capitalize(groupName.split('-').pop());
 
   const getQuery = (pageIndex) => {
     const query = {
