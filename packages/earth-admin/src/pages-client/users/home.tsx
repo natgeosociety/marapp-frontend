@@ -20,6 +20,7 @@
 import List from '@researchgate/react-intersection-list';
 import { navigate } from 'gatsby';
 import React, { useEffect, useState } from 'react';
+import { capitalize } from 'lodash/fp';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 import Creatable from 'react-select/creatable';
@@ -48,6 +49,8 @@ export function UsersHome(props: any) {
   const [serverErrors, setServerErrors] = useState([]);
   const [usersFeedback, setUsersFeedback] = useState([]);
 
+  const normalizeGroupName = (groupName: string): string => capitalize(groupName.split('-').pop());
+
   const getQuery = (pageIndex) => {
     const query = {
       page: { size: PAGE_SIZE, number: pageIndex },
@@ -72,7 +75,10 @@ export function UsersHome(props: any) {
 
     (async () => {
       const groupsResponse: any = await getAvailableGroups(selectedGroup);
-      const groups = groupsResponse.data.map((item) => ({ label: item.name, value: item.id }));
+      const groups = groupsResponse.data.map((item) => ({
+        label: normalizeGroupName(item.name),
+        value: item.id,
+      }));
       setAvailableGroups(groups);
       setValue(
         'role',
@@ -207,7 +213,7 @@ export function UsersHome(props: any) {
                         formatCreateLabel={(value) => `${value}`}
                         isValidNewOption={(value) => validEmail(value)}
                         isMulti={true}
-                        placeholder="Enter user emails to submit invite"
+                        placeholder="Enter existing emails to add users to this organization"
                         styles={customStylesUsers}
                         theme={(theme) => ({
                           ...theme,
@@ -320,7 +326,9 @@ export function UsersHome(props: any) {
                           >
                             <td className="ng-border-remove">{user.email}</td>
                             <td className="ng-border-remove">
-                              {user.groups.map((group) => group.name).join(', ')}
+                              {user.groups
+                                .map((group) => normalizeGroupName(group.name))
+                                .join(', ')}
                             </td>
                           </tr>
                         );
