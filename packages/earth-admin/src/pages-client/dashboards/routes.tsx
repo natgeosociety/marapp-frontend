@@ -49,6 +49,9 @@ export default function DashboardsPage(props) {
     return encodeQueryToURL('dashboards', query);
   };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllDashboards);
+
+  // Matches everything after the resource name in the url.
+  // In our case that's /resource-id or /new
   const selectedItem = props['*'];
 
   return (

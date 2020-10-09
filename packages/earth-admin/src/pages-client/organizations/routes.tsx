@@ -46,6 +46,9 @@ export default function PlacesPage(props) {
     return encodeQueryToURL('organizations', query);
   };
   const { listProps, mutate } = useInfiniteListPaged(getQuery, getAllOrganizations);
+
+  // Matches everything after the resource name in the url.
+  // In our case that's /resource-id or /new
   const selectedItem = props['*'];
 
   return (

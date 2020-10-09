@@ -49,6 +49,9 @@ export default function LayersPage(props) {
     return encodeQueryToURL('layers', query);
   };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllLayers);
+
+  // Matches everything after the resource name in the url.
+  // In our case that's /resource-id or /new
   const selectedItem = props['*'];
 
   return (

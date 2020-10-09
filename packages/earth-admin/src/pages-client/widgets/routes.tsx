@@ -68,6 +68,9 @@ export default function DashboardsPage(props) {
       return groupBy(filters, 'key');
     }
   );
+
+  // Matches everything after the resource name in the url.
+  // In our case that's /resource-id or /new
   const selectedItem = props['*'];
 
   return (
