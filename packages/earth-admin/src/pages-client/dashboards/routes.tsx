@@ -50,6 +50,10 @@ export default function DashboardsPage(props) {
   };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllDashboards);
 
+  // Matches everything after the resource name in the url.
+  // In our case that's /resource-id or /new
+  const selectedItem = props['*'];
+
   return (
     <>
       <SidebarLayout page={PAGE_TYPE}>
@@ -59,6 +63,7 @@ export default function DashboardsPage(props) {
           pageTitle="dashboards"
           searchValueAction={setSearchValue}
           pageSize={PAGE_SIZE}
+          selectedItem={selectedItem}
           searchValue={searchValue}
           {...listProps}
         />

@@ -69,6 +69,10 @@ export default function DashboardsPage(props) {
     }
   );
 
+  // Matches everything after the resource name in the url.
+  // In our case that's /resource-id or /new
+  const selectedItem = props['*'];
+
   return (
     <>
       <SidebarLayout page={PAGE_TYPE}>
@@ -79,6 +83,7 @@ export default function DashboardsPage(props) {
           searchValueAction={setSearchValue}
           pageSize={PAGE_SIZE}
           searchValue={searchValue}
+          selectedItem={selectedItem}
           {...listProps}
         />
       </SidebarLayout>
