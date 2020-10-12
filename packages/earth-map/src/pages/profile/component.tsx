@@ -4,7 +4,7 @@ import Link from 'redux-first-router-link';
 import { fetchProfile } from 'services/users';
 import { APP_LOGO } from 'theme';
 
-import { InlineEditCard, Spinner, UserMenu } from '@marapp/earth-shared';
+import { InlineEditCard, Spinner, UserMenu, Input } from '@marapp/earth-shared';
 
 interface IProps {
   page: string;
@@ -64,28 +64,28 @@ export function ProfileComponent(props: IProps) {
             <div className="ng-grid">
               <div className="ng-width-2-3 ng-push-1-6">
                 <InlineEditCard
-                // render={({setIsEditing, setIsLoading, setServerErrors}) => (
-                //   <>
-                //     <div className="ng-margin-medium-bottom">
-                //       <Input
-                //         name="firstName"
-                //         placeholder="First Name"
-                //         label="First Name"
-                //         defaultValue={''}
-                //         className="ng-display-block marapp-qa-inputfirstname"
-                //       />
-                //     </div>
-                //     <div className="ng-margin-medium-bottom">
-                //       <Input
-                //         name="lastName"
-                //         placeholder="Last Name"
-                //         label="Last Name"
-                //         defaultValue={''}
-                //         className="ng-display-block marapp-qa-inputlastname"
-                //       />
-                //     </div>
-                //   </>
-                // )}>
+                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                    <>
+                      <div className="ng-margin-medium-bottom">
+                        <Input
+                          name="firstName"
+                          placeholder="First Name"
+                          label="First Name"
+                          defaultValue={''}
+                          className="ng-display-block marapp-qa-inputfirstname"
+                        />
+                      </div>
+                      <div className="ng-margin-medium-bottom">
+                        <Input
+                          name="lastName"
+                          placeholder="Last Name"
+                          label="Last Name"
+                          defaultValue={''}
+                          className="ng-display-block marapp-qa-inputlastname"
+                        />
+                      </div>
+                    </>
+                  )}
                 >
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
                     Name

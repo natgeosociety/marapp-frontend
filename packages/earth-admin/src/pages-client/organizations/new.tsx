@@ -22,10 +22,9 @@ import { noop } from 'lodash';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { ErrorMessages, Spinner } from '@marapp/earth-shared';
+import { ErrorMessages, Spinner, Input } from '@marapp/earth-shared';
 
 import { Card } from '@app/components/card';
-import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 import { addOrganization } from '@app/services/organizations';
