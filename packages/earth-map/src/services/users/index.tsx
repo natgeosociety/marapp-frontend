@@ -28,7 +28,7 @@ import { encodeQueryToURL } from 'utils/query';
  */
 class UsersService {
   private dataFormatter: Jsona;
-  private api: AxiosInstance;
+  public api: AxiosInstance;
 
   constructor() {
     this.configure();
@@ -49,10 +49,12 @@ class UsersService {
    * @param {string} path - The path of the request.
    */
   public request(path) {
+    console.log(path);
     return new Promise((resolve, reject) => {
       this.api
         .get(path)
         .then((response) => {
+          console.log(response);
           resolve(this.dataFormatter.deserialize(response.data));
         })
         .catch((err) => {
@@ -64,9 +66,8 @@ class UsersService {
 
 export const service = new UsersService();
 
-export function changeEmailConfirmation(options = {}) {
-  const widgetsQuery = encodeQueryToURL(`/users/profile/change-email`, options);
-  return service.request(widgetsQuery);
+export function changeEmailConfirmation(options) {
+  return service.api.post(`/users/profile/change-email`, options);
 }
 
 export function fetchProfile(options = {}) {
