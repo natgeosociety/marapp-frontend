@@ -1,8 +1,9 @@
 import { Auth0Context } from 'auth/auth0';
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'redux-first-router-link';
-import { changeEmailConfirmation, fetchProfile } from 'services/users';
+import { fetchProfile, updateProfile, changeEmailConfirmation } from 'services/users';
 import { APP_LOGO } from 'theme';
+import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
 
 import { useForm } from 'react-hook-form';
 import {
@@ -13,10 +14,8 @@ import {
   setupErrors,
   validEmailRule,
 } from '@marapp/earth-shared';
-import auth0 from 'config/auth0';
-import { Auth0Client } from '@auth0/auth0-spa-js';
-import { handleLayerForm } from '@marapp/earth-admin/src/services';
 
+import auth0 from 'config/auth0';
 interface IProps {
   page: string;
 }
@@ -28,28 +27,25 @@ export function ProfileComponent(props: IProps) {
     mode: 'onChange',
   });
 
-  const { userData, logout, login, isAuthenticated, getToken } = useContext(Auth0Context);
+  const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
-  const [serverErrors, setServerErrors] = useState();
-  console.log(userData);
+  const [userProfile, setUserProfile] = useState({ firstName: '', lastName: '', name: '' });
 
   const { touched, isValid } = formState;
   const renderErrorFor = setupErrors(formErrors, touched);
 
   const userRoles = Object.keys(userData.roles);
 
+  const processUserName = ({ firstName, lastName, name }) => {
+    setUserName(firstName && lastName ? `${firstName} ${lastName}` : name);
+  };
+
   useEffect(() => {
     (async () => {
       const profile: any = await fetchProfile();
-
-      console.log(profile);
-
-      setUserName(
-        profile.firstName && profile.lastName
-          ? `${profile.firstName} ${profile.lastName}`
-          : profile.name
-      );
+      setUserProfile(profile.data);
+      processUserName(profile.data);
 
       setIsLoading(false);
     })();
@@ -75,6 +71,25 @@ export function ProfileComponent(props: IProps) {
     //   alert('Could not change email address.');
     // }
   };
+
+  async function onSubmitName(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
+    e.preventDefault();
+
+    const formData = getValues();
+
+    try {
+      setIsLoading && setIsLoading(true);
+
+      const result: any = await updateProfile(formData);
+      processUserName(result.data);
+
+      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(false);
+    } catch (error) {
+      setIsLoading && setIsLoading(false);
+      setServerErrors && setServerErrors(error.data?.errors);
+    }
+  }
 
   return isLoading ? (
     <Spinner size="large" />
@@ -108,28 +123,44 @@ export function ProfileComponent(props: IProps) {
             <div className="ng-grid">
               <div className="ng-width-2-3 ng-push-1-6">
                 <InlineEditCard
-                // render={({setIsEditing, setIsLoading, setServerErrors}) => (
-                //   <>
-                //     <div className="ng-margin-medium-bottom">
-                //       <Input
-                //         name="firstName"
-                //         placeholder="First Name"
-                //         label="First Name"
-                //         defaultValue={''}
-                //         className="ng-display-block marapp-qa-inputfirstname"
-                //       />
-                //     </div>
-                //     <div className="ng-margin-medium-bottom">
-                //       <Input
-                //         name="lastName"
-                //         placeholder="Last Name"
-                //         label="Last Name"
-                //         defaultValue={''}
-                //         className="ng-display-block marapp-qa-inputlastname"
-                //       />
-                //     </div>
-                //   </>
-                // )}>
+                  {...(!REACT_APP_EXTERNAL_IDP_URL && {
+                    render: ({ setIsEditing, setIsLoading, setServerErrors }) => (
+                      <>
+                        <div className="ng-margin-medium-bottom">
+                          <Input
+                            name="firstName"
+                            placeholder="First Name"
+                            label="First Name"
+                            defaultValue={userProfile.firstName}
+                            error={renderErrorFor('firstName')}
+                            ref={register({
+                              minLength: 1,
+                              maxLength: 40,
+                              required: true,
+                            })}
+                            className="ng-display-block marapp-qa-inputfirstname"
+                          />
+                        </div>
+                        <div className="ng-margin-medium-bottom">
+                          <Input
+                            name="lastName"
+                            placeholder="Last Name"
+                            label="Last Name"
+                            defaultValue={userProfile.lastName}
+                            error={renderErrorFor('lastName')}
+                            ref={register({
+                              minLength: 1,
+                              maxLength: 80,
+                              required: true,
+                            })}
+                            className="ng-display-block marapp-qa-inputlastname"
+                          />
+                        </div>
+                      </>
+                    ),
+                    validForm: isValid,
+                    onSubmit: onSubmitName,
+                  })}
                 >
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
                     Name

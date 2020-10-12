@@ -17,18 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { setup } from 'axios-cache-adapter';
 import { API_URL } from 'config';
 import Jsona, { SwitchCaseJsonMapper, SwitchCaseModelMapper } from 'jsona';
 import { encodeQueryToURL } from 'utils/query';
+import { deserializeData } from 'utils';
 
 /**
  * Users service class.
  */
 class UsersService {
-  public api: AxiosInstance;
   private dataFormatter: Jsona;
+  public api: AxiosInstance;
 
   constructor() {
     this.configure();
@@ -40,21 +41,22 @@ class UsersService {
   }
 
   public configure = () => {
-    this.api = setup({ baseURL: API_URL });
+    this.api = setup({
+      baseURL: API_URL,
+      // @ts-ignore
+      transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
+        data: data.data ? deserializeData(data) : data,
+        pagination: data.meta ? data.meta.pagination : null,
+        total: data.meta ? data.meta.results : null,
+      })),
+    });
   };
 
-  /**
-   * request
-   * Creates an axios request based on type an options.
-   * @param {string} path - The path of the request.
-   */
   public request(options: AxiosRequestConfig) {
     return new Promise((resolve, reject) => {
       this.api
         .request(options)
-        .then((response) => {
-          resolve(this.dataFormatter.deserialize(response.data));
-        })
+        .then((res) => resolve(res.data))
         .catch((error) => reject(error.response.data));
     });
   }
@@ -62,15 +64,29 @@ class UsersService {
 
 export const service = new UsersService();
 
-export function changeEmailConfirmation(options) {
-  // return service.request({});
-
-  return service.request({ url: `/users/profile/change-email`, data: options });
+export function changeEmailConfirmation(options = {}) {
+  const query = encodeQueryToURL(`/users/profile/change-email`, options);
+  return service.request({
+    url: query,
+    data: options,
+    method: 'get',
+  });
 }
 
 export function fetchProfile(options = {}) {
   const profileQuery = encodeQueryToURL(`/users/profile`, options);
-  return service.request({ url: profileQuery });
+  return service.request({
+    url: profileQuery,
+    method: 'get',
+  });
+}
+
+export function updateProfile(options = {}) {
+  return service.request({
+    url: `/users/profile`,
+    method: 'put',
+    data: options,
+  });
 }
 
 export default service;
