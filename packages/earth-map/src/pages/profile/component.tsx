@@ -30,26 +30,25 @@ export function ProfileComponent(props: IProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
   const [userProfile, setUserProfile] = useState({ firstName: '', lastName: '', name: '' });
-  const [refreshProfile, setRefreshProfile] = useState(0);
 
   const { touched, isValid } = formState;
   const renderErrorFor = setupErrors(formErrors, touched);
 
   const userRoles = Object.keys(userData.roles);
 
+  const processUserName = ({ firstName, lastName, name }) => {
+    setUserName(firstName && lastName ? `${firstName} ${lastName}` : name);
+  };
+
   useEffect(() => {
     (async () => {
       const profile: any = await fetchProfile();
-
       setUserProfile(profile.data);
-
-      const { firstName, lastName, name } = profile.data;
-
-      setUserName(firstName && lastName ? `${firstName} ${lastName}` : name);
+      processUserName(profile.data);
 
       setIsLoading(false);
     })();
-  }, [refreshProfile]);
+  }, []);
 
   async function onSubmitName(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
@@ -59,12 +58,11 @@ export function ProfileComponent(props: IProps) {
     try {
       setIsLoading && setIsLoading(true);
 
-      await updateProfile(formData);
+      const result: any = await updateProfile(formData);
+      processUserName(result.data);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
-
-      setRefreshProfile(Math.random());
     } catch (error) {
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data?.errors);
