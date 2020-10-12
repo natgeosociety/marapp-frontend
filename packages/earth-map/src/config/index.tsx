@@ -33,3 +33,5 @@ export const GTM_TAG = process.env.REACT_APP_GTM_TAG;
 export const ENABLE_PUBLIC_ACCESS = yn(process.env.REACT_APP_ENABLE_PUBLIC_ACCESS, {
   default: false,
 });
+
+export const REACT_APP_EXTERNAL_IDP_URL = process.env.REACT_APP_EXTERNAL_IDP_URL || '';

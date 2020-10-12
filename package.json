@@ -46,6 +46,7 @@
     "react-dom": "^16.8.6",
     "react-fast-compare": "^2.0.4",
     "react-iframe-resizer-super": "^0.2.2",
+    "react-hook-form": "^4.8.2",
     "react-map-gl": "^5.0.7",
     "react-markdown": "^4.0.8",
     "react-modal": "^3.8.1",

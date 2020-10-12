@@ -22,7 +22,14 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 
-import { AuthzGuards, ErrorMessages, InlineEditCard } from '@marapp/earth-shared';
+import {
+  AuthzGuards,
+  ErrorMessages,
+  InlineEditCard,
+  Input,
+  noSpecialCharsOrSpaceRule,
+  setupErrors,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
@@ -30,7 +37,6 @@ import { DetailList } from '@app/components/detail-list';
 import { DownloadFile } from '@app/components/download-file';
 import { ErrorBoundary } from '@app/components/error-boundary';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
-import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { MapComponent } from '@app/components/map';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
@@ -40,7 +46,6 @@ import { ContentLayout } from '@app/layouts';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from '@app/services';
 import { encodeQueryToURL, formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
 import { MapComponentContext } from '@app/utils/contexts';
-import { noSpecialCharsOrSpaceRule, setupErrors } from '@app/utils/validations';
 
 import { PLACE_DETAIL_QUERY, PlaceIntersection, PlaceTypeEnum } from './model';
 

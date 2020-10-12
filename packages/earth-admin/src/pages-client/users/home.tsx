@@ -24,7 +24,7 @@ import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 import Creatable from 'react-select/creatable';
 
-import { AuthzGuards, ErrorMessages, Spinner } from '@marapp/earth-shared';
+import { AuthzGuards, ErrorMessages, Spinner, validEmail } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
@@ -33,7 +33,6 @@ import { getAvailableGroups } from '@app/services';
 import { addUsers, getAllUsers } from '@app/services/users';
 import { encodeQueryToURL, normalizeGroupName } from '@app/utils';
 import { useInfiniteListPaged } from '@app/utils/hooks';
-import { validEmail } from '@app/utils/validations';
 
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 

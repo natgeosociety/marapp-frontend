@@ -22,19 +22,24 @@ import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { AsyncSelect, ErrorMessages, Spinner } from '@marapp/earth-shared';
+import {
+  AsyncSelect,
+  ErrorMessages,
+  Spinner,
+  Input,
+  alphaNumericDashesRule,
+  setupErrors,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
 import { HtmlEditor } from '@app/components/html-editor';
-import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 import { addDashboard, getDashboardSlug } from '@app/services/dashboards';
 import { getAllWidgets } from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenArrayForSelect } from '@app/utils';
-import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 interface IProps {
   path?: string;
