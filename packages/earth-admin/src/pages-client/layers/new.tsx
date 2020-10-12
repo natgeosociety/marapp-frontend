@@ -55,9 +55,9 @@ export function NewLayer(props: IProps) {
     mode: 'onChange',
   });
   const {
-    category: categoryOptions = [],
-    type: typeOptions = [],
-    provider: providerOptions = [],
+    category: layerCategoryOptions = [],
+    type: layerTypeOptions = [],
+    provider: layerProviderOptions = [],
   } = dynamicOptions;
 
   const { touched, dirty, isValid } = formState;
@@ -179,7 +179,7 @@ export function NewLayer(props: IProps) {
                 control={control}
                 className="marapp-qa-category"
                 name="category"
-                options={categoryOptions}
+                options={layerCategoryOptions}
                 isSearchable={true}
                 isMulti={true}
                 placeholder="Select layer category"
@@ -216,7 +216,7 @@ export function NewLayer(props: IProps) {
                 control={control}
                 className="marapp-qa-provider"
                 name="provider"
-                options={providerOptions}
+                options={layerProviderOptions}
                 isSearchable={true}
                 placeholder="Select layer provider"
                 styles={CUSTOM_STYLES}
@@ -234,7 +234,7 @@ export function NewLayer(props: IProps) {
                 control={control}
                 className="marapp-qa-type"
                 name="type"
-                options={typeOptions}
+                options={layerTypeOptions}
                 isSearchable={true}
                 placeholder="Select layer type"
                 styles={CUSTOM_STYLES}

@@ -156,7 +156,7 @@ export function mergePages(pagedResponse: any[]): IMergedResults {
 export function useFilters(resource: string, fetcher: (any) => Promise<any>, options: object = {}) {
   const { selectedGroup } = useAuth0();
   const query = {
-    select: 'name,slug',
+    select: 'id',
     page: { size: 1, number: 1 },
     group: selectedGroup,
   };

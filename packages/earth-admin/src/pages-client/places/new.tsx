@@ -43,7 +43,7 @@ interface IProps {
 
 export function NewPlace(props: IProps) {
   const { onDataChange = noop, dynamicOptions } = props;
-  const { type: typeOptions = [] } = dynamicOptions;
+  const { type: placeTypeOptions = [] } = dynamicOptions;
   const { getValues, register, watch, formState, errors, setValue } = useForm({
     mode: 'onChange',
   });
@@ -121,7 +121,7 @@ export function NewPlace(props: IProps) {
                 })}
                 name="type"
               >
-                {typeOptions.map((t) => (
+                {placeTypeOptions.map((t) => (
                   <option key={t.value} value={t.value}>
                     {t.label}
                   </option>
