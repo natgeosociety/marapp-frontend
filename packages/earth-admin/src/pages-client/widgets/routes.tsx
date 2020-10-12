@@ -18,16 +18,14 @@
 */
 
 import { Router } from '@reach/router';
-import { groupBy } from 'lodash';
 import React, { useState } from 'react';
-import useSWR from 'swr';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { DataListing, DefaultListItem } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
 import { getAllWidgets } from '@app/services';
 import { encodeQueryToURL, setPage } from '@app/utils';
-import { useInfiniteList } from '@app/utils/hooks';
+import { useInfiniteList, useFilters } from '@app/utils/hooks';
 
 import { WidgetsDetail } from './details';
 import { WidgetsHome } from './home';
@@ -51,23 +49,7 @@ export default function DashboardsPage(props) {
     return encodeQueryToURL('widgets', query);
   };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllWidgets);
-
-  // Fetch filters from /management/widgets api.
-  // Can't reuse the above request because it's using search param and
-  // it might not return filters
-  // TODO: create a custom hook for reuse on multiple pages
-  const metricsQuery = {
-    select: 'name,slug',
-    page: { size: 1, number: 1 },
-    group: selectedGroup,
-  };
-  const { data: groupedFilters } = useSWR(
-    encodeQueryToURL('widgets', metricsQuery),
-    async (url) => {
-      const { filters }: any = await getAllWidgets(url);
-      return groupBy(filters, 'key');
-    }
-  );
+  const { data = {} } = useFilters('widgets', getAllWidgets);
 
   // Matches everything after the resource name in the url.
   // In our case that's /resource-id or /new
@@ -89,8 +71,8 @@ export default function DashboardsPage(props) {
       </SidebarLayout>
       <Router>
         <WidgetsHome path="/" />
-        <NewWidget path="/new" onDataChange={mutate} groupedFilters={groupedFilters} />
-        <WidgetsDetail path="/:page" onDataChange={mutate} groupedFilters={groupedFilters} />
+        <NewWidget path="/new" onDataChange={mutate} dynamicOptions={data} />
+        <WidgetsDetail path="/:page" onDataChange={mutate} dynamicOptions={data} />
       </Router>
     </>
   );

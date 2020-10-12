@@ -18,7 +18,11 @@
 */
 
 import { noop } from 'lodash/fp';
-import { useSWRInfinite } from 'swr';
+import useSWR, { useSWRInfinite } from 'swr';
+import { groupBy } from 'lodash';
+
+import { encodeQueryToURL } from '@app/utils';
+import { useAuth0 } from '@app/auth/auth0';
 
 /**
  * Custom hook that integrates useSWRInfinite with <DataListing /> component
@@ -143,5 +147,30 @@ export function mergePages(pagedResponse: any[]): IMergedResults {
       };
     },
     { data: [] }
+  );
+}
+
+/**
+ * Queries the API and returns dynamic filters grouped by their keys
+ */
+export function useFilters(resource: string, fetcher: (any) => Promise<any>, options: object = {}) {
+  const { selectedGroup } = useAuth0();
+  const query = {
+    select: 'name,slug',
+    page: { size: 1, number: 1 },
+    group: selectedGroup,
+  };
+
+  return useSWR(
+    encodeQueryToURL(resource, query),
+    async (url) => {
+      const { filters }: any = await fetcher(url);
+      const filtersWithLabel = filters.map((f) => ({
+        ...f,
+        label: f.value,
+      }));
+      return groupBy(filtersWithLabel, 'key');
+    },
+    options
   );
 }

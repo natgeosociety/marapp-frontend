@@ -25,7 +25,7 @@ import { DataListing, DefaultListItem } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
 import { getAllLayers } from '@app/services';
 import { encodeQueryToURL, setPage } from '@app/utils';
-import { useInfiniteList } from '@app/utils/hooks';
+import { useInfiniteList, useFilters } from '@app/utils/hooks';
 
 import { LayerDetail } from './details';
 import { LayersHome } from './home';
@@ -49,6 +49,7 @@ export default function LayersPage(props) {
     return encodeQueryToURL('layers', query);
   };
   const { listProps, mutate } = useInfiniteList(getQuery, getAllLayers);
+  const { data = {} } = useFilters('layers', getAllLayers);
 
   // Matches everything after the resource name in the url.
   // In our case that's /resource-id or /new
@@ -70,8 +71,8 @@ export default function LayersPage(props) {
       </SidebarLayout>
       <Router>
         <LayersHome path="/" />
-        <NewLayer path="/new" onDataChange={mutate} />
-        <LayerDetail path="/:page" onDataChange={mutate} />
+        <NewLayer path="/new" onDataChange={mutate} dynamicOptions={data} />
+        <LayerDetail path="/:page" onDataChange={mutate} dynamicOptions={data} />
       </Router>
     </>
   );

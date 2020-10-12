@@ -42,16 +42,20 @@ import { encodeQueryToURL, formatArrayToParentheses, formatDate, km2toHa } from 
 import { MapComponentContext } from '@app/utils/contexts';
 import { noSpecialCharsOrSpaceRule, setupErrors } from '@app/utils/validations';
 
-import { PLACE_DETAIL_QUERY, PlaceIntersection, PlaceTypeEnum } from './model';
+import { PLACE_DETAIL_QUERY, PlaceIntersection, IPlace } from './model';
 
 interface IProps {
   path: string;
   page?: string;
   onDataChange?: () => {};
+  dynamicOptions?: {
+    type?: any[];
+  };
 }
 
 export function PlaceDetail(props: IProps) {
-  const { page, onDataChange = noop } = props;
+  const { page, onDataChange = noop, dynamicOptions } = props;
+  const { type: typeOptions = [] } = dynamicOptions;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
   const metricsPermission = getPermissions(AuthzGuards.accessMetricsGuard);
@@ -66,7 +70,7 @@ export function PlaceDetail(props: IProps) {
     getPlace(url).then((response: any) => response.data)
   );
 
-  const [place, setPlace] = useState({});
+  const [place, setPlace] = useState<IPlace>({});
   const [mapData, setMapData] = useState({});
   const [mappedIntersections, setMappedIntersections] = useState();
   const [geojsonValue, setGeojson] = useState(null);
@@ -268,13 +272,9 @@ export function PlaceDetail(props: IProps) {
                           name="type"
                           defaultValue={type}
                         >
-                          {Object.keys(PlaceTypeEnum).map((t, idx) => (
-                            <option
-                              key={idx}
-                              value={PlaceTypeEnum[t]}
-                              selected={type === PlaceTypeEnum[t]}
-                            >
-                              {PlaceTypeEnum[t]}
+                          {typeOptions.map((t) => (
+                            <option key={t.value} value={t.value} selected={type === t.value}>
+                              {t.label}
                             </option>
                           ))}
                         </select>

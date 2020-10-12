@@ -50,8 +50,8 @@ const WIDGET_DETAIL_QUERY = {
 };
 
 export function WidgetsDetail(props: WidgetProps) {
-  const { page, onDataChange = noop, groupedFilters = {} } = props;
-  const { metrics = [] } = groupedFilters;
+  const { page, onDataChange = noop, dynamicOptions = {} } = props;
+  const { metrics: metricsOptions = [] } = dynamicOptions;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
 
@@ -357,10 +357,7 @@ export function WidgetsDetail(props: WidgetProps) {
                         control={control}
                         className="marapp-qa-metricslug"
                         name="metrics"
-                        options={metrics.map((m) => ({
-                          value: m.value,
-                          label: m.value,
-                        }))}
+                        options={metricsOptions}
                         defaultValue={{
                           value: selectedMetrics[0],
                           label: selectedMetrics[0],

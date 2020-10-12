@@ -38,20 +38,27 @@ import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenArrayForSelect, flattenObjectForSelect } from '@app/utils';
 import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
-import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
-
 interface IProps {
   path?: string;
   onDataChange?: () => {};
+  dynamicOptions?: {
+    category?: any[];
+    type?: any[];
+    provider?: any[];
+  };
 }
 
 export function NewLayer(props: IProps) {
-  const { onDataChange = noop } = props;
+  const { onDataChange = noop, dynamicOptions } = props;
   const { selectedGroup } = useAuth0();
-
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
     mode: 'onChange',
   });
+  const {
+    category: categoryOptions = [],
+    type: typeOptions = [],
+    provider: providerOptions = [],
+  } = dynamicOptions;
 
   const { touched, dirty, isValid } = formState;
   const renderErrorFor = setupErrors(errors, touched);
@@ -172,7 +179,7 @@ export function NewLayer(props: IProps) {
                 control={control}
                 className="marapp-qa-category"
                 name="category"
-                options={LAYER_CATEGORY_OPTIONS}
+                options={categoryOptions}
                 isSearchable={true}
                 isMulti={true}
                 placeholder="Select layer category"
@@ -209,7 +216,7 @@ export function NewLayer(props: IProps) {
                 control={control}
                 className="marapp-qa-provider"
                 name="provider"
-                options={LAYER_PROVIDER_OPTIONS}
+                options={providerOptions}
                 isSearchable={true}
                 placeholder="Select layer provider"
                 styles={CUSTOM_STYLES}
@@ -227,7 +234,7 @@ export function NewLayer(props: IProps) {
                 control={control}
                 className="marapp-qa-type"
                 name="type"
-                options={LAYER_TYPE_OPTIONS}
+                options={typeOptions}
                 isSearchable={true}
                 placeholder="Select layer type"
                 styles={CUSTOM_STYLES}
