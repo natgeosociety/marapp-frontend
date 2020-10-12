@@ -29,6 +29,8 @@ import {
   ErrorMessages,
   InlineEditCard,
   Input,
+  alphaNumericDashesRule,
+  setupErrors,
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
@@ -44,7 +46,6 @@ import { getAllLayers } from '@app/services/layers';
 import { getWidget, handleWidgetForm } from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { copyToClipboard, encodeQueryToURL, flattenObjectForSelect, formatDate } from '@app/utils';
-import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 import { Widget, WidgetProps } from './model';
 

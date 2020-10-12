@@ -4,7 +4,15 @@ import Link from 'redux-first-router-link';
 import { fetchProfile } from 'services/users';
 import { APP_LOGO } from 'theme';
 
-import { InlineEditCard, Spinner, UserMenu, Input } from '@marapp/earth-shared';
+import { useForm } from 'react-hook-form';
+import {
+  InlineEditCard,
+  Spinner,
+  UserMenu,
+  Input,
+  setupErrors,
+  validEmailRule,
+} from '@marapp/earth-shared';
 
 interface IProps {
   page: string;
@@ -12,9 +20,17 @@ interface IProps {
 
 export function ProfileComponent(props: IProps) {
   const { page } = props;
+
+  const { getValues, register, formState, errors: formErrors } = useForm({
+    mode: 'onChange',
+  });
+
   const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
+
+  const { touched } = formState;
+  const renderErrorFor = setupErrors(formErrors, touched);
 
   const userRoles = Object.keys(userData.roles);
 
@@ -43,7 +59,7 @@ export function ProfileComponent(props: IProps) {
             type: 'EARTH',
           }}
         >
-          <img src={APP_LOGO} className="ng-margin" />
+          <img src={APP_LOGO} className="ng-margin" alt="" />
         </Link>
       </div>
 
@@ -101,9 +117,16 @@ export function ProfileComponent(props: IProps) {
                         <Input
                           name="email"
                           placeholder="Email"
-                          label="Email"
-                          defaultValue={''}
-                          className="ng-display-block marapp-qa-inputemail"
+                          label="Email*"
+                          className="marapp-qa-inputemail ng-display-block ng-margin-medium-bottom"
+                          defaultValue={userData.email}
+                          error={renderErrorFor('email')}
+                          ref={register({
+                            required: 'Please enter a valid email',
+                            validate: {
+                              validEmailRule: validEmailRule(),
+                            },
+                          })}
                         />
                       </div>
                       <div className="ng-margin-medium-bottom">

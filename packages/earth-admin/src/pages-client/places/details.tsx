@@ -22,7 +22,14 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 
-import { AuthzGuards, ErrorMessages, InlineEditCard, Input } from '@marapp/earth-shared';
+import {
+  AuthzGuards,
+  ErrorMessages,
+  InlineEditCard,
+  Input,
+  noSpecialCharsOrSpaceRule,
+  setupErrors,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
@@ -39,7 +46,6 @@ import { ContentLayout } from '@app/layouts';
 import { calculateAllForPlace, getPlace, handlePlaceForm } from '@app/services';
 import { encodeQueryToURL, formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
 import { MapComponentContext } from '@app/utils/contexts';
-import { noSpecialCharsOrSpaceRule, setupErrors } from '@app/utils/validations';
 
 import { PLACE_DETAIL_QUERY, PlaceIntersection, PlaceTypeEnum } from './model';
 

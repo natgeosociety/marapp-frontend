@@ -29,6 +29,8 @@ import {
   ErrorMessages,
   InlineEditCard,
   Input,
+  alphaNumericDashesRule,
+  setupErrors,
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
@@ -50,7 +52,6 @@ import {
   formatDate,
   getSelectValues,
 } from '@app/utils';
-import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 
