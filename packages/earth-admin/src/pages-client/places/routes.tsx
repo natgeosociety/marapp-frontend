@@ -25,7 +25,7 @@ import { DataListing, DefaultListItem } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
 import { getAllPlaces } from '@app/services/places';
 import { encodeQueryToURL, setPage } from '@app/utils';
-import { useInfiniteList, useFilters } from '@app/utils/hooks';
+import { useInfiniteList } from '@app/utils/hooks';
 
 import { PlaceDetail } from './details';
 import { PlacesHome } from './home';
@@ -48,8 +48,7 @@ export default function PlacesPage(props) {
     };
     return encodeQueryToURL('locations', query);
   };
-  const { listProps, mutate } = useInfiniteList(getQuery, getAllPlaces);
-  const { data = {} } = useFilters('locations', getAllPlaces);
+  const { listProps, filters, mutate } = useInfiniteList(getQuery, getAllPlaces);
 
   // Matches everything after the resource name in the url.
   // In our case that's /resource-id or /new
@@ -71,8 +70,8 @@ export default function PlacesPage(props) {
       </SidebarLayout>
       <Router>
         <PlacesHome path="/" />
-        <NewPlace path="/new" onDataChange={mutate} dynamicOptions={data} />
-        <PlaceDetail path="/:page" onDataChange={mutate} dynamicOptions={data} />
+        <NewPlace path="/new" onDataChange={mutate} dynamicOptions={filters} />
+        <PlaceDetail path="/:page" onDataChange={mutate} dynamicOptions={filters} />
       </Router>
     </>
   );

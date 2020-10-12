@@ -18,11 +18,8 @@
 */
 
 import { noop } from 'lodash/fp';
-import useSWR, { useSWRInfinite } from 'swr';
+import { useSWRInfinite } from 'swr';
 import { groupBy } from 'lodash';
-
-import { encodeQueryToURL } from '@app/utils';
-import { useAuth0 } from '@app/auth/auth0';
 
 /**
  * Custom hook that integrates useSWRInfinite with <DataListing /> component
@@ -55,10 +52,15 @@ export function useInfiniteList(
   } = useSWRInfinite(wrappedQuery, fetcher, options);
 
   const items = mergePages(response);
-  const [firstPage] = response;
-  const lastPage = response[response.length - 1];
-  const totalResults = firstPage?.total;
-  const isNoMore = !lastPage?.pagination.nextCursor;
+  const [firstPage = {}] = response;
+  const lastPage = response[response.length - 1] || {};
+  const totalResults = firstPage.total;
+  const filters = firstPage.filters || [];
+  const filtersWithLabel = filters.map((f) => ({
+    ...f,
+    label: f.value,
+  }));
+  const isNoMore = !lastPage?.pagination?.nextCursor;
   const awaitMore = !isValidating && !isNoMore;
 
   const returnValues = {
@@ -73,6 +75,7 @@ export function useInfiniteList(
       isNoMore,
       totalResults,
     },
+    filters: groupBy(filtersWithLabel, 'key'),
     revalidate,
     mutate,
     error,
@@ -147,30 +150,5 @@ export function mergePages(pagedResponse: any[]): IMergedResults {
       };
     },
     { data: [] }
-  );
-}
-
-/**
- * Queries the API and returns dynamic filters grouped by their keys
- */
-export function useFilters(resource: string, fetcher: (any) => Promise<any>, options: object = {}) {
-  const { selectedGroup } = useAuth0();
-  const query = {
-    select: 'id',
-    page: { size: 1, number: 1 },
-    group: selectedGroup,
-  };
-
-  return useSWR(
-    encodeQueryToURL(resource, query),
-    async (url) => {
-      const { filters }: any = await fetcher(url);
-      const filtersWithLabel = filters.map((f) => ({
-        ...f,
-        label: f.value,
-      }));
-      return groupBy(filtersWithLabel, 'key');
-    },
-    options
   );
 }

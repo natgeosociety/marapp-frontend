@@ -25,7 +25,7 @@ import { DataListing, DefaultListItem } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
 import { getAllWidgets } from '@app/services';
 import { encodeQueryToURL, setPage } from '@app/utils';
-import { useInfiniteList, useFilters } from '@app/utils/hooks';
+import { useInfiniteList } from '@app/utils/hooks';
 
 import { WidgetsDetail } from './details';
 import { WidgetsHome } from './home';
@@ -48,8 +48,7 @@ export default function DashboardsPage(props) {
     };
     return encodeQueryToURL('widgets', query);
   };
-  const { listProps, mutate } = useInfiniteList(getQuery, getAllWidgets);
-  const { data = {} } = useFilters('widgets', getAllWidgets);
+  const { listProps, filters, mutate } = useInfiniteList(getQuery, getAllWidgets);
 
   // Matches everything after the resource name in the url.
   // In our case that's /resource-id or /new
@@ -71,8 +70,8 @@ export default function DashboardsPage(props) {
       </SidebarLayout>
       <Router>
         <WidgetsHome path="/" />
-        <NewWidget path="/new" onDataChange={mutate} dynamicOptions={data} />
-        <WidgetsDetail path="/:page" onDataChange={mutate} dynamicOptions={data} />
+        <NewWidget path="/new" onDataChange={mutate} dynamicOptions={filters} />
+        <WidgetsDetail path="/:page" onDataChange={mutate} dynamicOptions={filters} />
       </Router>
     </>
   );
