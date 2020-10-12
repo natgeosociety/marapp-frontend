@@ -1,10 +1,19 @@
 import { Auth0Context } from 'auth/auth0';
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'redux-first-router-link';
-import { fetchProfile } from 'services/users';
+import { fetchProfile, updateProfile } from 'services/users';
 import { APP_LOGO } from 'theme';
+import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
 
-import { InlineEditCard, Spinner, UserMenu } from '@marapp/earth-shared';
+import { useForm } from 'react-hook-form';
+import {
+  InlineEditCard,
+  Spinner,
+  UserMenu,
+  Input,
+  setupErrors,
+  validEmailRule,
+} from '@marapp/earth-shared';
 
 interface IProps {
   page: string;
@@ -12,30 +21,58 @@ interface IProps {
 
 export function ProfileComponent(props: IProps) {
   const { page } = props;
+
+  const { getValues, register, formState, errors: formErrors } = useForm({
+    mode: 'onChange',
+  });
+
   const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
+  const [userProfile, setUserProfile] = useState({ firstName: '', lastName: '', name: '' });
+
+  const { touched, isValid } = formState;
+  const renderErrorFor = setupErrors(formErrors, touched);
 
   const userRoles = Object.keys(userData.roles);
+
+  const processUserName = ({ firstName, lastName, name }) => {
+    setUserName(firstName && lastName ? `${firstName} ${lastName}` : name);
+  };
 
   useEffect(() => {
     (async () => {
       const profile: any = await fetchProfile();
-
-      setUserName(
-        profile.firstName && profile.lastName
-          ? `${profile.firstName} ${profile.lastName}`
-          : profile.name
-      );
+      setUserProfile(profile.data);
+      processUserName(profile.data);
 
       setIsLoading(false);
     })();
   }, []);
 
+  async function onSubmitName(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
+    e.preventDefault();
+
+    const formData = getValues();
+
+    try {
+      setIsLoading && setIsLoading(true);
+
+      const result: any = await updateProfile(formData);
+      processUserName(result.data);
+
+      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(false);
+    } catch (error) {
+      setIsLoading && setIsLoading(false);
+      setServerErrors && setServerErrors(error.data?.errors);
+    }
+  }
+
   return isLoading ? (
     <Spinner size="large" />
   ) : (
-    <div className={`l-page ng-flex marapp-qa-user-profile ng-ep-background-gray-9`}>
+    <div className={`l-page ng-flex marapp-qa-user-profile ng-ep-background-gray-9`} id="portal">
       <div>
         <Link
           className="ng-border-remove"
@@ -43,7 +80,7 @@ export function ProfileComponent(props: IProps) {
             type: 'EARTH',
           }}
         >
-          <img src={APP_LOGO} className="ng-margin" />
+          <img src={APP_LOGO} className="ng-margin" alt="" />
         </Link>
       </div>
 
@@ -64,28 +101,44 @@ export function ProfileComponent(props: IProps) {
             <div className="ng-grid">
               <div className="ng-width-2-3 ng-push-1-6">
                 <InlineEditCard
-                // render={({setIsEditing, setIsLoading, setServerErrors}) => (
-                //   <>
-                //     <div className="ng-margin-medium-bottom">
-                //       <Input
-                //         name="firstName"
-                //         placeholder="First Name"
-                //         label="First Name"
-                //         defaultValue={''}
-                //         className="ng-display-block marapp-qa-inputfirstname"
-                //       />
-                //     </div>
-                //     <div className="ng-margin-medium-bottom">
-                //       <Input
-                //         name="lastName"
-                //         placeholder="Last Name"
-                //         label="Last Name"
-                //         defaultValue={''}
-                //         className="ng-display-block marapp-qa-inputlastname"
-                //       />
-                //     </div>
-                //   </>
-                // )}>
+                  {...(!REACT_APP_EXTERNAL_IDP_URL && {
+                    render: ({ setIsEditing, setIsLoading, setServerErrors }) => (
+                      <>
+                        <div className="ng-margin-medium-bottom">
+                          <Input
+                            name="firstName"
+                            placeholder="First Name"
+                            label="First Name"
+                            defaultValue={userProfile.firstName}
+                            error={renderErrorFor('firstName')}
+                            ref={register({
+                              minLength: 1,
+                              maxLength: 40,
+                              required: true,
+                            })}
+                            className="ng-display-block marapp-qa-inputfirstname"
+                          />
+                        </div>
+                        <div className="ng-margin-medium-bottom">
+                          <Input
+                            name="lastName"
+                            placeholder="Last Name"
+                            label="Last Name"
+                            defaultValue={userProfile.lastName}
+                            error={renderErrorFor('lastName')}
+                            ref={register({
+                              minLength: 1,
+                              maxLength: 80,
+                              required: true,
+                            })}
+                            className="ng-display-block marapp-qa-inputlastname"
+                          />
+                        </div>
+                      </>
+                    ),
+                    validForm: isValid,
+                    onSubmit: onSubmitName,
+                  })}
                 >
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
                     Name
@@ -95,26 +148,35 @@ export function ProfileComponent(props: IProps) {
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard
-                // render={({setIsEditing, setIsLoading, setServerErrors}) => (
-                //   <>
-                //     <div className="ng-margin-medium-bottom">
-                //       <Input
-                //         name="email"
-                //         placeholder="Email"
-                //         label="Email"
-                //         defaultValue={''}
-                //         className="ng-display-block marapp-qa-inputemail"
-                //       />
-                //     </div>
-                //     <div className="ng-margin-medium-bottom">
-                //       <p>
-                //         After saving, we will send an email to your new email address to confirm the change.
-                //         <br/>
-                //         Be sure to check your spam folder if you do not receive the email in a few minutes.
-                //       </p>
-                //     </div>
-                //   </>
-                // )}>
+                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                    <>
+                      <div className="ng-margin-medium-bottom">
+                        <Input
+                          name="email"
+                          placeholder="Email"
+                          label="Email*"
+                          className="marapp-qa-inputemail ng-display-block ng-margin-medium-bottom"
+                          defaultValue={userData.email}
+                          error={renderErrorFor('email')}
+                          ref={register({
+                            required: 'Please enter a valid email',
+                            validate: {
+                              validEmailRule: validEmailRule(),
+                            },
+                          })}
+                        />
+                      </div>
+                      <div className="ng-margin-medium-bottom">
+                        <p>
+                          After saving, we will send an email to your new email address to confirm
+                          the change.
+                          <br />
+                          Be sure to check your spam folder if you do not receive the email in a few
+                          minutes.
+                        </p>
+                      </div>
+                    </>
+                  )}
                 >
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
                     Email

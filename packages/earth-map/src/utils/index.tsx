@@ -20,6 +20,13 @@
 import { BASE_URL } from 'config';
 import React from 'react';
 import urljoin from 'url-join';
+import { Deserializer } from 'ts-jsonapi';
+
+const DeserializerService = new Deserializer({
+  keyForAttribute: (attribute: any) => {
+    return attribute;
+  },
+});
 
 /**
  * Route to target URL in case of success/failure.
@@ -49,3 +56,8 @@ export const parseHintBold = (text: string = '') => {
       )
     );
 };
+
+/**
+ * Deserializer
+ */
+export const deserializeData = (data) => DeserializerService.deserialize(data);
