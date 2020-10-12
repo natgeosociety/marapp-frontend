@@ -4,7 +4,7 @@ import Link from 'redux-first-router-link';
 import { fetchProfile } from 'services/users';
 import { APP_LOGO } from 'theme';
 
-import { InlineEditCard, Spinner, UserMenu } from '@marapp/earth-shared';
+import { InlineEditCard, Spinner, UserMenu, Input } from '@marapp/earth-shared';
 
 interface IProps {
   page: string;
@@ -35,7 +35,7 @@ export function ProfileComponent(props: IProps) {
   return isLoading ? (
     <Spinner size="large" />
   ) : (
-    <div className={`l-page ng-flex marapp-qa-user-profile ng-ep-background-gray-9`}>
+    <div className={`l-page ng-flex marapp-qa-user-profile ng-ep-background-gray-9`} id="portal">
       <div>
         <Link
           className="ng-border-remove"
@@ -95,26 +95,28 @@ export function ProfileComponent(props: IProps) {
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard
-                // render={({setIsEditing, setIsLoading, setServerErrors}) => (
-                //   <>
-                //     <div className="ng-margin-medium-bottom">
-                //       <Input
-                //         name="email"
-                //         placeholder="Email"
-                //         label="Email"
-                //         defaultValue={''}
-                //         className="ng-display-block marapp-qa-inputemail"
-                //       />
-                //     </div>
-                //     <div className="ng-margin-medium-bottom">
-                //       <p>
-                //         After saving, we will send an email to your new email address to confirm the change.
-                //         <br/>
-                //         Be sure to check your spam folder if you do not receive the email in a few minutes.
-                //       </p>
-                //     </div>
-                //   </>
-                // )}>
+                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                    <>
+                      <div className="ng-margin-medium-bottom">
+                        <Input
+                          name="email"
+                          placeholder="Email"
+                          label="Email"
+                          defaultValue={''}
+                          className="ng-display-block marapp-qa-inputemail"
+                        />
+                      </div>
+                      <div className="ng-margin-medium-bottom">
+                        <p>
+                          After saving, we will send an email to your new email address to confirm
+                          the change.
+                          <br />
+                          Be sure to check your spam folder if you do not receive the email in a few
+                          minutes.
+                        </p>
+                      </div>
+                    </>
+                  )}
                 >
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
                     Email
