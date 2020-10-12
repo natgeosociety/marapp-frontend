@@ -32,6 +32,7 @@ const PlacesAPIService = {
       transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
         data: data.data ? deserializeData(data) : data,
         pagination: data.meta ? data.meta.pagination : null,
+        filters: data.meta ? data.meta.filters : null,
         total: data.meta ? data.meta.results : null,
       })),
     });

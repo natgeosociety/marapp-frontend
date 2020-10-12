@@ -47,12 +47,14 @@ import { flattenObjectForSelect } from '@app/utils';
 interface IProps {
   path?: string;
   onDataChange?: () => {};
-  groupedFilters?: any;
+  dynamicOptions?: {
+    metrics?: any[];
+  };
 }
 
 export function NewWidget(props: IProps) {
-  const { onDataChange = noop, groupedFilters = {} } = props;
-  const { metrics = [] } = groupedFilters;
+  const { onDataChange = noop, dynamicOptions = {} } = props;
+  const { metrics: metricsOptions = [] } = dynamicOptions;
   const { selectedGroup } = useAuth0();
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
     mode: 'onChange',
@@ -216,10 +218,7 @@ export function NewWidget(props: IProps) {
                   control={control}
                   className="marapp-qa-metricslug"
                   name="metrics"
-                  options={metrics.map((m) => ({
-                    value: m.value,
-                    label: m.value,
-                  }))}
+                  options={metricsOptions}
                   placeholder="Select metric slug"
                   styles={CUSTOM_STYLES}
                   error={renderErrorFor('metrics')}

@@ -17,26 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-export enum LayerType {
-  raster = 'raster',
-  vector = 'vector',
-  geojson = 'geojson',
-  group = 'group',
-  video = 'video',
-}
-
-export enum LayerProvider {
-  cartodb = 'cartodb',
-  gee = 'gee',
-  mapbox = 'mapbox',
-  leaflet = 'leaflet',
-}
-
-export interface Layer {
+export interface ILayer {
   id: string;
   description: string;
   primary: boolean;
-  category: LayerCategory[];
+  category: any[];
   config: object;
   published: boolean;
   createdAt: Date;
@@ -44,53 +29,7 @@ export interface Layer {
   version: number;
   slug?: string;
   name?: string;
-  type?: LayerType;
-  provider?: LayerProvider;
-  references?: Layer[];
+  type?: any;
+  provider?: any;
+  references?: ILayer[];
 }
-
-export interface LayerProps {
-  data: Layer;
-  newLayer?: boolean;
-}
-
-export enum LayerCategory {
-  BIODIVERSITY = 'Biodiversity',
-  CLIMATE_CARBON = 'Climate & Carbon',
-  ECOSYSTEM_SERVICES = 'Ecosystem Services',
-  HUMAN_IMPACT = 'Human Impact',
-  LAND_COVER = 'Land Cover',
-  MARINE = 'Marine',
-  NATURAL_HAZARDS = 'Natural Hazards',
-  PROTECTED_AREAS = 'Protected Areas',
-  RESTORATION = 'Restoration',
-  SOCIO_ECONOMIC = 'Socio-Economic',
-}
-
-export const LAYER_CATEGORY_OPTIONS = [
-  { value: 'Biodiversity', label: 'Biodiversity' },
-  { value: 'Climate & Carbon', label: 'Climate & Carbon' },
-  { value: 'Ecosystem Services', label: 'Ecosystem Services' },
-  { value: 'Human Impact', label: 'Human Impact' },
-  { value: 'Land Cover', label: 'Land Cover' },
-  { value: 'Marine', label: 'Marine' },
-  { value: 'Natural Hazards', label: 'Natural Hazards' },
-  { value: 'Protected Areas', label: 'Protected Areas' },
-  { value: 'Restoration', label: 'Restoration' },
-  { value: 'Socio-Economic', label: 'Socio-Economic' },
-];
-
-export const LAYER_TYPE_OPTIONS = [
-  { value: 'raster', label: 'raster' },
-  { value: 'vector', label: 'vector' },
-  { value: 'geojson', label: 'geojson' },
-  { value: 'group', label: 'group' },
-  { value: 'video', label: 'video' },
-];
-
-export const LAYER_PROVIDER_OPTIONS = [
-  { value: 'cartodb', label: 'cartodb' },
-  { value: 'gee', label: 'gee' },
-  { value: 'mapbox', label: 'mapbox' },
-  { value: 'leaflet', label: 'leaflet' },
-];

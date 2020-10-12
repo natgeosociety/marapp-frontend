@@ -48,7 +48,7 @@ export default function PlacesPage(props) {
     };
     return encodeQueryToURL('locations', query);
   };
-  const { listProps, mutate } = useInfiniteList(getQuery, getAllPlaces);
+  const { listProps, filters, mutate } = useInfiniteList(getQuery, getAllPlaces);
 
   // Matches everything after the resource name in the url.
   // In our case that's /resource-id or /new
@@ -70,8 +70,8 @@ export default function PlacesPage(props) {
       </SidebarLayout>
       <Router>
         <PlacesHome path="/" />
-        <NewPlace path="/new" onDataChange={mutate} />
-        <PlaceDetail path="/:page" onDataChange={mutate} />
+        <NewPlace path="/new" onDataChange={mutate} dynamicOptions={filters} />
+        <PlaceDetail path="/:page" onDataChange={mutate} dynamicOptions={filters} />
       </Router>
     </>
   );

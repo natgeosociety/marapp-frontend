@@ -53,14 +53,19 @@ import {
   getSelectValues,
 } from '@app/utils';
 
-import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
+import { ILayer } from './model';
 
 const LAYER_DETAIL_QUERY = { include: 'references', select: 'references.name,references.id' };
 
 export function LayerDetail(props: any) {
-  const { page, onDataChange = noop } = props;
+  const { page, onDataChange = noop, dynamicOptions } = props;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
+  const {
+    category: layerCategoryOptions = [],
+    type: layerTypeOptions = [],
+    provider: layerProviderOptions = [],
+  } = dynamicOptions;
 
   const encodedQuery = encodeQueryToURL(`layers/${page}`, {
     ...LAYER_DETAIL_QUERY,
@@ -71,7 +76,7 @@ export function LayerDetail(props: any) {
     getLayer(url).then((res: any) => res.data)
   );
 
-  const [layer, setLayer] = useState({});
+  const [layer, setLayer] = useState<ILayer>({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState();
@@ -106,10 +111,10 @@ export function LayerDetail(props: any) {
 
   useEffect(() => {
     layer.config && setLayerConfig(layer.config);
-    layer.category && setLayerCategory(getSelectValues(LAYER_CATEGORY_OPTIONS, layer.category));
-    layer.type && setLayerType(LAYER_TYPE_OPTIONS.find((t) => t.value === layer.type));
+    layer.category && setLayerCategory(getSelectValues(layerCategoryOptions, layer.category));
+    layer.type && setLayerType(layerTypeOptions.find((t) => t.value === layer.type));
     layer.provider &&
-      setLayerProvider(LAYER_PROVIDER_OPTIONS.find((p) => p.value === layer.provider));
+      setLayerProvider(layerProviderOptions.find((p) => p.value === layer.provider));
   }, [layer]);
 
   const { getValues, register, formState, errors, control } = useForm({
@@ -268,7 +273,7 @@ export function LayerDetail(props: any) {
                           control={control}
                           className="marapp-qa-category"
                           name="category"
-                          options={LAYER_CATEGORY_OPTIONS}
+                          options={layerCategoryOptions}
                           defaultValue={layerCategory}
                           isSearchable={true}
                           isMulti={true}
@@ -366,7 +371,7 @@ export function LayerDetail(props: any) {
                           control={control}
                           className="marapp-qa-provider"
                           name="provider"
-                          options={LAYER_PROVIDER_OPTIONS}
+                          options={layerProviderOptions}
                           defaultValue={layerProvider}
                           isSearchable={true}
                           placeholder="Select layer provider"
@@ -385,7 +390,7 @@ export function LayerDetail(props: any) {
                           control={control}
                           className="marapp-qa-type"
                           name="type"
-                          options={LAYER_TYPE_OPTIONS}
+                          options={layerTypeOptions}
                           defaultValue={layerType}
                           isSearchable={true}
                           placeholder="Select layer type"
