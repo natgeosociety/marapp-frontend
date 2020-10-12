@@ -15,6 +15,7 @@ import {
 } from '@marapp/earth-shared';
 import auth0 from 'config/auth0';
 import { Auth0Client } from '@auth0/auth0-spa-js';
+import { handleLayerForm } from '@marapp/earth-admin/src/services';
 
 interface IProps {
   page: string;
@@ -30,6 +31,8 @@ export function ProfileComponent(props: IProps) {
   const { userData, logout, login, isAuthenticated, getToken } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
+  const [serverErrors, setServerErrors] = useState();
+  console.log(userData);
 
   const { touched, isValid } = formState;
   const renderErrorFor = setupErrors(formErrors, touched);
@@ -39,6 +42,8 @@ export function ProfileComponent(props: IProps) {
   useEffect(() => {
     (async () => {
       const profile: any = await fetchProfile();
+
+      console.log(profile);
 
       setUserName(
         profile.firstName && profile.lastName
@@ -51,19 +56,24 @@ export function ProfileComponent(props: IProps) {
   }, []);
 
   const handleEmailChange = async (e) => {
-    console.log('changy');
     e.preventDefault();
 
-    const response: any = await changeEmailConfirmation({ email: 'corina.cioloca@gmail.com' });
-    console.log(response, 'respy');
-    if (response && response?.success) {
-      alert('Email change successful. Please login using the new credentials.');
-      // Auth0 sessions are reset when a user’s email or password changes;
-      // force a re-login if email change request successful;
-      // return login({appState: {targetUrl: '/'}}); // TODO: redirect to profile after successful change;
-    } else {
-      alert('Could not change email address.');
+    try {
+      await changeEmailConfirmation({ email: 'corina.cioloca@gmail.com' });
+      // console.log(response, 'hehe');
+    } catch (error) {
+      console.log(error);
+      setServerErrors && setServerErrors(error.errors[0]);
     }
+
+    // if (response && response?.success) {
+    //   alert('Email change successful. Please login using the new credentials.');
+    //   // Auth0 sessions are reset when a user’s email or password changes;
+    //   // force a re-login if email change request successful;
+    //   //return login({appState: {targetUrl: '/'}}); // TODO: redirect to profile after successful change;
+    // } else {
+    //   alert('Could not change email address.');
+    // }
   };
 
   return isLoading ? (

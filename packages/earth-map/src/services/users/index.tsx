@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { setup } from 'axios-cache-adapter';
 import { API_URL } from 'config';
 import Jsona, { SwitchCaseJsonMapper, SwitchCaseModelMapper } from 'jsona';
@@ -27,8 +27,8 @@ import { encodeQueryToURL } from 'utils/query';
  * Users service class.
  */
 class UsersService {
-  private dataFormatter: Jsona;
   public api: AxiosInstance;
+  private dataFormatter: Jsona;
 
   constructor() {
     this.configure();
@@ -48,18 +48,14 @@ class UsersService {
    * Creates an axios request based on type an options.
    * @param {string} path - The path of the request.
    */
-  public request(path) {
-    console.log(path);
+  public request(options: AxiosRequestConfig) {
     return new Promise((resolve, reject) => {
       this.api
-        .get(path)
+        .request(options)
         .then((response) => {
-          console.log(response);
           resolve(this.dataFormatter.deserialize(response.data));
         })
-        .catch((err) => {
-          reject(err);
-        });
+        .catch((error) => reject(error.response.data));
     });
   }
 }
@@ -67,12 +63,14 @@ class UsersService {
 export const service = new UsersService();
 
 export function changeEmailConfirmation(options) {
-  return service.api.post(`/users/profile/change-email`, options);
+  // return service.request({});
+
+  return service.request({ url: `/users/profile/change-email`, data: options });
 }
 
 export function fetchProfile(options = {}) {
   const profileQuery = encodeQueryToURL(`/users/profile`, options);
-  return service.request(profileQuery);
+  return service.request({ url: profileQuery });
 }
 
 export default service;
