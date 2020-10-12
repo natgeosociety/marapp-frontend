@@ -29,9 +29,10 @@ export function ProfileComponent(props: IProps) {
   const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
+  const [userProfile, setUserProfile] = useState({ firstName: '', lastName: '', name: '' });
   const [refreshProfile, setRefreshProfile] = useState(0);
 
-  const { touched } = formState;
+  const { touched, isValid } = formState;
   const renderErrorFor = setupErrors(formErrors, touched);
 
   const userRoles = Object.keys(userData.roles);
@@ -40,33 +41,25 @@ export function ProfileComponent(props: IProps) {
     (async () => {
       const profile: any = await fetchProfile();
 
-      setUserName(
-        profile.firstName && profile.lastName
-          ? `${profile.firstName} ${profile.lastName}`
-          : profile.name
-      );
+      setUserProfile(profile.data);
+
+      const { firstName, lastName, name } = profile.data;
+
+      setUserName(firstName && lastName ? `${firstName} ${lastName}` : name);
 
       setIsLoading(false);
     })();
   }, [refreshProfile]);
 
-  async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
+  async function onSubmitName(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
 
     const formData = getValues();
 
-    const { firstName, lastName } = formData;
-
-    const parsed = {
-      ...formData,
-      ...(firstName && { firstName: firstName }),
-      ...(lastName && { lastName: lastName }),
-    };
-
     try {
       setIsLoading && setIsLoading(true);
 
-      await updateProfile(parsed);
+      await updateProfile(formData);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
@@ -74,7 +67,7 @@ export function ProfileComponent(props: IProps) {
       setRefreshProfile(Math.random());
     } catch (error) {
       setIsLoading && setIsLoading(false);
-      setServerErrors && setServerErrors(error.data.errors);
+      setServerErrors && setServerErrors(error.data?.errors);
     }
   }
 
@@ -110,7 +103,7 @@ export function ProfileComponent(props: IProps) {
             <div className="ng-grid">
               <div className="ng-width-2-3 ng-push-1-6">
                 <InlineEditCard
-                  {...(REACT_APP_EXTERNAL_IDP_URL && {
+                  {...(!REACT_APP_EXTERNAL_IDP_URL && {
                     render: ({ setIsEditing, setIsLoading, setServerErrors }) => (
                       <>
                         <div className="ng-margin-medium-bottom">
@@ -118,11 +111,12 @@ export function ProfileComponent(props: IProps) {
                             name="firstName"
                             placeholder="First Name"
                             label="First Name"
-                            defaultValue={''}
+                            defaultValue={userProfile.firstName}
                             error={renderErrorFor('firstName')}
                             ref={register({
                               minLength: 1,
                               maxLength: 40,
+                              required: true,
                             })}
                             className="ng-display-block marapp-qa-inputfirstname"
                           />
@@ -132,19 +126,20 @@ export function ProfileComponent(props: IProps) {
                             name="lastName"
                             placeholder="Last Name"
                             label="Last Name"
-                            defaultValue={''}
+                            defaultValue={userProfile.lastName}
                             error={renderErrorFor('lastName')}
                             ref={register({
                               minLength: 1,
                               maxLength: 80,
+                              required: true,
                             })}
                             className="ng-display-block marapp-qa-inputlastname"
                           />
                         </div>
                       </>
                     ),
-                    validForm: true,
-                    onSubmit,
+                    validForm: isValid,
+                    onSubmit: onSubmitName,
                   })}
                 >
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
