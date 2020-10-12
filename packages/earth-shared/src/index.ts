@@ -21,5 +21,6 @@ export * from './components';
 export * from './authorization';
 export * from './services';
 export * from './utils';
+export * from './validations';
 export * from './hooks';
 export * from './assets';

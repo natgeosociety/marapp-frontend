@@ -24,7 +24,14 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
-import { AsyncSelect, ErrorMessages, Spinner, Input } from '@marapp/earth-shared';
+import {
+  AsyncSelect,
+  ErrorMessages,
+  Spinner,
+  Input,
+  alphaNumericDashesRule,
+  setupErrors,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
@@ -36,7 +43,6 @@ import { getAllLayers } from '@app/services/layers';
 import { addWidget, getWidgetSlug } from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenObjectForSelect } from '@app/utils';
-import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 interface IProps {
   path?: string;

@@ -28,7 +28,7 @@ import { encodeQueryToURL } from 'utils/query';
  */
 class UsersService {
   private dataFormatter: Jsona;
-  private api: AxiosInstance;
+  public api: AxiosInstance;
 
   constructor() {
     this.configure();
@@ -72,6 +72,10 @@ export function changeEmailConfirmation(options = {}) {
 export function fetchProfile(options = {}) {
   const profileQuery = encodeQueryToURL(`/users/profile`, options);
   return service.request(profileQuery);
+}
+
+export function updateProfile(options = {}) {
+  return service.api.put(`/users/profile`, options);
 }
 
 export default service;

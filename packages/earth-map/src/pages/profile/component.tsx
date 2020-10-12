@@ -1,10 +1,19 @@
 import { Auth0Context } from 'auth/auth0';
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'redux-first-router-link';
-import { fetchProfile } from 'services/users';
+import { fetchProfile, updateProfile } from 'services/users';
 import { APP_LOGO } from 'theme';
+import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
 
-import { InlineEditCard, Spinner, UserMenu, Input } from '@marapp/earth-shared';
+import { useForm } from 'react-hook-form';
+import {
+  InlineEditCard,
+  Spinner,
+  UserMenu,
+  Input,
+  setupErrors,
+  validEmailRule,
+} from '@marapp/earth-shared';
 
 interface IProps {
   page: string;
@@ -12,9 +21,18 @@ interface IProps {
 
 export function ProfileComponent(props: IProps) {
   const { page } = props;
+
+  const { getValues, register, formState, errors: formErrors } = useForm({
+    mode: 'onChange',
+  });
+
   const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
+  const [refreshProfile, setRefreshProfile] = useState(0);
+
+  const { touched } = formState;
+  const renderErrorFor = setupErrors(formErrors, touched);
 
   const userRoles = Object.keys(userData.roles);
 
@@ -30,7 +48,35 @@ export function ProfileComponent(props: IProps) {
 
       setIsLoading(false);
     })();
-  }, []);
+  }, [refreshProfile]);
+
+  async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
+    e.preventDefault();
+
+    const formData = getValues();
+
+    const { firstName, lastName } = formData;
+
+    const parsed = {
+      ...formData,
+      ...(firstName && { firstName: firstName }),
+      ...(lastName && { lastName: lastName }),
+    };
+
+    try {
+      setIsLoading && setIsLoading(true);
+
+      await updateProfile(parsed);
+
+      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(false);
+
+      setRefreshProfile(Math.random());
+    } catch (error) {
+      setIsLoading && setIsLoading(false);
+      setServerErrors && setServerErrors(error.data.errors);
+    }
+  }
 
   return isLoading ? (
     <Spinner size="large" />
@@ -43,7 +89,7 @@ export function ProfileComponent(props: IProps) {
             type: 'EARTH',
           }}
         >
-          <img src={APP_LOGO} className="ng-margin" />
+          <img src={APP_LOGO} className="ng-margin" alt="" />
         </Link>
       </div>
 
@@ -64,28 +110,42 @@ export function ProfileComponent(props: IProps) {
             <div className="ng-grid">
               <div className="ng-width-2-3 ng-push-1-6">
                 <InlineEditCard
-                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
-                    <>
-                      <div className="ng-margin-medium-bottom">
-                        <Input
-                          name="firstName"
-                          placeholder="First Name"
-                          label="First Name"
-                          defaultValue={''}
-                          className="ng-display-block marapp-qa-inputfirstname"
-                        />
-                      </div>
-                      <div className="ng-margin-medium-bottom">
-                        <Input
-                          name="lastName"
-                          placeholder="Last Name"
-                          label="Last Name"
-                          defaultValue={''}
-                          className="ng-display-block marapp-qa-inputlastname"
-                        />
-                      </div>
-                    </>
-                  )}
+                  {...(REACT_APP_EXTERNAL_IDP_URL && {
+                    render: ({ setIsEditing, setIsLoading, setServerErrors }) => (
+                      <>
+                        <div className="ng-margin-medium-bottom">
+                          <Input
+                            name="firstName"
+                            placeholder="First Name"
+                            label="First Name"
+                            defaultValue={''}
+                            error={renderErrorFor('firstName')}
+                            ref={register({
+                              minLength: 1,
+                              maxLength: 40,
+                            })}
+                            className="ng-display-block marapp-qa-inputfirstname"
+                          />
+                        </div>
+                        <div className="ng-margin-medium-bottom">
+                          <Input
+                            name="lastName"
+                            placeholder="Last Name"
+                            label="Last Name"
+                            defaultValue={''}
+                            error={renderErrorFor('lastName')}
+                            ref={register({
+                              minLength: 1,
+                              maxLength: 80,
+                            })}
+                            className="ng-display-block marapp-qa-inputlastname"
+                          />
+                        </div>
+                      </>
+                    ),
+                    validForm: true,
+                    onSubmit,
+                  })}
                 >
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
                     Name
@@ -101,9 +161,16 @@ export function ProfileComponent(props: IProps) {
                         <Input
                           name="email"
                           placeholder="Email"
-                          label="Email"
-                          defaultValue={''}
-                          className="ng-display-block marapp-qa-inputemail"
+                          label="Email*"
+                          className="marapp-qa-inputemail ng-display-block ng-margin-medium-bottom"
+                          defaultValue={userData.email}
+                          error={renderErrorFor('email')}
+                          ref={register({
+                            required: 'Please enter a valid email',
+                            validate: {
+                              validEmailRule: validEmailRule(),
+                            },
+                          })}
                         />
                       </div>
                       <div className="ng-margin-medium-bottom">

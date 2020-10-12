@@ -25,6 +25,8 @@ import {
   ErrorMessages,
   InlineEditCard,
   Input,
+  alphaNumericDashesRule,
+  setupErrors,
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
@@ -38,7 +40,6 @@ import { ContentLayout } from '@app/layouts';
 import { getAllWidgets, getDashboard, handleDashboardForm } from '@app/services';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { encodeQueryToURL, flattenArrayForSelect, formatDate } from '@app/utils';
-import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 const DASHBOARD_DETAIL_QUERY = {
   include: 'layers,widgets',

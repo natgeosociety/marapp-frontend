@@ -24,7 +24,14 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
-import { AsyncSelect, ErrorMessages, Spinner, Input } from '@marapp/earth-shared';
+import {
+  AsyncSelect,
+  ErrorMessages,
+  Spinner,
+  Input,
+  alphaNumericDashesRule,
+  setupErrors,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
@@ -35,7 +42,6 @@ import { ContentLayout } from '@app/layouts';
 import { addLayer, getAllLayers, getLayerSlug } from '@app/services/layers';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenArrayForSelect, flattenObjectForSelect } from '@app/utils';
-import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 
