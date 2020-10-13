@@ -1,7 +1,7 @@
 import { Auth0Context } from 'auth/auth0';
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'redux-first-router-link';
-import { fetchProfile, updateProfile, changeEmailRequest, cancelEmailChange } from 'services/users';
+import { fetchProfile, updateProfile, changeEmail, cancelEmailChange } from 'services/users';
 import { APP_LOGO } from 'theme';
 import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
 
@@ -31,7 +31,7 @@ export function ProfileComponent(props: IProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
   const [userProfile, setUserProfile] = useState({ firstName: '', lastName: '', name: '' });
-  const [pendingEmail, setPendingEmail] = useState('coco');
+  const [pendingEmail, setPendingEmail] = useState(null);
   const [serverErrors, setServerErrors] = useState();
   const { touched, isValid } = formState;
   const renderErrorFor = setupErrors(formErrors, touched);
@@ -48,8 +48,7 @@ export function ProfileComponent(props: IProps) {
       setUserProfile(profile.data);
       processUserName(profile.data);
 
-      console.log(profile);
-      // setPendingEmail(profile.data.pendingEmail);
+      profile.data?.pendingEmail && setPendingEmail(profile.data.pendingEmail);
 
       setIsLoading(false);
     })();
@@ -61,8 +60,7 @@ export function ProfileComponent(props: IProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      const res = await changeEmailRequest(formData);
-      console.log(res);
+      const res = await changeEmail(formData);
       // @ts-ignore
       setPendingEmail(res.data.pendingEmail);
       setIsEditing && setIsEditing(false);

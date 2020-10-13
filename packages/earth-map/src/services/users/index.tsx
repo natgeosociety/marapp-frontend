@@ -64,7 +64,7 @@ class UsersService {
 
 export const service = new UsersService();
 
-export function changeEmailRequest(options = {}) {
+export function changeEmail(options = {}) {
   return service.request({
     url: '/users/profile/change-email',
     method: 'post',
@@ -77,7 +77,7 @@ export function changeEmailConfirmation(options = {}) {
   return service.request({ url: emailQuery });
 }
 
-export function cancelEmailChangeRequest(options = {}) {
+export function cancelEmailChange(options = {}) {
   return service.request({
     url: 'users/profile/change-email',
     method: 'delete',
