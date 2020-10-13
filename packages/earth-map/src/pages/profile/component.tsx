@@ -59,6 +59,7 @@ export function ProfileComponent(props: IProps) {
       setIsLoading && setIsLoading(true);
 
       const result: any = await updateProfile(formData);
+      setUserProfile(result.data);
       processUserName(result.data);
 
       setIsEditing && setIsEditing(false);
