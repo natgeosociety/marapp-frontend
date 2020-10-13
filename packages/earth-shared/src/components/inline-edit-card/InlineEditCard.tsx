@@ -86,6 +86,8 @@ export default function InlineEditCard(props: InlineCardProps) {
     setServerErrors(false);
   };
 
+  console.log(serverErrors);
+
   const renderEditable = () => (
     <>
       {render(optionsBag)}

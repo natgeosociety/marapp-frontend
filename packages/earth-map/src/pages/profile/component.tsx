@@ -1,7 +1,7 @@
 import { Auth0Context } from 'auth/auth0';
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'redux-first-router-link';
-import { fetchProfile, updateProfile, changeEmailConfirmation } from 'services/users';
+import { fetchProfile, updateProfile, changeEmailRequest, cancelEmailChange } from 'services/users';
 import { APP_LOGO } from 'theme';
 import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
 
@@ -13,9 +13,9 @@ import {
   Input,
   setupErrors,
   validEmailRule,
+  ErrorMessages,
 } from '@marapp/earth-shared';
 
-import auth0 from 'config/auth0';
 interface IProps {
   page: string;
 }
@@ -31,7 +31,8 @@ export function ProfileComponent(props: IProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
   const [userProfile, setUserProfile] = useState({ firstName: '', lastName: '', name: '' });
-
+  const [pendingEmail, setPendingEmail] = useState('coco');
+  const [serverErrors, setServerErrors] = useState();
   const { touched, isValid } = formState;
   const renderErrorFor = setupErrors(formErrors, touched);
 
@@ -47,46 +48,55 @@ export function ProfileComponent(props: IProps) {
       setUserProfile(profile.data);
       processUserName(profile.data);
 
+      console.log(profile);
+      // setPendingEmail(profile.data.pendingEmail);
+
       setIsLoading(false);
     })();
   }, []);
 
-  const handleEmailChange = async (e) => {
+  async function onEmailChange(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
-
-    try {
-      await changeEmailConfirmation({ email: 'corina.cioloca@gmail.com' });
-      // console.log(response, 'hehe');
-    } catch (error) {
-      console.log(error);
-      setServerErrors && setServerErrors(error.errors[0]);
-    }
-
-    // if (response && response?.success) {
-    //   alert('Email change successful. Please login using the new credentials.');
-    //   // Auth0 sessions are reset when a user’s email or password changes;
-    //   // force a re-login if email change request successful;
-    //   //return login({appState: {targetUrl: '/'}}); // TODO: redirect to profile after successful change;
-    // } else {
-    //   alert('Could not change email address.');
-    // }
-  };
-
-  async function onSubmitName(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
-    e.preventDefault();
-
     const formData = getValues();
 
     try {
       setIsLoading && setIsLoading(true);
-
-      const result: any = await updateProfile(formData);
-      processUserName(result.data);
-
+      const res = await changeEmailRequest(formData);
+      console.log(res);
+      // @ts-ignore
+      setPendingEmail(res.data.pendingEmail);
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
     } catch (error) {
       setIsLoading && setIsLoading(false);
+      setServerErrors && setServerErrors(error.data?.errors);
+    }
+  }
+
+  async function onSubmitName(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
+    e.preventDefault();
+    const formData = getValues();
+
+    try {
+      setIsLoading && setIsLoading(true);
+      const result: any = await updateProfile(formData);
+      processUserName(result.data);
+      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(false);
+    } catch (error) {
+      setIsLoading && setIsLoading(false);
+      setServerErrors && setServerErrors(error.data?.errors);
+    }
+  }
+
+  async function onCancelEmailChange(e) {
+    e.preventDefault;
+    try {
+      setIsLoading(true);
+      await cancelEmailChange();
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
       setServerErrors && setServerErrors(error.data?.errors);
     }
   }
@@ -170,7 +180,7 @@ export function ProfileComponent(props: IProps) {
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard
-                  onSubmit={handleEmailChange}
+                  onSubmit={onEmailChange}
                   validForm={isValid}
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
@@ -202,10 +212,35 @@ export function ProfileComponent(props: IProps) {
                     </>
                   )}
                 >
-                  <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                    Email
-                  </h3>
-                  <p className="ng-margin-remove">{userData.email}</p>
+                  {!pendingEmail && (
+                    <>
+                      <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                        Email
+                      </h3>
+                      {pendingEmail}
+                      <p className="ng-margin-remove">{userData.email}</p>
+                    </>
+                  )}
+                  {pendingEmail && (
+                    <>
+                      <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                        Current email
+                      </h3>
+                      <p className="ng-margin-remove">{userData.email}</p>
+                      <br />
+                      <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                        New Email (Pending Confirmation)
+                        <button
+                          onClick={onCancelEmailChange}
+                          type="button"
+                          className="marapp-qa-actioncancelupdate ng-button ng-button-link ng-text-transform-remove ng-color-mdgray ng-margin-small-left"
+                        >
+                          cancel update
+                        </button>
+                      </h3>
+                      <p className="ng-margin-remove">{pendingEmail}</p>
+                    </>
+                  )}
                 </InlineEditCard>
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">

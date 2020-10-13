@@ -28,8 +28,8 @@ import { deserializeData } from 'utils';
  * Users service class.
  */
 class UsersService {
-  private dataFormatter: Jsona;
   public api: AxiosInstance;
+  private dataFormatter: Jsona;
 
   constructor() {
     this.configure();
@@ -64,12 +64,23 @@ class UsersService {
 
 export const service = new UsersService();
 
-export function changeEmailConfirmation(options = {}) {
-  const query = encodeQueryToURL(`/users/profile/change-email`, options);
+export function changeEmailRequest(options = {}) {
   return service.request({
-    url: query,
+    url: '/users/profile/change-email',
+    method: 'post',
     data: options,
-    method: 'get',
+  });
+}
+
+export function changeEmailConfirmation(options = {}) {
+  const emailQuery = encodeQueryToURL(`/users/profile/change-email`, options);
+  return service.request({ url: emailQuery });
+}
+
+export function cancelEmailChangeRequest(options = {}) {
+  return service.request({
+    url: 'users/profile/change-email',
+    method: 'delete',
   });
 }
 

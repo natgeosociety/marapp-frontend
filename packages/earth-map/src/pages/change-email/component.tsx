@@ -27,8 +27,6 @@ import { Spinner } from '@marapp/earth-shared';
 export default function ChangeEmailComponent() {
   const { login } = useAuth0();
 
-  console.log('aiisa');
-
   useEffect(() => {
     (async () => {
       try {
@@ -39,19 +37,18 @@ export default function ChangeEmailComponent() {
         const accessToken = params.get('access_token');
         const error = params.get('error');
         const error_description = params.get('error_description');
-        console.log('trying');
-        console.log(accessToken);
-        // if (accessToken) {
-        //   // const response: any = await changeEmailConfirmation({ accessToken });
-        //   if (response && response?.success) {
-        //     alert('Email change successful. Please login using the new credentials.');
-        //     // Auth0 sessions are reset when a user’s email or password changes;
-        //     // force a re-login if email change request successful;
-        //     return login({ appState: { targetUrl: '/' } }); // TODO: redirect to profile after successful change;
-        //   } else {
-        //     alert('Could not change email address.');
-        //   }
-        // }
+
+        if (accessToken) {
+          const response: any = await changeEmailConfirmation({ accessToken });
+          if (response && response?.success) {
+            alert('Email change successful. Please login using the new credentials.');
+            // Auth0 sessions are reset when a user’s email or password changes;
+            // force a re-login if email change request successful;
+            return login({ appState: { targetUrl: '/' } }); // TODO: redirect to profile after successful change;
+          } else {
+            alert('Could not change email address.');
+          }
+        }
         if (error || error_description) {
           console.error(error, error_description);
           alert(error_description);
