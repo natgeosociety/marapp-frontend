@@ -125,7 +125,7 @@ export function ProfileComponent(props: IProps) {
                       An email has been sent to {userData.email} with a link to reset your password.
                     </span>
                     <button
-                      className="ng-text-display-l ng-text-weight-thin ng-position-absolute ng-position-top-right ng-margin-right"
+                      className="ng-text-display-l ng-text-weight-thin ng-position-absolute ng-position-top-right ng-margin-right marapp-qa-resetpassword"
                       onClick={() =>
                         setResetPasswordState(RESET_PASSWORD_STATE.NOTIFICATION_DISMISS)
                       }
