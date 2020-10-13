@@ -90,11 +90,9 @@ export function ProfileComponent(props: IProps) {
   async function onCancelEmailChange(e) {
     e.preventDefault;
     try {
-      setIsLoading(true);
       await cancelEmailChange();
-      setIsLoading(false);
+      //todo update card
     } catch (error) {
-      setIsLoading(false);
       setServerErrors && setServerErrors(error.data?.errors);
     }
   }
