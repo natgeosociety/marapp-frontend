@@ -13,7 +13,6 @@ import {
   Input,
   setupErrors,
   validEmailRule,
-  ErrorMessages,
 } from '@marapp/earth-shared';
 
 interface IProps {
@@ -23,9 +22,11 @@ interface IProps {
 export function ProfileComponent(props: IProps) {
   const { page } = props;
 
-  const { getValues, register, formState, errors: formErrors } = useForm({
+  const { getValues, register, formState, watch, errors: formErrors } = useForm({
     mode: 'onChange',
   });
+
+  const watchEmail = watch('email');
 
   const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,9 +61,8 @@ export function ProfileComponent(props: IProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      const res = await changeEmail(formData);
-      // @ts-ignore
-      setPendingEmail(res.data.pendingEmail);
+      const result: any = await changeEmail(formData);
+      setPendingEmail(result.data.pendingEmail);
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
     } catch (error) {
@@ -90,8 +90,9 @@ export function ProfileComponent(props: IProps) {
   async function onCancelEmailChange(e) {
     e.preventDefault;
     try {
-      await cancelEmailChange();
-      //todo update card
+      const result: any = await cancelEmailChange();
+      setUserProfile(result.data);
+      setPendingEmail(null);
     } catch (error) {
       setServerErrors && setServerErrors(error.data?.errors);
     }
@@ -177,7 +178,7 @@ export function ProfileComponent(props: IProps) {
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard
                   onSubmit={onEmailChange}
-                  validForm={isValid}
+                  validForm={watchEmail && isValid}
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <div className="ng-margin-medium-bottom">
