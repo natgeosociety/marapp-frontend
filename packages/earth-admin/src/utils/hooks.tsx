@@ -21,26 +21,35 @@ import { groupBy } from 'lodash';
 import { noop } from 'lodash/fp';
 import { useSWRInfinite } from 'swr';
 
+import { generateCacheKey, RequestQuery } from '@app/services';
+
 /**
  * Custom hook that integrates useSWRInfinite with <DataListing /> component
- * @param getQuery Function responsible for returning the api url
- * @param fetcher Function queries the api
- * @param options
+ * @param getQueryFn: Function responsible for returning the request query
+ * @param fetcher: API service which fetches the data
+ * @param options:
  */
 export function useInfiniteList(
-  getQuery: (cursor: number | string) => string,
+  getQueryFn: (cursor: number | string) => { query: RequestQuery; resourceType: string },
   fetcher: (any) => Promise<any>,
   options: object = {}
 ) {
-  const wrappedQuery = (pageIndex: number, previousPageData: any): string => {
-    // reached the end
+  const wrappedQueryFn = (
+    pageIndex: number,
+    previousPageData: any
+  ): { query: RequestQuery; resourceType: string } => {
+    // reached the end;
     if (previousPageData && !previousPageData.data) {
       return null;
     }
     const cursor = pageIndex === 0 ? -1 : previousPageData.pagination.nextCursor;
 
-    return getQuery(cursor);
+    return getQueryFn(cursor);
   };
+
+  const {} = wrappedQueryFn();
+  const cacheKey = generateCacheKey(`dashboards/${page}`, query);
+
   const {
     data: response = [],
     error,
@@ -49,7 +58,7 @@ export function useInfiniteList(
     setSize,
     mutate,
     revalidate,
-  } = useSWRInfinite(wrappedQuery, fetcher, options);
+  } = useSWRInfinite(wrappedQueryFn, fetcher, options);
 
   const items = mergePages(response);
   const [firstPage = {}] = response;

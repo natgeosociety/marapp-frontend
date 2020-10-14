@@ -17,72 +17,49 @@
   specific language governing permissions and limitations under the License.
 */
 
-import axios, { AxiosRequestConfig } from 'axios';
+import { merge } from 'lodash/fp';
 
-import { GATSBY_API_URL } from '@app/config';
-import { deserializeData, encodeQueryToURL } from '@app/utils';
+import { BaseAPIService, RequestQuery } from './base/APIBase';
 
 interface ResponseSuccess {
   operationId?: string;
 }
 
-interface ResponseError {
-  errors: [
-    {
-      code: number;
-      title: string;
-      detail: string;
-    }
-  ];
+interface Error {
+  code: number;
+  title: string;
+  detail: string;
 }
 
-const MetricAPIService = {
-  request: (options: AxiosRequestConfig) => {
-    const instance = axios.create({
-      baseURL: GATSBY_API_URL,
-      timeout: 10000,
-      // @ts-ignore
-      transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
-        data: data.data ? deserializeData(data) : data,
-        pagination: data.meta ? data.meta.pagination : null,
-      })),
-    });
+interface ResponseError {
+  errors: Error[];
+}
 
-    return new Promise((resolve, reject) => {
-      instance
-        .request(options)
-        .then((res) => resolve(res.data))
-        .catch((error) => reject(error.response.data));
-    });
-  },
+const calculateAllForPlace = async (
+  placeId: string,
+  query?: RequestQuery
+): Promise<ResponseSuccess | ResponseError> => {
+  const params = { operationType: 'calculate' };
+  return BaseAPIService.request(`/metrics/${placeId}/action`, {
+    query: merge(params, query),
+    method: 'post',
+  });
 };
 
-export const calculateAllForPlace = async (
+const calculateForPlace = async (
   placeId: string,
-  selectedGroup: string
-): Promise<ResponseSuccess | ResponseError> =>
-  MetricAPIService.request({
-    url: encodeQueryToURL(`/metrics/${placeId}/action`, { group: selectedGroup }),
-    method: 'post',
-    params: {
-      operationType: 'calculate',
-    },
-  });
-
-export const calculateForPlace = async (
-  placeID: string,
   metricId: string,
-  selectedGroup: string
-): Promise<ResponseSuccess | ResponseError> =>
-  MetricAPIService.request({
-    url: encodeQueryToURL(`/metrics/${placeID}/${metricId}/action`, { group: selectedGroup }),
+  query?: RequestQuery
+): Promise<ResponseSuccess | ResponseError> => {
+  const params = { operationType: 'calculate' };
+  return BaseAPIService.request(`/metrics/${placeId}/${metricId}/action`, {
+    query: merge(params, query),
     method: 'post',
-    params: {
-      operationType: 'calculate',
-    },
   });
+};
 
-export const getAllMetrics = async (query: string) =>
-  MetricAPIService.request({
-    url: query,
-  });
+const getAllMetrics = async (query?: RequestQuery) => {
+  return BaseAPIService.request('/metrics', { query });
+};
+
+export default { calculateAllForPlace, calculateForPlace, getAllMetrics };

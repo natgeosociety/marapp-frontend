@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 /**
  * Noop response interceptor.
  */
-export const successHandler = (config?: any) => {
+export const resSuccessInterceptor = (config?: any) => {
   return async (response: AxiosResponse): Promise<any> => {
     return response;
   };
@@ -16,7 +16,7 @@ export const successHandler = (config?: any) => {
  * due to an expired token.
  * It then forces a token refresh and updates the Authorization header globally.
  */
-export const errorHandler = (config: { authClient: Auth0Client }) => {
+export const resErrorInterceptor = (config: { authClient: Auth0Client }) => {
   return async (error: any): Promise<any> => {
     const request = error.config;
 

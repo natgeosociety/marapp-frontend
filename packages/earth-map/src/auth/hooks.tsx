@@ -19,10 +19,13 @@
 
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import axios from 'axios';
-import { errorHandler, successHandler } from 'services/interceptors/response';
 import { routeToPage } from 'utils';
 
-import { noopInterceptor } from '../services/interceptors/request';
+import {
+  reqNoopInterceptor,
+  resErrorInterceptor,
+  resSuccessInterceptor,
+} from '@marapp/earth-shared';
 
 /**
  * Routes the user to the right place after login.
@@ -43,11 +46,13 @@ export const onSuccessHook = (params: { accessToken?: string; authClient?: Auth0
   if (params.accessToken) {
     axios.defaults.headers.common.Authorization = `Bearer ${params.accessToken}`;
   }
-  axios.interceptors.request.use(noopInterceptor());
-  axios.interceptors.response.use(
-    successHandler(),
-    errorHandler({ authClient: params.authClient })
-  );
+  if (params.authClient) {
+    axios.interceptors.request.use(reqNoopInterceptor());
+    axios.interceptors.response.use(
+      resSuccessInterceptor(),
+      resErrorInterceptor({ authClient: params.authClient })
+    );
+  }
 };
 
 /**

@@ -17,73 +17,63 @@
   specific language governing permissions and limitations under the License.
 */
 
-import axios, { AxiosRequestConfig } from 'axios';
+import { merge } from 'lodash/fp';
 
-import { GATSBY_API_URL } from '@app/config';
+import { BaseAPIService, RequestQuery } from './base/APIBase';
 
-import { deserializeData, encodeQueryToURL } from '../utils';
-
-const PlacesAPIService = {
-  request: (options: AxiosRequestConfig) => {
-    const instance = axios.create({
-      baseURL: GATSBY_API_URL,
-      timeout: 100000,
-      // @ts-ignore
-      transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
-        data: data.data ? deserializeData(data) : data,
-        pagination: data.meta ? data.meta.pagination : null,
-        filters: data.meta ? data.meta.filters : null,
-        total: data.meta ? data.meta.results : null,
-      })),
-    });
-
-    return new Promise((resolve, reject) => {
-      instance
-        .request(options)
-        .then((res) => resolve(res.data))
-        .catch((error) => {
-          reject(error.response?.data);
-        });
-    });
-  },
+const getAllPlaces = async (query?: RequestQuery) => {
+  return BaseAPIService.request('/locations', { query });
 };
 
-export const getAllPlaces = async (placeQuery: string) =>
-  PlacesAPIService.request({
-    url: placeQuery,
-  });
-
-export const addPlace = async (request, group: string) =>
-  PlacesAPIService.request({
-    url: encodeQueryToURL('/locations', { group }),
+const addPlace = async (data: any, query?: RequestQuery) => {
+  return BaseAPIService.request('/locations', {
+    query,
     method: 'post',
-    data: request,
+    data,
   });
-
-export const getPlace = (placeQuery: string) =>
-  PlacesAPIService.request({
-    url: placeQuery,
-    method: 'get',
-  });
-
-export const updatePlace = async (placeID: string, place, group: string) =>
-  PlacesAPIService.request({
-    url: encodeQueryToURL(`/locations/${placeID}`, { group }),
-    method: 'put',
-    data: place,
-  });
-
-export const deletePlace = async (placeID: string, group: string) =>
-  PlacesAPIService.request({
-    url: encodeQueryToURL(`/locations/${placeID}`, { group }),
-    method: 'delete',
-  });
-
-export const handlePlaceForm = async (newPlace: boolean, place, placeID: string, group: string) => {
-  newPlace ? await addPlace(place, group) : await updatePlace(placeID, place, group);
 };
 
-export const getPlaceSlug = async (keyword: string, group: string, type: string = 'counter') =>
-  PlacesAPIService.request({
-    url: encodeQueryToURL('/locations/slug', { keyword, group, type }),
+const getPlace = (placeId: string, query?: RequestQuery) => {
+  return BaseAPIService.request(`/locations/${placeId}`, {
+    query,
   });
+};
+
+const updatePlace = async (placeId: string, data: any, query?: RequestQuery) => {
+  return BaseAPIService.request(`/locations/${placeId}`, {
+    method: 'put',
+    data,
+    query,
+  });
+};
+
+const deletePlace = async (placeId: string, query?: RequestQuery) => {
+  return BaseAPIService.request(`/locations/${placeId}`, {
+    method: 'delete',
+    query,
+  });
+};
+
+const getPlaceSlug = async (keyword: string, query?: RequestQuery) => {
+  const params = { keyword, type: 'counter' };
+  return BaseAPIService.request('/locations/slug', { query: merge(params, query) });
+};
+
+const handlePlaceForm = async (
+  newPlace: boolean,
+  data: any,
+  placeId: string,
+  query?: RequestQuery
+) => {
+  return newPlace ? addPlace(data, query) : updatePlace(placeId, data, query);
+};
+
+export default {
+  getAllPlaces,
+  addPlace,
+  getPlace,
+  updatePlace,
+  deletePlace,
+  handlePlaceForm,
+  getPlaceSlug,
+};

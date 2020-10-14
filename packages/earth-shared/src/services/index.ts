@@ -19,3 +19,4 @@
 
 export { default as SessionStorage } from './SessionStorage';
 export * from './SessionStorage';
+export * from './interceptors';
