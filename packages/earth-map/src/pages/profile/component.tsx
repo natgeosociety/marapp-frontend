@@ -341,6 +341,7 @@ export function ProfileComponent(props: IProps) {
                     )}
                     validForm={Object.keys(markedOrgsForLeave).length > 0}
                     onSubmit={onSubmitOrgLeave}
+                    onCancel={() => setMarkedOrgsForLeave({})}
                   >
                     <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
                       Organizations
