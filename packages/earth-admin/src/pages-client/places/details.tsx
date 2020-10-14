@@ -47,7 +47,7 @@ import { calculateAllForPlace, getPlace, handlePlaceForm } from '@app/services';
 import { encodeQueryToURL, formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
 import { MapComponentContext } from '@app/utils/contexts';
 
-import { PLACE_DETAIL_QUERY, PlaceIntersection, IPlace } from './model';
+import { IPlace, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
 
 interface IProps {
   path: string;

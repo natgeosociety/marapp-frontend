@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { groupBy } from 'lodash';
 import { noop } from 'lodash/fp';
 import { useSWRInfinite } from 'swr';
-import { groupBy } from 'lodash';
 
 /**
  * Custom hook that integrates useSWRInfinite with <DataListing /> component

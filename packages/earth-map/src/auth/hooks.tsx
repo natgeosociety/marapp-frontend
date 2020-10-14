@@ -17,8 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { Auth0Client } from '@auth0/auth0-spa-js';
 import axios from 'axios';
+import { errorHandler, successHandler } from 'services/interceptors/response';
 import { routeToPage } from 'utils';
+
+import { noopInterceptor } from '../services/interceptors/request';
 
 /**
  * Routes the user to the right place after login.
@@ -35,11 +39,15 @@ export const onRedirectCallback = (params: { targetUrl?: string } = {}) => {
  * Configure behaviour in case of successful login.
  * @param params
  */
-export const onSuccessHook = (params: { token?: string } = {}) => {
-  const { token } = params;
-  if (token) {
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+export const onSuccessHook = (params: { accessToken?: string; authClient?: Auth0Client } = {}) => {
+  if (params.accessToken) {
+    axios.defaults.headers.common.Authorization = `Bearer ${params.accessToken}`;
   }
+  axios.interceptors.request.use(noopInterceptor());
+  axios.interceptors.response.use(
+    successHandler(),
+    errorHandler({ authClient: params.authClient })
+  );
 };
 
 /**

@@ -18,10 +18,10 @@
 */
 
 import { navigate } from 'gatsby';
+import { capitalize } from 'lodash';
 import moment from 'moment';
 import queryStringEncode from 'query-string-encode';
 import { RefObject } from 'react';
-import { capitalize } from 'lodash';
 
 import { ADMIN_PAGES } from '@app/components/sidebar-select/model';
 import { BASE_URL } from '@app/config';

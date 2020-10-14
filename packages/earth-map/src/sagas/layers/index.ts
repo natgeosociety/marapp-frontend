@@ -39,8 +39,8 @@ import { setWidgets, setWidgetsError, setWidgetsLoading } from 'modules/widgets/
 import { replace } from 'redux-first-router';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { flattenLayerConfig, getGroup, getLayers, onlyMatch } from 'sagas/saga-utils';
-import { fetchDataIndexes } from 'services/data-indexes';
-import { fetchLayers } from 'services/layers';
+import DashboardsService from 'services/DashboardsService';
+import LayersService from 'services/LayersService';
 
 import { serializeFilters } from '@marapp/earth-shared';
 
@@ -71,7 +71,7 @@ function* loadActiveLayers({ payload }) {
     }),
     group: group.join(','),
   };
-  const { data: layers } = yield call(fetchLayers, options);
+  const { data: layers } = yield call(LayersService.fetchLayers, options);
   const decoratedLayers: ILayer[] = layers.map(flattenLayerConfig);
 
   yield put(setListActiveLayers(decoratedLayers));
@@ -114,7 +114,7 @@ export function* nextPage({ payload }) {
     ...(pageSize && { page: { size: pageSize } }),
     group: group.toString(),
   };
-  const page = yield call(fetchLayers, options);
+  const page = yield call(LayersService.fetchLayers, options);
   const { data: results, meta } = page;
 
   yield put(
@@ -132,7 +132,7 @@ export function* loadDataIndexes({ payload }) {
   const group = yield select(getGroup);
 
   try {
-    const indexes: IIndex[] = yield call(fetchDataIndexes, {
+    const indexes: IIndex[] = yield call(DashboardsService.fetchDashboards, {
       ...DATA_INDEX_QUERY,
       ...{ group: group.toString() },
     });

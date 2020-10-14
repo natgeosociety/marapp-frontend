@@ -17,23 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import { Auth0Provider } from './src/auth/auth0';
-import config from './src/auth/config';
-import { onRedirectCallback, onSuccessHook, onFailureHook } from './src/auth/hooks';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
-export const wrapRootElement = ({ element }) => (
-  <Auth0Provider
-    domain={`${config.auth0.domain}`}
-    client_id={`${config.auth0.clientId}`}
-    redirect_uri={`${config.auth0.redirectUri}`}
-    audience={config.auth0.audience}
-    onRedirectCallback={onRedirectCallback}
-    onSuccessHook={onSuccessHook}
-    onFailureHook={onFailureHook}
-    useRefreshTokens={true}
-    cacheLocation={'memory'}
-  >
-    {element}
-  </Auth0Provider>
-);
+const fetchProfile = async (query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request('/users/profile', { query }, metaDeserializer);
+};
+
+const updateProfile = async (data: any, query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request('/users/profile', { query, method: 'put', data }, metaDeserializer);
+};
+
+const changeEmailConfirmation = async (query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request('/users/profile/change-email', { query }, metaDeserializer);
+};
+
+export default { fetchProfile, updateProfile, changeEmailConfirmation };

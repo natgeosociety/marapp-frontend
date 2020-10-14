@@ -1,17 +1,17 @@
 import { Auth0Context } from 'auth/auth0';
-import React, { useContext, useEffect, useState } from 'react';
-import Link from 'redux-first-router-link';
-import { fetchProfile, updateProfile } from 'services/users';
-import { APP_LOGO } from 'theme';
 import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
-
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Link from 'redux-first-router-link';
+import ProfileService from 'services/ProfileService';
+import { APP_LOGO } from 'theme';
+
 import {
   InlineEditCard,
-  Spinner,
-  UserMenu,
   Input,
   setupErrors,
+  Spinner,
+  UserMenu,
   validEmailRule,
 } from '@marapp/earth-shared';
 
@@ -42,9 +42,9 @@ export function ProfileComponent(props: IProps) {
 
   useEffect(() => {
     (async () => {
-      const profile: any = await fetchProfile();
-      setUserProfile(profile.data);
-      processUserName(profile.data);
+      const response = await ProfileService.fetchProfile();
+      setUserProfile(response.data);
+      processUserName(response.data);
 
       setIsLoading(false);
     })();
@@ -54,12 +54,12 @@ export function ProfileComponent(props: IProps) {
     e.preventDefault();
 
     const formData = getValues();
-
     try {
       setIsLoading && setIsLoading(true);
 
-      const result: any = await updateProfile(formData);
-      processUserName(result.data);
+      const response = await ProfileService.updateProfile(formData);
+      setUserProfile(response.data);
+      processUserName(response.data);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
