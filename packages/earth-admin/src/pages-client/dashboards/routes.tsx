@@ -23,8 +23,9 @@ import React, { useState } from 'react';
 import { useAuth0 } from '@app/auth/auth0';
 import { DataListing, DefaultListItem } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
-import { getAllDashboards } from '@app/services';
-import { encodeQueryToURL, setPage } from '@app/utils';
+import { RequestQuery } from '@app/services';
+import DashboardsService from '@app/services/dashboards';
+import { setPage } from '@app/utils';
 import { useInfiniteList } from '@app/utils/hooks';
 
 import { DashboardDetail } from './details';
@@ -38,7 +39,7 @@ export default function DashboardsPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
 
-  const getQuery = (cursor) => {
+  const getQueryFn = (cursor: string | number): { query: RequestQuery; resourceType: string } => {
     const query = {
       search: searchValue,
       sort: 'name',
@@ -46,9 +47,9 @@ export default function DashboardsPage(props) {
       select: 'name,slug',
       group: selectedGroup,
     };
-    return encodeQueryToURL('dashboards', query);
+    return { query, resourceType: 'dashboards' };
   };
-  const { listProps, mutate } = useInfiniteList(getQuery, getAllDashboards);
+  const { listProps, mutate } = useInfiniteList(getQueryFn, DashboardsService.getAllDashboards);
 
   // Matches everything after the resource name in the url.
   // In our case that's /resource-id or /new

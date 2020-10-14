@@ -23,8 +23,9 @@ import React, { useState } from 'react';
 import { useAuth0 } from '@app/auth/auth0';
 import { DataListing, DefaultListItem } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
-import { getAllPlaces } from '@app/services/places';
-import { encodeQueryToURL, setPage } from '@app/utils';
+import { RequestQuery } from '@app/services';
+import PlacesService from '@app/services/places';
+import { setPage } from '@app/utils';
 import { useInfiniteList } from '@app/utils/hooks';
 
 import { PlaceDetail } from './details';
@@ -38,7 +39,7 @@ export default function PlacesPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
 
-  const getQuery = (cursor) => {
+  const getQueryFn = (cursor: string | number): { query: RequestQuery; resourceType: string } => {
     const query = {
       search: searchValue,
       sort: 'name',
@@ -46,9 +47,10 @@ export default function PlacesPage(props) {
       select: 'name,slug',
       group: selectedGroup,
     };
-    return encodeQueryToURL('locations', query);
+    return { query, resourceType: 'locations' };
   };
-  const { listProps, filters, mutate } = useInfiniteList(getQuery, getAllPlaces);
+
+  const { listProps, filters, mutate } = useInfiniteList(getQueryFn, PlacesService.getAllPlaces);
 
   // Matches everything after the resource name in the url.
   // In our case that's /resource-id or /new

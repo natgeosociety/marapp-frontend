@@ -22,7 +22,7 @@ import useSWR from 'swr';
 
 import { Card } from '@app/components/card';
 import { ContentLayout, SidebarLayout } from '@app/layouts';
-import { getOrganizationStats } from '@app/services/organizations';
+import OrganizationsService from '@app/services/organizations';
 import { encodeQueryToURL, setPage } from '@app/utils';
 
 import './styles.scss';

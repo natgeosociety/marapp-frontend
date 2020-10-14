@@ -23,8 +23,9 @@ import React, { useState } from 'react';
 import { useAuth0 } from '@app/auth/auth0';
 import { DataListing, DefaultListItem } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
-import { getAllWidgets } from '@app/services';
-import { encodeQueryToURL, setPage } from '@app/utils';
+import { RequestQuery } from '@app/services';
+import WidgetsService from '@app/services/widgets';
+import { setPage } from '@app/utils';
 import { useInfiniteList } from '@app/utils/hooks';
 
 import { WidgetsDetail } from './details';
@@ -37,8 +38,8 @@ const PAGE_SIZE = 20;
 export default function DashboardsPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
-
-  const getQuery = (cursor) => {
+  earth - admin / src / services / base;
+  const getQueryFn = (cursor: string | number): { query: RequestQuery; resourceType: string } => {
     const query = {
       search: searchValue,
       sort: 'name',
@@ -46,9 +47,10 @@ export default function DashboardsPage(props) {
       select: 'name,slug',
       group: selectedGroup,
     };
-    return encodeQueryToURL('widgets', query);
+    return { query, resourceType: 'widgets' };
   };
-  const { listProps, filters, mutate } = useInfiniteList(getQuery, getAllWidgets);
+
+  const { listProps, filters, mutate } = useInfiniteList(getQueryFn, WidgetsService.getAllWidgets);
 
   // Matches everything after the resource name in the url.
   // In our case that's /resource-id or /new

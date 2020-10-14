@@ -23,8 +23,9 @@ import React from 'react';
 import { useAuth0 } from '@app/auth/auth0';
 import { DataListing, DefaultListItem } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
-import { getAllOrganizations } from '@app/services/organizations';
-import { encodeQueryToURL, setPage } from '@app/utils';
+import { RequestQuery } from '@app/services';
+import OrganizationsService from '@app/services/organizations';
+import { setPage } from '@app/utils';
 import { useInfiniteListPaged } from '@app/utils/hooks';
 
 import { OrganizationDetails } from './details';
@@ -37,15 +38,19 @@ const PAGE_TYPE = setPage('Organizations');
 export default function PlacesPage(props) {
   const { selectedGroup } = useAuth0();
 
-  const getQuery = (pageIndex) => {
+  const getQueryFn = (pageIndex: number): { query: RequestQuery; resourceType: string } => {
     const query = {
       page: { size: PAGE_SIZE, number: pageIndex },
       select: 'name,slug',
       group: selectedGroup,
     };
-    return encodeQueryToURL('organizations', query);
+    return { query, resourceType: 'organizations' };
   };
-  const { listProps, mutate } = useInfiniteListPaged(getQuery, getAllOrganizations);
+
+  const { listProps, mutate } = useInfiniteListPaged(
+    getQueryFn,
+    OrganizationsService.getAllOrganizations
+  );
 
   // Matches everything after the resource name in the url.
   // In our case that's /resource-id or /new

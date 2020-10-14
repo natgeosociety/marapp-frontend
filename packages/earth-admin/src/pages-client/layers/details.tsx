@@ -17,6 +17,7 @@ import Collapse from '@kunukn/react-collapse';
 import classnames from 'classnames';
 import { JSHINT } from 'jshint';
 import { noop } from 'lodash';
+import { merge } from 'lodash/fp';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, ErrorMessage, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
@@ -42,11 +43,11 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
-import { getAllLayers, getLayer, handleLayerForm } from '@app/services/layers';
+import { generateCacheKey } from '@app/services';
+import LayersService from '@app/services/layers';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import {
   copyToClipboard,
-  encodeQueryToURL,
   flattenArrayForSelect,
   flattenObjectForSelect,
   formatDate,
@@ -67,13 +68,11 @@ export function LayerDetail(props: any) {
     provider: layerProviderOptions = [],
   } = dynamicOptions;
 
-  const encodedQuery = encodeQueryToURL(`layers/${page}`, {
-    ...LAYER_DETAIL_QUERY,
-    ...{ group: selectedGroup },
-  });
+  const query = merge(LAYER_DETAIL_QUERY, { group: selectedGroup });
+  const cacheKey = generateCacheKey(`layers/${page}`, query);
 
-  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
-    getLayer(url).then((res: any) => res.data)
+  const { data, error, mutate } = useSWR(cacheKey, () =>
+    LayersService.getLayer(page, query).then((res: any) => res.data)
   );
 
   const [layer, setLayer] = useState<ILayer>({});
@@ -141,7 +140,7 @@ export function LayerDetail(props: any) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await handleLayerForm(false, parsed, id, selectedGroup);
+      await LayersService.handleLayerForm(false, parsed, id, { group: selectedGroup });
       mutate();
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
@@ -485,7 +484,7 @@ export function LayerDetail(props: any) {
                           control={control}
                           getOptionLabel={(option) => option.name}
                           getOptionValue={(option) => option.id}
-                          loadFunction={getAllLayers}
+                          loadFunction={LayersService.getAllLayers}
                           defaultValue={references}
                           selectedGroup={selectedGroup}
                           as={AsyncSelect}

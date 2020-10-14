@@ -34,21 +34,15 @@ export function useInfiniteList(
   fetcher: (any) => Promise<any>,
   options: object = {}
 ) {
-  const wrappedQueryFn = (
-    pageIndex: number,
-    previousPageData: any
-  ): { query: RequestQuery; resourceType: string } => {
-    // reached the end;
-    if (previousPageData && !previousPageData.data) {
-      return null;
+  const swrKeyLoader = (pageIndex: number, previousPage: any): string => {
+    if (previousPage && !previousPage.data) {
+      return null; // reached the end;
     }
-    const cursor = pageIndex === 0 ? -1 : previousPageData.pagination.nextCursor;
+    const cursor = pageIndex === 0 ? -1 : previousPage.pagination.nextCursor;
 
-    return getQueryFn(cursor);
+    const { query, resourceType } = getQueryFn(cursor);
+    return generateCacheKey(`${resourceType}/${pageIndex}`, query);
   };
-
-  const {} = wrappedQueryFn();
-  const cacheKey = generateCacheKey(`dashboards/${page}`, query);
 
   const {
     data: response = [],
@@ -58,7 +52,7 @@ export function useInfiniteList(
     setSize,
     mutate,
     revalidate,
-  } = useSWRInfinite(wrappedQueryFn, fetcher, options);
+  } = useSWRInfinite(swrKeyLoader, fetcher, options);
 
   const items = mergePages(response);
   const [firstPage = {}] = response;
@@ -94,14 +88,16 @@ export function useInfiniteList(
 }
 
 export function useInfiniteListPaged(
-  getQuery: (pageIndex: number) => string,
+  getQueryFn: (pageIndex: number) => { query: RequestQuery; resourceType: string },
   fetcher: (any) => Promise<any>,
   options: object = {}
 ) {
-  const wrappedQuery = (pageIndex: number): string => {
+  const swrKeyLoader = (pageIndex: number): string => {
     const offsetPageIndex = pageIndex + 1;
-    return getQuery(offsetPageIndex);
+    const { query, resourceType } = getQueryFn(offsetPageIndex);
+    return generateCacheKey(`${resourceType}/${pageIndex}`, query);
   };
+
   const {
     data: response = [],
     error,
@@ -110,7 +106,7 @@ export function useInfiniteListPaged(
     setSize,
     mutate,
     revalidate,
-  } = useSWRInfinite(wrappedQuery, fetcher, options);
+  } = useSWRInfinite(swrKeyLoader, fetcher, options);
 
   const items = mergePages(response);
   const isNoMore = items.data.length >= items.total;

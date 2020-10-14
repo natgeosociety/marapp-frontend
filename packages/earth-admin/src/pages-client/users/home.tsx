@@ -29,12 +29,10 @@ import { AuthzGuards, ErrorMessages, Spinner, validEmail } from '@marapp/earth-s
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
 import { ContentLayout } from '@app/layouts';
-import { getAvailableGroups } from '@app/services';
-import { addUsers, getAllUsers } from '@app/services/users';
+import UsersService from '@app/services/users';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { encodeQueryToURL, normalizeGroupName } from '@app/utils';
 import { useInfiniteListPaged } from '@app/utils/hooks';
-
-import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 
 const PAGE_SIZE = 10;
 
@@ -70,8 +68,8 @@ export function UsersHome(props: any) {
     }
 
     (async () => {
-      const groupsResponse: any = await getAvailableGroups(selectedGroup);
-      const groups = groupsResponse.data.map((item) => ({
+      const { data } = await UsersService.getAvailableGroups({ group: selectedGroup });
+      const groups = data.map((item) => ({
         label: normalizeGroupName(item.name),
         value: item.id,
       }));
@@ -167,15 +165,13 @@ export function UsersHome(props: any) {
     };
 
     try {
-      const result: any = await addUsers(
-        {
-          emails: users.map((user) => user.value),
-          groups: [role?.value],
-        },
-        selectedGroup
-      );
+      const data = {
+        emails: users.map((user) => user.value),
+        groups: [role?.value],
+      };
+      const response = await UsersService.addUsers(data, { group: selectedGroup });
 
-      processUsersFeedback(result.data, true);
+      processUsersFeedback(response.data, true);
 
       mutate();
     } catch (err) {
