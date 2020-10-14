@@ -116,7 +116,7 @@ export function ProfileComponent(props: IProps) {
   }
 
   async function onCancelEmailChange(e) {
-    e.preventDefault;
+    e.preventDefault();
 
     try {
       const result: any = await cancelEmailChange();
