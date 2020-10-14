@@ -106,6 +106,7 @@ export function ProfileComponent(props: IProps) {
       <UserMenu
         selected={page}
         isAuthenticated={isAuthenticated}
+        profileLink={<Link to={{ type: 'PROFILE' }}>Profile</Link>}
         onLogin={login}
         onLogout={logout}
         onSignUp={() => login({ initialScreen: 'signUp' })}
