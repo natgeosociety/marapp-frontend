@@ -54,12 +54,12 @@ export function ProfileComponent(props: IProps) {
     setUserName(firstName && lastName ? `${firstName} ${lastName}` : name);
   };
 
-  const processUserGroups = (groups) => {
+  const groupRolesByOrganization = (groups) => {
     const result = groups.reduce((acc, c) => {
       const groupTokens = c.name.split('-');
 
-      const groupName = groupTokens.slice(0, groupTokens.length - 1).join('-');
-      const groupRole = capitalize(groupTokens[groupTokens.length - 1]);
+      const groupRole = capitalize(groupTokens.pop());
+      const groupName = groupTokens.join('-');
 
       acc[groupName] = acc[groupName] || [];
       acc[groupName].push(groupRole);
@@ -76,7 +76,7 @@ export function ProfileComponent(props: IProps) {
 
       setUserProfile(profile.data);
       processUserName(profile.data);
-      processUserGroups(profile.data.groups);
+      groupRolesByOrganization(profile.data.groups);
 
       setIsLoading(false);
     })();
