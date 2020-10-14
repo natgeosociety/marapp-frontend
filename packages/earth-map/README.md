@@ -564,7 +564,7 @@ $marapp-primary-font: 'Primary font';
 $marapp-secondary-font: 'Secondary font';
 $marapp-icon-font: 'icon-font';
 
-$marapp-color-sucess: #hex;
+$marapp-color-success: #hex;
 $marapp-color-error: #hex;
 
 $marapp-primary-color: #hex;

@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Layer } from '../layers/model';
+import { ILayer } from '../layers/model';
 import { Widget } from '../widgets/model';
 
 export interface Dashboard {
@@ -26,7 +26,7 @@ export interface Dashboard {
   name: string;
   description: string;
   published: boolean;
-  layers?: string[] | Layer[];
+  layers?: string[] | ILayer[];
   widgets?: string[] | Widget[];
 }
 
