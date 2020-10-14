@@ -20,12 +20,12 @@ import renderHTML from 'react-render-html';
 import useSWR from 'swr';
 
 import {
+  alphaNumericDashesRule,
   AsyncSelect,
   AuthzGuards,
   ErrorMessages,
   InlineEditCard,
   Input,
-  alphaNumericDashesRule,
   setupErrors,
 } from '@marapp/earth-shared';
 

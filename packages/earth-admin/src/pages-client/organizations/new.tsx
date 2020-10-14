@@ -24,9 +24,9 @@ import { useForm } from 'react-hook-form';
 
 import {
   ErrorMessages,
-  Spinner,
   Input,
   setupErrors,
+  Spinner,
   upperNumericDashesRule,
   validEmailRule,
 } from '@marapp/earth-shared';

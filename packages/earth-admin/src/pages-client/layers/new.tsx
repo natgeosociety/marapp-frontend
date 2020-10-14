@@ -25,12 +25,12 @@ import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
 import {
+  alphaNumericDashesRule,
   AsyncSelect,
   ErrorMessages,
-  Spinner,
   Input,
-  alphaNumericDashesRule,
   setupErrors,
+  Spinner,
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';

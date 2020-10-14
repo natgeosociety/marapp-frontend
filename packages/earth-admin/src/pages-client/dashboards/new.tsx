@@ -23,12 +23,12 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import {
+  alphaNumericDashesRule,
   AsyncSelect,
   ErrorMessages,
-  Spinner,
   Input,
-  alphaNumericDashesRule,
   setupErrors,
+  Spinner,
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';

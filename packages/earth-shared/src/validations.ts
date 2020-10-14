@@ -43,6 +43,13 @@ const noSpecialCharsOrSpace = (value: string): boolean => {
 };
 
 /**
+ * Return true if input value is different than prev value
+ * @param value
+ * @param previousValue
+ */
+const valueChanged = (value: string, previousValue: string): boolean => value !== previousValue;
+
+/**
  * Return true if email is not valid format
  */
 export const validEmail = (email: string): boolean => {
@@ -82,6 +89,12 @@ export const alphaNumericDashesRule = (
 export const noSpecialCharsOrSpaceRule = (
   errorMessage: string = 'Special characters or space are not allowed'
 ) => compose(maybeShowError(errorMessage), noSpecialCharsOrSpace);
+
+export const valueChangedRule = (
+  value,
+  previousValue,
+  errorMessage: string = 'Please enter a different email'
+) => compose(maybeShowError(errorMessage), valueChanged)(value, previousValue);
 
 export const setupErrors = (errors, touched) => (field: string): string => {
   const fieldErr: any = errors[field];

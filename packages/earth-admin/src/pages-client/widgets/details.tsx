@@ -24,12 +24,12 @@ import Select from 'react-select';
 import useSWR from 'swr';
 
 import {
+  alphaNumericDashesRule,
   AsyncSelect,
   AuthzGuards,
   ErrorMessages,
   InlineEditCard,
   Input,
-  alphaNumericDashesRule,
   setupErrors,
 } from '@marapp/earth-shared';
 

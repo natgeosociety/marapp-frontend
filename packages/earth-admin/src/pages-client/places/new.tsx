@@ -22,7 +22,7 @@ import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { ErrorMessages, Spinner, Input, setupErrors } from '@marapp/earth-shared';
+import { ErrorMessages, Input, setupErrors, Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';

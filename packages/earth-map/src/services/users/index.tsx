@@ -21,8 +21,8 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { setup } from 'axios-cache-adapter';
 import { API_URL } from 'config';
 import Jsona, { SwitchCaseJsonMapper, SwitchCaseModelMapper } from 'jsona';
-import { encodeQueryToURL } from 'utils/query';
 import { deserializeData } from 'utils';
+import { encodeQueryToURL } from 'utils/query';
 
 /**
  * Users service class.

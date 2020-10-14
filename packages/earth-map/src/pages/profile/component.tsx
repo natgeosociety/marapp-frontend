@@ -1,18 +1,19 @@
 import { Auth0Context } from 'auth/auth0';
-import React, { useContext, useEffect, useState } from 'react';
-import Link from 'redux-first-router-link';
-import { fetchProfile, updateProfile, changeEmail, cancelEmailChange } from 'services/users';
-import { APP_LOGO } from 'theme';
 import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
-
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Link from 'redux-first-router-link';
+import { cancelEmailChange, changeEmail, fetchProfile, updateProfile } from 'services/users';
+import { APP_LOGO } from 'theme';
+
 import {
   InlineEditCard,
-  Spinner,
-  UserMenu,
   Input,
   setupErrors,
+  Spinner,
+  UserMenu,
   validEmailRule,
+  valueChangedRule,
 } from '@marapp/earth-shared';
 
 interface IProps {
@@ -22,11 +23,9 @@ interface IProps {
 export function ProfileComponent(props: IProps) {
   const { page } = props;
 
-  const { getValues, register, formState, watch, errors: formErrors } = useForm({
+  const { getValues, register, formState, errors: formErrors } = useForm({
     mode: 'onChange',
   });
-
-  const watchEmail = watch('email');
 
   const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
@@ -89,6 +88,7 @@ export function ProfileComponent(props: IProps) {
 
   async function onCancelEmailChange(e) {
     e.preventDefault;
+
     try {
       const result: any = await cancelEmailChange();
       setUserProfile(result.data);
@@ -178,7 +178,7 @@ export function ProfileComponent(props: IProps) {
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard
                   onSubmit={onEmailChange}
-                  validForm={watchEmail && isValid}
+                  validForm={isValid}
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <div className="ng-margin-medium-bottom">
@@ -192,6 +192,7 @@ export function ProfileComponent(props: IProps) {
                           ref={register({
                             required: 'Please enter a valid email',
                             validate: {
+                              valueChangedRule: (value) => valueChangedRule(value, userData.email),
                               validEmailRule: validEmailRule(),
                             },
                           })}
