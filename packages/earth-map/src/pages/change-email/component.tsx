@@ -56,7 +56,7 @@ export default function ChangeEmailComponent() {
       } catch (e) {
         console.error(e);
       } finally {
-        replace('/');
+        replace('/profile');
       }
     })();
   });
