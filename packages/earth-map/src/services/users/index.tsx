@@ -100,4 +100,12 @@ export function updateProfile(options = {}) {
   });
 }
 
+export function resetPassword(options = {}) {
+  return service.request({
+    url: `/users/profile/change-password`,
+    method: 'post',
+    data: options,
+  });
+}
+
 export default service;

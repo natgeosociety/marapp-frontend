@@ -19,6 +19,7 @@
 
 import { noop } from 'lodash/fp';
 import { useSWRInfinite } from 'swr';
+import { groupBy } from 'lodash';
 
 /**
  * Custom hook that integrates useSWRInfinite with <DataListing /> component
@@ -51,10 +52,15 @@ export function useInfiniteList(
   } = useSWRInfinite(wrappedQuery, fetcher, options);
 
   const items = mergePages(response);
-  const [firstPage] = response;
-  const lastPage = response[response.length - 1];
-  const totalResults = firstPage?.total;
-  const isNoMore = !lastPage?.pagination.nextCursor;
+  const [firstPage = {}] = response;
+  const lastPage = response[response.length - 1] || {};
+  const totalResults = firstPage.total;
+  const filters = firstPage.filters || [];
+  const filtersWithLabel = filters.map((f) => ({
+    ...f,
+    label: f.value,
+  }));
+  const isNoMore = !lastPage?.pagination?.nextCursor;
   const awaitMore = !isValidating && !isNoMore;
 
   const returnValues = {
@@ -69,6 +75,7 @@ export function useInfiniteList(
       isNoMore,
       totalResults,
     },
+    filters: groupBy(filtersWithLabel, 'key'),
     revalidate,
     mutate,
     error,

@@ -48,7 +48,7 @@ export default function LayersPage(props) {
     };
     return encodeQueryToURL('layers', query);
   };
-  const { listProps, mutate } = useInfiniteList(getQuery, getAllLayers);
+  const { listProps, filters, mutate } = useInfiniteList(getQuery, getAllLayers);
 
   // Matches everything after the resource name in the url.
   // In our case that's /resource-id or /new
@@ -70,8 +70,8 @@ export default function LayersPage(props) {
       </SidebarLayout>
       <Router>
         <LayersHome path="/" />
-        <NewLayer path="/new" onDataChange={mutate} />
-        <LayerDetail path="/:page" onDataChange={mutate} />
+        <NewLayer path="/new" onDataChange={mutate} dynamicOptions={filters} />
+        <LayerDetail path="/:page" onDataChange={mutate} dynamicOptions={filters} />
       </Router>
     </>
   );

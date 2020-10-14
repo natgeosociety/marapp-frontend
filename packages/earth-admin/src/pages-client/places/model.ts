@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-export interface Place {
+export interface IPlace {
   id: string;
   description: string;
-  type: PlaceTypeEnum;
+  type: any;
   slug?: string;
   name?: string;
   geojson?: {};
@@ -36,15 +36,6 @@ export interface Place {
   intersections?: PlaceIntersection[] | string[];
 }
 
-export enum PlaceTypeEnum {
-  CONTINENT = 'Continent',
-  COUNTRY = 'Country',
-  JURISDICTION = 'Jurisdiction',
-  BIOME = 'Biome',
-  PROTECTED_AREA = 'Protected Area',
-  SPECIES_AREA = 'Species Area',
-}
-
 export interface MetricProps {
   id: any;
   slug?: string;
@@ -52,7 +43,7 @@ export interface MetricProps {
   createdAt?: Date;
   updatedAt?: Date;
   version?: number;
-  location?: string | Place;
+  location?: string | IPlace;
 }
 
 export interface PlaceMetricsProps {
@@ -63,7 +54,7 @@ export interface PlaceMetricsProps {
 }
 
 export interface PlaceProps {
-  data?: Place;
+  data?: IPlace;
   newPlace?: boolean;
 }
 

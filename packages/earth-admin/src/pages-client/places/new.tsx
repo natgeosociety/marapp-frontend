@@ -31,15 +31,17 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 import { addPlace, getPlaceSlug } from '@app/services/places';
 
-import { PlaceTypeEnum } from './model';
-
 interface IProps {
   path: string;
   onDataChange?: () => {};
+  dynamicOptions?: {
+    type?: any[];
+  };
 }
 
 export function NewPlace(props: IProps) {
-  const { onDataChange = noop } = props;
+  const { onDataChange = noop, dynamicOptions } = props;
+  const { type: placeTypeOptions = [] } = dynamicOptions;
   const { getValues, register, watch, formState, errors, setValue } = useForm({
     mode: 'onChange',
   });
@@ -117,9 +119,9 @@ export function NewPlace(props: IProps) {
                 })}
                 name="type"
               >
-                {Object.keys(PlaceTypeEnum).map((t, idx) => (
-                  <option key={idx} value={PlaceTypeEnum[t]}>
-                    {PlaceTypeEnum[t]}
+                {placeTypeOptions.map((t) => (
+                  <option key={t.value} value={t.value}>
+                    {t.label}
                   </option>
                 ))}
               </select>

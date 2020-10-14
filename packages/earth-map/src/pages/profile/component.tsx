@@ -1,10 +1,16 @@
 import { Auth0Context } from 'auth/auth0';
-import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Link from 'redux-first-router-link';
-import { cancelEmailChange, changeEmail, fetchProfile, updateProfile } from 'services/users';
+import {
+  fetchProfile,
+  updateProfile,
+  cancelEmailChange,
+  changeEmail,
+  resetPassword,
+} from 'services/users';
 import { APP_LOGO } from 'theme';
+import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
 
 import {
   InlineEditCard,
@@ -20,6 +26,13 @@ interface IProps {
   page: string;
 }
 
+enum RESET_PASSWORD_STATE {
+  INITIAL,
+  SENDING,
+  SENT,
+  NOTIFICATION_DISMISS,
+}
+
 export function ProfileComponent(props: IProps) {
   const { page } = props;
 
@@ -33,6 +46,8 @@ export function ProfileComponent(props: IProps) {
   const [userProfile, setUserProfile] = useState({ firstName: '', lastName: '', name: '' });
   const [pendingEmail, setPendingEmail] = useState(null);
   const [serverErrors, setServerErrors] = useState();
+  const [resetPasswordState, setResetPasswordState] = useState(RESET_PASSWORD_STATE.INITIAL);
+
   const { touched, isValid } = formState;
   const renderErrorFor = setupErrors(formErrors, touched);
 
@@ -54,14 +69,18 @@ export function ProfileComponent(props: IProps) {
     })();
   }, []);
 
-  async function onEmailChange(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
+  async function onSubmitName(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
+
     const formData = getValues();
 
     try {
       setIsLoading && setIsLoading(true);
-      const result: any = await changeEmail(formData);
-      setPendingEmail(result.data.pendingEmail);
+
+      const result: any = await updateProfile(formData);
+      setUserProfile(result.data);
+      processUserName(result.data);
+
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
     } catch (error) {
@@ -70,14 +89,24 @@ export function ProfileComponent(props: IProps) {
     }
   }
 
-  async function onSubmitName(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
+  async function sendResetEmail(e) {
+    e.preventDefault();
+
+    setResetPasswordState(RESET_PASSWORD_STATE.SENDING);
+
+    await resetPassword();
+
+    setResetPasswordState(RESET_PASSWORD_STATE.SENT);
+  }
+
+  async function onEmailChange(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
     const formData = getValues();
 
     try {
       setIsLoading && setIsLoading(true);
-      const result: any = await updateProfile(formData);
-      processUserName(result.data);
+      const result: any = await changeEmail(formData);
+      setPendingEmail(result.data.pendingEmail);
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
     } catch (error) {
@@ -128,6 +157,23 @@ export function ProfileComponent(props: IProps) {
           </h1>
           <form className="ng-form ng-form-dark">
             <div className="ng-grid">
+              {resetPasswordState === RESET_PASSWORD_STATE.SENT && (
+                <div className="ng-width-2-3 ng-push-1-6 ng-margin-bottom">
+                  <div className="ng-background-success ng-padding-medium ng-flex ng-flex-space-between">
+                    <span>
+                      An email has been sent to {userData.email} with a link to reset your password.
+                    </span>
+                    <button
+                      className="ng-text-display-l ng-text-weight-thin ng-position-absolute ng-position-top-right ng-margin-right marapp-qa-resetpassword-dismiss"
+                      onClick={() =>
+                        setResetPasswordState(RESET_PASSWORD_STATE.NOTIFICATION_DISMISS)
+                      }
+                    >
+                      &times;
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="ng-width-2-3 ng-push-1-6">
                 <InlineEditCard
                   {...(!REACT_APP_EXTERNAL_IDP_URL && {
@@ -249,14 +295,38 @@ export function ProfileComponent(props: IProps) {
                 //       <Input
                 //         name="email"
                 //         placeholder="Email"
-                //         label="Email"
-                //         defaultValue={''}
-                //         className="ng-display-block marapp-qa-inputemail"
+                //         label="Email*"
+                //         className="marapp-qa-inputemail ng-display-block ng-margin-medium-bottom"
+                //         defaultValue={userData.email}
+                //         error={renderErrorFor('email')}
+                //         ref={register({
+                //           required: 'Please enter a valid email',
+                //           validate: {
+                //             validEmailRule: validEmailRule(),
+                //           },
+                //         })}
                 //       />
                 //     </div>
+                //     <div className="ng-margin-medium-bottom">
+                //       <p>
+                //         After saving, we will send an email to your new email address to confirm
+                //         the change.
+                //         <br />
+                //         Be sure to check your spam folder if you do not receive the email in a few
+                //         minutes.
+                //       </p>
+                //     </div>
                 //   </>
-                // )}>
+                // )}
                 >
+                  <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                    Email
+                  </h3>
+                  <p className="ng-margin-remove">{userData.email}</p>
+                </InlineEditCard>
+              </div>
+              <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
+                <InlineEditCard>
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
                     Password reset
                   </h3>
@@ -266,8 +336,24 @@ export function ProfileComponent(props: IProps) {
                     Be sure to check your spam folder if you do not receive the email in a few
                     minutes.
                   </p>
-                  <button className="ng-button ng-button-secondary ng-margin-top" disabled={true}>
-                    Send reset email
+                  <button
+                    className="ng-button ng-button-secondary ng-margin-top marapp-qa-resetpassword"
+                    disabled={
+                      !!REACT_APP_EXTERNAL_IDP_URL ||
+                      resetPasswordState !== RESET_PASSWORD_STATE.INITIAL
+                    }
+                    onClick={sendResetEmail}
+                  >
+                    {resetPasswordState === RESET_PASSWORD_STATE.INITIAL ? (
+                      <span>Send reset email</span>
+                    ) : resetPasswordState === RESET_PASSWORD_STATE.SENDING ? (
+                      <div className="ng-flex">
+                        <Spinner size="mini" position="relative" />
+                        <span>Sending reset email</span>
+                      </div>
+                    ) : (
+                      <span>Email sent</span>
+                    )}
                   </button>
                 </InlineEditCard>
               </div>
