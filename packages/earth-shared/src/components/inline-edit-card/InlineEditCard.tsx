@@ -25,6 +25,7 @@ import { ErrorMessages } from '@marapp/earth-shared';
 
 import { InlineCardOverlay } from './index';
 import './styles.scss';
+import { noop } from 'lodash';
 
 interface IOptionsBag {
   isEditing: boolean;
@@ -45,6 +46,7 @@ export interface InlineCardProps {
     setIsLoading: (value: boolean) => void,
     setServerErrors: (value: boolean) => void
   ) => void;
+  onCancel?: () => void;
   submitButtonText?: string;
   cancelButtonText?: string;
   validForm?: boolean;
@@ -60,7 +62,8 @@ export default function InlineEditCard(props: InlineCardProps) {
     children,
     render,
     editButtonText = 'edit',
-    onSubmit,
+    onSubmit = noop,
+    onCancel = noop,
     submitButtonText = 'Save',
     cancelButtonText = 'Cancel',
     validForm,
@@ -84,6 +87,8 @@ export default function InlineEditCard(props: InlineCardProps) {
   const handleCancel = () => {
     setIsEditing(false);
     setServerErrors(false);
+
+    onCancel();
   };
 
   const renderEditable = () => (

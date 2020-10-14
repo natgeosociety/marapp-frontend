@@ -1,7 +1,8 @@
 import { Auth0Context } from 'auth/auth0';
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'redux-first-router-link';
-import { fetchProfile, updateProfile, resetPassword } from 'services/users';
+import { pickBy, identity, capitalize, omit } from 'lodash';
+import { fetchProfile, updateProfile, resetPassword, leaveOrganizations } from 'services/users';
 import { APP_LOGO } from 'theme';
 import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
 
@@ -36,23 +37,46 @@ export function ProfileComponent(props: IProps) {
   const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
-  const [userProfile, setUserProfile] = useState({ firstName: '', lastName: '', name: '' });
+  const [userProfile, setUserProfile] = useState({
+    firstName: '',
+    lastName: '',
+    name: '',
+    groups: [],
+  });
   const [resetPasswordState, setResetPasswordState] = useState(RESET_PASSWORD_STATE.INITIAL);
+  const [markedOrgsForLeave, setMarkedOrgsForLeave] = useState({});
+  const [userRoles, setUserRoles] = useState({});
 
   const { touched, isValid } = formState;
   const renderErrorFor = setupErrors(formErrors, touched);
-
-  const userRoles = Object.keys(userData.roles);
 
   const processUserName = ({ firstName, lastName, name }) => {
     setUserName(firstName && lastName ? `${firstName} ${lastName}` : name);
   };
 
+  const groupRolesByOrganization = (groups) => {
+    const result = groups.reduce((acc, c) => {
+      const groupTokens = c.name.split('-');
+
+      const groupRole = capitalize(groupTokens.pop());
+      const groupName = groupTokens.join('-');
+
+      acc[groupName] = acc[groupName] || [];
+      acc[groupName].push(groupRole);
+
+      return acc;
+    }, {});
+
+    setUserRoles(result);
+  };
+
   useEffect(() => {
     (async () => {
-      const profile: any = await fetchProfile();
+      const profile: any = await fetchProfile({ include: 'groups' });
+
       setUserProfile(profile.data);
       processUserName(profile.data);
+      groupRolesByOrganization(profile.data.groups);
 
       setIsLoading(false);
     })();
@@ -86,6 +110,34 @@ export function ProfileComponent(props: IProps) {
     await resetPassword();
 
     setResetPasswordState(RESET_PASSWORD_STATE.SENT);
+  }
+
+  function switchMarkOrgForLeave(e, org) {
+    e.preventDefault();
+
+    setMarkedOrgsForLeave(
+      pickBy({ ...markedOrgsForLeave, [org]: !markedOrgsForLeave[org] }, identity)
+    );
+  }
+
+  async function onSubmitOrgLeave(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
+    e.preventDefault();
+
+    const orgsToLeave = Object.keys(markedOrgsForLeave);
+
+    setIsLoading && setIsLoading(true);
+
+    try {
+      await leaveOrganizations(orgsToLeave);
+
+      setUserRoles({ ...omit(userRoles, orgsToLeave) });
+
+      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(false);
+    } catch (error) {
+      setIsLoading && setIsLoading(false);
+      setServerErrors && setServerErrors(error.data?.errors);
+    }
   }
 
   return isLoading ? (
@@ -254,25 +306,43 @@ export function ProfileComponent(props: IProps) {
                 </InlineEditCard>
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
-                {userRoles.length > 0 && (
+                {Object.keys(userRoles).length > 0 && (
                   <InlineEditCard
-                  // render={({setIsEditing, setIsLoading, setServerErrors}) => (
-                  //   <>
-                  //     <div className="ng-margin-medium-bottom">
-                  //       <p className="ng-text-weight-bold ng-margin-remove ng-color-mdgray ng-text-uppercase">Organizations</p>
-                  //       <div className="ng-grid ng-margin-top">
-                  //         <div className="ng-width-1-2 ng-text-weight-bold">Organization name</div>
-                  //         <div className="ng-width-1-2 ng-text-weight-bold">Role</div>
-                  //         {userRoles.map(org => (
-                  //           <>
-                  //             <div className="ng-width-1-2 ng-margin-top">{org}</div>
-                  //             <div className="ng-width-1-2 ng-margin-top">{userData.roles[org].join(', ')}</div>
-                  //           </>
-                  //         ))}
-                  //       </div>
-                  //     </div>
-                  //   </>
-                  // )}>
+                    render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                      <>
+                        <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                          Organizations
+                        </h3>
+                        <div className="ng-grid ng-margin-top">
+                          <div className="ng-width-1-2 ng-text-weight-bold">Organization name</div>
+                          <div className="ng-width-1-4 ng-text-weight-bold">Role</div>
+                          {Object.keys(userRoles).map((org) => (
+                            <>
+                              <div className="ng-width-1-2 ng-margin-top">{org}</div>
+                              <div className="ng-width-1-4 ng-margin-top">
+                                {markedOrgsForLeave[org] ? (
+                                  <span className="ng-color-mdgray"> marked for removal</span>
+                                ) : (
+                                  userRoles[org].join(', ')
+                                )}
+                              </div>
+                              <div className="ng-width-1-4 ng-margin-top">
+                                <button
+                                  className="ng-button ng-button-link ng-text-lowercase"
+                                  disabled={userRoles[org].includes('Owner')}
+                                  onClick={(e) => switchMarkOrgForLeave(e, org)}
+                                >
+                                  {markedOrgsForLeave[org] ? 'cancel' : 'leave organization'}
+                                </button>
+                              </div>
+                            </>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                    validForm={Object.keys(markedOrgsForLeave).length > 0}
+                    onSubmit={onSubmitOrgLeave}
+                    onCancel={() => setMarkedOrgsForLeave({})}
                   >
                     <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
                       Organizations
@@ -280,11 +350,11 @@ export function ProfileComponent(props: IProps) {
                     <div className="ng-grid ng-margin-top">
                       <div className="ng-width-1-2 ng-text-weight-bold">Organization name</div>
                       <div className="ng-width-1-2 ng-text-weight-bold">Role</div>
-                      {userRoles.map((org) => (
+                      {Object.keys(userRoles).map((org) => (
                         <>
                           <div className="ng-width-1-2 ng-margin-top">{org}</div>
                           <div className="ng-width-1-2 ng-margin-top">
-                            {userData.roles[org].join(', ')}
+                            {userRoles[org].join(', ')}
                           </div>
                         </>
                       ))}
