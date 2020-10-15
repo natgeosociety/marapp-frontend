@@ -26,7 +26,7 @@ import './style.scss';
 
 interface IProps {
   title: string;
-  key: string;
+  key?: string;
   active?: boolean;
   linkTo?: {
     type: string;

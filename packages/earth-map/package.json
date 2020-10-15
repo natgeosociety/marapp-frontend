@@ -6,7 +6,7 @@
     "start": "dotenv -e .env.local react-app-rewired start",
     "build": "dotenv -e .env react-app-rewired build",
     "lint": "tslint -p tsconfig.json --fix",
-    "test": "jest --runInBand --passWithNoTests",
+    "test": "jest --runInBand --passWithNoTests --watchAll --coverage",
     "typecheck": "tsc --emitDeclarationOnly"
   },
   "dependencies": {
