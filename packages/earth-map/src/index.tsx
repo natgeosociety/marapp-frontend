@@ -45,7 +45,7 @@ ReactDOM.render(
     onRedirectCallback={onRedirectCallback}
     onSuccessHook={onSuccessHook}
     onFailureHook={onFailureHook}
-    useRefreshTokens={true}
+    useRefreshTokens={false}
     cacheLocation={'memory'}
   >
     <App />
