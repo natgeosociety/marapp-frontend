@@ -19,19 +19,19 @@
 
 import React from 'react';
 
-import { Button, ErrorTemplate } from '@marapp/earth-shared';
-
 const NotFound = ({ returnToHome }) => {
   return (
-    <ErrorTemplate type="404" message="Sorry we couldn't find that page.">
-      <ul className="not-found--links--list">
-        <li>
-          <Button className="-light -fullwidth" onClick={returnToHome}>
-            Home
-          </Button>
-        </li>
-      </ul>
-    </ErrorTemplate>
+    <div>
+      <h1>OOPS</h1>
+      <p>
+        The page you are looking for may not exist, or we may be experiencing an error. We're
+        terribly sorry, but please visit our landing page at natgeo.org/earthpulse. You may also
+        learn more about our product at natgeo.org/earthpulse/about.
+      </p>
+      <button className="ng-button ng-button-primary" onClick={returnToHome}>
+        Return to marapp
+      </button>
+    </div>
   );
 };
 
