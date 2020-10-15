@@ -35,7 +35,7 @@ export function useInfiniteList(
   fetcher: (any) => Promise<any>,
   options: object = {}
 ) {
-  const wrappedGetQuery = (pageIndex: number, previousPage: any): string => {
+  const swrKeyLoader = (pageIndex: number, previousPage: any): string => {
     if (previousPage && !previousPage.data) {
       return null; // reached the end;
     }
@@ -44,8 +44,8 @@ export function useInfiniteList(
 
     return generateCacheKey(resourceType, query);
   };
-  const wrappedFetcher = async (url) => {
-    const [resource, query] = url.split('?');
+  const wrappedFetcher = async (pathQuery: string) => {
+    const [resource, query] = pathQuery.split('?');
     const parsed = qs.parse(query);
 
     return fetcher(parsed);
@@ -59,7 +59,7 @@ export function useInfiniteList(
     setSize,
     mutate,
     revalidate,
-  } = useSWRInfinite(wrappedGetQuery, wrappedFetcher, options);
+  } = useSWRInfinite(swrKeyLoader, wrappedFetcher, options);
 
   const items = mergePages(response);
   const [firstPage = {}] = response;
@@ -99,13 +99,14 @@ export function useInfiniteListPaged(
   fetcher: (any) => Promise<any>,
   options: object = {}
 ) {
-  const wrappedGetQuery = (pageIndex: number): string => {
+  const swrKeyLoader = (pageIndex: number): string => {
     const offsetPageIndex = pageIndex + 1;
     const { query, resourceType } = getQueryFn(offsetPageIndex);
+
     return generateCacheKey(resourceType, query);
   };
-  const wrappedFetcher = async (url) => {
-    const [resource, query] = url.split('?');
+  const wrappedFetcher = async (pathQuery: string) => {
+    const [resource, query] = pathQuery.split('?');
     const parsed = qs.parse(query);
 
     return fetcher(parsed);
@@ -119,7 +120,7 @@ export function useInfiniteListPaged(
     setSize,
     mutate,
     revalidate,
-  } = useSWRInfinite(wrappedGetQuery, wrappedFetcher, options);
+  } = useSWRInfinite(swrKeyLoader, wrappedFetcher, options);
 
   const items = mergePages(response);
   const isNoMore = items?.data.length >= items?.meta?.results;
