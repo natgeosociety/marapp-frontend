@@ -33,6 +33,7 @@
     "gatsby-plugin-typescript": "^2.1.15",
     "jshint": "^2.11.0",
     "lodash": "^4.17.15",
+    "query-string": "^6.13.5",
     "query-string-encode": "^1.0.1",
     "react": "^16.11.0",
     "react-codemirror2": "^7.1.0",

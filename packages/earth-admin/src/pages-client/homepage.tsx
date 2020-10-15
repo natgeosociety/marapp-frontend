@@ -22,22 +22,22 @@ import useSWR from 'swr';
 
 import { Card } from '@app/components/card';
 import { ContentLayout, SidebarLayout } from '@app/layouts';
-import { getOrganizationStats } from '@app/services/organizations';
-import { encodeQueryToURL, setPage } from '@app/utils';
+import { generateCacheKey } from '@app/services';
+import OrganizationsService from '@app/services/organizations';
+import { setPage } from '@app/utils';
 
 import './styles.scss';
 
 const PAGE_TYPE = setPage('Home');
 
 const Homepage = (props) => {
-  // use org from URL
-  // `const { selectedGroup } = useAuth0()` fires multiple times on change
   const { org } = props;
-  const encodedQuery = encodeQueryToURL(`/organizations/stats`, {
-    group: org,
-  });
-  const { data: organization, error } = useSWR(encodedQuery, (url) =>
-    getOrganizationStats(url).then((res) => res.data)
+
+  const query = { group: org };
+  const cacheKey = generateCacheKey(`organizations/stats`, query);
+
+  const { data: organization, error } = useSWR(cacheKey, () =>
+    OrganizationsService.getOrganizationStats(query).then((res: any) => res.data)
   );
 
   return (

@@ -20,7 +20,7 @@
 import { useAuth0 } from 'auth/auth0';
 import React, { useEffect } from 'react';
 import { replace } from 'redux-first-router';
-import { changeEmailConfirmation } from 'services/users';
+import ProfileService from 'services/ProfileService';
 
 import { Spinner } from '@marapp/earth-shared';
 
@@ -39,8 +39,8 @@ export default function ChangeEmailComponent() {
         const error_description = params.get('error_description');
 
         if (accessToken) {
-          const response: any = await changeEmailConfirmation({ accessToken });
-          if (response && response?.data.success) {
+          const response = await ProfileService.changeEmailConfirmation({ accessToken });
+          if (response && response?.data?.success) {
             alert('Email change successful. Please login using the new credentials.');
             // Auth0 sessions are reset when a user’s email or password changes;
             // force a re-login if email change request successful;

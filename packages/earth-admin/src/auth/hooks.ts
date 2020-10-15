@@ -17,7 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { Auth0Client } from '@auth0/auth0-spa-js';
 import axios from 'axios';
+
+import {
+  reqNoopInterceptor,
+  resErrorInterceptor,
+  resSuccessInterceptor,
+} from '@marapp/earth-shared';
 
 import { routeToPage } from '../utils';
 
@@ -34,10 +41,16 @@ export const onRedirectCallback = (targetUrl: string) => {
  * Configure behaviour in case of successful login.
  * @param params
  */
-export const onSuccessHook = (params: any = {}) => {
-  const token = params.token;
-  if (token) {
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+export const onSuccessHook = (params: { accessToken?: string; authClient?: Auth0Client } = {}) => {
+  if (params.accessToken) {
+    axios.defaults.headers.common.Authorization = `Bearer ${params.accessToken}`;
+  }
+  if (params.authClient) {
+    axios.interceptors.request.use(reqNoopInterceptor());
+    axios.interceptors.response.use(
+      resSuccessInterceptor(),
+      resErrorInterceptor({ authClient: params.authClient })
+    );
   }
 };
 

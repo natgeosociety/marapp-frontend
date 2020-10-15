@@ -17,11 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-export * from './base/APIBase';
-export * from './places';
-export * from './widgets';
-export * from './layers';
-export * from './dashboards';
-export * from './metrics';
-export * from './users';
-export * from './organizations';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
+
+const fetchStats = async (query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request(`/organizations/stats`, { query }, metaDeserializer);
+};
+
+export default { fetchStats };

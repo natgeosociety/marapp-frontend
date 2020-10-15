@@ -102,7 +102,7 @@ export const Auth0Provider = ({
       setIsAuthenticated(isAuthenticated);
 
       const accessToken = isAuthenticated ? await auth0FromHook.getTokenSilently() : null;
-      onSuccessHook({ token: accessToken });
+      onSuccessHook({ accessToken, authClient: auth0FromHook });
 
       const idToken = accessToken ? await auth0FromHook.getUser() : {};
 
@@ -163,7 +163,7 @@ export const Auth0Provider = ({
    * grant and the refresh token from the cache.
    * @param options
    */
-  const getToken = (options = {}) => {
+  const getAccessToken = (options = {}): Promise<string> => {
     return client.getTokenSilently(options);
   };
 
@@ -187,7 +187,7 @@ export const Auth0Provider = ({
         login,
         logout,
         getUser,
-        getToken,
+        getAccessToken,
         setupUserOrg: setSelectedGroup,
       }}
     >

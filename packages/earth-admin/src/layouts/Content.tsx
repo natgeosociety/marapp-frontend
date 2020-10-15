@@ -24,11 +24,11 @@ import { favicon, Spinner, UserMenu } from '@marapp/earth-shared';
 
 import { Card } from '@app/components/card';
 import { LinkWithOrg } from '@app/components/link-with-org';
+import { GATSBY_APP_BASE_URL } from '@app/config';
 import { Auth0Context } from '@app/utils/contexts';
 
 import '../styles/app.scss';
 import { APP_NAME } from '../theme';
-import { GATSBY_APP_BASE_URL } from '@app/config';
 
 interface ILayoutProps {
   children?: any;

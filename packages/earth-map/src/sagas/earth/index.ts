@@ -29,7 +29,7 @@ import { loadDataIndexes } from 'sagas/layers';
 import { LOCATION_QUERY } from 'sagas/model';
 import { nextPage } from 'sagas/places';
 import { getGroup, ignoreRedirectsTo } from 'sagas/saga-utils';
-import { fetchPlaces } from 'services/places';
+import PlacesService from 'services/PlacesService';
 
 const ignoreRedirectsToEarth = ignoreRedirectsTo('EARTH');
 
@@ -58,7 +58,7 @@ function* loadPlaces() {
 
   // PLACES
   const places: IPlace[] = yield all({
-    featured: call(fetchPlaces, {
+    featured: call(PlacesService.fetchPlaces, {
       select: 'slug,name,id,organization,type',
       page: { size: 100 },
       filter: 'featured==true',

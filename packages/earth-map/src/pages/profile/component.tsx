@@ -1,25 +1,18 @@
 import { Auth0Context } from 'auth/auth0';
-import React, { useContext, useEffect, useState } from 'react';
-import Link from 'redux-first-router-link';
-import { pickBy, identity, capitalize, omit } from 'lodash';
-import {
-  fetchProfile,
-  updateProfile,
-  resetPassword,
-  leaveOrganizations,
-  cancelEmailChange,
-  changeEmail,
-} from 'services/users';
-import { APP_LOGO } from 'theme';
 import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
-
+import { capitalize, identity, omit, pickBy } from 'lodash';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Link from 'redux-first-router-link';
+import ProfileService from 'services/ProfileService';
+import { APP_LOGO } from 'theme';
+
 import {
   InlineEditCard,
-  Spinner,
-  UserMenu,
   Input,
   setupErrors,
+  Spinner,
+  UserMenu,
   validEmailRule,
   valueChangedRule,
 } from '@marapp/earth-shared';
@@ -82,13 +75,13 @@ export function ProfileComponent(props: IProps) {
 
   useEffect(() => {
     (async () => {
-      const profile: any = await fetchProfile({ include: 'groups' });
+      const response = await ProfileService.fetchProfile({ include: 'groups' });
 
-      setUserProfile(profile.data);
-      processUserName(profile.data);
-      groupRolesByOrganization(profile.data.groups);
+      setUserProfile(response.data);
+      processUserName(response.data);
+      groupRolesByOrganization(response.data?.groups);
 
-      profile.data?.pendingEmail && setPendingEmail(profile.data.pendingEmail);
+      response.data?.pendingEmail && setPendingEmail(response.data.pendingEmail);
 
       setIsLoading(false);
     })();
@@ -98,13 +91,12 @@ export function ProfileComponent(props: IProps) {
     e.preventDefault();
 
     const formData = getValues();
-
     try {
       setIsLoading && setIsLoading(true);
 
-      const result: any = await updateProfile(formData);
-      setUserProfile(result.data);
-      processUserName(result.data);
+      const response = await ProfileService.updateProfile(formData);
+      setUserProfile(response.data);
+      processUserName(response.data);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
@@ -119,7 +111,7 @@ export function ProfileComponent(props: IProps) {
 
     setResetPasswordState(RESET_PASSWORD_STATE.SENDING);
 
-    await resetPassword();
+    await ProfileService.resetPassword();
 
     setResetPasswordState(RESET_PASSWORD_STATE.SENT);
   }
@@ -140,7 +132,7 @@ export function ProfileComponent(props: IProps) {
     setIsLoading && setIsLoading(true);
 
     try {
-      await leaveOrganizations(orgsToLeave);
+      await ProfileService.leaveOrganizations(orgsToLeave);
 
       setUserRoles({ ...omit(userRoles, orgsToLeave) });
 
@@ -158,8 +150,8 @@ export function ProfileComponent(props: IProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      const result: any = await changeEmail(formData);
-      setPendingEmail(result.data.pendingEmail);
+      const response = await ProfileService.changeEmail(formData);
+      setPendingEmail(response.data?.pendingEmail);
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
     } catch (error) {
@@ -172,8 +164,8 @@ export function ProfileComponent(props: IProps) {
     e.preventDefault();
 
     try {
-      const result: any = await cancelEmailChange();
-      setUserProfile(result.data);
+      const response = await ProfileService.cancelEmailChange();
+      setUserProfile(response.data);
       setPendingEmail(null);
     } catch (error) {
       setServerErrors && setServerErrors(error.data?.errors);

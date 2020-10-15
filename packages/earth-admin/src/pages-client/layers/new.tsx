@@ -39,7 +39,7 @@ import { HtmlEditor } from '@app/components/html-editor';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { addLayer, getAllLayers, getLayerSlug } from '@app/services/layers';
+import LayersService from '@app/services/layers';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenArrayForSelect, flattenObjectForSelect } from '@app/utils';
 
@@ -92,9 +92,9 @@ export function NewLayer(props: IProps) {
 
     try {
       setIsLoading(true);
-      const response: any = await addLayer(parsed, selectedGroup);
+      const { data } = await LayersService.addLayer(parsed, { group: selectedGroup });
       onDataChange();
-      await navigate(`/${selectedGroup}/layers/${response.data.id}`);
+      await navigate(`/${selectedGroup}/layers/${data.id}`);
     } catch (error) {
       setIsLoading(false);
       setServerErrors(error.data.errors);
@@ -104,7 +104,7 @@ export function NewLayer(props: IProps) {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getLayerSlug(watchName, selectedGroup);
+      const { data } = await LayersService.getLayerSlug(watchName, { group: selectedGroup });
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);
@@ -273,7 +273,7 @@ export function NewLayer(props: IProps) {
                 control={control}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id}
-                loadFunction={getAllLayers}
+                loadFunction={LayersService.getAllLayers}
                 defaultValue={references}
                 selectedGroup={selectedGroup}
                 as={AsyncSelect}

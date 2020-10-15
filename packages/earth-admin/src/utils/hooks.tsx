@@ -19,28 +19,38 @@
 
 import { groupBy } from 'lodash';
 import { noop } from 'lodash/fp';
+import qs from 'query-string';
 import { useSWRInfinite } from 'swr';
+
+import { generateCacheKey, RequestQuery } from '@app/services';
 
 /**
  * Custom hook that integrates useSWRInfinite with <DataListing /> component
- * @param getQuery Function responsible for returning the api url
- * @param fetcher Function queries the api
- * @param options
+ * @param getQueryFn: Function responsible for returning the request query
+ * @param fetcher: API service which fetches the data
+ * @param options:
  */
 export function useInfiniteList(
-  getQuery: (cursor: number | string) => string,
+  getQueryFn: (cursor: string) => { query: RequestQuery; resourceType: string },
   fetcher: (any) => Promise<any>,
   options: object = {}
 ) {
-  const wrappedQuery = (pageIndex: number, previousPageData: any): string => {
-    // reached the end
-    if (previousPageData && !previousPageData.data) {
-      return null;
+  const swrKeyLoader = (pageIndex: number, previousPage: any): string => {
+    if (previousPage && !previousPage.data) {
+      return null; // reached the end;
     }
-    const cursor = pageIndex === 0 ? -1 : previousPageData.pagination.nextCursor;
+    const cursor = pageIndex === 0 ? -1 : previousPage?.meta?.pagination?.nextCursor;
+    const { query, resourceType } = getQueryFn(cursor);
 
-    return getQuery(cursor);
+    return generateCacheKey(resourceType, query);
   };
+  const wrappedFetcher = async (pathQuery: string) => {
+    const [resource, query] = pathQuery.split('?');
+    const parsed = qs.parse(query);
+
+    return fetcher(parsed);
+  };
+
   const {
     data: response = [],
     error,
@@ -49,18 +59,18 @@ export function useInfiniteList(
     setSize,
     mutate,
     revalidate,
-  } = useSWRInfinite(wrappedQuery, fetcher, options);
+  } = useSWRInfinite(swrKeyLoader, wrappedFetcher, options);
 
   const items = mergePages(response);
   const [firstPage = {}] = response;
   const lastPage = response[response.length - 1] || {};
-  const totalResults = firstPage.total;
-  const filters = firstPage.filters || [];
+  const totalResults = firstPage?.meta?.results;
+  const filters = firstPage?.meta?.filters || [];
   const filtersWithLabel = filters.map((f) => ({
     ...f,
     label: f.value,
   }));
-  const isNoMore = !lastPage?.pagination?.nextCursor;
+  const isNoMore = !lastPage?.meta?.pagination?.nextCursor;
   const awaitMore = !isValidating && !isNoMore;
 
   const returnValues = {
@@ -85,14 +95,23 @@ export function useInfiniteList(
 }
 
 export function useInfiniteListPaged(
-  getQuery: (pageIndex: number) => string,
+  getQueryFn: (pageIndex: number) => { query: RequestQuery; resourceType: string },
   fetcher: (any) => Promise<any>,
   options: object = {}
 ) {
-  const wrappedQuery = (pageIndex: number): string => {
+  const swrKeyLoader = (pageIndex: number): string => {
     const offsetPageIndex = pageIndex + 1;
-    return getQuery(offsetPageIndex);
+    const { query, resourceType } = getQueryFn(offsetPageIndex);
+
+    return generateCacheKey(resourceType, query);
   };
+  const wrappedFetcher = async (pathQuery: string) => {
+    const [resource, query] = pathQuery.split('?');
+    const parsed = qs.parse(query);
+
+    return fetcher(parsed);
+  };
+
   const {
     data: response = [],
     error,
@@ -101,11 +120,11 @@ export function useInfiniteListPaged(
     setSize,
     mutate,
     revalidate,
-  } = useSWRInfinite(wrappedQuery, fetcher, options);
+  } = useSWRInfinite(swrKeyLoader, wrappedFetcher, options);
 
   const items = mergePages(response);
-  const isNoMore = items.data.length >= items.total;
-  const totalResults = items.total;
+  const isNoMore = items?.data.length >= items?.meta?.results;
+  const totalResults = items?.meta?.results;
   const awaitMore = !isValidating && !isNoMore;
 
   const returnValues = {
@@ -130,12 +149,15 @@ export function useInfiniteListPaged(
 
 interface IMergedResults {
   data: any[];
-  pagination?: {
-    size: number;
-    total: number;
-    nextCursor?: string;
+  meta: {
+    filters: Array<{ key: string; value: any; count: number }>;
+    pagination?: {
+      size: number;
+      total: number;
+      nextCursor?: string;
+    };
+    results?: number;
   };
-  total?: number;
 }
 
 /**

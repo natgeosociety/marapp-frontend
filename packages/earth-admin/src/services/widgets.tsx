@@ -17,80 +17,85 @@
   specific language governing permissions and limitations under the License.
 */
 
-import axios, { AxiosRequestConfig } from 'axios';
+import { merge } from 'lodash/fp';
 
-import { GATSBY_API_URL } from '@app/config';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
-import { deserializeData, encodeQueryToURL } from '../utils';
-
-const WidgetAPIService = {
-  request: (options: AxiosRequestConfig) => {
-    const instance = axios.create({
-      baseURL: GATSBY_API_URL,
-      timeout: 10000,
-      // @ts-ignore
-      transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
-        data: data.data ? deserializeData(data) : data,
-        pagination: data.meta ? data.meta.pagination : null,
-        filters: data.meta ? data.meta.filters : null,
-        total: data.meta ? data.meta.results : null,
-      })),
-    });
-
-    return new Promise((resolve, reject) => {
-      instance
-        .request(options)
-        .then((res) => resolve(res.data))
-        .catch((error) => {
-          if (error.response) {
-            reject(error.response.data);
-          } else {
-            reject(error);
-          }
-        });
-    });
-  },
+const getAllWidgets = async (query?: string | RequestQuery) => {
+  return BaseAPIService.request(
+    '/widgets',
+    {
+      query,
+    },
+    metaDeserializer
+  );
 };
 
-export const getAllWidgets = async (widgetQuery: string) =>
-  WidgetAPIService.request({
-    url: widgetQuery,
-  });
+const addWidget = async (data: any, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    '/widgets',
+    {
+      query,
+      method: 'post',
+      data,
+    },
+    metaDeserializer
+  );
+};
 
-export const addWidget = async (widget, group: string) =>
-  WidgetAPIService.request({
-    url: encodeQueryToURL('/widgets', { group }),
-    method: 'post',
-    data: widget,
-  });
+const getWidget = async (widgetId: string, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/widgets/${widgetId}`,
+    {
+      query,
+    },
+    metaDeserializer
+  );
+};
 
-export const getWidget = async (widgetQuery: string) =>
-  WidgetAPIService.request({
-    url: widgetQuery,
-    method: 'get',
-  });
+const updateWidget = async (widgetId: string, data: any, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/widgets/${widgetId}`,
+    {
+      query,
+      method: 'put',
+      data,
+    },
+    metaDeserializer
+  );
+};
 
-export const updateWidget = async (widgetId: string, widget, group: string) =>
-  WidgetAPIService.request({
-    url: encodeQueryToURL(`/widgets/${widgetId}`, { group }),
-    method: 'put',
-    data: widget,
-  });
+const deleteWidgets = async (widgetId: string, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/widgets/${widgetId}`,
+    {
+      query,
+      method: 'delete',
+    },
+    metaDeserializer
+  );
+};
 
-export const deleteWidgets = async (widgetID: string, group: string) =>
-  WidgetAPIService.request({
-    url: encodeQueryToURL(`/widgets/${widgetID}`, { group }),
-    method: 'delete',
-  });
+const getWidgetSlug = async (keyword: string, query?: RequestQuery) => {
+  const params = { keyword, type: 'counter' };
+  return BaseAPIService.request('/widgets/slug', { query: merge(params, query) }, metaDeserializer);
+};
 
-export const handleWidgetForm = async (
+const handleWidgetForm = async (
   newWidget: boolean,
-  widget,
+  data: any,
   widgetId: string,
-  group: string
-) => (newWidget ? addWidget(widget, group) : updateWidget(widgetId, widget, group));
+  query?: RequestQuery
+) => {
+  return newWidget ? addWidget(data, query) : updateWidget(widgetId, data, query);
+};
 
-export const getWidgetSlug = async (keyword: string, group: string, type: string = 'counter') =>
-  WidgetAPIService.request({
-    url: encodeQueryToURL('/widgets/slug', { keyword, group, type }),
-  });
+export default {
+  getAllWidgets,
+  addWidget,
+  getWidget,
+  updateWidget,
+  deleteWidgets,
+  getWidgetSlug,
+  handleWidgetForm,
+};

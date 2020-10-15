@@ -40,7 +40,7 @@ export interface Auth0 {
   logout?(o?: LogoutOptions): void;
   login?(o?: BaseLoginOptions): void;
   getUser?(o?: GetUserOptions): void;
-  getToken?(o?: GetTokenWithPopupOptions): void;
+  getAccessToken?(o?: GetTokenWithPopupOptions): Promise<string>;
   setupUserOrg?(org: string): void;
 }
 

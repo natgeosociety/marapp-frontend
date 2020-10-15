@@ -36,7 +36,7 @@ import { replace } from 'redux-first-router';
 import { call, cancelled, delay, put, select, takeLatest } from 'redux-saga/effects';
 import { loadDataIndexes } from 'sagas/layers';
 import { ignoreRedirectsTo } from 'sagas/saga-utils';
-import { fetchPlace } from 'services/places';
+import PlacesService from 'services/PlacesService';
 
 let PREV_SLUG = null;
 const ignoreRedirectsToLocation = ignoreRedirectsTo('LOCATION');
@@ -65,7 +65,7 @@ function* toLocation({ payload, meta }) {
   yield put(setMetricsLoading(true));
 
   try {
-    const { data }: { data: IPlace } = yield call(fetchPlace, slug, {
+    const { data }: { data: IPlace } = yield call(PlacesService.fetchPlaceById, slug, {
       include: 'metrics',
       group: organization,
     });

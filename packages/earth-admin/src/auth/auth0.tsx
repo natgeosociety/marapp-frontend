@@ -115,7 +115,7 @@ export const Auth0Provider = ({
 
       if (isAuthenticated) {
         const accessToken = await auth0FromHook.getTokenSilently();
-        onSuccessHook({ token: accessToken });
+        onSuccessHook({ accessToken, authClient: auth0FromHook });
 
         const idToken = await auth0FromHook.getUser();
 
@@ -180,7 +180,7 @@ export const Auth0Provider = ({
    * grant and the refresh token from the cache.
    * @param options
    */
-  const getToken = useCallback(
+  const getAccessToken = useCallback(
     (options: GetTokenSilentlyOptions = {} as any) => {
       return client.getTokenSilently && client.getTokenSilently(options);
     },
@@ -213,7 +213,7 @@ export const Auth0Provider = ({
         logout,
         userData,
         getUser,
-        getToken,
+        getAccessToken,
         setIsLoading,
         setupUserOrg: setSelectedGroup,
         getPermissions,

@@ -17,6 +17,7 @@ import Collapse from '@kunukn/react-collapse';
 import classnames from 'classnames';
 import { JSHINT } from 'jshint';
 import { noop } from 'lodash';
+import { merge } from 'lodash/fp';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
@@ -42,8 +43,9 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
-import { getAllLayers } from '@app/services/layers';
-import { getWidget, handleWidgetForm } from '@app/services/widgets';
+import { generateCacheKey } from '@app/services';
+import LayersService from '@app/services/layers';
+import WidgetsService from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { copyToClipboard, encodeQueryToURL, flattenObjectForSelect, formatDate } from '@app/utils';
 
@@ -61,13 +63,11 @@ export function WidgetsDetail(props: WidgetProps) {
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
 
-  const encodedQuery = encodeQueryToURL(`widgets/${page}`, {
-    ...WIDGET_DETAIL_QUERY,
-    ...{ group: selectedGroup },
-  });
+  const query = merge(WIDGET_DETAIL_QUERY, { group: selectedGroup });
+  const cacheKey = generateCacheKey(`widgets/${page}`, query);
 
-  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
-    getWidget(url).then((res: any) => res.data)
+  const { data, error, mutate } = useSWR(cacheKey, () =>
+    WidgetsService.getWidget(page, query).then((res: any) => res.data)
   );
 
   const [widget, setWidget] = useState<Widget>({});
@@ -122,7 +122,7 @@ export function WidgetsDetail(props: WidgetProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await handleWidgetForm(false, parsed, id, selectedGroup);
+      await WidgetsService.handleWidgetForm(false, parsed, id, { group: selectedGroup });
       await mutate();
       onDataChange();
       setIsLoading && setIsLoading(false);
@@ -313,7 +313,7 @@ export function WidgetsDetail(props: WidgetProps) {
                           control={control}
                           getOptionLabel={(option) => option.name}
                           getOptionValue={(option) => option.id}
-                          loadFunction={getAllLayers}
+                          loadFunction={LayersService.getAllLayers}
                           defaultValue={layers}
                           selectedGroup={selectedGroup}
                           as={AsyncSelect}
