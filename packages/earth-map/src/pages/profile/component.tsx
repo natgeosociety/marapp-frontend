@@ -49,6 +49,8 @@ export function ProfileComponent(props: IProps) {
   const [resetPasswordState, setResetPasswordState] = useState(RESET_PASSWORD_STATE.INITIAL);
   const [markedOrgsForLeave, setMarkedOrgsForLeave] = useState({});
   const [userRoles, setUserRoles] = useState({});
+  const [isDeletingAccountOpen, setIsDeleteingAccountOpen] = useState(false);
+  const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
 
   const { touched, isValid } = formState;
   const renderErrorFor = setupErrors(formErrors, touched);
@@ -168,6 +170,30 @@ export function ProfileComponent(props: IProps) {
       setUserProfile(response.data);
       setPendingEmail(null);
     } catch (error) {
+      setServerErrors && setServerErrors(error.data?.errors);
+    }
+  }
+
+  function openDeleteAccount(e) {
+    e.preventDefault();
+
+    setIsDeleteingAccountOpen(true);
+  }
+
+  async function deleteAccount(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
+    e.preventDefault();
+
+    setIsLoading && setIsLoading(true);
+
+    try {
+      await ProfileService.deleteAccount();
+
+      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(false);
+
+      await logout();
+    } catch (error) {
+      setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data?.errors);
     }
   }
@@ -421,6 +447,53 @@ export function ProfileComponent(props: IProps) {
                     </div>
                   </InlineEditCard>
                 )}
+              </div>
+              <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
+                <InlineEditCard
+                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                    <>
+                      <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                        Account access
+                      </h3>
+                      <p className="ng-margin-remove">
+                        Deleting your account will remove you from all public &amp; private
+                        workspaces, and
+                        <br />
+                        erase all of your settings.
+                      </p>
+                      <p>
+                        <label className="ng-padding-bottom ng-flex ng-c-cursor-pointer">
+                          <input
+                            className="ng-checkbox-input ng-flex-item-none ng-margin-top-remove"
+                            type="checkbox"
+                            checked={confirmDeleteAccount}
+                            onChange={(e) => setConfirmDeleteAccount(e.target.checked)}
+                          />
+                          I understand this will permanently delete my account and that this action
+                          can
+                          <br />
+                          not be undone.
+                        </label>
+                      </p>
+                    </>
+                  )}
+                  submitButtonText={'DELETE'}
+                  submitButtonVariant={'danger'}
+                  manualOpen={isDeletingAccountOpen}
+                  onCancel={() => setIsDeleteingAccountOpen(false)}
+                  onSubmit={deleteAccount}
+                  validForm={confirmDeleteAccount}
+                >
+                  <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                    Account access
+                  </h3>
+                  <button
+                    className="ng-button ng-button-secondary ng-margin-top marapp-qa-deleteaccount"
+                    onClick={openDeleteAccount}
+                  >
+                    Delete your account
+                  </button>
+                </InlineEditCard>
               </div>
             </div>
           </form>
