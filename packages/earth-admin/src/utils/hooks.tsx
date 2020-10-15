@@ -19,8 +19,8 @@
 
 import { groupBy } from 'lodash';
 import { noop } from 'lodash/fp';
-import { useSWRInfinite } from 'swr';
 import qs from 'query-string';
+import { useSWRInfinite } from 'swr';
 
 import { generateCacheKey, RequestQuery } from '@app/services';
 

@@ -1,9 +1,9 @@
 import { Auth0Context } from 'auth/auth0';
 import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
+import { capitalize, identity, omit, pickBy } from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Link from 'redux-first-router-link';
-import { pickBy, identity, capitalize, omit } from 'lodash';
 import ProfileService from 'services/ProfileService';
 import { APP_LOGO } from 'theme';
 

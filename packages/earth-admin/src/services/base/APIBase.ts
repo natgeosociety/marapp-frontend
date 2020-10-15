@@ -19,10 +19,10 @@
 
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { merge } from 'lodash/fp';
+import { Deserializer } from 'ts-jsonapi';
 
 import { GATSBY_API_URL } from '@app/config';
 import { encodeQueryToURL } from '@app/utils';
-const JSONAPIDeserializer = require('ts-jsonapi').Deserializer;
 
 export interface RequestQuery {
   [key: string]: any;
@@ -36,7 +36,7 @@ export interface RequestConfig {
 
 const TIMEOUT = 30000;
 
-export const DeserializerService = new JSONAPIDeserializer({
+export const DeserializerService = new Deserializer({
   keyForAttribute: (attribute: any) => {
     return attribute;
   },
