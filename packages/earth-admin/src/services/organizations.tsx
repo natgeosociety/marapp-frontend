@@ -34,7 +34,7 @@ const getOrganization = (orgId: string, query?: RequestQuery) => {
 };
 
 const getOrganizationStats = async (query?: RequestQuery) => {
-  return BaseAPIService.request('/organizations/stats', { query, metaDeserializer });
+  return BaseAPIService.request('/organizations/stats', { query }, metaDeserializer);
 };
 
 const updateOrganization = async (orgId: string, data: any, query?: RequestQuery) => {
