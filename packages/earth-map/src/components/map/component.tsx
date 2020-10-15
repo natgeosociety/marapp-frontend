@@ -25,6 +25,7 @@ import experienceIMG from 'images/pins/experience-marker.svg';
 import debounce from 'lodash/debounce';
 import React, { useContext } from 'react';
 import isEqual from 'react-fast-compare';
+import Link from 'redux-first-router-link';
 import { APP_ABOUT } from 'theme';
 
 import { Map, Spinner, UserMenu } from '@marapp/earth-shared';
@@ -357,6 +358,7 @@ function UserMenuWrapper(props) {
     <UserMenu
       selected={selected}
       isAuthenticated={isAuthenticated}
+      profileLink={<Link to={{ type: 'PROFILE' }}>Profile</Link>}
       onLogin={login}
       onLogout={logout}
       onSignUp={() => login({ initialScreen: 'signUp' })}
