@@ -64,12 +64,12 @@ export const BaseAPIService = {
       timeout: TIMEOUT,
     };
 
-    return axios
-      .request(options)
-      .then((response) => deserializer(response))
-      .catch((err) => {
-        throw new Error(err);
-      });
+    return new Promise((resolve, reject) => {
+      axios
+        .request(options)
+        .then((response) => resolve(deserializer(response)))
+        .catch((error) => reject(error?.response));
+    });
   },
   /**
    * JSON:API deserializer
