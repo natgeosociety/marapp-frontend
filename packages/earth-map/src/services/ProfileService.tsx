@@ -27,8 +27,48 @@ const updateProfile = async (data: any, query?: RequestQuery): Promise<any> => {
   return BaseAPIService.request('/users/profile', { query, method: 'put', data }, metaDeserializer);
 };
 
+const changeEmail = async (data: any, query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request(
+    '/users/profile/change-email',
+    { method: 'post', query, data },
+    metaDeserializer
+  );
+};
+
 const changeEmailConfirmation = async (query?: RequestQuery): Promise<any> => {
   return BaseAPIService.request('/users/profile/change-email', { query }, metaDeserializer);
 };
 
-export default { fetchProfile, updateProfile, changeEmailConfirmation };
+const cancelEmailChange = async (query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request(
+    'users/profile/change-email',
+    { method: 'delete', query },
+    metaDeserializer
+  );
+};
+
+const resetPassword = async (query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request(
+    '/users/profile/change-password',
+    { method: 'post', query },
+    metaDeserializer
+  );
+};
+
+const leaveOrganizations = async (data: any, query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request(
+    '/users/profile/organizations',
+    { method: 'post', query, data },
+    metaDeserializer
+  );
+};
+
+export default {
+  fetchProfile,
+  updateProfile,
+  changeEmail,
+  changeEmailConfirmation,
+  cancelEmailChange,
+  resetPassword,
+  leaveOrganizations,
+};

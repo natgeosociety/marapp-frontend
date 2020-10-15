@@ -40,7 +40,7 @@ export default function ChangeEmailComponent() {
 
         if (accessToken) {
           const response = await ProfileService.changeEmailConfirmation({ accessToken });
-          if (response && response?.success) {
+          if (response && response?.data?.success) {
             alert('Email change successful. Please login using the new credentials.');
             // Auth0 sessions are reset when a user’s email or password changes;
             // force a re-login if email change request successful;
@@ -56,7 +56,7 @@ export default function ChangeEmailComponent() {
       } catch (e) {
         console.error(e);
       } finally {
-        replace('/earth');
+        replace('/profile');
       }
     })();
   });
