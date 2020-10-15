@@ -23,7 +23,7 @@ yarn start --scope @marapp/earth-map
 Initialize the dependencies and link any cross-dependencies between the modules.
 
 ```
-yarn install && yarn bootstrap
+yarn bootstrap
 ```
 
 Bootstrap the packages in the current Lerna repo. Installs all of their dependencies and links any cross-dependencies.
