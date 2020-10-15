@@ -21,15 +21,15 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { setup } from 'axios-cache-adapter';
 import { API_URL } from 'config';
 import Jsona, { SwitchCaseJsonMapper, SwitchCaseModelMapper } from 'jsona';
-import { encodeQueryToURL } from 'utils/query';
 import { deserializeData } from 'utils';
+import { encodeQueryToURL } from 'utils/query';
 
 /**
  * Users service class.
  */
 class UsersService {
-  private dataFormatter: Jsona;
   public api: AxiosInstance;
+  private dataFormatter: Jsona;
 
   constructor() {
     this.configure();
@@ -64,11 +64,23 @@ class UsersService {
 
 export const service = new UsersService();
 
-export function changeEmailConfirmation(options = {}) {
-  const query = encodeQueryToURL(`/users/profile/change-email`, options);
+export function changeEmail(options = {}) {
   return service.request({
-    url: query,
-    method: 'get',
+    url: '/users/profile/change-email',
+    method: 'post',
+    data: options,
+  });
+}
+
+export function changeEmailConfirmation(options = {}) {
+  const emailQuery = encodeQueryToURL(`/users/profile/change-email`, options);
+  return service.request({ url: emailQuery });
+}
+
+export function cancelEmailChange(options = {}) {
+  return service.request({
+    url: 'users/profile/change-email',
+    method: 'delete',
   });
 }
 

@@ -2,7 +2,14 @@ import { Auth0Context } from 'auth/auth0';
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'redux-first-router-link';
 import { pickBy, identity, capitalize, omit } from 'lodash';
-import { fetchProfile, updateProfile, resetPassword, leaveOrganizations } from 'services/users';
+import {
+  fetchProfile,
+  updateProfile,
+  resetPassword,
+  leaveOrganizations,
+  cancelEmailChange,
+  changeEmail,
+} from 'services/users';
 import { APP_LOGO } from 'theme';
 import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
 
@@ -14,6 +21,7 @@ import {
   Input,
   setupErrors,
   validEmailRule,
+  valueChangedRule,
 } from '@marapp/earth-shared';
 
 interface IProps {
@@ -37,6 +45,8 @@ export function ProfileComponent(props: IProps) {
   const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
+  const [pendingEmail, setPendingEmail] = useState(null);
+  const [serverErrors, setServerErrors] = useState();
   const [userProfile, setUserProfile] = useState({
     firstName: '',
     lastName: '',
@@ -77,6 +87,8 @@ export function ProfileComponent(props: IProps) {
       setUserProfile(profile.data);
       processUserName(profile.data);
       groupRolesByOrganization(profile.data.groups);
+
+      profile.data?.pendingEmail && setPendingEmail(profile.data.pendingEmail);
 
       setIsLoading(false);
     })();
@@ -136,6 +148,34 @@ export function ProfileComponent(props: IProps) {
       setIsLoading && setIsLoading(false);
     } catch (error) {
       setIsLoading && setIsLoading(false);
+      setServerErrors && setServerErrors(error.data?.errors);
+    }
+  }
+
+  async function onEmailChange(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
+    e.preventDefault();
+    const formData = getValues();
+
+    try {
+      setIsLoading && setIsLoading(true);
+      const result: any = await changeEmail(formData);
+      setPendingEmail(result.data.pendingEmail);
+      setIsEditing && setIsEditing(false);
+      setIsLoading && setIsLoading(false);
+    } catch (error) {
+      setIsLoading && setIsLoading(false);
+      setServerErrors && setServerErrors(error.data?.errors);
+    }
+  }
+
+  async function onCancelEmailChange(e) {
+    e.preventDefault();
+
+    try {
+      const result: any = await cancelEmailChange();
+      setUserProfile(result.data);
+      setPendingEmail(null);
+    } catch (error) {
       setServerErrors && setServerErrors(error.data?.errors);
     }
   }
@@ -237,40 +277,68 @@ export function ProfileComponent(props: IProps) {
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard
-                // render={({ setIsEditing, setIsLoading, setServerErrors }) => (
-                //   <>
-                //     <div className="ng-margin-medium-bottom">
-                //       <Input
-                //         name="email"
-                //         placeholder="Email"
-                //         label="Email*"
-                //         className="marapp-qa-inputemail ng-display-block ng-margin-medium-bottom"
-                //         defaultValue={userData.email}
-                //         error={renderErrorFor('email')}
-                //         ref={register({
-                //           required: 'Please enter a valid email',
-                //           validate: {
-                //             validEmailRule: validEmailRule(),
-                //           },
-                //         })}
-                //       />
-                //     </div>
-                //     <div className="ng-margin-medium-bottom">
-                //       <p>
-                //         After saving, we will send an email to your new email address to confirm
-                //         the change.
-                //         <br />
-                //         Be sure to check your spam folder if you do not receive the email in a few
-                //         minutes.
-                //       </p>
-                //     </div>
-                //   </>
-                // )}
+                  onSubmit={onEmailChange}
+                  validForm={isValid}
+                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                    <>
+                      <div className="ng-margin-medium-bottom">
+                        <Input
+                          name="email"
+                          placeholder="Email"
+                          label="Email*"
+                          className="marapp-qa-inputemail ng-display-block ng-margin-medium-bottom"
+                          defaultValue={userData.email}
+                          error={renderErrorFor('email')}
+                          ref={register({
+                            required: 'Please enter a valid email',
+                            validate: {
+                              valueChangedRule: (value) => valueChangedRule(value, userData.email),
+                              validEmailRule: validEmailRule(),
+                            },
+                          })}
+                        />
+                      </div>
+                      <div className="ng-margin-medium-bottom">
+                        <p>
+                          After saving, we will send an email to your new email address to confirm
+                          the change.
+                          <br />
+                          Be sure to check your spam folder if you do not receive the email in a few
+                          minutes.
+                        </p>
+                      </div>
+                    </>
+                  )}
                 >
-                  <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                    Email
-                  </h3>
-                  <p className="ng-margin-remove">{userData.email}</p>
+                  {!pendingEmail && (
+                    <>
+                      <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                        Email
+                      </h3>
+                      {pendingEmail}
+                      <p className="ng-margin-remove">{userData.email}</p>
+                    </>
+                  )}
+                  {pendingEmail && (
+                    <>
+                      <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                        Current email
+                      </h3>
+                      <p className="ng-margin-remove">{userData.email}</p>
+                      <br />
+                      <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                        New Email (Pending Confirmation)
+                        <button
+                          onClick={onCancelEmailChange}
+                          type="button"
+                          className="marapp-qa-actioncancelupdate ng-button ng-button-link ng-text-transform-remove ng-color-mdgray ng-margin-small-left"
+                        >
+                          cancel update
+                        </button>
+                      </h3>
+                      <p className="ng-margin-remove">{pendingEmail}</p>
+                    </>
+                  )}
                 </InlineEditCard>
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
