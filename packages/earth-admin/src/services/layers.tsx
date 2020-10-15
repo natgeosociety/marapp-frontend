@@ -17,15 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { isString, merge } from 'lodash/fp';
-import qs from 'query-string';
+import { merge } from 'lodash/fp';
 
 import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
 const getAllLayers = async (query?: string | RequestQuery) => {
-  if (isString(query)) {
-    query = qs.parse(query);
-  }
   return BaseAPIService.request('/layers', { query }, metaDeserializer);
 };
 

@@ -20,6 +20,7 @@
 import { groupBy } from 'lodash';
 import { noop } from 'lodash/fp';
 import { useSWRInfinite } from 'swr';
+import qs from 'query-string';
 
 import { generateCacheKey, RequestQuery } from '@app/services';
 
@@ -34,14 +35,20 @@ export function useInfiniteList(
   fetcher: (any) => Promise<any>,
   options: object = {}
 ) {
-  const swrKeyLoader = (pageIndex: number, previousPage: any): string => {
+  const wrappedGetQuery = (pageIndex: number, previousPage: any): string => {
     if (previousPage && !previousPage.data) {
       return null; // reached the end;
     }
     const cursor = pageIndex === 0 ? -1 : previousPage?.meta?.pagination?.nextCursor;
-
     const { query, resourceType } = getQueryFn(cursor);
+
     return generateCacheKey(resourceType, query);
+  };
+  const wrappedFetcher = async (url) => {
+    const [resource, query] = url.split('?');
+    const parsed = qs.parse(query);
+
+    return fetcher(parsed);
   };
 
   const {
@@ -52,7 +59,7 @@ export function useInfiniteList(
     setSize,
     mutate,
     revalidate,
-  } = useSWRInfinite(swrKeyLoader, fetcher, options);
+  } = useSWRInfinite(wrappedGetQuery, wrappedFetcher, options);
 
   const items = mergePages(response);
   const [firstPage = {}] = response;
@@ -92,10 +99,16 @@ export function useInfiniteListPaged(
   fetcher: (any) => Promise<any>,
   options: object = {}
 ) {
-  const swrKeyLoader = (pageIndex: number): string => {
+  const wrappedGetQuery = (pageIndex: number): string => {
     const offsetPageIndex = pageIndex + 1;
     const { query, resourceType } = getQueryFn(offsetPageIndex);
     return generateCacheKey(resourceType, query);
+  };
+  const wrappedFetcher = async (url) => {
+    const [resource, query] = url.split('?');
+    const parsed = qs.parse(query);
+
+    return fetcher(parsed);
   };
 
   const {
@@ -106,7 +119,7 @@ export function useInfiniteListPaged(
     setSize,
     mutate,
     revalidate,
-  } = useSWRInfinite(swrKeyLoader, fetcher, options);
+  } = useSWRInfinite(wrappedGetQuery, wrappedFetcher, options);
 
   const items = mergePages(response);
   const isNoMore = items?.data.length >= items?.meta?.results;
