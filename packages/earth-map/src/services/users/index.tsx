@@ -108,4 +108,12 @@ export function resetPassword(options = {}) {
   });
 }
 
+export function leaveOrganizations(options = {}) {
+  return service.request({
+    url: `/users/profile/organizations`,
+    method: 'post',
+    data: options,
+  });
+}
+
 export default service;
