@@ -17,9 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { isString } from 'lodash/fp';
+import qs from 'query-string';
+
 import { BaseAPIService, RequestQuery } from './base/APIBase';
 
-const getAllUsers = async (query?: RequestQuery) => {
+const getAllUsers = async (query?: string | RequestQuery) => {
+  if (isString(query)) {
+    query = qs.parse(query);
+  }
   return BaseAPIService.request('/users', {
     query,
   });

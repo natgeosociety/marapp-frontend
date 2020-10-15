@@ -30,7 +30,7 @@ import { generateCacheKey, RequestQuery } from '@app/services';
  * @param options:
  */
 export function useInfiniteList(
-  getQueryFn: (cursor: number | string) => { query: RequestQuery; resourceType: string },
+  getQueryFn: (cursor: string) => { query: RequestQuery; resourceType: string },
   fetcher: (any) => Promise<any>,
   options: object = {}
 ) {
@@ -41,7 +41,7 @@ export function useInfiniteList(
     const cursor = pageIndex === 0 ? -1 : previousPage.pagination.nextCursor;
 
     const { query, resourceType } = getQueryFn(cursor);
-    return generateCacheKey(`${resourceType}/${pageIndex}`, query);
+    return generateCacheKey(resourceType, query);
   };
 
   const {

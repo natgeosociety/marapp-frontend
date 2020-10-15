@@ -45,15 +45,18 @@ export function UsersHome(props: any) {
   const [serverErrors, setServerErrors] = useState([]);
   const [usersFeedback, setUsersFeedback] = useState([]);
 
-  const getQuery = (pageIndex) => {
+  const getQueryFn = (pageIndex) => {
     const query = {
       page: { size: PAGE_SIZE, number: pageIndex },
       group: selectedGroup,
       include: 'groups',
     };
-    return encodeQueryToURL('users', query);
+    return { query, resourceType: 'users' };
   };
-  const { listProps: userListProps, mutate } = useInfiniteListPaged(getQuery, getAllUsers);
+  const { listProps: userListProps, mutate } = useInfiniteListPaged(
+    getQueryFn,
+    UsersService.getAllUsers
+  );
 
   const { watch, setValue, control, getValues } = useForm({
     mode: 'onChange',

@@ -39,7 +39,7 @@ export default function PlacesPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
 
-  const getQueryFn = (cursor: string | number): { query: RequestQuery; resourceType: string } => {
+  const getQueryFn = (cursor: string): { query: RequestQuery; resourceType: string } => {
     const query = {
       search: searchValue,
       sort: 'name',

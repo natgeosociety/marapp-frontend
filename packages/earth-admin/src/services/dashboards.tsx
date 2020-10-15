@@ -17,14 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { merge } from 'lodash/fp';
+import { isString, merge } from 'lodash/fp';
+import qs from 'query-string';
 
 import { BaseAPIService, RequestQuery } from './base/APIBase';
 
-const getAllDashboards = async (dashboardQuery: string) => {
-  return BaseAPIService.request({
-    url: dashboardQuery,
-  });
+const getAllDashboards = async (query?: string | RequestQuery) => {
+  if (isString(query)) {
+    query = qs.parse(query);
+  }
+  return BaseAPIService.request('/dashboards', { query });
 };
 
 const addDashboard = async (data: any, query?: RequestQuery) => {

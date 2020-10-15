@@ -38,8 +38,8 @@ const PAGE_SIZE = 20;
 export default function DashboardsPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
-  earth - admin / src / services / base;
-  const getQueryFn = (cursor: string | number): { query: RequestQuery; resourceType: string } => {
+
+  const getQueryFn = (cursor: string): { query: RequestQuery; resourceType: string } => {
     const query = {
       search: searchValue,
       sort: 'name',
