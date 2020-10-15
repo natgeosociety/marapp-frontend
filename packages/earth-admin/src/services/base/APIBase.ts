@@ -18,9 +18,9 @@
 */
 
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { GATSBY_API_URL } from 'config';
 import { merge } from 'lodash/fp';
 
+import { GATSBY_API_URL } from '@app/config';
 import { encodeQueryToURL } from '@app/utils';
 const JSONAPIDeserializer = require('ts-jsonapi').Deserializer;
 

@@ -26,7 +26,7 @@ import { ErrorMessages } from '@marapp/earth-shared';
 
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { SearchInput } from '@app/components/search-input';
-import { handleUserForm } from '@app/services/users';
+import UsersService from '@app/services/users';
 import { Auth0Context } from '@app/utils/contexts';
 
 import { UserEditProps } from '../model';
@@ -49,7 +49,9 @@ export default function UserEdit(props: UserEditProps) {
     const formData = getValues();
 
     try {
-      await handleUserForm(false, { groups: selectedGroups }, id || formData.email, selectedGroup);
+      await UsersService.handleUserForm(false, { groups: selectedGroups }, id || formData.email, {
+        group: selectedGroup,
+      });
       onDataChange();
       await navigate(`/${selectedGroup}/users`);
     } catch (error) {

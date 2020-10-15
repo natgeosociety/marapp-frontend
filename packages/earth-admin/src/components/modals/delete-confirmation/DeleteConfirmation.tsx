@@ -24,14 +24,12 @@ import React from 'react';
 import { Modal } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import {
-  deleteDashboards,
-  deleteLayer,
-  deleteOrganization,
-  deletePlace,
-  deleteUser,
-  deleteWidgets,
-} from '@app/services';
+import DashboardsService from '@app/services/dashboards';
+import LayersService from '@app/services/layers';
+import OrganizationsService from '@app/services/organizations';
+import PlacesService from '@app/services/places';
+import UsersService from '@app/services/users';
+import WidgetsService from '@app/services/widgets';
 
 interface IProps {
   id: string;
@@ -64,27 +62,27 @@ export const DeleteConfirmation = (props: IProps) => {
     try {
       switch (navigateRoute) {
         case 'dashboards': {
-          await deleteDashboards(id, selectedGroup);
+          await DashboardsService.deleteDashboards(id, { group: selectedGroup });
           break;
         }
         case 'layers': {
-          await deleteLayer(id, selectedGroup);
+          await LayersService.deleteLayer(id, { group: selectedGroup });
           break;
         }
         case 'places': {
-          await deletePlace(id, selectedGroup);
+          await PlacesService.deletePlace(id, { group: selectedGroup });
           break;
         }
         case 'widgets': {
-          await deleteWidgets(id, selectedGroup);
+          await WidgetsService.deleteWidgets(id, { group: selectedGroup });
           break;
         }
         case 'users': {
-          await deleteUser(id, selectedGroup);
+          await UsersService.deleteUser(id, { group: selectedGroup });
           break;
         }
         case 'organizations': {
-          await deleteOrganization(id);
+          await OrganizationsService.deleteOrganization(id);
           break;
         }
       }
