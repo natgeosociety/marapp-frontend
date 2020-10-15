@@ -20,41 +20,53 @@
 import { isString, merge } from 'lodash/fp';
 import qs from 'query-string';
 
-import { BaseAPIService, RequestQuery } from './base/APIBase';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
 const getAllOrganizations = async (query?: string | RequestQuery) => {
   if (isString(query)) {
     query = qs.parse(query);
   }
-  return BaseAPIService.request('/organizations', { query });
+  return BaseAPIService.request('/organizations', { query }, metaDeserializer);
 };
 
 const getOrganization = (orgId: string, query?: RequestQuery) => {
-  return BaseAPIService.request(`/organizations/${orgId}`, { query });
+  return BaseAPIService.request(`/organizations/${orgId}`, { query }, metaDeserializer);
 };
 
 const getOrganizationStats = async (query?: RequestQuery) => {
-  return BaseAPIService.request('/organization/stats', { query });
+  return BaseAPIService.request('/organizations/stats', { query, metaDeserializer });
 };
 
 const updateOrganization = async (orgId: string, data: any, query?: RequestQuery) => {
   const params = { include: 'owners' };
-  return BaseAPIService.request(`/organizations/${orgId}`, {
-    query: merge(params, query),
-    method: 'put',
-    data,
-  });
+  return BaseAPIService.request(
+    `/organizations/${orgId}`,
+    {
+      query: merge(params, query),
+      method: 'put',
+      data,
+    },
+    metaDeserializer
+  );
 };
 
 const addOrganization = async (data: any, query?: RequestQuery) => {
-  return BaseAPIService.request('/organizations', { query, method: 'post', data });
+  return BaseAPIService.request(
+    '/organizations',
+    { query, method: 'post', data },
+    metaDeserializer
+  );
 };
 
 const deleteOrganization = async (orgId, query?: RequestQuery) => {
-  return BaseAPIService.request(`/organizations/${orgId}`, {
-    method: 'delete',
-    query,
-  });
+  return BaseAPIService.request(
+    `/organizations/${orgId}`,
+    {
+      method: 'delete',
+      query,
+    },
+    metaDeserializer
+  );
 };
 
 export default {

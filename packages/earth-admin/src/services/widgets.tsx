@@ -20,49 +20,69 @@
 import { isString, merge } from 'lodash/fp';
 import qs from 'query-string';
 
-import { BaseAPIService, RequestQuery } from './base/APIBase';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
 const getAllWidgets = async (query?: string | RequestQuery) => {
   if (isString(query)) {
     query = qs.parse(query);
   }
-  return BaseAPIService.request('/widgets', {
-    query,
-  });
+  return BaseAPIService.request(
+    '/widgets',
+    {
+      query,
+    },
+    metaDeserializer
+  );
 };
 
 const addWidget = async (data: any, query?: RequestQuery) => {
-  return BaseAPIService.request('/widgets', {
-    query,
-    method: 'post',
-    data,
-  });
+  return BaseAPIService.request(
+    '/widgets',
+    {
+      query,
+      method: 'post',
+      data,
+    },
+    metaDeserializer
+  );
 };
 
 const getWidget = async (widgetId: string, query?: RequestQuery) => {
-  return BaseAPIService.request(`/widgets/${widgetId}`, {
-    query,
-  });
+  return BaseAPIService.request(
+    `/widgets/${widgetId}`,
+    {
+      query,
+    },
+    metaDeserializer
+  );
 };
 
 const updateWidget = async (widgetId: string, data: any, query?: RequestQuery) => {
-  return BaseAPIService.request(`/widgets/${widgetId}`, {
-    query,
-    method: 'put',
-    data,
-  });
+  return BaseAPIService.request(
+    `/widgets/${widgetId}`,
+    {
+      query,
+      method: 'put',
+      data,
+    },
+    metaDeserializer
+  );
 };
 
 const deleteWidgets = async (widgetId: string, query?: RequestQuery) => {
-  return BaseAPIService.request(`/widgets/${widgetId}`, {
-    query,
-    method: 'delete',
-  });
+  return BaseAPIService.request(
+    `/widgets/${widgetId}`,
+    {
+      query,
+      method: 'delete',
+    },
+    metaDeserializer
+  );
 };
 
 const getWidgetSlug = async (keyword: string, query?: RequestQuery) => {
   const params = { keyword, type: 'counter' };
-  return BaseAPIService.request('/widgets/slug', { query: merge(params, query) });
+  return BaseAPIService.request('/widgets/slug', { query: merge(params, query) }, metaDeserializer);
 };
 
 const handleWidgetForm = async (

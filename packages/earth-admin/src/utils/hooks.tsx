@@ -38,7 +38,7 @@ export function useInfiniteList(
     if (previousPage && !previousPage.data) {
       return null; // reached the end;
     }
-    const cursor = pageIndex === 0 ? -1 : previousPage.pagination.nextCursor;
+    const cursor = pageIndex === 0 ? -1 : previousPage?.meta?.pagination?.nextCursor;
 
     const { query, resourceType } = getQueryFn(cursor);
     return generateCacheKey(resourceType, query);
@@ -57,13 +57,13 @@ export function useInfiniteList(
   const items = mergePages(response);
   const [firstPage = {}] = response;
   const lastPage = response[response.length - 1] || {};
-  const totalResults = firstPage.total;
-  const filters = firstPage.filters || [];
+  const totalResults = firstPage?.meta?.results;
+  const filters = firstPage?.meta?.filters || [];
   const filtersWithLabel = filters.map((f) => ({
     ...f,
     label: f.value,
   }));
-  const isNoMore = !lastPage?.pagination?.nextCursor;
+  const isNoMore = !lastPage?.meta?.pagination?.nextCursor;
   const awaitMore = !isValidating && !isNoMore;
 
   const returnValues = {
@@ -95,7 +95,7 @@ export function useInfiniteListPaged(
   const swrKeyLoader = (pageIndex: number): string => {
     const offsetPageIndex = pageIndex + 1;
     const { query, resourceType } = getQueryFn(offsetPageIndex);
-    return generateCacheKey(`${resourceType}/${pageIndex}`, query);
+    return generateCacheKey(resourceType, query);
   };
 
   const {
@@ -109,8 +109,8 @@ export function useInfiniteListPaged(
   } = useSWRInfinite(swrKeyLoader, fetcher, options);
 
   const items = mergePages(response);
-  const isNoMore = items.data.length >= items.total;
-  const totalResults = items.total;
+  const isNoMore = items?.data.length >= items?.meta?.results;
+  const totalResults = items?.meta?.results;
   const awaitMore = !isValidating && !isNoMore;
 
   const returnValues = {
@@ -135,12 +135,15 @@ export function useInfiniteListPaged(
 
 interface IMergedResults {
   data: any[];
-  pagination?: {
-    size: number;
-    total: number;
-    nextCursor?: string;
+  meta: {
+    filters: Array<{ key: string; value: any; count: number }>;
+    pagination?: {
+      size: number;
+      total: number;
+      nextCursor?: string;
+    };
+    results?: number;
   };
-  total?: number;
 }
 
 /**

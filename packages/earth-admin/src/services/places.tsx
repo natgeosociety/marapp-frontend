@@ -20,47 +20,67 @@
 import { isString, merge } from 'lodash/fp';
 import qs from 'query-string';
 
-import { BaseAPIService, RequestQuery } from './base/APIBase';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
 const getAllPlaces = async (query?: string | RequestQuery) => {
   if (isString(query)) {
     query = qs.parse(query);
   }
-  return BaseAPIService.request('/locations', { query });
+  return BaseAPIService.request('/locations', { query }, metaDeserializer);
 };
 
 const addPlace = async (data: any, query?: RequestQuery) => {
-  return BaseAPIService.request('/locations', {
-    query,
-    method: 'post',
-    data,
-  });
+  return BaseAPIService.request(
+    '/locations',
+    {
+      query,
+      method: 'post',
+      data,
+    },
+    metaDeserializer
+  );
 };
 
 const getPlace = (placeId: string, query?: RequestQuery) => {
-  return BaseAPIService.request(`/locations/${placeId}`, {
-    query,
-  });
+  return BaseAPIService.request(
+    `/locations/${placeId}`,
+    {
+      query,
+    },
+    metaDeserializer
+  );
 };
 
 const updatePlace = async (placeId: string, data: any, query?: RequestQuery) => {
-  return BaseAPIService.request(`/locations/${placeId}`, {
-    method: 'put',
-    data,
-    query,
-  });
+  return BaseAPIService.request(
+    `/locations/${placeId}`,
+    {
+      method: 'put',
+      data,
+      query,
+    },
+    metaDeserializer
+  );
 };
 
 const deletePlace = async (placeId: string, query?: RequestQuery) => {
-  return BaseAPIService.request(`/locations/${placeId}`, {
-    method: 'delete',
-    query,
-  });
+  return BaseAPIService.request(
+    `/locations/${placeId}`,
+    {
+      method: 'delete',
+      query,
+    },
+    metaDeserializer
+  );
 };
 
 const getPlaceSlug = async (keyword: string, query?: RequestQuery) => {
   const params = { keyword, type: 'counter' };
-  return BaseAPIService.request('/locations/slug', { query: merge(params, query) });
+  return BaseAPIService.request(
+    '/locations/slug',
+    { query: merge(params, query) },
+    metaDeserializer
+  );
 };
 
 const handlePlaceForm = async (

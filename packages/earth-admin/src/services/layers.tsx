@@ -20,34 +20,42 @@
 import { isString, merge } from 'lodash/fp';
 import qs from 'query-string';
 
-import { BaseAPIService, RequestQuery } from './base/APIBase';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
 const getAllLayers = async (query?: string | RequestQuery) => {
   if (isString(query)) {
     query = qs.parse(query);
   }
-  return BaseAPIService.request('/layers', { query });
+  return BaseAPIService.request('/layers', { query }, metaDeserializer);
 };
 
 const addLayer = async (data: any, query?: RequestQuery) => {
-  return BaseAPIService.request('/layers', { query, method: 'post', data });
+  return BaseAPIService.request('/layers', { query, method: 'post', data }, metaDeserializer);
 };
 
 const getLayer = (layerId: string, query?: RequestQuery) => {
-  return BaseAPIService.request(`/layers/${layerId}`, { query });
+  return BaseAPIService.request(`/layers/${layerId}`, { query }, metaDeserializer);
 };
 
 const updateLayer = async (layerId: string, data: any, query?: RequestQuery) => {
-  return BaseAPIService.request(`/layers/${layerId}`, { query, method: 'put', data });
+  return BaseAPIService.request(
+    `/layers/${layerId}`,
+    { query, method: 'put', data },
+    metaDeserializer
+  );
 };
 
 const deleteLayer = async (layerId: string, query?: RequestQuery) => {
-  return BaseAPIService.request(`/layers/${layerId}`, { query, method: 'delete' });
+  return BaseAPIService.request(
+    `/layers/${layerId}`,
+    { query, method: 'delete' },
+    metaDeserializer
+  );
 };
 
 const getLayerSlug = async (keyword: string, query?: RequestQuery) => {
   const params = { keyword, type: 'counter' };
-  return BaseAPIService.request('/layers/slug', { query: merge(params, query) });
+  return BaseAPIService.request('/layers/slug', { query: merge(params, query) }, metaDeserializer);
 };
 
 const handleLayerForm = async (

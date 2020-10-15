@@ -20,48 +20,68 @@
 import { isString } from 'lodash/fp';
 import qs from 'query-string';
 
-import { BaseAPIService, RequestQuery } from './base/APIBase';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
 const getAllUsers = async (query?: string | RequestQuery) => {
   if (isString(query)) {
     query = qs.parse(query);
   }
-  return BaseAPIService.request('/users', {
-    query,
-  });
+  return BaseAPIService.request(
+    '/users',
+    {
+      query,
+    },
+    metaDeserializer
+  );
 };
 
 const addUsers = async (data: any, query?: RequestQuery) => {
-  return BaseAPIService.request('/users', {
-    method: 'put',
-    data,
-    query,
-  });
+  return BaseAPIService.request(
+    '/users',
+    {
+      method: 'put',
+      data,
+      query,
+    },
+    metaDeserializer
+  );
 };
 
 const getUser = (userId: string, query?: RequestQuery) => {
-  return BaseAPIService.request(`/users/${userId}`, {
-    query,
-  });
+  return BaseAPIService.request(
+    `/users/${userId}`,
+    {
+      query,
+    },
+    metaDeserializer
+  );
 };
 
 const getAvailableGroups = async (query?: RequestQuery) => {
-  return BaseAPIService.request('/users/groups', { query });
+  return BaseAPIService.request('/users/groups', { query }, metaDeserializer);
 };
 
 const updateUser = async (userId: string, data: any, query?: RequestQuery) => {
-  return BaseAPIService.request(`/users/${userId}`, {
-    method: 'put',
-    data,
-    query,
-  });
+  return BaseAPIService.request(
+    `/users/${userId}`,
+    {
+      method: 'put',
+      data,
+      query,
+    },
+    metaDeserializer
+  );
 };
 
 const deleteUser = async (userId: string, query?: RequestQuery) => {
-  return BaseAPIService.request(`/users/${userId}`, {
-    method: 'delete',
-    query,
-  });
+  return BaseAPIService.request(
+    `/users/${userId}`,
+    {
+      method: 'delete',
+      query,
+    },
+    metaDeserializer
+  );
 };
 
 const handleUserForm = async (

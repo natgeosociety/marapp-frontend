@@ -20,38 +20,50 @@
 import { isString, merge } from 'lodash/fp';
 import qs from 'query-string';
 
-import { BaseAPIService, RequestQuery } from './base/APIBase';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
 const getAllDashboards = async (query?: string | RequestQuery) => {
   if (isString(query)) {
     query = qs.parse(query);
   }
-  return BaseAPIService.request('/dashboards', { query });
+  return BaseAPIService.request('/dashboards', { query }, metaDeserializer);
 };
 
 const addDashboard = async (data: any, query?: RequestQuery) => {
-  return BaseAPIService.request('/dashboards', { query, method: 'post', data });
+  return BaseAPIService.request('/dashboards', { query, method: 'post', data }, metaDeserializer);
 };
 
 const getDashboard = async (dashboardId: string, query?: RequestQuery) => {
-  return BaseAPIService.request(`/dashboards/${dashboardId}`, { query });
+  return BaseAPIService.request(`/dashboards/${dashboardId}`, { query }, metaDeserializer);
 };
 
 const updateDashboard = async (dashboardId: string, data: any, query?: RequestQuery) => {
-  return BaseAPIService.request(`/dashboards/${dashboardId}`, {
-    method: 'put',
-    data,
-    query,
-  });
+  return BaseAPIService.request(
+    `/dashboards/${dashboardId}`,
+    {
+      method: 'put',
+      data,
+      query,
+    },
+    metaDeserializer
+  );
 };
 
 const deleteDashboards = async (dashboardId: string, query?: RequestQuery) => {
-  return BaseAPIService.request(`/dashboards/${dashboardId}`, { query, method: 'delete' });
+  return BaseAPIService.request(
+    `/dashboards/${dashboardId}`,
+    { query, method: 'delete' },
+    metaDeserializer
+  );
 };
 
 const getDashboardSlug = async (keyword: string, query?: RequestQuery) => {
   const params = { keyword, type: 'counter' };
-  return BaseAPIService.request('/dashboards/slug', { query: merge(params, query) });
+  return BaseAPIService.request(
+    '/dashboards/slug',
+    { query: merge(params, query) },
+    metaDeserializer
+  );
 };
 
 const handleDashboardForm = async (

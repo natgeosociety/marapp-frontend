@@ -19,7 +19,7 @@
 
 import { merge } from 'lodash/fp';
 
-import { BaseAPIService, RequestQuery } from './base/APIBase';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
 interface ResponseSuccess {
   operationId?: string;
@@ -40,10 +40,14 @@ const calculateAllForPlace = async (
   query?: RequestQuery
 ): Promise<ResponseSuccess | ResponseError> => {
   const params = { operationType: 'calculate' };
-  return BaseAPIService.request(`/metrics/${placeId}/action`, {
-    query: merge(params, query),
-    method: 'post',
-  });
+  return BaseAPIService.request(
+    `/metrics/${placeId}/action`,
+    {
+      query: merge(params, query),
+      method: 'post',
+    },
+    metaDeserializer
+  );
 };
 
 const calculateForPlace = async (
@@ -52,14 +56,18 @@ const calculateForPlace = async (
   query?: RequestQuery
 ): Promise<ResponseSuccess | ResponseError> => {
   const params = { operationType: 'calculate' };
-  return BaseAPIService.request(`/metrics/${placeId}/${metricId}/action`, {
-    query: merge(params, query),
-    method: 'post',
-  });
+  return BaseAPIService.request(
+    `/metrics/${placeId}/${metricId}/action`,
+    {
+      query: merge(params, query),
+      method: 'post',
+    },
+    metaDeserializer
+  );
 };
 
 const getAllMetrics = async (query?: RequestQuery) => {
-  return BaseAPIService.request('/metrics', { query });
+  return BaseAPIService.request('/metrics', { query }, metaDeserializer);
 };
 
 export default { calculateAllForPlace, calculateForPlace, getAllMetrics };
