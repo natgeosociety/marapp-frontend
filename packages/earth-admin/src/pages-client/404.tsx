@@ -1,21 +1,18 @@
 import React from 'react';
 
-import { ErrorTemplate } from '@marapp/earth-shared';
+import { NotFound } from '@marapp/earth-shared';
+import { GATSBY_APP_BASE_URL } from '@app/config';
+import { APP_NAME } from '../theme';
+import { navigate } from 'gatsby';
 
-import { LinkWithOrg } from '@app/components/link-with-org';
+const NotFoundPage = () => {
+  const returnToHome = () => {
+    navigate(GATSBY_APP_BASE_URL);
+  };
 
-const NotFound = () => {
   return (
-    <ErrorTemplate type="404" message="Sorry we couldn't find that page.">
-      <ul className="not-found--links--list">
-        <li>
-          <LinkWithOrg to="/" className="-light -fullwidth c-button marapp-qa-actionreturn">
-            Home
-          </LinkWithOrg>
-        </li>
-      </ul>
-    </ErrorTemplate>
+    <NotFound returnToHome={returnToHome} aboutLink={GATSBY_APP_BASE_URL} appName={APP_NAME} />
   );
 };
 
-export default NotFound;
+export default NotFoundPage;
