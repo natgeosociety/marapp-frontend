@@ -42,4 +42,4 @@ export { default as ErrorTemplate } from './error-template';
 export { UserMenu } from './user-menu';
 export { AppContextSwitcher } from './app-context-switcher';
 export { Input } from './input';
-export { default as NotFound } from './not-found';
+export { default as NotFoundComponent } from './not-found';

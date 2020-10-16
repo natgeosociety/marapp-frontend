@@ -20,7 +20,7 @@
 import React from 'react';
 import './styles.scss';
 
-const NotFound = ({ returnToHome, aboutLink, appName }) => {
+const NotFoundComponent = ({ returnToHome, aboutLink, appName }) => {
   return (
     <div className="marapp-qa-notfound ng-not-found ng-flex-center ng-flex">
       <div className="ng-grid ng-flex-center ng-flex-middle">
@@ -40,4 +40,4 @@ const NotFound = ({ returnToHome, aboutLink, appName }) => {
   );
 };
 
-export default NotFound;
+export default NotFoundComponent;
