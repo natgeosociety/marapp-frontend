@@ -19,7 +19,7 @@
 
 import { APP_NAME } from 'config';
 import React from 'react';
-import { animated, Transition } from 'react-spring/renderprops';
+import { animated, Transition } from 'react-spring/renderprops.cjs';
 
 import { Button } from '@marapp/earth-shared';
 

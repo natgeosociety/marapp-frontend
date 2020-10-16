@@ -21,7 +21,7 @@ import React, { Fragment, PureComponent } from 'react';
 import classnames from 'classnames';
 
 // Animations
-import { Transition } from 'react-spring/renderprops';
+import { Transition } from 'react-spring/renderprops.cjs';
 
 import { Spinner, Slick, SlickNextArrow, SlickPrevArrow } from '@marapp/earth-shared';
 
@@ -181,7 +181,7 @@ class Photo extends PureComponent<PhotoProps, PhotoState> {
                             <div key={image.id} className="thumbnails--item">
                               <div
                                 role="button"
-                                tabIndex="-1"
+                                tabIndex={-1}
                                 className={classnames({
                                   'thumbnails--button': true,
                                   '-active': index === i,

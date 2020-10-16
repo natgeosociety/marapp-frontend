@@ -20,7 +20,7 @@
 import Modal from 'components/modal';
 import debounce from 'lodash/debounce';
 import React from 'react';
-import { animated, Keyframes } from 'react-spring/renderprops';
+import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 import {
   Legend,
   LegendItemButtonInfo,

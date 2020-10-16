@@ -21,7 +21,7 @@ import React, { Fragment, PureComponent } from 'react';
 import ReactPlayer from 'react-player';
 
 // Animations
-import { Spring, Transition } from 'react-spring/renderprops';
+import { Spring, Transition } from 'react-spring/renderprops.cjs';
 
 import { Spinner } from '@marapp/earth-shared';
 

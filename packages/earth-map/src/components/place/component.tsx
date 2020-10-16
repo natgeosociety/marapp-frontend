@@ -19,7 +19,7 @@
 
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
-import { animated, Keyframes, Transition } from 'react-spring/renderprops';
+import { animated, Keyframes, Transition } from 'react-spring/renderprops.cjs';
 
 import PlaceFilter from './filter';
 import './styles.scss';

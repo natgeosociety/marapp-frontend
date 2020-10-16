@@ -19,7 +19,7 @@
 
 import classNames from 'classnames';
 import React from 'react';
-import { animated, Keyframes } from 'react-spring/renderprops';
+import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
 import SidebarToggle from './sidebar-toggle';
 import './styles.scss';

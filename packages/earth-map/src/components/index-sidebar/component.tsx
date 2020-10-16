@@ -18,7 +18,7 @@
 */
 
 import React from 'react';
-import { animated, Transition } from 'react-spring/renderprops';
+import { animated, Transition } from 'react-spring/renderprops.cjs';
 
 import IndexContent from '../index-content';
 import './styles.scss';
