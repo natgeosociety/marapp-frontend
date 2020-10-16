@@ -23,6 +23,7 @@ import React, { useState } from 'react';
 import { AuthzGuards, ErrorMessages } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
+import { normalizeGroupName } from '@app/utils';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { normalizeGroupName } from '@app/utils';
