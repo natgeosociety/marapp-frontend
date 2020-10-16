@@ -27,7 +27,7 @@ import {
   Input,
   setupErrors,
   Spinner,
-  upperNumericDashesRule,
+  lowerNumericDashesRule,
   validEmailRule,
 } from '@marapp/earth-shared';
 
@@ -109,7 +109,7 @@ export function NewOrganization(props: IProps) {
               ref={register({
                 required: 'Slug name is required',
                 validate: {
-                  upperNumericDashesRule: upperNumericDashesRule(),
+                  lowerNumericDashesRule: lowerNumericDashesRule(),
                 },
               })}
             />
