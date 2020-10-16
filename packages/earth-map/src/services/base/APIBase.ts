@@ -68,7 +68,7 @@ export const BaseAPIService = {
       .request(options)
       .then((response) => deserializer(response))
       .catch((err) => {
-        throw new Error(err);
+        throw err?.response || err;
       });
   },
   /**

@@ -391,8 +391,8 @@ export function ProfileComponent(props: IProps) {
                   </button>
                 </InlineEditCard>
               </div>
-              <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
-                {Object.keys(userRoles).length > 0 && (
+              {Object.keys(userRoles).length > 0 && (
+                <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                   <InlineEditCard
                     render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                       <>
@@ -446,8 +446,8 @@ export function ProfileComponent(props: IProps) {
                       ))}
                     </div>
                   </InlineEditCard>
-                )}
-              </div>
+                </div>
+              )}
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
@@ -480,7 +480,10 @@ export function ProfileComponent(props: IProps) {
                   submitButtonText={'DELETE'}
                   submitButtonVariant={'danger'}
                   manualOpen={isDeletingAccountOpen}
-                  onCancel={() => setIsDeleteingAccountOpen(false)}
+                  onCancel={() => {
+                    setIsDeleteingAccountOpen(false);
+                    setConfirmDeleteAccount(false);
+                  }}
                   onSubmit={deleteAccount}
                   validForm={confirmDeleteAccount}
                 >
