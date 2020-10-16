@@ -62,6 +62,11 @@ const upperNumericDashes = (value: string): boolean => {
   return regex.test(value);
 };
 
+const lowerNumericDashes = (value: string): boolean => {
+  const regex = RegExp('^[a-z0-9](-?[a-z0-9])*$');
+  return regex.test(value);
+};
+
 const alphaNumericDashes = (value: string): boolean => {
   const regex = RegExp(/^[a-z0-9](-?[a-z0-9])*$/gi);
   return regex.test(value);
@@ -81,6 +86,10 @@ export const validEmailRule = (errorMessage: string = 'Please add a valid email 
 export const upperNumericDashesRule = (
   errorMessage: string = 'Only upercase alphanumeric characters and hyphens allowed.'
 ) => compose(maybeShowError(errorMessage), upperNumericDashes);
+
+export const lowerNumericDashesRule = (
+  errorMessage: string = 'Only lowercase alphanumeric characters and hyphens allowed.'
+) => compose(maybeShowError(errorMessage), lowerNumericDashes);
 
 export const alphaNumericDashesRule = (
   errorMessage: string = 'Only lowercase alphanumeric characters and hyphens allowed.'
