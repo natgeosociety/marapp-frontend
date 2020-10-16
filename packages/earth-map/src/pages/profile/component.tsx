@@ -174,12 +174,6 @@ export function ProfileComponent(props: IProps) {
     }
   }
 
-  function openDeleteAccount(e) {
-    e.preventDefault();
-
-    setIsDeleteingAccountOpen(true);
-  }
-
   async function deleteAccount(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
 
@@ -491,8 +485,9 @@ export function ProfileComponent(props: IProps) {
                     Account access
                   </h3>
                   <button
+                    type="button"
                     className="ng-button ng-button-secondary ng-margin-top marapp-qa-deleteaccount"
-                    onClick={openDeleteAccount}
+                    onClick={() => setIsDeleteingAccountOpen(true)}
                   >
                     Delete your account
                   </button>
