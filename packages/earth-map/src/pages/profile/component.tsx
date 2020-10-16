@@ -155,7 +155,6 @@ export function ProfileComponent(props: IProps) {
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
     } catch (error) {
-      console.log(error);
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data?.errors);
     }
