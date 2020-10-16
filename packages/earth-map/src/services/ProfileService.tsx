@@ -63,6 +63,10 @@ const leaveOrganizations = async (data: any, query?: RequestQuery): Promise<any>
   );
 };
 
+const deleteAccount = async (): Promise<any> => {
+  return BaseAPIService.request('/users/profile', { method: 'delete' }, metaDeserializer);
+};
+
 export default {
   fetchProfile,
   updateProfile,
@@ -71,4 +75,5 @@ export default {
   cancelEmailChange,
   resetPassword,
   leaveOrganizations,
+  deleteAccount,
 };

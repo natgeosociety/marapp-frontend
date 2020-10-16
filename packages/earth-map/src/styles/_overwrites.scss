@@ -36,6 +36,28 @@
   }
 }
 
+.ng-button-danger {
+  background: $marapp-red-1;
+  border: 1px solid $marapp-red-1;
+  color: $marapp-gray-0;
+  &:hover {
+    background: $marapp-red-1;
+    border: 1px solid $marapp-red-1;
+    color: $marapp-gray-0;
+  }
+  &:active, &:focus, &.active {
+    background: $marapp-red-1;
+    border: 1px solid $marapp-red-1;
+    color: $marapp-gray-0;
+  }
+  &:disabled {
+    background: $marapp-red-1;
+    color: $marapp-gray-0;
+    border: 1px solid $marapp-red-1;
+    opacity: .65;
+  }
+}
+
 .ng-small-select {
   min-width: 100px;
   width: auto;
