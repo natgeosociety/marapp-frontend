@@ -49,7 +49,7 @@ export function ProfileComponent(props: IProps) {
   const [resetPasswordState, setResetPasswordState] = useState(RESET_PASSWORD_STATE.INITIAL);
   const [markedOrgsForLeave, setMarkedOrgsForLeave] = useState({});
   const [userRoles, setUserRoles] = useState({});
-  const [isDeletingAccountOpen, setIsDeleteingAccountOpen] = useState(false);
+  const [isDeletingAccountOpen, setIsDeletingAccountOpen] = useState(false);
   const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
 
   const { touched, isValid } = formState;
@@ -475,7 +475,7 @@ export function ProfileComponent(props: IProps) {
                   submitButtonVariant={'danger'}
                   manualOpen={isDeletingAccountOpen}
                   onCancel={() => {
-                    setIsDeleteingAccountOpen(false);
+                    setIsDeletingAccountOpen(false);
                     setConfirmDeleteAccount(false);
                   }}
                   onSubmit={deleteAccount}
@@ -487,7 +487,7 @@ export function ProfileComponent(props: IProps) {
                   <button
                     type="button"
                     className="ng-button ng-button-secondary ng-margin-top marapp-qa-deleteaccount"
-                    onClick={() => setIsDeleteingAccountOpen(true)}
+                    onClick={() => setIsDeletingAccountOpen(true)}
                   >
                     Delete your account
                   </button>
