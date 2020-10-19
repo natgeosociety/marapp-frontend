@@ -24,7 +24,7 @@ import SidebarComponent from './component';
 
 export default connect(
   (state: any) => ({
-    ...state.places,
+    selectedOpen: state.places.selectedOpen,
     ...state.sidebar,
   }),
   { setSidebarOpen }

@@ -38,12 +38,12 @@ interface IIndexes {
   list?: [];
   setIndexesSelected?: (any) => void;
   selected?: any;
-  data?: any;
+  selectedOpen?: any;
 }
 
 class IndexesComponent extends React.PureComponent<IIndexes> {
   public getCardsState() {
-    const { loading, selected, data } = this.props;
+    const { loading, selected, selectedOpen } = this.props;
 
     if (loading) {
       return 'loading';
@@ -53,7 +53,7 @@ class IndexesComponent extends React.PureComponent<IIndexes> {
       return 'open';
     }
 
-    return !isEmpty(data) ? 'show' : 'hide';
+    return !selectedOpen ? 'show' : 'hide';
   }
 
   public onClickIndex = (item) => {

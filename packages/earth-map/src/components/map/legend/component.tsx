@@ -57,7 +57,7 @@ interface ILegend {
   toggleLayer?: any;
   setLayerSettings?: (data: any) => void;
   open?: boolean;
-  selected?: string;
+  placeOpened?: boolean;
 }
 
 class LegendComponent extends React.PureComponent<ILegend> {
@@ -117,9 +117,9 @@ class LegendComponent extends React.PureComponent<ILegend> {
   };
 
   public getState = () => {
-    const { open, selected } = this.props;
+    const { open, placeOpened } = this.props;
     if (open) {
-      if (!!selected) {
+      if (placeOpened) {
         return 'openW';
       }
       return 'open';

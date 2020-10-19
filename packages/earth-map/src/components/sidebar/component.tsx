@@ -43,7 +43,7 @@ interface ISidebarPanel {
   resetMap?: () => void;
   resetPlace?: () => void;
   resetLayers?: () => void;
-  data?: any;
+  selectedOpen?: boolean;
 }
 
 class Sidebar extends React.Component<ISidebarPanel> {
@@ -65,12 +65,13 @@ class Sidebar extends React.Component<ISidebarPanel> {
   };
 
   public render() {
-    const { children, open, data, layersPanel, setSidebarOpen } = this.props;
+    const { children, open, selectedOpen, layersPanel, setSidebarOpen } = this.props;
     let state;
 
+    // console.log(selectedOpen, 'selected open');
     if (open) {
       state = 'open';
-      if (!!data) {
+      if (selectedOpen) {
         state = 'openW';
       }
     } else {

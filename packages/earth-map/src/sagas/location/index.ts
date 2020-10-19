@@ -101,6 +101,7 @@ function* toLocation({ payload, meta }) {
       })
     );
 
+    yield put(setPlaceSelectedOpen(true));
     // Let animations finish before we change the place
     yield delay(750);
 

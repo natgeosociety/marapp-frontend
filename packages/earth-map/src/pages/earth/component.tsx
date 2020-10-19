@@ -39,7 +39,7 @@ interface IEarth {
   page?: string;
   layersPanel?: boolean;
   selected?: string;
-  data?: any;
+  place?: any;
 }
 
 class EarthPage extends React.Component<IEarth> {
@@ -50,7 +50,7 @@ class EarthPage extends React.Component<IEarth> {
       setSidebarPanel,
       selected,
       panel,
-      data,
+      place,
     } = this.props;
 
     return (
@@ -76,8 +76,8 @@ class EarthPage extends React.Component<IEarth> {
             <Tab label="Places" value="places" />
             <Tab label="Layers" value="layers" />
           </Tabs>
-          {panel === EPanels.PLACES && <Places selected={!!data} />}
-          {panel === EPanels.LAYERS && <Layers selected={!!data} />}
+          {panel === EPanels.PLACES && <Places selected={!!place} />}
+          {panel === EPanels.LAYERS && <Layers selected={!!place} />}
         </Sidebar>
 
         <div className="l-content">

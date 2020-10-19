@@ -28,6 +28,7 @@ import {
 } from 'modules/layers/actions';
 import { getLegendLayers } from 'modules/layers/selectors';
 import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 
 import LegendComponent from './component';
 
@@ -35,7 +36,7 @@ export default connect(
   (state: any) => ({
     layerGroups: getLegendLayers(state),
     ...state.sidebar,
-    ...state.indexes,
+    placeOpened: !isEmpty(state.places.data),
   }),
   {
     setLayerInfo,

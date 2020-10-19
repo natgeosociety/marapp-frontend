@@ -27,13 +27,13 @@ interface IndexSidebar {
   native?: boolean;
   children?: any;
   open?: boolean;
-  data?: any;
+  selectedOpen?: boolean;
 }
 
 class IndexSidebarComponent extends React.Component<IndexSidebar> {
-  // public static defaultProps = {
-  //   selected: null,
-  // };
+  public static defaultProps = {
+    selectedOpen: null,
+  };
   //
   // public onClose = () => {
   //   const { setIndexesSelected } = this.props;
@@ -41,13 +41,13 @@ class IndexSidebarComponent extends React.Component<IndexSidebar> {
   // };
 
   public render() {
-    const { data } = this.props;
-    const state = !!data ? 'open' : 'close';
+    const { selectedOpen } = this.props;
+    const state = selectedOpen ? 'open' : 'close';
 
     return (
       <Transition
         native={true}
-        items={!!data}
+        items={selectedOpen}
         from={{ x: 100, opacity: 0 }}
         enter={{ x: 0, opacity: 1, visibility: 'visible', delay: 0 }}
         leave={[{ x: 100 }, { visibility: 'hidden', immediate: true }]}

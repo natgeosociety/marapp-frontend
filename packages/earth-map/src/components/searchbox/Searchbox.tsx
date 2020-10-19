@@ -38,7 +38,7 @@ interface ISearchbox {
   resetPlace?: () => {};
   search?: any;
   open?: boolean;
-  showClose?: boolean;
+  showClose?: any;
 }
 
 const SearchBox = (props: ISearchbox) => {

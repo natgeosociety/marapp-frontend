@@ -23,7 +23,7 @@ import IndexesComponent from './component';
 
 export default connect(
   (state: any) => ({
-    ...state.places,
+    selectedOpen: state.places.selectedOpen,
   }),
   {}
 )(IndexesComponent);

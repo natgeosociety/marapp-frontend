@@ -83,7 +83,7 @@ export default {
   }),
 
   // Selected
-  [actions.setPlaceData]: (state, { payload }) => ({ ...state, data: payload }),
+  [actions.setPlaceData]: (state, { payload }) => ({ ...state, ...{ data: payload } }),
   [actions.setPlacesLoading]: (state, { payload }) => ({
     ...state,
     loading: payload,

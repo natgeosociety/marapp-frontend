@@ -24,11 +24,12 @@ import { setSidebarOpen } from 'modules/sidebar/actions';
 import { connect } from 'react-redux';
 
 import SidebarComponent from './component';
+import isEmpty from 'lodash/isEmpty';
 
 export default connect(
   (state: any) => ({
     ...state.sidebar,
-    ...state.places,
+    selectedOpen: state.places.selectedOpen,
   }),
   {
     setSidebarOpen,

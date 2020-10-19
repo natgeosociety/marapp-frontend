@@ -28,7 +28,7 @@ export default connect(
   (state: any) => ({
     ...state.indexes,
     ...state.sidebar,
-    ...state.places,
+    place: state.places.data,
   }),
   {
     setMapInteractions,
