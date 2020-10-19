@@ -128,7 +128,7 @@ export function useInfiniteListPaged(
   return returnValues;
 }
 
-interface IMergedResults {
+export interface IMergedResults {
   data: any[];
   pagination?: {
     size: number;
