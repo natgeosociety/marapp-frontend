@@ -28,6 +28,7 @@ export default connect(
   (state: any) => ({
     ...state.indexes,
     ...state.sidebar,
+    ...state.places,
   }),
   {
     setMapInteractions,

@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setIndexesSelected } from 'modules/indexes/actions';
 import { resetLayerCache, resetLayers, setLayersSearch } from 'modules/layers/actions';
 import { resetMap } from 'modules/map/actions';
 import { resetPlace, resetPlacesFeatured, setPlacesSearch } from 'modules/places/actions';
@@ -39,7 +38,6 @@ export default connect(
     resetPlacesFeatured,
     resetLayerCache,
     resetMap,
-    setIndexesSelected,
     setLayersSearch,
     setSidebarPanel,
     resetLayers,

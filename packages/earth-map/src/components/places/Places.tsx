@@ -34,8 +34,6 @@ interface IProps {
 
 const Places = (props: IProps) => {
   const {
-    selected,
-    panel,
     panelExpanded,
     search,
     results,
@@ -47,19 +45,18 @@ const Places = (props: IProps) => {
     nextPlacesPage,
     resetPlace,
     resetMap,
-    setIndexesSelected,
     setPlacesSearch,
     setSidebarPanelExpanded,
     setPlacesSearchOpen,
   } = props;
   const hasSearchTerm = !!search.search;
-  const showX = selected || hasSearchTerm;
-  const showFilter = !selected || panelExpanded;
+  const showX = locationName || hasSearchTerm;
+  const showFilter = !locationName || panelExpanded;
   const withFilters = hasFilters(search.filters);
   const showResults = hasSearchTerm || withFilters;
-  const showBack = selected && panelExpanded && showResults;
-  const onLocationPage = selected && panelExpanded && showResults;
-  const onHomepage = !selected && showResults;
+  const showBack = locationName && panelExpanded && showResults;
+  const onLocationPage = locationName && panelExpanded && showResults;
+  const onHomepage = !locationName && showResults;
   const showLastViewedPlace = lastViewedPlace && group.includes(lastViewedPlace.organization);
 
   const handleChange = (e) => {
@@ -68,7 +65,7 @@ const Places = (props: IProps) => {
   };
 
   const handleBack = () => {
-    if (selected) {
+    if (locationName) {
       setPlacesSearch({ search: locationName });
     }
     setSidebarPanelExpanded(false);
@@ -77,7 +74,7 @@ const Places = (props: IProps) => {
   const handleReset = () => {
     resetPlace({ keepCache: true });
     setPlacesSearch({ search: '' });
-    setIndexesSelected('');
+    //  setIndexesSelected('');
     resetMap();
     push('/earth');
   };
@@ -92,7 +89,7 @@ const Places = (props: IProps) => {
             onChange={handleChange}
             onReset={handleReset}
             onFocus={() => setSidebarPanelExpanded(true)}
-            showClose={showX}
+            // showClose={showX}
           />
           {showFilter && (
             <FilterBy
@@ -131,7 +128,7 @@ const Places = (props: IProps) => {
             />
           )}
         </InfiniteList>
-      ) : selected ? (
+      ) : !!locationName ? (
         <IndexSidebar />
       ) : (
         <>

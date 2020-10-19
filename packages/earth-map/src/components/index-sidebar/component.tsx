@@ -25,30 +25,29 @@ import './styles.scss';
 
 interface IndexSidebar {
   native?: boolean;
-  selected?: string;
-  setIndexesSelected?: (any) => void;
   children?: any;
   open?: boolean;
+  data?: any;
 }
 
 class IndexSidebarComponent extends React.Component<IndexSidebar> {
-  public static defaultProps = {
-    selected: null,
-  };
-
-  public onClose = () => {
-    const { setIndexesSelected } = this.props;
-    setIndexesSelected('');
-  };
+  // public static defaultProps = {
+  //   selected: null,
+  // };
+  //
+  // public onClose = () => {
+  //   const { setIndexesSelected } = this.props;
+  // //  setIndexesSelected('');
+  // };
 
   public render() {
-    const { selected, open } = this.props;
-    const state = open ? 'open' : 'close';
+    const { data } = this.props;
+    const state = !!data ? 'open' : 'close';
 
     return (
       <Transition
         native={true}
-        items={!!selected}
+        items={!!data}
         from={{ x: 100, opacity: 0 }}
         enter={{ x: 0, opacity: 1, visibility: 'visible', delay: 0 }}
         leave={[{ x: 100 }, { visibility: 'hidden', immediate: true }]}
@@ -63,7 +62,7 @@ class IndexSidebarComponent extends React.Component<IndexSidebar> {
                 ...props,
               }}
             >
-              <IndexContent state={state} selected={selected} />
+              <IndexContent state={state} />
             </animated.div>
           ))
         }

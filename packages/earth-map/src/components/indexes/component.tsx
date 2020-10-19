@@ -59,7 +59,7 @@ class IndexesComponent extends React.PureComponent<IIndexes> {
   public onClickIndex = (item) => {
     const { setIndexesSelected } = this.props;
 
-    setIndexesSelected(item.slug);
+    // setIndexesSelected(item.slug);
   };
 
   public render() {

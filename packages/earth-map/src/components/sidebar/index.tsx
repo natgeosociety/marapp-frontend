@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setIndexesSelected } from 'modules/indexes/actions';
 import { resetLayers } from 'modules/layers/actions';
 import { resetMap } from 'modules/map/actions';
 import { resetPlace, setPlacesSearch } from 'modules/places/actions';
@@ -29,12 +28,11 @@ import SidebarComponent from './component';
 export default connect(
   (state: any) => ({
     ...state.sidebar,
-    ...state.indexes,
+    ...state.places,
   }),
   {
     setSidebarOpen,
     setPlacesSearch,
-    setIndexesSelected,
     resetMap,
     resetPlace,
     resetLayers,

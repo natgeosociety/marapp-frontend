@@ -32,7 +32,7 @@ import MapComponent from './component';
 export default connect(
   (state: any) => ({
     ...state.map,
-    open: state.indexes.selected,
+    open: !!state.places.data,
     activeInteractiveLayersIds: getActiveInteractiveLayersIds(state),
   }),
   {

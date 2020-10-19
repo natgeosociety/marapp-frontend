@@ -1,4 +1,3 @@
-import { setIndexesSelected } from 'modules/indexes/actions';
 import { resetMap } from 'modules/map/actions';
 import {
   nextPlacesPage,
@@ -26,7 +25,6 @@ export default connect(
     resetMap,
     resetPlace,
     setPlacesSearch,
-    setIndexesSelected,
     nextPlacesPage,
     setSidebarPanelExpanded,
     setPlacesSearchOpen,
