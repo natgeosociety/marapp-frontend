@@ -36,7 +36,7 @@ export default connect(
   (state: any) => ({
     layerGroups: getLegendLayers(state),
     ...state.sidebar,
-    placeOpened: !isEmpty(state.places.data),
+    selectedOpen: state.places.selectedOpen,
   }),
   {
     setLayerInfo,

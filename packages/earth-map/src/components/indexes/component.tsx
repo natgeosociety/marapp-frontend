@@ -38,7 +38,7 @@ interface IIndexes {
   list?: [];
   setIndexesSelected?: (any) => void;
   selected?: any;
-  selectedOpen?: any;
+  selectedOpen?: boolean;
 }
 
 class IndexesComponent extends React.PureComponent<IIndexes> {
@@ -55,12 +55,6 @@ class IndexesComponent extends React.PureComponent<IIndexes> {
 
     return !selectedOpen ? 'show' : 'hide';
   }
-
-  public onClickIndex = (item) => {
-    const { setIndexesSelected } = this.props;
-
-    // setIndexesSelected(item.slug);
-  };
 
   public render() {
     const { selected, list } = this.props;
@@ -86,7 +80,6 @@ class IndexesComponent extends React.PureComponent<IIndexes> {
                   '-inactive': selected && selected !== item.slug,
                 })}
                 style={styles}
-                onClick={() => this.onClickIndex(item)}
               >
                 <h4
                   className={classnames({
