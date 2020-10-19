@@ -5,7 +5,8 @@
   "module": "src/index.ts",
   "scripts": {
     "transpile": "babel src -d dist --ignore '**/*.spec.js,**/*.stories.js'",
-    "test": "jest --passWithNoTests --watch",
+    "test": "jest --passWithNoTests --watch --color",
+    "test-coverage": "jest --coverage --color",
     "build-icons": "webpack --mode production"
   },
   "babel": {
