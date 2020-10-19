@@ -22,19 +22,24 @@ import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { AsyncSelect, ErrorMessages, Spinner } from '@marapp/earth-shared';
+import {
+  alphaNumericDashesRule,
+  AsyncSelect,
+  ErrorMessages,
+  Input,
+  setupErrors,
+  Spinner,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
 import { HtmlEditor } from '@app/components/html-editor';
-import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { addDashboard, getDashboardSlug } from '@app/services/dashboards';
-import { getAllWidgets } from '@app/services/widgets';
+import DashboardsService from '@app/services/dashboards';
+import WidgetsService from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenArrayForSelect } from '@app/utils';
-import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 interface IProps {
   path?: string;
@@ -67,9 +72,9 @@ export function NewDashboard(props: IProps) {
 
     try {
       setIsLoading(true);
-      const response: any = await addDashboard(parsed, selectedGroup);
+      const { data } = await DashboardsService.addDashboard(parsed, { group: selectedGroup });
       onDataChange();
-      await navigate(`/${selectedGroup}/dashboards/${response.data.id}`);
+      await navigate(`/${selectedGroup}/dashboards/${data.id}`);
     } catch (error) {
       setIsLoading(false);
       setServerErrors(error.data.errors);
@@ -79,7 +84,9 @@ export function NewDashboard(props: IProps) {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getDashboardSlug(watchName, selectedGroup);
+      const { data } = await DashboardsService.getDashboardSlug(watchName, {
+        group: selectedGroup,
+      });
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);
@@ -163,7 +170,7 @@ export function NewDashboard(props: IProps) {
                 control={control}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id}
-                loadFunction={getAllWidgets}
+                loadFunction={WidgetsService.getAllWidgets}
                 defaultValue={widgets}
                 selectedGroup={selectedGroup}
                 as={AsyncSelect}

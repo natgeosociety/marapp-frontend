@@ -25,7 +25,7 @@ import { remove } from 'lodash';
 import { EPanels } from 'modules/sidebar/model';
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'redux-first-router-link';
-import { fetchStats } from 'services/stats';
+import OrganizationService from 'services/OrganizationService';
 import { APP_LOGO } from 'theme';
 
 import { AppContextSwitcher, checkRole } from '@marapp/earth-shared';
@@ -77,7 +77,7 @@ const Header = (props: IProps) => {
   useEffect(() => {
     (async () => {
       try {
-        const response: any = await fetchStats({ group: groups.join(',') });
+        const response = await OrganizationService.fetchStats({ group: groups.join(',') });
         setAvailableGroups(response.data);
       } catch (err) {
         console.error(err);

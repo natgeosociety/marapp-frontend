@@ -37,6 +37,7 @@ The following environment variables are required by the application.
 | `REACT_APP_ADMIN_URL` | The URL for admin component (e.g. `/admin/`) |
 | `REACT_APP_GTM_TAG` | Google Tag Manager ID |
 | `REACT_APP_ENABLE_PUBLIC_ACCESS` | Enable unauthenticated access |
+| `REACT_APP_EXTERNAL_IDP_URL` | External Identity Provider URL |
 
 ## Getting started
 
@@ -563,7 +564,7 @@ $marapp-primary-font: 'Primary font';
 $marapp-secondary-font: 'Secondary font';
 $marapp-icon-font: 'icon-font';
 
-$marapp-color-sucess: #hex;
+$marapp-color-success: #hex;
 $marapp-color-error: #hex;
 
 $marapp-primary-color: #hex;

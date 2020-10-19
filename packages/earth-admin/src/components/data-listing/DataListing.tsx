@@ -64,19 +64,6 @@ const DataListing = (props: DataListingProps) => {
   } = props;
   const { selectedGroup } = useAuth0();
 
-  const renderItem = (index) => {
-    const item = data[index];
-    return (
-      <div key={`${index}-${item.slug}`}>
-        {React.createElement(childComponent, {
-          item,
-          categoryUrl,
-          selectedItem,
-        })}
-      </div>
-    );
-  };
-
   return (
     <>
       {searchValueAction && (
@@ -101,7 +88,18 @@ const DataListing = (props: DataListingProps) => {
             awaitMore={awaitMore}
             pageSize={pageSize}
             itemCount={data.length}
-            renderItem={renderItem}
+            renderItem={(index) => {
+              const item = data[index];
+              return (
+                <div key={item.slug}>
+                  {React.createElement(childComponent, {
+                    item,
+                    categoryUrl,
+                    selected: selectedItem === item.id,
+                  })}
+                </div>
+              );
+            }}
             onIntersection={onIntersection}
             {...otherProps}
           />

@@ -23,8 +23,9 @@ import React, { useState } from 'react';
 import { useAuth0 } from '@app/auth/auth0';
 import { DataListing, DefaultListItem } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
-import { getAllLayers } from '@app/services';
-import { encodeQueryToURL, setPage } from '@app/utils';
+import { RequestQuery } from '@app/services';
+import LayersService from '@app/services/layers';
+import { setPage } from '@app/utils';
 import { useInfiniteList } from '@app/utils/hooks';
 
 import { LayerDetail } from './details';
@@ -38,7 +39,7 @@ export default function LayersPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
 
-  const getQuery = (cursor) => {
+  const getQueryFn = (cursor: string): { query: RequestQuery; resourceType: string } => {
     const query = {
       search: searchValue,
       sort: 'name',
@@ -46,9 +47,13 @@ export default function LayersPage(props) {
       select: 'name,slug',
       group: selectedGroup,
     };
-    return encodeQueryToURL('layers', query);
+    return { query, resourceType: 'layers' };
   };
-  const { listProps, mutate } = useInfiniteList(getQuery, getAllLayers);
+  const { listProps, filters, mutate } = useInfiniteList(getQueryFn, LayersService.getAllLayers);
+
+  // Matches everything after the resource name in the url.
+  // In our case that's /resource-id or /new
+  const selectedItem = props['*'];
 
   return (
     <>
@@ -60,13 +65,14 @@ export default function LayersPage(props) {
           searchValueAction={setSearchValue}
           pageSize={PAGE_SIZE}
           searchValue={searchValue}
+          selectedItem={selectedItem}
           {...listProps}
         />
       </SidebarLayout>
       <Router>
         <LayersHome path="/" />
-        <NewLayer path="/new" onDataChange={mutate} />
-        <LayerDetail path="/:page" onDataChange={mutate} />
+        <NewLayer path="/new" onDataChange={mutate} dynamicOptions={filters} />
+        <LayerDetail path="/:page" onDataChange={mutate} dynamicOptions={filters} />
       </Router>
     </>
   );

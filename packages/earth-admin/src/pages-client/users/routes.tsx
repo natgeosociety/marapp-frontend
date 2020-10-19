@@ -18,6 +18,7 @@
 */
 
 import { Router } from '@reach/router';
+import { merge } from 'lodash/fp';
 import * as React from 'react';
 import useSWR from 'swr';
 
@@ -26,9 +27,10 @@ import { Card } from '@app/components/card';
 import { UserDetails, UserEdit } from '@app/components/users';
 import { SidebarLayout } from '@app/layouts';
 import ContentLayout from '@app/layouts/Content';
-import { getOrganizationStats } from '@app/services/organizations';
-import { getUser } from '@app/services/users';
-import { encodeQueryToURL, setPage } from '@app/utils';
+import { generateCacheKey } from '@app/services';
+import OrganizationsService from '@app/services/organizations';
+import UsersService from '@app/services/users';
+import { setPage } from '@app/utils';
 
 import { UsersHome } from './home';
 
@@ -39,11 +41,12 @@ const USER_DETAIL_QUERY = {
 
 export default function UsersPage(props) {
   const { org } = props;
-  const encodedQuery = encodeQueryToURL(`/organizations/stats`, {
-    group: org,
-  });
-  const { data: organization, error } = useSWR(encodedQuery, (url) =>
-    getOrganizationStats(url).then((res: any) => res.data)
+
+  const query = { group: org };
+  const cacheKey = generateCacheKey(`organizations/stats`, query);
+
+  const { data: organization, error } = useSWR(cacheKey, () =>
+    OrganizationsService.getOrganizationStats(query).then((res: any) => res.data)
   );
 
   return (
@@ -95,14 +98,14 @@ export default function UsersPage(props) {
 }
 
 function DetailsPage(props: any) {
+  const { page } = props;
   const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`users/${props.page}`, {
-    ...USER_DETAIL_QUERY,
-    group: selectedGroup,
-  });
 
-  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
-    getUser(url).then((response: any) => response.data)
+  const query = merge(USER_DETAIL_QUERY, { group: selectedGroup });
+  const cacheKey = generateCacheKey(`users/${page}`, query);
+
+  const { data, error, mutate } = useSWR(cacheKey, () =>
+    UsersService.getUser(page, query).then((response: any) => response.data)
   );
 
   return (
@@ -118,13 +121,14 @@ function DetailsPage(props: any) {
 }
 
 function EditPage(props: any) {
+  const { page } = props;
   const { selectedGroup } = useAuth0();
-  const encodedQuery = encodeQueryToURL(`users/${props.page}`, {
-    ...USER_DETAIL_QUERY,
-    ...{ group: selectedGroup },
-  });
-  const { data, error, mutate } = useSWR(!props.newUser && encodedQuery, (url) =>
-    getUser(url).then((response: any) => response.data)
+
+  const query = merge(USER_DETAIL_QUERY, { group: selectedGroup });
+  const cacheKey = generateCacheKey(`users/${page}`, query);
+
+  const { data, error, mutate } = useSWR(!props.newUser && cacheKey, () =>
+    UsersService.getUser(page, query).then((response: any) => response.data)
   );
 
   return (

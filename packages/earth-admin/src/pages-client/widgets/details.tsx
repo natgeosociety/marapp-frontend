@@ -17,29 +17,37 @@ import Collapse from '@kunukn/react-collapse';
 import classnames from 'classnames';
 import { JSHINT } from 'jshint';
 import { noop } from 'lodash';
+import { merge } from 'lodash/fp';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
 import useSWR from 'swr';
 
-import { AsyncSelect, AuthzGuards, ErrorMessages, InlineEditCard } from '@marapp/earth-shared';
+import {
+  alphaNumericDashesRule,
+  AsyncSelect,
+  AuthzGuards,
+  ErrorMessages,
+  InlineEditCard,
+  Input,
+  setupErrors,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
 import { DetailList } from '@app/components/detail-list';
 import { HtmlEditor } from '@app/components/html-editor';
-import { Input } from '@app/components/input';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
-import { getAllLayers } from '@app/services/layers';
-import { getWidget, handleWidgetForm } from '@app/services/widgets';
+import { generateCacheKey } from '@app/services';
+import LayersService from '@app/services/layers';
+import WidgetsService from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { copyToClipboard, encodeQueryToURL, flattenObjectForSelect, formatDate } from '@app/utils';
-import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
 import { Widget, WidgetProps } from './model';
 
@@ -50,18 +58,16 @@ const WIDGET_DETAIL_QUERY = {
 };
 
 export function WidgetsDetail(props: WidgetProps) {
-  const { page, onDataChange = noop, groupedFilters = {} } = props;
-  const { metrics = [] } = groupedFilters;
+  const { page, onDataChange = noop, dynamicOptions = {} } = props;
+  const { metrics: metricsOptions = [] } = dynamicOptions;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
 
-  const encodedQuery = encodeQueryToURL(`widgets/${page}`, {
-    ...WIDGET_DETAIL_QUERY,
-    ...{ group: selectedGroup },
-  });
+  const query = merge(WIDGET_DETAIL_QUERY, { group: selectedGroup });
+  const cacheKey = generateCacheKey(`widgets/${page}`, query);
 
-  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
-    getWidget(url).then((res: any) => res.data)
+  const { data, error, mutate } = useSWR(cacheKey, () =>
+    WidgetsService.getWidget(page, query).then((res: any) => res.data)
   );
 
   const [widget, setWidget] = useState<Widget>({});
@@ -116,7 +122,7 @@ export function WidgetsDetail(props: WidgetProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await handleWidgetForm(false, parsed, id, selectedGroup);
+      await WidgetsService.handleWidgetForm(false, parsed, id, { group: selectedGroup });
       await mutate();
       onDataChange();
       setIsLoading && setIsLoading(false);
@@ -307,7 +313,7 @@ export function WidgetsDetail(props: WidgetProps) {
                           control={control}
                           getOptionLabel={(option) => option.name}
                           getOptionValue={(option) => option.id}
-                          loadFunction={getAllLayers}
+                          loadFunction={LayersService.getAllLayers}
                           defaultValue={layers}
                           selectedGroup={selectedGroup}
                           as={AsyncSelect}
@@ -357,10 +363,7 @@ export function WidgetsDetail(props: WidgetProps) {
                         control={control}
                         className="marapp-qa-metricslug"
                         name="metrics"
-                        options={metrics.map((m) => ({
-                          value: m.value,
-                          label: m.value,
-                        }))}
+                        options={metricsOptions}
                         defaultValue={{
                           value: selectedMetrics[0],
                           label: selectedMetrics[0],

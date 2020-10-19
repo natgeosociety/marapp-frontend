@@ -22,15 +22,20 @@ import { noop } from 'lodash';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { ErrorMessages, Spinner } from '@marapp/earth-shared';
+import {
+  ErrorMessages,
+  Input,
+  lowerNumericDashesRule,
+  setupErrors,
+  Spinner,
+  validEmailRule,
+} from '@marapp/earth-shared';
 
 import { Card } from '@app/components/card';
-import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { addOrganization } from '@app/services/organizations';
+import OrganizationsService from '@app/services/organizations';
 import { Auth0Context } from '@app/utils/contexts';
-import { setupErrors, upperNumericDashesRule, validEmailRule } from '@app/utils/validations';
 
 interface IProps {
   path?: string;
@@ -51,13 +56,13 @@ export function NewOrganization(props: IProps) {
   const onSubmit = async (values: any) => {
     try {
       setIsLoading(true);
-      const { data }: any = await addOrganization(
+      const { data } = await OrganizationsService.addOrganization(
         {
           name: values.name,
           slug: values.slug,
           owners: [].concat(values.owners),
         },
-        selectedGroup
+        { group: selectedGroup }
       );
       onDataChange();
       await navigate(`/${selectedGroup}/organizations/${data.id}`);
@@ -104,7 +109,7 @@ export function NewOrganization(props: IProps) {
               ref={register({
                 required: 'Slug name is required',
                 validate: {
-                  upperNumericDashesRule: upperNumericDashesRule(),
+                  lowerNumericDashesRule: lowerNumericDashesRule(),
                 },
               })}
             />

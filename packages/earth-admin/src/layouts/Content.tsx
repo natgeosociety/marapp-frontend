@@ -24,10 +24,11 @@ import { favicon, Spinner, UserMenu } from '@marapp/earth-shared';
 
 import { Card } from '@app/components/card';
 import { LinkWithOrg } from '@app/components/link-with-org';
+import { MAP_PATH } from '@app/config';
 import { Auth0Context } from '@app/utils/contexts';
 
 import '../styles/app.scss';
-import { APP_LOGO, APP_NAME } from '../theme';
+import { APP_NAME } from '../theme';
 
 interface ILayoutProps {
   children?: any;
@@ -67,6 +68,7 @@ export default function ContentLayout(props: ILayoutProps) {
       <div className="ng-page-container ng-background-gray-9">
         <UserMenu
           isAuthenticated={isAuthenticated}
+          profileLink={<a href={`${MAP_PATH}profile`}>Profile</a>}
           onLogin={login}
           onLogout={logout}
           onSignUp={() => login({ initialScreen: 'signUp' })}

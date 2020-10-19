@@ -22,26 +22,26 @@ import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { ErrorMessages, Spinner } from '@marapp/earth-shared';
+import { ErrorMessages, Input, setupErrors, Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
-import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { addPlace, getPlaceSlug } from '@app/services/places';
-import { setupErrors } from '@app/utils/validations';
-
-import { PlaceTypeEnum } from './model';
+import PlacesService from '@app/services/places';
 
 interface IProps {
   path: string;
   onDataChange?: () => {};
+  dynamicOptions?: {
+    type?: any[];
+  };
 }
 
 export function NewPlace(props: IProps) {
-  const { onDataChange = noop } = props;
+  const { onDataChange = noop, dynamicOptions } = props;
+  const { type: placeTypeOptions = [] } = dynamicOptions;
   const { getValues, register, watch, formState, errors, setValue } = useForm({
     mode: 'onChange',
   });
@@ -64,9 +64,9 @@ export function NewPlace(props: IProps) {
     };
     try {
       setIsLoading(true);
-      const response: any = await addPlace(parsed, selectedGroup);
+      const { data } = await PlacesService.addPlace(parsed, { group: selectedGroup });
       onDataChange();
-      await navigate(`/${selectedGroup}/places/${response.data.id}`);
+      await navigate(`/${selectedGroup}/places/${data.id}`);
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
       const fallbackError = [
@@ -80,7 +80,7 @@ export function NewPlace(props: IProps) {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getPlaceSlug(watchName, selectedGroup);
+      const { data } = await PlacesService.getPlaceSlug(watchName, { group: selectedGroup });
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);
@@ -119,9 +119,9 @@ export function NewPlace(props: IProps) {
                 })}
                 name="type"
               >
-                {Object.keys(PlaceTypeEnum).map((t, idx) => (
-                  <option key={idx} value={PlaceTypeEnum[t]}>
-                    {PlaceTypeEnum[t]}
+                {placeTypeOptions.map((t) => (
+                  <option key={t.value} value={t.value}>
+                    {t.label}
                   </option>
                 ))}
               </select>

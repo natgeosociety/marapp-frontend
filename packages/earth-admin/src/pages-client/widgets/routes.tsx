@@ -18,15 +18,14 @@
 */
 
 import { Router } from '@reach/router';
-import { groupBy } from 'lodash';
 import React, { useState } from 'react';
-import useSWR from 'swr';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { DataListing, DefaultListItem } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
-import { getAllWidgets } from '@app/services';
-import { encodeQueryToURL, setPage } from '@app/utils';
+import { RequestQuery } from '@app/services';
+import WidgetsService from '@app/services/widgets';
+import { setPage } from '@app/utils';
 import { useInfiniteList } from '@app/utils/hooks';
 
 import { WidgetsDetail } from './details';
@@ -40,7 +39,7 @@ export default function DashboardsPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
 
-  const getQuery = (cursor) => {
+  const getQueryFn = (cursor: string): { query: RequestQuery; resourceType: string } => {
     const query = {
       search: searchValue,
       sort: 'name',
@@ -48,26 +47,14 @@ export default function DashboardsPage(props) {
       select: 'name,slug',
       group: selectedGroup,
     };
-    return encodeQueryToURL('widgets', query);
+    return { query, resourceType: 'widgets' };
   };
-  const { listProps, mutate } = useInfiniteList(getQuery, getAllWidgets);
 
-  // Fetch filters from /management/widgets api.
-  // Can't reuse the above request because it's using search param and
-  // it might not return filters
-  // TODO: create a custom hook for reuse on multiple pages
-  const metricsQuery = {
-    select: 'name,slug',
-    page: { size: 1, number: 1 },
-    group: selectedGroup,
-  };
-  const { data: groupedFilters } = useSWR(
-    encodeQueryToURL('widgets', metricsQuery),
-    async (url) => {
-      const { filters }: any = await getAllWidgets(url);
-      return groupBy(filters, 'key');
-    }
-  );
+  const { listProps, filters, mutate } = useInfiniteList(getQueryFn, WidgetsService.getAllWidgets);
+
+  // Matches everything after the resource name in the url.
+  // In our case that's /resource-id or /new
+  const selectedItem = props['*'];
 
   return (
     <>
@@ -79,13 +66,14 @@ export default function DashboardsPage(props) {
           searchValueAction={setSearchValue}
           pageSize={PAGE_SIZE}
           searchValue={searchValue}
+          selectedItem={selectedItem}
           {...listProps}
         />
       </SidebarLayout>
       <Router>
         <WidgetsHome path="/" />
-        <NewWidget path="/new" onDataChange={mutate} groupedFilters={groupedFilters} />
-        <WidgetsDetail path="/:page" onDataChange={mutate} groupedFilters={groupedFilters} />
+        <NewWidget path="/new" onDataChange={mutate} dynamicOptions={filters} />
+        <WidgetsDetail path="/:page" onDataChange={mutate} dynamicOptions={filters} />
       </Router>
     </>
   );

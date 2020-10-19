@@ -22,10 +22,10 @@ import React, { useContext, useState } from 'react';
 import { AuthzGuards } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { calculateForPlace } from '@app/services';
+import { PlaceMetricsProps } from '@app/pages-client/places/model';
+import MetricsService from '@app/services/metrics';
 import { Auth0Context } from '@app/utils/contexts';
 
-import { PlaceMetricsProps } from '../../../pages-client/places/model';
 import './styles.scss';
 
 export default function Metrics(props: PlaceMetricsProps) {
@@ -47,7 +47,7 @@ export default function Metrics(props: PlaceMetricsProps) {
     e.stopPropagation();
     try {
       handleServerErrors(false);
-      await calculateForPlace(placeID, metricId, selectedGroup);
+      await MetricsService.calculateForPlace(placeID, metricId, { group: selectedGroup });
       setLoading(true);
     } catch (error) {
       handleServerErrors(error.data.errors);

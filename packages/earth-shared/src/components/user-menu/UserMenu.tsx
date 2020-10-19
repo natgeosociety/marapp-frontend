@@ -34,6 +34,7 @@ const Dropdown: any = Keyframes.Spring({
 
 interface IProps {
   isAuthenticated: boolean;
+  profileLink: React.ReactElement;
   onLogin: () => {};
   onLogout: () => {};
   onSignUp: () => {};
@@ -41,7 +42,7 @@ interface IProps {
 }
 
 export const UserMenu = (props: IProps) => {
-  const { isAuthenticated = false, onLogin, onLogout, onSignUp, selected } = props;
+  const { isAuthenticated = false, onLogin, onLogout, onSignUp, selected, profileLink } = props;
   const [showDrop, setShowDrop] = useState(false);
 
   const menuRef = useDomWatcher(() => setShowDrop(false), !showDrop);
@@ -83,8 +84,7 @@ export const UserMenu = (props: IProps) => {
                       selected: selected === 'profile',
                     })}
                   >
-                    {/* TODO User router navigation where possible */}
-                    <a href="/profile">Profile</a>
+                    {profileLink}
                   </li>
 
                   <li>

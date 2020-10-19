@@ -18,21 +18,13 @@
 */
 
 import { navigate } from 'gatsby';
+import { capitalize } from 'lodash';
 import moment from 'moment';
 import queryStringEncode from 'query-string-encode';
 import { RefObject } from 'react';
-import { capitalize } from 'lodash';
 
 import { ADMIN_PAGES } from '@app/components/sidebar-select/model';
 import { BASE_URL } from '@app/config';
-
-const JSONAPIDeserializer = require('ts-jsonapi').Deserializer;
-
-const DeserializerService = new JSONAPIDeserializer({
-  keyForAttribute: (attribute: any) => {
-    return attribute;
-  },
-});
 
 /**
  * Wrapper over navigate that takes into account baseURL.
@@ -44,11 +36,6 @@ export const routeToPage = (targetPath: string, stripBase: boolean = false) => {
   }
   navigate(path);
 };
-
-/**
- * Deserializer
- */
-export const deserializeData = (data) => DeserializerService.deserialize(data);
 
 /**
  * Url encode

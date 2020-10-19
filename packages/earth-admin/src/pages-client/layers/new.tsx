@@ -24,34 +24,46 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
-import { AsyncSelect, ErrorMessages, Spinner } from '@marapp/earth-shared';
+import {
+  alphaNumericDashesRule,
+  AsyncSelect,
+  ErrorMessages,
+  Input,
+  setupErrors,
+  Spinner,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
 import { HtmlEditor } from '@app/components/html-editor';
-import { Input } from '@app/components/input';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { addLayer, getAllLayers, getLayerSlug } from '@app/services/layers';
+import LayersService from '@app/services/layers';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenArrayForSelect, flattenObjectForSelect } from '@app/utils';
-import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
-
-import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
 
 interface IProps {
   path?: string;
   onDataChange?: () => {};
+  dynamicOptions?: {
+    category?: any[];
+    type?: any[];
+    provider?: any[];
+  };
 }
 
 export function NewLayer(props: IProps) {
-  const { onDataChange = noop } = props;
+  const { onDataChange = noop, dynamicOptions } = props;
   const { selectedGroup } = useAuth0();
-
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
     mode: 'onChange',
   });
+  const {
+    category: layerCategoryOptions = [],
+    type: layerTypeOptions = [],
+    provider: layerProviderOptions = [],
+  } = dynamicOptions;
 
   const { touched, dirty, isValid } = formState;
   const renderErrorFor = setupErrors(errors, touched);
@@ -80,9 +92,9 @@ export function NewLayer(props: IProps) {
 
     try {
       setIsLoading(true);
-      const response: any = await addLayer(parsed, selectedGroup);
+      const { data } = await LayersService.addLayer(parsed, { group: selectedGroup });
       onDataChange();
-      await navigate(`/${selectedGroup}/layers/${response.data.id}`);
+      await navigate(`/${selectedGroup}/layers/${data.id}`);
     } catch (error) {
       setIsLoading(false);
       setServerErrors(error.data.errors);
@@ -92,7 +104,7 @@ export function NewLayer(props: IProps) {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getLayerSlug(watchName, selectedGroup);
+      const { data } = await LayersService.getLayerSlug(watchName, { group: selectedGroup });
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);
@@ -172,7 +184,7 @@ export function NewLayer(props: IProps) {
                 control={control}
                 className="marapp-qa-category"
                 name="category"
-                options={LAYER_CATEGORY_OPTIONS}
+                options={layerCategoryOptions}
                 isSearchable={true}
                 isMulti={true}
                 placeholder="Select layer category"
@@ -209,7 +221,7 @@ export function NewLayer(props: IProps) {
                 control={control}
                 className="marapp-qa-provider"
                 name="provider"
-                options={LAYER_PROVIDER_OPTIONS}
+                options={layerProviderOptions}
                 isSearchable={true}
                 placeholder="Select layer provider"
                 styles={CUSTOM_STYLES}
@@ -227,7 +239,7 @@ export function NewLayer(props: IProps) {
                 control={control}
                 className="marapp-qa-type"
                 name="type"
-                options={LAYER_TYPE_OPTIONS}
+                options={layerTypeOptions}
                 isSearchable={true}
                 placeholder="Select layer type"
                 styles={CUSTOM_STYLES}
@@ -261,7 +273,7 @@ export function NewLayer(props: IProps) {
                 control={control}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id}
-                loadFunction={getAllLayers}
+                loadFunction={LayersService.getAllLayers}
                 defaultValue={references}
                 selectedGroup={selectedGroup}
                 as={AsyncSelect}

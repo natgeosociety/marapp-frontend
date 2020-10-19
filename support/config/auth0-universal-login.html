@@ -21,7 +21,7 @@
 
     <script src="https://cdn.auth0.com/js/lock/11.27/lock.min.js"></script>
     <script>
-      // Decode utf8 characters promarapp-frontend/packages/earth-admin/src/layouts/Content.tsxperly
+      // Decode utf8 characters properly
       var config = JSON.parse(decodeURIComponent(escape(window.atob('@@config@@'))));
       config.extraParams = config.extraParams || {};
       var connection = config.connection;
@@ -88,20 +88,20 @@
               };
             },
           },
-          {
-            name: 'nickname',
-            placeholder: 'Enter your nickname (optional)',
-            storage: 'root',
-            validator: (nickname) => {
-              if (!nickname) {
-                return true; // optional
-              }
-              return {
-                valid: nickname.trim().length >= 1,
-                hint: "Nickname can't be blank",
-              };
-            },
-          },
+          // {
+          //   name: 'nickname',
+          //   placeholder: 'Enter your nickname (optional)',
+          //   storage: 'root',
+          //   validator: (nickname) => {
+          //     if (!nickname) {
+          //       return true; // optional
+          //     }
+          //     return {
+          //       valid: nickname.trim().length >= 1,
+          //       hint: "Nickname can't be blank",
+          //     };
+          //   },
+          // },
         ],
       });
 

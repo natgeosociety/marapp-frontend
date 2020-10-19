@@ -22,16 +22,20 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 
-import { AuthzGuards, InlineEditCard } from '@marapp/earth-shared';
+import {
+  AuthzGuards,
+  InlineEditCard,
+  Input,
+  setupErrors,
+  validEmailRule,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { ContentLayout } from '@app/layouts';
-import { getOrganization, updateOrganization } from '@app/services/organizations';
-import { encodeQueryToURL } from '@app/utils';
-import { setupErrors, validEmailRule } from '@app/utils/validations';
+import { generateCacheKey } from '@app/services';
+import OrganizationsService from '@app/services/organizations';
 
 import { OrganizationDetailsProps } from './model';
 
@@ -41,10 +45,12 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   const [localOrgData, setLocalOrgData] = useState({});
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
-  const encodedQuery = encodeQueryToURL(`organizations/${props.page}`, { include: 'owners' });
 
-  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
-    getOrganization(url).then((res: any) => res.data)
+  const query = { include: 'owners' };
+  const cacheKey = generateCacheKey(`organizations/${page}`, query);
+
+  const { data, error, mutate } = useSWR(cacheKey, () =>
+    OrganizationsService.getOrganization(page, query).then((res: any) => res.data)
   );
 
   useEffect(() => {
@@ -75,7 +81,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await updateOrganization(id, parsed, selectedGroup);
+      await OrganizationsService.updateOrganization(id, parsed, { group: selectedGroup });
       mutate();
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
@@ -86,7 +92,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     }
   }
 
-  const { name, owners, slug, id } = localOrgData;
+  const { name, owners, slug, id }: any = localOrgData;
   const owner = owners && owners[0];
 
   return (

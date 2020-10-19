@@ -28,7 +28,7 @@ import {
 } from 'modules/places/actions';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { getGroup, getPlaces } from 'sagas/saga-utils';
-import { fetchPlaces } from 'services/places';
+import PlacesService from 'services/PlacesService';
 
 import { serializeFilters } from '@marapp/earth-shared';
 
@@ -61,7 +61,7 @@ export function* nextPage({ payload }) {
   const filterQuery = serializeFilters(filters);
 
   yield put(setPlacesSearchLoading(true));
-  const page = yield call(fetchPlaces, {
+  const page = yield call(PlacesService.fetchPlaces, {
     ...LOCATION_QUERY,
     ...(!!userInput && { search: userInput }),
     ...(!!filters && { filter: filterQuery }),

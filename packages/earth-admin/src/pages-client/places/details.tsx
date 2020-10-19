@@ -18,11 +18,19 @@
 */
 
 import { groupBy, map, noop } from 'lodash';
+import { merge } from 'lodash/fp';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 
-import { AuthzGuards, ErrorMessages, InlineEditCard } from '@marapp/earth-shared';
+import {
+  AuthzGuards,
+  ErrorMessages,
+  InlineEditCard,
+  Input,
+  noSpecialCharsOrSpaceRule,
+  setupErrors,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
@@ -30,43 +38,45 @@ import { DetailList } from '@app/components/detail-list';
 import { DownloadFile } from '@app/components/download-file';
 import { ErrorBoundary } from '@app/components/error-boundary';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
-import { Input } from '@app/components/input';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { MapComponent } from '@app/components/map';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Metrics } from '@app/components/places';
 import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
-import { calculateAllForPlace, getPlace, handlePlaceForm } from '@app/services';
-import { encodeQueryToURL, formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
+import { generateCacheKey } from '@app/services';
+import MetricService from '@app/services/metrics';
+import PlacesService from '@app/services/places';
+import { formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
 import { MapComponentContext } from '@app/utils/contexts';
-import { noSpecialCharsOrSpaceRule, setupErrors } from '@app/utils/validations';
 
-import { PLACE_DETAIL_QUERY, PlaceIntersection, PlaceTypeEnum } from './model';
+import { IPlace, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
 
 interface IProps {
   path: string;
   page?: string;
   onDataChange?: () => {};
+  dynamicOptions?: {
+    type?: any[];
+  };
 }
 
 export function PlaceDetail(props: IProps) {
-  const { page, onDataChange = noop } = props;
+  const { page, onDataChange = noop, dynamicOptions } = props;
+  const { type: placeTypeOptions = [] } = dynamicOptions;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
   const metricsPermission = getPermissions(AuthzGuards.accessMetricsGuard);
   const writeMetricsPermission = getPermissions(AuthzGuards.writeMetricsGuard);
 
-  const encodedQuery = encodeQueryToURL(`locations/${page}`, {
-    ...PLACE_DETAIL_QUERY,
-    group: selectedGroup,
-  });
+  const query = merge(PLACE_DETAIL_QUERY, { group: selectedGroup });
+  const cacheKey = generateCacheKey(`locations/${page}`, query);
 
-  const { data, error, mutate, revalidate } = useSWR(encodedQuery, (url) =>
-    getPlace(url).then((response: any) => response.data)
+  const { data, error, mutate, revalidate } = useSWR(cacheKey, () =>
+    PlacesService.getPlace(page, query).then((response: any) => response.data)
   );
 
-  const [place, setPlace] = useState({});
+  const [place, setPlace] = useState<IPlace>({});
   const [mapData, setMapData] = useState({});
   const [mappedIntersections, setMappedIntersections] = useState();
   const [geojsonValue, setGeojson] = useState(null);
@@ -126,7 +136,7 @@ export function PlaceDetail(props: IProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await handlePlaceForm(false, parsed, id, selectedGroup);
+      await PlacesService.handlePlaceForm(false, parsed, id, { group: selectedGroup });
       revalidate();
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
@@ -147,7 +157,7 @@ export function PlaceDetail(props: IProps) {
     e.stopPropagation();
     try {
       setServerErrors(false);
-      await calculateAllForPlace(placeID, selectedGroup);
+      await MetricService.calculateAllForPlace(placeID, { group: selectedGroup });
       setMetricsLoading(true);
     } catch (error) {
       setServerErrors(error.data.errors);
@@ -268,13 +278,9 @@ export function PlaceDetail(props: IProps) {
                           name="type"
                           defaultValue={type}
                         >
-                          {Object.keys(PlaceTypeEnum).map((t, idx) => (
-                            <option
-                              key={idx}
-                              value={PlaceTypeEnum[t]}
-                              selected={type === PlaceTypeEnum[t]}
-                            >
-                              {PlaceTypeEnum[t]}
+                          {placeTypeOptions.map((t) => (
+                            <option key={t.value} value={t.value} selected={type === t.value}>
+                              {t.label}
                             </option>
                           ))}
                         </select>

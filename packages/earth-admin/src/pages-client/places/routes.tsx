@@ -23,8 +23,9 @@ import React, { useState } from 'react';
 import { useAuth0 } from '@app/auth/auth0';
 import { DataListing, DefaultListItem } from '@app/components/data-listing';
 import { SidebarLayout } from '@app/layouts';
-import { getAllPlaces } from '@app/services/places';
-import { encodeQueryToURL, setPage } from '@app/utils';
+import { RequestQuery } from '@app/services';
+import PlacesService from '@app/services/places';
+import { setPage } from '@app/utils';
 import { useInfiniteList } from '@app/utils/hooks';
 
 import { PlaceDetail } from './details';
@@ -38,7 +39,7 @@ export default function PlacesPage(props) {
   const { selectedGroup } = useAuth0();
   const [searchValue, setSearchValue] = useState('');
 
-  const getQuery = (cursor) => {
+  const getQueryFn = (cursor: string): { query: RequestQuery; resourceType: string } => {
     const query = {
       search: searchValue,
       sort: 'name',
@@ -46,9 +47,14 @@ export default function PlacesPage(props) {
       select: 'name,slug',
       group: selectedGroup,
     };
-    return encodeQueryToURL('locations', query);
+    return { query, resourceType: 'locations' };
   };
-  const { listProps, mutate } = useInfiniteList(getQuery, getAllPlaces);
+
+  const { listProps, filters, mutate } = useInfiniteList(getQueryFn, PlacesService.getAllPlaces);
+
+  // Matches everything after the resource name in the url.
+  // In our case that's /resource-id or /new
+  const selectedItem = props['*'];
 
   return (
     <>
@@ -60,14 +66,14 @@ export default function PlacesPage(props) {
           searchValueAction={setSearchValue}
           pageSize={PAGE_SIZE}
           searchValue={searchValue}
+          selectedItem={selectedItem}
           {...listProps}
-          // selectedItem={selectedItem}
         />
       </SidebarLayout>
       <Router>
         <PlacesHome path="/" />
-        <NewPlace path="/new" onDataChange={mutate} />
-        <PlaceDetail path="/:page" onDataChange={mutate} />
+        <NewPlace path="/new" onDataChange={mutate} dynamicOptions={filters} />
+        <PlaceDetail path="/:page" onDataChange={mutate} dynamicOptions={filters} />
       </Router>
     </>
   );

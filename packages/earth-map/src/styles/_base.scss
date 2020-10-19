@@ -92,3 +92,7 @@ body {
 .ng-color-primary {
   color: $marapp-primary-color;
 }
+
+.ng-background-success {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25)), $marapp-color-success;
+}

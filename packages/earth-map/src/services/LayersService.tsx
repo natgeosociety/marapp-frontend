@@ -16,4 +16,15 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-export { default as Auth0ListItem } from './Auth0ListItem';
+
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
+
+const fetchLayerById = async (id: string, query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request(`/layers/${id}`, { query }, metaDeserializer);
+};
+
+const fetchLayers = async (query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request('/layers', { query }, metaDeserializer);
+};
+
+export default { fetchLayerById, fetchLayers };

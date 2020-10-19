@@ -48,11 +48,6 @@ interface ISidebarPanel {
 class Sidebar extends React.Component<ISidebarPanel> {
   private sidebarPanel: any;
 
-  public componentWillUnmount() {
-    const { setSidebarOpen } = this.props;
-    setSidebarOpen(false);
-  }
-
   public onClose = () => {
     const { setSidebarOpen } = this.props;
     setSidebarOpen(false);

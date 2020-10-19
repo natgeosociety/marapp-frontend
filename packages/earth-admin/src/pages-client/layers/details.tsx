@@ -17,55 +17,65 @@ import Collapse from '@kunukn/react-collapse';
 import classnames from 'classnames';
 import { JSHINT } from 'jshint';
 import { noop } from 'lodash';
+import { merge } from 'lodash/fp';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, ErrorMessage, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
 import useSWR from 'swr';
 
-import { AsyncSelect, AuthzGuards, ErrorMessages, InlineEditCard } from '@marapp/earth-shared';
+import {
+  alphaNumericDashesRule,
+  AsyncSelect,
+  AuthzGuards,
+  ErrorMessages,
+  InlineEditCard,
+  Input,
+  setupErrors,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
 import { DetailList } from '@app/components/detail-list';
 import { HtmlEditor } from '@app/components/html-editor';
-import { Input } from '@app/components/input';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
-import { getAllLayers, getLayer, handleLayerForm } from '@app/services/layers';
+import { generateCacheKey } from '@app/services';
+import LayersService from '@app/services/layers';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import {
   copyToClipboard,
-  encodeQueryToURL,
   flattenArrayForSelect,
   flattenObjectForSelect,
   formatDate,
   getSelectValues,
 } from '@app/utils';
-import { alphaNumericDashesRule, setupErrors } from '@app/utils/validations';
 
-import { LAYER_CATEGORY_OPTIONS, LAYER_PROVIDER_OPTIONS, LAYER_TYPE_OPTIONS } from './model';
+import { ILayer } from './model';
 
 const LAYER_DETAIL_QUERY = { include: 'references', select: 'references.name,references.id' };
 
 export function LayerDetail(props: any) {
-  const { page, onDataChange = noop } = props;
+  const { page, onDataChange = noop, dynamicOptions } = props;
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
+  const {
+    category: layerCategoryOptions = [],
+    type: layerTypeOptions = [],
+    provider: layerProviderOptions = [],
+  } = dynamicOptions;
 
-  const encodedQuery = encodeQueryToURL(`layers/${page}`, {
-    ...LAYER_DETAIL_QUERY,
-    ...{ group: selectedGroup },
-  });
+  const query = merge(LAYER_DETAIL_QUERY, { group: selectedGroup });
+  const cacheKey = generateCacheKey(`layers/${page}`, query);
 
-  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
-    getLayer(url).then((res: any) => res.data)
+  const { data, error, mutate } = useSWR(cacheKey, () =>
+    LayersService.getLayer(page, query).then((res: any) => res.data)
   );
 
-  const [layer, setLayer] = useState({});
+  const [layer, setLayer] = useState<ILayer>({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState();
@@ -100,10 +110,10 @@ export function LayerDetail(props: any) {
 
   useEffect(() => {
     layer.config && setLayerConfig(layer.config);
-    layer.category && setLayerCategory(getSelectValues(LAYER_CATEGORY_OPTIONS, layer.category));
-    layer.type && setLayerType(LAYER_TYPE_OPTIONS.find((t) => t.value === layer.type));
+    layer.category && setLayerCategory(getSelectValues(layerCategoryOptions, layer.category));
+    layer.type && setLayerType(layerTypeOptions.find((t) => t.value === layer.type));
     layer.provider &&
-      setLayerProvider(LAYER_PROVIDER_OPTIONS.find((p) => p.value === layer.provider));
+      setLayerProvider(layerProviderOptions.find((p) => p.value === layer.provider));
   }, [layer]);
 
   const { getValues, register, formState, errors, control } = useForm({
@@ -130,7 +140,7 @@ export function LayerDetail(props: any) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await handleLayerForm(false, parsed, id, selectedGroup);
+      await LayersService.handleLayerForm(false, parsed, id, { group: selectedGroup });
       mutate();
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
@@ -262,7 +272,7 @@ export function LayerDetail(props: any) {
                           control={control}
                           className="marapp-qa-category"
                           name="category"
-                          options={LAYER_CATEGORY_OPTIONS}
+                          options={layerCategoryOptions}
                           defaultValue={layerCategory}
                           isSearchable={true}
                           isMulti={true}
@@ -360,7 +370,7 @@ export function LayerDetail(props: any) {
                           control={control}
                           className="marapp-qa-provider"
                           name="provider"
-                          options={LAYER_PROVIDER_OPTIONS}
+                          options={layerProviderOptions}
                           defaultValue={layerProvider}
                           isSearchable={true}
                           placeholder="Select layer provider"
@@ -379,7 +389,7 @@ export function LayerDetail(props: any) {
                           control={control}
                           className="marapp-qa-type"
                           name="type"
-                          options={LAYER_TYPE_OPTIONS}
+                          options={layerTypeOptions}
                           defaultValue={layerType}
                           isSearchable={true}
                           placeholder="Select layer type"
@@ -474,7 +484,7 @@ export function LayerDetail(props: any) {
                           control={control}
                           getOptionLabel={(option) => option.name}
                           getOptionValue={(option) => option.id}
-                          loadFunction={getAllLayers}
+                          loadFunction={LayersService.getAllLayers}
                           defaultValue={references}
                           selectedGroup={selectedGroup}
                           as={AsyncSelect}

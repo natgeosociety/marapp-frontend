@@ -17,68 +17,59 @@
   specific language governing permissions and limitations under the License.
 */
 
-import axios, { AxiosRequestConfig } from 'axios';
+import { merge } from 'lodash/fp';
 
-import { GATSBY_API_URL } from '@app/config';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
-import { deserializeData, encodeQueryToURL } from '../utils';
-
-const OrganizationAPIService = {
-  request: (options: AxiosRequestConfig) => {
-    const instance = axios.create({
-      baseURL: GATSBY_API_URL,
-      timeout: 100000,
-      // @ts-ignore
-      transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
-        data: data.data ? deserializeData(data) : data,
-        pagination: data.meta ? data.meta.pagination : null,
-        total: data.meta ? data.meta.results : null,
-      })),
-    });
-
-    return new Promise((resolve, reject) => {
-      instance
-        .request(options)
-        .then((res) => resolve(res.data))
-        .catch((error) => {
-          reject(error.response.data);
-        });
-    });
-  },
+const getAllOrganizations = async (query?: string | RequestQuery) => {
+  return BaseAPIService.request('/organizations', { query }, metaDeserializer);
 };
 
-export const getAllOrganizations = async (organizationQuery: string) =>
-  OrganizationAPIService.request({
-    url: organizationQuery,
-  });
+const getOrganization = (orgId: string, query?: RequestQuery) => {
+  return BaseAPIService.request(`/organizations/${orgId}`, { query }, metaDeserializer);
+};
 
-export const getOrganization = (organizationQuery: string) =>
-  OrganizationAPIService.request({
-    url: organizationQuery,
-    method: 'get',
-  });
+const getOrganizationStats = async (query?: RequestQuery) => {
+  return BaseAPIService.request('/organizations/stats', { query }, metaDeserializer);
+};
 
-export const getOrganizationStats = async (query: string) =>
-  OrganizationAPIService.request({
-    url: query,
-  });
+const updateOrganization = async (orgId: string, data: any, query?: RequestQuery) => {
+  const params = { include: 'owners' };
+  return BaseAPIService.request(
+    `/organizations/${orgId}`,
+    {
+      query: merge(params, query),
+      method: 'put',
+      data,
+    },
+    metaDeserializer
+  );
+};
 
-export const updateOrganization = async (organizationID: string, organization, group: string) =>
-  OrganizationAPIService.request({
-    url: encodeQueryToURL(`/organizations/${organizationID}`, { group, include: 'owners' }),
-    method: 'put',
-    data: organization,
-  });
+const addOrganization = async (data: any, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    '/organizations',
+    { query, method: 'post', data },
+    metaDeserializer
+  );
+};
 
-export const addOrganization = async (request, group: string) =>
-  OrganizationAPIService.request({
-    url: encodeQueryToURL('/organizations', { group }),
-    method: 'post',
-    data: request,
-  });
+const deleteOrganization = async (orgId, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/organizations/${orgId}`,
+    {
+      method: 'delete',
+      query,
+    },
+    metaDeserializer
+  );
+};
 
-export const deleteOrganization = async (organizationId) =>
-  OrganizationAPIService.request({
-    url: encodeQueryToURL(`/organizations/${organizationId}`),
-    method: 'delete',
-  });
+export default {
+  getAllOrganizations,
+  getOrganization,
+  getOrganizationStats,
+  updateOrganization,
+  addOrganization,
+  deleteOrganization,
+};
