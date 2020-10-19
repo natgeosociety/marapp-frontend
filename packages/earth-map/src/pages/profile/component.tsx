@@ -293,38 +293,41 @@ export function ProfileComponent(props: IProps) {
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard
-                  onSubmit={onEmailChange}
-                  validForm={isValid}
-                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
-                    <>
-                      <div className="ng-margin-medium-bottom">
-                        <Input
-                          name="email"
-                          placeholder="Email"
-                          label="Email*"
-                          className="marapp-qa-inputemail ng-display-block ng-margin-medium-bottom"
-                          defaultValue={userData.email}
-                          error={renderErrorFor('email')}
-                          ref={register({
-                            required: 'Please enter a valid email',
-                            validate: {
-                              valueChangedRule: (value) => valueChangedRule(value, userData.email),
-                              validEmailRule: validEmailRule(),
-                            },
-                          })}
-                        />
-                      </div>
-                      <div className="ng-margin-medium-bottom">
-                        <p>
-                          After saving, we will send an email to your new email address to confirm
-                          the change.
-                          <br />
-                          Be sure to check your spam folder if you do not receive the email in a few
-                          minutes.
-                        </p>
-                      </div>
-                    </>
-                  )}
+                  {...(!REACT_APP_EXTERNAL_IDP_URL && {
+                    onSubmit: onEmailChange,
+                    validForm: isValid,
+                    render: ({ setIsEditing, setIsLoading, setServerErrors }) => (
+                      <>
+                        <div className="ng-margin-medium-bottom">
+                          <Input
+                            name="email"
+                            placeholder="Email"
+                            label="Email*"
+                            className="marapp-qa-inputemail ng-display-block ng-margin-medium-bottom"
+                            defaultValue={userData.email}
+                            error={renderErrorFor('email')}
+                            ref={register({
+                              required: 'Please enter a valid email',
+                              validate: {
+                                valueChangedRule: (value) =>
+                                  valueChangedRule(value, userData.email),
+                                validEmailRule: validEmailRule(),
+                              },
+                            })}
+                          />
+                        </div>
+                        <div className="ng-margin-medium-bottom">
+                          <p>
+                            After saving, we will send an email to your new email address to confirm
+                            the change.
+                            <br />
+                            Be sure to check your spam folder if you do not receive the email in a
+                            few minutes.
+                          </p>
+                        </div>
+                      </>
+                    ),
+                  })}
                 >
                   {!pendingEmail && (
                     <>
