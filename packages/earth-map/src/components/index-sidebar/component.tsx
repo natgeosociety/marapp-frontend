@@ -34,11 +34,6 @@ class IndexSidebarComponent extends React.Component<IndexSidebar> {
   public static defaultProps = {
     selectedOpen: null,
   };
-  //
-  // public onClose = () => {
-  //   const { setIndexesSelected } = this.props;
-  // //  setIndexesSelected('');
-  // };
 
   public render() {
     const { selectedOpen } = this.props;

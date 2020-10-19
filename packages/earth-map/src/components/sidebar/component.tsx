@@ -47,19 +47,16 @@ interface ISidebarPanel {
 }
 
 class Sidebar extends React.Component<ISidebarPanel> {
-  private sidebarPanel: any;
-
   public onClose = () => {
     const { setSidebarOpen } = this.props;
     setSidebarOpen(false);
   };
 
   public resetMap = () => {
-    const { setPlacesSearch, setIndexesSelected, resetMap, resetPlace, resetLayers } = this.props;
+    const { setPlacesSearch, resetMap, resetPlace, resetLayers } = this.props;
 
     resetPlace();
     setPlacesSearch({ search: '' });
-    // setIndexesSelected('');
     resetLayers();
     resetMap();
   };
@@ -68,7 +65,6 @@ class Sidebar extends React.Component<ISidebarPanel> {
     const { children, open, selectedOpen, layersPanel, setSidebarOpen } = this.props;
     let state;
 
-    // console.log(selectedOpen, 'selected open');
     if (open) {
       state = 'open';
       if (selectedOpen) {

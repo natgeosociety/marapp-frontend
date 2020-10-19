@@ -23,7 +23,6 @@ interface IProps {
   locationName?: string;
   locationOrganization?: string;
   lastViewedPlace?: IPlace;
-  selectedOpen?: boolean;
   nextPlacesPage?: () => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
@@ -49,16 +48,17 @@ const Places = (props: IProps) => {
     setPlacesSearch,
     setSidebarPanelExpanded,
     setPlacesSearchOpen,
-    selectedOpen = false,
+    selected,
   } = props;
+
   const hasSearchTerm = !!search.search;
-  const showX = selectedOpen || hasSearchTerm;
-  const showFilter = !selectedOpen || panelExpanded;
+  const showX = selected || hasSearchTerm;
+  const showFilter = !selected || panelExpanded;
   const withFilters = hasFilters(search.filters);
   const showResults = hasSearchTerm || withFilters;
-  const showBack = selectedOpen && panelExpanded && showResults;
-  const onLocationPage = selectedOpen && panelExpanded && showResults;
-  const onHomepage = !selectedOpen && showResults;
+  const showBack = selected && panelExpanded && showResults;
+  const onLocationPage = selected && panelExpanded && showResults;
+  const onHomepage = !selected && showResults;
   const showLastViewedPlace = lastViewedPlace && group.includes(lastViewedPlace.organization);
 
   const handleChange = (e) => {
@@ -67,7 +67,7 @@ const Places = (props: IProps) => {
   };
 
   const handleBack = () => {
-    if (locationName) {
+    if (selected) {
       setPlacesSearch({ search: locationName });
     }
     setSidebarPanelExpanded(false);
@@ -76,7 +76,6 @@ const Places = (props: IProps) => {
   const handleReset = () => {
     resetPlace({ keepCache: true });
     setPlacesSearch({ search: '' });
-    //  setIndexesSelected('');
     resetMap();
     push('/earth');
   };
@@ -130,7 +129,7 @@ const Places = (props: IProps) => {
             />
           )}
         </InfiniteList>
-      ) : selectedOpen ? (
+      ) : selected ? (
         <IndexSidebar />
       ) : (
         <>

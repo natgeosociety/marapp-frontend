@@ -59,12 +59,14 @@ function* toLocation({ payload, meta }) {
     return;
   }
 
+  yield put(setPlaceSelectedOpen(false));
   yield put(setSidebarPanelExpanded(false));
   yield put(setPlacesLoading(true));
-  yield put(setPlaceSelectedOpen(false));
   yield put(setMetricsLoading(true));
 
   try {
+    yield put(setPlaceSelectedOpen(true));
+
     const { data }: { data: IPlace } = yield call(PlacesService.fetchPlaceById, slug, {
       include: 'metrics',
       group: organization,
@@ -101,7 +103,6 @@ function* toLocation({ payload, meta }) {
       })
     );
 
-    yield put(setPlaceSelectedOpen(true));
     // Let animations finish before we change the place
     yield delay(750);
 

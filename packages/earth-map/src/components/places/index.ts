@@ -20,7 +20,6 @@ export default connect(
     locationName: state.places.data.name,
     locationOrganization: state.places.data.organization,
     lastViewedPlace: state.global.lastViewedPlace,
-    selectedOpen: state.places.selectedOpen,
   }),
   {
     resetMap,

@@ -39,19 +39,12 @@ interface IEarth {
   page?: string;
   layersPanel?: boolean;
   selected?: string;
-  place?: any;
+  selectedOpen?: boolean;
 }
 
 class EarthPage extends React.Component<IEarth> {
   public render() {
-    const {
-      setFullscreen,
-      setMapInteractions,
-      setSidebarPanel,
-      selected,
-      panel,
-      place,
-    } = this.props;
+    const { setFullscreen, setMapInteractions, setSidebarPanel, panel, selectedOpen } = this.props;
 
     return (
       <main className="l-page marapp-qa-pageearth" role="main">
@@ -76,8 +69,8 @@ class EarthPage extends React.Component<IEarth> {
             <Tab label="Places" value="places" />
             <Tab label="Layers" value="layers" />
           </Tabs>
-          {panel === EPanels.PLACES && <Places selected={!!place} />}
-          {panel === EPanels.LAYERS && <Layers selected={!!place} />}
+          {panel === EPanels.PLACES && <Places selected={selectedOpen} />}
+          {panel === EPanels.LAYERS && <Layers selected={selectedOpen} />}
         </Sidebar>
 
         <div className="l-content">
