@@ -69,7 +69,9 @@ export const BaseAPIService = {
       axios
         .request(options)
         .then((response) => resolve(deserializer(response)))
-        .catch((error) => reject(error?.response));
+        .catch((error) =>
+          reject(error?.response?.data?.data ? deserializer(error?.response) : error?.response)
+        );
     });
   },
   /**
