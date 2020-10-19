@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.9.0...v1.9.1) (2020-10-19)
+
+
+### Bug Fixes
+
+* **profile:** page overflow ([#241](https://github.com/natgeosociety/marapp-frontend/issues/241)) ([0881a3a](https://github.com/natgeosociety/marapp-frontend/commit/0881a3a716505e4dbc02062abe197c64d7ba2172))
+
 # [1.9.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.8.1...v1.9.0) (2020-10-19)
 
 
