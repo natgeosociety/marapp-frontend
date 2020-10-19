@@ -9,7 +9,7 @@
     "serve": "gatsby serve --prefix-paths --port 8000",
     "clean": "gatsby clean",
     "lint": "tslint -p tsconfig.json --fix",
-    "test": "jest --runInBand --passWithNoTests --watchAll --coverage",
+    "test": "jest --passWithNoTests --watchAll",
     "typecheck": "tsc --emitDeclarationOnly"
   },
   "dependencies": {

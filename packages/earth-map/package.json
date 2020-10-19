@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "start": "SKIP_PREFLIGHT_CHECK=true dotenv -e .env.local react-app-rewired start",
-    "build": "dotenv -e .env react-app-rewired build",
+    "build": "SKIP_PREFLIGHT_CHECK=true dotenv -e .env react-app-rewired build",
     "lint": "tslint -p tsconfig.json --fix",
-    "test": "jest --runInBand --passWithNoTests --watchAll --coverage",
+    "test": "jest --passWithNoTests --watchAll",
     "typecheck": "tsc --emitDeclarationOnly"
   },
   "dependencies": {
