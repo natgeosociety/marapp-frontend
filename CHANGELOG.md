@@ -1,3 +1,41 @@
+# [1.9.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.8.1...v1.9.0) (2020-10-19)
+
+
+### Bug Fixes
+
+* deserialize response if JSON:API error ([edc3097](https://github.com/natgeosociety/marapp-frontend/commit/edc30975115199371b7aa2e37b94d596d9071d4f))
+* deserialize response if JSON:API error ([24261e7](https://github.com/natgeosociety/marapp-frontend/commit/24261e71257eba800f44ab784c9ebeebf93d2222))
+* **admin:** Fix link to profile from the admin [EP-3123] ([17502c4](https://github.com/natgeosociety/marapp-frontend/commit/17502c461ec832a91bc5de4056c42dacc9c77c30))
+* **admin:** Show selected item in the sidebar ([fe2b04e](https://github.com/natgeosociety/marapp-frontend/commit/fe2b04e366ec46f6c4f176999cd7d35aeb64d5b3))
+* **admin:** update label for roles on user views ([#219](https://github.com/natgeosociety/marapp-frontend/issues/219)) ([ad39232](https://github.com/natgeosociety/marapp-frontend/commit/ad392324ad4e44465c3ccb9d9f5694bdb9cf3fab))
+* **earth-map:** refactor service layer, support refresh token interceptors ([fb7a875](https://github.com/natgeosociety/marapp-frontend/commit/fb7a875c2e147ff38aca561399356184ed8b3e01))
+* **map:** fixed imports ([3c6fac0](https://github.com/natgeosociety/marapp-frontend/commit/3c6fac051987a1f61d5d62a80ccd4a4ee9d838cb))
+* **map:** removed console log ([7d2aabb](https://github.com/natgeosociety/marapp-frontend/commit/7d2aabbfd65841f90794049e1510705b22eee4a2))
+* **map:** test email error ([4109b1b](https://github.com/natgeosociety/marapp-frontend/commit/4109b1bac267b907d146c417aff1236aa4993026))
+* change import ([e3cd71a](https://github.com/natgeosociety/marapp-frontend/commit/e3cd71ab50f71324bbbd4033bd093a89d87f4261))
+* decode URI components [EP-3130] ([6022194](https://github.com/natgeosociety/marapp-frontend/commit/602219443e7f117ab5787378cf7054aa87ee8bed))
+* **profile:** enable name update save button when fields are changed [EP-3124] ([#229](https://github.com/natgeosociety/marapp-frontend/issues/229)) ([783ab3f](https://github.com/natgeosociety/marapp-frontend/commit/783ab3f3217f64c6205e4184554274dc4f43d560))
+* add meta deserializer ([c77b091](https://github.com/natgeosociety/marapp-frontend/commit/c77b09184d52015046a2535fff4fb21770fbb22e))
+* handle errors ([c913c2b](https://github.com/natgeosociety/marapp-frontend/commit/c913c2b15716e09ad79ca6aada4237653fc404ce))
+* home details page ([95d49bf](https://github.com/natgeosociety/marapp-frontend/commit/95d49bfbad985669b6cb0bf0f67dd21fa5cd24a4))
+* Profile link from the account menu [EP-3123] ([3c15ecf](https://github.com/natgeosociety/marapp-frontend/commit/3c15ecf500d4b64e04b7c29bb60d07e1846cc9ea))
+* update components w/ service setup ([3ec1d33](https://github.com/natgeosociety/marapp-frontend/commit/3ec1d333214bf9bcdc81e710e8add442a1bb2b3b))
+* update pages-client ([5b7c95b](https://github.com/natgeosociety/marapp-frontend/commit/5b7c95bab26d485ae714a2f558fd0a0e6b4e1d5b))
+* wip ([3e53c83](https://github.com/natgeosociety/marapp-frontend/commit/3e53c836762ae445a110d422fd23b20550c44e99))
+* **earth-admin:** refactor service layer, support refresh token interceptors ([e28fc56](https://github.com/natgeosociety/marapp-frontend/commit/e28fc5658e7cdb3504b7116512f99ccfba69cb22))
+* **shared:** Update session storge methods ([2e6e5af](https://github.com/natgeosociety/marapp-frontend/commit/2e6e5af067434a33b9d65b76ec8e60229c49c48a))
+
+
+### Features
+
+* **admin:** force lowercase slug when creating an org [EP-2755] ([#234](https://github.com/natgeosociety/marapp-frontend/issues/234)) ([92b0a4e](https://github.com/natgeosociety/marapp-frontend/commit/92b0a4e5008e99f775653fd4c573cc6fe3c1c3f5))
+* **admin:** Use dynamic filters from the API [EP-2767] ([568bd2b](https://github.com/natgeosociety/marapp-frontend/commit/568bd2b5a64d20bbbc5fba3037c5187eeee4df8c))
+* **map:** change email [EP-2749] ([#225](https://github.com/natgeosociety/marapp-frontend/issues/225)) ([c89080a](https://github.com/natgeosociety/marapp-frontend/commit/c89080a7778cf824cb9e375038c61d27879e66db)), closes [#223](https://github.com/natgeosociety/marapp-frontend/issues/223)
+* **profile:** delete account [EP-2924] ([#231](https://github.com/natgeosociety/marapp-frontend/issues/231)) ([4077f79](https://github.com/natgeosociety/marapp-frontend/commit/4077f79bcb3969d62b2d9be3b9b04f8bef38dd76))
+* **profile:** enable fist name & last name update [EP-2582] ([#223](https://github.com/natgeosociety/marapp-frontend/issues/223)) ([b32b1c7](https://github.com/natgeosociety/marapp-frontend/commit/b32b1c7882461cc97c0d6a796666ca4a300c0c63))
+* **profile:** enable remove from orgs [EP-2620] ([#227](https://github.com/natgeosociety/marapp-frontend/issues/227)) ([f44d3c2](https://github.com/natgeosociety/marapp-frontend/commit/f44d3c2bde334d04d2170e83323159d4ece1c6a9))
+* **profile:** enable reset password [EP-2584] ([#224](https://github.com/natgeosociety/marapp-frontend/issues/224)) ([ab5e027](https://github.com/natgeosociety/marapp-frontend/commit/ab5e0277dfaacaa14741d4ca40cfde609e3d7e4b))
+
 ## [1.8.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.8.0...v1.8.1) (2020-10-08)
 
 

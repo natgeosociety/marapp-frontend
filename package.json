@@ -1,6 +1,6 @@
 {
   "name": "marapp-fe",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "private": true,
   "scripts": {
     "bootstrap": "lerna clean -y && lerna bootstrap",
@@ -24,8 +24,8 @@
     "d3-geo": "^1.11.3",
     "deck.gl": "7.3.6",
     "delay": "^4.1.0",
-    "iframe-resizer": "^3.6.6",
     "flat": "^5.0.2",
+    "iframe-resizer": "^3.6.6",
     "json2csv": "^5.0.3",
     "layer-manager": "^3.0.6",
     "lodash": "^4.17.11",
@@ -40,8 +40,8 @@
     "react-datepicker": "^2.8.0",
     "react-dom": "^16.8.6",
     "react-fast-compare": "^2.0.4",
-    "react-iframe-resizer-super": "^0.2.2",
     "react-hook-form": "^4.8.2",
+    "react-iframe-resizer-super": "^0.2.2",
     "react-map-gl": "^5.0.7",
     "react-markdown": "^4.0.8",
     "react-modal": "^3.8.1",
