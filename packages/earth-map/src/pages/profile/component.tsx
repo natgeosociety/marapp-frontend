@@ -195,7 +195,10 @@ export function ProfileComponent(props: IProps) {
   return isLoading ? (
     <Spinner size="large" />
   ) : (
-    <div className={`ng-flex marapp-qa-user-profile ng-ep-background-gray-9`} id="portal">
+    <div
+      className={`ng-flex ng-flex-column marapp-qa-user-profile ng-ep-background-gray-9`}
+      id="portal"
+    >
       <div>
         <Link
           className="ng-border-remove"
