@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { setSidebarOpen } from 'modules/sidebar/actions';
 import { connect } from 'react-redux';
 
-import { setSidebarOpen } from 'modules/sidebar/actions';
 import SidebarComponent from './component';
 
 export default connect(
