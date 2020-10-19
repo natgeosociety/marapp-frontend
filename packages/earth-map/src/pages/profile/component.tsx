@@ -199,26 +199,27 @@ export function ProfileComponent(props: IProps) {
       className={`ng-flex ng-flex-column marapp-qa-user-profile ng-ep-background-gray-9`}
       id="portal"
     >
-      <div>
-        <Link
-          className="ng-border-remove"
-          to={{
-            type: 'EARTH',
-          }}
-        >
-          <img src={APP_LOGO} className="ng-margin" alt="" />
-        </Link>
+      <div className="ng-position-fixed ng-width-1">
+        <div>
+          <Link
+            className="ng-border-remove"
+            to={{
+              type: 'EARTH',
+            }}
+          >
+            <img src={APP_LOGO} className="ng-margin" alt="" />
+          </Link>
+        </div>
+
+        <UserMenu
+          selected={page}
+          isAuthenticated={isAuthenticated}
+          profileLink={<Link to={{ type: 'PROFILE' }}>Profile</Link>}
+          onLogin={login}
+          onLogout={logout}
+          onSignUp={() => login({ initialScreen: 'signUp' })}
+        />
       </div>
-
-      <UserMenu
-        selected={page}
-        isAuthenticated={isAuthenticated}
-        profileLink={<Link to={{ type: 'PROFILE' }}>Profile</Link>}
-        onLogin={login}
-        onLogout={logout}
-        onSignUp={() => login({ initialScreen: 'signUp' })}
-      />
-
       <div className="ng-user-profile-container">
         <div className="ng-padding-large">
           <h1 className="ng-margin-medium-bottom ng-text-center ng-text-uppercase ng-ep-text-gray-1 ng-text-display-m user-profile-title">
