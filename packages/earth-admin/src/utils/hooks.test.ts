@@ -26,7 +26,6 @@ describe('Hooks', () => {
       return `/something?cursor=${cursor}`;
     });
     const fetcher = async (url) => {
-      console.log(url);
       return {
         data: [{}, {}, {}],
         pagination: {

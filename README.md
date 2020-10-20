@@ -49,7 +49,7 @@ yarn build
 
 ## Deployment
 
-Create & deploy all required services. 
+Create & deploy all required services.
 
 You will need an AWS access key ID and secret pair stored in `~/.aws/credentials`.
 
@@ -61,6 +61,20 @@ You will need to have access to the following AWS services:
 ```shell script
 yarn serverless:deploy -- --stage <env>
 ```
+
+## Unit Testing
+Our goal with unit testing is to get the most value out of them with the minimum ammount of effort. To achieve this, we should have this things in mind:
+
+* The more our tests resemble the way the software is used, the more confidence they can give us.
+* Avoid testing the implementation details. We use [Testing Library](https://testing-library.com/) instead of Enzyme because of this. See this [blog post](https://kentcdodds.com/blog/testing-implementation-details).
+* Find the most critical parts of the application and start creating unit tests there
+
+### Testing workflow
+For unit testing we use [Jest](https://jestjs.io/en/) and [Testing Library](https://testing-library.com/).
+
+As a developer, you should always have the unit tests running in the background by running  `yarn test` in thre root of the project. This will run only the tests that have changes on them, or contain imports that have changes on them.
+
+There is also `yarn test-coverage` which will run all the available unit tests and provide code coverage statistics.
 
 ## Docs
 - [earth-map](packages/earth-map/README.md)
