@@ -19,8 +19,9 @@
 
 import React, { useState } from 'react';
 import classnames from 'classnames';
-import { animated, Keyframes } from 'react-spring/renderprops';
-import { compose } from 'lodash/fp';
+import { animated, Keyframes } from 'react-spring/renderprops.cjs';
+import compose from 'lodash/fp/compose';
+import noop from 'lodash/noop';
 
 import { useDomWatcher } from '@marapp/earth-shared';
 
@@ -33,16 +34,23 @@ const Dropdown: any = Keyframes.Spring({
 });
 
 interface IProps {
-  isAuthenticated: boolean;
   profileLink: React.ReactElement;
-  onLogin: () => {};
-  onLogout: () => {};
-  onSignUp: () => {};
+  onLogin?: () => {};
+  onLogout?: () => {};
+  onSignUp?: () => {};
+  isAuthenticated?: boolean;
   selected?: string;
 }
 
 export const UserMenu = (props: IProps) => {
-  const { isAuthenticated = false, onLogin, onLogout, onSignUp, selected, profileLink } = props;
+  const {
+    isAuthenticated = false,
+    onLogin = noop,
+    onLogout = noop,
+    onSignUp = noop,
+    selected,
+    profileLink,
+  } = props;
   const [showDrop, setShowDrop] = useState(false);
 
   const menuRef = useDomWatcher(() => setShowDrop(false), !showDrop);

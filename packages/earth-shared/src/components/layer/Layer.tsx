@@ -53,7 +53,7 @@ class LayerComponent extends PureComponent<LayerProps> {
           '-active': active,
         })}
         role="button"
-        tabIndex="-1"
+        tabIndex={-1}
         onClick={onClick}
       >
         {!background && (

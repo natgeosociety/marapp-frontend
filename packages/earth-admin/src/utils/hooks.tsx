@@ -147,7 +147,7 @@ export function useInfiniteListPaged(
   return returnValues;
 }
 
-interface IMergedResults {
+export interface IMergedResults {
   data: any[];
   meta: {
     filters: Array<{ key: string; value: any; count: number }>;

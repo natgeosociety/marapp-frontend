@@ -5,7 +5,8 @@
   "module": "src/index.ts",
   "scripts": {
     "transpile": "babel src -d dist --ignore '**/*.spec.js,**/*.stories.js'",
-    "jest": "jest --coverage --verbose --color",
+    "test": "jest --passWithNoTests --watch --color",
+    "test-coverage": "jest --coverage --color",
     "build-icons": "webpack --mode production"
   },
   "babel": {
@@ -15,14 +16,7 @@
     ],
     "plugins": [
       "transform-class-properties"
-    ],
-    "env": {
-      "test": {
-        "plugins": [
-          "transform-es2015-modules-commonjs"
-        ]
-      }
-    }
+    ]
   },
   "devDependencies": {
     "webpack-cli": "^3.3.11"

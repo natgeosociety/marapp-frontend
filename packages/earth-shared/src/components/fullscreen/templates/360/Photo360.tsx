@@ -20,7 +20,7 @@
 import React, { Fragment, PureComponent } from 'react';
 
 // Animations
-import { Transition } from 'react-spring/renderprops';
+import { Transition } from 'react-spring/renderprops.cjs';
 
 import { Panorama } from '@marapp/earth-shared';
 

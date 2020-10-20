@@ -20,7 +20,7 @@
 import classnames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
-import { animated, Keyframes } from 'react-spring/renderprops';
+import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
 import { Icon } from '@marapp/earth-shared';
 
