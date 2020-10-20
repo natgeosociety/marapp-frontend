@@ -171,6 +171,12 @@ export const Auth0Provider = ({
     return client.getUser(options);
   };
 
+  const updateToken = async () => {
+    const accessToken = isAuthenticated ? await getAccessToken({ ignoreCache: true }) : null;
+
+    onSuccessHook({ accessToken });
+  };
+
   return (
     <Auth0Context.Provider
       value={{
@@ -188,6 +194,7 @@ export const Auth0Provider = ({
         logout,
         getUser,
         getAccessToken,
+        updateToken,
         setupUserOrg: setSelectedGroup,
       }}
     >
