@@ -21,6 +21,8 @@
 
 .ng-not-found {
   background-image: url("../../assets/404_bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
   height: 100vh;
 
   > .ng-grid {

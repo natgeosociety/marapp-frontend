@@ -3,20 +3,18 @@ import React from 'react';
 
 import { NotFoundComponent } from '@marapp/earth-shared';
 
-import { GATSBY_APP_BASE_URL } from '@app/config';
-
-import { APP_NAME } from '../theme';
+import { GATSBY_APP_BASE_URL, GATSBY_APP_NAME } from '@app/config';
 
 const NotFoundPage = () => {
   const returnToHome = () => {
-    navigate(GATSBY_APP_BASE_URL);
+    navigate('/');
   };
 
   return (
     <NotFoundComponent
       returnToHome={returnToHome}
       aboutLink={GATSBY_APP_BASE_URL}
-      appName={APP_NAME}
+      appName={GATSBY_APP_NAME}
     />
   );
 };
