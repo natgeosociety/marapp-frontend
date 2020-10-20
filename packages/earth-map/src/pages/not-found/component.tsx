@@ -17,22 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { APP_NAME } from 'config';
 import React from 'react';
+import { APP_ABOUT } from 'theme';
 
-import { Button, ErrorTemplate } from '@marapp/earth-shared';
+import { NotFoundComponent } from '@marapp/earth-shared';
 
-const NotFound = ({ returnToHome }) => {
-  return (
-    <ErrorTemplate type="404" message="Sorry we couldn't find that page.">
-      <ul className="not-found--links--list">
-        <li>
-          <Button className="-light -fullwidth" onClick={returnToHome}>
-            Home
-          </Button>
-        </li>
-      </ul>
-    </ErrorTemplate>
-  );
-};
+const NotFoundPage = ({ returnToHome }) => (
+  <NotFoundComponent returnToHome={returnToHome} aboutLink={APP_ABOUT} appName={APP_NAME} />
+);
 
-export default NotFound;
+export default NotFoundPage;

@@ -24,17 +24,17 @@ import { useForm } from 'react-hook-form';
 
 import {
   ErrorMessages,
-  Spinner,
   Input,
+  lowerNumericDashesRule,
   setupErrors,
-  upperNumericDashesRule,
+  Spinner,
   validEmailRule,
 } from '@marapp/earth-shared';
 
 import { Card } from '@app/components/card';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { addOrganization } from '@app/services/organizations';
+import OrganizationsService from '@app/services/organizations';
 import { Auth0Context } from '@app/utils/contexts';
 
 interface IProps {
@@ -56,13 +56,13 @@ export function NewOrganization(props: IProps) {
   const onSubmit = async (values: any) => {
     try {
       setIsLoading(true);
-      const { data }: any = await addOrganization(
+      const { data } = await OrganizationsService.addOrganization(
         {
           name: values.name,
           slug: values.slug,
           owners: [].concat(values.owners),
         },
-        selectedGroup
+        { group: selectedGroup }
       );
       onDataChange();
       await navigate(`/${selectedGroup}/organizations/${data.id}`);
@@ -109,7 +109,7 @@ export function NewOrganization(props: IProps) {
               ref={register({
                 required: 'Slug name is required',
                 validate: {
-                  upperNumericDashesRule: upperNumericDashesRule(),
+                  lowerNumericDashesRule: lowerNumericDashesRule(),
                 },
               })}
             />

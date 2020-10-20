@@ -18,14 +18,14 @@
 */
 
 import classnames from 'classnames';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
 import { ErrorMessages } from '@marapp/earth-shared';
 
 import { InlineCardOverlay } from './index';
 import './styles.scss';
-import { noop } from 'lodash';
+import { noop, isNil } from 'lodash';
 
 interface IOptionsBag {
   isEditing: boolean;
@@ -49,7 +49,9 @@ export interface InlineCardProps {
   onCancel?: () => void;
   submitButtonText?: string;
   cancelButtonText?: string;
+  submitButtonVariant?: string;
   validForm?: boolean;
+  manualOpen?: boolean;
 }
 
 const Card: any = Keyframes.Spring({
@@ -66,12 +68,17 @@ export default function InlineEditCard(props: InlineCardProps) {
     onCancel = noop,
     submitButtonText = 'Save',
     cancelButtonText = 'Cancel',
+    submitButtonVariant,
     validForm,
+    manualOpen,
   } = props;
-
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
+
+  useEffect(() => {
+    setIsEditing(manualOpen);
+  }, [manualOpen]);
 
   const state = isEditing ? 'open' : 'close';
 
@@ -98,7 +105,10 @@ export default function InlineEditCard(props: InlineCardProps) {
       <InlineCardOverlay />
       <div className="ng-margin-medium-top">
         <button
-          className="marapp-qa-actionsaveinline ng-button ng-button-primary ng-margin-right"
+          className={classnames(
+            'marapp-qa-actionsaveinline ng-button ng-button-primary ng-margin-right',
+            submitButtonVariant && `ng-button-${submitButtonVariant}`
+          )}
           disabled={!validForm}
           onClick={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}
         >
@@ -117,7 +127,7 @@ export default function InlineEditCard(props: InlineCardProps) {
 
   const renderDefault = () => (
     <>
-      {render && (
+      {render && isNil(manualOpen) && (
         <button
           type="button"
           className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"

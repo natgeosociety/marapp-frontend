@@ -19,8 +19,8 @@
 
 import { BASE_URL } from 'config';
 import React from 'react';
-import urljoin from 'url-join';
 import { Deserializer } from 'ts-jsonapi';
+import urljoin from 'url-join';
 
 const DeserializerService = new Deserializer({
   keyForAttribute: (attribute: any) => {

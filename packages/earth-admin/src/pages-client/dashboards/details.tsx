@@ -14,18 +14,19 @@
 */
 
 import { noop } from 'lodash';
+import { merge } from 'lodash/fp';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
 import useSWR from 'swr';
 
 import {
+  alphaNumericDashesRule,
   AsyncSelect,
   AuthzGuards,
   ErrorMessages,
   InlineEditCard,
   Input,
-  alphaNumericDashesRule,
   setupErrors,
 } from '@marapp/earth-shared';
 
@@ -37,9 +38,11 @@ import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
-import { getAllWidgets, getDashboard, handleDashboardForm } from '@app/services';
+import { generateCacheKey } from '@app/services';
+import DashboardsService from '@app/services/dashboards';
+import WidgetsService from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
-import { encodeQueryToURL, flattenArrayForSelect, formatDate } from '@app/utils';
+import { flattenArrayForSelect, formatDate } from '@app/utils';
 
 const DASHBOARD_DETAIL_QUERY = {
   include: 'layers,widgets',
@@ -48,6 +51,7 @@ const DASHBOARD_DETAIL_QUERY = {
 };
 
 interface IProps {
+  page: string;
   path: string;
   onDataChange?: () => {};
 }
@@ -57,13 +61,11 @@ export function DashboardDetail(props: IProps) {
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
-  const encodedQuery = encodeQueryToURL(`dashboards/${page}`, {
-    ...DASHBOARD_DETAIL_QUERY,
-    ...{ group: selectedGroup },
-  });
+  const query = merge(DASHBOARD_DETAIL_QUERY, { group: selectedGroup });
+  const cacheKey = generateCacheKey(`dashboards/${page}`, query);
 
-  const { data, error, mutate } = useSWR(encodedQuery, (url) =>
-    getDashboard(url).then((res: any) => res.data)
+  const { data, error, mutate } = useSWR(cacheKey, () =>
+    DashboardsService.getDashboard(page, query).then((res: any) => res.data)
   );
 
   const [dashboard, setDashboard] = useState({});
@@ -80,7 +82,7 @@ export function DashboardDetail(props: IProps) {
     createdAt,
     updatedAt,
     version,
-  } = dashboard;
+  }: any = dashboard;
 
   useEffect(() => {
     data && setDashboard(data);
@@ -107,7 +109,7 @@ export function DashboardDetail(props: IProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await handleDashboardForm(false, parsed, id, selectedGroup);
+      await DashboardsService.handleDashboardForm(false, parsed, id, { group: selectedGroup });
       mutate();
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
@@ -282,7 +284,7 @@ export function DashboardDetail(props: IProps) {
                           control={control}
                           getOptionLabel={(option) => option.name}
                           getOptionValue={(option) => option.id}
-                          loadFunction={getAllWidgets}
+                          loadFunction={WidgetsService.getAllWidgets}
                           defaultValue={widgets}
                           selectedGroup={selectedGroup}
                           as={AsyncSelect}

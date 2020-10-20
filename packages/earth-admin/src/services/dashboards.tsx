@@ -17,74 +17,66 @@
   specific language governing permissions and limitations under the License.
 */
 
-import axios, { AxiosRequestConfig } from 'axios';
+import { merge } from 'lodash/fp';
 
-import { GATSBY_API_URL } from '@app/config';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
-import { deserializeData, encodeQueryToURL } from '../utils';
-
-const DashboardAPIService = {
-  request: (options: AxiosRequestConfig) => {
-    const instance = axios.create({
-      baseURL: GATSBY_API_URL,
-      timeout: 10000,
-      // @ts-ignore
-      transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
-        data: data.data ? deserializeData(data) : data,
-        pagination: data.meta ? data.meta.pagination : null,
-        total: data.meta ? data.meta.results : null,
-      })),
-    });
-
-    return new Promise((resolve, reject) => {
-      instance
-        .request(options)
-        .then((res) => resolve(res.data))
-        .catch((error) => reject(error.response.data));
-    });
-  },
+const getAllDashboards = async (query?: string | RequestQuery) => {
+  return BaseAPIService.request('/dashboards', { query }, metaDeserializer);
 };
 
-export const getAllDashboards = async (dashboardQuery: string) =>
-  DashboardAPIService.request({
-    url: dashboardQuery,
-  });
+const addDashboard = async (data: any, query?: RequestQuery) => {
+  return BaseAPIService.request('/dashboards', { query, method: 'post', data }, metaDeserializer);
+};
 
-export const addDashboard = async (dashboard, group: string) =>
-  DashboardAPIService.request({
-    url: encodeQueryToURL('/dashboards', { group }),
-    method: 'post',
-    data: dashboard,
-  });
+const getDashboard = async (dashboardId: string, query?: RequestQuery) => {
+  return BaseAPIService.request(`/dashboards/${dashboardId}`, { query }, metaDeserializer);
+};
 
-export const getDashboard = async (dashboardQuery: string) =>
-  DashboardAPIService.request({
-    url: dashboardQuery,
-    method: 'get',
-  });
+const updateDashboard = async (dashboardId: string, data: any, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/dashboards/${dashboardId}`,
+    {
+      method: 'put',
+      data,
+      query,
+    },
+    metaDeserializer
+  );
+};
 
-export const updateDashboard = async (dashboardId: string, dashboard, group: string) =>
-  DashboardAPIService.request({
-    url: encodeQueryToURL(`/dashboards/${dashboardId}`, { group }),
-    method: 'put',
-    data: dashboard,
-  });
+const deleteDashboards = async (dashboardId: string, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/dashboards/${dashboardId}`,
+    { query, method: 'delete' },
+    metaDeserializer
+  );
+};
 
-export const deleteDashboards = async (dashboardId: string, group: string) =>
-  DashboardAPIService.request({
-    url: encodeQueryToURL(`/dashboards/${dashboardId}`, { group }),
-    method: 'delete',
-  });
+const getDashboardSlug = async (keyword: string, query?: RequestQuery) => {
+  const params = { keyword, type: 'counter' };
+  return BaseAPIService.request(
+    '/dashboards/slug',
+    { query: merge(params, query) },
+    metaDeserializer
+  );
+};
 
-export const handleDashboardForm = async (
+const handleDashboardForm = async (
   newDashboard: boolean,
-  dashboard,
+  data: any,
   dashboardId: string,
-  group: string
-) =>
-  newDashboard ? addDashboard(dashboard, group) : updateDashboard(dashboardId, dashboard, group);
+  query?: RequestQuery
+) => {
+  return newDashboard ? addDashboard(data, query) : updateDashboard(dashboardId, data, query);
+};
 
-export const getDashboardSlug = async (keyword: string, group: string, type: string = 'counter') =>
-  DashboardAPIService.request({
-    url: encodeQueryToURL('/dashboards/slug', { keyword, group, type }),
-  });
+export default {
+  getAllDashboards,
+  addDashboard,
+  getDashboard,
+  updateDashboard,
+  deleteDashboards,
+  getDashboardSlug,
+  handleDashboardForm,
+};

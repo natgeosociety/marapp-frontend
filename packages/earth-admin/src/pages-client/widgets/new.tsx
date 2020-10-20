@@ -25,12 +25,12 @@ import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
 import {
+  alphaNumericDashesRule,
   AsyncSelect,
   ErrorMessages,
-  Spinner,
   Input,
-  alphaNumericDashesRule,
   setupErrors,
+  Spinner,
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
@@ -39,8 +39,8 @@ import { HtmlEditor } from '@app/components/html-editor';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { getAllLayers } from '@app/services/layers';
-import { addWidget, getWidgetSlug } from '@app/services/widgets';
+import LayersService from '@app/services/layers';
+import WidgetsService from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenObjectForSelect } from '@app/utils';
 
@@ -83,9 +83,9 @@ export function NewWidget(props: IProps) {
 
     try {
       setIsLoading(true);
-      const response: any = await addWidget(parsed, selectedGroup);
+      const { data } = await WidgetsService.addWidget(parsed, { group: selectedGroup });
       onDataChange();
-      await navigate(`/${selectedGroup}/widgets/${response.data.id}`);
+      await navigate(`/${selectedGroup}/widgets/${data.id}`);
     } catch (error) {
       setIsLoading(false);
       setServerErrors(error.data.errors);
@@ -95,7 +95,7 @@ export function NewWidget(props: IProps) {
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
-      const { data }: any = await getWidgetSlug(watchName, selectedGroup);
+      const { data } = await WidgetsService.getWidgetSlug(watchName, { group: selectedGroup });
       setValue('slug', data.slug, true);
     } catch (error) {
       setServerErrors(error.data.errors);
@@ -195,7 +195,7 @@ export function NewWidget(props: IProps) {
                   control={control}
                   getOptionLabel={(option) => option.name}
                   getOptionValue={(option) => option.id}
-                  loadFunction={getAllLayers}
+                  loadFunction={LayersService.getAllLayers}
                   selectedGroup={selectedGroup}
                   as={AsyncSelect}
                   isClearable={true}

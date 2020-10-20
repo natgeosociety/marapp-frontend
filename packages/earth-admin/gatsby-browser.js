@@ -32,7 +32,7 @@ export const wrapRootElement = ({ element }) => (
     onSuccessHook={onSuccessHook}
     onFailureHook={onFailureHook}
     useRefreshTokens={true}
-    cacheLocation={'localstorage'}
+    cacheLocation={'memory'}
   >
     {element}
   </Auth0Provider>

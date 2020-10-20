@@ -21,10 +21,9 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 
 import { AsyncPaginate } from 'react-select-async-paginate';
-import { encodeQueryToURL } from '../../utils';
 
 interface AsyncSelectProps {
-  loadFunction: (q: string) => void;
+  loadFunction: (query: { [key: string]: any }) => Promise<any>;
   type: string;
   selectedGroup: string;
   onChange?: (e: any) => void;
@@ -44,11 +43,10 @@ const AsyncSelect = (props: AsyncSelectProps) => {
       page: { size: 10, cursor: cursor },
       group: selectedGroup,
     };
-    const encodedQuery = encodeQueryToURL(type, query);
-    const res: any = await loadFunction(encodedQuery);
-    const data = res.data;
+    const response = await loadFunction(query);
+    const { data, meta } = response;
 
-    setCursor(res.pagination.nextCursor);
+    setCursor(meta.pagination.nextCursor);
 
     let filteredOptions = [];
 
@@ -58,7 +56,7 @@ const AsyncSelect = (props: AsyncSelectProps) => {
       filteredOptions = data;
     }
 
-    const hasMore = !!res.pagination.nextCursor;
+    const hasMore = !!meta.pagination.nextCursor;
 
     return {
       options: filteredOptions,

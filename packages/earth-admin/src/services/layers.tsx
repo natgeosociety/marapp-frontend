@@ -17,67 +17,58 @@
   specific language governing permissions and limitations under the License.
 */
 
-import axios, { AxiosRequestConfig } from 'axios';
+import { merge } from 'lodash/fp';
 
-import { GATSBY_API_URL } from '@app/config';
-import { deserializeData, encodeQueryToURL } from '@app/utils';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
-const LayerAPIService = {
-  request: (options: AxiosRequestConfig) => {
-    const instance = axios.create({
-      baseURL: GATSBY_API_URL,
-      timeout: 10000,
-      // @ts-ignore
-      transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
-        data: data.data ? deserializeData(data) : data,
-        pagination: data.meta ? data.meta.pagination : null,
-        filters: data.meta ? data.meta.filters : null,
-        total: data.meta ? data.meta.results : null,
-      })),
-    });
-
-    return new Promise((resolve, reject) => {
-      instance
-        .request(options)
-        .then((res) => resolve(res.data))
-        .catch((error) => reject(error.response.data));
-    });
-  },
+const getAllLayers = async (query?: string | RequestQuery) => {
+  return BaseAPIService.request('/layers', { query }, metaDeserializer);
 };
 
-export const getAllLayers = async (layerQuery: string) =>
-  LayerAPIService.request({ url: layerQuery });
+const addLayer = async (data: any, query?: RequestQuery) => {
+  return BaseAPIService.request('/layers', { query, method: 'post', data }, metaDeserializer);
+};
 
-export const addLayer = async (layer, group: string) =>
-  LayerAPIService.request({
-    url: encodeQueryToURL('/layers', { group }),
-    method: 'post',
-    data: layer,
-  });
+const getLayer = (layerId: string, query?: RequestQuery) => {
+  return BaseAPIService.request(`/layers/${layerId}`, { query }, metaDeserializer);
+};
 
-export const getLayer = (layerQuery: string) =>
-  LayerAPIService.request({
-    url: layerQuery,
-    method: 'get',
-  });
+const updateLayer = async (layerId: string, data: any, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/layers/${layerId}`,
+    { query, method: 'put', data },
+    metaDeserializer
+  );
+};
 
-export const updateLayer = async (layerId: string, layer, group: string) =>
-  LayerAPIService.request({
-    url: encodeQueryToURL(`/layers/${layerId}`, { group }),
-    method: 'put',
-    data: layer,
-  });
+const deleteLayer = async (layerId: string, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/layers/${layerId}`,
+    { query, method: 'delete' },
+    metaDeserializer
+  );
+};
 
-export const deleteLayer = async (layerId: string, group: string) =>
-  LayerAPIService.request({
-    url: encodeQueryToURL(`/layers/${layerId}`, { group }),
-    method: 'delete',
-  });
+const getLayerSlug = async (keyword: string, query?: RequestQuery) => {
+  const params = { keyword, type: 'counter' };
+  return BaseAPIService.request('/layers/slug', { query: merge(params, query) }, metaDeserializer);
+};
 
-export const handleLayerForm = async (newLayer: boolean, layer, layerId: string, group: string) =>
-  newLayer ? addLayer(layer, group) : updateLayer(layerId, layer, group);
+const handleLayerForm = async (
+  newLayer: boolean,
+  data: any,
+  layerId: string,
+  query?: RequestQuery
+) => {
+  return newLayer ? addLayer(data, query) : updateLayer(layerId, data, query);
+};
 
-export const getLayerSlug = async (keyword: string, group: string, type: string = 'counter') =>
-  LayerAPIService.request({
-    url: encodeQueryToURL('/layers/slug', { keyword, group, type }),
-  });
+export default {
+  getAllLayers,
+  addLayer,
+  getLayer,
+  updateLayer,
+  deleteLayer,
+  getLayerSlug,
+  handleLayerForm,
+};

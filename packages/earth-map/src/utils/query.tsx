@@ -22,8 +22,7 @@ import queryStringEncode from 'query-string-encode';
 /**
  * Url encode
  */
-
-export const encodeQueryToURL = (baseUrl, query) =>
+export const encodeQueryToURL = (baseUrl: string, query: { [key: string]: any } = {}): string =>
   [baseUrl, decodeURIComponent(queryStringEncode(query))].join('?');
 
 export default { encodeQueryToURL };

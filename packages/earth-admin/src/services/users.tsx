@@ -17,73 +17,82 @@
   specific language governing permissions and limitations under the License.
 */
 
-import axios, { AxiosRequestConfig } from 'axios';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
-import { GATSBY_API_URL } from '@app/config';
-
-import { deserializeData, encodeQueryToURL } from '../utils';
-
-const UserAPIService = {
-  request: (options: AxiosRequestConfig) => {
-    const instance = axios.create({
-      baseURL: GATSBY_API_URL,
-      timeout: 100000,
-      // @ts-ignore
-      transformResponse: axios.defaults.transformResponse.concat((data, headers) => ({
-        data: data.data ? deserializeData(data) : data,
-        pagination: data.meta ? data.meta.pagination : null,
-        total: data.meta ? data.meta.results : null,
-      })),
-    });
-
-    return new Promise((resolve, reject) => {
-      instance
-        .request(options)
-        .then((res) => resolve(res.data))
-        .catch((error) => {
-          reject(error.response.data);
-        });
-    });
-  },
+const getAllUsers = async (query?: string | RequestQuery) => {
+  return BaseAPIService.request(
+    '/users',
+    {
+      query,
+    },
+    metaDeserializer
+  );
 };
 
-export const getAllUsers = async (userQuery: string) =>
-  UserAPIService.request({
-    url: userQuery,
-  });
+const addUsers = async (data: any, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    '/users',
+    {
+      method: 'put',
+      data,
+      query,
+    },
+    metaDeserializer
+  );
+};
 
-export const addUsers = async (request, group: string) =>
-  UserAPIService.request({
-    url: encodeQueryToURL('/users', { group }),
-    method: 'put',
-    data: request,
-  });
+const getUser = (userId: string, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/users/${userId}`,
+    {
+      query,
+    },
+    metaDeserializer
+  );
+};
 
-export const getUser = (userQuery: string) =>
-  UserAPIService.request({
-    url: userQuery,
-    method: 'get',
-  });
+const getAvailableGroups = async (query?: RequestQuery) => {
+  return BaseAPIService.request('/users/groups', { query }, metaDeserializer);
+};
 
-export const getAvailableGroups = async (group: string) =>
-  UserAPIService.request({
-    url: encodeQueryToURL('/users/groups', { group }),
-    method: 'get',
-  });
+const updateUser = async (userId: string, data: any, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/users/${userId}`,
+    {
+      method: 'put',
+      data,
+      query,
+    },
+    metaDeserializer
+  );
+};
 
-export const updateUser = async (userID: string, user, group: string) =>
-  UserAPIService.request({
-    url: encodeQueryToURL(`/users/${userID}`, { group }),
-    method: 'put',
-    data: user,
-  });
+const deleteUser = async (userId: string, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/users/${userId}`,
+    {
+      method: 'delete',
+      query,
+    },
+    metaDeserializer
+  );
+};
 
-export const deleteUser = async (userID: string, group: string) =>
-  UserAPIService.request({
-    url: encodeQueryToURL(`/users/${userID}`, { group }),
-    method: 'delete',
-  });
+const handleUserForm = async (
+  newUser: boolean,
+  data: any,
+  userId: string,
+  query?: RequestQuery
+) => {
+  return newUser ? addUsers(data, query) : updateUser(userId, data, query);
+};
 
-export const handleUserForm = async (newUser: boolean, user, userID: string, group: string) => {
-  newUser ? await addUsers(user, group) : await updateUser(userID, user, group);
+export default {
+  getAllUsers,
+  addUsers,
+  getUser,
+  getAvailableGroups,
+  updateUser,
+  deleteUser,
+  handleUserForm,
 };

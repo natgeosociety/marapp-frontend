@@ -46,7 +46,7 @@ ReactDOM.render(
     onSuccessHook={onSuccessHook}
     onFailureHook={onFailureHook}
     useRefreshTokens={true}
-    cacheLocation={'localstorage'}
+    cacheLocation={'memory'}
   >
     <App />
   </Auth0Provider>,

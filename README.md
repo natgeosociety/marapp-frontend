@@ -23,7 +23,7 @@ yarn start --scope @marapp/earth-map
 Initialize the dependencies and link any cross-dependencies between the modules.
 
 ```
-yarn install && yarn bootstrap
+yarn bootstrap
 ```
 
 Bootstrap the packages in the current Lerna repo. Installs all of their dependencies and links any cross-dependencies.
@@ -75,6 +75,9 @@ For unit testing we use [Jest](https://jestjs.io/en/) and [Testing Library](http
 As a developer, you should always have the unit tests running in the background by running  `yarn test` in thre root of the project. This will run only the tests that have changes on them, or contain imports that have changes on them.
 
 There is also `yarn test-coverage` which will run all the available unit tests and provide code coverage statistics.
+
+### FAQ
+* What selectors should I use to get DOM nodes in the tests? => [see this](https://testing-library.com/docs/guide-which-query)
 
 ## Docs
 - [earth-map](packages/earth-map/README.md)

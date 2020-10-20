@@ -18,11 +18,14 @@
 */
 
 import { remove } from 'lodash';
+import { merge } from 'lodash/fp';
 import React, { useContext, useEffect, useState } from 'react';
 
 import { LinkWithOrg } from '@app/components/link-with-org';
-import { getAllLayers, getAllWidgets, getAvailableGroups } from '@app/services';
-import { encodeQueryToURL, normalizeGroupName } from '@app/utils';
+import LayersService from '@app/services/layers';
+import UsersService from '@app/services/users';
+import WidgetsService from '@app/services/widgets';
+import { normalizeGroupName } from '@app/utils';
 import { Auth0Context } from '@app/utils/contexts';
 
 interface SearchInputProps {
@@ -76,19 +79,14 @@ export default function SearchInput(props: SearchInputProps) {
     clearTimeout(timer);
 
     const initAvailableOptions = async () => {
-      const encodedOptionsQuery = encodeQueryToURL(baseUrl, {
-        ...OPTIONS_QUERY,
-        ...{
-          search: searchValue,
-          page: { size: resultsLimit },
-        },
-      });
-      const res: any =
+      const query = merge(OPTIONS_QUERY, { search: searchValue, page: { size: resultsLimit } });
+
+      const res =
         optionType === 'layers'
-          ? await getAllLayers(encodedOptionsQuery)
+          ? await LayersService.getAllLayers(query)
           : optionType === 'userGroups'
-          ? processGroupNames(await getAvailableGroups(selectedGroup))
-          : await getAllWidgets(encodedOptionsQuery);
+          ? processGroupNames(await UsersService.getAvailableGroups({ group: selectedGroup }))
+          : await WidgetsService.getAllWidgets(query);
 
       setAvailableOptions(res.data);
     };
