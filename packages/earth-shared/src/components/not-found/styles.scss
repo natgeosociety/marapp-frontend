@@ -16,15 +16,28 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
+@import '~styles/config';
 
-import { APP_NAME } from 'config';
-import React from 'react';
-import { APP_ABOUT } from 'theme';
 
-import { NotFoundComponent } from '@marapp/earth-shared';
+.ng-not-found {
+  background-image: url("../../assets/404_bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
 
-const NotFoundPage = ({ returnToHome }) => (
-  <NotFoundComponent returnToHome={returnToHome} aboutLink={APP_ABOUT} appName={APP_NAME} />
-);
+  > .ng-grid {
+    position: relative;
+    z-index: 1;
+  }
 
-export default NotFoundPage;
+  &:after {
+    content: '';
+    background: $marapp-gray-9;
+    display: block;
+    height: 100%;
+    opacity: .8;
+    position: absolute;
+    z-index: 0;
+    width: 100%;
+  }
+}
