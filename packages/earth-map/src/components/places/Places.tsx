@@ -34,8 +34,6 @@ interface IProps {
 
 const Places = (props: IProps) => {
   const {
-    selected,
-    panel,
     panelExpanded,
     search,
     results,
@@ -47,11 +45,12 @@ const Places = (props: IProps) => {
     nextPlacesPage,
     resetPlace,
     resetMap,
-    setIndexesSelected,
     setPlacesSearch,
     setSidebarPanelExpanded,
     setPlacesSearchOpen,
+    selected,
   } = props;
+
   const hasSearchTerm = !!search.search;
   const showX = selected || hasSearchTerm;
   const showFilter = !selected || panelExpanded;
@@ -77,7 +76,6 @@ const Places = (props: IProps) => {
   const handleReset = () => {
     resetPlace({ keepCache: true });
     setPlacesSearch({ search: '' });
-    setIndexesSelected('');
     resetMap();
     push('/earth');
   };

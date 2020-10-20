@@ -25,8 +25,4 @@ export default {
     ...state,
     list: payload,
   }),
-  [actions.setIndexesSelected]: (state, { payload }) => ({
-    ...state,
-    selected: payload,
-  }),
 };

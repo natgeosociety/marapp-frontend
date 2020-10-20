@@ -19,7 +19,6 @@
 
 import { Auth0Context } from 'auth/auth0';
 import classNames from 'classnames';
-import DropdownComponent from 'components/dropdown';
 import { ADMIN_URL, APP_NAME } from 'config';
 import { remove } from 'lodash';
 import { EPanels } from 'modules/sidebar/model';
@@ -37,7 +36,6 @@ interface IProps {
   resetPlace?: Function;
   setPlacesSearch?: Function;
   resetPlacesFeatured?: Function;
-  setIndexesSelected?: Function;
   resetMap?: Function;
   resetLayerCache?: Function;
   setUserGroup?: Function;
@@ -59,7 +57,6 @@ const Header = (props: IProps) => {
     resetLayerCache,
     resetMap,
     resetPlace,
-    setIndexesSelected,
     setUserGroup,
     setPlacesSearch,
     setLayersSearch,
@@ -95,7 +92,6 @@ const Header = (props: IProps) => {
     setPlacesSearch({ search: '' });
     setLayersSearch({ search: '' });
     setSidebarPanel(EPanels.PLACES);
-    setIndexesSelected('');
     resetLayers();
     resetMap();
   };

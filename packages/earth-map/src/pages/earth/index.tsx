@@ -26,8 +26,8 @@ import EarthComponent from './component';
 
 export default connect(
   (state: any) => ({
-    ...state.indexes,
     ...state.sidebar,
+    selectedOpen: state.places.selectedOpen,
   }),
   {
     setMapInteractions,

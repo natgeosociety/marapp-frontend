@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setIndexesSelected } from 'modules/indexes/actions';
 import { setPlacesSearch } from 'modules/places/actions';
 import { connect } from 'react-redux';
 
@@ -29,6 +28,5 @@ export default connect(
   }),
   {
     setPlacesSearch,
-    setIndexesSelected,
   }
 )(ListItem);

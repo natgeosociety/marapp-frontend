@@ -37,7 +37,6 @@ interface IProps {
   list?: any[];
   labels?: string[];
   setPlacesSearch?: (payload) => void;
-  setIndexesSelected?: (payload) => void;
   onClick?: () => void;
 }
 
@@ -51,7 +50,6 @@ const ListItem = (props: IProps) => {
     key,
     list,
     setPlacesSearch,
-    setIndexesSelected,
     onClick,
     active,
   } = props;
@@ -63,10 +61,6 @@ const ListItem = (props: IProps) => {
   // Default click action. Can be overritten by passing onClick prop
   const onClickIndex = () => {
     setPlacesSearch({ search: title });
-    const [first] = list;
-    if (!!first) {
-      setIndexesSelected(first.slug);
-    }
   };
 
   return (

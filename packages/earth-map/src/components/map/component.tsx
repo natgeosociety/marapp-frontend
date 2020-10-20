@@ -53,7 +53,7 @@ interface IMap {
   setMapInteractions?: (data: any) => void;
   setMapBounds?: (data: any) => void;
   setMapHoverInteractions?: (data: any) => void;
-  open?: any;
+  selectedOpen?: boolean;
   page?: string;
   activeInteractiveLayersIds?: any;
 }
@@ -283,7 +283,7 @@ class MapComponent extends React.Component<IMap, IMapState> {
 
   public render() {
     const {
-      open,
+      selectedOpen,
       mapStyle,
       viewport,
       bounds,
@@ -296,7 +296,7 @@ class MapComponent extends React.Component<IMap, IMapState> {
     return (
       <div
         className={classnames('c-map-wrapper', {
-          '-open': open,
+          '-open': selectedOpen,
         })}
       >
         <UserMenuWrapper selected={page} />

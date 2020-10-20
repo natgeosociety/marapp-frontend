@@ -33,7 +33,6 @@ interface ILIst {
 
 interface IIndexContent {
   place?: {};
-  selected?: string;
   state?: string;
   widgets?: [];
   loading?: boolean;
@@ -44,8 +43,7 @@ interface IIndexContent {
 
 class IndexContentComponent extends React.PureComponent<IIndexContent> {
   public render() {
-    const { place, selected, widgets, list, metricsLoading, widgetsLoading } = this.props;
-
+    const { place, widgets, metricsLoading, widgetsLoading } = this.props;
     if (isEmpty(place) || metricsLoading || widgetsLoading) {
       return <Spinner />;
     }

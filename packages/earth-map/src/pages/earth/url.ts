@@ -17,17 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setIndexesSelected } from 'modules/indexes/actions';
 import { setLayersActive } from 'modules/layers/actions';
 
 export const URL_PROPS = [
-  {
-    type: 'string',
-    value: 'dashboards',
-    redux: 'indexes.selected',
-    action: setIndexesSelected,
-    required: false,
-  },
   {
     type: 'array',
     value: 'layers',
