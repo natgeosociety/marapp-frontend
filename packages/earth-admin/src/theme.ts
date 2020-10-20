@@ -28,6 +28,8 @@ export const APP_BASEMAPS = [
   },
 ];
 
+export const APP_ABOUT = 'https://github.com/natgeosociety/marapp-frontend/blob/master/ABOUT.md';
+
 export const SELECT_THEME = {
   borderRadius: 0,
   colors: {
