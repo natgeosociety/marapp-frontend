@@ -35,7 +35,7 @@ export function ProfileComponent(props: IProps) {
     mode: 'onChange',
   });
 
-  const { userData, logout, login, isAuthenticated } = useContext(Auth0Context);
+  const { userData, logout, login, isAuthenticated, updateToken } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState('');
   const [pendingEmail, setPendingEmail] = useState(null);
@@ -135,6 +135,7 @@ export function ProfileComponent(props: IProps) {
 
     try {
       await ProfileService.leaveOrganizations(orgsToLeave);
+      await updateToken();
 
       setUserRoles({ ...omit(userRoles, orgsToLeave) });
 
