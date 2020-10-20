@@ -7,7 +7,7 @@ import { GATSBY_APP_BASE_URL, GATSBY_APP_NAME } from '@app/config';
 
 const NotFoundPage = () => {
   const returnToHome = () => {
-    navigate(GATSBY_APP_BASE_URL);
+    navigate('/');
   };
 
   return (
