@@ -48,7 +48,8 @@ export function ProfileComponent(props: IProps) {
   });
   const [resetPasswordState, setResetPasswordState] = useState(RESET_PASSWORD_STATE.INITIAL);
   const [markedOrgsForLeave, setMarkedOrgsForLeave] = useState({});
-  const [hasLeftOrg, setHasLeftOrg] = useState(false);
+  const [hasLeftOrg, setHasLeftOrg] = useState(false); // detect when the user is leaving an org in order to
+  // change the map link to a "native" one (classic navigation to reset the whole state)
   const [userRoles, setUserRoles] = useState({});
   const [isDeletingAccountOpen, setIsDeletingAccountOpen] = useState(false);
   const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
@@ -204,20 +205,23 @@ export function ProfileComponent(props: IProps) {
     >
       <div className="ng-position-fixed ng-width-1">
         <div>
-          {hasLeftOrg ? (
-            <a href={`${PUBLIC_URL}earth`} className="ng-border-remove">
-              <img src={APP_LOGO} className="ng-margin" alt="" />
-            </a>
-          ) : (
-            <Link
-              className="ng-border-remove"
-              to={{
-                type: 'EARTH',
-              }}
-            >
-              <img src={APP_LOGO} className="ng-margin" alt="" />
-            </Link>
-          )}
+          {
+            // TODO: remove this when we find a way to do a full reset (redux and auth0 context) and use redux-first-router link
+            hasLeftOrg ? (
+              <a href={`${PUBLIC_URL}earth`} className="ng-border-remove">
+                <img src={APP_LOGO} className="ng-margin" alt="" />
+              </a>
+            ) : (
+              <Link
+                className="ng-border-remove"
+                to={{
+                  type: 'EARTH',
+                }}
+              >
+                <img src={APP_LOGO} className="ng-margin" alt="" />
+              </Link>
+            )
+          }
         </div>
 
         <UserMenu
