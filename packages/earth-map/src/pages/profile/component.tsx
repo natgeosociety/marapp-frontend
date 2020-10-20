@@ -1,5 +1,5 @@
 import { Auth0Context } from 'auth/auth0';
-import { REACT_APP_EXTERNAL_IDP_URL } from 'config';
+import { REACT_APP_EXTERNAL_IDP_URL, PUBLIC_URL } from 'config';
 import { capitalize, identity, omit, pickBy } from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -48,6 +48,7 @@ export function ProfileComponent(props: IProps) {
   });
   const [resetPasswordState, setResetPasswordState] = useState(RESET_PASSWORD_STATE.INITIAL);
   const [markedOrgsForLeave, setMarkedOrgsForLeave] = useState({});
+  const [hasLeftOrg, setHasLeftOrg] = useState(false);
   const [userRoles, setUserRoles] = useState({});
   const [isDeletingAccountOpen, setIsDeletingAccountOpen] = useState(false);
   const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
@@ -138,6 +139,7 @@ export function ProfileComponent(props: IProps) {
       await updateToken();
 
       setUserRoles({ ...omit(userRoles, orgsToLeave) });
+      setHasLeftOrg(true);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
@@ -202,14 +204,20 @@ export function ProfileComponent(props: IProps) {
     >
       <div className="ng-position-fixed ng-width-1">
         <div>
-          <Link
-            className="ng-border-remove"
-            to={{
-              type: 'EARTH',
-            }}
-          >
-            <img src={APP_LOGO} className="ng-margin" alt="" />
-          </Link>
+          {hasLeftOrg ? (
+            <a href={`${PUBLIC_URL}earth`} className="ng-border-remove">
+              <img src={APP_LOGO} className="ng-margin" alt="" />
+            </a>
+          ) : (
+            <Link
+              className="ng-border-remove"
+              to={{
+                type: 'EARTH',
+              }}
+            >
+              <img src={APP_LOGO} className="ng-margin" alt="" />
+            </Link>
+          )}
         </div>
 
         <UserMenu
