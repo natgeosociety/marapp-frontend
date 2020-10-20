@@ -1,3 +1,12 @@
+## [1.9.2](https://github.com/natgeosociety/marapp-frontend/compare/v1.9.1...v1.9.2) (2020-10-20)
+
+
+### Bug Fixes
+
+* **profile:** earth navigation link when leaving org [EP-3154] ([#245](https://github.com/natgeosociety/marapp-frontend/issues/245)) ([d9f677e](https://github.com/natgeosociety/marapp-frontend/commit/d9f677e542465d532cf6aaa9e84167427baa649b))
+* edit email on external IDP ([e230356](https://github.com/natgeosociety/marapp-frontend/commit/e230356a629bccf93ec9984213b96994c24e8903))
+* update token after leaving org [EP-3154] ([0508378](https://github.com/natgeosociety/marapp-frontend/commit/05083780ff2e784adf880b7569b9ac50ef244ae5))
+
 ## [1.9.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.9.0...v1.9.1) (2020-10-19)
 
 
