@@ -47,7 +47,7 @@ class EarthPage extends React.Component<IEarth> {
     const { setFullscreen, setMapInteractions, setSidebarPanel, panel, selectedOpen } = this.props;
 
     return (
-      <main className="l-page marapp-qa-pageearth" role="main">
+      <main className="marapp-qa-earth l-page marapp-qa-pageearth" role="main">
         <VizzIcons />
 
         <Url type="EARTH" urlProps={URL_PROPS} />

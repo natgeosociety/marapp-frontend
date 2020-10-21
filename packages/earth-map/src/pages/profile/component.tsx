@@ -200,7 +200,7 @@ export function ProfileComponent(props: IProps) {
     <Spinner size="large" />
   ) : (
     <div
-      className={`ng-flex ng-flex-column marapp-qa-user-profile ng-ep-background-gray-9`}
+      className={`marapp-qa-user-profile ng-flex ng-flex-column ng-ep-background-gray-9`}
       id="portal"
     >
       <div className="ng-position-fixed ng-width-1">
@@ -209,7 +209,7 @@ export function ProfileComponent(props: IProps) {
             // TODO: remove this when we find a way to do a full reset (redux and auth0 context) and use redux-first-router link
             hasLeftOrg ? (
               <a href={`${PUBLIC_URL}earth`} className="ng-border-remove">
-                <img src={APP_LOGO} className="ng-margin" alt="" />
+                <img src={APP_LOGO} className="marapp-qa-logo ng-margin" alt="" />
               </a>
             ) : (
               <Link
@@ -218,7 +218,7 @@ export function ProfileComponent(props: IProps) {
                   type: 'EARTH',
                 }}
               >
-                <img src={APP_LOGO} className="ng-margin" alt="" />
+                <img src={APP_LOGO} className="marapp-qa-logo ng-margin" alt="" />
               </Link>
             )
           }
@@ -247,7 +247,7 @@ export function ProfileComponent(props: IProps) {
                       An email has been sent to {userData.email} with a link to reset your password.
                     </span>
                     <button
-                      className="ng-text-display-l ng-text-weight-thin ng-position-absolute ng-position-top-right ng-margin-right marapp-qa-resetpassword-dismiss"
+                      className="marapp-qa-resetpassword-dismiss ng-text-display-l ng-text-weight-thin ng-position-absolute ng-position-top-right ng-margin-right"
                       onClick={() =>
                         setResetPasswordState(RESET_PASSWORD_STATE.NOTIFICATION_DISMISS)
                       }
@@ -274,7 +274,7 @@ export function ProfileComponent(props: IProps) {
                               maxLength: 40,
                               required: true,
                             })}
-                            className="ng-display-block marapp-qa-inputfirstname"
+                            className="marapp-qa-inputfirstname ng-display-block"
                           />
                         </div>
                         <div className="ng-margin-medium-bottom">
@@ -289,7 +289,7 @@ export function ProfileComponent(props: IProps) {
                               maxLength: 80,
                               required: true,
                             })}
-                            className="ng-display-block marapp-qa-inputlastname"
+                            className="marapp-qa-inputlastname ng-display-block"
                           />
                         </div>
                       </>
@@ -301,7 +301,7 @@ export function ProfileComponent(props: IProps) {
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
                     Name
                   </h3>
-                  <p className="ng-margin-remove">{userName}</p>
+                  <p className="marapp-qa-user-name ng-margin-remove">{userName}</p>
                 </InlineEditCard>
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
@@ -348,7 +348,7 @@ export function ProfileComponent(props: IProps) {
                         Email
                       </h3>
                       {pendingEmail}
-                      <p className="ng-margin-remove">{userData.email}</p>
+                      <p className="marapp-qa-user-email ng-margin-remove">{userData.email}</p>
                     </>
                   )}
                   {pendingEmail && (
@@ -368,7 +368,9 @@ export function ProfileComponent(props: IProps) {
                           cancel update
                         </button>
                       </h3>
-                      <p className="ng-margin-remove">{pendingEmail}</p>
+                      <p className="marapp-qa-user-pending-email ng-margin-remove">
+                        {pendingEmail}
+                      </p>
                     </>
                   )}
                 </InlineEditCard>
@@ -385,7 +387,7 @@ export function ProfileComponent(props: IProps) {
                     minutes.
                   </p>
                   <button
-                    className="ng-button ng-button-secondary ng-margin-top marapp-qa-resetpassword"
+                    className="marapp-qa-resetpassword ng-button ng-button-secondary ng-margin-top"
                     disabled={
                       !!REACT_APP_EXTERNAL_IDP_URL ||
                       resetPasswordState !== RESET_PASSWORD_STATE.INITIAL
@@ -478,7 +480,7 @@ export function ProfileComponent(props: IProps) {
                       <p>
                         <label className="ng-padding-bottom ng-flex ng-c-cursor-pointer">
                           <input
-                            className="ng-checkbox-input ng-flex-item-none ng-margin-top-remove"
+                            className="marapp-qa-confirm-delete ng-checkbox-input ng-flex-item-none ng-margin-top-remove"
                             type="checkbox"
                             checked={confirmDeleteAccount}
                             onChange={(e) => setConfirmDeleteAccount(e.target.checked)}
@@ -506,7 +508,7 @@ export function ProfileComponent(props: IProps) {
                   </h3>
                   <button
                     type="button"
-                    className="ng-button ng-button-secondary ng-margin-top marapp-qa-deleteaccount"
+                    className="marapp-qa-deleteaccount ng-button ng-button-secondary ng-margin-top"
                     onClick={() => setIsDeletingAccountOpen(true)}
                   >
                     Delete your account
