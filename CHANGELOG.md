@@ -1,3 +1,15 @@
+# [1.11.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.10.0...v1.11.0) (2020-10-21)
+
+
+### Bug Fixes
+
+* **map:** check if metric exists on widget download ([#248](https://github.com/natgeosociety/marapp-frontend/issues/248)) ([0535117](https://github.com/natgeosociety/marapp-frontend/commit/0535117fbf1d1864e8f3b3692eda6b3235945974))
+
+
+### Features
+
+* Create Unit Testing Setup [EP-2857] ([f319ed3](https://github.com/natgeosociety/marapp-frontend/commit/f319ed3e2f938fad8e2a6ce40c5cce507f75b28a))
+
 # [1.10.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.9.2...v1.10.0) (2020-10-20)
 
 
