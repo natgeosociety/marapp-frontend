@@ -19,14 +19,13 @@
 
 import classNames from 'classnames';
 import React, { useState } from 'react';
-import { Tooltip } from 'vizzuality-components';
 
 import { downloadCSVFile, downloadJSONFile, useDomWatcher } from '@marapp/earth-shared';
 
 import './styles.scss';
 
 interface IMetric {
-  data: { metric: {}; slug: string };
+  data: { metric?: {}; slug?: string };
 }
 
 const WidgetDownload = (props: IMetric) => {

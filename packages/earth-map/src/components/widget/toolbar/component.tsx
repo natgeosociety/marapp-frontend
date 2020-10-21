@@ -18,6 +18,7 @@
 */
 
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { Tooltip } from 'vizzuality-components';
@@ -56,7 +57,7 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
         className={`marapp-qa-widgettoolbar c-widget-toolbar ng-flex
          ng-flex-middle ng-margin-left ${classNames}`}
       >
-        <WidgetDownload data={data} />
+        {!isEmpty(data) && <WidgetDownload data={data} />}
         <Tooltip
           placement="top"
           overlay={<span>Info</span>}
