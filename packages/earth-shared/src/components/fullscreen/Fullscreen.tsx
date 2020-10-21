@@ -20,7 +20,7 @@
 import React, { PureComponent } from 'react';
 
 // Animations
-import { Transition } from 'react-spring/renderprops';
+import { Transition } from 'react-spring/renderprops.cjs';
 
 import Templates from './templates';
 

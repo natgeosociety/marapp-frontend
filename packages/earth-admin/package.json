@@ -9,7 +9,8 @@
     "serve": "gatsby serve --prefix-paths --port 8000",
     "clean": "gatsby clean",
     "lint": "tslint -p tsconfig.json --fix",
-    "test": "jest --runInBand --passWithNoTests",
+    "test": "jest --passWithNoTests --watch --color",
+    "test-coverage": "jest --coverage --color",
     "typecheck": "tsc --emitDeclarationOnly"
   },
   "dependencies": {
@@ -35,9 +36,7 @@
     "lodash": "^4.17.15",
     "query-string": "^6.13.5",
     "query-string-encode": "^1.0.1",
-    "react": "^16.11.0",
     "react-codemirror2": "^7.1.0",
-    "react-dom": "^16.11.0",
     "react-helmet": "^6.1.0",
     "swr": "^0.3.2",
     "ts-jsonapi": "^2.1.2",

@@ -19,7 +19,7 @@
 
 import classnames from 'classnames';
 import React, { ReactNode, useEffect, useState } from 'react';
-import { animated, Keyframes } from 'react-spring/renderprops';
+import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
 import { ErrorMessages } from '@marapp/earth-shared';
 
