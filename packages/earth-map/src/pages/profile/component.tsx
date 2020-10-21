@@ -2,6 +2,7 @@ import { Auth0Context } from 'auth/auth0';
 import { REACT_APP_EXTERNAL_IDP_URL, PUBLIC_URL } from 'config';
 import { capitalize, identity, omit, pickBy } from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
+import classnames from 'classnames';
 import { useForm } from 'react-hook-form';
 import Link from 'redux-first-router-link';
 import ProfileService from 'services/ProfileService';
@@ -430,7 +431,12 @@ export function ProfileComponent(props: IProps) {
                               </div>
                               <div className="ng-width-1-4 ng-margin-top">
                                 <button
-                                  className="ng-button ng-button-link ng-text-lowercase"
+                                  className={classnames(
+                                    markedOrgsForLeave[org]
+                                      ? 'marapp-qa-cancelorgaction'
+                                      : 'marapp-qa-leaveorg',
+                                    'ng-button ng-button-link ng-text-lowercase'
+                                  )}
                                   disabled={userRoles[org].includes('Owner')}
                                   onClick={(e) => switchMarkOrgForLeave(e, org)}
                                 >
