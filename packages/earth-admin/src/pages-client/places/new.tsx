@@ -19,7 +19,7 @@
 
 import { navigate } from 'gatsby';
 import { noop } from 'lodash';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { ErrorMessages, Input, setupErrors, Spinner } from '@marapp/earth-shared';
@@ -42,7 +42,7 @@ interface IProps {
 export function NewPlace(props: IProps) {
   const { onDataChange = noop, dynamicOptions } = props;
   const { type: placeTypeOptions = [] } = dynamicOptions;
-  const { getValues, register, watch, formState, errors, setValue } = useForm({
+  const { getValues, register, watch, formState, errors, setValue, reset } = useForm({
     mode: 'onChange',
   });
   const { touched, dirty, isValid } = formState;
@@ -53,6 +53,11 @@ export function NewPlace(props: IProps) {
   const [jsonError, setJsonError] = useState(false);
   const { selectedGroup } = useAuth0();
   const renderErrorFor = setupErrors(errors, touched);
+
+  // When placeTypeOptions are available, select the first one
+  useEffect(() => {
+    reset({ type: placeTypeOptions[0]?.value });
+  }, [placeTypeOptions.length]);
 
   async function onSubmit(e) {
     e.preventDefault();
