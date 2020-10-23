@@ -20,7 +20,6 @@ import Fullscreen from 'components/fullscreen';
 import Header from 'components/header';
 import Layers from 'components/layers';
 import Map from 'components/map';
-import Place from 'components/place';
 import Places from 'components/places';
 import Sidebar from 'components/sidebar';
 import { Tab, Tabs } from 'components/tabs';
@@ -75,7 +74,6 @@ class EarthPage extends React.Component<IEarth> {
 
         <div className="l-content">
           <Map page={this.props.page} />
-          <Place />
         </div>
       </main>
     );
