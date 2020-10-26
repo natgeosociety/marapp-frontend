@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import isEmpty from 'lodash/isEmpty';
 import { resetLayers } from 'modules/layers/actions';
 import { resetMap } from 'modules/map/actions';
 import { resetPlace, setPlacesSearch } from 'modules/places/actions';
@@ -29,7 +28,6 @@ import SidebarComponent from './component';
 export default connect(
   (state: any) => ({
     ...state.sidebar,
-    selectedOpen: state.places.selectedOpen,
   }),
   {
     setSidebarOpen,

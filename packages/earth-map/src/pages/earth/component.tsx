@@ -45,7 +45,6 @@ interface IEarth {
 
 class EarthPage extends React.Component<IEarth> {
   public render() {
-    console.log;
     const { setSidebarPanel, panel, router } = this.props;
     const { type } = router;
     const selectedOpen = ['LOCATION', 'COLLECTION'].includes(type);
@@ -54,7 +53,7 @@ class EarthPage extends React.Component<IEarth> {
 
     return (
       <main className="marapp-qa-earth l-page marapp-qa-pageearth" role="main">
-        <Sidebar>
+        <Sidebar selectedOpen={selectedOpen}>
           {withHeaderLayout && (
             <>
               <VizzIcons />

@@ -24,7 +24,6 @@ import { setMetrics, setMetricsLoading } from 'modules/metrics/actions';
 import {
   setPlaceData,
   setPlaceSelectedFilter,
-  setPlaceSelectedOpen,
   setPlaceSelectedSearch,
   setPlacesError,
   setPlacesLoading,
@@ -59,14 +58,11 @@ function* toLocation({ payload, meta }) {
     return;
   }
 
-  yield put(setPlaceSelectedOpen(false));
   yield put(setSidebarPanelExpanded(false));
   yield put(setPlacesLoading(true));
   yield put(setMetricsLoading(true));
 
   try {
-    yield put(setPlaceSelectedOpen(true));
-
     const { data }: { data: IPlace } = yield call(PlacesService.fetchPlaceById, slug, {
       include: 'metrics',
       group: organization,

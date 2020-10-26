@@ -57,7 +57,10 @@ interface ILegend {
   toggleLayer?: any;
   setLayerSettings?: (data: any) => void;
   open?: boolean;
-  selectedOpen?: boolean;
+  router?: {
+    type: 'EARTH' | 'LOCATION' | 'NEW_COLLECTION' | 'COLLECTION';
+    payload: any;
+  };
 }
 
 class LegendComponent extends React.PureComponent<ILegend> {
@@ -117,7 +120,9 @@ class LegendComponent extends React.PureComponent<ILegend> {
   };
 
   public getState = () => {
-    const { open, selectedOpen } = this.props;
+    const { open, router } = this.props;
+    const selectedOpen = ['LOCATION', 'COLLECTION'].includes(router.type);
+
     if (open) {
       if (selectedOpen) {
         return 'openW';
