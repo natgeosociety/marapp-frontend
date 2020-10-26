@@ -19,17 +19,19 @@
 
 import { navigate } from 'gatsby';
 import { noop } from 'lodash';
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import Select from 'react-select';
 
 import { ErrorMessages, Input, setupErrors, Spinner } from '@marapp/earth-shared';
-
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 import PlacesService from '@app/services/places';
+import { flattenObjectForSelect } from '@app/utils';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 
 interface IProps {
   path: string;
@@ -42,7 +44,7 @@ interface IProps {
 export function NewPlace(props: IProps) {
   const { onDataChange = noop, dynamicOptions } = props;
   const { type: placeTypeOptions = [] } = dynamicOptions;
-  const { getValues, register, watch, formState, errors, setValue, reset } = useForm({
+  const { register, handleSubmit, watch, formState, errors, setValue, reset, control } = useForm({
     mode: 'onChange',
   });
   const { touched, dirty, isValid } = formState;
@@ -54,17 +56,11 @@ export function NewPlace(props: IProps) {
   const { selectedGroup } = useAuth0();
   const renderErrorFor = setupErrors(errors, touched);
 
-  // When placeTypeOptions are available, select the first one
-  useEffect(() => {
-    reset({ type: placeTypeOptions[0]?.value });
-  }, [placeTypeOptions.length]);
-
-  async function onSubmit(e) {
-    e.preventDefault();
-
-    const formData = getValues();
+  async function onSubmit(values) {
+    const { type } = values;
     const parsed = {
-      ...formData,
+      ...values,
+      ...(type && { type: flattenObjectForSelect(type, 'value') }),
       geojson: geojsonValue,
     };
     try {
@@ -99,7 +95,10 @@ export function NewPlace(props: IProps) {
           <h2 className="ng-text-display-m ng-c-flex-grow-1">New place</h2>
         </div>
 
-        <form className="ng-form ng-form-dark ng-flex-column ng-width-4-5">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="ng-form ng-form-dark ng-flex-column ng-width-4-5"
+        >
           <Card className="ng-margin-medium-bottom">
             <Input
               name="name"
@@ -115,21 +114,21 @@ export function NewPlace(props: IProps) {
 
           <Card className="ng-margin-medium-bottom">
             <div className="ng-margin-medium-bottom">
-              <label htmlFor="input-type">Place type*</label>
-              <select
-                className="ng-width-1-1 ng-form-large"
-                id="input-type"
-                ref={register({
-                  required: true,
-                })}
+              <label htmlFor="type">Place type*</label>
+              <Controller
+                as={Select}
+                control={control}
                 name="type"
-              >
-                {placeTypeOptions.map((t) => (
-                  <option key={t.value} value={t.value}>
-                    {t.label}
-                  </option>
-                ))}
-              </select>
+                options={placeTypeOptions}
+                placeholder="Select layer category"
+                styles={CUSTOM_STYLES}
+                error={renderErrorFor('category')}
+                theme={(theme) => ({
+                  ...theme,
+                  ...SELECT_THEME,
+                })}
+                rules={{ required: true }}
+              />
             </div>
 
             <div className="ng-grid ng-flex-top">
@@ -185,7 +184,6 @@ export function NewPlace(props: IProps) {
             <div className="ng-flex">
               <button
                 className="marapp-qa-actionsave ng-button ng-button-primary ng-button-large ng-margin-medium-right"
-                onClick={onSubmit}
                 disabled={!isValid || jsonError || !dirty}
               >
                 Save and view details
