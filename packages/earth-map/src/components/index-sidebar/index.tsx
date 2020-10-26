@@ -16,16 +16,6 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-
-import { setSidebarOpen } from 'modules/sidebar/actions';
-import { connect } from 'react-redux';
-
 import SidebarComponent from './component';
 
-export default connect(
-  (state: any) => ({
-    selectedOpen: state.places.selectedOpen,
-    ...state.sidebar,
-  }),
-  { setSidebarOpen }
-)(SidebarComponent);
+export default SidebarComponent;

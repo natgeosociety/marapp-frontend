@@ -1,7 +1,6 @@
 import Link from 'redux-first-router-link';
 import BackToLocation from 'components/back-to-location';
 import FilterBy from 'components/filter-by';
-import IndexSidebar from 'components/index-sidebar';
 import InfiniteList from 'components/infinite-list';
 import LastViewedPlace from 'components/last-viewed-place';
 import ListItem from 'components/list-item';
@@ -15,6 +14,7 @@ import { hasFilters } from 'utils/filters';
 
 interface IProps {
   selected: boolean;
+  children: any;
   panel?: string;
   panelExpanded?: boolean;
   search?: any;
@@ -50,6 +50,7 @@ const Places = (props: IProps) => {
     setSidebarPanelExpanded,
     setPlacesSearchOpen,
     selected,
+    children,
   } = props;
 
   const hasSearchTerm = !!search.search;
@@ -131,7 +132,7 @@ const Places = (props: IProps) => {
           )}
         </InfiniteList>
       ) : selected ? (
-        <IndexSidebar />
+        children
       ) : (
         <>
           <Link to={{ type: 'NEW_COLLECTION' }}>New collection</Link>
