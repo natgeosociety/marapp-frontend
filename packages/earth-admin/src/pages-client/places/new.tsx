@@ -120,9 +120,9 @@ export function NewPlace(props: IProps) {
                 control={control}
                 name="type"
                 options={placeTypeOptions}
-                placeholder="Select layer category"
+                placeholder="Select place type"
                 styles={CUSTOM_STYLES}
-                error={renderErrorFor('category')}
+                error={renderErrorFor('type')}
                 theme={(theme) => ({
                   ...theme,
                   ...SELECT_THEME,
