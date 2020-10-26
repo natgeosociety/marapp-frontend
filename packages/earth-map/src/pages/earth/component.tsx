@@ -36,30 +36,40 @@ interface IEarth {
   layersPanel?: boolean;
   selected?: string;
   selectedOpen?: boolean;
+  router?: {
+    type: string;
+    payload: any;
+  };
 }
 
 class EarthPage extends React.Component<IEarth> {
   public render() {
-    const { setSidebarPanel, panel, selectedOpen } = this.props;
+    const { setSidebarPanel, panel, selectedOpen, router } = this.props;
+    const { type } = router;
 
     return (
       <main className="marapp-qa-earth l-page marapp-qa-pageearth" role="main">
-        <VizzIcons />
-
-        <Url type="EARTH" urlProps={URL_PROPS} />
-
         <Sidebar>
-          <Header />
-          <Tabs
-            value={panel}
-            onChange={setSidebarPanel}
-            className="ng-padding-medium-horizontal ng-padding-bottom ng-ep-background-dark"
-          >
-            <Tab label="Places" value="places" />
-            <Tab label="Layers" value="layers" />
-          </Tabs>
-          {panel === EPanels.PLACES && <Places selected={selectedOpen} />}
-          {panel === EPanels.LAYERS && <Layers selected={selectedOpen} />}
+          {['EARTH', 'LOCATION'].includes(type) && (
+            <>
+              <VizzIcons />
+              <Url type="EARTH" urlProps={URL_PROPS} />
+
+              <Header />
+              <Tabs
+                value={panel}
+                onChange={setSidebarPanel}
+                className="ng-padding-medium-horizontal ng-padding-bottom ng-ep-background-dark"
+              >
+                <Tab label="Places" value="places" />
+                <Tab label="Layers" value="layers" />
+              </Tabs>
+              {panel === EPanels.PLACES && <Places selected={selectedOpen} />}
+              {panel === EPanels.LAYERS && <Layers selected={selectedOpen} />}
+            </>
+          )}
+
+          {['NEW_COLLECTION'].includes(type) && <h1>New collection here</h1>}
         </Sidebar>
 
         <div className="l-content">

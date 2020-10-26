@@ -1,3 +1,4 @@
+import Link from 'redux-first-router-link';
 import BackToLocation from 'components/back-to-location';
 import FilterBy from 'components/filter-by';
 import IndexSidebar from 'components/index-sidebar';
@@ -133,6 +134,7 @@ const Places = (props: IProps) => {
         <IndexSidebar />
       ) : (
         <>
+          <Link to={{ type: 'NEW_COLLECTION' }}>New collection</Link>
           {showLastViewedPlace && <LastViewedPlace place={lastViewedPlace} />}
           <FeaturedPlaces />
         </>

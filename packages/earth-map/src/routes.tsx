@@ -79,6 +79,13 @@ export const ROUTES = {
     isAuthzRequired,
     fallbackRouteResolver,
   },
+  NEW_COLLECTION: {
+    path: '/collection/new',
+    page: 'earth',
+    isAuthRequired,
+    isAuthzRequired,
+    fallbackRouteResolver,
+  },
   CHANGE_EMAIL: {
     path: '/profile/change-email',
     page: 'change-email',

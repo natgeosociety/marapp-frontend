@@ -26,6 +26,7 @@ export default connect(
   (state: any) => ({
     ...state.sidebar,
     selectedOpen: state.places.selectedOpen,
+    router: state.router,
   }),
   {
     setSidebarPanel,
