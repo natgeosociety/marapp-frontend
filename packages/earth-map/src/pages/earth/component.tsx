@@ -16,7 +16,6 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-import Fullscreen from 'components/fullscreen';
 import Header from 'components/header';
 import Layers from 'components/layers';
 import Map from 'components/map';
@@ -31,8 +30,6 @@ import { Icons as VizzIcons } from 'vizzuality-components';
 import { URL_PROPS } from './url';
 
 interface IEarth {
-  setFullscreen?: (p: { data: {}; open: boolean }) => void;
-  setMapInteractions?: (p: {}) => void;
   setSidebarPanel?: () => void;
   panel?: EPanels;
   page?: string;
@@ -43,20 +40,13 @@ interface IEarth {
 
 class EarthPage extends React.Component<IEarth> {
   public render() {
-    const { setFullscreen, setMapInteractions, setSidebarPanel, panel, selectedOpen } = this.props;
+    const { setSidebarPanel, panel, selectedOpen } = this.props;
 
     return (
       <main className="marapp-qa-earth l-page marapp-qa-pageearth" role="main">
         <VizzIcons />
 
         <Url type="EARTH" urlProps={URL_PROPS} />
-
-        <Fullscreen
-          onClose={() => {
-            setFullscreen({ open: false, data: {} });
-            setMapInteractions({});
-          }}
-        />
 
         <Sidebar>
           <Header />

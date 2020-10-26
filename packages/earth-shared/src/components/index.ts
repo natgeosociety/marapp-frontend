@@ -20,7 +20,6 @@
 export { default as Button } from './button';
 export { default as Chart } from './chart';
 export { default as Datepicker } from './datepicker';
-export { default as Fullscreen } from './fullscreen';
 export { default as Html } from './html';
 export { default as Layer } from './layer';
 export { default as Legend } from './legend';

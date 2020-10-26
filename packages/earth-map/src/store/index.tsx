@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as fullscreen from 'modules/fullscreen';
 import * as global from 'modules/global';
 import * as indexes from 'modules/indexes';
 import * as layers from 'modules/layers';
@@ -63,7 +62,6 @@ const initStore = (initialState = {}) => {
     indexes: handleModule(indexes),
     places: handleModule(places),
     layers: handleModule(layers),
-    fullscreen: handleModule(fullscreen),
     widgets: handleModule(widgets),
     widget: handleModule(widget),
     metrics: handleModule(metrics),

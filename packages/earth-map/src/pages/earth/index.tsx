@@ -17,8 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setFullscreen } from 'modules/fullscreen/actions';
-import { setMapInteractions } from 'modules/map/actions';
 import { setSidebarPanel } from 'modules/sidebar/actions';
 import { connect } from 'react-redux';
 
@@ -30,8 +28,6 @@ export default connect(
     selectedOpen: state.places.selectedOpen,
   }),
   {
-    setMapInteractions,
-    setFullscreen,
     setSidebarPanel,
   }
 )(EarthComponent);
