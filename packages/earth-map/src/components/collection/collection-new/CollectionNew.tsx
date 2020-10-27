@@ -18,18 +18,34 @@
 */
 
 import React from 'react';
+import { replace } from 'redux-first-router';
 import Link from 'redux-first-router-link';
 import { useForm } from 'react-hook-form';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
+import { useAuth0 } from 'auth/auth0';
+import { createCollection } from 'services/CollectionsService';
 
 const CollectionNew = () => {
   const { handleSubmit, register, errors, formState } = useForm({ mode: 'onChange' });
-  const { touched, dirty, isValid } = formState;
+  const { touched, dirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
+  const { groups } = useAuth0();
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = async (values) => {
+    try {
+      const { data } = await createCollection(
+        {
+          ...values,
+          published: true,
+          slug: values.name,
+        },
+        {
+          group: values.organization,
+        }
+      );
+      replace(`/collection/${data.organization}/${data.slug}`);
+    } catch (e) {}
   };
 
   return (
@@ -60,42 +76,29 @@ const CollectionNew = () => {
           selected organization. Organizations can not be edited once picked.
         </p>
         <div className="legend-item-group--radio ng-padding-medium-left">
-          <div>
-            <input
-              type="radio"
-              id="marapp"
-              value="Marapp"
-              name="org"
-              ref={register({
-                required: true,
-              })}
-            />
-            <label htmlFor="marapp">
-              <span className="legend-item-group--symbol" />
-              <span className="legend-item-group--name">Marapp</span>
-            </label>
-          </div>
-          <div>
-            <input
-              type="radio"
-              id="unbl"
-              name="org"
-              value="UNBL"
-              ref={register({
-                required: true,
-              })}
-            />
-            <label htmlFor="unbl">
-              <span className="legend-item-group--symbol" />
-              <span className="legend-item-group--name">UNBL</span>
-            </label>
-          </div>
+          {groups.map((group) => (
+            <div>
+              <input
+                type="radio"
+                id={`radio-${group}`}
+                value={group}
+                name="organization"
+                ref={register({
+                  required: true,
+                })}
+              />
+              <label htmlFor={`radio-${group}`}>
+                <span className="legend-item-group--symbol" />
+                <span className="legend-item-group--name">{group}</span>
+              </label>
+            </div>
+          ))}
         </div>
       </Card>
 
       <Card elevation="flush">
         <button
-          disabled={!isValid || !dirty}
+          disabled={!isValid || !dirty || isSubmitting}
           type="submit"
           className="ng-button ng-button-primary ng-margin-right"
         >
