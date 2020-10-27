@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setFullscreen } from 'modules/fullscreen/actions';
 import { getActiveInteractiveLayersIds } from 'modules/layers/selectors';
 import {
   setMapBounds,
@@ -36,7 +35,6 @@ export default connect(
     activeInteractiveLayersIds: getActiveInteractiveLayersIds(state),
   }),
   {
-    setFullscreen,
     setMapViewport,
     setMapBounds,
     setMapInteractions,

@@ -72,6 +72,8 @@ const alphaNumericDashes = (value: string): boolean => {
   return regex.test(value);
 };
 
+const notEmpty = (value: []): boolean => value.length > 0;
+
 /**
  * Validation rules used by react-hook-form
  * Allow for message customization
@@ -104,6 +106,9 @@ export const valueChangedRule = (
   previousValue,
   errorMessage: string = 'Please enter a different email'
 ) => compose(maybeShowError(errorMessage), valueChanged)(value, previousValue);
+
+export const notEmptyRule = (errorMessage: string = 'Cannot be empty') =>
+  compose(maybeShowError(errorMessage), notEmpty);
 
 export const setupErrors = (errors, touched) => (field: string): string => {
   const fieldErr: any = errors[field];

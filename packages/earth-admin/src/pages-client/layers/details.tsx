@@ -31,6 +31,7 @@ import {
   ErrorMessages,
   InlineEditCard,
   Input,
+  notEmptyRule,
   setupErrors,
 } from '@marapp/earth-shared';
 
@@ -283,7 +284,12 @@ export function LayerDetail(props: any) {
                             ...theme,
                             ...SELECT_THEME,
                           })}
-                          rules={{ required: true }}
+                          rules={{
+                            required: true,
+                            validate: {
+                              notEmptyRule: notEmptyRule('Layer category cannot be empty'),
+                            },
+                          }}
                         />
                         <div className="ng-form-error-block">
                           <ErrorMessage
