@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.11.1...v1.12.0) (2020-10-27)
+
+
+### Features
+
+* **map:** loading indicator legend [EP-1460] ([#253](https://github.com/natgeosociety/marapp-frontend/issues/253)) ([4dae28a](https://github.com/natgeosociety/marapp-frontend/commit/4dae28a5018e7444f12390a0f237b9f34b22ca1f))
+
 ## [1.11.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.11.0...v1.11.1) (2020-10-27)
 
 
