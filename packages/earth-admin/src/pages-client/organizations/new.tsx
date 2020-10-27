@@ -20,7 +20,8 @@
 import { navigate } from 'gatsby';
 import { noop } from 'lodash';
 import React, { useContext, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+import Creatable from 'react-select/creatable';
 
 import {
   ErrorMessages,
@@ -28,12 +29,14 @@ import {
   lowerNumericDashesRule,
   setupErrors,
   Spinner,
+  validEmail,
   validEmailRule,
 } from '@marapp/earth-shared';
 
 import { Card } from '@app/components/card';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import OrganizationsService from '@app/services/organizations';
 import { Auth0Context } from '@app/utils/contexts';
 
@@ -47,7 +50,7 @@ export function NewOrganization(props: IProps) {
   const [serverErrors, setServerErrors] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { selectedGroup } = useContext(Auth0Context);
-  const { handleSubmit, register, errors, formState } = useForm({
+  const { handleSubmit, register, errors, formState, setValue, control } = useForm({
     mode: 'onChange',
   });
   const { isValid, touched } = formState;
@@ -70,6 +73,53 @@ export function NewOrganization(props: IProps) {
       setIsLoading(false);
       setServerErrors(error.data.errors);
     }
+  };
+
+  const customStylesUsers = {
+    ...CUSTOM_STYLES,
+    multiValueLabel: (provided, state) => {
+      return {
+        ...provided,
+        color: state.data.hasError
+          ? 'red'
+          : state.data.skipped
+          ? 'orange'
+          : state.data.hasSuccess
+          ? 'green'
+          : 'var(--marapp-gray-9)',
+        borderRadius: '50px',
+        display: 'flex',
+      };
+    },
+    multiValueRemove: (provided, state) => ({
+      ...provided,
+      color: state.data.hasError ? 'red' : state.data.skipped ? 'orange' : 'var(--marapp-gray-9)',
+    }),
+    control: (provided, state) => {
+      return {
+        ...provided,
+        minHeight: '55px',
+      };
+    },
+    menu: () => ({
+      display: 'none',
+    }),
+    dropdownIndicator: () => ({
+      display: 'none',
+    }),
+    indicatorSeparator: () => ({
+      display: 'none',
+    }),
+  };
+
+  const appendEmailToUsersList = (email: string): void => {
+    setValue('users', [
+      ...inviteUsersWatcher,
+      {
+        label: email,
+        value: email,
+      },
+    ]);
   };
 
   return (
@@ -116,13 +166,55 @@ export function NewOrganization(props: IProps) {
           </Card>
 
           <Card className="ng-margin-medium-bottom">
-            <Input
+            {/* <Input
               name="owners"
               placeholder="Owner email address"
               label="Owner email address*"
               className="marapp-qa-inputname ng-display-block"
               maxLength="64"
               disabled={isLoading}
+              error={renderErrorFor('owners')}
+              ref={register({
+                required: 'Please add an owners email',
+                validate: {
+                  validEmailRule: validEmailRule(),
+                },
+              })}
+            /> */}
+            <Controller
+              name="users"
+              type="users"
+              className="marapp-qa-invite-users"
+              defaultValue={[]}
+              control={control}
+              selectedGroup={selectedGroup}
+              as={Creatable}
+              formatCreateLabel={(value) => `${value}`}
+              isValidNewOption={(value) => validEmail(value)}
+              isMulti={true}
+              placeholder="Enter existing emails to add owners to this organization"
+              onKeyDown={(e) => {
+                const value = e.target.value;
+
+                if (e.key === ' ' && validEmail(value)) {
+                  appendEmailToUsersList(value);
+                }
+              }}
+              onBlur={([e]) => {
+                e.preventDefault();
+
+                const value = e.target.value;
+
+                if (value && validEmail(value)) {
+                  appendEmailToUsersList(value);
+                }
+              }}
+              styles={customStylesUsers}
+              theme={(theme) => ({
+                ...theme,
+                ...SELECT_THEME,
+              })}
+              rules={{ required: true }}
               error={renderErrorFor('owners')}
               ref={register({
                 required: 'Please add an owners email',
