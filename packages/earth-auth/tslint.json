@@ -1,0 +1,55 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
+  "jsRules": {},
+  "rules": {
+    "object-literal-sort-keys": false,
+    "no-submodule-imports": false,
+    "no-shadowed-variable": false,
+    "no-var-requires": false,
+    "no-implicit-dependencies": false,
+    "interface-name": false,
+    "no-unused-expression": false,
+    "variable-name": false,
+    "ban-types": false,
+    "no-empty": false,
+    "no-console": false,
+    "jsx-no-lambda": false,
+    "jsx-key": false,
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "case-insensitive",
+        "named-imports-order": "case-insensitive",
+        "grouped-imports": true,
+        "module-source-path": "full",
+        "groups": [
+          {
+            "name": "internal",
+            "match": "^@marapp",
+            "order": 2
+          },
+          {
+            "name": "alias",
+            "match": "^@app",
+            "order": 3
+          },
+          {
+            "name": "relative",
+            "match": "^[.].*",
+            "order": 4
+          },
+          {
+            "name": "node_modules",
+            "match": ".*",
+            "order": 1
+          }
+        ]
+      }
+    ]
+  },
+  "rulesDirectory": [],
+  "linterOptions": {
+    "exclude": ["node_modules"]
+  }
+}
