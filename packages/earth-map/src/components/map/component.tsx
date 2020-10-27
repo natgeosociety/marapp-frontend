@@ -24,6 +24,7 @@ import { API_URL, MAPBOX_TOKEN } from 'config';
 import experienceIMG from 'images/pins/experience-marker.svg';
 import debounce from 'lodash/debounce';
 import React, { useContext } from 'react';
+import { renderToString } from 'react-dom/server';
 import isEqual from 'react-fast-compare';
 import Link from 'redux-first-router-link';
 import { APP_ABOUT } from 'theme';
@@ -59,7 +60,6 @@ interface IMap {
 }
 
 interface IMapState {
-  isLoadingTiles?: boolean;
   loadingTilesIntervalRef?: NodeJS.Timeout;
 }
 
@@ -77,18 +77,17 @@ class MapComponent extends React.Component<IMap, IMapState> {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      isLoadingTiles: false,
-    };
   }
 
   public componentDidMount() {
     const loadingTilesIntervalRef = setInterval(() => {
       const isLoadingTiles = !this.map.areTilesLoaded();
+      const loadingIndicatorNode = document.querySelector('.map-load-indicator');
 
-      if (isLoadingTiles !== this.state.isLoadingTiles) {
-        this.setState({ isLoadingTiles });
+      if (isLoadingTiles) {
+        loadingIndicatorNode.classList.remove('ng-hidden');
+      } else {
+        loadingIndicatorNode.classList.add('ng-hidden');
       }
     }, 100);
 
@@ -315,7 +314,15 @@ class MapComponent extends React.Component<IMap, IMapState> {
           onHover={this.onHover}
           onReady={this.onReady}
           mapOptions={{
-            customAttribution: `<a href="${APP_ABOUT}" target="_blank">About</a>`,
+            customAttribution: `
+              <a href="${APP_ABOUT}" target="_blank">About</a>
+              ${renderToString(
+                <Spinner
+                  size="nano"
+                  className="ng-position-static ng-display-inline-block ng-padding-remove ng-margin-small-right spinner-border-dark map-load-indicator ng-float-left"
+                />
+              )}
+            `,
           }}
           // onLoad={this.onLoad}
           transformRequest={this.onTransformRequest}
@@ -336,7 +343,6 @@ class MapComponent extends React.Component<IMap, IMapState> {
         <Legend />
 
         <MapControls>
-          {this.state.isLoadingTiles && <Spinner size="small" position="relative" />}
           <BasemapComponent />
           <div>
             <RecenterControl onClick={this.onRecenterChange} />

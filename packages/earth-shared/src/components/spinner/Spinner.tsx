@@ -25,7 +25,7 @@ import './styles.scss';
 interface SpinnerProps {
   position?: string;
   className?: string;
-  size?: string;
+  size?: 'nano' | 'mini' | 'small' | 'medium' | 'large';
 }
 
 const Spinner = (props: SpinnerProps) => {
