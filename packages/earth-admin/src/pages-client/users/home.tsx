@@ -27,7 +27,7 @@ import Creatable from 'react-select/creatable';
 import { AuthzGuards, ErrorMessages, Spinner, validEmail } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@app/components/card';
+import { Card } from '@marapp/earth-shared';
 import { ContentLayout } from '@app/layouts';
 import UsersService from '@app/services/users';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';

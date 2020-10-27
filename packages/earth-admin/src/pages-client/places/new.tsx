@@ -25,7 +25,7 @@ import Select from 'react-select';
 
 import { ErrorMessages, Input, setupErrors, Spinner } from '@marapp/earth-shared';
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@app/components/card';
+import { Card } from '@marapp/earth-shared';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';

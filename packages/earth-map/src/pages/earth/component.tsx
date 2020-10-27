@@ -27,6 +27,8 @@ import Sidebar from 'components/sidebar';
 import { Tab, Tabs } from 'components/tabs';
 import Url from 'components/url';
 import IndexSidebar from 'components/index-sidebar';
+import CollectionNew from 'components/collection/collection-new';
+import CollectionDetails from 'components/collection/collection-details';
 import { EPanels } from 'modules/sidebar/model';
 
 import { URL_PROPS } from './url';
@@ -47,7 +49,7 @@ class EarthPage extends React.Component<IEarth> {
   public render() {
     const { setSidebarPanel, panel, router } = this.props;
     const { type } = router;
-    const selectedOpen = ['LOCATION', 'COLLECTION'].includes(type);
+    const selectedOpen = ['LOCATION', 'COLLECTION', 'NEW_COLLECTION'].includes(type);
     const withHeaderLayout = ['EARTH', 'LOCATION', 'COLLECTION'].includes(type);
     const newCollectionLayout = ['NEW_COLLECTION'].includes(type);
 
@@ -73,14 +75,14 @@ class EarthPage extends React.Component<IEarth> {
                   {type === 'LOCATION' && (
                     <IndexSidebar {...this.props} selectedOpen={selectedOpen} />
                   )}
-                  {type === 'COLLECTION' && <div>This is a collection view</div>}
+                  {type === 'COLLECTION' && <CollectionDetails />}
                 </Places>
               )}
               {panel === EPanels.LAYERS && <Layers selected={selectedOpen} />}
             </>
           )}
 
-          {newCollectionLayout && <h1>New collection here</h1>}
+          {newCollectionLayout && <CollectionNew />}
         </Sidebar>
 
         <div className="l-content">

@@ -33,7 +33,7 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@app/components/card';
+import { Card } from '@marapp/earth-shared';
 import { DetailList } from '@app/components/detail-list';
 import { DownloadFile } from '@app/components/download-file';
 import { ErrorBoundary } from '@app/components/error-boundary';
