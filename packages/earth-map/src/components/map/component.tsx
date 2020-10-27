@@ -319,7 +319,7 @@ class MapComponent extends React.Component<IMap, IMapState> {
               ${renderToString(
                 <Spinner
                   size="nano"
-                  className="ng-position-static ng-display-inline-block ng-padding-vertical-remove spinner-border-dark map-load-indicator"
+                  className="ng-position-static ng-display-inline-block ng-padding-remove ng-margin-small-right spinner-border-dark map-load-indicator ng-float-left"
                 />
               )}
             `,
