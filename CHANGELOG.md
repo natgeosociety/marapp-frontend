@@ -1,3 +1,11 @@
+## [1.11.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.11.0...v1.11.1) (2020-10-27)
+
+
+### Bug Fixes
+
+* **admin:** Error is still displayed, even after correct value was saved [EP-3021] ([17c0a85](https://github.com/natgeosociety/marapp-frontend/commit/17c0a85cf8dc75636ca97a6bed4b59e8ada594ab))
+* **admin:** Save places button was initially disabled [EP-3169] ([0f16eb4](https://github.com/natgeosociety/marapp-frontend/commit/0f16eb48578a4f6b6b22c54c597b678ecfcb050d))
+
 # [1.11.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.10.0...v1.11.0) (2020-10-21)
 
 
