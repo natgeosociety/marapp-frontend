@@ -122,7 +122,15 @@ class EarthPage extends React.Component<IEarth> {
                   )}
                 </>
               )}
-              {panel === EPanels.LAYERS && <Layers selected={selectedOpen} />}
+              {panel === EPanels.LAYERS && (
+                <Layers
+                  selected={selectedOpen}
+                  {...(type === 'COLLECTION' && {
+                    locationName: collection.name,
+                    locationOrganization: collection.organization,
+                  })}
+                />
+              )}
             </>
           )}
 

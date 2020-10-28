@@ -38,7 +38,7 @@ const CollectionNew = () => {
         {
           ...values,
           published: true,
-          slug: values.name,
+          slug: values.name.replaceAll(' ', ''),
         },
         {
           group: values.organization,
@@ -62,7 +62,7 @@ const CollectionNew = () => {
             name="name"
             error={renderErrorFor('name')}
             ref={register({
-              required: 'This is required',
+              required: 'Collection name is required',
             })}
           />
         </label>
