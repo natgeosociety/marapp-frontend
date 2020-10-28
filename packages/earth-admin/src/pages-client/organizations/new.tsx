@@ -26,6 +26,7 @@ import Creatable from 'react-select/creatable';
 import {
   ErrorMessages,
   Input,
+  EmailInput,
   lowerNumericDashesRule,
   setupErrors,
   Spinner,
@@ -192,6 +193,11 @@ export function NewOrganization(props: IProps) {
 
           <Card className="ng-margin-medium-bottom">
             <p className="ng-text-weight-bold ng-margin-remove">Owner(s)*</p>
+
+            {/* <EmailInput/> */}
+
+            <Controller as={EmailInput} name="owners" control={control} />
+
             <Controller
               name="owners"
               type="owners"
