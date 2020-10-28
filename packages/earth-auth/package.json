@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --env.develop --development",
-    "build:templates": "webpack --env.production --production"
+    "build:templates": "webpack --env.production --production",
+    "build": "echo @marapp/earth-auth does not run as part of the default build"
   },
   "keywords": [],
   "author": "",
