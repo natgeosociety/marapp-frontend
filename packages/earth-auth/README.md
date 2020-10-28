@@ -22,6 +22,7 @@ The following environment variables are required by the application.
 | `NODE_ENV` | Node.js environment (e.g. `development`, `production`) |
 | `APP_TERMS_OF_SERVICE` | the link for terms of service |
 | `APP_PRIVACY_POLICY` | the link for privacy policy |
+| `APP_NAME` | app name |
 | `APP_ATOB` | the encoded data from auth0 |
 
 APP_ATOB is specified from auth0. When developing locally, you can specify an atob in the env config, so that you can run the screens locally. 
