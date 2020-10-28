@@ -6,8 +6,8 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --open --mode development",
-    "build": "webpack --production"
+    "start": "webpack-dev-server --env.develop --development",
+    "build": "webpack --env.production --production"
   },
   "keywords": [],
   "author": "",
@@ -16,8 +16,10 @@
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",
     "ts-loader": "^8.0.7",
-    "html-webpack-plugin": "^4.5.0",
-    "style-loader": "^2.0.0"
+    "html-webpack-plugin": "3.2.0",
+    "style-loader": "^2.0.0",
+    "dotenv-webpack": "^4.0.0",
+    "html-webpack-inline-source-plugin": "^0.0.10"
   },
   "dependencies": {
     "auth0-lock": "^11.27.0"
