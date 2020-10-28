@@ -17,28 +17,39 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Creatable from 'react-select/creatable';
 
+import { validEmail } from '../../index';
 import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 
 export interface EmailInputProps {
   // creatable?
+  isMulti?: Boolean;
+  placeholder?: String;
+  isDisabled?: Boolean;
+  className?: String;
 }
 
-const customStylesOwners = {
+const customStyles = {
   ...CUSTOM_STYLES,
   multiValueLabel: (provided, state) => {
     return {
       ...provided,
-      color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
+      color: state.data.hasError
+        ? 'red'
+        : state.data.skipped
+        ? 'orange'
+        : state.data.hasSuccess
+        ? 'green'
+        : 'var(--marapp-gray-9)',
       borderRadius: '50px',
       display: 'flex',
     };
   },
   multiValueRemove: (provided, state) => ({
     ...provided,
-    color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
+    color: state.data.hasError ? 'red' : state.data.skipped ? 'orange' : 'var(--marapp-gray-9)',
   }),
   control: (provided, state) => {
     return {
@@ -58,14 +69,58 @@ const customStylesOwners = {
 };
 
 export function EmailInput(props: EmailInputProps) {
+  const [creatableRef, setCreatableRef] = useState({} as any);
+
+  const isEmailInList = (email: string): boolean => {
+    return (creatableRef.state.value || []).find((x) => x.value === email);
+  };
+
+  const appendEmailToList = (email: string): void => {
+    if (isEmailInList(email)) {
+      return;
+    }
+
+    creatableRef.onChange(
+      [
+        ...creatableRef.state.value,
+        {
+          label: email,
+          value: email,
+        },
+      ],
+      'set-value'
+    );
+
+    creatableRef.onInputChange('', 'set-value');
+  };
+
   return (
     <Creatable
       {...props}
-      styles={customStylesOwners}
+      ref={(ref) => setCreatableRef(ref)}
+      formatCreateLabel={(value) => `${value}`}
+      isValidNewOption={(value) => validEmail(value) && !isEmailInList(value)}
+      styles={customStyles}
       theme={(theme) => ({
         ...theme,
         ...SELECT_THEME,
       })}
+      onKeyDown={(e) => {
+        const email = e.target.value;
+
+        if (e.key === 'Enter' && email === '') {
+          e.preventDefault();
+        } else if (e.key === ' ' && validEmail(email)) {
+          appendEmailToList(email);
+        }
+      }}
+      onBlur={(e) => {
+        const email = e.target.value;
+
+        if (email && validEmail(email)) {
+          appendEmailToList(email);
+        }
+      }}
     />
   );
 }

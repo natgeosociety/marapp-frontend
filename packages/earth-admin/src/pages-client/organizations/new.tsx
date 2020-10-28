@@ -21,7 +21,6 @@ import { navigate } from 'gatsby';
 import { noop } from 'lodash';
 import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import Creatable from 'react-select/creatable';
 
 import {
   ErrorMessages,
@@ -30,14 +29,11 @@ import {
   lowerNumericDashesRule,
   setupErrors,
   Spinner,
-  validEmail,
-  validEmailRule,
 } from '@marapp/earth-shared';
 
 import { Card } from '@app/components/card';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
-import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import OrganizationsService from '@app/services/organizations';
 import { Auth0Context } from '@app/utils/contexts';
 
@@ -77,55 +73,14 @@ export function NewOrganization(props: IProps) {
       const errors = err.data?.errors;
 
       setIsLoading(false);
-      processOwnersFeedback(errors ? [] : err.data, false);
+      processOwnersFeedback(errors ? [] : err.data);
       setServerErrors(errors || err.data);
     }
   };
 
-  const customStylesOwners = {
-    ...CUSTOM_STYLES,
-    multiValueLabel: (provided, state) => {
-      return {
-        ...provided,
-        color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
-        borderRadius: '50px',
-        display: 'flex',
-      };
-    },
-    multiValueRemove: (provided, state) => ({
-      ...provided,
-      color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
-    }),
-    control: (provided, state) => {
-      return {
-        ...provided,
-        minHeight: '55px',
-      };
-    },
-    menu: () => ({
-      display: 'none',
-    }),
-    dropdownIndicator: () => ({
-      display: 'none',
-    }),
-    indicatorSeparator: () => ({
-      display: 'none',
-    }),
-  };
-
   const ownersWatcher = watch('owners');
 
-  const appendEmailToOwnersList = (email: string): void => {
-    setValue('owners', [
-      ...ownersWatcher,
-      {
-        label: email,
-        value: email,
-      },
-    ]);
-  };
-
-  const processOwnersFeedback = (data, isSccess) => {
+  const processOwnersFeedback = (data) => {
     const feedback = [];
 
     const feedbackOwners = data.map((item) => {
@@ -193,60 +148,16 @@ export function NewOrganization(props: IProps) {
 
           <Card className="ng-margin-medium-bottom">
             <p className="ng-text-weight-bold ng-margin-remove">Owner(s)*</p>
-
-            {/* <EmailInput/> */}
-
-            <Controller as={EmailInput} name="owners" control={control} />
-
             <Controller
+              as={EmailInput}
               name="owners"
-              type="owners"
-              className="marapp-qa-owners"
-              defaultValue={[]}
               control={control}
-              selectedGroup={selectedGroup}
-              as={Creatable}
-              formatCreateLabel={(value) => `${value}`}
-              isValidNewOption={(value) => validEmail(value)}
+              defaultValue={[]}
               isMulti={true}
-              isDisabled={isLoading}
               placeholder="Emails"
-              onKeyDown={(e) => {
-                const value = e.target.value;
-
-                if (e.key === 'Enter') {
-                  if (
-                    value === '' ||
-                    (ownersWatcher && ownersWatcher.find((x) => x.value === value))
-                  ) {
-                    e.preventDefault();
-                  }
-                } else if (e.key === ' ' && validEmail(value)) {
-                  appendEmailToOwnersList(value);
-                }
-              }}
-              onBlur={([e]) => {
-                e.preventDefault();
-
-                const value = e.target.value;
-
-                if (value && validEmail(value)) {
-                  appendEmailToOwnersList(value);
-                }
-              }}
-              styles={customStylesOwners}
-              theme={(theme) => ({
-                ...theme,
-                ...SELECT_THEME,
-              })}
+              isDisabled={isLoading}
+              className="marapp-qa-owners"
               rules={{ required: true }}
-              error={renderErrorFor('owners')}
-              ref={register({
-                required: 'Please add an owner email',
-                validate: {
-                  validEmailRule: validEmailRule(),
-                },
-              })}
             />
             <div className="ng-width-1-1 ng-margin-top">
               {ownersFeedback.map(

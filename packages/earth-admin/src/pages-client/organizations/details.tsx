@@ -20,23 +20,14 @@
 import { noop } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import Creatable from 'react-select/creatable';
 import useSWR from 'swr';
 
-import {
-  AuthzGuards,
-  InlineEditCard,
-  Input,
-  setupErrors,
-  validEmail,
-  validEmailRule,
-} from '@marapp/earth-shared';
+import { AuthzGuards, InlineEditCard, Input, EmailInput, setupErrors } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { ContentLayout } from '@app/layouts';
-import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { generateCacheKey } from '@app/services';
 import OrganizationsService from '@app/services/organizations';
 
@@ -107,7 +98,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
       console.log(err, errors);
 
       setIsLoading && setIsLoading(false);
-      processOwnersFeedback(errors ? [] : err.data, false);
+      processOwnersFeedback(errors ? [] : err.data);
       setServerErrors(errors || err.data);
     }
   }
@@ -117,50 +108,9 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     owners: (localOrgData as any).owners || [],
   };
 
-  const customStylesOwners = {
-    ...CUSTOM_STYLES,
-    multiValueLabel: (provided, state) => {
-      return {
-        ...provided,
-        color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
-        borderRadius: '50px',
-        display: 'flex',
-      };
-    },
-    multiValueRemove: (provided, state) => ({
-      ...provided,
-      color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
-    }),
-    control: (provided, state) => {
-      return {
-        ...provided,
-        minHeight: '55px',
-      };
-    },
-    menu: () => ({
-      display: 'none',
-    }),
-    dropdownIndicator: () => ({
-      display: 'none',
-    }),
-    indicatorSeparator: () => ({
-      display: 'none',
-    }),
-  };
-
   const ownersWatcher = watch('owners');
 
-  const appendEmailToOwnersList = (email: string): void => {
-    setValue('owners', [
-      ...ownersWatcher,
-      {
-        label: email,
-        value: email,
-      },
-    ]);
-  };
-
-  const processOwnersFeedback = (data, isSccess) => {
+  const processOwnersFeedback = (data) => {
     const feedback = [];
 
     const feedbackOwners = data.map((item) => {
@@ -246,53 +196,14 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                   <>
                     <p className="ng-text-weight-bold ng-margin-remove">Owner(s)*</p>
                     <Controller
+                      as={EmailInput}
                       name="owners"
-                      type="owners"
-                      className="marapp-qa-owners"
-                      defaultValue={owners.map((owner) => ({ label: owner, value: owner }))}
                       control={control}
-                      selectedGroup={selectedGroup}
-                      as={Creatable}
-                      formatCreateLabel={(value) => `${value}`}
-                      isValidNewOption={(value) => validEmail(value)}
+                      defaultValue={owners.map((owner) => ({ label: owner, value: owner }))}
                       isMulti={true}
                       placeholder="Emails"
-                      onKeyDown={(e) => {
-                        const value = e.target.value;
-
-                        if (e.key === 'Enter') {
-                          if (
-                            value === '' ||
-                            (ownersWatcher && ownersWatcher.find((x) => x.value === value))
-                          ) {
-                            e.preventDefault();
-                          }
-                        } else if (e.key === ' ' && validEmail(value)) {
-                          appendEmailToOwnersList(value);
-                        }
-                      }}
-                      onBlur={([e]) => {
-                        e.preventDefault();
-
-                        const value = e.target.value;
-
-                        if (value && validEmail(value)) {
-                          appendEmailToOwnersList(value);
-                        }
-                      }}
-                      styles={customStylesOwners}
-                      theme={(theme) => ({
-                        ...theme,
-                        ...SELECT_THEME,
-                      })}
+                      className="marapp-qa-owners"
                       rules={{ required: true }}
-                      error={renderErrorFor('owners')}
-                      ref={register({
-                        required: 'Please add an owner email',
-                        validate: {
-                          validEmailRule: validEmailRule(),
-                        },
-                      })}
                     />
                     <div className="ng-width-1-1 ng-margin-top">
                       {ownersFeedback.map(
