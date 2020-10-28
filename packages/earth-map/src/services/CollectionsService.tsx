@@ -30,3 +30,7 @@ export const createCollection = async (data, query: RequestQuery): Promise<any> 
     metaDeserializer
   );
 };
+
+export const fetchCollection = async (idOrSlug: string, query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request(`/collections/${idOrSlug}`, { query }, metaDeserializer);
+};

@@ -23,6 +23,7 @@ import * as layers from 'modules/layers';
 import * as map from 'modules/map';
 import * as metrics from 'modules/metrics';
 import * as places from 'modules/places';
+import * as collections from 'modules/collections';
 import * as sidebar from 'modules/sidebar';
 import * as user from 'modules/user';
 import * as widget from 'modules/widget';
@@ -61,6 +62,7 @@ const initStore = (initialState = {}) => {
     sidebar: handleModule(sidebar),
     indexes: handleModule(indexes),
     places: handleModule(places),
+    collections: handleModule(collections),
     layers: handleModule(layers),
     widgets: handleModule(widgets),
     widget: handleModule(widget),

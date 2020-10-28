@@ -16,24 +16,21 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
+import * as actions from './actions';
 
-import { all, fork } from 'redux-saga/effects';
-import earth from 'sagas/earth';
-import global from 'sagas/global';
-import indexes from 'sagas/indexes';
-import layers from 'sagas/layers';
-import location from 'sagas/location';
-import places from 'sagas/places';
-import collections from 'sagas/collections';
-
-export default function* root() {
-  yield all([
-    fork(earth),
-    fork(global),
-    fork(places),
-    fork(collections),
-    fork(layers),
-    fork(indexes),
-    fork(location),
-  ]);
-}
+export default {
+  [actions.setCollectionData]: (state, { payload }) => ({
+    ...state,
+    data: {
+      ...payload,
+    },
+  }),
+  [actions.setCollectionsLoading]: (state, { payload }) => ({
+    ...state,
+    loading: payload,
+  }),
+  [actions.setCollectionsError]: (state, { payload }) => ({
+    ...state,
+    error: payload,
+  }),
+};

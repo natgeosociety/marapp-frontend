@@ -18,11 +18,16 @@
 */
 import React from 'react';
 import { Icons as VizzIcons } from 'vizzuality-components';
+import Link from 'redux-first-router-link';
 
+import { Card } from '@marapp/earth-shared';
+
+import FeaturedPlaces from 'components/places/featured-places';
 import Header from 'components/header';
 import Layers from 'components/layers';
 import Map from 'components/map';
 import Places from 'components/places';
+import LastViewedPlace from 'components/last-viewed-place';
 import Sidebar from 'components/sidebar';
 import { Tab, Tabs } from 'components/tabs';
 import Url from 'components/url';
@@ -30,6 +35,7 @@ import IndexSidebar from 'components/index-sidebar';
 import CollectionNew from 'components/collection/collection-new';
 import CollectionDetails from 'components/collection/collection-details';
 import { EPanels } from 'modules/sidebar/model';
+import { IPlace } from 'modules/places/model';
 
 import { URL_PROPS } from './url';
 
@@ -38,7 +44,10 @@ interface IEarth {
   panel?: EPanels;
   page?: string;
   layersPanel?: boolean;
+  lastViewedPlace?: IPlace;
+  group?: any;
   selected?: string;
+  collection?: any;
   router?: {
     type: 'EARTH' | 'LOCATION' | 'NEW_COLLECTION' | 'COLLECTION';
     payload: any;
@@ -47,11 +56,12 @@ interface IEarth {
 
 class EarthPage extends React.Component<IEarth> {
   public render() {
-    const { setSidebarPanel, panel, router } = this.props;
+    const { setSidebarPanel, panel, router, lastViewedPlace, group, collection } = this.props;
     const { type } = router;
     const selectedOpen = ['LOCATION', 'COLLECTION', 'NEW_COLLECTION'].includes(type);
     const withHeaderLayout = ['EARTH', 'LOCATION', 'COLLECTION'].includes(type);
     const newCollectionLayout = ['NEW_COLLECTION'].includes(type);
+    const showLastViewedPlace = lastViewedPlace && group.includes(lastViewedPlace.organization);
 
     return (
       <main className="marapp-qa-earth l-page marapp-qa-pageearth" role="main">
@@ -71,12 +81,46 @@ class EarthPage extends React.Component<IEarth> {
                 <Tab label="Layers" value="layers" />
               </Tabs>
               {panel === EPanels.PLACES && (
-                <Places selected={selectedOpen}>
-                  {type === 'LOCATION' && (
-                    <IndexSidebar {...this.props} selectedOpen={selectedOpen} />
+                <>
+                  {type === 'EARTH' && (
+                    <Places selected={selectedOpen}>
+                      <>
+                        <Card className="ng-margin-bottom">
+                          <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
+                            Collections
+                          </h2>
+                          <p>
+                            You currently do not have any collections in your organizations. Create
+                            a collection and start sharing your insights with your organization
+                            members.
+                          </p>
+                          <Link
+                            to={{ type: 'NEW_COLLECTION' }}
+                            className="ng-button ng-button-secondary"
+                          >
+                            Create New Collection
+                          </Link>
+                        </Card>
+                        {showLastViewedPlace && <LastViewedPlace place={lastViewedPlace} />}
+                        <FeaturedPlaces />
+                      </>
+                    </Places>
                   )}
-                  {type === 'COLLECTION' && <CollectionDetails />}
-                </Places>
+                  {type === 'LOCATION' && (
+                    <Places selected={selectedOpen}>
+                      <IndexSidebar {...this.props} selectedOpen={selectedOpen} />
+                    </Places>
+                  )}
+                  {type === 'COLLECTION' && (
+                    <Places
+                      selected={selectedOpen}
+                      locationName={collection.name}
+                      locationOrganization={collection.organization}
+                    >
+                      <CollectionDetails />
+                    </Places>
+                  )}
+                </>
               )}
               {panel === EPanels.LAYERS && <Layers selected={selectedOpen} />}
             </>

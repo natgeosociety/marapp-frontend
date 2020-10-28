@@ -19,8 +19,48 @@
 
 import React from 'react';
 
-const CollectionDetails = () => {
-  return <div>This is a collection view</div>;
+import { Card, Spinner } from '@marapp/earth-shared';
+
+interface IProps {
+  data?: any;
+  loading?: boolean;
+  error?: any;
+}
+
+const CollectionDetails = (props: IProps) => {
+  const { loading, data } = props;
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  const { organization, name } = data;
+
+  return (
+    <div>
+      <Card elevation="flush" className="ng-widget-header">
+        <h3 className="ng-text-display-s ng-margin-bottom">
+          {organization} | <span className="ng-text-weight-regular">Collection</span>
+        </h3>
+        <h2 className="ng-text-edit-m ng-body-color ng-margin-remove">{name}</h2>
+      </Card>
+
+      <Card className="c-legend-item-group">
+        <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">Collection places</h2>
+        <p>
+          You currently don’t have any places added to your collection. Add places to your
+          collection to access data metrics and share your insights with your team.
+        </p>
+        <button
+          disabled={true}
+          type="submit"
+          className="ng-button ng-button-secondary ng-margin-right"
+        >
+          Add places
+        </button>
+      </Card>
+    </div>
+  );
 };
 
 export default CollectionDetails;

@@ -17,4 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { default } from './CollectionDetails';
+import { connect } from 'react-redux';
+
+import CollectionDetails from './CollectionDetails';
+
+export default connect((state: any) => ({
+  ...state.collections,
+}))(CollectionDetails);
