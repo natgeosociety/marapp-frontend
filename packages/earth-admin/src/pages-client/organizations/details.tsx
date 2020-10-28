@@ -19,7 +19,8 @@
 
 import { noop } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+import Creatable from 'react-select/creatable';
 import useSWR from 'swr';
 
 import {
@@ -27,6 +28,7 @@ import {
   InlineEditCard,
   Input,
   setupErrors,
+  validEmail,
   validEmailRule,
 } from '@marapp/earth-shared';
 
@@ -34,6 +36,7 @@ import { useAuth0 } from '@app/auth/auth0';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { ContentLayout } from '@app/layouts';
+import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { generateCacheKey } from '@app/services';
 import OrganizationsService from '@app/services/organizations';
 
@@ -43,6 +46,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   const { page, onDataChange = noop } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [localOrgData, setLocalOrgData] = useState({});
+  const [ownersFeedback, setOwnersFeedback] = useState([]);
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
@@ -57,7 +61,16 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     data && setLocalOrgData(data);
   }, [data]);
 
-  const { getValues, register, formState, errors: formErrors } = useForm({
+  const {
+    getValues,
+    register,
+    formState,
+    errors: formErrors,
+    control,
+    setValue,
+    watch,
+    reset,
+  } = useForm({
     mode: 'onChange',
   });
 
@@ -70,16 +83,18 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
 
   async function onSubmit(e, setIsEditing, setIsLoading, setServerErrors) {
     e.preventDefault();
-    const { owner, ...rest } = getValues();
+    const { owners, ...rest } = getValues();
 
     const parsed = {
       ...rest,
-      ...(owner && {
-        owners: [owner],
+      ...(owners && {
+        owners: owners.map((item) => item.value),
       }),
     };
 
     try {
+      setServerErrors([]);
+      setOwnersFeedback([]);
       setIsLoading && setIsLoading(true);
       await OrganizationsService.updateOrganization(id, parsed, { group: selectedGroup });
       mutate();
@@ -87,13 +102,84 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
       setIsEditing && setIsEditing(false);
       onDataChange();
     } catch (err) {
+      const errors = err.data?.errors;
+
       setIsLoading && setIsLoading(false);
-      setServerErrors(err.data.errors);
+      processOwnersFeedback(errors || [], false);
+      setServerErrors(errors || err.data);
     }
   }
 
-  const { name, owners, slug, id }: any = localOrgData;
-  const owner = owners && owners[0];
+  const { name, owners, slug, id }: any = {
+    ...localOrgData,
+    owners: (localOrgData as any).owners || [],
+  };
+
+  const customStylesOwners = {
+    ...CUSTOM_STYLES,
+    multiValueLabel: (provided, state) => {
+      return {
+        ...provided,
+        color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
+        borderRadius: '50px',
+        display: 'flex',
+      };
+    },
+    multiValueRemove: (provided, state) => ({
+      ...provided,
+      color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
+    }),
+    control: (provided, state) => {
+      return {
+        ...provided,
+        minHeight: '55px',
+      };
+    },
+    menu: () => ({
+      display: 'none',
+    }),
+    dropdownIndicator: () => ({
+      display: 'none',
+    }),
+    indicatorSeparator: () => ({
+      display: 'none',
+    }),
+  };
+
+  const ownersWatcher = watch('owners');
+
+  const appendEmailToOwnersList = (email: string): void => {
+    setValue('owners', [
+      ...ownersWatcher,
+      {
+        label: email,
+        value: email,
+      },
+    ]);
+  };
+
+  const processOwnersFeedback = (data, isSccess) => {
+    const feedback = [];
+
+    const feedbackOwners = data.map((item) => {
+      const hasError = !!item.error;
+
+      feedback.push({
+        hasError,
+        title: item.email,
+        detail: item.error,
+      });
+
+      return {
+        label: item.email,
+        value: item.email,
+        hasError,
+      };
+    });
+
+    setValue('owners', feedbackOwners);
+    setOwnersFeedback(feedback);
+  };
 
   return (
     <ContentLayout
@@ -152,29 +238,78 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
             <div className="ng-width-1-2">
               <InlineEditCard
                 onSubmit={onSubmit}
-                validForm={!formErrors.owner}
+                onCancel={() => [reset(), setOwnersFeedback([])]}
+                validForm={!formErrors.owners && formState.dirty && ownersWatcher?.length > 0}
                 render={() => (
                   <>
-                    <Input
-                      name="owner"
-                      placeholder="required"
-                      label="Owner*"
-                      className="marapp-qa-inputowner ng-display-block ng-margin-medium-bottom"
-                      defaultValue={owner}
-                      error={renderErrorFor('owner')}
+                    <p className="ng-text-weight-bold ng-margin-remove">Owner(s)*</p>
+                    <Controller
+                      name="owners"
+                      type="owners"
+                      className="marapp-qa-owners"
+                      defaultValue={owners.map((owner) => ({ label: owner, value: owner }))}
+                      control={control}
+                      selectedGroup={selectedGroup}
+                      as={Creatable}
+                      formatCreateLabel={(value) => `${value}`}
+                      isValidNewOption={(value) => validEmail(value)}
+                      isMulti={true}
+                      placeholder="Emails"
+                      onKeyDown={(e) => {
+                        const value = e.target.value;
+
+                        if (e.key === 'Enter') {
+                          if (
+                            value === '' ||
+                            (ownersWatcher && ownersWatcher.find((x) => x.value === value))
+                          ) {
+                            e.preventDefault();
+                          }
+                        } else if (e.key === ' ' && validEmail(value)) {
+                          appendEmailToOwnersList(value);
+                        }
+                      }}
+                      onBlur={([e]) => {
+                        e.preventDefault();
+
+                        const value = e.target.value;
+
+                        if (value && validEmail(value)) {
+                          appendEmailToOwnersList(value);
+                        }
+                      }}
+                      styles={customStylesOwners}
+                      theme={(theme) => ({
+                        ...theme,
+                        ...SELECT_THEME,
+                      })}
+                      rules={{ required: true }}
+                      error={renderErrorFor('owners')}
                       ref={register({
-                        required: 'Please enter owner email',
+                        required: 'Please add an owner email',
                         validate: {
                           validEmailRule: validEmailRule(),
                         },
                       })}
                     />
+                    <div className="ng-width-1-1 ng-margin-top">
+                      {ownersFeedback.map(
+                        (item) =>
+                          item.hasError && (
+                            <p className="ng-margin-remove">
+                              The email, {item.title} is unavailable. Details: {item.detail}
+                            </p>
+                          )
+                      )}
+                    </div>
                   </>
                 )}
               >
                 <div className="ng-margin-medium-bottom">
-                  <p className="ng-text-weight-bold ng-margin-remove">Owner</p>
-                  <p className="ng-margin-remove ng-padding-left">{owner}</p>
+                  <p className="ng-text-weight-bold ng-margin-remove">Owner(s)</p>
+                  {owners.map((owner) => (
+                    <p className="ng-margin-remove ng-padding-left">{owner}</p>
+                  ))}
                 </div>
               </InlineEditCard>
             </div>

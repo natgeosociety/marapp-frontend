@@ -49,8 +49,9 @@ export function NewOrganization(props: IProps) {
   const { onDataChange = noop } = props;
   const [serverErrors, setServerErrors] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [ownersFeedback, setOwnersFeedback] = useState([]);
   const { selectedGroup } = useContext(Auth0Context);
-  const { handleSubmit, register, errors, formState, setValue, control } = useForm({
+  const { handleSubmit, register, errors, formState, setValue, control, watch } = useForm({
     mode: 'onChange',
   });
   const { isValid, touched } = formState;
@@ -59,41 +60,40 @@ export function NewOrganization(props: IProps) {
   const onSubmit = async (values: any) => {
     try {
       setIsLoading(true);
+      setServerErrors([]);
+      setOwnersFeedback([]);
       const { data } = await OrganizationsService.addOrganization(
         {
           name: values.name,
           slug: values.slug,
-          owners: [].concat(values.owners),
+          owners: values.owners.map((item) => item.value),
         },
         { group: selectedGroup }
       );
       onDataChange();
       await navigate(`/${selectedGroup}/organizations/${data.id}`);
-    } catch (error) {
+    } catch (err) {
+      const errors = err.data?.errors;
+
       setIsLoading(false);
-      setServerErrors(error.data.errors);
+      processOwnersFeedback(errors || [], false);
+      setServerErrors(errors || err.data);
     }
   };
 
-  const customStylesUsers = {
+  const customStylesOwners = {
     ...CUSTOM_STYLES,
     multiValueLabel: (provided, state) => {
       return {
         ...provided,
-        color: state.data.hasError
-          ? 'red'
-          : state.data.skipped
-          ? 'orange'
-          : state.data.hasSuccess
-          ? 'green'
-          : 'var(--marapp-gray-9)',
+        color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
         borderRadius: '50px',
         display: 'flex',
       };
     },
     multiValueRemove: (provided, state) => ({
       ...provided,
-      color: state.data.hasError ? 'red' : state.data.skipped ? 'orange' : 'var(--marapp-gray-9)',
+      color: state.data.hasError ? 'red' : 'var(--marapp-gray-9)',
     }),
     control: (provided, state) => {
       return {
@@ -112,14 +112,39 @@ export function NewOrganization(props: IProps) {
     }),
   };
 
-  const appendEmailToUsersList = (email: string): void => {
-    setValue('users', [
-      ...inviteUsersWatcher,
+  const ownersWatcher = watch('owners');
+
+  const appendEmailToOwnersList = (email: string): void => {
+    setValue('owners', [
+      ...ownersWatcher,
       {
         label: email,
         value: email,
       },
     ]);
+  };
+
+  const processOwnersFeedback = (data, isSccess) => {
+    const feedback = [];
+
+    const feedbackOwners = data.map((item) => {
+      const hasError = !!item.error;
+
+      feedback.push({
+        hasError,
+        title: item.email,
+        detail: item.error,
+      });
+
+      return {
+        label: item.email,
+        value: item.email,
+        hasError,
+      };
+    });
+
+    setValue('owners', feedbackOwners);
+    setOwnersFeedback(feedback);
   };
 
   return (
@@ -166,25 +191,11 @@ export function NewOrganization(props: IProps) {
           </Card>
 
           <Card className="ng-margin-medium-bottom">
-            {/* <Input
-              name="owners"
-              placeholder="Owner email address"
-              label="Owner email address*"
-              className="marapp-qa-inputname ng-display-block"
-              maxLength="64"
-              disabled={isLoading}
-              error={renderErrorFor('owners')}
-              ref={register({
-                required: 'Please add an owners email',
-                validate: {
-                  validEmailRule: validEmailRule(),
-                },
-              })}
-            /> */}
+            <p className="ng-text-weight-bold ng-margin-remove">Owner(s)*</p>
             <Controller
-              name="users"
-              type="users"
-              className="marapp-qa-invite-users"
+              name="owners"
+              type="owners"
+              className="marapp-qa-owners"
               defaultValue={[]}
               control={control}
               selectedGroup={selectedGroup}
@@ -192,12 +203,20 @@ export function NewOrganization(props: IProps) {
               formatCreateLabel={(value) => `${value}`}
               isValidNewOption={(value) => validEmail(value)}
               isMulti={true}
-              placeholder="Enter existing emails to add owners to this organization"
+              isDisabled={isLoading}
+              placeholder="Emails"
               onKeyDown={(e) => {
                 const value = e.target.value;
 
-                if (e.key === ' ' && validEmail(value)) {
-                  appendEmailToUsersList(value);
+                if (e.key === 'Enter') {
+                  if (
+                    value === '' ||
+                    (ownersWatcher && ownersWatcher.find((x) => x.value === value))
+                  ) {
+                    e.preventDefault();
+                  }
+                } else if (e.key === ' ' && validEmail(value)) {
+                  appendEmailToOwnersList(value);
                 }
               }}
               onBlur={([e]) => {
@@ -206,10 +225,10 @@ export function NewOrganization(props: IProps) {
                 const value = e.target.value;
 
                 if (value && validEmail(value)) {
-                  appendEmailToUsersList(value);
+                  appendEmailToOwnersList(value);
                 }
               }}
-              styles={customStylesUsers}
+              styles={customStylesOwners}
               theme={(theme) => ({
                 ...theme,
                 ...SELECT_THEME,
@@ -217,12 +236,22 @@ export function NewOrganization(props: IProps) {
               rules={{ required: true }}
               error={renderErrorFor('owners')}
               ref={register({
-                required: 'Please add an owners email',
+                required: 'Please add an owner email',
                 validate: {
                   validEmailRule: validEmailRule(),
                 },
               })}
             />
+            <div className="ng-width-1-1 ng-margin-top">
+              {ownersFeedback.map(
+                (item) =>
+                  item.hasError && (
+                    <p className="ng-margin-remove">
+                      The email, {item.title} is unavailable. Details: {item.detail}
+                    </p>
+                  )
+              )}
+            </div>
           </Card>
 
           {serverErrors && <ErrorMessages errors={serverErrors} />}
@@ -235,7 +264,7 @@ export function NewOrganization(props: IProps) {
             <div className="ng-flex">
               <button
                 className="ng-button ng-button-primary ng-margin-medium-right"
-                disabled={!isValid}
+                disabled={!isValid || ownersWatcher?.length < 1}
               >
                 Save and view details
               </button>
