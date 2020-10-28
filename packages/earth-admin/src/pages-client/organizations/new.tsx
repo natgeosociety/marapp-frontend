@@ -76,7 +76,7 @@ export function NewOrganization(props: IProps) {
       const errors = err.data?.errors;
 
       setIsLoading(false);
-      processOwnersFeedback(errors || [], false);
+      processOwnersFeedback(errors ? [] : err.data, false);
       setServerErrors(errors || err.data);
     }
   };

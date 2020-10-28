@@ -104,8 +104,10 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     } catch (err) {
       const errors = err.data?.errors;
 
+      console.log(err, errors);
+
       setIsLoading && setIsLoading(false);
-      processOwnersFeedback(errors || [], false);
+      processOwnersFeedback(errors ? [] : err.data, false);
       setServerErrors(errors || err.data);
     }
   }
