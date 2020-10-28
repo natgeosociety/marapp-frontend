@@ -26,3 +26,4 @@ The following environment variables are required by the application.
 
 APP_ATOB is specified from auth0. When developing locally, you can specify an atob in the env config, so that you can run the screens locally. 
 
+Due to the file size of the generated html being to high, all external dependencies are linked with script tags in the html head.
