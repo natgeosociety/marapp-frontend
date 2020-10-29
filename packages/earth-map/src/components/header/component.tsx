@@ -27,7 +27,7 @@ import Link from 'redux-first-router-link';
 import OrganizationService from 'services/OrganizationService';
 import { APP_LOGO } from 'theme';
 
-import { AppContextSwitcher, isAdminAuthz } from '@marapp/earth-shared';
+import { AppContextSwitcher, checkAdminRole } from '@marapp/earth-shared';
 
 const { Option } = AppContextSwitcher;
 
@@ -189,7 +189,7 @@ const Header = (props: IProps) => {
       {orgCheckBoxes}
       {Object.keys(roles).map(
         (g) =>
-          isAdminAuthz(roles[g]) && (
+          checkAdminRole(roles[g]) && (
             <Option value={g} key={g}>
               {g} - ADMIN
             </Option>

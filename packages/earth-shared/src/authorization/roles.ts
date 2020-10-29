@@ -91,3 +91,13 @@ export const mapAuthorizedRoleGroups = (
     .filter((g: string) => !excludeGroups.includes(g));
   return Array.from(new Set(groups));
 };
+
+/**
+ *  Returns true if user has permission to view admin link.
+ */
+export const checkAdminRole = (roles: string[]): boolean => {
+  const filtered: string[] = Object.values(RoleEnum).filter(
+    (r: any) => ![RoleEnum.PUBLIC, RoleEnum.VIEWER].includes(r)
+  );
+  return roles.some((r: string) => filtered.includes(r));
+};
