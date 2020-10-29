@@ -19,16 +19,10 @@
 
 import { noop } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import useSWR from 'swr';
 
-import {
-  AuthzGuards,
-  InlineEditCard,
-  Input,
-  setupErrors,
-  validEmailRule,
-} from '@marapp/earth-shared';
+import { AuthzGuards, EmailInput, InlineEditCard, Input, setupErrors } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { LinkWithOrg } from '@app/components/link-with-org';
@@ -43,6 +37,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   const { page, onDataChange = noop } = props;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [localOrgData, setLocalOrgData] = useState({});
+  const [ownersFeedback, setOwnersFeedback] = useState([]);
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
@@ -57,7 +52,16 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     data && setLocalOrgData(data);
   }, [data]);
 
-  const { getValues, register, formState, errors: formErrors } = useForm({
+  const {
+    getValues,
+    register,
+    formState,
+    errors: formErrors,
+    control,
+    setValue,
+    watch,
+    reset,
+  } = useForm({
     mode: 'onChange',
   });
 
@@ -70,16 +74,18 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
 
   async function onSubmit(e, setIsEditing, setIsLoading, setServerErrors) {
     e.preventDefault();
-    const { owner, ...rest } = getValues();
+    const { owners, ...rest } = getValues();
 
     const parsed = {
       ...rest,
-      ...(owner && {
-        owners: [owner],
+      ...(owners && {
+        owners: owners.map((item) => item.value),
       }),
     };
 
     try {
+      setServerErrors([]);
+      setOwnersFeedback([]);
       setIsLoading && setIsLoading(true);
       await OrganizationsService.updateOrganization(id, parsed, { group: selectedGroup });
       mutate();
@@ -87,13 +93,45 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
       setIsEditing && setIsEditing(false);
       onDataChange();
     } catch (err) {
+      const errors = err.data?.errors;
+
+      console.log(err, errors);
+
       setIsLoading && setIsLoading(false);
-      setServerErrors(err.data.errors);
+      processOwnersFeedback(errors ? [] : err.data);
+      setServerErrors(errors || err.data);
     }
   }
 
-  const { name, owners, slug, id }: any = localOrgData;
-  const owner = owners && owners[0];
+  const { name, owners, slug, id }: any = {
+    ...localOrgData,
+    owners: (localOrgData as any).owners || [],
+  };
+
+  const ownersWatcher = watch('owners');
+
+  const processOwnersFeedback = (data) => {
+    const feedback = [];
+
+    const feedbackOwners = data.map((item) => {
+      const hasError = !!item.error;
+
+      feedback.push({
+        hasError,
+        title: item.email,
+        detail: item.error,
+      });
+
+      return {
+        label: item.email,
+        value: item.email,
+        hasError,
+      };
+    });
+
+    setValue('owners', feedbackOwners);
+    setOwnersFeedback(feedback);
+  };
 
   return (
     <ContentLayout
@@ -152,29 +190,39 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
             <div className="ng-width-1-2">
               <InlineEditCard
                 onSubmit={onSubmit}
-                validForm={!formErrors.owner}
+                onCancel={() => [reset(), setOwnersFeedback([])]}
+                validForm={!formErrors.owners && formState.dirty && ownersWatcher?.length > 0}
                 render={() => (
                   <>
-                    <Input
-                      name="owner"
-                      placeholder="required"
-                      label="Owner*"
-                      className="marapp-qa-inputowner ng-display-block ng-margin-medium-bottom"
-                      defaultValue={owner}
-                      error={renderErrorFor('owner')}
-                      ref={register({
-                        required: 'Please enter owner email',
-                        validate: {
-                          validEmailRule: validEmailRule(),
-                        },
-                      })}
+                    <p className="ng-text-weight-bold ng-margin-remove">Owner(s)*</p>
+                    <Controller
+                      as={EmailInput}
+                      name="owners"
+                      control={control}
+                      defaultValue={owners.map((owner) => ({ label: owner, value: owner }))}
+                      isMulti={true}
+                      placeholder="Emails"
+                      className="marapp-qa-owners"
+                      rules={{ required: true }}
                     />
+                    <div className="ng-width-1-1 ng-margin-top">
+                      {ownersFeedback.map(
+                        (item) =>
+                          item.hasError && (
+                            <p className="ng-margin-remove">
+                              The email, {item.title} is unavailable. Details: {item.detail}
+                            </p>
+                          )
+                      )}
+                    </div>
                   </>
                 )}
               >
                 <div className="ng-margin-medium-bottom">
-                  <p className="ng-text-weight-bold ng-margin-remove">Owner</p>
-                  <p className="ng-margin-remove ng-padding-left">{owner}</p>
+                  <p className="ng-text-weight-bold ng-margin-remove">Owner(s)</p>
+                  {owners.map((owner) => (
+                    <p className="ng-margin-remove ng-padding-left">{owner}</p>
+                  ))}
                 </div>
               </InlineEditCard>
             </div>

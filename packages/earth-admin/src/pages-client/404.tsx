@@ -4,6 +4,7 @@ import React from 'react';
 import { NotFoundComponent } from '@marapp/earth-shared';
 
 import { GATSBY_APP_NAME } from '@app/config';
+
 import { APP_ABOUT } from '../theme';
 
 const NotFoundPage = () => {

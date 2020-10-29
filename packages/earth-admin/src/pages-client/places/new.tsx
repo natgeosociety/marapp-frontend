@@ -20,18 +20,19 @@
 import { navigate } from 'gatsby';
 import { noop } from 'lodash';
 import React, { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
 import { ErrorMessages, Input, setupErrors, Spinner } from '@marapp/earth-shared';
+
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@marapp/earth-shared';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 import PlacesService from '@app/services/places';
-import { flattenObjectForSelect } from '@app/utils';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
+import { flattenObjectForSelect } from '@app/utils';
 
 interface IProps {
   path: string;

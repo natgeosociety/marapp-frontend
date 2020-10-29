@@ -17,30 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-/**
- * Remove nested groups (children) from groups.
- * Nested groups are prefixed with the group label.
- * @param groups
- */
-export const removeNestedGroups = (groups: string[]): string[] => {
-  if (groups.length) {
-    return groups.filter((group: string) => {
-      return groups.filter((g: string) => g.includes(group)).length >= 2;
-    });
-  }
-  return [];
-};
-
-/**
- * Whether the selected group is included in the available groups.
- * @param groups
- * @param group
- * @param allowPlaceholderGroup
- */
-export const isValidGroup = (
-  groups: string[],
-  group: string,
-  allowPlaceholderGroup: boolean
-): boolean => {
-  return groups.includes(group) || (allowPlaceholderGroup && group === '*');
-};
+export { EmailInput } from './EmailInput';

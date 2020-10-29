@@ -22,9 +22,8 @@ import { navigate } from 'gatsby';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
-import Creatable from 'react-select/creatable';
 
-import { AuthzGuards, ErrorMessages, Spinner, validEmail } from '@marapp/earth-shared';
+import { AuthzGuards, EmailInput, ErrorMessages, Spinner, validEmail } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@marapp/earth-shared';
@@ -83,43 +82,6 @@ export function UsersHome(props: any) {
       );
     })();
   }, []);
-
-  const customStylesUsers = {
-    ...CUSTOM_STYLES,
-    multiValueLabel: (provided, state) => {
-      return {
-        ...provided,
-        color: state.data.hasError
-          ? 'red'
-          : state.data.skipped
-          ? 'orange'
-          : state.data.hasSuccess
-          ? 'green'
-          : 'var(--marapp-gray-9)',
-        borderRadius: '50px',
-        display: 'flex',
-      };
-    },
-    multiValueRemove: (provided, state) => ({
-      ...provided,
-      color: state.data.hasError ? 'red' : state.data.skipped ? 'orange' : 'var(--marapp-gray-9)',
-    }),
-    control: (provided, state) => {
-      return {
-        ...provided,
-        minHeight: '55px',
-      };
-    },
-    menu: () => ({
-      display: 'none',
-    }),
-    dropdownIndicator: () => ({
-      display: 'none',
-    }),
-    indicatorSeparator: () => ({
-      display: 'none',
-    }),
-  };
 
   const customStylesRoles = {
     ...CUSTOM_STYLES,
@@ -193,16 +155,6 @@ export function UsersHome(props: any) {
     setUsersFeedback([]);
   };
 
-  const appendEmailToUsersList = (email: string): void => {
-    setValue('users', [
-      ...inviteUsersWatcher,
-      {
-        label: email,
-        value: email,
-      },
-    ]);
-  };
-
   return (
     writePermissions && (
       <ContentLayout className="marapp-qa-usershome">
@@ -217,38 +169,13 @@ export function UsersHome(props: any) {
                     </div>
                     <div className="ng-width-10-12">
                       <Controller
+                        as={EmailInput}
                         name="users"
-                        type="users"
-                        className="marapp-qa-invite-users"
-                        defaultValue={[]}
                         control={control}
-                        selectedGroup={selectedGroup}
-                        as={Creatable}
-                        formatCreateLabel={(value) => `${value}`}
-                        isValidNewOption={(value) => validEmail(value)}
+                        defaultValue={[]}
                         isMulti={true}
                         placeholder="Enter existing emails to add users to this organization"
-                        onKeyDown={(e) => {
-                          const value = e.target.value;
-
-                          if (e.key === ' ' && validEmail(value)) {
-                            appendEmailToUsersList(value);
-                          }
-                        }}
-                        onBlur={([e]) => {
-                          e.preventDefault();
-
-                          const value = e.target.value;
-
-                          if (value && validEmail(value)) {
-                            appendEmailToUsersList(value);
-                          }
-                        }}
-                        styles={customStylesUsers}
-                        theme={(theme) => ({
-                          ...theme,
-                          ...SELECT_THEME,
-                        })}
+                        className="marapp-qa-invite-users"
                         rules={{ required: true }}
                       />
                     </div>

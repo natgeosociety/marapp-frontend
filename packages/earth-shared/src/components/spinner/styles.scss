@@ -24,6 +24,7 @@
 }
 
 $sizes: (
+  "nano": 15px,
   "mini": 20px,
   "small": 40px,
   "medium": 60px,
@@ -79,6 +80,13 @@ $sizes: (
         height: $i;
         border-width: 4px;
       }
+    }
+  }
+
+  &.spinner-border-dark {
+    .spinner-border {
+      border-color: $marapp-gray-7;
+      border-right-color: transparent;
     }
   }
 }

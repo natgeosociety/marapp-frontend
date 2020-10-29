@@ -20,15 +20,15 @@
 import { navigate } from 'gatsby';
 import { noop } from 'lodash';
 import React, { useContext, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import {
+  EmailInput,
   ErrorMessages,
   Input,
   lowerNumericDashesRule,
   setupErrors,
   Spinner,
-  validEmailRule,
 } from '@marapp/earth-shared';
 
 import { Card } from '@marapp/earth-shared';
@@ -46,8 +46,9 @@ export function NewOrganization(props: IProps) {
   const { onDataChange = noop } = props;
   const [serverErrors, setServerErrors] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [ownersFeedback, setOwnersFeedback] = useState([]);
   const { selectedGroup } = useContext(Auth0Context);
-  const { handleSubmit, register, errors, formState } = useForm({
+  const { handleSubmit, register, errors, formState, setValue, control, watch } = useForm({
     mode: 'onChange',
   });
   const { isValid, touched } = formState;
@@ -56,20 +57,50 @@ export function NewOrganization(props: IProps) {
   const onSubmit = async (values: any) => {
     try {
       setIsLoading(true);
+      setServerErrors([]);
+      setOwnersFeedback([]);
       const { data } = await OrganizationsService.addOrganization(
         {
           name: values.name,
           slug: values.slug,
-          owners: [].concat(values.owners),
+          owners: values.owners.map((item) => item.value),
         },
         { group: selectedGroup }
       );
       onDataChange();
       await navigate(`/${selectedGroup}/organizations/${data.id}`);
-    } catch (error) {
+    } catch (err) {
+      const errors = err.data?.errors;
+
       setIsLoading(false);
-      setServerErrors(error.data.errors);
+      processOwnersFeedback(errors ? [] : err.data);
+      setServerErrors(errors || err.data);
     }
+  };
+
+  const ownersWatcher = watch('owners');
+
+  const processOwnersFeedback = (data) => {
+    const feedback = [];
+
+    const feedbackOwners = data.map((item) => {
+      const hasError = !!item.error;
+
+      feedback.push({
+        hasError,
+        title: item.email,
+        detail: item.error,
+      });
+
+      return {
+        label: item.email,
+        value: item.email,
+        hasError,
+      };
+    });
+
+    setValue('owners', feedbackOwners);
+    setOwnersFeedback(feedback);
   };
 
   return (
@@ -116,21 +147,28 @@ export function NewOrganization(props: IProps) {
           </Card>
 
           <Card className="ng-margin-medium-bottom">
-            <Input
+            <p className="ng-text-weight-bold ng-margin-remove">Owner(s)*</p>
+            <Controller
+              as={EmailInput}
               name="owners"
-              placeholder="Owner email address"
-              label="Owner email address*"
-              className="marapp-qa-inputname ng-display-block"
-              maxLength="64"
-              disabled={isLoading}
-              error={renderErrorFor('owners')}
-              ref={register({
-                required: 'Please add an owners email',
-                validate: {
-                  validEmailRule: validEmailRule(),
-                },
-              })}
+              control={control}
+              defaultValue={[]}
+              isMulti={true}
+              placeholder="Emails"
+              isDisabled={isLoading}
+              className="marapp-qa-owners"
+              rules={{ required: true }}
             />
+            <div className="ng-width-1-1 ng-margin-top">
+              {ownersFeedback.map(
+                (item) =>
+                  item.hasError && (
+                    <p className="ng-margin-remove">
+                      The email, {item.title} is unavailable. Details: {item.detail}
+                    </p>
+                  )
+              )}
+            </div>
           </Card>
 
           {serverErrors && <ErrorMessages errors={serverErrors} />}
@@ -143,7 +181,7 @@ export function NewOrganization(props: IProps) {
             <div className="ng-flex">
               <button
                 className="ng-button ng-button-primary ng-margin-medium-right"
-                disabled={!isValid}
+                disabled={!isValid || ownersWatcher?.length < 1}
               >
                 Save and view details
               </button>
