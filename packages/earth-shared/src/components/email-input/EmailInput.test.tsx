@@ -100,7 +100,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(inputValues[1])).toBeInTheDocument();
   });
 
-  it('should render a valid email inside a multi input (with multiple default values) when typing a valid email', () => {
+  it('should render a valid email and default values inside a multi input (with multiple default values) when typing a valid email', () => {
     const defaultValue = [
       {
         label: 'abc@test.com',
