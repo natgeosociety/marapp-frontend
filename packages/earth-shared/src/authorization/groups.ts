@@ -30,17 +30,3 @@ export const removeNestedGroups = (groups: string[]): string[] => {
   }
   return [];
 };
-
-/**
- * Whether the selected group is valid.
- * @param groups
- * @param group
- * @param allowPlaceholderGroup
- */
-export const isValidGroup = (
-  groups: string[],
-  group: string,
-  allowPlaceholderGroup: boolean
-): boolean => {
-  return groups.includes(group) || (allowPlaceholderGroup && group === '*');
-};

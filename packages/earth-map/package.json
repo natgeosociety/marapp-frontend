@@ -6,7 +6,8 @@
     "start": "SKIP_PREFLIGHT_CHECK=true dotenv -e .env.local react-app-rewired start",
     "build": "SKIP_PREFLIGHT_CHECK=true dotenv -e .env react-app-rewired build",
     "lint": "tslint -p tsconfig.json --fix",
-    "test": "jest --passWithNoTests --watch --color",
+    "test": "jest --passWithNoTests --color",
+    "test:watch": "jest --passWithNoTests --watch --color",
     "test-coverage": "jest --coverage --color",
     "typecheck": "tsc --emitDeclarationOnly"
   },
