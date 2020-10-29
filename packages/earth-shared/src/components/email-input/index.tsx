@@ -17,4 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { EmailInput } from './Emailnput';
+export { EmailInput } from './EmailInput';
