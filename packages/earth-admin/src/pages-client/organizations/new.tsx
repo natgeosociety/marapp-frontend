@@ -23,9 +23,9 @@ import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import {
+  EmailInput,
   ErrorMessages,
   Input,
-  EmailInput,
   lowerNumericDashesRule,
   setupErrors,
   Spinner,

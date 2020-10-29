@@ -22,7 +22,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import useSWR from 'swr';
 
-import { AuthzGuards, InlineEditCard, Input, EmailInput, setupErrors } from '@marapp/earth-shared';
+import { AuthzGuards, EmailInput, InlineEditCard, Input, setupErrors } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { LinkWithOrg } from '@app/components/link-with-org';

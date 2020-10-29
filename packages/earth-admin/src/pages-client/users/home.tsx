@@ -23,7 +23,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
-import { AuthzGuards, ErrorMessages, Spinner, validEmail, EmailInput } from '@marapp/earth-shared';
+import { AuthzGuards, EmailInput, ErrorMessages, Spinner, validEmail } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { Card } from '@app/components/card';
