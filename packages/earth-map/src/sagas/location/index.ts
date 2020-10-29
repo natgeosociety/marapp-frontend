@@ -124,7 +124,7 @@ function* toLocation({ payload, meta }) {
     yield put(persistData()); // to keep last viewed place
   } catch (e) {
     // TODO better error handling for sagas
-    if (e.response.status === 403 || e.response.status === 404) {
+    if ([403, 404].includes(e.request.status)) {
       replace('/404');
     }
   } finally {

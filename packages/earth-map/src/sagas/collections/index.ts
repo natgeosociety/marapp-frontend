@@ -21,6 +21,7 @@ import { persistData, setLastViewedPlace } from 'modules/global/actions';
 import { setCollectionData, setCollectionsLoading } from 'modules/collections/actions';
 import { setPlacesSearch } from 'modules/places/actions';
 import { takeLatest, call, put } from 'redux-saga/effects';
+import { replace } from 'redux-first-router';
 
 import { fetchCollection } from 'services/CollectionsService';
 import { EMainType, SubType } from 'modules/global/model';
@@ -54,6 +55,10 @@ function* loadCollection({ payload }) {
     yield put(setCollectionsLoading(false));
     yield put(persistData()); // to keep last viewed place
   } catch (e) {
+    // TODO better error handling for sagas
+    if ([403, 404].includes(e.request.status)) {
+      replace('/404');
+    }
     yield put(setCollectionsLoading(false));
   }
 }
