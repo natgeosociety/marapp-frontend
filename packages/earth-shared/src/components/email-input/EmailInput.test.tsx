@@ -20,14 +20,21 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { UserMenu } from './UserMenu';
+import { EmailInput } from './EmailInput';
 
-test('<UserMenu />', () => {
-  const props = {
-    isAuthenticated: true,
-    profileLink: <a href="/profile">Your profile</a>,
-  };
-  render(<UserMenu {...props} />);
-
-  expect(screen.getByText('Your profile')).toBeInTheDocument();
+describe('<EmailInput />', () => {
+  it('should render correctly', () => {
+    const { debug } = render(
+      <EmailInput
+        isMulti={true}
+        defaultValue={[
+          {
+            label: 'Test label',
+            value: 'test',
+          },
+        ]}
+      />
+    );
+    debug();
+  });
 });

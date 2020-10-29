@@ -29,6 +29,7 @@ export interface EmailInputProps {
   placeholder?: String;
   isDisabled?: Boolean;
   className?: String;
+  [key: string]: any;
 }
 
 const customStyles = {
