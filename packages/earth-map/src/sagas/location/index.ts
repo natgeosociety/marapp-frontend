@@ -36,6 +36,7 @@ import { call, cancelled, delay, put, select, takeLatest } from 'redux-saga/effe
 import { loadDataIndexes } from 'sagas/layers';
 import { ignoreRedirectsTo } from 'sagas/saga-utils';
 import PlacesService from 'services/PlacesService';
+import { EMainType } from 'modules/global/model';
 
 let PREV_SLUG = null;
 const ignoreRedirectsToLocation = ignoreRedirectsTo('LOCATION');
@@ -112,7 +113,7 @@ function* toLocation({ payload, meta }) {
         name: data.name,
         slug: data.slug,
         organization: data.organization,
-        mainType: 'LOCATION',
+        mainType: EMainType.LOCATION,
         subType: data.type,
       })
     );

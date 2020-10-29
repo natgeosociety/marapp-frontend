@@ -18,12 +18,17 @@
 */
 
 import * as actions from './actions';
+import { ILastViewedPlace } from './model';
+
+interface LastViewedPlacePayload {
+  payload: ILastViewedPlace;
+}
 
 export default {
   [actions.persistData]: (state, { payload }) => {
     return state;
   },
-  [actions.setLastViewedPlace]: (state, { payload }) => {
+  [actions.setLastViewedPlace]: (state, { payload }: LastViewedPlacePayload) => {
     return {
       ...state,
       lastViewedPlace: payload,

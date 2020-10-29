@@ -35,7 +35,8 @@ import IndexSidebar from 'components/index-sidebar';
 import CollectionNew from 'components/collection/collection-new';
 import CollectionDetails from 'components/collection/collection-details';
 import { EPanels } from 'modules/sidebar/model';
-import { IPlace } from 'modules/places/model';
+import { ILastViewedPlace } from 'modules/global/model';
+import { EarthRoutes, IRouter } from 'modules/router/model';
 
 import { URL_PROPS } from './url';
 
@@ -44,23 +45,22 @@ interface IEarth {
   panel?: EPanels;
   page?: string;
   layersPanel?: boolean;
-  lastViewedPlace?: IPlace;
+  lastViewedPlace?: ILastViewedPlace;
   group?: any;
   selected?: string;
   collection?: any;
-  router?: {
-    type: 'EARTH' | 'LOCATION' | 'NEW_COLLECTION' | 'COLLECTION';
-    payload: any;
-  };
+  router?: IRouter;
 }
+
+const { EARTH, COLLECTION, LOCATION, NEW_COLLECTION } = EarthRoutes;
 
 class EarthPage extends React.Component<IEarth> {
   public render() {
     const { setSidebarPanel, panel, router, lastViewedPlace, group, collection } = this.props;
     const { type } = router;
-    const selectedOpen = ['LOCATION', 'COLLECTION', 'NEW_COLLECTION'].includes(type);
-    const withHeaderLayout = ['EARTH', 'LOCATION', 'COLLECTION'].includes(type);
-    const newCollectionLayout = ['NEW_COLLECTION'].includes(type);
+    const selectedOpen = [LOCATION, COLLECTION, NEW_COLLECTION].includes(type);
+    const withHeaderLayout = [EARTH, LOCATION, COLLECTION].includes(type);
+    const newCollectionLayout = [NEW_COLLECTION].includes(type);
     const showLastViewedPlace = lastViewedPlace && group.includes(lastViewedPlace.organization);
     const hasOrgs = group.length > 0;
 
@@ -83,7 +83,7 @@ class EarthPage extends React.Component<IEarth> {
               </Tabs>
               {panel === EPanels.PLACES && (
                 <>
-                  {type === 'EARTH' && (
+                  {type === EARTH && (
                     <Places selected={selectedOpen}>
                       <>
                         {hasOrgs && (
@@ -97,7 +97,7 @@ class EarthPage extends React.Component<IEarth> {
                               organization members.
                             </p>
                             <Link
-                              to={{ type: 'NEW_COLLECTION' }}
+                              to={{ type: NEW_COLLECTION }}
                               className="ng-button ng-button-secondary"
                             >
                               Create New Collection
@@ -109,12 +109,12 @@ class EarthPage extends React.Component<IEarth> {
                       </>
                     </Places>
                   )}
-                  {type === 'LOCATION' && (
+                  {type === LOCATION && (
                     <Places selected={selectedOpen}>
                       <IndexSidebar {...this.props} selectedOpen={selectedOpen} />
                     </Places>
                   )}
-                  {type === 'COLLECTION' && (
+                  {type === COLLECTION && (
                     <Places
                       selected={selectedOpen}
                       locationName={collection.name}
@@ -128,7 +128,7 @@ class EarthPage extends React.Component<IEarth> {
               {panel === EPanels.LAYERS && (
                 <Layers
                   selected={selectedOpen}
-                  {...(type === 'COLLECTION' && {
+                  {...(type === COLLECTION && {
                     locationName: collection.name,
                     locationOrganization: collection.organization,
                   })}

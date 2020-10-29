@@ -20,15 +20,10 @@
 import ListItem from 'components/list-item';
 import React from 'react';
 
+import { ILastViewedPlace } from 'modules/global/model';
+
 interface IProps {
-  place: {
-    id: string;
-    slug?: string;
-    name?: string;
-    organization?: string;
-    mainType?: string;
-    subType?: string;
-  };
+  place: ILastViewedPlace;
 }
 
 export const LastViewedPlace = ({ place }: IProps) => {

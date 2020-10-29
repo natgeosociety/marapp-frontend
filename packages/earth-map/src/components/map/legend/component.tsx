@@ -37,6 +37,7 @@ import LegendInfo from './legend-info';
 import LegendItemGroup from './legend-item-group';
 import './styles.scss';
 import TEMPLATES from './templates';
+import { EarthRoutes, IRouter } from 'modules/router/model';
 
 // styles
 
@@ -57,10 +58,7 @@ interface ILegend {
   toggleLayer?: any;
   setLayerSettings?: (data: any) => void;
   open?: boolean;
-  router?: {
-    type: 'EARTH' | 'LOCATION' | 'NEW_COLLECTION' | 'COLLECTION';
-    payload: any;
-  };
+  router?: IRouter;
 }
 
 class LegendComponent extends React.PureComponent<ILegend> {
@@ -121,7 +119,7 @@ class LegendComponent extends React.PureComponent<ILegend> {
 
   public getState = () => {
     const { open, router } = this.props;
-    const selectedOpen = ['LOCATION', 'COLLECTION'].includes(router.type);
+    const selectedOpen = [EarthRoutes.LOCATION, EarthRoutes.COLLECTION].includes(router.type);
 
     if (open) {
       if (selectedOpen) {

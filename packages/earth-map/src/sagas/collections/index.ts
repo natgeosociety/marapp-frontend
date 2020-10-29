@@ -23,10 +23,12 @@ import { setPlacesSearch } from 'modules/places/actions';
 import { takeLatest, call, put } from 'redux-saga/effects';
 
 import { fetchCollection } from 'services/CollectionsService';
+import { EMainType, SubType } from 'modules/global/model';
+import { EarthRoutes } from 'modules/router/model';
 
 export default function* collections() {
   // @ts-ignore
-  yield takeLatest('COLLECTION', loadCollection);
+  yield takeLatest(EarthRoutes.COLLECTION, loadCollection);
 }
 
 function* loadCollection({ payload }) {
@@ -45,8 +47,8 @@ function* loadCollection({ payload }) {
         name: data.name,
         slug: data.slug,
         organization: data.organization,
-        mainType: 'COLLECTION',
-        subType: 'Collection',
+        mainType: EMainType.COLLECTION,
+        subType: SubType.COLLECTION,
       })
     );
     yield put(setCollectionsLoading(false));
