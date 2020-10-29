@@ -46,7 +46,7 @@ export const isAuthz = (roles: string[]): boolean => {
 };
 
 /**
- * Authorized if any role except 'Viewer' present.
+ * Authorized if any role except 'Public' & 'Viewer' present.
  * @param roles
  * @param sep
  */
@@ -75,7 +75,7 @@ export const mapRoleGroups = (
 
 /**
  * Map groups from existing roles.
- * Group isAuthorized if any role except 'Viewer' present.
+ * Group isAuthorized if any role except 'Public' & 'Viewer' present.
  * @param roles
  * @param excludeGroups
  * @param sep
@@ -90,14 +90,4 @@ export const mapAuthorizedRoleGroups = (
     .map((r: string) => r.split(sep)[0])
     .filter((g: string) => !excludeGroups.includes(g));
   return Array.from(new Set(groups));
-};
-
-/**
- *  Returns true if user has permission to view admin link.
- */
-export const checkRole = (roles: string[]): boolean => {
-  const exceptViewer: string[] = Object.values(RoleEnum).filter(
-    (r) => ![RoleEnum.PUBLIC, RoleEnum.VIEWER].includes(r)
-  );
-  return roles.some((r: string) => exceptViewer.includes(r));
 };
