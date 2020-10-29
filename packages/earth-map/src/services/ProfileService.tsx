@@ -39,6 +39,14 @@ const changeEmailConfirmation = async (query?: RequestQuery): Promise<any> => {
   return BaseAPIService.request('/users/profile/change-email', { query }, metaDeserializer);
 };
 
+const resendEmailConfirmation = async (query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request(
+    '/users/profile/verify-email',
+    { method: 'post' },
+    metaDeserializer
+  );
+};
+
 const cancelEmailChange = async (query?: RequestQuery): Promise<any> => {
   return BaseAPIService.request(
     'users/profile/change-email',
@@ -76,4 +84,5 @@ export default {
   resetPassword,
   leaveOrganizations,
   deleteAccount,
+  resendEmailConfirmation,
 };
