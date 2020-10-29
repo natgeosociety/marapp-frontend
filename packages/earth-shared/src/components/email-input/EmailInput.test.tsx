@@ -68,7 +68,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(defaultValue[1].label)).toBeInTheDocument();
   });
 
-  it('should render 2 valid emails inside a multi input when typing', () => {
+  it('should render 2 valid emails inside a multi input when typing 2 valid emails', () => {
     const { container } = render(<EmailInput isMulti={true} />);
 
     const nativeContainerInput = container.querySelector('input');
@@ -84,7 +84,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(inputValues[1])).toBeInTheDocument();
   });
 
-  it('should render 1 valid & 1 wrong email inside a multi input when typing', () => {
+  it('should render a valid inside a multi input when typing a valid and a wrong email', () => {
     const { container } = render(<EmailInput isMulti={true} />);
 
     const nativeContainerInput = container.querySelector('input');
@@ -100,7 +100,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(inputValues[1])).toBeInTheDocument();
   });
 
-  it('should render a valid email inside a multi input (with multiple default values) when typing', () => {
+  it('should render a valid email inside a multi input (with multiple default values) when typing a valid email', () => {
     const defaultValue = [
       {
         label: 'abc@test.com',
@@ -126,7 +126,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(inputValues[0])).toBeInTheDocument();
   });
 
-  it('should not render an invalid email inside a multi input (with multiple default values) when typing', () => {
+  it('should not render an invalid email inside a multi input (with multiple default values) when typing an invalid email', () => {
     const defaultValue = [
       {
         label: 'abc@test.com',
@@ -156,7 +156,7 @@ describe('<EmailInput />', () => {
     expect(screen.queryByText(inputValues[0])).toBeNull();
   });
 
-  it('should not render a valid email inside a multi input when typing and removing', () => {
+  it('should not render a valid email inside a multi input when typing a valid email and removing it', () => {
     const { container } = render(<EmailInput isMulti={true} />);
 
     const nativeContainerInput = container.querySelector('input');
