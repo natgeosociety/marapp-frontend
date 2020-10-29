@@ -84,7 +84,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(inputValues[1])).toBeInTheDocument();
   });
 
-  it('should render a valid inside a multi input when typing a valid and a wrong email', () => {
+  it('should render a valid email inside a multi input when typing a valid email and a wrong email', () => {
     const { container } = render(<EmailInput isMulti={true} />);
 
     const nativeContainerInput = container.querySelector('input');
