@@ -18,11 +18,7 @@
 */
 
 import { persistData, setLastViewedPlace } from 'modules/global/actions';
-import {
-  setCollectionData,
-  setCollectionsLoading,
-  setCollectionsError,
-} from 'modules/collections/actions';
+import { setCollectionData, setCollectionsLoading } from 'modules/collections/actions';
 import { setPlacesSearch } from 'modules/places/actions';
 import { takeLatest, call, put } from 'redux-saga/effects';
 
@@ -43,16 +39,18 @@ function* loadCollection({ payload }) {
     });
     yield put(setPlacesSearch({ search: data.name }));
     yield put(setCollectionData(data));
-    // yield put(
-    //   setLastViewedPlace({
-    //     id: data.id,
-    //     name: data.name,
-    //     slug: data.slug,
-    //     organization: data.organization,
-    //     type: data.type,
-    //   })
-    // );
+    yield put(
+      setLastViewedPlace({
+        id: data.id,
+        name: data.name,
+        slug: data.slug,
+        organization: data.organization,
+        mainType: 'COLLECTION',
+        subType: 'Collection',
+      })
+    );
     yield put(setCollectionsLoading(false));
+    yield put(persistData()); // to keep last viewed place
   } catch (e) {
     yield put(setCollectionsLoading(false));
   }

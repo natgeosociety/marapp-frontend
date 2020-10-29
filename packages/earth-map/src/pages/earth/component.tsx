@@ -62,6 +62,7 @@ class EarthPage extends React.Component<IEarth> {
     const withHeaderLayout = ['EARTH', 'LOCATION', 'COLLECTION'].includes(type);
     const newCollectionLayout = ['NEW_COLLECTION'].includes(type);
     const showLastViewedPlace = lastViewedPlace && group.includes(lastViewedPlace.organization);
+    const hasOrgs = group.length > 0;
 
     return (
       <main className="marapp-qa-earth l-page marapp-qa-pageearth" role="main">
@@ -85,22 +86,24 @@ class EarthPage extends React.Component<IEarth> {
                   {type === 'EARTH' && (
                     <Places selected={selectedOpen}>
                       <>
-                        <Card className="ng-margin-bottom">
-                          <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
-                            Collections
-                          </h2>
-                          <p>
-                            You currently do not have any collections in your organizations. Create
-                            a collection and start sharing your insights with your organization
-                            members.
-                          </p>
-                          <Link
-                            to={{ type: 'NEW_COLLECTION' }}
-                            className="ng-button ng-button-secondary"
-                          >
-                            Create New Collection
-                          </Link>
-                        </Card>
+                        {hasOrgs && (
+                          <Card className="ng-margin-bottom">
+                            <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
+                              Collections
+                            </h2>
+                            <p>
+                              You currently do not have any collections in your organizations.
+                              Create a collection and start sharing your insights with your
+                              organization members.
+                            </p>
+                            <Link
+                              to={{ type: 'NEW_COLLECTION' }}
+                              className="ng-button ng-button-secondary"
+                            >
+                              Create New Collection
+                            </Link>
+                          </Card>
+                        )}
                         {showLastViewedPlace && <LastViewedPlace place={lastViewedPlace} />}
                         <FeaturedPlaces />
                       </>

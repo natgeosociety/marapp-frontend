@@ -24,7 +24,11 @@ export const createCollection = async (data, query: RequestQuery): Promise<any> 
     `/management/collections`,
     {
       method: 'post',
-      data,
+      data: {
+        ...data,
+        // all collections created from map view are published by default
+        published: true,
+      },
       query,
     },
     metaDeserializer

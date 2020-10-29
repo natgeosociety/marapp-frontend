@@ -112,7 +112,8 @@ function* toLocation({ payload, meta }) {
         name: data.name,
         slug: data.slug,
         organization: data.organization,
-        type: data.type,
+        mainType: 'LOCATION',
+        subType: data.type,
       })
     );
     yield put(setMetrics(formattedData.metrics));

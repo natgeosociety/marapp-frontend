@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { replace } from 'redux-first-router';
 import Link from 'redux-first-router-link';
 import { useForm } from 'react-hook-form';
@@ -27,6 +27,7 @@ import { useAuth0 } from 'auth/auth0';
 import { createCollection } from 'services/CollectionsService';
 
 const CollectionNew = () => {
+  const [saveError, setSaveError] = useState(null);
   const { handleSubmit, register, errors, formState } = useForm({ mode: 'onChange' });
   const { touched, dirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
@@ -34,18 +35,18 @@ const CollectionNew = () => {
 
   const onSubmit = async (values) => {
     try {
-      const { data } = await createCollection(
-        {
-          ...values,
-          published: true,
-          slug: values.name.replaceAll(' ', ''),
-        },
-        {
-          group: values.organization,
-        }
-      );
+      const { data } = await createCollection(values, {
+        group: values.organization,
+      });
       replace(`/collection/${data.organization}/${data.slug}`);
-    } catch (e) {}
+    } catch (e) {
+      if (typeof e === 'undefined') {
+        return setSaveError('Unable to create collection. You might be offline');
+      } else if (e?.data?.errors.length) {
+        const [firstError] = e.data.errors;
+        return setSaveError(firstError.detail);
+      }
+    }
   };
 
   return (
@@ -97,6 +98,7 @@ const CollectionNew = () => {
       </Card>
 
       <Card elevation="flush">
+        {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
         <button
           disabled={!isValid || !dirty || isSubmitting}
           type="submit"
