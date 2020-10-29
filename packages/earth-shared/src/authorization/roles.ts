@@ -18,10 +18,11 @@
 */
 
 enum RoleEnum {
-  OWNER = 'Owner',
-  ADMIN = 'Admin',
-  EDITOR = 'Editor',
+  PUBLIC = 'Public',
   VIEWER = 'Viewer',
+  EDITOR = 'Editor',
+  ADMIN = 'Admin',
+  OWNER = 'Owner',
   SUPER_ADMIN = 'SuperAdmin',
 }
 
@@ -50,7 +51,9 @@ export const isAuthz = (roles: string[]): boolean => {
  * @param sep
  */
 export const isAdminAuthz = (roles: string[], sep: string = ':'): boolean => {
-  return !!roles.find((r: string) => r.split(sep)[1] !== RoleEnum.VIEWER);
+  return !!roles.find(
+    (r: string) => ![RoleEnum.PUBLIC, RoleEnum.VIEWER].includes(<any>r.split(sep)[1])
+  );
 };
 
 /**
@@ -83,7 +86,7 @@ export const mapAuthorizedRoleGroups = (
   sep: string = ':'
 ): string[] => {
   const groups = roles
-    .filter((r: string) => r.split(sep)[1] !== RoleEnum.VIEWER)
+    .filter((r: string) => ![RoleEnum.PUBLIC, RoleEnum.VIEWER].includes(<any>r.split(sep)[1]))
     .map((r: string) => r.split(sep)[0])
     .filter((g: string) => !excludeGroups.includes(g));
   return Array.from(new Set(groups));
@@ -94,7 +97,7 @@ export const mapAuthorizedRoleGroups = (
  */
 export const checkRole = (roles: string[]): boolean => {
   const exceptViewer: string[] = Object.values(RoleEnum).filter(
-    (r: string) => r !== RoleEnum.VIEWER
+    (r) => ![RoleEnum.PUBLIC, RoleEnum.VIEWER].includes(r)
   );
   return roles.some((r: string) => exceptViewer.includes(r));
 };
