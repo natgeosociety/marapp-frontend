@@ -23,7 +23,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { EmailInput } from './EmailInput';
 
 describe('<EmailInput />', () => {
-  it('should render correctly a single input with a placeholder', () => {
+  it('should render a placeholder inside a single input', () => {
     const placeholder = 'Test placeholder';
 
     render(<EmailInput isMulti={false} placeholder={placeholder} />);
@@ -31,7 +31,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(placeholder)).toBeInTheDocument();
   });
 
-  it('should render correctly a multi input with a placeholder', () => {
+  it('should render a placeholder inside a multi input', () => {
     const placeholder = 'Test placeholder';
 
     render(<EmailInput isMulti={true} placeholder={placeholder} />);
@@ -39,7 +39,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(placeholder)).toBeInTheDocument();
   });
 
-  it('should render correctly a single input with single default value', () => {
+  it('should render a default value inside a single input', () => {
     const defaultValue = {
       label: 'Test1 label',
       value: 'test1',
@@ -50,7 +50,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(defaultValue.label)).toBeInTheDocument();
   });
 
-  it('should render correctly a multi input with multiple default value', () => {
+  it('should render multiple default values inside a multi input', () => {
     const defaultValue = [
       {
         label: 'Test1 label',
@@ -68,7 +68,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(defaultValue[1].label)).toBeInTheDocument();
   });
 
-  it('should render correctly a multi input when typing 2 valid emails', () => {
+  it('should render 2 valid emails inside a multi input when typing', () => {
     const { container } = render(<EmailInput isMulti={true} />);
 
     const nativeContainerInput = container.querySelector('input');
@@ -84,7 +84,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(inputValues[1])).toBeInTheDocument();
   });
 
-  it('should render correctly a multi input when typing 1 valid & 1 wrong email', () => {
+  it('should render 1 valid & 1 wrong email inside a multi input when typing', () => {
     const { container } = render(<EmailInput isMulti={true} />);
 
     const nativeContainerInput = container.querySelector('input');
@@ -100,7 +100,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(inputValues[1])).toBeInTheDocument();
   });
 
-  it('should render correctly a multi input with default value when typing 1 valid email', () => {
+  it('should render a valid email inside a multi input (with multiple default values) when typing', () => {
     const defaultValue = [
       {
         label: 'abc@test.com',
@@ -126,7 +126,7 @@ describe('<EmailInput />', () => {
     expect(screen.getByText(inputValues[0])).toBeInTheDocument();
   });
 
-  it('should render correctly a multi input with default value when typing 1 invalid email', () => {
+  it('should not render an invalid email inside a multi input (with multiple default values) when typing', () => {
     const defaultValue = [
       {
         label: 'abc@test.com',
@@ -156,7 +156,7 @@ describe('<EmailInput />', () => {
     expect(screen.queryByText(inputValues[0])).toBeNull();
   });
 
-  it('should render correctly a multi input when typing 1 valid email and removing it', () => {
+  it('should not render a valid email inside a multi input when typing and removing', () => {
     const { container } = render(<EmailInput isMulti={true} />);
 
     const nativeContainerInput = container.querySelector('input');
@@ -177,7 +177,7 @@ describe('<EmailInput />', () => {
     expect(screen.queryByText(inputValues[0])).toBeNull();
   });
 
-  it('should render correctly a multi input when typing 2 valid email and removing 1', () => {
+  it('should render one valid email inside a multi input when typing 2 valid emails and removing one', () => {
     const { container } = render(<EmailInput isMulti={true} />);
 
     const nativeContainerInput = container.querySelector('input');
