@@ -20,10 +20,11 @@
 import { useAuth0 } from 'auth/auth0';
 import { APP_NAME, ENABLE_PUBLIC_ACCESS } from 'config';
 import React, { useState } from 'react';
+import ProfileService from 'services/ProfileService';
+
+import { Spinner } from '@marapp/earth-shared/src';
 
 import './styles.scss';
-import ProfileService from 'services/ProfileService';
-import { Spinner } from '@marapp/earth-shared/src';
 
 export const APP_LOGO = require('images/unbl_logo.svg');
 
