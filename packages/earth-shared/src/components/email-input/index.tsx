@@ -17,17 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-export const APP_NAME = 'UNBL';
-export const APP_LOGO = require('@app/images/unbl_logo.svg');
-
-export const APP_BASEMAPS = [
-  {
-    slug: 'grayscale',
-    name: 'Grayscale',
-    id: 'mapbox://styles/ngsmapbox-gf/ckbwix5xv165q1htdbvkrmxug',
-  },
-];
-
-export const APP_ABOUT = 'https://github.com/natgeosociety/marapp-frontend/blob/master/ABOUT.md';
-
-export { CUSTOM_STYLES, SELECT_THEME } from '@marapp/earth-shared';
+export { EmailInput } from './EmailInput';
