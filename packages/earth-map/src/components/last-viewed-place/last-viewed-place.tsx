@@ -18,7 +18,6 @@
 */
 
 import ListItem from 'components/list-item';
-import { IPlace } from 'modules/places/model';
 import React from 'react';
 
 interface IProps {
