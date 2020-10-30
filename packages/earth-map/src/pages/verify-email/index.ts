@@ -19,7 +19,7 @@
 
 import { connect } from 'react-redux';
 
-import VerifyEmail from './component';
+import VerifyEmail from './VerifyEmail';
 
 export default connect(null, (dispatch) => ({
   returnToHome: () => {

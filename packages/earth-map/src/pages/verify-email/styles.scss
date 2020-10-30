@@ -23,7 +23,6 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url('../../images/blur.jpg');
-
   position: relative;
   width: 100%;
   min-height: 100vh;
@@ -33,9 +32,6 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-
-
-
   .verified-container {
     box-shadow: 0px 16px 48px rgba(0, 0, 0, 0.175);
     background: $marapp-gray-7;
