@@ -27,6 +27,7 @@ const GATSBY_APP_MAPBOX_TOKEN: string = process.env.GATSBY_APP_MAPBOX_TOKEN;
 const GATSBY_APP_AUTH0_NAMESPACE: string = process.env.GATSBY_APP_AUTH0_NAMESPACE;
 const MAP_PATH: string = process.env.GATSBY_APP_MAP_URL;
 const GATSBY_APP_NAME: string = process.env.GATSBY_APP_NAME;
+const PUBLIC_ORG: string = process.env.GATSBY_APP_PUBLIC_ORG;
 
 export {
   GATSBY_API_URL,
@@ -39,4 +40,5 @@ export {
   GATSBY_APP_AUTH0_NAMESPACE,
   MAP_PATH,
   GATSBY_APP_NAME,
+  PUBLIC_ORG,
 };

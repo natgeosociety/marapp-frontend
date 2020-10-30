@@ -25,6 +25,7 @@ export interface IPlace {
   name?: string;
   geojson?: {};
   published?: boolean;
+  publicResource?: boolean;
   featured?: boolean;
   bbox2d?: number[];
   areaKm2?: number;
