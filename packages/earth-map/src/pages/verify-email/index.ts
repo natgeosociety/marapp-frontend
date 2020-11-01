@@ -17,12 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-
 import VerifyEmail from './VerifyEmail';
 
-export default connect(null, (dispatch) => ({
-  returnToHome: () => {
-    dispatch({ type: 'EARTH' });
-  },
-}))(VerifyEmail);
+export default VerifyEmail;

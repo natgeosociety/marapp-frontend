@@ -20,6 +20,7 @@
 import { useAuth0 } from 'auth/auth0';
 import { APP_NAME, ENABLE_PUBLIC_ACCESS } from 'config';
 import React, { useState } from 'react';
+import Link from 'redux-first-router-link';
 import ProfileService from 'services/ProfileService';
 
 import { Spinner } from '@marapp/earth-shared/src';
@@ -28,41 +29,49 @@ import './styles.scss';
 
 export const APP_LOGO = require('images/unbl_logo.svg');
 
-interface EmailState {
-  type: 'inactive' | 'pending' | 'done' | 'error';
-  text: string;
+enum EmailStates {
+  INACTIVE = 'Inactive',
+  PENDING = 'Pending',
+  DONE = 'Done',
+  ERROR = 'Error',
 }
 
-const VerifyEmail = ({ returnToHome }) => {
+interface VerifyEmailState {
+  type: EmailStates;
+  text: string;
+  message?: string;
+}
+
+const VerifyEmail = () => {
   const { logout, isEmailVerified } = useAuth0();
 
   return (
     <div className="verified-page marapp-qa-verify-email">
       <div className="verified-container">
-        {isEmailVerified ? (
-          <VerifiedEmailTemplate returnToHome={returnToHome} />
-        ) : (
-          <VerifyEmailTemplate logout={logout} />
-        )}
+        {isEmailVerified ? <VerifiedEmailTemplate /> : <VerifyEmailTemplate logout={logout} />}
       </div>
     </div>
   );
 };
 
 const VerifyEmailTemplate = ({ logout }) => {
-  const [emailState, setEmailState] = useState<EmailState>({
-    type: 'inactive',
+  const [emailState, setEmailState] = useState<VerifyEmailState>({
+    type: EmailStates.INACTIVE,
     text: 'Send email verification Link',
   });
 
   const handleResendEmail = async () => {
-    setEmailState({ type: 'pending', text: 'sending email validation' });
+    setEmailState({ type: EmailStates.PENDING, text: 'sending email validation' });
 
     try {
       await ProfileService.resendEmailConfirmation();
-      setEmailState({ type: 'done', text: 'email sent' });
+      setEmailState({ type: EmailStates.DONE, text: 'email sent' });
     } catch (error) {
-      setEmailState({ type: 'error', text: 'error' });
+      setEmailState({
+        type: EmailStates.ERROR,
+        text: 'something went wrong',
+        message: error.data.errors[0].detail,
+      });
     }
   };
 
@@ -93,20 +102,21 @@ const VerifyEmailTemplate = ({ logout }) => {
         View {APP_NAME} as a Public User
       </button>
       <button
-        disabled={emailState.type === 'done'}
+        disabled={emailState.type.includes(EmailStates.DONE)}
         className="ng-button ng-button-secondary ng-width-1-1 marapp-qa-resendemail"
         onClick={(e) => handleResendEmail()}
       >
-        {emailState.type === 'pending' && (
+        {emailState.type.includes(EmailStates.PENDING) && (
           <Spinner size="nano" position="relative" className="ng-display-inline" />
         )}
         {emailState.text}
       </button>
+      {emailState.message && <span className="ng-form-error-block">{emailState.message}</span>}
     </>
   );
 };
 
-const VerifiedEmailTemplate = ({ returnToHome }) => {
+const VerifiedEmailTemplate = () => {
   return (
     <>
       <p className="ng-text-weight-bold ng-color-ultraltgray ng-margin-medium-bottom">
@@ -116,12 +126,12 @@ const VerifiedEmailTemplate = ({ returnToHome }) => {
         Your email address has been successfully verified. To access your account, please sign in
         with your new email.
       </p>
-      <button
+      <Link
+        to={{ type: 'EARTH' }}
         className="ng-button ng-button-primary ng-width-1-1 ng-margin-bottom marapp-qa-returnhome"
-        onClick={(e) => returnToHome()}
       >
         Return to home
-      </button>
+      </Link>
     </>
   );
 };
