@@ -70,7 +70,7 @@ const VerifyEmailTemplate = ({ logout }) => {
       setEmailState({
         type: EmailStates.ERROR,
         text: 'something went wrong',
-        message: error.data.errors[0].detail,
+        message: error?.data.errors[0].detail,
       });
     }
   };
