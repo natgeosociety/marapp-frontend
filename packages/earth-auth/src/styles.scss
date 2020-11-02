@@ -45,9 +45,35 @@ $marapp-gray-9: #212529;
 $marapp-gray-100: #212529;
 
 body {
+  .auth0-lock-overlay {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('./assets/blur.jpg');
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 1;
+    transition: opacity 0.2s ease-in 0.4s;
+  }
+
   .auth0-lock.auth0-lock {
     color: $marapp-gray-1;
     font-family: 'Roboto', serif;
+
+    &.auth0-lock-opened-in-frame {
+      display: table;
+      text-rendering: optimizeLegibility;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      right: 0;
+      z-index: 1000000;
+    }
 
     //overlay
     .auth0-lock-overlay {
@@ -199,6 +225,7 @@ body {
 
     //submit button
     .auth0-lock-submit {
+      background: $marapp-primary-color;
       border-radius: 0;
       color: $marapp-gray-9;
       font-weight: 500;
@@ -208,6 +235,7 @@ body {
       margin: 20px 30px 30px;
       text-transform: uppercase;
       width: auto;
+
       .auth0-loading-container {
         .auth0-loading {
           top: -4px;
@@ -215,6 +243,7 @@ body {
           width: 20px;
         }
       }
+
       .auth0-label-submit {
         height: auto;
         line-height: 1;
@@ -226,9 +255,10 @@ body {
       }
 
       &:hover {
-        background: lighten($marapp-primary-color, 25%)!important;
+        background: lighten($marapp-primary-color, 25%) !important;
+
         span {
-          transform: none!important;
+          transform: none !important;
         }
       }
     }
@@ -260,3 +290,50 @@ body {
   }
 
 }
+
+#change-password-widget-container {
+  .auth0-lock-submit {
+    margin: 0 30px;
+    width: calc(100% - 60px);
+    > span {
+      svg {
+        display: none;
+      }
+
+      &:before {
+        content: 'CHANGE PASSWORD'
+      }
+    }
+  }
+
+  .auth0-lock-cred-pane {
+    padding-bottom: 30px;
+  }
+  .auth0-lock-header-bg .auth0-lock-header-bg-blur {
+    display: none;
+  }
+  .auth0-lock-body-content {
+    padding: 0 0 20px;
+  }
+  .auth0-lock-content {
+    padding: 0;
+  }
+  .auth0-lock-form {
+    padding: 0 30px;
+    > p {
+      background: $marapp-primary-color;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 27px;
+      text-align: center;
+      padding: 5px 0;
+      margin: 0 -30px 20px;
+    }
+  }
+  .auth0-lock.auth0-lock .auth0-lock-confirmation {
+    background: $marapp-gray-7;
+    color: $marapp-gray-1;
+  }
+}
+
+

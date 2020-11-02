@@ -10,11 +10,18 @@ require('dotenv').config({path: ACTIVE_ENV});
 
 module.exports = {
   mode: 'production',
-  entry: './src/index.ts',
+  entry: {
+    signin: './src/Signin.ts',
+    passReset: './src/PasswordReset.ts',
+  },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 8000,
+    port: 8000
+  },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
   },
   externals: {
     'react': 'React',
@@ -45,17 +52,22 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
-  output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
   plugins: [
     new HtmlWebpackPlugin({
       inlineSource: '.(js|css)$',
-      template: __dirname + '/src/index.html',
-      filename: 'index.html',
+      template: __dirname + '/src/signin.html',
+      filename: 'signin.html',
       inject: 'body',
       title: process.env.APP_NAME,
+      chunk: ['Signin.ts'],
+    }),
+    new HtmlWebpackPlugin({
+      inlineSource: '.(js|css)$',
+      template: __dirname + '/src/password-reset.html',
+      filename: 'password-reset.html',
+      inject: 'body',
+      title: process.env.APP_NAME,
+      chunk: ['PasswordReset.ts'],
     }),
     new HtmlWebpackInlineSourcePlugin(),
     new Dotenv({
