@@ -34,7 +34,6 @@ import { ContentLayout } from '@app/layouts';
 import PlacesService from '@app/services/places';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenObjectForSelect } from '@app/utils';
-import { PUBLIC_ORG } from '@app/config';
 
 interface IProps {
   path: string;
@@ -56,7 +55,6 @@ export function NewPlace(props: IProps) {
   const [geojsonValue, setGeojson] = useState(null);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
-  const [publicResource, setPublicResource] = useState(true);
   const { selectedGroup } = useAuth0();
   const renderErrorFor = setupErrors(errors, touched);
 
@@ -92,8 +90,6 @@ export function NewPlace(props: IProps) {
     }
   };
 
-  const isInPublicOrg = PUBLIC_ORG === selectedGroup;
-
   return (
     <ContentLayout backTo="/places" className="marapp-qa-placesnew">
       <div>
@@ -106,7 +102,7 @@ export function NewPlace(props: IProps) {
           className="ng-form ng-form-dark ng-flex-column ng-width-4-5"
         >
           <div className="ng-grid ng-margin-medium-bottom">
-            <div className={isInPublicOrg ? 'ng-width-3-4' : 'ng-width-1-1'}>
+            <div className="ng-width-1-1">
               <Card>
                 <Input
                   name="name"
@@ -120,20 +116,6 @@ export function NewPlace(props: IProps) {
                 />
               </Card>
             </div>
-            {isInPublicOrg && (
-              <div className="ng-width-1-4">
-                <Card>
-                  <Toggle
-                    name="publicResource"
-                    label="Public"
-                    value={publicResource}
-                    className="ng-display-block"
-                    onChange={(e) => setPublicResource(e.target.checked)}
-                    ref={register({})}
-                  />
-                </Card>
-              </div>
-            )}
           </div>
 
           <Card className="ng-margin-medium-bottom">
