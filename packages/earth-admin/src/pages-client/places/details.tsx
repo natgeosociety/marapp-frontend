@@ -49,6 +49,7 @@ import MetricService from '@app/services/metrics';
 import PlacesService from '@app/services/places';
 import { formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
 import { MapComponentContext } from '@app/utils/contexts';
+import { PUBLIC_ORG } from '@app/config';
 
 import { IPlace, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
 
@@ -98,6 +99,7 @@ export function PlaceDetail(props: IProps) {
     intersections,
     featured,
     published,
+    publicResource,
     type,
     slug,
     metrics,
@@ -241,6 +243,16 @@ export function PlaceDetail(props: IProps) {
                     onChange={onSubmit}
                     ref={register({})}
                   />
+                  {PUBLIC_ORG === selectedGroup && (
+                    <Toggle
+                      name="publicResource"
+                      label="Public"
+                      value={publicResource}
+                      className="ng-display-block"
+                      onChange={onSubmit}
+                      ref={register({})}
+                    />
+                  )}
                 </Card>
               </div>
             </div>

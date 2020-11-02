@@ -22,6 +22,7 @@ The following environment variables are required by the application.
 | ------------- |:----------------|
 | `NODE_ENV` | Node.js environment (e.g. `development`, `production`) |
 | `GATSBY_APP_NAME` | The name of the app (e.g. `marapp`) |
+| `GATSBY_APP_PUBLIC_ORG` | The name of the public organization (e.g. `MARAPP`) |
 | `GATSBY_TELEMETRY_DISABLED` |  https://www.gatsbyjs.org/docs/telemetry/ |
 | `GATSBY_APP_BASE_URL` | https://reach.tech/router/api/Router - `basepath` |
 | `GATSBY_API_URL` | https://www.gatsbyjs.org/docs/environment-variables/#client-side-javascript - API URL |

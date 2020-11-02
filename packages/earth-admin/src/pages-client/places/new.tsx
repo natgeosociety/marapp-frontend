@@ -100,18 +100,22 @@ export function NewPlace(props: IProps) {
           onSubmit={handleSubmit(onSubmit)}
           className="ng-form ng-form-dark ng-flex-column ng-width-4-5"
         >
-          <Card className="ng-margin-medium-bottom">
-            <Input
-              name="name"
-              placeholder="Place title"
-              label="Title*"
-              className="ng-display-block"
-              error={renderErrorFor('name')}
-              ref={register({
-                required: 'Place title is required',
-              })}
-            />
-          </Card>
+          <div className="ng-grid ng-margin-medium-bottom">
+            <div className="ng-width-1-1">
+              <Card>
+                <Input
+                  name="name"
+                  placeholder="Place title"
+                  label="Title*"
+                  className="ng-display-block"
+                  error={renderErrorFor('name')}
+                  ref={register({
+                    required: 'Place title is required',
+                  })}
+                />
+              </Card>
+            </div>
+          </div>
 
           <Card className="ng-margin-medium-bottom">
             <div className="ng-margin-medium-bottom">
