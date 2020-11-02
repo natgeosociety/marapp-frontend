@@ -50,7 +50,10 @@ const CollectionNew = () => {
   };
 
   return (
-    <form className="ng-form ng-form-dark" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="marapp-qa-collection-new ng-form ng-form-dark"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Card elevation="high" className="ng-margin-bottom">
         <h3 className="ng-text-edit-s ng-margin-remove">Create a Collection</h3>
       </Card>
@@ -102,11 +105,14 @@ const CollectionNew = () => {
         <button
           disabled={!isValid || !dirty || isSubmitting}
           type="submit"
-          className="ng-button ng-button-primary ng-margin-right"
+          className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
         >
           Create Collection
         </button>
-        <Link to={{ type: 'EARTH' }} className="ng-button ng-button-secondary">
+        <Link
+          to={{ type: 'EARTH' }}
+          className="marapp-qa-cancel-collection ng-button ng-button-secondary"
+        >
           Cancel
         </Link>
       </Card>

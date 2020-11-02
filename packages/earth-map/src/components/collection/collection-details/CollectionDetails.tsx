@@ -37,7 +37,7 @@ const CollectionDetails = (props: IProps) => {
   const { organization, name } = data;
 
   return (
-    <div>
+    <div className="marapp-qa-collection-details">
       <Card elevation="flush" className="ng-widget-header">
         <h3 className="ng-text-display-s ng-margin-bottom">
           {organization} | <span className="ng-text-weight-regular">Collection</span>
