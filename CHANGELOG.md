@@ -1,3 +1,50 @@
+# [1.12.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.11.1...v1.12.0) (2020-10-27)
+
+
+### Features
+
+* **map:** loading indicator legend [EP-1460] ([#253](https://github.com/natgeosociety/marapp-frontend/issues/253)) ([4dae28a](https://github.com/natgeosociety/marapp-frontend/commit/4dae28a5018e7444f12390a0f237b9f34b22ca1f))
+
+## [1.11.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.11.0...v1.11.1) (2020-10-27)
+
+
+### Bug Fixes
+
+* **admin:** Error is still displayed, even after correct value was saved [EP-3021] ([17c0a85](https://github.com/natgeosociety/marapp-frontend/commit/17c0a85cf8dc75636ca97a6bed4b59e8ada594ab))
+* **admin:** Save places button was initially disabled [EP-3169] ([0f16eb4](https://github.com/natgeosociety/marapp-frontend/commit/0f16eb48578a4f6b6b22c54c597b678ecfcb050d))
+
+# [1.11.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.10.0...v1.11.0) (2020-10-21)
+
+
+### Bug Fixes
+
+* **map:** check if metric exists on widget download ([#248](https://github.com/natgeosociety/marapp-frontend/issues/248)) ([0535117](https://github.com/natgeosociety/marapp-frontend/commit/0535117fbf1d1864e8f3b3692eda6b3235945974))
+
+
+### Features
+
+* Create Unit Testing Setup [EP-2857] ([f319ed3](https://github.com/natgeosociety/marapp-frontend/commit/f319ed3e2f938fad8e2a6ce40c5cce507f75b28a))
+
+# [1.10.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.9.2...v1.10.0) (2020-10-20)
+
+
+### Bug Fixes
+
+* **admin:** correct about link ([008f30b](https://github.com/natgeosociety/marapp-frontend/commit/008f30bb485a998fe9b2fad3137e994b68a7afce))
+* **profile:** centered profile page ([546577f](https://github.com/natgeosociety/marapp-frontend/commit/546577f588e6422ccd40f3d9e2a5255b3760646e))
+* **profile:** earth navigation link when leaving org [EP-3154] ([#245](https://github.com/natgeosociety/marapp-frontend/issues/245)) ([792ca1d](https://github.com/natgeosociety/marapp-frontend/commit/792ca1d9b958b96a8f06da08411564e279a7cdc1))
+* **profile:** fixed position logo & profile ([10e2110](https://github.com/natgeosociety/marapp-frontend/commit/10e2110ebfb012faec49b416dc26a297d680f32c))
+* **shared:** 404 bugs ([#244](https://github.com/natgeosociety/marapp-frontend/issues/244)) ([07fe735](https://github.com/natgeosociety/marapp-frontend/commit/07fe7353f9b4fdc0b6eff66539d72536f17156d9))
+* edit email on external IDP ([2e1dbdd](https://github.com/natgeosociety/marapp-frontend/commit/2e1dbdd01a0818963825affe536e1a4eac0dd7ce))
+* update token after leaving org [EP-3154] ([910b9fd](https://github.com/natgeosociety/marapp-frontend/commit/910b9fdb9b35758927220cef5cd34768766b9994))
+* **profile:** page overflow ([#241](https://github.com/natgeosociety/marapp-frontend/issues/241)) ([f68b414](https://github.com/natgeosociety/marapp-frontend/commit/f68b414fa77a39c6aa86de8a75425ddf172e75b6))
+
+
+### Features
+
+* **map:** remove selected dashboard [EP-2021] ([#243](https://github.com/natgeosociety/marapp-frontend/issues/243)) ([d1fe9eb](https://github.com/natgeosociety/marapp-frontend/commit/d1fe9eb7eb0f51ec64ede1e0039a48f38746a3c4))
+* **shared:** 404 page [EP-2589] ([ee1417b](https://github.com/natgeosociety/marapp-frontend/commit/ee1417b4cec27e49fd8efd48c31bba65239c6483))
+
 ## [1.9.2](https://github.com/natgeosociety/marapp-frontend/compare/v1.9.1...v1.9.2) (2020-10-20)
 
 
