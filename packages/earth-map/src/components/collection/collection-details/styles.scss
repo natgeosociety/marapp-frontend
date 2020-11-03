@@ -17,18 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
+@import '~styles/config';
 
-import CollectionDetails from './CollectionDetails';
-import { setCollectionData } from 'modules/collections/actions';
-import { setMapBounds } from 'modules/map/actions';
+.sidebar-content-full {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
 
-export default connect(
-  (state: any) => ({
-    ...state.collections,
-  }),
-  {
-    setCollectionData,
-    setMapBounds,
-  }
-)(CollectionDetails);
+  background-color: $marapp-gray-9;
+}

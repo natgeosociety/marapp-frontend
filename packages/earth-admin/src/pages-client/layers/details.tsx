@@ -484,6 +484,7 @@ export function LayerDetail(props: any) {
                       <div className="ng-margin-medium-bottom">
                         <label htmlFor="provider">Included layers:</label>
                         <Controller
+                          as={AsyncSelect}
                           name="references"
                           type="layers"
                           className="marapp-qa-references"
@@ -493,16 +494,10 @@ export function LayerDetail(props: any) {
                           loadFunction={LayersService.getAllLayers}
                           defaultValue={references}
                           selectedGroup={selectedGroup}
-                          as={AsyncSelect}
                           onChange={([e]) => e}
                           isClearable={true}
                           isSearchable={true}
                           isMulti={true}
-                          styles={CUSTOM_STYLES}
-                          theme={(theme) => ({
-                            ...theme,
-                            ...SELECT_THEME,
-                          })}
                           closeMenuOnSelect={false}
                           placeholder="Select layers"
                         />

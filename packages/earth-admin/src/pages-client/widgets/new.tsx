@@ -189,6 +189,7 @@ export function NewWidget(props: IProps) {
               <Card className="ng-margin-medium-bottom">
                 <label htmlFor="provider">Widget Layer(s):</label>
                 <Controller
+                  as={AsyncSelect}
                   name="layers"
                   type="layers"
                   className="marapp-qa-layers"
@@ -197,16 +198,10 @@ export function NewWidget(props: IProps) {
                   getOptionValue={(option) => option.id}
                   loadFunction={LayersService.getAllLayers}
                   selectedGroup={selectedGroup}
-                  as={AsyncSelect}
                   isClearable={true}
                   isSearchable={true}
                   closeMenuOnSelect={false}
                   placeholder="Select layer(s)"
-                  styles={CUSTOM_STYLES}
-                  theme={(theme) => ({
-                    ...theme,
-                    ...SELECT_THEME,
-                  })}
                 />
               </Card>
             </div>

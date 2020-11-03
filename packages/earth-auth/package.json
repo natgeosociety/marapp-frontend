@@ -5,7 +5,6 @@
   "private": true,
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=development webpack-dev-server",
     "build:templates": "NODE_ENV=production webpack",
     "build": "echo @marapp/earth-auth does not run as part of the default build"

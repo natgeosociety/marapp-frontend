@@ -15,7 +15,7 @@ describe('Hooks', () => {
       },
     ];
 
-    const mergedPages = mergePages(separatePages);
+    const mergedPages: any = mergePages(separatePages);
     expect(mergedPages.data.length).toBe(5);
     expect(mergedPages.total).toBe(90);
   });

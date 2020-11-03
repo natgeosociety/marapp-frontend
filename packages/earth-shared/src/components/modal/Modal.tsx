@@ -74,7 +74,7 @@ class ModalComponent extends PureComponent<ModalProps> {
           <button
             type="button"
             className="modal-close"
-            onClick={(e) => e.stopPropagation() || onRequestClose()}
+            onClick={(e: any) => e.stopPropagation() || onRequestClose()}
           >
             <i className="ng-icon-close" />
           </button>

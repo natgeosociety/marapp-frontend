@@ -19,7 +19,7 @@
 
 import groupBy from 'lodash/groupBy';
 import { persistData, setLastViewedPlace } from 'modules/global/actions';
-import { setMap } from 'modules/map/actions';
+import { setMapBounds } from 'modules/map/actions';
 import { setMetrics, setMetricsLoading } from 'modules/metrics/actions';
 import {
   setPlaceData,
@@ -81,24 +81,7 @@ function* toLocation({ payload, meta }) {
       },
     };
 
-    const { map } = yield select();
-
-    yield put(
-      setMap({
-        ...map,
-        bounds: {
-          bbox: data.bbox2d,
-          options: {
-            padding: {
-              top: 50,
-              bottom: 50,
-              left: 50,
-              right: 50,
-            },
-          },
-        },
-      })
-    );
+    yield put(setMapBounds({ bbox: data.bbox2d }));
 
     // Let animations finish before we change the place
     yield delay(750);
