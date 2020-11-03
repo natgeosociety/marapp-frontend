@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 
 const ACTIVE_ENV = process.env.NODE_ENV === 'production' ? '.env' : '.env.local';
@@ -10,11 +10,18 @@ require('dotenv').config({path: ACTIVE_ENV});
 
 module.exports = {
   mode: 'production',
-  entry: './src/index.ts',
+  entry: {
+    main: './src/index.ts',
+    signin: './src/signin/Signin.ts',
+  },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
     port: 8000,
+  },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
   },
   externals: {
     'react': 'React',
@@ -31,7 +38,7 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          {loader: 'style-loader', options: {injectType: 'styleTag'}},
+          {loader: MiniCssExtractPlugin.loader, options: {injectType: 'styleTag'}},
           'css-loader',
           'sass-loader',
         ],
@@ -45,17 +52,22 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
-  output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
   plugins: [
+    new MiniCssExtractPlugin({}),
     new HtmlWebpackPlugin({
       inlineSource: '.(js|css)$',
-      template: __dirname + '/src/index.html',
-      filename: 'index.html',
-      inject: 'body',
+      template: __dirname + '/src/signin/signin.html',
+      filename: 'signin.html',
       title: process.env.APP_NAME,
+      chunk: ['signin'],
+    }),
+    new HtmlWebpackPlugin({
+      inlineSource: '.(js|css)$',
+      template: __dirname + '/src/password-reset/password-reset.html',
+      filename: 'password-reset.html',
+      title: process.env.APP_NAME,
+      chunk: ['main'],
+      excludeChunks: ['signin'],
     }),
     new HtmlWebpackInlineSourcePlugin(),
     new Dotenv({
