@@ -38,3 +38,15 @@ export const createCollection = async (data, query: RequestQuery): Promise<any> 
 export const fetchCollection = async (idOrSlug: string, query?: RequestQuery): Promise<any> => {
   return BaseAPIService.request(`/collections/${idOrSlug}`, { query }, metaDeserializer);
 };
+
+export const updateCollection = async (collectionId: string, data: any, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/management/collections/${collectionId}`,
+    {
+      method: 'put',
+      data,
+      query,
+    },
+    metaDeserializer
+  );
+};

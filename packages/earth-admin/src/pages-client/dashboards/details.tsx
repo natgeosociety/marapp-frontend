@@ -292,11 +292,6 @@ export function DashboardDetail(props: IProps) {
                           isClearable={true}
                           isSearchable={true}
                           isMulti={true}
-                          styles={CUSTOM_STYLES}
-                          theme={(theme) => ({
-                            ...theme,
-                            ...SELECT_THEME,
-                          })}
                           closeMenuOnSelect={false}
                           placeholder="Select widgets"
                         />

@@ -24,10 +24,12 @@ import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 import SidebarToggle from './sidebar-toggle';
 import './styles.scss';
 
+import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from 'config';
+
 // Creates a spring with predefined animation slots
 const SidebarPanel: any = Keyframes.Spring({
-  open: { x: 0, width: 375, from: { x: -100 }, delay: 0 },
-  openW: { x: 0, width: 500, from: { x: 0 }, delay: 0 },
+  open: { x: 0, width: SIDEBAR_WIDTH, from: { x: -100 }, delay: 0 },
+  openW: { x: 0, width: SIDEBAR_WIDTH_WIDE, from: { x: 0 }, delay: 0 },
   close: { x: -100, delay: 100 },
 });
 
@@ -42,6 +44,7 @@ interface ISidebarPanel {
   setIndexesSelected?: (i: string) => void;
   resetMap?: () => void;
   resetPlace?: () => void;
+  resetCollection?: () => void;
   resetLayers?: () => void;
   selectedOpen?: boolean;
 }
@@ -53,9 +56,10 @@ class Sidebar extends React.Component<ISidebarPanel> {
   };
 
   public resetMap = () => {
-    const { setPlacesSearch, resetMap, resetPlace, resetLayers } = this.props;
+    const { setPlacesSearch, resetMap, resetPlace, resetCollection, resetLayers } = this.props;
 
     resetPlace();
+    resetCollection();
     setPlacesSearch({ search: '' });
     resetLayers();
     resetMap();

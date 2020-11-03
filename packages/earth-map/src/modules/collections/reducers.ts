@@ -33,4 +33,8 @@ export default {
     ...state,
     error: payload,
   }),
+  [actions.resetCollection]: (state) => ({
+    ...state,
+    data: {},
+  }),
 };

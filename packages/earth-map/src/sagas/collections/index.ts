@@ -19,10 +19,11 @@
 
 import { persistData, setLastViewedPlace } from 'modules/global/actions';
 import { setCollectionData, setCollectionsLoading } from 'modules/collections/actions';
-import { setPlacesSearch } from 'modules/places/actions';
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { replace } from 'redux-first-router';
 
+import { setMapBounds } from 'modules/map/actions';
+import { setPlacesSearch } from 'modules/places/actions';
 import { fetchCollection } from 'services/CollectionsService';
 import { EMainType, SubType } from 'modules/global/model';
 import { EarthRoutes } from 'modules/router/model';
@@ -39,7 +40,13 @@ function* loadCollection({ payload }) {
     yield put(setCollectionsLoading(true));
     const { data } = yield call(fetchCollection, slug, {
       group: organization,
+      include: 'locations',
+      select: 'locations.slug,locations.name',
     });
+
+    if (data.bbox2d.length) {
+      yield put(setMapBounds({ bbox: data.bbox2d }));
+    }
     yield put(setPlacesSearch({ search: data.name }));
     yield put(setCollectionData(data));
     yield put(

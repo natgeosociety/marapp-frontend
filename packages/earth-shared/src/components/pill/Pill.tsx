@@ -17,18 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
+import React from 'react';
 
-import CollectionDetails from './CollectionDetails';
-import { setCollectionData } from 'modules/collections/actions';
-import { setMapBounds } from 'modules/map/actions';
+interface IProps {
+  label: string;
+  className?: string;
+}
 
-export default connect(
-  (state: any) => ({
-    ...state.collections,
-  }),
-  {
-    setCollectionData,
-    setMapBounds,
-  }
-)(CollectionDetails);
+import './styles.scss';
+
+export const Pill = ({ label, className = '' }: IProps) => (
+  <span className={`pill ${className}`}>{label}</span>
+);

@@ -17,18 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-
-import CollectionDetails from './CollectionDetails';
-import { setCollectionData } from 'modules/collections/actions';
-import { setMapBounds } from 'modules/map/actions';
-
-export default connect(
-  (state: any) => ({
-    ...state.collections,
-  }),
-  {
-    setCollectionData,
-    setMapBounds,
-  }
-)(CollectionDetails);
+export { ReactSelect } from './ReactSelect';

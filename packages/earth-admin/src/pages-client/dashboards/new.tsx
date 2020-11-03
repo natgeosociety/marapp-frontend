@@ -179,11 +179,6 @@ export function NewDashboard(props: IProps) {
                 isMulti={true}
                 closeMenuOnSelect={false}
                 placeholder="Select widgets"
-                styles={CUSTOM_STYLES}
-                theme={(theme) => ({
-                  ...theme,
-                  ...SELECT_THEME,
-                })}
               />
             </div>
           </Card>

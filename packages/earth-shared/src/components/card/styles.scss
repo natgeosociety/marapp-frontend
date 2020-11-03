@@ -1,6 +1,7 @@
 @import '~styles/config';
 
 .marapp-card {
+  position: relative;
 
   &.marapp-card-flush {
     background-color: transparent;

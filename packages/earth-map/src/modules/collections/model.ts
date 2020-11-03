@@ -17,18 +17,22 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
+import { IPlace } from '../places/model';
 
-import CollectionDetails from './CollectionDetails';
-import { setCollectionData } from 'modules/collections/actions';
-import { setMapBounds } from 'modules/map/actions';
+export interface ICollection {
+  id: string;
+  slug?: string;
+  name?: string;
+  description: string;
+  organization?: string;
 
-export default connect(
-  (state: any) => ({
-    ...state.collections,
-  }),
-  {
-    setCollectionData,
-    setMapBounds,
-  }
-)(CollectionDetails);
+  // relationships
+  locations?: IPlace[];
+  metrics?: any[];
+
+  published?: boolean;
+  featured?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  version?: number;
+}

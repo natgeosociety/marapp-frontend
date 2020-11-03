@@ -17,18 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
+import React from 'react';
+import Select from 'react-select';
 
-import CollectionDetails from './CollectionDetails';
-import { setCollectionData } from 'modules/collections/actions';
-import { setMapBounds } from 'modules/map/actions';
+import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
 
-export default connect(
-  (state: any) => ({
-    ...state.collections,
-  }),
-  {
-    setCollectionData,
-    setMapBounds,
-  }
-)(CollectionDetails);
+export function ReactSelect(props) {
+  return (
+    <Select
+      styles={CUSTOM_STYLES}
+      theme={(theme) => ({
+        ...theme,
+        ...SELECT_THEME,
+      })}
+      {...props}
+    />
+  );
+}
