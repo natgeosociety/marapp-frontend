@@ -16,22 +16,21 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-
 import * as actions from './actions';
-import { ILastViewedPlace } from './model';
-
-interface LastViewedPlacePayload {
-  payload: ILastViewedPlace;
-}
 
 export default {
-  [actions.persistData]: (state, { payload }) => {
-    return state;
-  },
-  [actions.setLastViewedPlace]: (state, { payload }: LastViewedPlacePayload) => {
-    return {
-      ...state,
-      lastViewedPlace: payload,
-    };
-  },
+  [actions.setCollectionData]: (state, { payload }) => ({
+    ...state,
+    data: {
+      ...payload,
+    },
+  }),
+  [actions.setCollectionsLoading]: (state, { payload }) => ({
+    ...state,
+    loading: payload,
+  }),
+  [actions.setCollectionsError]: (state, { payload }) => ({
+    ...state,
+    error: payload,
+  }),
 };

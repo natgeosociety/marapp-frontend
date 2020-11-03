@@ -32,7 +32,7 @@ import { connect } from 'react-redux';
 import Layers from './Layers';
 
 export default connect(
-  (state: any) => ({
+  (state: any, props: any) => ({
     ...state.sidebar,
     group: state.user.group,
     layers: state.layers,
@@ -40,8 +40,8 @@ export default connect(
     mapStyle: state.map.mapStyle,
     mapLabels: state.map.mapLabels,
     mapRoads: state.map.mapRoads,
-    locationName: state.places.data.name,
-    locationOrganization: state.places.data.organization,
+    locationName: props.locationName || state.places.data.name,
+    locationOrganization: props.locationOrganization || state.places.data.organization,
   }),
   {
     toggleLayer,

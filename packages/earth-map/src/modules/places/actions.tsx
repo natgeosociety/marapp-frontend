@@ -31,7 +31,6 @@ export const resetPlacesFeatured = createAction('PLACES/resetPlacesFeatured');
 export const setPlaceData = createAction('PLACES/setPlaceData');
 export const setPlacesLoading = createAction('PLACES/setPlacesLoading');
 export const setPlacesError = createAction('PLACES/setPlacesError');
-export const setPlaceSelectedOpen = createAction('PLACES/setPlaceSelectedOpen');
 export const setPlaceSelectedSearch = createAction('PLACES/setPlaceSelectedSearch');
 export const setPlaceSelectedFilter = createAction('PLACES/setPlaceSelectedFilter');
 export const setPlaceSelectedId = createAction('PLACES/setPlaceSelectedId');

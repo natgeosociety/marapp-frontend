@@ -17,13 +17,24 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
-import IndexesComponent from './component';
+export const createCollection = async (data, query: RequestQuery): Promise<any> => {
+  return BaseAPIService.request(
+    `/management/collections`,
+    {
+      method: 'post',
+      data: {
+        ...data,
+        // all collections created from map view are published by default
+        published: true,
+      },
+      query,
+    },
+    metaDeserializer
+  );
+};
 
-export default connect(
-  (state: any) => ({
-    selectedOpen: state.places.selectedOpen,
-  }),
-  {}
-)(IndexesComponent);
+export const fetchCollection = async (idOrSlug: string, query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request(`/collections/${idOrSlug}`, { query }, metaDeserializer);
+};

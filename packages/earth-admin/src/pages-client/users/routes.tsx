@@ -23,7 +23,7 @@ import * as React from 'react';
 import useSWR from 'swr';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@app/components/card';
+import { Card } from '@marapp/earth-shared';
 import { UserDetails, UserEdit } from '@app/components/users';
 import { SidebarLayout } from '@app/layouts';
 import ContentLayout from '@app/layouts/Content';

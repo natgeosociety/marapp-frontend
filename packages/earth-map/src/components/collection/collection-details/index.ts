@@ -17,21 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as actions from './actions';
-import { ILastViewedPlace } from './model';
+import { connect } from 'react-redux';
 
-interface LastViewedPlacePayload {
-  payload: ILastViewedPlace;
-}
+import CollectionDetails from './CollectionDetails';
 
-export default {
-  [actions.persistData]: (state, { payload }) => {
-    return state;
-  },
-  [actions.setLastViewedPlace]: (state, { payload }: LastViewedPlacePayload) => {
-    return {
-      ...state,
-      lastViewedPlace: payload,
-    };
-  },
-};
+export default connect((state: any) => ({
+  ...state.collections,
+}))(CollectionDetails);

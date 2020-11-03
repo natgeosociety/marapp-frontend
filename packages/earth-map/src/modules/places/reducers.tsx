@@ -97,10 +97,6 @@ export default {
     ...state,
     selectedId: payload,
   }),
-  [actions.setPlaceSelectedOpen]: (state, { payload }) => ({
-    ...state,
-    selectedOpen: payload,
-  }),
   [actions.setPlaceSelectedSearch]: (state, { payload }) => ({
     ...state,
     selectedSearch: payload,

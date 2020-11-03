@@ -18,20 +18,7 @@
 */
 
 import * as actions from './actions';
-import { ILastViewedPlace } from './model';
+import initialState from './initial-state';
+import reducers from './reducers';
 
-interface LastViewedPlacePayload {
-  payload: ILastViewedPlace;
-}
-
-export default {
-  [actions.persistData]: (state, { payload }) => {
-    return state;
-  },
-  [actions.setLastViewedPlace]: (state, { payload }: LastViewedPlacePayload) => {
-    return {
-      ...state,
-      lastViewedPlace: payload,
-    };
-  },
-};
+export { actions, initialState, reducers };

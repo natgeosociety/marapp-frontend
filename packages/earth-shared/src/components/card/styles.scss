@@ -1,0 +1,19 @@
+@import '~styles/config';
+
+.marapp-card {
+
+  &.marapp-card-flush {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  &.marapp-card-raised {
+    background-color: $marapp-gray-8;
+    box-shadow: $shadow-small;
+  }
+
+  &.marapp-card-high {
+    background-color: $marapp-gray-7;
+    box-shadow: $shadow-medium;
+  }
+}

@@ -35,7 +35,7 @@ export default connect(
   (state: any) => ({
     layerGroups: getLegendLayers(state),
     ...state.sidebar,
-    selectedOpen: state.places.selectedOpen,
+    router: state.router,
   }),
   {
     setLayerInfo,

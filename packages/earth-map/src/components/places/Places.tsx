@@ -1,19 +1,17 @@
-import BackToLocation from 'components/back-to-location';
-import FilterBy from 'components/filter-by';
-import IndexSidebar from 'components/index-sidebar';
-import InfiniteList from 'components/infinite-list';
-import LastViewedPlace from 'components/last-viewed-place';
-import ListItem from 'components/list-item';
-import FeaturedPlaces from 'components/places/featured-places';
-import SearchBox from 'components/searchbox';
-import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
-import { IPlace } from 'modules/places/model';
 import React from 'react';
 import { push } from 'redux-first-router';
+
+import BackToLocation from 'components/back-to-location';
+import FilterBy from 'components/filter-by';
+import InfiniteList from 'components/infinite-list';
+import ListItem from 'components/list-item';
+import SearchBox from 'components/searchbox';
+import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
 import { hasFilters } from 'utils/filters';
 
 interface IProps {
   selected: boolean;
+  children: any;
   panel?: string;
   panelExpanded?: boolean;
   search?: any;
@@ -22,7 +20,6 @@ interface IProps {
   group?: any;
   locationName?: string;
   locationOrganization?: string;
-  lastViewedPlace?: IPlace;
   nextPlacesPage?: () => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
@@ -41,7 +38,6 @@ const Places = (props: IProps) => {
     group,
     locationName,
     locationOrganization,
-    lastViewedPlace,
     nextPlacesPage,
     resetPlace,
     resetMap,
@@ -49,6 +45,7 @@ const Places = (props: IProps) => {
     setSidebarPanelExpanded,
     setPlacesSearchOpen,
     selected,
+    children,
   } = props;
 
   const hasSearchTerm = !!search.search;
@@ -59,7 +56,7 @@ const Places = (props: IProps) => {
   const showBack = selected && panelExpanded && showResults;
   const onLocationPage = selected && panelExpanded && showResults;
   const onHomepage = !selected && showResults;
-  const showLastViewedPlace = lastViewedPlace && group.includes(lastViewedPlace.organization);
+  const showSearchResults = onLocationPage || onHomepage;
 
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -110,7 +107,7 @@ const Places = (props: IProps) => {
         </>
       }
     >
-      {onLocationPage || onHomepage ? (
+      {showSearchResults ? (
         <InfiniteList
           title="Search results"
           data={results}
@@ -129,13 +126,8 @@ const Places = (props: IProps) => {
             />
           )}
         </InfiniteList>
-      ) : selected ? (
-        <IndexSidebar />
       ) : (
-        <>
-          {showLastViewedPlace && <LastViewedPlace place={lastViewedPlace} />}
-          <FeaturedPlaces />
-        </>
+        children
       )}
     </SidebarLayoutSearch>
   );

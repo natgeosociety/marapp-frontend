@@ -17,21 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import * as actions from './actions';
-import { ILastViewedPlace } from './model';
-
-interface LastViewedPlacePayload {
-  payload: ILastViewedPlace;
-}
-
 export default {
-  [actions.persistData]: (state, { payload }) => {
-    return state;
-  },
-  [actions.setLastViewedPlace]: (state, { payload }: LastViewedPlacePayload) => {
-    return {
-      ...state,
-      lastViewedPlace: payload,
-    };
-  },
+  // selected collection
+  data: {},
+  loading: false,
+  error: null,
+  // collections list
+  results: [],
 };

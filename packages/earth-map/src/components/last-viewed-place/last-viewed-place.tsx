@@ -18,15 +18,16 @@
 */
 
 import ListItem from 'components/list-item';
-import { IPlace } from 'modules/places/model';
 import React from 'react';
 
+import { ILastViewedPlace } from 'modules/global/model';
+
 interface IProps {
-  place: IPlace;
+  place: ILastViewedPlace;
 }
 
 export const LastViewedPlace = ({ place }: IProps) => {
-  const { name, slug, id, organization, type } = place;
+  const { name, slug, id, organization, mainType, subType } = place;
 
   return (
     <div className="marapp-qa-lastviewedplace ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
@@ -36,9 +37,9 @@ export const LastViewedPlace = ({ place }: IProps) => {
       <ListItem
         title={name}
         key={`${slug}-${organization}`}
-        linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
+        linkTo={{ type: mainType, payload: { slug, id, organization } }}
         organization={organization}
-        labels={[type]}
+        labels={[subType]}
       />
     </div>
   );

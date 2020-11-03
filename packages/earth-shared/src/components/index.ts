@@ -18,6 +18,7 @@
 */
 
 export { default as Button } from './button';
+export { Card } from './card';
 export { default as Chart } from './chart';
 export { default as Datepicker } from './datepicker';
 export { default as Html } from './html';
