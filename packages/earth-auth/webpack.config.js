@@ -12,7 +12,7 @@ module.exports = {
   mode: 'production',
   entry: {
     main: './src/index.ts',
-    signin: './src/Signin.ts',
+    signin: './src/signin/Signin.ts',
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
@@ -56,14 +56,14 @@ module.exports = {
     new MiniCssExtractPlugin({}),
     new HtmlWebpackPlugin({
       inlineSource: '.(js|css)$',
-      template: __dirname + '/src/signin.html',
+      template: __dirname + '/src/signin/signin.html',
       filename: 'signin.html',
       title: process.env.APP_NAME,
       chunk: ['signin'],
     }),
     new HtmlWebpackPlugin({
       inlineSource: '.(js|css)$',
-      template: __dirname + '/src/password-reset.html',
+      template: __dirname + '/src/password-reset/password-reset.html',
       filename: 'password-reset.html',
       title: process.env.APP_NAME,
       chunk: ['main'],

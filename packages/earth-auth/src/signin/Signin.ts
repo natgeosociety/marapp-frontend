@@ -16,10 +16,10 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-import { AuthEnv } from './config';
+import { AuthEnv } from '../config';
 import { Auth0LockConfig } from './model';
 
-const profile = require('./assets/profile.svg') as string;
+const profile = require('../assets/profile.svg') as string;
 
 const AUTH_CONFIG: Auth0LockConfig = JSON.parse(
   decodeURIComponent(escape(window.atob(AuthEnv.atob)))

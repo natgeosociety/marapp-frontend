@@ -48,7 +48,7 @@ body {
   .auth0-lock-overlay {
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: url('./assets/blur.jpg');
+    background-image: url('../assets/blur.jpg');
     position: fixed;
     top: 0;
     bottom: 0;
@@ -79,7 +79,7 @@ body {
     .auth0-lock-overlay {
       background-repeat: no-repeat;
       background-size: cover;
-      background-image: url('./assets/blur.jpg')
+      background-image: url('../assets/blur.jpg')
     }
 
     &.auth0-lock-opened {
