@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 
 const ACTIVE_ENV = process.env.NODE_ENV === 'production' ? '.env' : '.env.local';
@@ -11,13 +11,13 @@ require('dotenv').config({path: ACTIVE_ENV});
 module.exports = {
   mode: 'production',
   entry: {
+    main: './src/index.ts',
     signin: './src/Signin.ts',
-    passReset: './src/PasswordReset.ts',
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 8000
+    port: 8000,
   },
   output: {
     filename: '[name].bundle.js',
@@ -38,7 +38,7 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          {loader: 'style-loader', options: {injectType: 'styleTag'}},
+          {loader: MiniCssExtractPlugin.loader, options: {injectType: 'styleTag'}},
           'css-loader',
           'sass-loader',
         ],
@@ -53,21 +53,21 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
+    new MiniCssExtractPlugin({}),
     new HtmlWebpackPlugin({
       inlineSource: '.(js|css)$',
       template: __dirname + '/src/signin.html',
       filename: 'signin.html',
-      inject: 'body',
       title: process.env.APP_NAME,
-      chunk: ['Signin.ts'],
+      chunk: ['signin'],
     }),
     new HtmlWebpackPlugin({
       inlineSource: '.(js|css)$',
       template: __dirname + '/src/password-reset.html',
       filename: 'password-reset.html',
-      inject: 'body',
       title: process.env.APP_NAME,
-      chunk: ['PasswordReset.ts'],
+      chunk: ['main'],
+      excludeChunks: ['signin'],
     }),
     new HtmlWebpackInlineSourcePlugin(),
     new Dotenv({

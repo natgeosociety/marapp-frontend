@@ -28,3 +28,26 @@ The following environment variables are required by the application.
 APP_ATOB is specified from auth0. When developing locally, you can specify an atob in the env config, so that you can run the screens locally. 
 
 Due to the file size of the generated html being to high, all external dependencies are linked with script tags in the html head.
+
+In order to develop on the password reset screens, you need to setup some values for the Auth0ChangePassword instace (copy values from auth0).
+
+```javascript
+new Auth0ChangePassword({
+      container:         'change-password-widget-container',                // required
+      email:             "someone@example.com",                              // DO NOT CHANGE THIS
+      csrf_token:        "FAKE_MANAGE_CSRF_TOKEN",                                  // DO NOT CHANGE THIS
+      ticket:            "FAKE_MANAGE_CSRF_TOKEN",                                      // DO NOT CHANGE THIS
+      password_policy:   "good",                             // DO NOT CHANGE THIS
+      password_complexity_options:  {'minLength':8},        // DO NOT CHANGE THIS
+      theme: {icon: 'https://www.new.unbiodiversitylab.org/wp-content/uploads/2020/07/UNBL_FULL_WEBSITE.png',primaryColor: '#0099a1'},
+      dict: {
+        passwordPlaceholder: 'enter password',
+        passwordConfirmationPlaceholder: 're-enter password',
+        successMessage:
+          'You have successfully changed your password. You may now sign in with your new password.',
+        headerText: 'Create new password',
+        title: 'Change Password',
+      },
+    });
+````
+ 

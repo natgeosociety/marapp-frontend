@@ -21,8 +21,6 @@ import { Auth0LockConfig } from './model';
 
 const profile = require('./assets/profile.svg') as string;
 
-import './styles.scss';
-
 const AUTH_CONFIG: Auth0LockConfig = JSON.parse(
   decodeURIComponent(escape(window.atob(AuthEnv.atob)))
 );
