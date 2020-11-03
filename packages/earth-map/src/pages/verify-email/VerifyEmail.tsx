@@ -97,6 +97,7 @@ const VerifyEmailTemplate = ({ logout }) => {
       )}
       <button
         className="marapp-qa-logout ng-button ng-button-primary ng-width-1-1 ng-margin-bottom"
+        style={{ lineHeight: '16px' }}
         onClick={(e) => logout()}
       >
         View {APP_NAME} as a Public User
@@ -124,7 +125,7 @@ const VerifiedEmailTemplate = () => {
       </p>
       <p className="ng-margin-medium-bottom">
         Your email address has been successfully verified. To access your account, please sign in
-        with your new email.
+        with your email.
       </p>
       <Link
         to={{ type: 'EARTH' }}
