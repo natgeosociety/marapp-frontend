@@ -154,7 +154,7 @@ class MapComponent extends React.Component<IMap, IMapState> {
   public onRecenterChange = () => {
     const { bounds, setMapBounds } = this.props;
 
-    setMapBounds(null);
+    setMapBounds({});
 
     requestAnimationFrame(() => {
       setMapBounds(bounds);
