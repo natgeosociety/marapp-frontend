@@ -243,6 +243,10 @@ export const getActiveBoundsLayer = createSelector(
 
     const { id, geojson } = selectedResource;
 
+    if (!geojson) {
+      return;
+    }
+
     return {
       key: `bounds-${id}`,
       id: `bounds-${id}`,

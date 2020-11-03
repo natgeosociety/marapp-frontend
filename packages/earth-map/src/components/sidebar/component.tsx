@@ -42,6 +42,7 @@ interface ISidebarPanel {
   setIndexesSelected?: (i: string) => void;
   resetMap?: () => void;
   resetPlace?: () => void;
+  resetCollection?: () => void;
   resetLayers?: () => void;
   selectedOpen?: boolean;
 }
@@ -53,9 +54,10 @@ class Sidebar extends React.Component<ISidebarPanel> {
   };
 
   public resetMap = () => {
-    const { setPlacesSearch, resetMap, resetPlace, resetLayers } = this.props;
+    const { setPlacesSearch, resetMap, resetPlace, resetCollection, resetLayers } = this.props;
 
     resetPlace();
+    resetCollection();
     setPlacesSearch({ search: '' });
     resetLayers();
     resetMap();

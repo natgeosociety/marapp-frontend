@@ -68,7 +68,6 @@ const CollectionDetails = (props: IProps) => {
         include: 'locations',
         select: 'locations.slug,locations.name',
       });
-      console.log(data);
       setCollectionData(data);
       setIsAddingPlaces(false);
       setSaveError(null);

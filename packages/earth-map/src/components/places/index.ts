@@ -6,6 +6,7 @@ import {
   setPlacesSearchOpen,
 } from 'modules/places/actions';
 import { setSidebarPanelExpanded } from 'modules/sidebar/actions';
+import { resetCollection } from 'modules/collections/actions';
 import { connect } from 'react-redux';
 
 import Places from './Places';
@@ -23,6 +24,7 @@ export default connect(
   {
     resetMap,
     resetPlace,
+    resetCollection,
     setPlacesSearch,
     nextPlacesPage,
     setSidebarPanelExpanded,

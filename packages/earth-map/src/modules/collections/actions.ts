@@ -21,3 +21,5 @@ import { createAction } from 'vizzuality-redux-tools';
 export const setCollectionData = createAction('COLLECTIONS/setCollectionData');
 export const setCollectionsLoading = createAction('COLLECTIONS/setCollectionsLoading');
 export const setCollectionsError = createAction('COLLECTIONS/setCollectionsError');
+
+export const resetCollection = createAction('COLLECTIONS/resetCollection');
