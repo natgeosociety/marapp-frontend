@@ -34,4 +34,7 @@ export const ENABLE_PUBLIC_ACCESS = yn(process.env.REACT_APP_ENABLE_PUBLIC_ACCES
   default: false,
 });
 
+export const SIDEBAR_WIDTH = 375;
+export const SIDEBAR_WIDTH_WIDE = 500;
+
 export const REACT_APP_EXTERNAL_IDP_URL = process.env.REACT_APP_EXTERNAL_IDP_URL || '';

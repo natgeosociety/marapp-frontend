@@ -21,14 +21,7 @@ import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { isEmpty } from 'lodash';
 
-import {
-  Card,
-  Spinner,
-  TitleHero,
-  AsyncSelect,
-  Pill,
-  serializeFilters,
-} from '@marapp/earth-shared';
+import { Card, Spinner, TitleHero, AsyncSelect, Pill } from '@marapp/earth-shared';
 
 import { ICollection } from 'modules/collections/model';
 import { updateCollection } from 'services/CollectionsService';
@@ -111,7 +104,7 @@ const CollectionDetails = (props: IProps) => {
               .map((location) => (
                 <Pill
                   label={location.name}
-                  className="ng-margin-small-right ng-margin-small-bottom"
+                  className="marapp-qa-locationpill ng-margin-small-right ng-margin-small-bottom"
                 />
               ))}
           </p>
@@ -127,7 +120,7 @@ const CollectionDetails = (props: IProps) => {
           </p>
           <button
             type="submit"
-            className="ng-button ng-button-secondary ng-margin-right"
+            className="marapp-qa-actionaddplaces ng-button ng-button-secondary ng-margin-right"
             onClick={() => setIsAddingPlaces(true)}
           >
             Add places
@@ -172,13 +165,13 @@ const CollectionDetails = (props: IProps) => {
 
               <button
                 type="submit"
-                className="ng-button ng-button-primary ng-margin-right"
+                className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-right"
                 disabled={!isValid || isSubmitting}
               >
                 {isSubmitting ? 'Saving' : 'Save'}
               </button>
               <button
-                className="ng-button ng-button-secondary"
+                className="marapp-qa-actioncancel ng-button ng-button-secondary"
                 onClick={() => setIsAddingPlaces(false)}
               >
                 Cancel
