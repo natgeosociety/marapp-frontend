@@ -1,6 +1,6 @@
 # Earth Auth
 
-Custom screens for auth0
+Custom screens for Auth0 login/sign-up and password reset flows.
 
 ## Setup
 
@@ -33,21 +33,25 @@ In order to develop on the password reset screens, you need to setup some values
 
 ```javascript
 new Auth0ChangePassword({
-      container:         'change-password-widget-container',                // required
-      email:             "someone@example.com",                              // DO NOT CHANGE THIS
-      csrf_token:        "FAKE_MANAGE_CSRF_TOKEN",                                  // DO NOT CHANGE THIS
-      ticket:            "FAKE_MANAGE_CSRF_TOKEN",                                      // DO NOT CHANGE THIS
-      password_policy:   "good",                             // DO NOT CHANGE THIS
-      password_complexity_options:  {'minLength':8},        // DO NOT CHANGE THIS
-      theme: {icon: 'https://www.new.unbiodiversitylab.org/wp-content/uploads/2020/07/UNBL_FULL_WEBSITE.png',primaryColor: '#0099a1'},
-      dict: {
-        passwordPlaceholder: 'enter password',
-        passwordConfirmationPlaceholder: 're-enter password',
-        successMessage:
-          'You have successfully changed your password. You may now sign in with your new password.',
-        headerText: 'Create new password',
-        title: 'Change Password',
-      },
-    });
+	container: 'change-password-widget-container', // required
+	email: "someone@example.com",                  // DO NOT CHANGE THIS
+	csrf_token: "FAKE_MANAGE_CSRF_TOKEN",          // DO NOT CHANGE THIS
+	ticket: "FAKE_MANAGE_CSRF_TOKEN",              // DO NOT CHANGE THIS
+	password_policy: "good",                       // DO NOT CHANGE THIS
+	password_complexity_options: {
+		'minLength': 8
+	},                                             // DO NOT CHANGE THIS
+	theme: {
+		icon: '<PLACEHOLDER_PICTURE_URL>',
+		primaryColor: '#0099a1'
+	},
+	dict: {
+		passwordPlaceholder: 'enter password',
+		passwordConfirmationPlaceholder: 're-enter password',
+		successMessage: 'You have successfully changed your password. You may now sign in with your new password.',
+		headerText: 'Create new password',
+		title: 'Change Password',
+	},
+});
 ````
  
