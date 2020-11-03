@@ -19,6 +19,7 @@
 
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { isEmpty } from 'lodash';
 
 import {
   Card,
@@ -81,7 +82,7 @@ const CollectionDetails = (props: IProps) => {
     }
   };
 
-  if (loading) {
+  if (loading || isEmpty(data)) {
     return <Spinner />;
   }
 
