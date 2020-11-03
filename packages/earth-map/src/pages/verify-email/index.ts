@@ -17,6 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import VerifyEmail from './component';
+import VerifyEmail from './VerifyEmail';
 
 export default VerifyEmail;
