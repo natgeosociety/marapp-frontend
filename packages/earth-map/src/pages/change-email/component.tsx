@@ -44,9 +44,9 @@ export default function ChangeEmailComponent() {
             alert('Email change successful. Please login using the new credentials.');
             // Auth0 sessions are reset when a user’s email or password changes;
             // force a re-login if email change request successful;
-            return login({ appState: { targetUrl: '/' } }); // TODO: redirect to profile after successful change;
+            return login({ appState: { targetUrl: '/' }, verifiedEmail: true }); // TODO: redirect to profile after successful change;
           } else {
-            alert('Could not change email address.');
+            return login({ appState: { targetUrl: '/' }, verifiedEmailError: true });
           }
         }
         if (error || error_description) {
@@ -56,7 +56,7 @@ export default function ChangeEmailComponent() {
       } catch (e) {
         console.error(e);
       } finally {
-        replace('/profile');
+        login({ appState: { targetUrl: '/' }, fromEmail: true });
       }
     })();
   });
