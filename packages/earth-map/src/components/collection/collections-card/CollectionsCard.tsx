@@ -69,22 +69,22 @@ export const CollectionsCard = (props: IProps) => {
         })}
       </Card>
     );
-  } else {
-    return (
-      <Card className="ng-margin-bottom">
-        <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">Collections</h2>
-        <p>
-          You currently do not have any collections in your organizations.
-          {canCreate &&
-            `Create a collection and start sharing your insights with your
-        organization members.`}
-        </p>
-        {canCreate && (
-          <Link to={{ type: NEW_COLLECTION }} className="ng-button ng-button-secondary">
-            Create New Collection
-          </Link>
-        )}
-      </Card>
-    );
   }
+
+  return (
+    <Card className="ng-margin-bottom">
+      <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">Collections</h2>
+      <p>
+        You currently do not have any collections in your organizations.
+        {canCreate &&
+          `Create a collection and start sharing your insights with your
+        organization members.`}
+      </p>
+      {canCreate && (
+        <Link to={{ type: NEW_COLLECTION }} className="ng-button ng-button-secondary">
+          Create New Collection
+        </Link>
+      )}
+    </Card>
+  );
 };
