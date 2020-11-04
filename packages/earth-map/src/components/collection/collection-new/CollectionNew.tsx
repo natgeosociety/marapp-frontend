@@ -31,6 +31,7 @@ interface IProps {
 
 const CollectionNew = (props: IProps) => {
   const { privateGroups } = props;
+  const canCreateCollection = !!privateGroups.length;
   const [saveError, setSaveError] = useState(null);
   const { handleSubmit, register, errors, formState } = useForm({ mode: 'onChange' });
   const { touched, dirty, isValid, isSubmitting } = formState;
@@ -61,26 +62,30 @@ const CollectionNew = (props: IProps) => {
         <h3 className="ng-text-edit-s ng-margin-remove">Create a Collection</h3>
       </Card>
 
-      <Card className="ng-margin-bottom">
-        <label>
-          <Input
-            label="Name Collection"
-            placeholder="enter a name for your collection"
-            name="name"
-            error={renderErrorFor('name')}
-            ref={register({
-              required: 'Collection name is required',
-            })}
-          />
-        </label>
-      </Card>
+      {canCreateCollection && (
+        <Card className="ng-margin-bottom">
+          <label>
+            <Input
+              label="Name Collection"
+              placeholder="enter a name for your collection"
+              name="name"
+              error={renderErrorFor('name')}
+              ref={register({
+                required: 'Collection name is required',
+              })}
+            />
+          </label>
+        </Card>
+      )}
 
       <Card className="c-legend-item-group">
         <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">Select an Organization</h2>
         <p>
-          Please select an organization to create a collection under. After selecting an
+          {canCreateCollection
+            ? `Please select an organization to create a collection under. After selecting an
           organization, you will be able to select places and share insights with members of your
-          selected organization. Organizations can not be edited once picked.
+          selected organization. Organizations can not be edited once picked.`
+            : `You don't have rights to create a new collection`}
         </p>
         <div className="legend-item-group--radio ng-padding-medium-left">
           {privateGroups.map((group) => (
@@ -106,7 +111,7 @@ const CollectionNew = (props: IProps) => {
       <Card elevation="flush">
         {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
         <button
-          disabled={!isValid || !dirty || isSubmitting}
+          disabled={!isValid || !dirty || isSubmitting || !canCreateCollection}
           type="submit"
           className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
         >
