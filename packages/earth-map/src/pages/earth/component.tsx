@@ -102,7 +102,7 @@ const EarthPage = (props: IProps) => {
                     locationName={collection.name}
                     locationOrganization={collection.organization}
                   >
-                    <CollectionDetails />
+                    <CollectionDetails privateGroups={privateGroups} />
                   </Places>
                 )}
               </>

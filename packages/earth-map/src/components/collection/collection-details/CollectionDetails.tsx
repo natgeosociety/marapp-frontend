@@ -30,6 +30,7 @@ import PlacesService from 'services/PlacesService';
 import './styles.scss';
 
 interface IProps {
+  privateGroups: string[];
   data?: ICollection;
   loading?: boolean;
   error?: any;
@@ -39,13 +40,15 @@ interface IProps {
 }
 
 const CollectionDetails = (props: IProps) => {
-  const { loading, data, setMapBounds, setCollectionData } = props;
+  const { privateGroups, loading, data, setMapBounds, setCollectionData } = props;
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
   const [saveError, setSaveError] = useState('');
   const { control, handleSubmit, formState } = useForm({
     mode: 'onChange',
   });
   const { isValid, isSubmitting } = formState;
+  const canEdit = privateGroups.includes(data.organization);
+
   const onSubmit = async (values) => {
     const parsedValues = {
       ...values,
@@ -89,12 +92,14 @@ const CollectionDetails = (props: IProps) => {
 
       {hasLocations ? (
         <Card className="c-legend-item-group">
-          <button
-            className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
-            onClick={() => setIsAddingPlaces(true)}
-          >
-            edit
-          </button>
+          {canEdit && (
+            <button
+              className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
+              onClick={() => setIsAddingPlaces(true)}
+            >
+              edit
+            </button>
+          )}
           <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
             Collection places ({locations.length})
           </h2>
@@ -115,16 +120,20 @@ const CollectionDetails = (props: IProps) => {
             Collection places {hasLocations && locations.length}
           </h2>
           <p>
-            You currently don’t have any places added to your collection. Add places to your
-            collection to access data metrics and share your insights with your team.
+            {canEdit
+              ? `You currently don’t have any places added to your collection. Add places to your
+            collection to access data metrics and share your insights with your team.`
+              : `There are no places added to this collection.`}
           </p>
-          <button
-            type="submit"
-            className="marapp-qa-actionaddplaces ng-button ng-button-secondary ng-margin-right"
-            onClick={() => setIsAddingPlaces(true)}
-          >
-            Add places
-          </button>
+          {canEdit && (
+            <button
+              type="submit"
+              className="marapp-qa-actionaddplaces ng-button ng-button-secondary ng-margin-right"
+              onClick={() => setIsAddingPlaces(true)}
+            >
+              Add places
+            </button>
+          )}
         </Card>
       )}
 
@@ -149,9 +158,6 @@ const CollectionDetails = (props: IProps) => {
                 loadFunction={(query) =>
                   PlacesService.fetchPlaces({
                     ...query,
-                    // filter: serializeFilters({
-                    //   publicResource: true,
-                    // })
                   })
                 }
                 selectedGroup={organization}
