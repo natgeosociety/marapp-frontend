@@ -19,15 +19,10 @@
 
 import { useAuth0 } from 'auth/auth0';
 import React, { useEffect } from 'react';
+import { replace } from 'redux-first-router';
 import ProfileService from 'services/ProfileService';
 
 import { Spinner } from '@marapp/earth-shared';
-
-enum ChangeEmailStates {
-  VERIFIED = 'Change Email. Please sign in with your original account email to continue with your update.',
-  ERROR = 'Email Update Error',
-  PENDING = 'Email Change Successful. Please sign in with your original account email to continue with your update.',
-}
 
 export default function ChangeEmailComponent() {
   const { login } = useAuth0();
@@ -44,29 +39,24 @@ export default function ChangeEmailComponent() {
         const error_description = params.get('error_description');
 
         if (accessToken) {
-          console.log('accesstoken');
           const response = await ProfileService.changeEmailConfirmation({ accessToken });
           if (response && response?.data?.success) {
             alert('Email change successful. Please login using the new credentials.');
             // Auth0 sessions are reset when a user’s email or password changes;
             // force a re-login if email change request successful;
-            return login({
-              appState: { targetUrl: '/' },
-              emailState: ChangeEmailStates['VERIFIED'],
-            }); // TODO: redirect to profile after successful change;
+            return login({ appState: { targetUrl: '/' } }); // TODO: redirect to profile after successful change;
           } else {
-            return login({ appState: { targetUrl: '/' }, emailState: ChangeEmailStates['ERROR'] });
+            alert('Could not change email address.');
           }
         }
         if (error || error_description) {
           console.error(error, error_description);
-          return login({ appState: { targetUrl: '/' }, emailState: error_description });
+          alert(error_description);
         }
       } catch (e) {
         console.error(e);
       } finally {
-        console.log('finally');
-        login({ appState: { targetUrl: '/' }, emailState: ChangeEmailStates['PENDING'] });
+        replace('/profile');
       }
     })();
   });
