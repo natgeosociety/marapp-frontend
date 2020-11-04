@@ -40,9 +40,9 @@ const AsyncSelect = (props: AsyncSelectProps) => {
 
   const loadOptions = async (search, prevOptions) => {
     const query = {
-      search: search,
+      search,
       sort: 'name',
-      page: { size: 10, cursor: cursor },
+      page: { size: 30, cursor },
       group: selectedGroup,
     };
     const response = await loadFunction(query);

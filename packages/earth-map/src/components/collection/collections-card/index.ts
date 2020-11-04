@@ -16,29 +16,11 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-import * as actions from './actions';
 
-export default {
-  [actions.setCollectionData]: (state, { payload }) => ({
-    ...state,
-    data: {
-      ...payload,
-    },
-  }),
-  [actions.setCollectionsLoading]: (state, { payload }) => ({
-    ...state,
-    loading: payload,
-  }),
-  [actions.setCollectionsError]: (state, { payload }) => ({
-    ...state,
-    error: payload,
-  }),
-  [actions.resetCollection]: (state) => ({
-    ...state,
-    data: {},
-  }),
-  [actions.setFeaturedCollections]: (state, { payload }) => ({
-    ...state,
-    featured: payload,
-  }),
-};
+import { connect } from 'react-redux';
+
+import { CollectionsCard } from './CollectionsCard';
+
+export default connect((state: any) => ({
+  featured: state.collections.featured,
+}))(CollectionsCard);

@@ -24,4 +24,8 @@ export default {
   error: null,
   // collections list
   results: [],
+
+  featured: {
+    data: [],
+  },
 };

@@ -23,3 +23,5 @@ export const setCollectionsLoading = createAction('COLLECTIONS/setCollectionsLoa
 export const setCollectionsError = createAction('COLLECTIONS/setCollectionsError');
 
 export const resetCollection = createAction('COLLECTIONS/resetCollection');
+
+export const setFeaturedCollections = createAction('COLLECTIONS/setFeaturedCollections');
