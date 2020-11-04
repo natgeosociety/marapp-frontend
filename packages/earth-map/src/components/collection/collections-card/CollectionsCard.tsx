@@ -38,8 +38,9 @@ interface IProps {
 export const CollectionsCard = (props: IProps) => {
   const { canCreate, featured } = props;
   const { data } = featured;
+  const hasCollections = !!data.length;
 
-  if (!!data.length) {
+  if (hasCollections) {
     return (
       <Card expanded={true} className="ng-margin-bottom ng-padding-medium-bottom">
         <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">

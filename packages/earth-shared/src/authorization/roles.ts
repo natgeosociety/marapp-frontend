@@ -102,6 +102,9 @@ export const checkAdminRole = (roles: string[]): boolean => {
   return roles.some((r: string) => filtered.includes(r));
 };
 
+/**
+ * Returns a list of groups where role >= VIEWER
+ */
 export const getPrivateGroups = (mappedRoles): string[] => {
   return Object.keys(mappedRoles).filter(
     (group) =>
