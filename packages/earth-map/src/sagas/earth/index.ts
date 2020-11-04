@@ -23,13 +23,15 @@ import {
   setPlacesCache,
   setPlacesSearchAvailableFilters,
 } from 'modules/places/actions';
+import { setFeaturedCollections } from 'modules/collections/actions';
+import { ICollection } from 'modules/collections/model';
 import { IPlace } from 'modules/places/model';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { loadDataIndexes } from 'sagas/layers';
-import { LOCATION_QUERY } from 'sagas/model';
 import { nextPage } from 'sagas/places';
 import { getGroup, ignoreRedirectsTo } from 'sagas/saga-utils';
 import PlacesService from 'services/PlacesService';
+import { fetchCollections } from 'services/CollectionsService';
 
 const ignoreRedirectsToEarth = ignoreRedirectsTo('EARTH');
 
@@ -37,12 +39,15 @@ export default function* earth() {
   // @ts-ignore
   yield takeLatest(ignoreRedirectsToEarth, loadPlaces);
   // @ts-ignore
+  yield takeLatest(ignoreRedirectsToEarth, loadCollections);
+  // @ts-ignore
   yield takeLatest(ignoreRedirectsToEarth, loadDataIndexes);
   // @ts-ignore
   yield takeLatest(ignoreRedirectsToEarth, preloadFilters);
 
   // WARNING - will execute on any page from the app, not just on /EARTH
   yield takeLatest(resetPlacesFeatured, loadPlaces);
+  yield takeLatest(resetPlacesFeatured, loadCollections);
   yield takeLatest(resetLayerCache, loadDataIndexes);
 }
 
@@ -68,4 +73,20 @@ function* loadPlaces() {
   });
 
   yield put(setPlacesCache(places));
+}
+
+function* loadCollections() {
+  const group = yield select(getGroup);
+  const { data }: { data: ICollection[] } = yield call(fetchCollections, {
+    select: 'slug,name,id,organization,type',
+    page: { size: 5 },
+    sort: 'updatedAt',
+    group: group.toString(),
+  });
+
+  yield put(
+    setFeaturedCollections({
+      data,
+    })
+  );
 }

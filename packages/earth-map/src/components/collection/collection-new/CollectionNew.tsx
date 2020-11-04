@@ -23,15 +23,18 @@ import Link from 'redux-first-router-link';
 import { useForm } from 'react-hook-form';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
-import { useAuth0 } from 'auth/auth0';
 import { createCollection } from 'services/CollectionsService';
 
-const CollectionNew = () => {
+interface IProps {
+  privateGroups: string[];
+}
+
+const CollectionNew = (props: IProps) => {
+  const { privateGroups } = props;
   const [saveError, setSaveError] = useState(null);
   const { handleSubmit, register, errors, formState } = useForm({ mode: 'onChange' });
   const { touched, dirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
-  const { groups } = useAuth0();
 
   const onSubmit = async (values) => {
     try {
@@ -80,7 +83,7 @@ const CollectionNew = () => {
           selected organization. Organizations can not be edited once picked.
         </p>
         <div className="legend-item-group--radio ng-padding-medium-left">
-          {groups.map((group) => (
+          {privateGroups.map((group) => (
             <div>
               <input
                 type="radio"

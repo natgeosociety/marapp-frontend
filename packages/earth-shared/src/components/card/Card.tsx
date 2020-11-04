@@ -25,12 +25,14 @@ import './styles.scss';
 interface IProps {
   children: React.ReactNode;
   elevation?: 'flush' | 'raised' | 'high';
+  expanded?: boolean;
   className?: string;
 }
 
 export const Card = (props: IProps) => {
-  const { children, elevation = 'raised', className = '' } = props;
-  const classNames = cn(`marapp-qa-card marapp-card ng-padding-medium `, {
+  const { children, elevation = 'raised', expanded = false, className = '' } = props;
+  const classNames = cn(`marapp-qa-card marapp-card`, {
+    'ng-padding-medium': !expanded,
     [`marapp-card-${elevation}`]: true,
     [className]: true,
   });

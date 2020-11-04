@@ -24,7 +24,13 @@ import qs from 'query-string';
 import React, { useContext, useEffect, useState } from 'react';
 import { routeToPage } from 'utils';
 
-import { isAuthz, mapAuthzScopes, mapRoleGroups, SessionStorage } from '@marapp/earth-shared';
+import {
+  isAuthz,
+  mapAuthzScopes,
+  mapRoleGroups,
+  SessionStorage,
+  getPrivateGroups,
+} from '@marapp/earth-shared';
 
 import { Auth0 } from './model';
 
@@ -71,6 +77,7 @@ export const Auth0Provider = ({
   const [userData, setUserData] = useState({});
 
   const [groups, setGroups] = useState([]);
+  const [privateGroups, setPrivateGroups] = useState([]);
   const [roles, setRoles] = useState({});
   const [permissions, setPermissions] = useState({});
   // TODO: rename this to selectedGroups
@@ -109,6 +116,8 @@ export const Auth0Provider = ({
       const roles = get(idToken, `${NAMESPACE}/roles`, []);
       const mappedRoles = mapAuthzScopes(roles);
       setRoles(mappedRoles);
+
+      setPrivateGroups(getPrivateGroups(mappedRoles));
 
       const groups = get(idToken, `${NAMESPACE}/groups`);
       const roleGroups = mapRoleGroups(roles, ['*']); // exclude special groups;
@@ -187,6 +196,7 @@ export const Auth0Provider = ({
         email,
         userData,
         groups,
+        privateGroups,
         roles,
         permissions,
         selectedGroup,

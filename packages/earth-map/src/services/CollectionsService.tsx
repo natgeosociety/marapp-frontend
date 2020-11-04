@@ -39,6 +39,10 @@ export const fetchCollection = async (idOrSlug: string, query?: RequestQuery): P
   return BaseAPIService.request(`/collections/${idOrSlug}`, { query }, metaDeserializer);
 };
 
+export const fetchCollections = async (query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request('/collections', { query }, metaDeserializer);
+};
+
 export const updateCollection = async (collectionId: string, data: any, query?: RequestQuery) => {
   return BaseAPIService.request(
     `/management/collections/${collectionId}`,
