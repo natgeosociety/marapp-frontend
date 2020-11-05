@@ -43,17 +43,17 @@ export default function ChangeEmailComponent() {
       }
       if (isAuthenticated) {
         console.log('is authenticated');
-        const token = getAccessToken();
-        console.log(token, 'token is');
+        const accessToken = await getAccessToken();
+        // console.log(token, 'token is');
         try {
-          const hashParameter = window.location.hash;
-          console.log(window.location.hash, 'hash');
-          console.log(window.location.search, 'search');
-          const hashQuery = hashParameter.split('#')[1];
-          const params = new URLSearchParams(hashQuery);
-          const accessToken = params.get('access_token');
-          const error = params.get('error');
-          const error_description = params.get('error_description');
+          // const hashParameter = window.location.hash;
+          // console.log(window.location.hash, 'hash');
+          // console.log(window.location.search, 'search');
+          // const hashQuery = hashParameter.split('#')[1];
+          // const params = new URLSearchParams(hashQuery);
+          // const accessToken = params.get('access_token');
+          // const error = params.get('error');
+          // const error_description = params.get('error_description');
 
           if (accessToken) {
             console.log('accesstoken');
@@ -73,10 +73,10 @@ export default function ChangeEmailComponent() {
               });
             }
           }
-          if (error || error_description) {
-            console.error(error, error_description);
-            return login({ appState: { targetUrl: '/' }, emailState: error_description });
-          }
+          // if (error || error_description) {
+          //   console.error(error, error_description);
+          //   return login({ appState: { targetUrl: '/' }, emailState: error_description });
+          // }
         } catch (e) {
           console.error(e);
         }
