@@ -111,7 +111,6 @@ export const Auth0Provider = ({
       setIsAuthenticated(isAuthenticated);
 
       const accessToken = isAuthenticated ? await auth0FromHook.getTokenSilently() : null;
-      console.log(accessToken, 'auth service');
       onSuccessHook({ accessToken, authClient: auth0FromHook });
 
       const idToken = accessToken ? await auth0FromHook.getUser() : {};
