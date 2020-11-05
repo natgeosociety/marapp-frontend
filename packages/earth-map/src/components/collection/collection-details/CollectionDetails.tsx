@@ -118,7 +118,7 @@ const CollectionDetails = (props: IProps) => {
 
           <div className="scroll-container">
             <Card elevation="raised">
-              <label>Included layers:</label>
+              <label>Add places:</label>
               <Controller
                 as={AsyncSelect}
                 name="locations"
