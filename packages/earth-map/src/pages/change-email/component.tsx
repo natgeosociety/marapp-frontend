@@ -77,10 +77,11 @@ export default function ChangeEmailComponent() {
           }
         } catch (e) {
           console.error(e);
-        } finally {
-          console.log('finally');
-          replace('/profile');
         }
+        // } finally {
+        //   console.log('finally');
+        //   replace('/profile');
+        // }
       }
     };
 
