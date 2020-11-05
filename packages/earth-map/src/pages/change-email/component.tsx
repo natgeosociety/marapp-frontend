@@ -31,59 +31,53 @@ enum ChangeEmailStates {
 }
 
 export default function ChangeEmailComponent() {
-  const { login, isAuthenticated, getAccessToken } = useAuth0();
+  const { login, isAuthenticated } = useAuth0();
 
   useEffect(() => {
     const fn = async () => {
-      if (!isAuthenticated) {
-        return login({
-          appState: { targetUrl: '/profile/change-email' },
-          emailState: ChangeEmailStates['PENDING'],
-        });
-      }
-      if (isAuthenticated) {
-        console.log('is authenticated');
-        const accessToken = await getAccessToken();
-        // console.log(token, 'token is');
-        try {
-          // const hashParameter = window.location.hash;
-          // console.log(window.location.hash, 'hash');
-          // console.log(window.location.search, 'search');
-          // const hashQuery = hashParameter.split('#')[1];
-          // const params = new URLSearchParams(hashQuery);
-          // const accessToken = params.get('access_token');
-          // const error = params.get('error');
-          // const error_description = params.get('error_description');
-
-          if (accessToken) {
-            console.log('accesstoken');
-            const response = await ProfileService.changeEmailConfirmation({ accessToken });
-            if (response && response?.data?.success) {
-              alert('Email change successful. Please login using the new credentials.');
-              // Auth0 sessions are reset when a user’s email or password changes;
-              // force a re-login if email change request successful;
-              return login({
-                appState: { targetUrl: '/' },
-                emailState: ChangeEmailStates['VERIFIED'],
-              }); // TODO: redirect to profile after successful change;
-            } else {
-              return login({
-                appState: { targetUrl: '/' },
-                emailState: ChangeEmailStates['ERROR'],
-              });
-            }
-          }
-          // if (error || error_description) {
-          //   console.error(error, error_description);
-          //   return login({ appState: { targetUrl: '/' }, emailState: error_description });
-          // }
-        } catch (e) {
-          console.error(e);
+      try {
+        const hashParameter = window.location.hash;
+        console.log(window.location.hash, 'hash');
+        console.log(window.location.search, 'search');
+        const hashQuery = hashParameter.split('#')[1];
+        const params = new URLSearchParams(hashQuery);
+        const accessToken = params.get('access_token');
+        const error = params.get('error');
+        const error_description = params.get('error_description');
+        if (!isAuthenticated) {
+          return login({
+            appState: { targetUrl: '/profile/change-email' },
+            emailState: ChangeEmailStates['PENDING'],
+          });
         }
-        // } finally {
-        //   console.log('finally');
-        //   replace('/profile');
-        // }
+
+        if (accessToken) {
+          console.log('accesstoken');
+          const response = await ProfileService.changeEmailConfirmation({ accessToken });
+          if (response && response?.data?.success) {
+            alert('Email change successful. Please login using the new credentials.');
+            // Auth0 sessions are reset when a user’s email or password changes;
+            // force a re-login if email change request successful;
+            return login({
+              appState: { targetUrl: '/' },
+              emailState: ChangeEmailStates['VERIFIED'],
+            }); // TODO: redirect to profile after successful change;
+          } else {
+            return login({
+              appState: { targetUrl: '/' },
+              emailState: ChangeEmailStates['ERROR'],
+            });
+          }
+        }
+        if (error || error_description) {
+          console.error(error, error_description);
+          return login({ appState: { targetUrl: '/' }, emailState: error_description });
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        console.log('finally');
+        replace('/profile');
       }
     };
 
