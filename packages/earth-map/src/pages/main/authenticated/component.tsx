@@ -27,6 +27,7 @@ const AuthenticatedPage = ({ component: Component, fallbackRoute, redirect, ...r
   useEffect(() => {
     const fn = async () => {
       if (!isAuthenticated) {
+        console.log('authenticated page');
         // preserve path, query and hash params when redirecting;
         const target = window.location.href.replace(window.location.origin, '');
         // save target URL to redirect to after login;
