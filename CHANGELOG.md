@@ -1,3 +1,21 @@
+# [1.13.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.12.0...v1.13.0) (2020-11-03)
+
+
+### Bug Fixes
+
+* **admin:** new place remove toggle for public asset [EP-3920] ([#265](https://github.com/natgeosociety/marapp-frontend/issues/265)) ([5c91b35](https://github.com/natgeosociety/marapp-frontend/commit/5c91b35174d7b64c208cdc414801ce46e548836d))
+* add missing groups util ([fff263a](https://github.com/natgeosociety/marapp-frontend/commit/fff263aec4bec4fc31b408d89f4b7ac3e5cc29e8))
+* change admin link check ([4ed1cef](https://github.com/natgeosociety/marapp-frontend/commit/4ed1cef9c3eb71c10373f03e104f593c501b88db))
+* update access util ([e34217b](https://github.com/natgeosociety/marapp-frontend/commit/e34217b2004dc21b83477345027ef4ccee643605))
+
+
+### Features
+
+* **admin:** places public flag based on org [EP-3172] ([#263](https://github.com/natgeosociety/marapp-frontend/issues/263)) ([64168f1](https://github.com/natgeosociety/marapp-frontend/commit/64168f1661648821bd85b517e2c4961bc139bd5d))
+* add support for public role ([91b5bfd](https://github.com/natgeosociety/marapp-frontend/commit/91b5bfd8efe7ae9be5244e38707b9019cf169591))
+* **admin:** multiple org owners support [EP-3125] ([#259](https://github.com/natgeosociety/marapp-frontend/issues/259)) ([e55746f](https://github.com/natgeosociety/marapp-frontend/commit/e55746ffaee47043c2ecac931530e84487985cb4)), closes [#2](https://github.com/natgeosociety/marapp-frontend/issues/2)
+* **auth:** earth auth pages ([#260](https://github.com/natgeosociety/marapp-frontend/issues/260)) ([616c152](https://github.com/natgeosociety/marapp-frontend/commit/616c152ad1f559fc16f15eff4d84a4e392bd3403))
+
 # [1.12.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.11.1...v1.12.0) (2020-10-27)
 
 
