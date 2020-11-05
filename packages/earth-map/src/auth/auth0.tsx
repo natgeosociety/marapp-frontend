@@ -30,6 +30,7 @@ import {
   mapRoleGroups,
   SessionStorage,
   getPrivateGroups,
+  getPublicGroups,
 } from '@marapp/earth-shared';
 
 import { Auth0 } from './model';
@@ -77,6 +78,7 @@ export const Auth0Provider = ({
   const [userData, setUserData] = useState({});
 
   const [groups, setGroups] = useState([]);
+  const [publicGroups, setPublicGroups] = useState([]);
   const [privateGroups, setPrivateGroups] = useState([]);
   const [roles, setRoles] = useState({});
   const [permissions, setPermissions] = useState({});
@@ -118,6 +120,7 @@ export const Auth0Provider = ({
       setRoles(mappedRoles);
 
       setPrivateGroups(getPrivateGroups(mappedRoles));
+      setPublicGroups(getPublicGroups(mappedRoles));
 
       const groups = get(idToken, `${NAMESPACE}/groups`);
       const roleGroups = mapRoleGroups(roles, ['*']); // exclude special groups;
@@ -196,6 +199,7 @@ export const Auth0Provider = ({
         email,
         userData,
         groups,
+        publicGroups,
         privateGroups,
         roles,
         permissions,
