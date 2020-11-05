@@ -37,10 +37,12 @@ export default function ChangeEmailComponent() {
     const fn = async () => {
       if (!isAuthenticated) {
         return login({
-          appState: { targetUrl: '/' },
+          appState: { targetUrl: '/profile/change-email' },
           emailState: ChangeEmailStates['PENDING'],
         });
-      } else {
+      }
+      if (isAuthenticated) {
+        console.log('is authenticated');
         try {
           const hashParameter = window.location.hash;
           const hashQuery = hashParameter.split('#')[1];
@@ -80,6 +82,7 @@ export default function ChangeEmailComponent() {
         }
       }
     };
+
     fn();
   });
 
