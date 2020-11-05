@@ -39,7 +39,6 @@ export default function ChangeEmailComponent() {
         const error_description = params.get('error_description');
 
         if (accessToken) {
-          console.log('has access token');
           const response = await ProfileService.changeEmailConfirmation({ accessToken });
           if (response && response?.data?.success) {
             alert('Email change successful. Please login using the new credentials.');
@@ -57,7 +56,6 @@ export default function ChangeEmailComponent() {
       } catch (e) {
         console.error(e);
       } finally {
-        console.log('redirect to profile');
         replace('/profile');
       }
     })();

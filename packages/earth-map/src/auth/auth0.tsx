@@ -89,8 +89,6 @@ export const Auth0Provider = ({
       const queryParams: IQueryParams = qs.parse(window.location.search);
       setClient(auth0FromHook);
 
-      console.log(window.location.hash, 'hash');
-
       if (queryParams.code) {
         try {
           const { appState } = await auth0FromHook.handleRedirectCallback();
