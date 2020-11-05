@@ -18,6 +18,7 @@
 */
 import React from 'react';
 import { Icons as VizzIcons } from 'vizzuality-components';
+import { union } from 'lodash';
 
 import { useAuth0 } from 'auth/auth0';
 import FeaturedPlaces from 'components/places/featured-places';
@@ -55,7 +56,7 @@ const { EARTH, COLLECTION, LOCATION, NEW_COLLECTION } = EarthRoutes;
 
 const EarthPage = (props: IProps) => {
   const { setSidebarPanel, panel, router, lastViewedPlace, group, collection } = props;
-  const { privateGroups } = useAuth0();
+  const { groups, privateGroups, publicGroups } = useAuth0();
   const { type } = router;
   const selectedOpen = [LOCATION, COLLECTION, NEW_COLLECTION].includes(type);
   const withHeaderLayout = [EARTH, LOCATION, COLLECTION].includes(type);
@@ -86,7 +87,7 @@ const EarthPage = (props: IProps) => {
                   <Places selected={selectedOpen}>
                     <>
                       {showLastViewedPlace && <LastViewedPlace place={lastViewedPlace} />}
-                      <CollectionsCard canCreate={canCreateCollections} />
+                      <CollectionsCard group={group} canCreate={canCreateCollections} />
                       <FeaturedPlaces />
                     </>
                   </Places>
@@ -102,7 +103,10 @@ const EarthPage = (props: IProps) => {
                     locationName={collection.name}
                     locationOrganization={collection.organization}
                   >
-                    <CollectionDetails privateGroups={privateGroups} />
+                    <CollectionDetails
+                      placesFromGroups={union([collection.organization], publicGroups)}
+                      privateGroups={privateGroups}
+                    />
                   </Places>
                 )}
               </>

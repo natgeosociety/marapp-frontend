@@ -80,7 +80,7 @@ function* loadCollections() {
   const { data }: { data: ICollection[] } = yield call(fetchCollections, {
     select: 'slug,name,id,organization,type',
     page: { size: 5 },
-    sort: 'updatedAt',
+    sort: '-updatedAt',
     group: group.toString(),
   });
 
