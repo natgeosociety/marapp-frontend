@@ -45,39 +45,40 @@ export default function ChangeEmailComponent() {
         const error = params.get('error');
         const error_description = params.get('error_description');
         if (!isAuthenticated) {
+          console.log('not auth');
           return login({
             appState: { targetUrl: '/profile/change-email' },
             emailState: ChangeEmailStates['PENDING'],
           });
-        }
-
-        if (accessToken) {
-          console.log('accesstoken');
-          const response = await ProfileService.changeEmailConfirmation({ accessToken });
-          if (response && response?.data?.success) {
-            alert('Email change successful. Please login using the new credentials.');
-            // Auth0 sessions are reset when a user’s email or password changes;
-            // force a re-login if email change request successful;
-            return login({
-              appState: { targetUrl: '/' },
-              emailState: ChangeEmailStates['VERIFIED'],
-            }); // TODO: redirect to profile after successful change;
-          } else {
-            return login({
-              appState: { targetUrl: '/' },
-              emailState: ChangeEmailStates['ERROR'],
-            });
+        } else {
+          if (accessToken) {
+            console.log('accesstoken');
+            const response = await ProfileService.changeEmailConfirmation({ accessToken });
+            if (response && response?.data?.success) {
+              alert('Email change successful. Please login using the new credentials.');
+              // Auth0 sessions are reset when a user’s email or password changes;
+              // force a re-login if email change request successful;
+              return login({
+                appState: { targetUrl: '/' },
+                emailState: ChangeEmailStates['VERIFIED'],
+              }); // TODO: redirect to profile after successful change;
+            } else {
+              return login({
+                appState: { targetUrl: '/' },
+                emailState: ChangeEmailStates['ERROR'],
+              });
+            }
           }
-        }
-        if (error || error_description) {
-          console.error(error, error_description);
-          return login({ appState: { targetUrl: '/' }, emailState: error_description });
+          if (error || error_description) {
+            console.error(error, error_description);
+            return login({ appState: { targetUrl: '/' }, emailState: error_description });
+          }
         }
       } catch (e) {
         console.error(e);
       } finally {
         console.log('finally');
-        replace('/profile');
+        // replace('/profile');
       }
     };
 
