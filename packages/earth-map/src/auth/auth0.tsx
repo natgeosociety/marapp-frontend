@@ -89,7 +89,8 @@ export const Auth0Provider = ({
       const queryParams: IQueryParams = qs.parse(window.location.search);
       setClient(auth0FromHook);
 
-      console.log(window.location, 'window');
+      console.log(window.location.search, 'window');
+      console.log(window.location.href, 'window');
 
       if (queryParams.code) {
         try {
