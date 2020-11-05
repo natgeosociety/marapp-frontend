@@ -134,6 +134,7 @@ export function PlaceDetail(props: IProps) {
     const parsed = {
       ...formData,
       ...(geojsonValue && { geojson: geojsonValue }),
+      publicResource: formData.publicResource && formData.published,
     };
 
     try {
@@ -243,7 +244,7 @@ export function PlaceDetail(props: IProps) {
                     onChange={onSubmit}
                     ref={register({})}
                   />
-                  {PUBLIC_ORG === selectedGroup && (
+                  {PUBLIC_ORG === selectedGroup && published && (
                     <Toggle
                       name="publicResource"
                       label="Public"
