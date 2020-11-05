@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-export const APP_NAME = 'UNBL';
-export const APP_LOGO = require('@app/images/unbl_logo.svg');
+export const APP_NAME = 'Marapp';
+export const APP_LOGO = require('@app/images/marapp.svg');
 
 export const APP_BASEMAPS = [
   {
