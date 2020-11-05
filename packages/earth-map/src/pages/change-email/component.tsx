@@ -47,7 +47,7 @@ export default function ChangeEmailComponent() {
           const hashParameter = window.location.hash;
           const hashQuery = hashParameter.split('#')[1];
           const params = new URLSearchParams(hashQuery);
-
+          console.log(hashParameter, 'hash param');
           const accessToken = params.get('access_token');
           const error = params.get('error');
           const error_description = params.get('error_description');
