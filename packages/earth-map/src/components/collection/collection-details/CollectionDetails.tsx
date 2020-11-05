@@ -30,6 +30,7 @@ import PlacesService from 'services/PlacesService';
 import './styles.scss';
 
 interface IProps {
+  placesFromGroups: string[];
   privateGroups: string[];
   data?: ICollection;
   loading?: boolean;
@@ -40,42 +41,14 @@ interface IProps {
 }
 
 const CollectionDetails = (props: IProps) => {
-  const { privateGroups, loading, data, setMapBounds, setCollectionData } = props;
+  const { placesFromGroups, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
   const [saveError, setSaveError] = useState('');
   const { control, handleSubmit, formState } = useForm({
     mode: 'onChange',
   });
-  const { isValid, isSubmitting } = formState;
+  const { isValid, isSubmitting, dirty } = formState;
   const canEdit = privateGroups.includes(data.organization);
-
-  const onSubmit = async (values) => {
-    const parsedValues = {
-      ...values,
-
-      // The api expects an array of ids or an empty array
-      // should this be handled by AsyncSelect?
-      ...(values.locations ? { locations: values.locations.map((x) => x.id) } : { locations: [] }),
-    };
-
-    try {
-      const { data } = await updateCollection(id, parsedValues, {
-        group: organization,
-        include: 'locations',
-        select: 'locations.slug,locations.name',
-      });
-      setCollectionData(data);
-      setIsAddingPlaces(false);
-      setSaveError(null);
-
-      if (data.bbox2d.length) {
-        setMapBounds({ bbox: data.bbox2d });
-      }
-    } catch (e) {
-      setSaveError('Something went wrong');
-      console.log(e);
-    }
-  };
 
   if (loading || isEmpty(data)) {
     return <Spinner />;
@@ -95,7 +68,7 @@ const CollectionDetails = (props: IProps) => {
           {canEdit && (
             <button
               className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
-              onClick={() => setIsAddingPlaces(true)}
+              onClick={toggleEditPlaces}
             >
               edit
             </button>
@@ -129,7 +102,7 @@ const CollectionDetails = (props: IProps) => {
             <button
               type="submit"
               className="marapp-qa-actionaddplaces ng-button ng-button-secondary ng-margin-right"
-              onClick={() => setIsAddingPlaces(true)}
+              onClick={toggleEditPlaces}
             >
               Add places
             </button>
@@ -145,12 +118,14 @@ const CollectionDetails = (props: IProps) => {
 
           <div className="scroll-container">
             <Card elevation="raised">
+              <label>Included layers:</label>
               <Controller
                 as={AsyncSelect}
                 name="locations"
                 type="places"
+                label="Add places"
                 placeholder="Add places to your collection"
-                className="ng-margin-medium-bottom"
+                className="marapp-qa-locationsdropdown ng-margin-medium-bottom"
                 control={control}
                 defaultValue={locations}
                 getOptionLabel={(option) => option.name}
@@ -158,6 +133,7 @@ const CollectionDetails = (props: IProps) => {
                 loadFunction={(query) =>
                   PlacesService.fetchPlaces({
                     ...query,
+                    group: placesFromGroups.join(','),
                   })
                 }
                 selectedGroup={organization}
@@ -172,13 +148,13 @@ const CollectionDetails = (props: IProps) => {
               <button
                 type="submit"
                 className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-right"
-                disabled={!isValid || isSubmitting}
+                disabled={!isValid || isSubmitting || !dirty}
               >
                 {isSubmitting ? 'Saving' : 'Save'}
               </button>
               <button
                 className="marapp-qa-actioncancel ng-button ng-button-secondary"
-                onClick={() => setIsAddingPlaces(false)}
+                onClick={toggleEditPlaces}
               >
                 Cancel
               </button>
@@ -188,6 +164,39 @@ const CollectionDetails = (props: IProps) => {
       )}
     </div>
   );
+
+  async function onSubmit(values) {
+    const parsedValues = {
+      ...values,
+
+      // The api expects an array of ids or an empty array
+      // should this be handled by AsyncSelect?
+      ...(values.locations ? { locations: values.locations.map((x) => x.id) } : { locations: [] }),
+    };
+
+    try {
+      const { data } = await updateCollection(id, parsedValues, {
+        group: organization,
+        include: 'locations',
+        select: 'locations.slug,locations.name',
+      });
+      setCollectionData(data);
+      toggleEditPlaces();
+      setSaveError(null);
+
+      if (data.bbox2d.length) {
+        setMapBounds({ bbox: data.bbox2d });
+      }
+    } catch (e) {
+      setSaveError('Something went wrong');
+      console.log(e);
+    }
+  }
+
+  function toggleEditPlaces() {
+    setIsAddingPlaces(!isAddingPlaces);
+    setSaveError('');
+  }
 };
 
 export default CollectionDetails;

@@ -30,13 +30,14 @@ const { NEW_COLLECTION } = EarthRoutes;
 
 interface IProps {
   canCreate: boolean;
+  group: string[];
   featured?: {
     data: ICollection[];
   };
 }
 
 export const CollectionsCard = (props: IProps) => {
-  const { canCreate, featured } = props;
+  const { canCreate, featured, group } = props;
   const { data } = featured;
   const hasCollections = !!data.length;
 
@@ -62,7 +63,7 @@ export const CollectionsCard = (props: IProps) => {
               title={name}
               key={`${slug}-${organization}`}
               linkTo={{ type: EMainType.COLLECTION, payload: { slug, id, organization } }}
-              organization={organization}
+              organization={group.length > 1 && organization}
               labels={[SubType.COLLECTION]}
             />
           );
