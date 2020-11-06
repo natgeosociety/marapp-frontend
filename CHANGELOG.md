@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.14.0...v1.14.1) (2020-11-06)
+
+
+### Bug Fixes
+
+* **map:** Wrong button label displayed in the validate email page [EP-3412] ([#279](https://github.com/natgeosociety/marapp-frontend/issues/279)) ([e53384e](https://github.com/natgeosociety/marapp-frontend/commit/e53384eba6e5371532d526dc56bc5cf5403df16d))
+
 # [1.14.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.13.0...v1.14.0) (2020-11-06)
 
 
