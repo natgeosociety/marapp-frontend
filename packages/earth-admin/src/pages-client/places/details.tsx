@@ -33,7 +33,7 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@app/components/card';
+import { Card } from '@marapp/earth-shared';
 import { DetailList } from '@app/components/detail-list';
 import { DownloadFile } from '@app/components/download-file';
 import { ErrorBoundary } from '@app/components/error-boundary';
@@ -134,6 +134,7 @@ export function PlaceDetail(props: IProps) {
     const parsed = {
       ...formData,
       ...(geojsonValue && { geojson: geojsonValue }),
+      publicResource: formData.publicResource && formData.published,
     };
 
     try {
@@ -243,7 +244,7 @@ export function PlaceDetail(props: IProps) {
                     onChange={onSubmit}
                     ref={register({})}
                   />
-                  {PUBLIC_ORG === selectedGroup && (
+                  {PUBLIC_ORG === selectedGroup && published && (
                     <Toggle
                       name="publicResource"
                       label="Public"

@@ -154,7 +154,7 @@ class MapComponent extends React.Component<IMap, IMapState> {
   public onRecenterChange = () => {
     const { bounds, setMapBounds } = this.props;
 
-    setMapBounds(null);
+    setMapBounds({});
 
     requestAnimationFrame(() => {
       setMapBounds(bounds);
@@ -242,7 +242,7 @@ class MapComponent extends React.Component<IMap, IMapState> {
   };
 
   public setRoads = () => {
-    const ROADS_GROUP = ['roads', 'bridges', 'tunnels', 'road labels'];
+    const ROADS_GROUP = ['roads', 'bridges', 'tunnels', 'road-labels', 'surface', 'surface-icons'];
 
     const { mapRoads } = this.props;
     const { layers, metadata } = this.map.getStyle();

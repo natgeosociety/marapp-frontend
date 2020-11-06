@@ -87,5 +87,8 @@ export const BaseAPIService = {
  * @param response
  */
 export const metaDeserializer = (response: AxiosResponse): any => {
-  return { data: DeserializerService.deserialize(response?.data), meta: response?.data?.meta };
+  return {
+    data: DeserializerService.deserialize(response?.data),
+    meta: response?.data?.meta,
+  };
 };

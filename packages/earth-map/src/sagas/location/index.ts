@@ -19,12 +19,11 @@
 
 import groupBy from 'lodash/groupBy';
 import { persistData, setLastViewedPlace } from 'modules/global/actions';
-import { setMap } from 'modules/map/actions';
+import { setMapBounds } from 'modules/map/actions';
 import { setMetrics, setMetricsLoading } from 'modules/metrics/actions';
 import {
   setPlaceData,
   setPlaceSelectedFilter,
-  setPlaceSelectedOpen,
   setPlaceSelectedSearch,
   setPlacesError,
   setPlacesLoading,
@@ -37,6 +36,7 @@ import { call, cancelled, delay, put, select, takeLatest } from 'redux-saga/effe
 import { loadDataIndexes } from 'sagas/layers';
 import { ignoreRedirectsTo } from 'sagas/saga-utils';
 import PlacesService from 'services/PlacesService';
+import { EMainType } from 'modules/global/model';
 
 let PREV_SLUG = null;
 const ignoreRedirectsToLocation = ignoreRedirectsTo('LOCATION');
@@ -59,14 +59,11 @@ function* toLocation({ payload, meta }) {
     return;
   }
 
-  yield put(setPlaceSelectedOpen(false));
   yield put(setSidebarPanelExpanded(false));
   yield put(setPlacesLoading(true));
   yield put(setMetricsLoading(true));
 
   try {
-    yield put(setPlaceSelectedOpen(true));
-
     const { data }: { data: IPlace } = yield call(PlacesService.fetchPlaceById, slug, {
       include: 'metrics',
       group: organization,
@@ -84,24 +81,7 @@ function* toLocation({ payload, meta }) {
       },
     };
 
-    const { map } = yield select();
-
-    yield put(
-      setMap({
-        ...map,
-        bounds: {
-          bbox: data.bbox2d,
-          options: {
-            padding: {
-              top: 50,
-              bottom: 50,
-              left: 50,
-              right: 50,
-            },
-          },
-        },
-      })
-    );
+    yield put(setMapBounds({ bbox: data.bbox2d }));
 
     // Let animations finish before we change the place
     yield delay(750);
@@ -116,7 +96,8 @@ function* toLocation({ payload, meta }) {
         name: data.name,
         slug: data.slug,
         organization: data.organization,
-        type: data.type,
+        mainType: EMainType.LOCATION,
+        subType: data.type,
       })
     );
     yield put(setMetrics(formattedData.metrics));
@@ -126,7 +107,7 @@ function* toLocation({ payload, meta }) {
     yield put(persistData()); // to keep last viewed place
   } catch (e) {
     // TODO better error handling for sagas
-    if (e.response.status === 403 || e.response.status === 404) {
+    if ([403, 404].includes(e.request.status)) {
       replace('/404');
     }
   } finally {

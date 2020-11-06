@@ -26,8 +26,10 @@ import { createSelector } from 'reselect';
 
 import decodes from './decodes';
 import { ILayer } from './model';
+import { EarthRoutes } from 'modules/router/model';
 import { getParams } from './utils';
 
+const routeType = (state) => state.router.type;
 const layers = (state) => state.layers.listActive;
 const active = (state) => state.layers.active;
 const settings = (state) => state.layers.settings;
@@ -36,6 +38,7 @@ const interactions = (state) => state.map.interactions;
 const interactionsSelected = (state) => state.map.interactionsSelected;
 
 const place = (state) => state.places.data;
+const collection = (state) => state.collections.data;
 
 const GROUP_LEGEND = (type) => type === 'group';
 const YEAR_PICKER_LEGEND = (type) => type === 'yearpicker';
@@ -221,52 +224,69 @@ export const getActiveLayers = createSelector(
   }
 );
 
-export const getActiveBoundsLayer = createSelector([place], (_place) => {
-  if (!_place || isEmpty(_place)) {
-    return null;
-  }
+/**
+ * Computes the data needed to display the location/collection path on the map
+ * Checks the router to know when to compute location or collection path
+ */
+export const getActiveBoundsLayer = createSelector(
+  [routeType, place, collection],
+  (_routeType, _place, _collection) => {
+    const routeAwareMapping = {
+      [EarthRoutes.LOCATION]: _place,
+      [EarthRoutes.COLLECTION]: _collection,
+    };
+    const selectedResource = routeAwareMapping[_routeType];
 
-  const { id, geojson } = _place;
+    if (!selectedResource || isEmpty(selectedResource)) {
+      return null;
+    }
 
-  return {
-    key: `bounds-${id}`,
-    id: `bounds-${id}`,
-    slug: `bounds-${id}`,
-    name: 'Bounds',
-    zIndex: 2000,
-    provider: 'geojson',
-    type: 'geojson',
-    source: {
+    const { id, geojson } = selectedResource;
+
+    if (!geojson) {
+      return;
+    }
+
+    return {
+      key: `bounds-${id}`,
+      id: `bounds-${id}`,
+      slug: `bounds-${id}`,
+      name: 'Bounds',
+      zIndex: 2000,
+      provider: 'geojson',
       type: 'geojson',
-      data: geojson,
-    },
-    render: {
-      metadata: {
-        position: 'top',
+      source: {
+        type: 'geojson',
+        data: geojson,
       },
-      layers: [
-        {
-          id: `${id}-fill`,
-          type: 'fill',
-          source: id,
-          paint: {
-            'fill-color': 'transparent',
-            'fill-opacity': 0.25,
-          },
+      render: {
+        metadata: {
+          position: 'top',
         },
-        {
-          id: `${id}-line`,
-          type: 'line',
-          source: id,
-          paint: {
-            'line-color': '#000000',
-            'line-width': 3,
+        layers: [
+          {
+            id: `${id}-fill`,
+            type: 'fill',
+            source: id,
+            paint: {
+              'fill-color': 'transparent',
+              'fill-opacity': 0.25,
+            },
           },
-        },
-      ],
-    },
-  };
-});
+          {
+            id: `${id}-line`,
+            type: 'line',
+            source: id,
+            paint: {
+              'line-color': '#000000',
+              'line-width': 3,
+            },
+          },
+        ],
+      },
+    };
+  }
+);
 
 export const getActiveInteractiveLayersIds = createSelector(
   [layers, settings, active],

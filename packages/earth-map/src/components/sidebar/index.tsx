@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import isEmpty from 'lodash/isEmpty';
 import { resetLayers } from 'modules/layers/actions';
 import { resetMap } from 'modules/map/actions';
+import { resetCollection } from 'modules/collections/actions';
 import { resetPlace, setPlacesSearch } from 'modules/places/actions';
 import { setSidebarOpen } from 'modules/sidebar/actions';
 import { connect } from 'react-redux';
@@ -29,13 +29,13 @@ import SidebarComponent from './component';
 export default connect(
   (state: any) => ({
     ...state.sidebar,
-    selectedOpen: state.places.selectedOpen,
   }),
   {
     setSidebarOpen,
     setPlacesSearch,
     resetMap,
     resetPlace,
+    resetCollection,
     resetLayers,
   }
 )(SidebarComponent);

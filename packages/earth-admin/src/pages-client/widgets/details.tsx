@@ -35,7 +35,7 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@app/components/card';
+import { Card } from '@marapp/earth-shared';
 import { DetailList } from '@app/components/detail-list';
 import { HtmlEditor } from '@app/components/html-editor';
 import { JsonEditor } from '@app/components/json-editor';
@@ -307,6 +307,7 @@ export function WidgetsDetail(props: WidgetProps) {
                       <div className="ng-margin-medium-bottom">
                         <label htmlFor="provider">Widget Layer(s)</label>
                         <Controller
+                          as={AsyncSelect}
                           name="layers"
                           type="layers"
                           className="marapp-qa-layers"
@@ -316,15 +317,9 @@ export function WidgetsDetail(props: WidgetProps) {
                           loadFunction={LayersService.getAllLayers}
                           defaultValue={layers}
                           selectedGroup={selectedGroup}
-                          as={AsyncSelect}
                           onChange={([e]) => e}
                           isClearable={true}
                           isSearchable={true}
-                          styles={CUSTOM_STYLES}
-                          theme={(theme) => ({
-                            ...theme,
-                            ...SELECT_THEME,
-                          })}
                           closeMenuOnSelect={false}
                           placeholder="Select layer(s)"
                         />

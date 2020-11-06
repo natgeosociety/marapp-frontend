@@ -31,7 +31,7 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@app/components/card';
+import { Card } from '@marapp/earth-shared';
 import { DetailList } from '@app/components/detail-list';
 import { HtmlEditor } from '@app/components/html-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
@@ -292,11 +292,6 @@ export function DashboardDetail(props: IProps) {
                           isClearable={true}
                           isSearchable={true}
                           isMulti={true}
-                          styles={CUSTOM_STYLES}
-                          theme={(theme) => ({
-                            ...theme,
-                            ...SELECT_THEME,
-                          })}
                           closeMenuOnSelect={false}
                           placeholder="Select widgets"
                         />

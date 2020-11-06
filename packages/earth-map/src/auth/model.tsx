@@ -35,6 +35,8 @@ export interface Auth0 {
   // TODO: rename this to selectedGroups
   selectedGroup?: string[];
   groups?: string[];
+  publicGroups?: string[];
+  privateGroups?: string[];
   roles?: { [key: string]: any };
   permissions?: { [key: string]: any };
   logout?(o?: LogoutOptions): void;

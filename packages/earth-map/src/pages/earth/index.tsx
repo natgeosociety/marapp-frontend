@@ -25,7 +25,10 @@ import EarthComponent from './component';
 export default connect(
   (state: any) => ({
     ...state.sidebar,
-    selectedOpen: state.places.selectedOpen,
+    router: state.router,
+    group: state.user.group,
+    lastViewedPlace: state.global.lastViewedPlace,
+    collection: state.collections.data,
   }),
   {
     setSidebarPanel,

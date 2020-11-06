@@ -34,7 +34,7 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@app/components/card';
+import { Card } from '@marapp/earth-shared';
 import { HtmlEditor } from '@app/components/html-editor';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
@@ -267,6 +267,7 @@ export function NewLayer(props: IProps) {
             <div className="ng-width-1-1">
               <label htmlFor="provider">Included layers:</label>
               <Controller
+                as={AsyncSelect}
                 name="references"
                 type="layers"
                 className="marapp-qa-references"
@@ -276,17 +277,11 @@ export function NewLayer(props: IProps) {
                 loadFunction={LayersService.getAllLayers}
                 defaultValue={references}
                 selectedGroup={selectedGroup}
-                as={AsyncSelect}
                 isClearable={true}
                 isSearchable={true}
                 isMulti={true}
                 closeMenuOnSelect={false}
                 placeholder="Select layers"
-                styles={CUSTOM_STYLES}
-                theme={(theme) => ({
-                  ...theme,
-                  ...SELECT_THEME,
-                })}
               />
             </div>
           </Card>

@@ -20,7 +20,11 @@
 import isEmpty from 'lodash/isEmpty';
 import { createSelector } from 'reselect';
 
+import { SIDEBAR_WIDTH_WIDE } from 'config';
+
 const latlng = (state) => state.map.latlng;
+const bbox = (state) => state.map.bounds.bbox;
+const sidebarOpen = (state) => state.sidebar.open;
 
 export const getPopup = createSelector([latlng], (_latlng) => {
   if (isEmpty(_latlng) || !_latlng.lat || !_latlng.lng) {
@@ -35,6 +39,19 @@ export const getPopup = createSelector([latlng], (_latlng) => {
   return popup;
 });
 
+export const sidebarAwareMapBounds = createSelector([bbox, sidebarOpen], (_bbox, _sidebarOpen) => ({
+  bbox: _bbox,
+  options: {
+    padding: {
+      top: 50,
+      bottom: 50,
+      left: _sidebarOpen ? SIDEBAR_WIDTH_WIDE + 50 : 50,
+      right: 50,
+    },
+  },
+}));
+
 export default {
   getPopup,
+  sidebarAwareMapBounds,
 };

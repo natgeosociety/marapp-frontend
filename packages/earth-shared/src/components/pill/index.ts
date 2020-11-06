@@ -17,13 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-
-import IndexesComponent from './component';
-
-export default connect(
-  (state: any) => ({
-    selectedOpen: state.places.selectedOpen,
-  }),
-  {}
-)(IndexesComponent);
+export { Pill } from './Pill';

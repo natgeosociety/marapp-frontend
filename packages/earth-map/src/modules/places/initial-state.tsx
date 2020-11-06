@@ -31,7 +31,6 @@ export default {
   error: null,
 
   // Selected
-  selectedOpen: false,
   selectedSearch: '',
   selectedFilter: '',
   selectedId: null,

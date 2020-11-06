@@ -101,3 +101,26 @@ export const checkAdminRole = (roles: string[]): boolean => {
   );
   return roles.some((r: string) => filtered.includes(r));
 };
+
+/**
+ * Returns a list of groups where role >= VIEWER
+ */
+export const getPrivateGroups = (mappedRoles): string[] => {
+  return Object.keys(mappedRoles)
+    .filter(filterNotSuperAdmin)
+    .filter(
+      (group) =>
+        !(mappedRoles[group].length === 1 && mappedRoles[group][0].endsWith(RoleEnum.PUBLIC))
+    );
+};
+
+/**
+ * Returns a list of groups where the user has PUBLIC role
+ */
+export const getPublicGroups = (mappedRoles): string[] => {
+  return Object.keys(mappedRoles)
+    .filter(filterNotSuperAdmin)
+    .filter((group) => mappedRoles[group].find((x) => x === RoleEnum.PUBLIC));
+};
+
+const filterNotSuperAdmin = (group) => group !== '*';

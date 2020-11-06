@@ -31,7 +31,7 @@ import {
   Spinner,
 } from '@marapp/earth-shared';
 
-import { Card } from '@app/components/card';
+import { Card } from '@marapp/earth-shared';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 import OrganizationsService from '@app/services/organizations';

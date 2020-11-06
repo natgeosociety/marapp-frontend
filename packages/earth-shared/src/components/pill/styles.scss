@@ -1,0 +1,12 @@
+@import '~styles/config';
+
+.pill {
+  display: inline-block;
+  padding: 0 10px;
+  border-radius: 50px;
+  background-color: $marapp-gray-3;
+  color: $marapp-gray-9;
+  line-height: 27px;
+  white-space: nowrap;
+  user-select: none;
+}

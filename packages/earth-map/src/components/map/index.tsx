@@ -18,6 +18,7 @@
 */
 
 import { getActiveInteractiveLayersIds } from 'modules/layers/selectors';
+import { sidebarAwareMapBounds } from 'modules/map/selectors';
 import {
   setMapBounds,
   setMapHoverInteractions,
@@ -31,7 +32,7 @@ import MapComponent from './component';
 export default connect(
   (state: any) => ({
     ...state.map,
-    selectedOpen: state.places.selectedOpen,
+    bounds: sidebarAwareMapBounds(state),
     activeInteractiveLayersIds: getActiveInteractiveLayersIds(state),
   }),
   {

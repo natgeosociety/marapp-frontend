@@ -73,7 +73,21 @@ export const ROUTES = {
     fallbackRouteResolver,
   },
   LOCATION: {
-    path: '/earth/:organization/:slug',
+    path: '/location/:organization/:slug',
+    page: 'earth',
+    isAuthRequired,
+    isAuthzRequired,
+    fallbackRouteResolver,
+  },
+  COLLECTION: {
+    path: '/collection/:organization/:slug',
+    page: 'earth',
+    isAuthRequired,
+    isAuthzRequired,
+    fallbackRouteResolver,
+  },
+  NEW_COLLECTION: {
+    path: '/collection/new',
     page: 'earth',
     isAuthRequired,
     isAuthzRequired,

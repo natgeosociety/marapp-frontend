@@ -25,7 +25,7 @@ $marapp-color-success: #28A745!default;
 $marapp-color-error: #FC4349!default;
 
 $marapp-primary-color: #0099A1;
-$marapp-secondary-color: #0099A1;
+$marapp-secondary-color: #7ecace;
 
 $marapp-gray-0: #fff;
 
@@ -42,5 +42,21 @@ $marapp-gray-9: #212529;
 $marapp-gray-100: #212529;
 
 $marapp-red-1: #CE2746;
+
+:root {
+  --marapp-primary-color: #{$marapp-primary-color};
+  --marapp-secondary-color: #{$marapp-secondary-color};
+  --marapp-gray-0: #{$marapp-gray-0};
+  --marapp-gray-1: #{$marapp-gray-1};
+  --marapp-gray-2: #{$marapp-gray-2};
+  --marapp-gray-3: #{$marapp-gray-3};
+  --marapp-gray-4: #{$marapp-gray-4};
+  --marapp-gray-5: #{$marapp-gray-5};
+  --marapp-gray-6: #{$marapp-gray-6};
+  --marapp-gray-7: #{$marapp-gray-7};
+  --marapp-gray-8: #{$marapp-gray-8};
+  --marapp-gray-9: #{$marapp-gray-9};
+  --marapp-gray-100: #{$marapp-gray-100};
+}
 
 @import "variables";

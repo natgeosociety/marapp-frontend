@@ -22,6 +22,8 @@ import classnames from 'classnames';
 
 import { AsyncPaginate } from 'react-select-async-paginate';
 
+import { CUSTOM_STYLES, SELECT_THEME } from '../../theme';
+
 interface AsyncSelectProps {
   loadFunction: (query: { [key: string]: any }) => Promise<any>;
   type: string;
@@ -38,9 +40,9 @@ const AsyncSelect = (props: AsyncSelectProps) => {
 
   const loadOptions = async (search, prevOptions) => {
     const query = {
-      search: search,
+      search,
       sort: 'name',
-      page: { size: 10, cursor: cursor },
+      page: { size: 30, cursor },
       group: selectedGroup,
     };
     const response = await loadFunction(query);
@@ -77,6 +79,11 @@ const AsyncSelect = (props: AsyncSelectProps) => {
       loadOptions={loadOptions}
       shouldLoadMore={shouldLoadMore}
       onChange={(values) => onChange(values)}
+      styles={CUSTOM_STYLES}
+      theme={(theme) => ({
+        ...theme,
+        ...SELECT_THEME,
+      })}
       {...rest}
     />
   );

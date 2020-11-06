@@ -32,7 +32,7 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@app/components/card';
+import { Card } from '@marapp/earth-shared';
 import { HtmlEditor } from '@app/components/html-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
@@ -179,11 +179,6 @@ export function NewDashboard(props: IProps) {
                 isMulti={true}
                 closeMenuOnSelect={false}
                 placeholder="Select widgets"
-                styles={CUSTOM_STYLES}
-                theme={(theme) => ({
-                  ...theme,
-                  ...SELECT_THEME,
-                })}
               />
             </div>
           </Card>
