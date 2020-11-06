@@ -100,7 +100,7 @@ const VerifyEmailTemplate = ({ logout }) => {
         style={{ lineHeight: '16px' }}
         onClick={(e) => logout()}
       >
-        View {APP_NAME} as a Public User
+        {ENABLE_PUBLIC_ACCESS ? `View ${APP_NAME} as a Public User` : 'Logout'}
       </button>
       <button
         disabled={emailState.type.includes(EmailStates.DONE)}
