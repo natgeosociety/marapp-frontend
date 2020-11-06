@@ -1,3 +1,23 @@
+# [1.14.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.13.0...v1.14.0) (2020-11-06)
+
+
+### Bug Fixes
+
+* **admin:** location edit public flag based on publish value ([#278](https://github.com/natgeosociety/marapp-frontend/issues/278)) ([f5f9216](https://github.com/natgeosociety/marapp-frontend/commit/f5f9216f302fde76123e3a65656e81efa6aa0b1f))
+* **auth:** design qa [EP-3303] ([97c8bdd](https://github.com/natgeosociety/marapp-frontend/commit/97c8bddadf7911116af2a95925ad773e2df96e87))
+* **auth:** design qa [EP-3303] ([#269](https://github.com/natgeosociety/marapp-frontend/issues/269)) ([cf8c562](https://github.com/natgeosociety/marapp-frontend/commit/cf8c562f59341c04556e6cff97325a9e88477531))
+* **map:** Collections bugs [EP-3319][EP-3326][EP-3313][EP-3315][EP-3317] ([60fa8c7](https://github.com/natgeosociety/marapp-frontend/commit/60fa8c7c09b3fcbfc76855c55c3ac62bda54ed39))
+* **map:** Fix map center action [EP-3304] ([9c3d0ee](https://github.com/natgeosociety/marapp-frontend/commit/9c3d0ee03a8c0af998bdaecc1fcb32045185ba4d))
+* **map:** toggle on/off roads layer [EP-3176] ([#272](https://github.com/natgeosociety/marapp-frontend/issues/272)) ([5bc2220](https://github.com/natgeosociety/marapp-frontend/commit/5bc2220165a189a61d666b8a15162787eadd0639))
+
+
+### Features
+
+* add robots.txt to avoid public crawlers ([73130a8](https://github.com/natgeosociety/marapp-frontend/commit/73130a82a7a5a021b00115612e1ef3fa1d2054d8))
+* **auth:** password reset screens [EP-3115 ] ([#268](https://github.com/natgeosociety/marapp-frontend/issues/268)) ([ac1c86a](https://github.com/natgeosociety/marapp-frontend/commit/ac1c86acfd1cd73e68e266536f65f05c46a0c8c4))
+* **map:** Edit collection and Center map functionality [EP-3173] ([6040db9](https://github.com/natgeosociety/marapp-frontend/commit/6040db9e8afba5a339f533d9bfaad7fadac1e7d3))
+* **map:** email validation [EP-2874] ([#262](https://github.com/natgeosociety/marapp-frontend/issues/262)) ([06f544c](https://github.com/natgeosociety/marapp-frontend/commit/06f544c5dc8f996e504dc4f0589d36518c16c12c))
+
 # [1.13.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.12.0...v1.13.0) (2020-11-03)
 
 
