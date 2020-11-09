@@ -80,7 +80,7 @@ export default function ChangeEmailComponent() {
           });
         } finally {
           localStorage.removeItem('emailToken');
-          replace('/profile');
+          // replace('/profile');
         }
       }
       // if (error || error_description) {
