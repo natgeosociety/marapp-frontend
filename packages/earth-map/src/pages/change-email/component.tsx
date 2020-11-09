@@ -18,11 +18,15 @@
 */
 
 import { useAuth0 } from 'auth/auth0';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfileService from 'services/ProfileService';
 
 import { Spinner } from '@marapp/earth-shared';
 import { replace } from 'redux-first-router';
+import { ignoreRedirectsTo } from 'sagas/saga-utils';
+import './styles.scss';
+import { PUBLIC_URL } from 'config';
+import { APP_LOGO } from 'theme';
 
 enum ChangeEmailStates {
   VERIFIED = 'Email Change Successful. Please sign in with your new email to continue with your update.',
@@ -32,6 +36,7 @@ enum ChangeEmailStates {
 
 export default function ChangeEmailComponent() {
   const { login, isAuthenticated } = useAuth0();
+  const [errorPage, setErrorPage] = useState('');
 
   useEffect(() => {
     const fn = async () => {
@@ -63,59 +68,39 @@ export default function ChangeEmailComponent() {
               // force a re-login if email change request successful;
               localStorage.removeItem('emailToken');
               return login({
-                appState: { targetUrl: '/profile/change-email' },
+                appState: { targetUrl: '/profile' },
                 emailState: ChangeEmailStates['VERIFIED'],
               });
             }
           }
           if (error || error_description) {
             console.log(error_description, 'aici');
-            return <div>{error_description}</div>;
-            // return login({
-            //   appState: { targetUrl: '/' },
-            //   emailState: error_description,
-            // });
+            setErrorPage(error_description);
           }
         }
       } catch (e) {
-        console.log(e);
         return login({
           appState: { targetUrl: '/profile/change-email' },
           emailState: e,
         });
       }
-
-      // console.log(error, error_description);
-      // if (!isAuthenticated) {
-      //   console.log(accessToken);
-      //   localStorage.setItem('emailToken', accessToken);
-      //   return login({
-      //     appState: { targetUrl: '/profile/change-email' },
-      //     emailState: error ? error_description : ChangeEmailStates['PENDING'],
-      //   });
-      // } else {
-      //   try {
-      //     console.log('try');
-      //
-      //
-      //   } catch (e) {
-      //     console.log(e);
-      //
-      //   } finally {
-      //
-      //     // replace('/profile');
-      //   }
-      // }
-      // // if (error || error_description) {
-      // //   console.log('aici eroare', error_description);
-      // //   return login({
-      // //     appState: {targetUrl: '/'},
-      // //     emailState: error_description,
-      // //   });
-      // // }
     };
     fn();
   });
+
+  if (errorPage) {
+    return (
+      <div className="verified-page marapp-qa-verify-email">
+        <div className="verified-container">
+          <a href={`${PUBLIC_URL}earth`} className="ng-border-remove">
+            <img src={APP_LOGO} className="marapp-qa-logo ng-margin" alt="" />
+          </a>
+          <p className="ng-text-weight-bold ng-color-ultraltgray ng-margin-medium-bottom">Oops!</p>
+          <p className="ng-margin-medium-bottom">{errorPage}</p>
+        </div>
+      </div>
+    );
+  }
 
   return <Spinner size="large" />;
 }
