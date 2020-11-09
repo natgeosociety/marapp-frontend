@@ -75,7 +75,7 @@ export default function ChangeEmailComponent() {
         } catch (e) {
           console.log(e);
           return login({
-            appState: { targetUrl: '/' },
+            appState: { targetUrl: '/profile/change-email' },
             emailState: e,
           });
         } finally {
