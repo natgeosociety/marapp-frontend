@@ -69,10 +69,11 @@ export default function ChangeEmailComponent() {
           }
           if (error || error_description) {
             console.log(error_description, 'aici');
-            return login({
-              appState: { targetUrl: '/' },
-              emailState: error_description,
-            });
+            return <div>{error_description}</div>;
+            // return login({
+            //   appState: { targetUrl: '/' },
+            //   emailState: error_description,
+            // });
           }
         }
       } catch (e) {
