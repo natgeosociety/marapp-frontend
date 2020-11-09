@@ -42,10 +42,10 @@ export default function ChangeEmailComponent() {
       const accessToken = params.get('access_token');
       const error = params.get('error');
       const error_description = params.get('error_description');
-      console.log(accessToken);
-      localStorage.setItem('emailToken', accessToken);
 
       if (!isAuthenticated) {
+        console.log(accessToken);
+        localStorage.setItem('emailToken', accessToken);
         return login({
           appState: { targetUrl: '/profile/change-email' },
           emailState: ChangeEmailStates['PENDING'],
