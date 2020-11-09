@@ -56,25 +56,24 @@ export default function ChangeEmailComponent() {
         const emailToken = localStorage.getItem('emailToken');
 
         try {
-          if (emailToken) {
-            const response = await ProfileService.changeEmailConfirmation({
-              accessToken: emailToken,
+          const response = await ProfileService.changeEmailConfirmation({
+            accessToken: emailToken,
+          });
+          if (response && response?.data?.success) {
+            // Auth0 sessions are reset when a user’s email or password changes;
+            // force a re-login if email change request successful;
+            return login({
+              appState: { targetUrl: '/profile/change-email' },
+              emailState: ChangeEmailStates['VERIFIED'],
             });
-            if (response && response?.data?.success) {
-              // Auth0 sessions are reset when a user’s email or password changes;
-              // force a re-login if email change request successful;
-              return login({
-                appState: { targetUrl: '/profile/change-email' },
-                emailState: ChangeEmailStates['VERIFIED'],
-              });
-            } else {
-              return login({
-                appState: { targetUrl: '/profile/change-email' },
-                emailState: ChangeEmailStates['ERROR'],
-              });
-            }
+          } else {
+            return login({
+              appState: { targetUrl: '/profile/change-email' },
+              emailState: ChangeEmailStates['ERROR'],
+            });
           }
         } catch (e) {
+          console.log(e);
           return login({
             appState: { targetUrl: '/profile/change-email' },
             emailState: e,
@@ -84,13 +83,13 @@ export default function ChangeEmailComponent() {
           replace('/profile');
         }
       }
-      if (error || error_description) {
-        console.log('aici eroare', error_description);
-        return login({
-          appState: { targetUrl: '/' },
-          emailState: error_description,
-        });
-      }
+      // if (error || error_description) {
+      //   console.log('aici eroare', error_description);
+      //   return login({
+      //     appState: {targetUrl: '/'},
+      //     emailState: error_description,
+      //   });
+      // }
     };
     fn();
   });
