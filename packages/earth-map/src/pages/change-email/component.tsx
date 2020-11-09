@@ -44,8 +44,8 @@ export default function ChangeEmailComponent() {
         const accessToken = params.get('access_token');
         const error = params.get('error');
         const error_description = params.get('error_description');
+
         if (!isAuthenticated) {
-          console.log(accessToken);
           localStorage.setItem('emailToken', accessToken);
           return login({
             appState: { targetUrl: '/profile/change-email' },
@@ -53,26 +53,26 @@ export default function ChangeEmailComponent() {
           });
         } else {
           const emailToken = localStorage.getItem('emailToken');
-          if (emailToken || accessToken) {
+          if (emailToken) {
             console.log('email token');
             const response = await ProfileService.changeEmailConfirmation({
-              accessToken: emailToken ? emailToken : accessToken,
+              accessToken: emailToken,
             });
             if (response && response?.data?.success) {
-              console.log('success');
               // Auth0 sessions are reset when a user’s email or password changes;
               // force a re-login if email change request successful;
               return login({
                 appState: { targetUrl: '/profile/change-email' },
                 emailState: ChangeEmailStates['VERIFIED'],
               });
-            } else {
-              console.log('else');
-              return login({
-                appState: { targetUrl: '/profile/change-email' },
-                emailState: ChangeEmailStates['ERROR'],
-              });
             }
+          }
+          if (error || error_description) {
+            console.log(error_description, 'aici');
+            return login({
+              appState: { targetUrl: '/' },
+              emailState: error_description,
+            });
           }
         }
       } catch (e) {
