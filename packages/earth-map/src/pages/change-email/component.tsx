@@ -53,8 +53,10 @@ export default function ChangeEmailComponent() {
         });
       } else {
         try {
+          console.log('try');
           const emailToken = localStorage.getItem('emailToken');
           if (emailToken) {
+            console.log('email token');
             const response = await ProfileService.changeEmailConfirmation({
               accessToken: emailToken,
             });
@@ -66,6 +68,7 @@ export default function ChangeEmailComponent() {
                 emailState: ChangeEmailStates['VERIFIED'],
               });
             } else {
+              console.log('else');
               return login({
                 appState: { targetUrl: '/profile/change-email' },
                 emailState: ChangeEmailStates['ERROR'],
@@ -79,6 +82,7 @@ export default function ChangeEmailComponent() {
             emailState: e,
           });
         } finally {
+          console.log('finally');
           localStorage.removeItem('emailToken');
           // replace('/profile');
         }
