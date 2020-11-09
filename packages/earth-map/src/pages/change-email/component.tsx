@@ -54,26 +54,29 @@ export default function ChangeEmailComponent() {
         try {
           const emailToken = localStorage.getItem('emailToken');
           if (emailToken) {
-            const response = await ProfileService.changeEmailConfirmation({
-              accessToken: emailToken,
-            });
-            if (response && response?.data?.success) {
-              // Auth0 sessions are reset when a user’s email or password changes;
-              // force a re-login if email change request successful;
-              return login({
-                appState: { targetUrl: '/profile/change-email' },
-                emailState: ChangeEmailStates['VERIFIED'],
+            try {
+              const response = await ProfileService.changeEmailConfirmation({
+                accessToken: emailToken,
               });
-            } else {
-              return login({
-                appState: { targetUrl: '/profile/change-email' },
-                emailState: ChangeEmailStates['ERROR'],
-              });
+              if (response && response?.data?.success) {
+                // Auth0 sessions are reset when a user’s email or password changes;
+                // force a re-login if email change request successful;
+                return login({
+                  appState: { targetUrl: '/profile/change-email' },
+                  emailState: ChangeEmailStates['VERIFIED'],
+                });
+              } else {
+                return login({
+                  appState: { targetUrl: '/profile/change-email' },
+                  emailState: ChangeEmailStates['ERROR'],
+                });
+              }
+            } catch (e) {
+              console.log('error', e);
+              console.log(error, error_description);
+              return login({ appState: { targetUrl: '/profile/change-email' }, emailState: e });
             }
           }
-        } catch (e) {
-          console.log('error');
-          return login({ appState: { targetUrl: '/profile/change-email' }, emailState: e });
         } finally {
           localStorage.removeItem('emailToken');
           replace('/profile');
