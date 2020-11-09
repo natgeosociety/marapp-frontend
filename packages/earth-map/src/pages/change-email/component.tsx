@@ -61,6 +61,7 @@ export default function ChangeEmailComponent() {
             if (response && response?.data?.success) {
               // Auth0 sessions are reset when a user’s email or password changes;
               // force a re-login if email change request successful;
+              localStorage.removeItem('emailToken');
               return login({
                 appState: { targetUrl: '/profile/change-email' },
                 emailState: ChangeEmailStates['VERIFIED'],
@@ -82,9 +83,6 @@ export default function ChangeEmailComponent() {
           appState: { targetUrl: '/profile/change-email' },
           emailState: e,
         });
-      } finally {
-        console.log('finally');
-        localStorage.removeItem('emailToken');
       }
 
       // console.log(error, error_description);
