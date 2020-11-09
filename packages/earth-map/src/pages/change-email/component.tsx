@@ -57,7 +57,7 @@ export default function ChangeEmailComponent() {
           if (emailToken) {
             console.log('accesstoken', emailToken);
             const response = await ProfileService.changeEmailConfirmation({
-              emailToken: emailToken,
+              accessToken: emailToken,
             });
             if (response && response?.data?.success) {
               alert('Email change successful. Please login using the new credentials.');
