@@ -22,12 +22,11 @@ import React, { useEffect } from 'react';
 import ProfileService from 'services/ProfileService';
 
 import { Spinner } from '@marapp/earth-shared';
-import { replace } from 'redux-first-router';
 
 enum ChangeEmailStates {
-  VERIFIED = 'Email Change Successful. Please sign in with your original account email to continue with your update.',
+  VERIFIED = 'Email Change Successful. Please sign in with your new email to continue with your update.',
   ERROR = 'Email Update Error',
-  PENDING = 'Change Email. Please sign in with your original account email to continue with your update.',
+  PENDING = 'Change Email. Please sign in with your new account email to continue with your update.',
 }
 
 export default function ChangeEmailComponent() {
@@ -53,9 +52,7 @@ export default function ChangeEmailComponent() {
       } else {
         try {
           const emailToken = localStorage.getItem('emailToken');
-          console.log(emailToken, 'aici');
           if (emailToken) {
-            console.log('accesstoken', emailToken);
             const response = await ProfileService.changeEmailConfirmation({
               accessToken: emailToken,
             });
@@ -65,7 +62,7 @@ export default function ChangeEmailComponent() {
               return login({
                 appState: { targetUrl: '/profile' },
                 emailState: ChangeEmailStates['VERIFIED'],
-              }); // TODO: redirect to profile after successful change;
+              });
             } else {
               return login({
                 appState: { targetUrl: '/profile/change-email' },
@@ -73,16 +70,10 @@ export default function ChangeEmailComponent() {
               });
             }
           }
-          if (error || error_description) {
-            console.error(error, error_description);
-            return login({ appState: { targetUrl: '/' }, emailState: error_description });
-          }
         } catch (e) {
-          console.error(e);
+          return login({ appState: { targetUrl: '/' }, emailState: e });
         } finally {
-          console.log('finally');
           localStorage.removeItem('emailToken');
-          //replace('/profile');
         }
       }
     };
