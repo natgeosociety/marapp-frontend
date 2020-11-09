@@ -55,27 +55,25 @@ export default function ChangeEmailComponent() {
         try {
           const emailToken = localStorage.getItem('emailToken');
           if (emailToken) {
-            try {
-              const response = await ProfileService.changeEmailConfirmation({
-                accessToken: emailToken,
+            const response = await ProfileService.changeEmailConfirmation({
+              accessToken: emailToken,
+            });
+            if (response && response?.data?.success) {
+              // Auth0 sessions are reset when a user’s email or password changes;
+              // force a re-login if email change request successful;
+              return login({
+                appState: { targetUrl: '/profile/change-email' },
+                emailState: ChangeEmailStates['VERIFIED'],
               });
-              if (response && response?.data?.success) {
-                // Auth0 sessions are reset when a user’s email or password changes;
-                // force a re-login if email change request successful;
-                return login({
-                  appState: { targetUrl: '/profile/change-email' },
-                  emailState: ChangeEmailStates['VERIFIED'],
-                });
-              } else {
-                return login({
-                  appState: { targetUrl: '/profile/change-email' },
-                  emailState: ChangeEmailStates['ERROR'],
-                });
-              }
-            } catch (e) {
-              return login({ appState: { targetUrl: '/profile/change-email' }, emailState: e });
+            } else {
+              return login({
+                appState: { targetUrl: '/profile/change-email' },
+                emailState: ChangeEmailStates['ERROR'],
+              });
             }
           }
+        } catch (e) {
+          console.log(e);
           if (error || error_description) {
             return login({
               appState: { targetUrl: '/profile/change-email' },
