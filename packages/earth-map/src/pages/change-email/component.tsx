@@ -52,9 +52,10 @@ export default function ChangeEmailComponent() {
         });
       } else {
         try {
-          if (accessToken) {
+          const emailToken = localStorage.getItem('emailToken');
+          if (emailToken) {
             console.log('accesstoken');
-            const response = await ProfileService.changeEmailConfirmation({ accessToken });
+            const response = await ProfileService.changeEmailConfirmation({ emailToken });
             if (response && response?.data?.success) {
               alert('Email change successful. Please login using the new credentials.');
               // Auth0 sessions are reset when a user’s email or password changes;
