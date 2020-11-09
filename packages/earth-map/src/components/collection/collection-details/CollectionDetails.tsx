@@ -20,8 +20,9 @@
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { isEmpty } from 'lodash';
+import cn from 'classnames';
 
-import { Card, Spinner, TitleHero, AsyncSelect, Pill } from '@marapp/earth-shared';
+import { Card, Spinner, TitleHero, AsyncSelect, Pill, DropdownSimple } from '@marapp/earth-shared';
 
 import { ICollection } from 'modules/collections/model';
 import { updateCollection } from 'services/CollectionsService';
@@ -54,13 +55,29 @@ const CollectionDetails = (props: IProps) => {
     return <Spinner />;
   }
 
+  const editActions = (
+    <DropdownSimple
+      trigger={(open) => (
+        <i
+          className={cn({
+            'ng-icon-download-outline ng-toolbar-button': true,
+            'ng-toolbar-button-open': open,
+          })}
+        />
+      )}
+    >
+      <a onClick={console.log}>Rename Collection</a>
+      <a>Delete</a>
+    </DropdownSimple>
+  );
+
   const { id, organization, name, locations } = data;
   const hasLocations = locations.length > 0;
 
   return (
     <div className="marapp-qa-collection-details">
       <Card elevation="flush" className="ng-widget-header">
-        <TitleHero title={name} subtitle={organization} extra="Collection" />
+        <TitleHero title={name} subtitle={organization} extra="Collection" actions={editActions} />
       </Card>
 
       {hasLocations ? (
