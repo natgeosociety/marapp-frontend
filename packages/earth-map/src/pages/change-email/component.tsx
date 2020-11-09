@@ -43,6 +43,7 @@ export default function ChangeEmailComponent() {
       const error = params.get('error');
       const error_description = params.get('error_description');
 
+      console.log(error, error_description);
       if (!isAuthenticated) {
         console.log(accessToken);
         localStorage.setItem('emailToken', accessToken);
@@ -72,10 +73,14 @@ export default function ChangeEmailComponent() {
                 });
               }
             } catch (e) {
-              console.log('error', e);
-              console.log(error, error_description);
               return login({ appState: { targetUrl: '/profile/change-email' }, emailState: e });
             }
+          }
+          if (error || error_description) {
+            return login({
+              appState: { targetUrl: '/profile/change-email' },
+              emailState: error_description,
+            });
           }
         } finally {
           localStorage.removeItem('emailToken');
