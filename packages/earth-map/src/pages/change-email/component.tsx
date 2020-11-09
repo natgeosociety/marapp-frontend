@@ -49,7 +49,7 @@ export default function ChangeEmailComponent() {
         localStorage.setItem('emailToken', accessToken);
         return login({
           appState: { targetUrl: '/profile/change-email' },
-          emailState: ChangeEmailStates['PENDING'],
+          emailState: error ? error_description : ChangeEmailStates['PENDING'],
         });
       } else {
         console.log('intra si aici?');
