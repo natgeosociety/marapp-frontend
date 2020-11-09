@@ -161,6 +161,7 @@ export const Auth0Provider = ({
    */
   const login = (options = {}) => {
     SessionStorage.remove('ephemeral');
+    console.log(options);
     return client.loginWithRedirect(options);
   };
 

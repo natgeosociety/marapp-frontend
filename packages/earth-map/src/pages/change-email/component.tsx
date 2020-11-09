@@ -35,21 +35,23 @@ export default function ChangeEmailComponent() {
 
   useEffect(() => {
     const fn = async () => {
+      const hashParameter = window.location.hash;
+      const hashQuery = hashParameter.split('#')[1];
+      const params = new URLSearchParams(hashQuery);
+
+      const accessToken = params.get('access_token');
+      const error = params.get('error');
+      const error_description = params.get('error_description');
+      console.log(accessToken);
+
       if (!isAuthenticated) {
         return login({
+          accessToken: accessToken,
           appState: { targetUrl: '/' },
           emailState: ChangeEmailStates['PENDING'],
         });
       } else {
         try {
-          const hashParameter = window.location.hash;
-          const hashQuery = hashParameter.split('#')[1];
-          const params = new URLSearchParams(hashQuery);
-
-          const accessToken = params.get('access_token');
-          const error = params.get('error');
-          const error_description = params.get('error_description');
-
           if (accessToken) {
             console.log('accesstoken');
             const response = await ProfileService.changeEmailConfirmation({ accessToken });
