@@ -22,11 +22,12 @@ import React, { useEffect } from 'react';
 import ProfileService from 'services/ProfileService';
 
 import { Spinner } from '@marapp/earth-shared';
+import { replace } from 'redux-first-router';
 
 enum ChangeEmailStates {
   VERIFIED = 'Email Change Successful. Please sign in with your new email to continue with your update.',
   ERROR = 'Email Update Error',
-  PENDING = 'Change Email. Please sign in with your new account email to continue with your update.',
+  PENDING = 'Change Email. Please sign in with your original account email to continue with your update.',
 }
 
 export default function ChangeEmailComponent() {
@@ -60,7 +61,7 @@ export default function ChangeEmailComponent() {
               // Auth0 sessions are reset when a user’s email or password changes;
               // force a re-login if email change request successful;
               return login({
-                appState: { targetUrl: '/profile' },
+                appState: { targetUrl: '/profile/change-email' },
                 emailState: ChangeEmailStates['VERIFIED'],
               });
             } else {
@@ -71,9 +72,11 @@ export default function ChangeEmailComponent() {
             }
           }
         } catch (e) {
-          return login({ appState: { targetUrl: '/' }, emailState: e });
+          console.log('error');
+          return login({ appState: { targetUrl: '/profile/change-email' }, emailState: e });
         } finally {
           localStorage.removeItem('emailToken');
+          replace('/profile');
         }
       }
     };
