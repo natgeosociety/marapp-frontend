@@ -53,10 +53,10 @@ export default function ChangeEmailComponent() {
           });
         } else {
           const emailToken = localStorage.getItem('emailToken');
-          if (emailToken) {
+          if (emailToken || accessToken) {
             console.log('email token');
             const response = await ProfileService.changeEmailConfirmation({
-              accessToken: emailToken,
+              accessToken: emailToken ? emailToken : accessToken,
             });
             if (response && response?.data?.success) {
               console.log('success');
