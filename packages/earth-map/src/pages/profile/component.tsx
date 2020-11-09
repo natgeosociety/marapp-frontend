@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { PUBLIC_URL, REACT_APP_EXTERNAL_IDP_URL } from 'config';
 import { capitalize, identity, omit, pickBy } from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import Link from 'redux-first-router-link';
 import ProfileService from 'services/ProfileService';
@@ -31,6 +32,7 @@ enum RESET_PASSWORD_STATE {
 
 export function ProfileComponent(props: IProps) {
   const { page } = props;
+  const { t } = useTranslation();
 
   const { getValues, register, formState, errors: formErrors } = useForm({
     mode: 'onChange',
@@ -228,7 +230,7 @@ export function ProfileComponent(props: IProps) {
         <UserMenu
           selected={page}
           isAuthenticated={isAuthenticated}
-          profileLink={<Link to={{ type: 'PROFILE' }}>Profile</Link>}
+          profileLink={<Link to={{ type: 'PROFILE' }}>{t('Profile')}</Link>}
           onLogin={login}
           onLogout={logout}
           onSignUp={() => login({ initialScreen: 'signUp' })}
@@ -237,7 +239,7 @@ export function ProfileComponent(props: IProps) {
       <div className="ng-user-profile-container">
         <div className="ng-padding-large">
           <h1 className="ng-margin-medium-bottom ng-text-center ng-text-uppercase ng-ep-text-gray-1 ng-text-display-m user-profile-title">
-            Manage your account
+            {t('Manage your account')}
           </h1>
           <form className="ng-form ng-form-dark">
             <div className="ng-grid">

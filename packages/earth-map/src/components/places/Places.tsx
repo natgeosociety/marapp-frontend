@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
 
 import BackToLocation from 'components/back-to-location';
@@ -31,6 +32,7 @@ interface IProps {
 }
 
 const Places = (props: IProps) => {
+  const { t } = useTranslation();
   const {
     panelExpanded,
     search,
@@ -86,7 +88,7 @@ const Places = (props: IProps) => {
         <>
           <SearchBox
             value={search.search}
-            placeholder="search places"
+            placeholder={t('search places')}
             onChange={handleChange}
             onReset={handleReset}
             onFocus={() => setSidebarPanelExpanded(true)}
@@ -112,7 +114,7 @@ const Places = (props: IProps) => {
     >
       {showSearchResults ? (
         <InfiniteList
-          title="Search results"
+          title={t('Search results')}
           data={results}
           loading={search.loading}
           nextPageCursor={nextPageCursor}

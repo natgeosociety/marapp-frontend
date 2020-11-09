@@ -18,6 +18,7 @@
 */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 import { isEmpty } from 'lodash';
 
@@ -42,6 +43,7 @@ interface IProps {
 
 const CollectionDetails = (props: IProps) => {
   const { placesFromGroups, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
+  const { t } = useTranslation();
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
   const [saveError, setSaveError] = useState('');
   const { control, handleSubmit, formState } = useForm({
@@ -60,7 +62,7 @@ const CollectionDetails = (props: IProps) => {
   return (
     <div className="marapp-qa-collection-details">
       <Card elevation="flush" className="ng-widget-header">
-        <TitleHero title={name} subtitle={organization} extra="Collection" />
+        <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
       </Card>
 
       {hasLocations ? (
@@ -70,11 +72,11 @@ const CollectionDetails = (props: IProps) => {
               className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
               onClick={toggleEditPlaces}
             >
-              edit
+              {t('edit')}
             </button>
           )}
           <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
-            Collection places ({locations.length})
+            {t('Collection places')} ({locations.length})
           </h2>
           <p>
             {locations
@@ -90,7 +92,7 @@ const CollectionDetails = (props: IProps) => {
       ) : (
         <Card className="c-legend-item-group">
           <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
-            Collection places {hasLocations && locations.length}
+            {t('Collection places')} {hasLocations && locations.length}
           </h2>
           <p>
             {canEdit
@@ -104,7 +106,7 @@ const CollectionDetails = (props: IProps) => {
               className="marapp-qa-actionaddplaces ng-button ng-button-secondary ng-margin-right"
               onClick={toggleEditPlaces}
             >
-              Add places
+              {t('Add places')}
             </button>
           )}
         </Card>
@@ -113,17 +115,17 @@ const CollectionDetails = (props: IProps) => {
       {isAddingPlaces && (
         <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full">
           <Card elevation="high" className="ng-margin-bottom">
-            <TitleHero title={name} subtitle={organization} extra="Collection" />
+            <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
           </Card>
 
           <div className="scroll-container">
             <Card elevation="raised">
-              <label>Add places:</label>
+              <label>{t('Add places')}:</label>
               <Controller
                 as={AsyncSelect}
                 name="locations"
                 type="places"
-                label="Add places"
+                label={t('Add places')}
                 placeholder="Add places to your collection"
                 className="marapp-qa-locationsdropdown ng-margin-medium-bottom"
                 control={control}
@@ -150,13 +152,13 @@ const CollectionDetails = (props: IProps) => {
                 className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-right"
                 disabled={!isValid || isSubmitting || !dirty}
               >
-                {isSubmitting ? 'Saving' : 'Save'}
+                {isSubmitting ? t('Saving') : t('Save')}
               </button>
               <button
                 className="marapp-qa-actioncancel ng-button ng-button-secondary"
                 onClick={toggleEditPlaces}
               >
-                Cancel
+                {t('Cancel')}
               </button>
             </Card>
           </div>
