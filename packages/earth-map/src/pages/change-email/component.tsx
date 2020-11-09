@@ -60,11 +60,10 @@ export default function ChangeEmailComponent() {
               accessToken: emailToken,
             });
             if (response && response?.data?.success) {
-              alert('Email change successful. Please login using the new credentials.');
               // Auth0 sessions are reset when a user’s email or password changes;
               // force a re-login if email change request successful;
               return login({
-                appState: { targetUrl: '/profile/change-email' },
+                appState: { targetUrl: '/profile' },
                 emailState: ChangeEmailStates['VERIFIED'],
               }); // TODO: redirect to profile after successful change;
             } else {
@@ -82,6 +81,7 @@ export default function ChangeEmailComponent() {
           console.error(e);
         } finally {
           console.log('finally');
+          localStorage.removeItem('emailToken');
           //replace('/profile');
         }
       }
