@@ -51,6 +51,11 @@ export default function ChangeEmailComponent() {
           appState: { targetUrl: '/profile/change-email' },
           emailState: ChangeEmailStates['PENDING'],
         });
+      } else if (error || error_description) {
+        return login({
+          appState: { targetUrl: '/profile/change-email' },
+          emailState: error_description,
+        });
       } else {
         try {
           const emailToken = localStorage.getItem('emailToken');
@@ -73,13 +78,10 @@ export default function ChangeEmailComponent() {
             }
           }
         } catch (e) {
-          console.log(e);
-          if (error || error_description) {
-            return login({
-              appState: { targetUrl: '/profile/change-email' },
-              emailState: error_description,
-            });
-          }
+          return login({
+            appState: { targetUrl: '/profile/change-email' },
+            emailState: e,
+          });
         } finally {
           localStorage.removeItem('emailToken');
           replace('/profile');
