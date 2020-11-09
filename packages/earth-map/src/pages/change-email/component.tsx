@@ -52,11 +52,13 @@ export default function ChangeEmailComponent() {
           emailState: ChangeEmailStates['PENDING'],
         });
       } else if (error || error_description) {
+        console.log('aici eroare', error_description);
         return login({
           appState: { targetUrl: '/profile/change-email' },
           emailState: error_description,
         });
       } else {
+        console.log('intra si aici?');
         try {
           const emailToken = localStorage.getItem('emailToken');
           if (emailToken) {
