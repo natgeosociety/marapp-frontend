@@ -35,25 +35,23 @@ export default function ChangeEmailComponent() {
 
   useEffect(() => {
     const fn = async () => {
-      const hashParameter = window.location.hash;
-      const hashQuery = hashParameter.split('#')[1];
-      const params = new URLSearchParams(hashQuery);
+      try {
+        console.log('try');
+        const hashParameter = window.location.hash;
+        const hashQuery = hashParameter.split('#')[1];
+        const params = new URLSearchParams(hashQuery);
 
-      const accessToken = params.get('access_token');
-      const error = params.get('error');
-      const error_description = params.get('error_description');
-
-      console.log(error, error_description);
-      if (!isAuthenticated) {
-        console.log(accessToken);
-        localStorage.setItem('emailToken', accessToken);
-        return login({
-          appState: { targetUrl: '/profile/change-email' },
-          emailState: error ? error_description : ChangeEmailStates['PENDING'],
-        });
-      } else {
-        try {
-          console.log('try');
+        const accessToken = params.get('access_token');
+        const error = params.get('error');
+        const error_description = params.get('error_description');
+        if (!isAuthenticated) {
+          console.log(accessToken);
+          localStorage.setItem('emailToken', accessToken);
+          return login({
+            appState: { targetUrl: '/profile/change-email' },
+            emailState: error ? error_description : ChangeEmailStates['PENDING'],
+          });
+        } else {
           const emailToken = localStorage.getItem('emailToken');
           if (emailToken) {
             console.log('email token');
@@ -61,6 +59,7 @@ export default function ChangeEmailComponent() {
               accessToken: emailToken,
             });
             if (response && response?.data?.success) {
+              console.log('success');
               // Auth0 sessions are reset when a user’s email or password changes;
               // force a re-login if email change request successful;
               return login({
@@ -75,25 +74,46 @@ export default function ChangeEmailComponent() {
               });
             }
           }
-        } catch (e) {
-          console.log(e);
-          return login({
-            appState: { targetUrl: '/profile/change-email' },
-            emailState: e,
-          });
-        } finally {
-          console.log('finally');
-          localStorage.removeItem('emailToken');
-          // replace('/profile');
         }
+      } catch (e) {
+        console.log(e);
+        return login({
+          appState: { targetUrl: '/profile/change-email' },
+          emailState: e,
+        });
+      } finally {
+        console.log('finally');
+        localStorage.removeItem('emailToken');
       }
-      // if (error || error_description) {
-      //   console.log('aici eroare', error_description);
+
+      // console.log(error, error_description);
+      // if (!isAuthenticated) {
+      //   console.log(accessToken);
+      //   localStorage.setItem('emailToken', accessToken);
       //   return login({
-      //     appState: {targetUrl: '/'},
-      //     emailState: error_description,
+      //     appState: { targetUrl: '/profile/change-email' },
+      //     emailState: error ? error_description : ChangeEmailStates['PENDING'],
       //   });
+      // } else {
+      //   try {
+      //     console.log('try');
+      //
+      //
+      //   } catch (e) {
+      //     console.log(e);
+      //
+      //   } finally {
+      //
+      //     // replace('/profile');
+      //   }
       // }
+      // // if (error || error_description) {
+      // //   console.log('aici eroare', error_description);
+      // //   return login({
+      // //     appState: {targetUrl: '/'},
+      // //     emailState: error_description,
+      // //   });
+      // // }
     };
     fn();
   });
