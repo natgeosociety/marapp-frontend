@@ -54,8 +54,9 @@ export default function ChangeEmailComponent() {
       } else {
         console.log('intra si aici?');
         const emailToken = localStorage.getItem('emailToken');
-        if (emailToken) {
-          try {
+
+        try {
+          if (emailToken) {
             const response = await ProfileService.changeEmailConfirmation({
               accessToken: emailToken,
             });
@@ -72,23 +73,23 @@ export default function ChangeEmailComponent() {
                 emailState: ChangeEmailStates['ERROR'],
               });
             }
-          } catch (e) {
-            return login({
-              appState: { targetUrl: '/profile/change-email' },
-              emailState: e,
-            });
-          } finally {
-            localStorage.removeItem('emailToken');
-            replace('/profile');
           }
-        }
-        if (error || error_description) {
-          console.log('aici eroare', error_description);
+        } catch (e) {
           return login({
-            appState: { targetUrl: '/' },
-            emailState: error_description,
+            appState: { targetUrl: '/profile/change-email' },
+            emailState: e,
           });
+        } finally {
+          localStorage.removeItem('emailToken');
+          replace('/profile');
         }
+      }
+      if (error || error_description) {
+        console.log('aici eroare', error_description);
+        return login({
+          appState: { targetUrl: '/' },
+          emailState: error_description,
+        });
       }
     };
     fn();
