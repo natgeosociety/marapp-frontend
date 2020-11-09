@@ -67,15 +67,15 @@ export default function ChangeEmailComponent() {
               emailState: ChangeEmailStates['VERIFIED'],
             });
           } else {
-            return login({
-              appState: { targetUrl: '/profile/change-email' },
-              emailState: ChangeEmailStates['ERROR'],
-            });
+            // return login({
+            //   appState: { targetUrl: '/profile/change-email' },
+            //   emailState: ChangeEmailStates['ERROR'],
+            // });
           }
         } catch (e) {
           console.log(e);
           return login({
-            appState: { targetUrl: '/profile/change-email' },
+            appState: { targetUrl: '/' },
             emailState: e,
           });
         } finally {
