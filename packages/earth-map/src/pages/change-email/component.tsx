@@ -43,11 +43,11 @@ export default function ChangeEmailComponent() {
       const error = params.get('error');
       const error_description = params.get('error_description');
       console.log(accessToken);
+      localStorage.setItem('emailToken', accessToken);
 
       if (!isAuthenticated) {
         return login({
-          accessToken: accessToken,
-          appState: { targetUrl: '/' },
+          appState: { targetUrl: '/profile/change-email' },
           emailState: ChangeEmailStates['PENDING'],
         });
       } else {
