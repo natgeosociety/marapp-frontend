@@ -53,6 +53,7 @@ export default function ChangeEmailComponent() {
       } else {
         try {
           const emailToken = localStorage.getItem('emailToken');
+          console.log(emailToken, 'aici');
           if (emailToken) {
             console.log('accesstoken');
             const response = await ProfileService.changeEmailConfirmation({ emailToken });
@@ -61,12 +62,12 @@ export default function ChangeEmailComponent() {
               // Auth0 sessions are reset when a user’s email or password changes;
               // force a re-login if email change request successful;
               return login({
-                appState: { targetUrl: '/' },
+                appState: { targetUrl: '/profile/change-email' },
                 emailState: ChangeEmailStates['VERIFIED'],
               }); // TODO: redirect to profile after successful change;
             } else {
               return login({
-                appState: { targetUrl: '/' },
+                appState: { targetUrl: '/profile/change-email' },
                 emailState: ChangeEmailStates['ERROR'],
               });
             }
@@ -79,7 +80,7 @@ export default function ChangeEmailComponent() {
           console.error(e);
         } finally {
           console.log('finally');
-          replace('/profile');
+          //replace('/profile');
         }
       }
     };
