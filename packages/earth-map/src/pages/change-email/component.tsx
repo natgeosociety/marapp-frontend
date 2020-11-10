@@ -22,8 +22,7 @@ import React, { useEffect, useState } from 'react';
 import ProfileService from 'services/ProfileService';
 
 import { Spinner } from '@marapp/earth-shared';
-import { replace } from 'redux-first-router';
-import { ignoreRedirectsTo } from 'sagas/saga-utils';
+import Link from 'redux-first-router-link';
 import './styles.scss';
 import { PUBLIC_URL } from 'config';
 import { APP_LOGO } from 'theme';
@@ -88,19 +87,25 @@ export default function ChangeEmailComponent() {
     fn();
   });
 
-  if (errorPage) {
-    return (
-      <div className="verified-page marapp-qa-verify-email">
-        <div className="verified-container">
-          <a href={`${PUBLIC_URL}earth`} className="ng-border-remove">
-            <img src={APP_LOGO} className="marapp-qa-logo ng-margin" alt="" />
-          </a>
-          <p className="ng-text-weight-bold ng-color-ultraltgray ng-margin-medium-bottom">Oops!</p>
-          <p className="ng-margin-medium-bottom">{errorPage}</p>
-        </div>
-      </div>
-    );
-  }
+  if (errorPage) ErrorPage(errorPage);
 
   return <Spinner size="large" />;
 }
+
+const ErrorPage = (error) => (
+  <div className="verified-page marapp-qa-verify-email">
+    <div className="verified-container">
+      <a href={`${PUBLIC_URL}earth`} className="ng-border-remove">
+        <img src={APP_LOGO} className="marapp-qa-logo ng-margin" />
+      </a>
+      <p className="ng-text-weight-bold ng-color-ultraltgray ng-margin-medium-bottom">Oops!</p>
+      <p className="ng-margin-medium-bottom">{error}</p>
+      <Link
+        to={{ type: 'PROFILE' }}
+        className="ng-button ng-button-secondary ng-width-1-1 marapp-qa-resendemail"
+      >
+        return to profile
+      </Link>
+    </div>
+  </div>
+);
