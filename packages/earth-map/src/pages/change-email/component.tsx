@@ -40,46 +40,36 @@ export default function ChangeEmailComponent() {
 
   useEffect(() => {
     const fn = async () => {
-      try {
-        const hashParameter = window.location.hash;
-        const hashQuery = hashParameter.split('#')[1];
-        const params = new URLSearchParams(hashQuery);
+      const hashParameter = window.location.hash;
+      const hashQuery = hashParameter.split('#')[1];
+      const params = new URLSearchParams(hashQuery);
 
-        const accessToken = params.get('access_token');
-        const error = params.get('error');
-        const error_description = params.get('error_description');
+      const accessToken = params.get('access_token');
+      const error = params.get('error');
+      const error_description = params.get('error_description');
 
-        if (!isAuthenticated) {
-          localStorage.setItem('emailToken', accessToken);
-          return login({
-            appState: { targetUrl: '/profile/change-email' },
-            emailState: error ? error_description : ChangeEmailStates.PENDING,
-          });
-        } else {
-          const emailToken = localStorage.getItem('emailToken');
-          if (!!emailToken) {
-            const response = await ProfileService.changeEmailConfirmation({
-              accessToken: emailToken,
-            });
-            if (response && response?.data?.success) {
-              // Auth0 sessions are reset when a user’s email or password changes;
-              // force a re-login if email change request successful;
-              localStorage.removeItem('emailToken');
-              return login({
-                appState: { targetUrl: '/profile' },
-                emailState: ChangeEmailStates.VERIFIED,
-              });
-            }
-          }
-          if (error || error_description) {
-            setErrorPage(error_description);
-          }
-        }
-      } catch (e) {
-        return login({
-          appState: { targetUrl: '/profile/change-email' },
-          emailState: e,
+      if (!isAuthenticated) {
+        const target = window.location.href.replace(window.location.origin, '');
+        // save target URL to redirect to after login;
+        await login({
+          appState: { targetUrl: target },
+          emailState: error ? error_description : ChangeEmailStates.PENDING,
         });
+      } else {
+        const response = await ProfileService.changeEmailConfirmation({
+          accessToken: accessToken,
+        });
+        if (response && response?.data?.success) {
+          // Auth0 sessions are reset when a user’s email or password changes;
+          // force a re-login if email change request successful;
+          await login({
+            appState: { targetUrl: '/profile' },
+            emailState: ChangeEmailStates.VERIFIED,
+          });
+        }
+        if (error || error_description) {
+          setErrorPage(error_description);
+        }
       }
     };
     fn();
