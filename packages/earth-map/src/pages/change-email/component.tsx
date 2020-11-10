@@ -56,18 +56,19 @@ export default function ChangeEmailComponent() {
           emailState: error ? error_description : ChangeEmailStates.PENDING,
         });
       } else {
-        const response = await ProfileService.changeEmailConfirmation({
-          accessToken: accessToken,
-        });
-        if (response && response?.data?.success) {
-          // Auth0 sessions are reset when a user’s email or password changes;
-          // force a re-login if email change request successful;
-          await login({
-            appState: { targetUrl: '/profile' },
-            emailState: ChangeEmailStates.VERIFIED,
+        try {
+          const response = await ProfileService.changeEmailConfirmation({
+            accessToken: accessToken,
           });
-        }
-        if (error || error_description) {
+          if (response && response?.data?.success) {
+            // Auth0 sessions are reset when a user’s email or password changes;
+            // force a re-login if email change request successful;
+            await login({
+              appState: { targetUrl: '/profile' },
+              emailState: ChangeEmailStates.VERIFIED,
+            });
+          }
+        } catch (e) {
           setErrorPage(error_description);
         }
       }
