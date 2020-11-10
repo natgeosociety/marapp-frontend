@@ -26,8 +26,6 @@ import Link from 'redux-first-router-link';
 import './styles.scss';
 import { PUBLIC_URL } from 'config';
 import { APP_LOGO } from 'theme';
-import { doc } from 'prettier';
-import isEmpty = doc.utils.isEmpty;
 
 enum ChangeEmailStates {
   VERIFIED = 'Email Change Successful. Please sign in with your new email to continue with your update.',
