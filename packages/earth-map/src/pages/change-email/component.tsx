@@ -40,7 +40,6 @@ export default function ChangeEmailComponent() {
   useEffect(() => {
     const fn = async () => {
       try {
-        console.log('try');
         const hashParameter = window.location.hash;
         const hashQuery = hashParameter.split('#')[1];
         const params = new URLSearchParams(hashQuery);
@@ -58,7 +57,6 @@ export default function ChangeEmailComponent() {
         } else {
           const emailToken = localStorage.getItem('emailToken');
           if (!!emailToken) {
-            console.log('email token');
             const response = await ProfileService.changeEmailConfirmation({
               accessToken: emailToken,
             });
@@ -73,7 +71,6 @@ export default function ChangeEmailComponent() {
             }
           }
           if (error || error_description) {
-            console.log(error_description, 'aici');
             setErrorPage(error_description);
           }
         }
@@ -95,8 +92,8 @@ export default function ChangeEmailComponent() {
 }
 
 const ErrorPage = (error) => (
-  <div className="verified-page marapp-qa-verify-email">
-    <div className="verified-container">
+  <div className="change-page marapp-qa-change-email">
+    <div className="change-container">
       <a href={`${PUBLIC_URL}earth`} className="ng-border-remove">
         <img src={APP_LOGO} className="marapp-qa-logo ng-margin" />
       </a>
@@ -104,7 +101,7 @@ const ErrorPage = (error) => (
       <p className="ng-margin-medium-bottom">{error}</p>
       <Link
         to={{ type: 'PROFILE' }}
-        className="ng-button ng-button-secondary ng-width-1-1 marapp-qa-resendemail"
+        className="ng-button ng-button-secondary ng-width-1-1 marapp-qa-gotoprofile"
       >
         return to profile
       </Link>

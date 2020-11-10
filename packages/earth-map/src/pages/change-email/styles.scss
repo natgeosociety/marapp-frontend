@@ -19,7 +19,7 @@
 
 @import '~styles/config';
 
-.verified-page {
+.change-page {
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url('../../images/blur.jpg');
@@ -32,7 +32,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  .verified-container {
+  .change-container {
     box-shadow: 0px 16px 48px rgba(0, 0, 0, 0.175);
     background: $marapp-gray-7;
     max-width: 375px;
