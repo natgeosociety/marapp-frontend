@@ -1,12 +1,11 @@
-import React from 'react';
-import { push } from 'redux-first-router';
-
 import BackToLocation from 'components/back-to-location';
 import FilterBy from 'components/filter-by';
 import InfiniteList from 'components/infinite-list';
 import ListItem from 'components/list-item';
 import SearchBox from 'components/searchbox';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
+import React from 'react';
+import { push } from 'redux-first-router';
 import { hasFilters } from 'utils/filters';
 
 interface IProps {

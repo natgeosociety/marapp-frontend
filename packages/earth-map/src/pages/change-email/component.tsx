@@ -18,14 +18,15 @@
 */
 
 import { useAuth0 } from 'auth/auth0';
+import { PUBLIC_URL } from 'config';
 import React, { useEffect, useState } from 'react';
+import Link from 'redux-first-router-link';
 import ProfileService from 'services/ProfileService';
+import { APP_LOGO } from 'theme';
 
 import { Spinner } from '@marapp/earth-shared';
-import Link from 'redux-first-router-link';
+
 import './styles.scss';
-import { PUBLIC_URL } from 'config';
-import { APP_LOGO } from 'theme';
 
 enum ChangeEmailStates {
   VERIFIED = 'Email Change Successful. Please sign in with your new email to continue with your update.',
@@ -52,7 +53,7 @@ export default function ChangeEmailComponent() {
           localStorage.setItem('emailToken', accessToken);
           return login({
             appState: { targetUrl: '/profile/change-email' },
-            emailState: error ? error_description : ChangeEmailStates['PENDING'],
+            emailState: error ? error_description : ChangeEmailStates.PENDING,
           });
         } else {
           const emailToken = localStorage.getItem('emailToken');
@@ -66,7 +67,7 @@ export default function ChangeEmailComponent() {
               localStorage.removeItem('emailToken');
               return login({
                 appState: { targetUrl: '/profile' },
-                emailState: ChangeEmailStates['VERIFIED'],
+                emailState: ChangeEmailStates.VERIFIED,
               });
             }
           }

@@ -25,12 +25,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { routeToPage } from 'utils';
 
 import {
+  getPrivateGroups,
+  getPublicGroups,
   isAuthz,
   mapAuthzScopes,
   mapRoleGroups,
   SessionStorage,
-  getPrivateGroups,
-  getPublicGroups,
 } from '@marapp/earth-shared';
 
 import { Auth0 } from './model';
@@ -161,7 +161,6 @@ export const Auth0Provider = ({
    */
   const login = (options = {}) => {
     SessionStorage.remove('ephemeral');
-    console.log(options);
     return client.loginWithRedirect(options);
   };
 
