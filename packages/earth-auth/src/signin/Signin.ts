@@ -33,7 +33,7 @@ let language;
 
 if (AUTH_CONFIG.dict && AUTH_CONFIG.dict.signin && AUTH_CONFIG.dict.signin.title) {
   languageDictionary = {
-    title: AUTH_CONFIG.dict.signin.title,
+    title: AUTH_CONFIG.extraParams.emailState ? AUTH_CONFIG.extraParams.emailState : '',
     signUpTerms: `By signing up, you agree to our <a target="_blank" href=${AuthEnv.terms}>terms of service</a> and
         <a target="_blank" href=${AuthEnv.privacy}>privacy policy.</a>`,
     forgotPasswordAction: 'Forgot password?',
