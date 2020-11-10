@@ -87,7 +87,9 @@ export default function ChangeEmailComponent() {
     fn();
   });
 
-  if (errorPage) ErrorPage(errorPage);
+  if (errorPage) {
+    return ErrorPage(errorPage);
+  }
 
   return <Spinner size="large" />;
 }
