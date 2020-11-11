@@ -47,13 +47,19 @@ export default function ChangeEmailComponent() {
 
       const accessToken = params.get('access_token');
       const error = params.get('error');
-      const error_description = params.get('error_description');
+      const errorDescription = params.get('error_description');
+
+      const message: string = error
+        ? error === 'unauthorized'
+          ? errorDescription
+          : ChangeEmailStates.ERROR
+        : ChangeEmailStates.PENDING;
 
       if (!isAuthenticated) {
         // preserve path, query and hash params when redirecting;
         const target = window.location.href.replace(window.location.origin, '');
         // save target URL to redirect to after login;
-        return login({ appState: { targetUrl: target }, emailState: ChangeEmailStates.PENDING });
+        return login({ appState: { targetUrl: target }, emailState: message });
       }
 
       if (accessToken) {
@@ -70,12 +76,8 @@ export default function ChangeEmailComponent() {
         } catch (err) {
           setErrorPage(ChangeEmailStates.ERROR);
         }
-      } else if (error || error_description) {
-        if (error === 'unauthorized') {
-          setErrorPage(error_description);
-        } else {
-          setErrorPage(ChangeEmailStates.ERROR);
-        }
+      } else if (error) {
+        setErrorPage(message);
       } else {
         replace('/profile');
       }
