@@ -67,6 +67,10 @@ export function CollectionDelete(props: IProps) {
       dispatch({
         type: 'EARTH',
       });
+      dispatch({
+        type: 'GLOBAL/setLastViewedPlace',
+        payload: null,
+      });
       // TODO: move all the following side effects under the `EARTH` action
       dispatch({
         type: 'COLLECTIONS/resetCollection',

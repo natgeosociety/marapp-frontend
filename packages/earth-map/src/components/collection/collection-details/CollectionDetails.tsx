@@ -58,7 +58,7 @@ const CollectionDetails = (props: IProps) => {
       trigger={(open) => (
         <i
           className={cn({
-            'ng-icon-download-outline ng-toolbar-button': true,
+            'ng-icon-ellipse ng-toolbar-button': true,
             'ng-toolbar-button-open': open,
           })}
         />
