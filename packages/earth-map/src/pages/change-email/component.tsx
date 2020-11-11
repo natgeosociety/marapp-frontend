@@ -32,7 +32,7 @@ import './styles.scss';
 enum ChangeEmailStates {
   VERIFIED = 'Email change successful. Please sign in with your new email to continue with your update.',
   PENDING = 'Change email. Please sign in with your original account email to continue with your update.',
-  ERROR = 'Email update error.',
+  ERROR = 'It looks like something went wrong with this verification link, it might have expired, or it’s possible you’re using a bad URL.',
 }
 
 export default function ChangeEmailComponent() {
@@ -47,13 +47,8 @@ export default function ChangeEmailComponent() {
 
       const accessToken = params.get('access_token');
       const error = params.get('error');
-      const errorDescription = params.get('error_description');
 
-      const message: string = error
-        ? error === 'unauthorized'
-          ? errorDescription
-          : ChangeEmailStates.ERROR
-        : ChangeEmailStates.PENDING;
+      const message: string = error ? ChangeEmailStates.ERROR : ChangeEmailStates.PENDING;
 
       if (!isAuthenticated) {
         // preserve path, query and hash params when redirecting;
