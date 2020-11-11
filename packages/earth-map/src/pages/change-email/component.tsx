@@ -20,6 +20,7 @@
 import { useAuth0 } from 'auth/auth0';
 import { PUBLIC_URL } from 'config';
 import React, { useEffect, useState } from 'react';
+import { replace } from 'redux-first-router';
 import Link from 'redux-first-router-link';
 import ProfileService from 'services/ProfileService';
 import { APP_LOGO } from 'theme';
@@ -29,9 +30,9 @@ import { Spinner } from '@marapp/earth-shared';
 import './styles.scss';
 
 enum ChangeEmailStates {
-  VERIFIED = 'Email Change Successful. Please sign in with your new email to continue with your update.',
-  ERROR = 'Email Update Error',
-  PENDING = 'Change Email. Please sign in with your original account email to continue with your update.',
+  VERIFIED = 'Email change successful. Please sign in with your new email to continue with your update.',
+  PENDING = 'Change email. Please sign in with your original account email to continue with your update.',
+  ERROR = 'Email update error.',
 }
 
 export default function ChangeEmailComponent() {
@@ -49,28 +50,34 @@ export default function ChangeEmailComponent() {
       const error_description = params.get('error_description');
 
       if (!isAuthenticated) {
+        // preserve path, query and hash params when redirecting;
         const target = window.location.href.replace(window.location.origin, '');
         // save target URL to redirect to after login;
-        await login({
-          appState: { targetUrl: target },
-          emailState: error ? error_description : ChangeEmailStates.PENDING,
-        });
-      } else {
+        return login({ appState: { targetUrl: target }, emailState: ChangeEmailStates.PENDING });
+      }
+
+      if (accessToken) {
         try {
-          const response = await ProfileService.changeEmailConfirmation({
-            accessToken: accessToken,
-          });
+          const response = await ProfileService.changeEmailConfirmation({ accessToken });
           if (response && response?.data?.success) {
             // Auth0 sessions are reset when a user’s email or password changes;
             // force a re-login if email change request successful;
-            await login({
+            return login({
               appState: { targetUrl: '/profile' },
               emailState: ChangeEmailStates.VERIFIED,
             });
           }
-        } catch (e) {
-          setErrorPage(error_description);
+        } catch (err) {
+          setErrorPage(ChangeEmailStates.ERROR);
         }
+      } else if (error || error_description) {
+        if (error === 'unauthorized') {
+          setErrorPage(error_description);
+        } else {
+          setErrorPage(ChangeEmailStates.ERROR);
+        }
+      } else {
+        replace('/profile');
       }
     };
     fn();
