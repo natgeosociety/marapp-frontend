@@ -18,6 +18,7 @@
 */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 import compose from 'lodash/fp/compose';
@@ -43,6 +44,7 @@ interface IProps {
 }
 
 export const UserMenu = (props: IProps) => {
+  const { t, i18n } = useTranslation();
   const {
     isAuthenticated = false,
     onLogin = noop,
@@ -52,6 +54,7 @@ export const UserMenu = (props: IProps) => {
     profileLink,
   } = props;
   const [showDrop, setShowDrop] = useState(false);
+  const [showLangDrop, setShowLangDrop] = useState(false);
 
   const menuRef = useDomWatcher(() => setShowDrop(false), !showDrop);
 
@@ -60,8 +63,77 @@ export const UserMenu = (props: IProps) => {
     setShowDrop(!showDrop);
   };
 
+  const toggleLangDrop = (e) => {
+    e.preventDefault();
+    setShowLangDrop(!showLangDrop);
+  };
+
+  const changeLanguage = (e, lang) => {
+    toggleLangDrop(e);
+    i18n.changeLanguage(lang);
+  };
+
+  const selectedLanguage = i18n.language;
+
   return (
     <div className="marapp-qa-useraccount ng-user-account" ref={menuRef}>
+      <button
+        className="ng-background-ultradkgray ng-color-light ng-padding-medium-horizontal ng-padding-small-vertical ng-margin-medium-right"
+        onClick={toggleLangDrop}
+      >
+        <span className="ng-text-weight-medium ng-text-uppercase">{selectedLanguage}</span>
+        <i
+          className={classnames('ng-icon ng-color-white ng-margin-left', {
+            'ng-icon-directionup': showLangDrop,
+            'ng-icon-directiondown': !showLangDrop,
+          })}
+        />
+      </button>
+      <Dropdown native={true} state={`${showLangDrop}`}>
+        {({ x, ...props }) => (
+          <animated.div
+            style={{
+              transform: x.interpolate((x) => `translate3d(85px, ${x},0)`),
+              position: 'absolute',
+              ...props,
+            }}
+          >
+            <ul className="ng-user-profile-dropdown">
+              <li>
+                <h4 className="ng-text-display-s ng-margin-remove">{t('Languages')}</h4>
+              </li>
+              <li
+                className={classnames({
+                  selected: selectedLanguage === 'en',
+                })}
+              >
+                <a className="marapp-qa-lang-en" onClick={(e) => changeLanguage(e, 'en')}>
+                  English
+                </a>
+              </li>
+              <li
+                className={classnames({
+                  selected: selectedLanguage === 'es',
+                })}
+              >
+                <a className="marapp-qa-lang-es" onClick={(e) => changeLanguage(e, 'es')}>
+                  Español
+                </a>
+              </li>
+              <li
+                className={classnames({
+                  selected: selectedLanguage === 'fr',
+                })}
+              >
+                <a className="marapp-qa-lang-fr" onClick={(e) => changeLanguage(e, 'fr')}>
+                  Français
+                </a>
+              </li>
+            </ul>
+          </animated.div>
+        )}
+      </Dropdown>
+
       <button
         className="ng-user-profile ng-background-ultraltgray ng-color-black"
         onClick={toggleDrop}
@@ -83,7 +155,9 @@ export const UserMenu = (props: IProps) => {
           >
             <ul className="ng-user-profile-dropdown">
               <li>
-                <h4 className="ng-text-display-s ng-margin-remove">ACCOUNT</h4>
+                <h4 className="ng-text-display-s ng-margin-remove ng-text-uppercase">
+                  {t('Account')}
+                </h4>
               </li>
               {isAuthenticated ? (
                 <>
@@ -100,16 +174,16 @@ export const UserMenu = (props: IProps) => {
                   </li>
 
                   <li className="marapp-qa-signout">
-                    <a onClick={compose(onLogout, toggleDrop)}>Sign Out</a>
+                    <a onClick={compose(onLogout, toggleDrop)}>{t('Sign Out')}</a>
                   </li>
                 </>
               ) : (
                 <>
                   <li className="marapp-qa-signin">
-                    <a onClick={compose(onLogin, toggleDrop)}>Sign in</a>
+                    <a onClick={compose(onLogin, toggleDrop)}>{t('Sign in')}</a>
                   </li>
                   <li className="marapp-qa-signup">
-                    <a onClick={compose(onSignUp, toggleDrop)}>Sign up</a>
+                    <a onClick={compose(onSignUp, toggleDrop)}>{t('Sign up')}</a>
                   </li>
                 </>
               )}

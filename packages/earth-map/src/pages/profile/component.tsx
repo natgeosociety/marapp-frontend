@@ -247,7 +247,10 @@ export function ProfileComponent(props: IProps) {
                 <div className="ng-width-2-3 ng-push-1-6 ng-margin-bottom">
                   <div className="ng-background-success ng-padding-medium ng-flex ng-flex-space-between">
                     <span>
-                      An email has been sent to {userData.email} with a link to reset your password.
+                      {t('An email has been sent to {{email}} with a link to reset your password', {
+                        email: userData.email,
+                      })}
+                      .
                     </span>
                     <button
                       className="marapp-qa-resetpassword-dismiss ng-text-display-l ng-text-weight-thin ng-position-absolute ng-position-top-right ng-margin-right"
@@ -268,8 +271,8 @@ export function ProfileComponent(props: IProps) {
                         <div className="ng-margin-medium-bottom">
                           <Input
                             name="firstName"
-                            placeholder="First Name"
-                            label="First Name"
+                            placeholder={t('First Name')}
+                            label={t('First Name')}
                             defaultValue={userProfile.firstName}
                             error={renderErrorFor('firstName')}
                             ref={register({
@@ -283,8 +286,8 @@ export function ProfileComponent(props: IProps) {
                         <div className="ng-margin-medium-bottom">
                           <Input
                             name="lastName"
-                            placeholder="Last Name"
-                            label="Last Name"
+                            placeholder={t('Last Name')}
+                            label={t('Last Name')}
                             defaultValue={userProfile.lastName}
                             error={renderErrorFor('lastName')}
                             ref={register({
@@ -302,7 +305,7 @@ export function ProfileComponent(props: IProps) {
                   })}
                 >
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                    Name
+                    {t('Name')}
                   </h3>
                   <p className="marapp-qa-user-name ng-margin-remove">{userName}</p>
                 </InlineEditCard>
@@ -323,7 +326,7 @@ export function ProfileComponent(props: IProps) {
                             defaultValue={userData.email}
                             error={renderErrorFor('email')}
                             ref={register({
-                              required: 'Please enter a valid email',
+                              required: t('Please enter a valid email') as string,
                               validate: {
                                 valueChangedRule: (value) =>
                                   valueChangedRule(value, userData.email),
@@ -334,11 +337,15 @@ export function ProfileComponent(props: IProps) {
                         </div>
                         <div className="ng-margin-medium-bottom">
                           <p>
-                            After saving, we will send an email to your new email address to confirm
-                            the change.
+                            {t(
+                              'After saving, we will send an email to your new email address to confirm the change'
+                            )}
+                            .
                             <br />
-                            Be sure to check your spam folder if you do not receive the email in a
-                            few minutes.
+                            {t(
+                              'Be sure to check your spam folder if you do not receive the email in a few minutes'
+                            )}
+                            .
                           </p>
                         </div>
                       </>
@@ -357,7 +364,7 @@ export function ProfileComponent(props: IProps) {
                   {pendingEmail && (
                     <>
                       <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                        Current email
+                        {t('Current email')}
                       </h3>
                       <p className="ng-margin-remove">{userData.email}</p>
                       <br />
@@ -381,13 +388,15 @@ export function ProfileComponent(props: IProps) {
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard>
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                    Password reset
+                    {t('Password reset')}
                   </h3>
                   <p className="ng-margin-remove">
-                    We'll send you an email to reset your password.
+                    {t(`We'll send you an email to reset your password`)}.
                     <br />
-                    Be sure to check your spam folder if you do not receive the email in a few
-                    minutes.
+                    {t(
+                      `Be sure to check your spam folder if you do not receive the email in a few minutes`
+                    )}
+                    .
                   </p>
                   <button
                     className="marapp-qa-resetpassword ng-button ng-button-secondary ng-margin-top"
@@ -398,14 +407,14 @@ export function ProfileComponent(props: IProps) {
                     onClick={sendResetEmail}
                   >
                     {resetPasswordState === RESET_PASSWORD_STATE.INITIAL ? (
-                      <span>Send reset email</span>
+                      <span>{t('Send reset email')}</span>
                     ) : resetPasswordState === RESET_PASSWORD_STATE.SENDING ? (
                       <div className="ng-flex">
                         <Spinner size="mini" position="relative" />
-                        <span>Sending reset email</span>
+                        <span>{t('Sending reset email')}</span>
                       </div>
                     ) : (
-                      <span>Email sent</span>
+                      <span>{t('Email sent')}</span>
                     )}
                   </button>
                 </InlineEditCard>
@@ -416,17 +425,19 @@ export function ProfileComponent(props: IProps) {
                     render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                       <>
                         <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                          Organizations
+                          {t('Organizations')}
                         </h3>
                         <div className="ng-grid ng-margin-top">
-                          <div className="ng-width-1-2 ng-text-weight-bold">Organization name</div>
-                          <div className="ng-width-1-4 ng-text-weight-bold">Role</div>
+                          <div className="ng-width-1-2 ng-text-weight-bold">
+                            {t('Organization name')}
+                          </div>
+                          <div className="ng-width-1-4 ng-text-weight-bold">{t('Role')}</div>
                           {Object.keys(userRoles).map((org) => (
                             <>
                               <div className="ng-width-1-2 ng-margin-top">{org}</div>
                               <div className="ng-width-1-4 ng-margin-top">
                                 {markedOrgsForLeave[org] ? (
-                                  <span className="ng-color-mdgray"> marked for removal</span>
+                                  <span className="ng-color-mdgray">{t('marked for removal')}</span>
                                 ) : (
                                   userRoles[org].join(', ')
                                 )}
@@ -442,7 +453,7 @@ export function ProfileComponent(props: IProps) {
                                   disabled={userRoles[org].includes('Owner')}
                                   onClick={(e) => switchMarkOrgForLeave(e, org)}
                                 >
-                                  {markedOrgsForLeave[org] ? 'cancel' : 'leave organization'}
+                                  {markedOrgsForLeave[org] ? t('cancel') : t('leave organization')}
                                 </button>
                               </div>
                             </>
@@ -455,11 +466,13 @@ export function ProfileComponent(props: IProps) {
                     onCancel={() => setMarkedOrgsForLeave({})}
                   >
                     <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                      Organizations
+                      {t('Organizations')}
                     </h3>
                     <div className="ng-grid ng-margin-top">
-                      <div className="ng-width-1-2 ng-text-weight-bold">Organization name</div>
-                      <div className="ng-width-1-2 ng-text-weight-bold">Role</div>
+                      <div className="ng-width-1-2 ng-text-weight-bold">
+                        {t('Organization name')}
+                      </div>
+                      <div className="ng-width-1-2 ng-text-weight-bold">{t('Role')}</div>
                       {Object.keys(userRoles).map((org) => (
                         <>
                           <div className="ng-width-1-2 ng-margin-top">{org}</div>
@@ -477,13 +490,14 @@ export function ProfileComponent(props: IProps) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                        Account access
+                        {t('Account access')}
                       </h3>
                       <p className="ng-margin-remove">
-                        Deleting your account will remove you from all public &amp; private
-                        workspaces, and
+                        {t(
+                          'Deleting your account will remove you from all public & private workspaces, and'
+                        )}
                         <br />
-                        erase all of your settings.
+                        {t('erase all of your settings')}.
                       </p>
                       <p>
                         <label className="ng-padding-bottom ng-flex ng-c-cursor-pointer">
@@ -493,15 +507,16 @@ export function ProfileComponent(props: IProps) {
                             checked={confirmDeleteAccount}
                             onChange={(e) => setConfirmDeleteAccount(e.target.checked)}
                           />
-                          I understand this will permanently delete my account and that this action
-                          can
+                          {t(
+                            'I understand this will permanently delete my account and that this action can'
+                          )}
                           <br />
-                          not be undone.
+                          {t('not be undone')}.
                         </label>
                       </p>
                     </>
                   )}
-                  submitButtonText={'DELETE'}
+                  submitButtonText={t('DELETE')}
                   submitButtonVariant={'danger'}
                   manualOpen={isDeletingAccountOpen}
                   onCancel={() => {
@@ -512,14 +527,14 @@ export function ProfileComponent(props: IProps) {
                   validForm={confirmDeleteAccount}
                 >
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                    Account access
+                    {t('Account access')}
                   </h3>
                   <button
                     type="button"
                     className="marapp-qa-deleteaccount ng-button ng-button-secondary ng-margin-top"
                     onClick={() => setIsDeletingAccountOpen(true)}
                   >
-                    Delete your account
+                    {t('Delete your account')}
                   </button>
                 </InlineEditCard>
               </div>
