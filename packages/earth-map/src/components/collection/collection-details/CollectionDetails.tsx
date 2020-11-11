@@ -96,9 +96,11 @@ const CollectionDetails = (props: IProps) => {
           </h2>
           <p>
             {canEdit
-              ? `You currently don’t have any places added to your collection. Add places to your
-            collection to access data metrics and share your insights with your team.`
-              : `There are no places added to this collection.`}
+              ? t(
+                  `You currently don’t have any places added to your collection. Add places to your collection to access data metrics and share your insights with your team`
+                )
+              : t(`There are no places added to this collection`)}
+            .
           </p>
           {canEdit && (
             <button
@@ -126,7 +128,7 @@ const CollectionDetails = (props: IProps) => {
                 name="locations"
                 type="places"
                 label={t('Add places')}
-                placeholder="Add places to your collection"
+                placeholder={t('Add places to your collection')}
                 className="marapp-qa-locationsdropdown ng-margin-medium-bottom"
                 control={control}
                 defaultValue={locations}
