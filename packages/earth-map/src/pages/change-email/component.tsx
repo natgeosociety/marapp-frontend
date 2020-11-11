@@ -50,10 +50,6 @@ export default function ChangeEmailComponent() {
 
       const message: string = error ? ChangeEmailStates.ERROR : ChangeEmailStates.PENDING;
 
-      if (!accessToken || !error) {
-        replace('/profile');
-      }
-
       if (!isAuthenticated) {
         // preserve path, query and hash params when redirecting;
         const target = window.location.href.replace(window.location.origin, '');
@@ -75,7 +71,7 @@ export default function ChangeEmailComponent() {
         } catch (err) {
           setErrorPage(ChangeEmailStates.ERROR);
         }
-      } else if (error) {
+      } else if (error && !isAuthenticated) {
         setErrorPage(message);
       } else {
         replace('/profile');
