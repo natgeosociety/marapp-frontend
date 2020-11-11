@@ -26,6 +26,7 @@ import { Card, Spinner, TitleHero, Pill, DropdownSimple } from '@marapp/earth-sh
 import { ICollection } from 'modules/collections/model';
 import { CollectionRename } from '../collection-rename';
 import { CollectionEditPlaces } from '../collection-editplaces';
+import CollectionDelete from '../collection-delete';
 
 import './styles.scss';
 
@@ -43,7 +44,8 @@ interface IProps {
 const CollectionDetails = (props: IProps) => {
   const { placesFromGroups, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
-  const [isRenamingCollection, setIsRenamingCollection] = useState(false);
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const canEdit = privateGroups.includes(data.organization);
 
@@ -62,8 +64,8 @@ const CollectionDetails = (props: IProps) => {
         />
       )}
     >
-      <a onClick={() => setIsRenamingCollection(true)}>Rename Collection</a>
-      <a>Delete</a>
+      <a onClick={() => setIsRenaming(true)}>Rename Collection</a>
+      <a onClick={() => setIsDeleting(true)}>Delete</a>
     </DropdownSimple>
   );
 
@@ -95,6 +97,7 @@ const CollectionDetails = (props: IProps) => {
               .map((location) => (
                 <Pill
                   label={location.name}
+                  key={location.id}
                   className="marapp-qa-locationpill ng-margin-small-right ng-margin-small-bottom"
                 />
               ))}
@@ -123,9 +126,7 @@ const CollectionDetails = (props: IProps) => {
         </Card>
       )}
 
-      {isRenamingCollection && (
-        <CollectionRename collection={data} onCancel={() => setIsRenamingCollection(false)} />
-      )}
+      {isRenaming && <CollectionRename collection={data} onCancel={() => setIsRenaming(false)} />}
 
       {isAddingPlaces && (
         <CollectionEditPlaces
@@ -136,6 +137,8 @@ const CollectionDetails = (props: IProps) => {
           toggleEditPlaces={toggleEditPlaces}
         />
       )}
+
+      <CollectionDelete collection={data} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />
     </div>
   );
 
