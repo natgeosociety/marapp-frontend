@@ -13,6 +13,7 @@ module.exports = {
   entry: {
     main: './src/index.ts',
     signin: './src/signin/Signin.ts',
+    emailTemplates: './src/email-templates/index.ts',
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
@@ -59,15 +60,21 @@ module.exports = {
       template: __dirname + '/src/signin/signin.html',
       filename: 'signin.html',
       title: process.env.APP_NAME,
-      chunk: ['signin'],
+      chunks: ['signin'],
     }),
     new HtmlWebpackPlugin({
       inlineSource: '.(js|css)$',
       template: __dirname + '/src/password-reset/password-reset.html',
       filename: 'password-reset.html',
       title: process.env.APP_NAME,
-      chunk: ['main'],
-      excludeChunks: ['signin'],
+      chunks: ['main'],
+    }),
+    new HtmlWebpackPlugin({
+      inlineSource: '.(js|css)$',
+      template: __dirname + '/src/email-templates/email-confirmation.html',
+      filename: 'email-confirmation.html',
+      title: process.env.APP_NAME,
+      chunks: ['emailTemplates'],
     }),
     new HtmlWebpackInlineSourcePlugin(),
     new Dotenv({

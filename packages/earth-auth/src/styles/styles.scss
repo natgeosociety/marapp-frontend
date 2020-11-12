@@ -17,30 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-$marapp-primary-font: 'Roboto';
-$marapp-secondary-font: 'Roboto';
-$marapp-icon-font: 'icon-font';
-
-$marapp-color-success: #28A745 !default;
-$marapp-color-error: #FC4349 !default;
-
-$marapp-primary-color: #0099A1;
-$marapp-secondary-color: #7ecace;
-
-$marapp-gray-0: #fff;
-
-
-$marapp-gray-1: #F8F9FA;
-$marapp-gray-2: #E9ECEF;
-$marapp-gray-3: #DEE2E6;
-$marapp-gray-4: #CED4DA;
-$marapp-gray-5: #ADB5BD;
-$marapp-gray-6: #6C757D;
-$marapp-gray-7: #495057;
-$marapp-gray-8: #343A40;
-$marapp-gray-9: #212529;
-
-$marapp-gray-100: #212529;
+@import './variables.scss';
 
 body {
   .auth0-lock-overlay {
