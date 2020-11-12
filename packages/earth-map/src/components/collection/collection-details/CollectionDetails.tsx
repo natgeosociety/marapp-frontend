@@ -76,7 +76,12 @@ const CollectionDetails = (props: IProps) => {
   return (
     <div className="marapp-qa-collection-details">
       <Card elevation="flush" className="ng-widget-header">
-        <TitleHero title={name} subtitle={organization} extra="Collection" actions={editActions} />
+        <TitleHero
+          title={name}
+          subtitle={organization}
+          extra="Collection"
+          actions={canEdit ? editActions : null}
+        />
       </Card>
 
       {hasLocations ? (
