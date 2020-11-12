@@ -36,6 +36,16 @@ import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 
 const PAGE_SIZE = 10;
 
+interface RolePopupData {
+  x?: number;
+  y?: number;
+  email?: string;
+  group?: string;
+  visible?: boolean;
+  isLoading?: boolean;
+  error?: { message?: string };
+}
+
 export function UsersHome(props: any) {
   const { getPermissions, selectedGroup } = useAuth0();
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
@@ -44,23 +54,7 @@ export function UsersHome(props: any) {
   const [availableGroups, setAvailableGroups] = useState([]);
   const [serverErrors, setServerErrors] = useState([]);
   const [usersFeedback, setUsersFeedback] = useState([]);
-  const [rolePopupData, setRolePopupData] = useState({
-    x: 0,
-    y: 0,
-    email: '',
-    group: '',
-    visible: false,
-    isLoading: false,
-    error: null,
-  } as {
-    x?: number;
-    y?: number;
-    email?: string;
-    group?: string;
-    visible?: boolean;
-    isLoading?: boolean;
-    error?: { message?: string };
-  });
+  const [rolePopupData, setRolePopupData] = useState({} as RolePopupData);
   const [showRemoveUser, setShowRemoveUser] = useState(false);
 
   const getQueryFn = (pageIndex) => {
@@ -330,12 +324,9 @@ export function UsersHome(props: any) {
                 <Card>
                   {!!rolePopupData.error && (
                     <div className="ng-background-danger ng-padding-medium">
-                      <span>
-                        Something went wrong! Details:{' '}
-                        {JSON.stringify(rolePopupData.error?.message)}
-                      </span>
+                      <span>Something went wrong! Details: {rolePopupData.error.message}</span>
                       <button
-                        className="marapp-qa-error-dismiss ng-background-danger ng-border-remove ng-text-display-l ng-text-weight-thin ng-position-absolute ng-position-top-right ng-margin-medium-right ng-margin-medium-top"
+                        className="marapp-qa-error-dismiss ng-background-danger ng-border-remove ng-text-display-m ng-text-weight-thin ng-position-absolute ng-position-top-right ng-padding ng-margin-medium-right ng-margin-medium-top"
                         onClick={() => setRolePopupData({})}
                       >
                         &times;
