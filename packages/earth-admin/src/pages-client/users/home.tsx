@@ -51,6 +51,7 @@ export function UsersHome(props: any) {
     group: '',
     visible: false,
     isLoading: false,
+    error: null,
   } as {
     x?: number;
     y?: number;
@@ -58,6 +59,7 @@ export function UsersHome(props: any) {
     group?: string;
     visible?: boolean;
     isLoading?: boolean;
+    error?: { message?: string };
   });
   const [showRemoveUser, setShowRemoveUser] = useState(false);
 
@@ -203,6 +205,14 @@ export function UsersHome(props: any) {
     });
   };
 
+  const handleRoleError = (err: any) => {
+    setRolePopupData({
+      error: {
+        message: err?.message || JSON.stringify(err?.data || err),
+      },
+    });
+  };
+
   const updateUserHandler = async (group: string) => {
     setRolePopupData({
       ...rolePopupData,
@@ -220,7 +230,7 @@ export function UsersHome(props: any) {
 
       toggleRolePopup();
     } catch (err) {
-      console.error(err);
+      handleRoleError(err);
     }
   };
 
@@ -318,10 +328,24 @@ export function UsersHome(props: any) {
               </div>
               <div className="ng-width-1-1 ng-margin-top">
                 <Card>
+                  {!!rolePopupData.error && (
+                    <div className="ng-background-danger ng-padding-medium">
+                      <span>
+                        Something went wrong! Details:{' '}
+                        {JSON.stringify(rolePopupData.error?.message)}
+                      </span>
+                      <button
+                        className="marapp-qa-error-dismiss ng-background-danger ng-border-remove ng-text-display-l ng-text-weight-thin ng-position-absolute ng-position-top-right ng-margin-medium-right ng-margin-medium-top"
+                        onClick={() => setRolePopupData({})}
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  )}
                   <table className="ng-table">
                     <thead>
                       <tr>
-                        <th className="ng-border-remove ng-width-1-3">User</th>
+                        <th className="ng-border-remove ng-width-1-3">Name</th>
                         <th className="ng-border-remove ng-width-1-3">Email</th>
                         <th className="ng-border-remove ng-width-1-3">Role &amp; Access</th>
                       </tr>
@@ -357,6 +381,7 @@ export function UsersHome(props: any) {
                                 <button
                                   className="ng-border-remove ng-background-ultradkgray ng-color-light"
                                   onClick={(e) => toggleRolePopup(e, user)}
+                                  disabled={rolePopupData.isLoading}
                                 >
                                   <i
                                     className={classnames('ng-icon ng-color-white', {
@@ -383,7 +408,7 @@ export function UsersHome(props: any) {
                         'ng-inline-card-loading': rolePopupData.isLoading,
                       })}
                     >
-                      <ul className="ng-user-profile-dropdown">
+                      <ul className="ng-default-dropdown">
                         {rolePopupData.isLoading && (
                           <div className="ng-inline-card-spinner">
                             <i className="ng-icon-spinner ng-icon-spin" />
@@ -397,7 +422,7 @@ export function UsersHome(props: any) {
                           >
                             <a
                               className={`marapp-qa-role-${group.label}`}
-                              onClick={(e) => updateUserHandler(group.value)}
+                              onClick={() => updateUserHandler(group.value)}
                             >
                               {group.label}
                             </a>
@@ -425,6 +450,7 @@ export function UsersHome(props: any) {
                     toggleModal={() => setShowRemoveUser(!showRemoveUser)}
                     onDelete={toggleRolePopup}
                     visibility={showRemoveUser}
+                    error={handleRoleError}
                   />
                 </Card>
               </div>
