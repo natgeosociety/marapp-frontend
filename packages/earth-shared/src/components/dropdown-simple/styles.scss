@@ -30,24 +30,25 @@
     right: 0;
     transform: translateY(5px);
     z-index: 100;
-    width: 320px;
+    width: 275px;
     ul {
       padding: 0!important;
     }
     li {
-      position: relative;
-      border-bottom: 0;
-      color: $marapp-gray-0;
       display: block;
+      position: relative;
+      border-bottom: 1px solid $marapp-gray-8;
+      color: $marapp-gray-1;
       font-family: $marapp-secondary-font;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 2.6px;
+      font-size: 16px;
       > a {
         padding: 10px 20px;
       }
       &:hover {
         background: $marapp-gray-6;
+      }
+      &:last-child {
+        border-bottom: 0;
       }
     }
   }

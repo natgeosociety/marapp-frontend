@@ -59,6 +59,7 @@ const CollectionDetails = (props: IProps) => {
         <i
           className={cn({
             'ng-icon-ellipse ng-toolbar-button': true,
+            'ng-toolbar-button-raised': true,
             'ng-toolbar-button-open': open,
           })}
         />
@@ -138,7 +139,9 @@ const CollectionDetails = (props: IProps) => {
         />
       )}
 
-      <CollectionDelete collection={data} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />
+      {isDeleting && (
+        <CollectionDelete collection={data} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />
+      )}
     </div>
   );
 

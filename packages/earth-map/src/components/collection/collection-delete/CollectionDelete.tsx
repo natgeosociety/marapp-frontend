@@ -72,6 +72,7 @@ export function CollectionDelete(props: IProps) {
         payload: null,
       });
       // TODO: move all the following side effects under the `EARTH` action
+      // also find out why actions only work with dispatch()
       dispatch({
         type: 'COLLECTIONS/resetCollection',
       });
