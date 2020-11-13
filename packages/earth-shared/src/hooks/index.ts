@@ -34,7 +34,7 @@ export function useDomWatcher(
     const handleClickOutside = (event) => {
       if (
         (ref.current && !ref.current.contains(event.target)) ||
-        !event.target.closest(targetSelector)
+        (targetSelector && !event.target.closest(targetSelector))
       ) {
         callback && callback();
       }
