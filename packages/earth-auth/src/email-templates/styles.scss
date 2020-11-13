@@ -17,8 +17,10 @@
  * specific language governing permissions and limitations under the License.
  */
 
- @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import '../styles/variables.scss';
 
+// Auth0 CSS
 .ExternalClass,
 .ExternalClass div,
 .ExternalClass font,
@@ -111,5 +113,24 @@ body {
 
   #signIn {
     max-width: 280px !important;
+  }
+}
+
+// Custom CSS
+#mainLogo {
+  background: url('../assets/marapp-logo.png') center center no-repeat;
+}
+
+#mainTitle {
+  background-color: $marapp-secondary-color;
+  color: $marapp-gray-9;
+}
+
+#mainCta {
+  background-color: $marapp-primary-color;
+  color: $marapp-gray-9;
+
+  &:hover {
+    opacity: .9;
   }
 }
