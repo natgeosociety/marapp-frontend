@@ -40,6 +40,7 @@ export { TitleHero } from './title-hero';
 export { ReactSelect } from './react-select';
 export { Pill } from './pill';
 export { InlineEditCard } from './inline-edit-card';
+export { DropdownSimple } from './dropdown-simple';
 export { ErrorMessages } from './error-messages';
 export { default as ErrorTemplate } from './error-template';
 export { UserMenu } from './user-menu';

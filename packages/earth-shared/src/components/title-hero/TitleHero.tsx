@@ -19,18 +19,22 @@
 
 import React from 'react';
 
+import './styles.scss';
+
 interface IProps {
   extra: string;
   subtitle: string;
   title: string;
+  actions?: React.ReactElement;
   className?: string;
 }
 
-export const TitleHero = ({ extra, subtitle, title, className = '' }: IProps) => (
-  <div data-testid="title-hero" className={className}>
+export const TitleHero = ({ extra, subtitle, title, className = ' ', actions }: IProps) => (
+  <div data-testid="title-hero" className={`title-hero ${className}`}>
     <h3 className="ng-text-display-s ng-margin-bottom">
       {subtitle} | <span className="ng-text-weight-regular">{extra}</span>
     </h3>
     <h2 className="ng-text-edit-m ng-body-color ng-margin-remove">{title}</h2>
+    {!!actions && <div className="title-hero-actions">{actions}</div>}
   </div>
 );

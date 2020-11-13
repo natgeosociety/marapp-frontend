@@ -54,3 +54,14 @@ export const updateCollection = async (collectionId: string, data: any, query?: 
     metaDeserializer
   );
 };
+
+export const deleteCollection = async (idOrSlug, query): Promise<any> => {
+  return BaseAPIService.request(
+    `/management/collections/${idOrSlug}`,
+    {
+      method: 'delete',
+      query,
+    },
+    metaDeserializer
+  );
+};
