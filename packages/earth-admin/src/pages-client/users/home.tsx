@@ -23,10 +23,16 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
-import { AuthzGuards, EmailInput, ErrorMessages, Spinner, validEmail } from '@marapp/earth-shared';
+import {
+  AuthzGuards,
+  EmailInput,
+  ErrorMessages,
+  Spinner,
+  Card,
+  useDomWatcher,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { ContentLayout } from '@app/layouts';
 import UsersService from '@app/services/users';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
@@ -43,7 +49,7 @@ interface RolePopupData {
   group?: string;
   visible?: boolean;
   isLoading?: boolean;
-  error?: { message?: string };
+  error?: { data?: any[] };
 }
 
 export function UsersHome(props: any) {
@@ -202,7 +208,7 @@ export function UsersHome(props: any) {
   const handleRoleError = (err: any) => {
     setRolePopupData({
       error: {
-        message: err?.message || JSON.stringify(err?.data || err),
+        data: err?.data?.errors || [],
       },
     });
   };
@@ -227,6 +233,8 @@ export function UsersHome(props: any) {
       handleRoleError(err);
     }
   };
+
+  useDomWatcher(() => setRolePopupData({}), !rolePopupData.visible, '.role-popup');
 
   return (
     writePermissions && (
@@ -324,7 +332,14 @@ export function UsersHome(props: any) {
                 <Card>
                   {!!rolePopupData.error && (
                     <div className="ng-background-danger ng-padding-medium">
-                      <span>Something went wrong! Details: {rolePopupData.error.message}</span>
+                      {rolePopupData.error.data.length > 0 ? (
+                        <ErrorMessages
+                          errors={rolePopupData.error.data}
+                          className="ng-color-white"
+                        />
+                      ) : (
+                        <span>Something went wrong! Unknown error.</span>
+                      )}
                       <button
                         className="marapp-qa-error-dismiss ng-background-danger ng-border-remove ng-text-display-m ng-text-weight-thin ng-position-absolute ng-position-top-right ng-padding ng-margin-medium-right ng-margin-medium-top"
                         onClick={() => setRolePopupData({})}
@@ -370,12 +385,12 @@ export function UsersHome(props: any) {
                                 (group) => group.label === normalizeGroupName(user.groups[0].name)
                               ) && (
                                 <button
-                                  className="ng-border-remove ng-background-ultradkgray ng-color-light"
+                                  className="ng-border-remove ng-background-ultradkgray ng-color-light role-popup"
                                   onClick={(e) => toggleRolePopup(e, user)}
                                   disabled={rolePopupData.isLoading}
                                 >
                                   <i
-                                    className={classnames('ng-icon ng-color-white', {
+                                    className={classnames('ng-icon ng-color-white role-popup', {
                                       'ng-icon-directionup': rolePopupData.email === user.email,
                                       'ng-icon-directiondown': rolePopupData.email !== user.email,
                                     })}
@@ -396,6 +411,7 @@ export function UsersHome(props: any) {
                         top: rolePopupData.y - 280,
                       }}
                       className={classnames({
+                        'role-popup': true,
                         'ng-inline-card-loading': rolePopupData.isLoading,
                       })}
                     >
