@@ -17,15 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 import { isEmpty } from 'lodash';
-
-import { Card, Spinner, TitleHero, AsyncSelect, Pill } from '@marapp/earth-shared';
-
 import { ICollection } from 'modules/collections/model';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { updateCollection } from 'services/CollectionsService';
 import PlacesService from 'services/PlacesService';
+
+import { AsyncSelect, Card, Pill, Spinner, TitleHero } from '@marapp/earth-shared';
 
 import './styles.scss';
 

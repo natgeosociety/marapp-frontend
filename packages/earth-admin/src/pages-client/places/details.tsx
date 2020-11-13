@@ -25,6 +25,7 @@ import useSWR from 'swr';
 
 import {
   AuthzGuards,
+  Card,
   ErrorMessages,
   InlineEditCard,
   Input,
@@ -33,7 +34,6 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { DetailList } from '@app/components/detail-list';
 import { DownloadFile } from '@app/components/download-file';
 import { ErrorBoundary } from '@app/components/error-boundary';
@@ -43,13 +43,13 @@ import { MapComponent } from '@app/components/map';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Metrics } from '@app/components/places';
 import { Toggle } from '@app/components/toggle';
+import { PUBLIC_ORG } from '@app/config';
 import { ContentLayout } from '@app/layouts';
 import { generateCacheKey } from '@app/services';
 import MetricService from '@app/services/metrics';
 import PlacesService from '@app/services/places';
 import { formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
 import { MapComponentContext } from '@app/utils/contexts';
-import { PUBLIC_ORG } from '@app/config';
 
 import { IPlace, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
 

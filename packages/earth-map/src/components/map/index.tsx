@@ -18,13 +18,13 @@
 */
 
 import { getActiveInteractiveLayersIds } from 'modules/layers/selectors';
-import { sidebarAwareMapBounds } from 'modules/map/selectors';
 import {
   setMapBounds,
   setMapHoverInteractions,
   setMapInteractions,
   setMapViewport,
 } from 'modules/map/actions';
+import { sidebarAwareMapBounds } from 'modules/map/selectors';
 import { connect } from 'react-redux';
 
 import MapComponent from './component';

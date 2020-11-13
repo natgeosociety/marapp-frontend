@@ -96,7 +96,7 @@ export const ROUTES = {
   CHANGE_EMAIL: {
     path: '/profile/change-email',
     page: 'change-email',
-    isAuthRequired: stubTrue,
+    isAuthRequired: stubFalse,
     isAuthzRequired: stubFalse,
     fallbackRouteResolver: noop,
   },

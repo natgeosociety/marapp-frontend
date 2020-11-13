@@ -21,6 +21,7 @@ import React from 'react';
 import useSWR from 'swr';
 
 import { Card } from '@marapp/earth-shared';
+
 import { ContentLayout, SidebarLayout } from '@app/layouts';
 import { generateCacheKey } from '@app/services';
 import OrganizationsService from '@app/services/organizations';
