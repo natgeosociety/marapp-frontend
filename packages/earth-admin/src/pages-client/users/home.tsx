@@ -390,7 +390,7 @@ export function UsersHome(props: any) {
                                   disabled={rolePopupData.isLoading}
                                 >
                                   <i
-                                    className={classnames('ng-icon ng-color-white role-popup', {
+                                    className={classnames('ng-icon ng-color-white', {
                                       'ng-icon-directionup': rolePopupData.email === user.email,
                                       'ng-icon-directiondown': rolePopupData.email !== user.email,
                                     })}
