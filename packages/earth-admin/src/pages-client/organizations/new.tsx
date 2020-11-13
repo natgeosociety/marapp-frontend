@@ -23,6 +23,7 @@ import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import {
+  Card,
   EmailInput,
   ErrorMessages,
   Input,
@@ -31,7 +32,6 @@ import {
   Spinner,
 } from '@marapp/earth-shared';
 
-import { Card } from '@marapp/earth-shared';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 import OrganizationsService from '@app/services/organizations';

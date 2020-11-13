@@ -24,6 +24,7 @@ import {
   alphaNumericDashesRule,
   AsyncSelect,
   AuthzGuards,
+  Card,
   ErrorMessages,
   InlineEditCard,
   Input,
@@ -31,7 +32,6 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { DetailList } from '@app/components/detail-list';
 import { HtmlEditor } from '@app/components/html-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';

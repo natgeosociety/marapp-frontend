@@ -19,10 +19,9 @@
 
 import React from 'react';
 
-import { AuthzGuards } from '@marapp/earth-shared';
+import { AuthzGuards, Card } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 

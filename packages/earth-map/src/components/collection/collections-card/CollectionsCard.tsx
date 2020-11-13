@@ -17,14 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
+import ListItem from 'components/list-item';
+import { ICollection } from 'modules/collections/model';
+import { EMainType, SubType } from 'modules/global/model';
+import { EarthRoutes } from 'modules/router/model';
 import React from 'react';
 import Link from 'redux-first-router-link';
 
 import { Card } from '@marapp/earth-shared';
-import { EarthRoutes } from 'modules/router/model';
-import { ICollection } from 'modules/collections/model';
-import ListItem from 'components/list-item';
-import { EMainType, SubType } from 'modules/global/model';
 
 const { NEW_COLLECTION } = EarthRoutes;
 

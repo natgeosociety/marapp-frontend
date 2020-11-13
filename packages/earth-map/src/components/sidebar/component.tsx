@@ -18,13 +18,12 @@
 */
 
 import classNames from 'classnames';
+import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from 'config';
 import React from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
 import SidebarToggle from './sidebar-toggle';
 import './styles.scss';
-
-import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from 'config';
 
 // Creates a spring with predefined animation slots
 const SidebarPanel: any = Keyframes.Spring({

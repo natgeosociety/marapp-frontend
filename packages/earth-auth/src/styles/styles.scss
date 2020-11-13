@@ -97,7 +97,7 @@ body {
     //logo
     .auth0-lock-header-logo {
       height: 40px;
-      margin-bottom: 0;
+      margin-bottom: 20px;
     }
 
     .auth0-lock-widget {
@@ -131,9 +131,24 @@ body {
 
     }
 
+    &.auth0-lock-with-terms {
+      .auth0-lock-name {
+        display: none;
+      }
+    }
+
     // general
     .auth0-lock-name {
-      display: none;
+      background: $marapp-secondary-color;
+      color: $marapp-gray-9;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 27px;
+      letter-spacing: 0px;
+      text-align: center;
+      margin-left: -30px;
+      margin-right: -30px;
     }
 
     .auth0-lock-form {

@@ -23,10 +23,16 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
-import { AuthzGuards, EmailInput, ErrorMessages, Spinner, validEmail } from '@marapp/earth-shared';
+import {
+  AuthzGuards,
+  Card,
+  EmailInput,
+  ErrorMessages,
+  Spinner,
+  validEmail,
+} from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { ContentLayout } from '@app/layouts';
 import UsersService from '@app/services/users';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';

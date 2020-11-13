@@ -1,3 +1,4 @@
+import { resetCollection } from 'modules/collections/actions';
 import { resetMap } from 'modules/map/actions';
 import {
   nextPlacesPage,
@@ -6,7 +7,6 @@ import {
   setPlacesSearchOpen,
 } from 'modules/places/actions';
 import { setSidebarPanelExpanded } from 'modules/sidebar/actions';
-import { resetCollection } from 'modules/collections/actions';
 import { connect } from 'react-redux';
 
 import Places from './Places';
