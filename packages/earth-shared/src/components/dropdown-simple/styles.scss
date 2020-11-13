@@ -30,7 +30,6 @@
     right: 0;
     transform: translateY(5px);
     z-index: 100;
-    width: 275px;
     ul {
       padding: 0!important;
     }
@@ -41,8 +40,9 @@
       color: $marapp-gray-1;
       font-family: $marapp-secondary-font;
       font-size: 16px;
+      white-space: nowrap;
       > a {
-        padding: 10px 20px;
+        padding: 10px 25px;
       }
       &:hover {
         background: $marapp-gray-6;
