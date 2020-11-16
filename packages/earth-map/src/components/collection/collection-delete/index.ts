@@ -17,27 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
 
-export function useDomWatcher(callback: Function, skip?: boolean): React.RefObject<any> {
-  const ref: React.RefObject<any> = useRef();
+import { CollectionDelete } from './CollectionDelete';
 
-  useEffect(() => {
-    if (skip) {
-      return;
-    }
-
-    const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        callback && callback();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [skip]);
-
-  return ref;
-}
+// We just need the disapatch
+export default connect(null, null)(CollectionDelete);
