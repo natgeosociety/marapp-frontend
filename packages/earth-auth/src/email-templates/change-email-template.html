@@ -1,6 +1,21 @@
 <html>
-  <head> </head>
-  <body>
+  <head></head>
+
+  <body
+    leftmargin="0"
+    marginwidth="0"
+    topmargin="0"
+    marginheight="0"
+    offset="0"
+    style="
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      height: 100% !important;
+    "
+  >
     <center>
       <p
         id="mainLogo"
@@ -15,6 +30,9 @@
         "
       ></p>
 
+      <!-- Email change content -->
+      {% if operation == 'change_email' %}
+
       <h1
         id="mainTitle"
         style="
@@ -25,8 +43,10 @@
           font-weight: 700;
         "
       >
-        Welcome to {{ application.name}}!
+        Your email address has been updated.
       </h1>
+
+      {% endif %}
 
       <table
         style="
@@ -37,7 +57,7 @@
           mso-table-rspace: 0pt;
           margin: 0;
           padding: 0;
-          font-family: 'Roboto', sans-serif;
+          font-family: 'Roboto';
           border-collapse: collapse !important;
           height: 100% !important;
         "
@@ -61,20 +81,32 @@
               mso-table-rspace: 0pt;
               margin: 0;
               padding: 20px;
-              font-family: 'Roboto', sans-serif;
+              font-family: 'Roboto';
               height: 100% !important;
             "
           >
             <div class="main">
-              <p>
-                Thank you for signing up. Please verify your email address by clicking the following
-                link:
+              {% if operation != 'change_email' %}
+
+              <!-- Signup email content -->
+              {% if send == 'link' or send == 'link_ios' or send == 'link_android' %}
+
+              <p
+                style="
+                  font-size: 1.2em;
+                  line-height: 1.3;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                "
+              >
+                Click and confirm that you want to sign in to {{ application.name }}. This link will
+                expire in three minutes.
               </p>
 
               <p>
                 <a
                   id="mainCta"
-                  href="{{ url }}"
+                  href="{{ link }}"
                   style="
                     display: block;
                     width: 200px;
@@ -83,12 +115,38 @@
                     padding: 13px 0;
                     text-decoration: none;
                   "
-                  >Confirm my account</a
+                  >Sign in to {{ application.name }}</a
                 >
               </p>
 
-              <p>
-                If you are having any issues with your account, please don’t hesitate to contact us
+              <p style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+                Or sign in using this link:
+              </p>
+              <p style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+                <a
+                  style="
+                    font-size: 12px;
+                    color: #a9b3bc;
+                    text-decoration: none;
+                    word-break: break-all;
+                    -webkit-text-size-adjust: 100%;
+                    -ms-text-size-adjust: 100%;
+                  "
+                  href="{{ link }}"
+                  >{{ link }}</a
+                >
+              </p>
+
+              {% elsif send == 'code' %}
+
+              <p style="font-size: 1.4em; line-height: 1.3;">
+                Your verification code is: <b>{{ code }}</b>
+              </p>
+
+              {% endif %} {% endif %}
+
+              <p style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+                If you are having any issues with your account, please don't hesitate to contact us
                 by replying to this mail.
               </p>
 

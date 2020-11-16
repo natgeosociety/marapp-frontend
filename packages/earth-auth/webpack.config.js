@@ -69,6 +69,7 @@ module.exports = {
       title: process.env.APP_NAME,
       chunks: ['main'],
     }),
+
     new HtmlWebpackPlugin({
       inlineSource: '.(js|css)$',
       template: __dirname + '/src/email-templates/email-confirmation.html',
@@ -76,6 +77,21 @@ module.exports = {
       title: process.env.APP_NAME,
       chunks: ['emailTemplates'],
     }),
+    new HtmlWebpackPlugin({
+      inlineSource: '.(js|css)$',
+      template: __dirname + '/src/email-templates/password-reset-template.html',
+      filename: 'password-reset-template.html',
+      title: process.env.APP_NAME,
+      chunks: ['emailTemplates'],
+    }),
+    new HtmlWebpackPlugin({
+      inlineSource: '.(js|css)$',
+      template: __dirname + '/src/email-templates/change-email-template.html',
+      filename: 'change-email-template.html',
+      title: process.env.APP_NAME,
+      chunks: ['emailTemplates'],
+    }),
+
     new HtmlWebpackInlineSourcePlugin(),
     new Dotenv({
       path: ACTIVE_ENV,
