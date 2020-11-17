@@ -25,7 +25,7 @@ import {
   setPlacesCache,
   setPlacesSearchAvailableFilters,
 } from 'modules/places/actions';
-import { IPlace } from 'modules/places/model';
+import { IPlace, LocationTypeEnum } from 'modules/places/model';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { loadDataIndexes } from 'sagas/layers';
 import { nextPage } from 'sagas/places';
@@ -78,7 +78,7 @@ function* loadCollections() {
   const group = yield select(getGroup);
   const { data }: { data: ICollection[] } = yield call(PlacesService.fetchPlaces, {
     select: 'slug,name,id,organization,type',
-    filter: ['type', '==', 'Collection'].join(''),
+    filter: ['type', '==', LocationTypeEnum.COLLECTION].join(''),
     page: { size: 5 },
     sort: '-updatedAt',
     group: group.toString(),
