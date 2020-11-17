@@ -347,6 +347,7 @@ export function PlaceDetail(props: IProps) {
                               <DownloadFile
                                 data={geojson}
                                 fileName={slug}
+                                type="geojson"
                                 className="ng-align-right ng-margin-top"
                               >
                                 Download GeoJSON
@@ -354,6 +355,7 @@ export function PlaceDetail(props: IProps) {
                               <div className="ng-width-1-1 ng-margin-medium-top">
                                 <FakeJsonUpload
                                   name="geojson"
+                                  type=".geojson"
                                   label="Place shape*"
                                   ref={register({
                                     required: 'GeoJSON is required',

@@ -166,6 +166,7 @@ export function NewPlace(props: IProps) {
             <p>Choose a GeoJSON to calculate shape maths and geographic relationships.</p>
             <FakeJsonUpload
               name="geojson"
+              type=".geojson"
               label="Place shape*"
               ref={register({
                 required: 'GeoJSON is required',
