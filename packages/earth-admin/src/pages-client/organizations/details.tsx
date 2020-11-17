@@ -20,7 +20,7 @@
 import { noop } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 
 import { AuthzGuards, EmailInput, InlineEditCard, Input, setupErrors } from '@marapp/earth-shared';
 
@@ -50,7 +50,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   const setter = (data) =>
     OrganizationsService.updateOrganization(id, data, query).then((response: any) => response.data);
 
-  const { data, error, revalidate } = useSWR(cacheKey, fetcher);
+  const { data, error, revalidate, mutate } = useSWR(cacheKey, fetcher);
 
   useEffect(() => {
     data && setLocalOrgData(data);
@@ -92,12 +92,12 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
       setOwnersFeedback([]);
       setIsLoading && setIsLoading(true);
 
-      mutate(cacheKey, setter(parsed), false);
+      await mutate(setter(parsed), false);
 
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
 
-      onDataChange();
+      await onDataChange();
     } catch (err) {
       const errors = err.data?.errors;
 

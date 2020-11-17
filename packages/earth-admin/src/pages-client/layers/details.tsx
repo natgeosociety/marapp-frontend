@@ -22,7 +22,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Controller, ErrorMessage, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 
 import {
   alphaNumericDashesRule,
@@ -77,7 +77,7 @@ export function LayerDetail(props: any) {
   const setter = (data) =>
     LayersService.handleLayerForm(false, data, id, query).then((response: any) => response.data);
 
-  const { data, error, revalidate } = useSWR(cacheKey, fetcher);
+  const { data, error, revalidate, mutate } = useSWR(cacheKey, fetcher);
 
   const [layer, setLayer] = useState<ILayer>({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -145,12 +145,12 @@ export function LayerDetail(props: any) {
     try {
       setIsLoading && setIsLoading(true);
 
-      mutate(cacheKey, setter(parsed), false);
+      await mutate(setter(parsed), false);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
 
-      onDataChange();
+      await onDataChange();
     } catch (error) {
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data.errors);

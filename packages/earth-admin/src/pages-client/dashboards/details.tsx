@@ -18,7 +18,7 @@ import { merge } from 'lodash/fp';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 
 import {
   alphaNumericDashesRule,
@@ -71,7 +71,7 @@ export function DashboardDetail(props: IProps) {
       (response: any) => response.data
     );
 
-  const { data, error, revalidate } = useSWR(cacheKey, fetcher);
+  const { data, error, revalidate, mutate } = useSWR(cacheKey, fetcher);
 
   const [dashboard, setDashboard] = useState({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -115,11 +115,11 @@ export function DashboardDetail(props: IProps) {
     try {
       setIsLoading && setIsLoading(true);
 
-      mutate(cacheKey, setter(parsed), false);
+      await mutate(setter(parsed), false);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
-      onDataChange();
+      await onDataChange();
     } catch (error) {
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data.errors);

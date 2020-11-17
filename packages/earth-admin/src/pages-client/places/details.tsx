@@ -21,7 +21,7 @@ import { groupBy, map, noop } from 'lodash';
 import { merge } from 'lodash/fp';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 
 import {
   AuthzGuards,
@@ -77,7 +77,7 @@ export function PlaceDetail(props: IProps) {
   const setter = (data) =>
     PlacesService.handlePlaceForm(false, data, id, query).then((response: any) => response.data);
 
-  const { data, error, revalidate } = useSWR(cacheKey, fetcher);
+  const { data, error, revalidate, mutate } = useSWR(cacheKey, fetcher);
 
   const [place, setPlace] = useState<IPlace>({});
   const [mapData, setMapData] = useState({});
@@ -142,11 +142,11 @@ export function PlaceDetail(props: IProps) {
     try {
       setIsLoading && setIsLoading(true);
 
-      mutate(cacheKey, setter(parsed), false);
+      await mutate(setter(parsed), false);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
-      onDataChange();
+      await onDataChange();
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
       const fallbackError = [
