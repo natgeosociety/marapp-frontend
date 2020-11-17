@@ -1,6 +1,10 @@
 <html>
-  <head></head>
-
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
   <body
     leftmargin="0"
     marginwidth="0"
@@ -17,37 +21,6 @@
     "
   >
     <center>
-      <p
-        id="mainLogo"
-        style="
-          text-align: center;
-          -webkit-text-size-adjust: 100%;
-          -ms-text-size-adjust: 100%;
-          margin: 30px;
-          width: 200px;
-          height: 60px;
-          background-size: contain;
-        "
-      ></p>
-
-      <!-- Email change content -->
-      {% if operation == 'change_email' %}
-
-      <h1
-        id="mainTitle"
-        style="
-          margin-bottom: 20px;
-          padding: 10px;
-          text-align: center;
-          font-size: 20px;
-          font-weight: 700;
-        "
-      >
-        Your email address has been updated.
-      </h1>
-
-      {% endif %}
-
       <table
         style="
           width: 600px;
@@ -57,7 +30,7 @@
           mso-table-rspace: 0pt;
           margin: 0;
           padding: 0;
-          font-family: 'Roboto';
+          font-family: 'Roboto', sans-serif;
           border-collapse: collapse !important;
           height: 100% !important;
         "
@@ -81,12 +54,51 @@
               mso-table-rspace: 0pt;
               margin: 0;
               padding: 20px;
-              font-family: 'Roboto';
+              font-family: 'Roboto', sans-serif;
               height: 100% !important;
             "
           >
             <div class="main">
-              {% if operation != 'change_email' %}
+              <p
+                style="
+                  text-align: center;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  margin-bottom: 30px;
+                "
+              >
+                <img
+                  src="{{ logo_url }}"
+                  width="150"
+                  alt="{{ application.name }}"
+                  style="
+                    -ms-interpolation-mode: bicubic;
+                    border: 0;
+                    height: auto;
+                    line-height: 100%;
+                    outline: none;
+                    text-decoration: none;
+                  "
+                />
+              </p>
+
+              <!-- Email change content -->
+              {% if operation == 'change_email' %}
+
+              <h1
+                id="mainTitle"
+                style="
+                  margin-bottom: 20px;
+                  padding: 10px;
+                  text-align: center;
+                  font-size: 20px;
+                  font-weight: 700;
+                "
+              >
+                Your email address has been updated.
+              </h1>
+
+              {% else %}
 
               <!-- Signup email content -->
               {% if send == 'link' or send == 'link_ios' or send == 'link_android' %}
@@ -106,7 +118,7 @@
               <p>
                 <a
                   id="mainCta"
-                  href="{{ link }}"
+                  href="{{ url }}"
                   style="
                     display: block;
                     width: 200px;
@@ -139,9 +151,18 @@
 
               {% elsif send == 'code' %}
 
-              <p style="font-size: 1.4em; line-height: 1.3;">
+              <h1
+                id="mainTitle"
+                style="
+                  margin-bottom: 20px;
+                  padding: 10px;
+                  text-align: center;
+                  font-size: 20px;
+                  font-weight: 700;
+                "
+              >
                 Your verification code is: <b>{{ code }}</b>
-              </p>
+              </h1>
 
               {% endif %} {% endif %}
 

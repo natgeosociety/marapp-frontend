@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
+const HtmlWebpackInlineStylePlugin = require('html-webpack-inline-style-plugin');
 
 const ACTIVE_ENV = process.env.NODE_ENV === 'production' ? '.env' : '.env.local';
 
@@ -72,8 +73,8 @@ module.exports = {
 
     new HtmlWebpackPlugin({
       inlineSource: '.(js|css)$',
-      template: __dirname + '/src/email-templates/email-confirmation.html',
-      filename: 'email-confirmation.html',
+      template: __dirname + '/src/email-templates/email-confirmation-template.html',
+      filename: 'email-confirmation-template.html',
       title: process.env.APP_NAME,
       chunks: ['emailTemplates'],
     }),
@@ -92,6 +93,7 @@ module.exports = {
       chunks: ['emailTemplates'],
     }),
 
+    new HtmlWebpackInlineStylePlugin(),
     new HtmlWebpackInlineSourcePlugin(),
     new Dotenv({
       path: ACTIVE_ENV,

@@ -13,14 +13,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.2",
-    "ts-loader": "^8.0.7",
-    "html-webpack-plugin": "3.2.0",
-    "style-loader": "^2.0.0",
+    "@types/auth0-lock": "^11.4.13",
+    "base64-inline-loader": "^1.1.1",
     "dotenv-webpack": "^4.0.0",
     "html-webpack-inline-source-plugin": "^0.0.10",
-    "@types/auth0-lock": "^11.4.13",
-    "base64-inline-loader": "^1.1.1"
+    "html-webpack-inline-style-plugin": "^0.2.0",
+    "html-webpack-plugin": "3.2.0",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.0.7",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
   }
 }
