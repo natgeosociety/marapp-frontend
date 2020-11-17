@@ -122,7 +122,7 @@ export function PlaceDetail(props: IProps) {
   useEffect(() => {
     place && setMapData({ geojson, bbox: bbox2d });
     place && setMappedIntersections(groupBy(intersections, 'type'));
-  }, [data]);
+  }, [place]);
 
   useEffect(() => {
     setFormValid(isValid);

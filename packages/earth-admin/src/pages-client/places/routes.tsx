@@ -51,7 +51,6 @@ export default function PlacesPage(props) {
   };
 
   const { listProps, filters, mutate } = useInfiniteList(getQueryFn, PlacesService.getAllPlaces);
-  console.log(props);
 
   // Matches everything after the resource name in the url.
   // In our case that's /resource-id or /new
