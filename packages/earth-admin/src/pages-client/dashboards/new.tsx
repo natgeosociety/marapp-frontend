@@ -25,6 +25,7 @@ import { Controller, useForm } from 'react-hook-form';
 import {
   alphaNumericDashesRule,
   AsyncSelect,
+  Card,
   ErrorMessages,
   Input,
   setupErrors,
@@ -32,7 +33,6 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { HtmlEditor } from '@app/components/html-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';

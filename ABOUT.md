@@ -11,7 +11,7 @@ version 1.0 <br />
 ***
 License
 =======
-The UN Biodiversty Lab website is under the Apache 2.0 license. See the [LICENSE](https://github.com/natgeosociety/marapp-frontend/LICENSE) for more information.
+The UN Biodiversity Lab website is under the Apache 2.0 license. See the [LICENSE](https://github.com/natgeosociety/marapp-frontend/LICENSE) for more information.
 
 UN Biodiversity Lab
 Copyright 2020 © United Nations

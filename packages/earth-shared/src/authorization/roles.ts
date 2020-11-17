@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-enum RoleEnum {
+export enum RoleEnum {
   PUBLIC = 'Public',
   VIEWER = 'Viewer',
   EDITOR = 'Editor',

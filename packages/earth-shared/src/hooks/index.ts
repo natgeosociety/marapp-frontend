@@ -19,7 +19,7 @@
 
 import { useEffect, useRef } from 'react';
 
-export function useDomWatcher(callback: () => any, skip?: boolean): React.RefObject<any> {
+export function useDomWatcher(callback: Function, skip?: boolean): React.RefObject<any> {
   const ref: React.RefObject<any> = useRef();
 
   useEffect(() => {

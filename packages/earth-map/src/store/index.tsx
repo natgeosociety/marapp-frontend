@@ -17,13 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
+import * as collections from 'modules/collections';
 import * as global from 'modules/global';
 import * as indexes from 'modules/indexes';
 import * as layers from 'modules/layers';
 import * as map from 'modules/map';
 import * as metrics from 'modules/metrics';
 import * as places from 'modules/places';
-import * as collections from 'modules/collections';
 import * as sidebar from 'modules/sidebar';
 import * as user from 'modules/user';
 import * as widget from 'modules/widget';
