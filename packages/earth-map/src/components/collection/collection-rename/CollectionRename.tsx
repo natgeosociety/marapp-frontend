@@ -21,7 +21,7 @@ import { ICollection } from 'modules/collections/model';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { replace } from 'redux-first-router';
-import { updateCollection } from 'services/CollectionsService';
+import PlacesService from 'services/PlacesService';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
 
@@ -86,7 +86,7 @@ export function CollectionRename(props: IProps) {
 
   async function onSubmit(values) {
     try {
-      const { data } = await updateCollection(
+      const { data } = await PlacesService.updatePlace(
         id,
         {
           name: values.name,

@@ -21,7 +21,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { replace } from 'redux-first-router';
 import Link from 'redux-first-router-link';
-import { createCollection } from 'services/CollectionsService';
+import PlacesService from 'services/PlacesService';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
 
@@ -39,7 +39,7 @@ const CollectionNew = (props: IProps) => {
 
   const onSubmit = async (values) => {
     try {
-      const { data } = await createCollection(values, {
+      const { data } = await PlacesService.addCollection(values, {
         group: values.organization,
       });
       replace(`/collection/${data.organization}/${data.slug}`);

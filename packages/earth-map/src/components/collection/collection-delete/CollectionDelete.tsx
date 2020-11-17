@@ -20,7 +20,7 @@
 import { ICollection } from 'modules/collections/model';
 import { EPanels } from 'modules/sidebar/model';
 import React, { useState } from 'react';
-import { deleteCollection } from 'services/CollectionsService';
+import PlacesService from 'services/PlacesService';
 
 import { Modal } from '@marapp/earth-shared';
 
@@ -62,7 +62,7 @@ export function CollectionDelete(props: IProps) {
 
   async function handleDelete() {
     try {
-      await deleteCollection(id, { group: organization });
+      await PlacesService.deletePlace(id, { group: organization });
 
       dispatch({
         type: 'EARTH',
