@@ -17,6 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { LocationTypeEnum } from 'modules/places/model';
+
 import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
 const fetchPlaceById = async (id: string, query?: RequestQuery): Promise<any> => {
@@ -63,11 +65,11 @@ const deletePlace = async (placeId: string, query?: RequestQuery) => {
 };
 
 const addCollection = async (data, query: RequestQuery): Promise<any> => {
-  return addPlace({ ...data, type: 'Collection' }, query);
+  return addPlace({ ...data, type: LocationTypeEnum.COLLECTION }, query);
 };
 
 const updateCollection = async (placeId: string, data: any, query?: RequestQuery): Promise<any> => {
-  return updatePlace(placeId, { ...data, type: 'Collection' }, query);
+  return updatePlace(placeId, { ...data, type: LocationTypeEnum.COLLECTION }, query);
 };
 
 export default {
