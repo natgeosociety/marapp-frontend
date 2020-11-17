@@ -20,7 +20,7 @@
 import { noop } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 
 import { AuthzGuards, EmailInput, InlineEditCard, Input, setupErrors } from '@marapp/earth-shared';
 
@@ -44,9 +44,13 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   const query = { include: 'owners' };
   const cacheKey = generateCacheKey(`organizations/${page}`, query);
 
-  const { data, error, mutate } = useSWR(cacheKey, () =>
-    OrganizationsService.getOrganization(page, query).then((res: any) => res.data)
-  );
+  const fetcher = () =>
+    OrganizationsService.getOrganization(page, query).then((response: any) => response.data);
+
+  const setter = (data) =>
+    OrganizationsService.updateOrganization(id, data, query).then((response: any) => response.data);
+
+  const { data, error, revalidate } = useSWR(cacheKey, fetcher);
 
   useEffect(() => {
     data && setLocalOrgData(data);
@@ -87,10 +91,12 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
       setServerErrors([]);
       setOwnersFeedback([]);
       setIsLoading && setIsLoading(true);
-      await OrganizationsService.updateOrganization(id, parsed, { group: selectedGroup });
-      mutate();
+
+      mutate(cacheKey, setter(parsed), false);
+
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
+
       onDataChange();
     } catch (err) {
       const errors = err.data?.errors;

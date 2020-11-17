@@ -22,7 +22,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 
 import {
   alphaNumericDashesRule,
@@ -45,6 +45,7 @@ import { Toggle } from '@app/components/toggle';
 import { ContentLayout } from '@app/layouts';
 import { generateCacheKey } from '@app/services';
 import LayersService from '@app/services/layers';
+import PlacesService from '@app/services/places';
 import WidgetsService from '@app/services/widgets';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { copyToClipboard, encodeQueryToURL, flattenObjectForSelect, formatDate } from '@app/utils';
@@ -66,9 +67,12 @@ export function WidgetsDetail(props: WidgetProps) {
   const query = merge(WIDGET_DETAIL_QUERY, { group: selectedGroup });
   const cacheKey = generateCacheKey(`widgets/${page}`, query);
 
-  const { data, error, mutate } = useSWR(cacheKey, () =>
-    WidgetsService.getWidget(page, query).then((res: any) => res.data)
-  );
+  const fetcher = () =>
+    WidgetsService.getWidget(page, query).then((response: any) => response.data);
+  const setter = (data) =>
+    WidgetsService.handleWidgetForm(false, data, id, query).then((response: any) => response.data);
+
+  const { data, error, revalidate } = useSWR(cacheKey, fetcher);
 
   const [widget, setWidget] = useState<Widget>({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -122,11 +126,12 @@ export function WidgetsDetail(props: WidgetProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await WidgetsService.handleWidgetForm(false, parsed, id, { group: selectedGroup });
-      await mutate();
-      onDataChange();
+
+      mutate(cacheKey, setter(parsed), false);
+
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
+      onDataChange();
     } catch (error) {
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data.errors);

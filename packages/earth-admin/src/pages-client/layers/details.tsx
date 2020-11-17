@@ -22,7 +22,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Controller, ErrorMessage, useForm } from 'react-hook-form';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 
 import {
   alphaNumericDashesRule,
@@ -72,9 +72,12 @@ export function LayerDetail(props: any) {
   const query = merge(LAYER_DETAIL_QUERY, { group: selectedGroup });
   const cacheKey = generateCacheKey(`layers/${page}`, query);
 
-  const { data, error, mutate } = useSWR(cacheKey, () =>
-    LayersService.getLayer(page, query).then((res: any) => res.data)
-  );
+  const fetcher = () => LayersService.getLayer(page, query).then((response: any) => response.data);
+
+  const setter = (data) =>
+    LayersService.handleLayerForm(false, data, id, query).then((response: any) => response.data);
+
+  const { data, error, revalidate } = useSWR(cacheKey, fetcher);
 
   const [layer, setLayer] = useState<ILayer>({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -141,10 +144,12 @@ export function LayerDetail(props: any) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await LayersService.handleLayerForm(false, parsed, id, { group: selectedGroup });
-      mutate();
+
+      mutate(cacheKey, setter(parsed), false);
+
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
+
       onDataChange();
     } catch (error) {
       setIsLoading && setIsLoading(false);
