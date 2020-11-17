@@ -23,7 +23,7 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
-import { Card, ErrorMessages, Input, setupErrors, Spinner } from '@marapp/earth-shared';
+import { Card, ErrorMessages, Input, setupErrors, Spinner, Tab, Tabs } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
@@ -32,6 +32,7 @@ import { ContentLayout } from '@app/layouts';
 import PlacesService from '@app/services/places';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenObjectForSelect } from '@app/utils';
+import { JsonEditor } from '@app/components/json-editor';
 
 interface IProps {
   path: string;
@@ -53,6 +54,7 @@ export function NewPlace(props: IProps) {
   const [geojsonValue, setGeojson] = useState(null);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
+  const [panel, setSidebarPanel] = useState('upload');
   const { selectedGroup } = useAuth0();
   const renderErrorFor = setupErrors(errors, touched);
 
@@ -78,6 +80,7 @@ export function NewPlace(props: IProps) {
       setServerErrors(error?.data.errors || fallbackError);
     }
   }
+
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
@@ -164,19 +167,40 @@ export function NewPlace(props: IProps) {
 
           <Card className="ng-margin-medium-bottom">
             <p>Choose a GeoJSON to calculate shape maths and geographic relationships.</p>
-            <FakeJsonUpload
-              name="geojson"
-              type=".geojson"
-              label="Place shape*"
-              ref={register({
-                required: 'GeoJSON is required',
-              })}
-              onChange={(json) => {
-                setGeojson(json);
-                setJsonError(false);
-              }}
-              onError={(err) => setJsonError(true)}
-            />
+            <Tabs
+              value={panel}
+              onChange={setSidebarPanel}
+              className="ng-padding-medium-horizontal ng-padding-bottom ng-ep-background-dark"
+            >
+              <Tab label="Places" value="upload" />
+              <Tab label="Layers" value="json" />
+            </Tabs>
+            {panel === 'upload' && (
+              <FakeJsonUpload
+                name="geojson"
+                type=".geojson"
+                label="Place shape*"
+                ref={register({
+                  required: 'GeoJSON is required',
+                })}
+                onChange={(json) => {
+                  setGeojson(json);
+                  setJsonError(false);
+                }}
+                onError={(err) => setJsonError(true)}
+              />
+            )}
+            {panel === 'json' && (
+              <div className="ng-margin-medium-bottom">
+                <Controller
+                  name="geojson"
+                  control={control}
+                  defaultValue=""
+                  onChange={(json) => setGeojson(json)}
+                  as={<JsonEditor json="" />}
+                />
+              </div>
+            )}
           </Card>
 
           {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}
