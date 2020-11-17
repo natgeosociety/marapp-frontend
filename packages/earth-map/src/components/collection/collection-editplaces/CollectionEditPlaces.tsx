@@ -18,6 +18,7 @@
  */
 
 import { ICollection } from 'modules/collections/model';
+import { LocationTypeEnum } from 'modules/places/model';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import PlacesService from 'services/PlacesService';
@@ -64,8 +65,9 @@ export function CollectionEditPlaces(props: IProps) {
             loadFunction={(query) =>
               PlacesService.fetchPlaces({
                 ...query,
-                filter: ['type', '!=', 'Collection'].join(''),
+                filter: ['type', '!=', LocationTypeEnum.COLLECTION].join(''),
                 group: placesFromGroups.join(','),
+                select: ['id', 'slug', 'name', 'organization'].join(','),
               })
             }
             selectedGroup={organization}
