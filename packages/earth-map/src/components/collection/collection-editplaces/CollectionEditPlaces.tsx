@@ -17,13 +17,12 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import React, { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-
-import { Card, TitleHero, AsyncSelect } from '@marapp/earth-shared';
-import PlacesService from 'services/PlacesService';
-import { updateCollection } from 'services/CollectionsService';
 import { ICollection } from 'modules/collections/model';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import PlacesService from 'services/PlacesService';
+
+import { AsyncSelect, Card, TitleHero } from '@marapp/earth-shared';
 
 interface IProps {
   collection: ICollection;
@@ -65,6 +64,7 @@ export function CollectionEditPlaces(props: IProps) {
             loadFunction={(query) =>
               PlacesService.fetchPlaces({
                 ...query,
+                filter: ['type', '!=', 'Collection'].join(''),
                 group: placesFromGroups.join(','),
               })
             }
@@ -105,7 +105,7 @@ export function CollectionEditPlaces(props: IProps) {
     };
 
     try {
-      const { data } = await updateCollection(id, parsedValues, {
+      const { data } = await PlacesService.updateCollection(id, parsedValues, {
         group: organization,
         include: 'locations',
         select: 'locations.slug,locations.name',

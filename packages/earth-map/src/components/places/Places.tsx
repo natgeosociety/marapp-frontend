@@ -122,7 +122,10 @@ const Places = (props: IProps) => {
               hint={$searchHint.name}
               title={name}
               key={`${slug}-${organization}`}
-              linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
+              linkTo={{
+                type: type === 'Collection' ? 'COLLECTION' : 'LOCATION',
+                payload: { slug, id, organization },
+              }}
               organization={group.length > 1 && organization}
               labels={[type]}
             />

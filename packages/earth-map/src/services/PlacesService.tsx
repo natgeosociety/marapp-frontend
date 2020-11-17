@@ -27,4 +27,55 @@ const fetchPlaces = async (query?: RequestQuery): Promise<any> => {
   return BaseAPIService.request('/locations', { query }, metaDeserializer);
 };
 
-export default { fetchPlaceById, fetchPlaces };
+const addPlace = async (data: any, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    '/locations',
+    {
+      query,
+      method: 'post',
+      data,
+    },
+    metaDeserializer
+  );
+};
+
+const updatePlace = async (placeId: string, data: any, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/locations/${placeId}`,
+    {
+      method: 'put',
+      data,
+      query,
+    },
+    metaDeserializer
+  );
+};
+
+const deletePlace = async (placeId: string, query?: RequestQuery) => {
+  return BaseAPIService.request(
+    `/locations/${placeId}`,
+    {
+      method: 'delete',
+      query,
+    },
+    metaDeserializer
+  );
+};
+
+const addCollection = async (data, query: RequestQuery): Promise<any> => {
+  return addPlace({ ...data, type: 'Collection' }, query);
+};
+
+const updateCollection = async (placeId: string, data: any, query?: RequestQuery): Promise<any> => {
+  return updatePlace(placeId, { ...data, type: 'Collection' }, query);
+};
+
+export default {
+  fetchPlaceById,
+  fetchPlaces,
+  addPlace,
+  updatePlace,
+  deletePlace,
+  addCollection,
+  updateCollection,
+};

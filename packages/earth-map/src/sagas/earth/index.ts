@@ -30,7 +30,6 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { loadDataIndexes } from 'sagas/layers';
 import { nextPage } from 'sagas/places';
 import { getGroup, ignoreRedirectsTo } from 'sagas/saga-utils';
-import { fetchCollections } from 'services/CollectionsService';
 import PlacesService from 'services/PlacesService';
 
 const ignoreRedirectsToEarth = ignoreRedirectsTo('EARTH');
@@ -77,8 +76,9 @@ function* loadPlaces() {
 
 function* loadCollections() {
   const group = yield select(getGroup);
-  const { data }: { data: ICollection[] } = yield call(fetchCollections, {
+  const { data }: { data: ICollection[] } = yield call(PlacesService.fetchPlaces, {
     select: 'slug,name,id,organization,type',
+    filter: ['type', '==', 'Collection'].join(''),
     page: { size: 5 },
     sort: '-updatedAt',
     group: group.toString(),
