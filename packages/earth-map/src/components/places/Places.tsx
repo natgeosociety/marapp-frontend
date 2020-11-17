@@ -4,6 +4,8 @@ import InfiniteList from 'components/infinite-list';
 import ListItem from 'components/list-item';
 import SearchBox from 'components/searchbox';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
+import { LocationTypeEnum } from 'modules/places/model';
+import { EarthRoutes } from 'modules/router/model';
 import React from 'react';
 import { push } from 'redux-first-router';
 import { hasFilters } from 'utils/filters';
@@ -123,7 +125,10 @@ const Places = (props: IProps) => {
               title={name}
               key={`${slug}-${organization}`}
               linkTo={{
-                type: type === 'Collection' ? 'COLLECTION' : 'LOCATION',
+                type:
+                  type === LocationTypeEnum.COLLECTION
+                    ? EarthRoutes.COLLECTION
+                    : EarthRoutes.LOCATION,
                 payload: { slug, id, organization },
               }}
               organization={group.length > 1 && organization}
