@@ -73,9 +73,11 @@ export function PlaceDetail(props: IProps) {
   const query = merge(PLACE_DETAIL_QUERY, { group: selectedGroup });
   const cacheKey = generateCacheKey(`locations/${page}`, query);
 
-  const { data, error, revalidate, mutate } = useSWR(cacheKey, () =>
-    PlacesService.getPlace(page, query).then((response: any) => response.data)
-  );
+  const fetcher = () => PlacesService.getPlace(page, query).then((response: any) => response.data);
+  const setter = (data) =>
+    PlacesService.handlePlaceForm(false, data, id, query).then((response: any) => response.data);
+
+  const { data, error, revalidate } = useSWR(cacheKey, fetcher);
 
   const [place, setPlace] = useState<IPlace>({});
   const [mapData, setMapData] = useState({});
@@ -86,6 +88,10 @@ export function PlaceDetail(props: IProps) {
   const [formValid, setFormValid] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [metricsLoading, setMetricsLoading] = useState(false);
+
+  useEffect(() => {
+    data && setPlace(data);
+  }, [data]);
 
   const {
     name,
@@ -104,7 +110,7 @@ export function PlaceDetail(props: IProps) {
     createdAt,
     updatedAt,
     version,
-  } = data || {};
+  } = place;
 
   const { getValues, register, formState, errors } = useForm({
     mode: 'onChange',
@@ -114,9 +120,8 @@ export function PlaceDetail(props: IProps) {
   const renderErrorFor = setupErrors(errors, touched);
 
   useEffect(() => {
-    console.log(data);
-    data && setMapData({ geojson, bbox: bbox2d });
-    data && setMappedIntersections(groupBy(intersections, 'type'));
+    place && setMapData({ geojson, bbox: bbox2d });
+    place && setMappedIntersections(groupBy(intersections, 'type'));
   }, [data]);
 
   useEffect(() => {
@@ -134,15 +139,10 @@ export function PlaceDetail(props: IProps) {
       publicResource: formData.publicResource && formData.published,
     };
 
-    console.log({ ...data, ...parsed });
-
     try {
       setIsLoading && setIsLoading(true);
-      const data = await mutate(PlacesService.getPlace(id, query, parsed, 'put'), false);
-      setPlace(data);
 
-      // mutate(cacheKey, parsed, false);      // use `false` to mutate without revalidation
-      // mutate(cacheKey, PlacesService.getPlace( id, query, parsed, 'put'));
+      mutate(cacheKey, setter(parsed), false);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
@@ -179,7 +179,7 @@ export function PlaceDetail(props: IProps) {
   }
 
   return (
-    !!data && (
+    !!place && (
       <ContentLayout
         backTo="/places"
         isLoading={!data && !error}
