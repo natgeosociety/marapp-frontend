@@ -21,7 +21,7 @@ import { groupBy, map, noop } from 'lodash';
 import { merge } from 'lodash/fp';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 
 import {
   AuthzGuards,
@@ -73,7 +73,7 @@ export function PlaceDetail(props: IProps) {
   const query = merge(PLACE_DETAIL_QUERY, { group: selectedGroup });
   const cacheKey = generateCacheKey(`locations/${page}`, query);
 
-  const { data, error, mutate, revalidate } = useSWR(cacheKey, () =>
+  const { data, error, revalidate, mutate } = useSWR(cacheKey, () =>
     PlacesService.getPlace(page, query).then((response: any) => response.data)
   );
 
@@ -86,10 +86,6 @@ export function PlaceDetail(props: IProps) {
   const [formValid, setFormValid] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [metricsLoading, setMetricsLoading] = useState(false);
-
-  useEffect(() => {
-    data && setPlace(data);
-  }, [data]);
 
   const {
     name,
@@ -108,7 +104,7 @@ export function PlaceDetail(props: IProps) {
     createdAt,
     updatedAt,
     version,
-  } = place;
+  } = data || {};
 
   const { getValues, register, formState, errors } = useForm({
     mode: 'onChange',
@@ -118,9 +114,10 @@ export function PlaceDetail(props: IProps) {
   const renderErrorFor = setupErrors(errors, touched);
 
   useEffect(() => {
-    place && setMapData({ geojson, bbox: bbox2d });
-    place && setMappedIntersections(groupBy(intersections, 'type'));
-  }, [place]);
+    console.log(data);
+    data && setMapData({ geojson, bbox: bbox2d });
+    data && setMappedIntersections(groupBy(intersections, 'type'));
+  }, [data]);
 
   useEffect(() => {
     setFormValid(isValid);
@@ -137,10 +134,16 @@ export function PlaceDetail(props: IProps) {
       publicResource: formData.publicResource && formData.published,
     };
 
+    console.log({ ...data, ...parsed });
+
     try {
       setIsLoading && setIsLoading(true);
-      await PlacesService.handlePlaceForm(false, parsed, id, { group: selectedGroup });
-      revalidate();
+      const data = await mutate(PlacesService.getPlace(id, query, parsed, 'put'), false);
+      setPlace(data);
+
+      // mutate(cacheKey, parsed, false);      // use `false` to mutate without revalidation
+      // mutate(cacheKey, PlacesService.getPlace( id, query, parsed, 'put'));
+
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
       onDataChange();
@@ -176,7 +179,7 @@ export function PlaceDetail(props: IProps) {
   }
 
   return (
-    !!place && (
+    !!data && (
       <ContentLayout
         backTo="/places"
         isLoading={!data && !error}

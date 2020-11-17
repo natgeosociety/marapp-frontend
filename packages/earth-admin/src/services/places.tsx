@@ -37,10 +37,12 @@ const addPlace = async (data: any, query?: RequestQuery) => {
   );
 };
 
-const getPlace = (placeId: string, query?: RequestQuery) => {
+const getPlace = (placeId: string, query?: RequestQuery, data?: any, method?) => {
   return BaseAPIService.request(
     `/locations/${placeId}`,
     {
+      method: method ? method : 'get',
+      data,
       query,
     },
     metaDeserializer
