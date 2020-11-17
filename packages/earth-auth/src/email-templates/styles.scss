@@ -1,0 +1,137 @@
+/*
+ * Copyright 2018-2020 National Geographic Society
+ *
+ * Use of this software does not constitute endorsement by National Geographic
+ * Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+ * written permission from NGS.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+ * this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import '../styles/variables.scss';
+
+// Auth0 CSS
+.ExternalClass,
+.ExternalClass div,
+.ExternalClass font,
+.ExternalClass p,
+.ExternalClass span,
+.ExternalClass td,
+img {
+  line-height: 100%;
+}
+
+#outlook a {
+  padding: 0;
+}
+
+.ExternalClass,
+.ReadMsgBody {
+  width: 100%;
+}
+
+a,
+blockquote,
+body,
+li,
+p,
+table,
+td {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+table,
+td {
+  mso-table-lspace: 0;
+  mso-table-rspace: 0;
+}
+
+img {
+  -ms-interpolation-mode: bicubic;
+  border: 0;
+  height: auto;
+  outline: 0;
+  text-decoration: none;
+}
+
+table {
+  border-collapse: collapse !important;
+}
+
+#bodyCell,
+#bodyTable,
+body {
+  height: 100% !important;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, sans-serif;
+}
+
+#bodyCell {
+  padding: 20px;
+}
+
+#bodyTable {
+  width: 600px;
+}
+
+@media only screen and (max-width: 480px) {
+
+  #bodyTable,
+  body {
+    width: 100% !important;
+  }
+
+  a,
+  blockquote,
+  body,
+  li,
+  p,
+  table,
+  td {
+    -webkit-text-size-adjust: none !important;
+  }
+
+  body {
+    min-width: 100% !important;
+  }
+
+  #bodyTable {
+    max-width: 600px !important;
+  }
+
+  #signIn {
+    max-width: 280px !important;
+  }
+}
+
+// Custom CSS
+#mainTitle {
+  background-color: $marapp-secondary-color;
+  color: $marapp-gray-9;
+}
+
+#mainCta {
+  background-color: $marapp-primary-color;
+  color: $marapp-gray-9;
+
+  &:hover {
+    opacity: .9;
+  }
+}
+
+#helperMessage {
+  color: $marapp-gray-7;
+  font-style: italic;
+}
