@@ -77,62 +77,66 @@ export const UserMenu = (props: IProps) => {
 
   return (
     <div className="marapp-qa-useraccount ng-user-account" ref={menuRef}>
-      <button
-        className="ng-background-ultradkgray ng-color-light ng-padding-medium-horizontal ng-padding-small-vertical ng-margin-medium-right"
-        onClick={toggleLangDrop}
-      >
-        <span className="ng-text-weight-medium ng-text-uppercase">{selectedLanguage}</span>
-        <i
-          className={classnames('ng-icon ng-color-white ng-margin-left', {
-            'ng-icon-directionup': showLangDrop,
-            'ng-icon-directiondown': !showLangDrop,
-          })}
-        />
-      </button>
-      <Dropdown native={true} state={`${showLangDrop}`}>
-        {({ x, ...props }) => (
-          <animated.div
-            style={{
-              transform: x.interpolate((x) => `translate3d(85px, ${x},0)`),
-              position: 'absolute',
-              ...props,
-            }}
+      {!!selectedLanguage && (
+        <>
+          <button
+            className="ng-background-ultradkgray ng-color-light ng-padding-medium-horizontal ng-padding-small-vertical ng-margin-medium-right"
+            onClick={toggleLangDrop}
           >
-            <ul className="ng-user-profile-dropdown">
-              <li>
-                <h4 className="ng-text-display-s ng-margin-remove">{t('Languages')}</h4>
-              </li>
-              <li
-                className={classnames({
-                  selected: selectedLanguage === 'en',
-                })}
+            <span className="ng-text-weight-medium ng-text-uppercase">{selectedLanguage}</span>
+            <i
+              className={classnames('ng-icon ng-color-white ng-margin-left', {
+                'ng-icon-directionup': showLangDrop,
+                'ng-icon-directiondown': !showLangDrop,
+              })}
+            />
+          </button>
+          <Dropdown native={true} state={`${showLangDrop}`}>
+            {({ x, ...props }) => (
+              <animated.div
+                style={{
+                  transform: x.interpolate((x) => `translate3d(85px, ${x},0)`),
+                  position: 'absolute',
+                  ...props,
+                }}
               >
-                <a className="marapp-qa-lang-en" onClick={(e) => changeLanguage(e, 'en')}>
-                  English
-                </a>
-              </li>
-              <li
-                className={classnames({
-                  selected: selectedLanguage === 'es',
-                })}
-              >
-                <a className="marapp-qa-lang-es" onClick={(e) => changeLanguage(e, 'es')}>
-                  Español
-                </a>
-              </li>
-              <li
-                className={classnames({
-                  selected: selectedLanguage === 'fr',
-                })}
-              >
-                <a className="marapp-qa-lang-fr" onClick={(e) => changeLanguage(e, 'fr')}>
-                  Français
-                </a>
-              </li>
-            </ul>
-          </animated.div>
-        )}
-      </Dropdown>
+                <ul className="ng-user-profile-dropdown">
+                  <li>
+                    <h4 className="ng-text-display-s ng-margin-remove">{t('Languages')}</h4>
+                  </li>
+                  <li
+                    className={classnames({
+                      selected: selectedLanguage === 'en',
+                    })}
+                  >
+                    <a className="marapp-qa-lang-en" onClick={(e) => changeLanguage(e, 'en')}>
+                      English
+                    </a>
+                  </li>
+                  <li
+                    className={classnames({
+                      selected: selectedLanguage === 'es',
+                    })}
+                  >
+                    <a className="marapp-qa-lang-es" onClick={(e) => changeLanguage(e, 'es')}>
+                      Español
+                    </a>
+                  </li>
+                  <li
+                    className={classnames({
+                      selected: selectedLanguage === 'fr',
+                    })}
+                  >
+                    <a className="marapp-qa-lang-fr" onClick={(e) => changeLanguage(e, 'fr')}>
+                      Français
+                    </a>
+                  </li>
+                </ul>
+              </animated.div>
+            )}
+          </Dropdown>
+        </>
+      )}
 
       <button
         className="ng-user-profile ng-background-ultraltgray ng-color-black"
