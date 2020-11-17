@@ -73,9 +73,11 @@ export function PlaceDetail(props: IProps) {
   const query = merge(PLACE_DETAIL_QUERY, { group: selectedGroup });
   const cacheKey = generateCacheKey(`locations/${page}`, query);
 
-  const { data, error, mutate, revalidate } = useSWR(cacheKey, () =>
-    PlacesService.getPlace(page, query).then((response: any) => response.data)
-  );
+  const fetcher = () => PlacesService.getPlace(page, query).then((response: any) => response.data);
+  const setter = (data) =>
+    PlacesService.handlePlaceForm(false, data, id, query).then((response: any) => response.data);
+
+  const { data, error, revalidate, mutate } = useSWR(cacheKey, fetcher);
 
   const [place, setPlace] = useState<IPlace>({});
   const [mapData, setMapData] = useState({});
@@ -139,11 +141,12 @@ export function PlaceDetail(props: IProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await PlacesService.handlePlaceForm(false, parsed, id, { group: selectedGroup });
-      revalidate();
+
+      await mutate(setter(parsed), false);
+
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
-      onDataChange();
+      await onDataChange();
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
       const fallbackError = [

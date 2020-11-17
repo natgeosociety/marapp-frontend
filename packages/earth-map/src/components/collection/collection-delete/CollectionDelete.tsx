@@ -17,12 +17,12 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import React, { useState } from 'react';
-
-import { Modal } from '@marapp/earth-shared';
-import { deleteCollection } from 'services/CollectionsService';
 import { ICollection } from 'modules/collections/model';
 import { EPanels } from 'modules/sidebar/model';
+import React, { useState } from 'react';
+import { deleteCollection } from 'services/CollectionsService';
+
+import { Modal } from '@marapp/earth-shared';
 
 interface IProps {
   collection: ICollection;

@@ -17,13 +17,13 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import React, { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-
-import { Card, TitleHero, AsyncSelect } from '@marapp/earth-shared';
-import PlacesService from 'services/PlacesService';
-import { updateCollection } from 'services/CollectionsService';
 import { ICollection } from 'modules/collections/model';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { updateCollection } from 'services/CollectionsService';
+import PlacesService from 'services/PlacesService';
+
+import { AsyncSelect, Card, TitleHero } from '@marapp/earth-shared';
 
 interface IProps {
   collection: ICollection;
