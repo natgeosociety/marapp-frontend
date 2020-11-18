@@ -46,6 +46,7 @@ interface RolePopupData {
   x?: number;
   y?: number;
   email?: string;
+  deleteEmail?: string;
   group?: string;
   visible?: boolean;
   isLoading?: boolean;
@@ -198,6 +199,7 @@ export function UsersHome(props: any) {
 
     setRolePopupData({
       email: user.email,
+      deleteEmail: user.email,
       group: normalizeGroupName(user.groups[0].name),
       x: boundingRect.left - containerBoundingRect.left,
       y: boundingRect.bottom + scrollContainer.scrollTop,
@@ -234,7 +236,11 @@ export function UsersHome(props: any) {
     }
   };
 
-  useDomWatcher(() => setRolePopupData({}), !rolePopupData.visible, '.role-popup');
+  useDomWatcher(
+    () => setRolePopupData({ deleteEmail: rolePopupData.deleteEmail }),
+    !rolePopupData.visible,
+    '.role-popup'
+  );
 
   return (
     writePermissions && (
@@ -351,9 +357,8 @@ export function UsersHome(props: any) {
                   <table className="ng-table">
                     <thead>
                       <tr>
-                        <th className="ng-border-remove ng-width-1-3">Name</th>
-                        <th className="ng-border-remove ng-width-1-3">Email</th>
-                        <th className="ng-border-remove ng-width-1-3">Role &amp; Access</th>
+                        <th className="ng-border-remove ng-width-1-2">Email</th>
+                        <th className="ng-border-remove ng-width-1-2">Role &amp; Access</th>
                       </tr>
                     </thead>
                     <List
@@ -377,7 +382,6 @@ export function UsersHome(props: any) {
                         const user = userListProps.data[index];
                         return (
                           <tr key={user.email}>
-                            <td className="ng-border-remove">{user.name}</td>
                             <td className="ng-border-remove">{user.email}</td>
                             <td className="ng-border-remove">
                               {normalizeGroupName(user.groups[0].name)}
@@ -450,7 +454,7 @@ export function UsersHome(props: any) {
                     </div>
                   )}
                   <DeleteConfirmation
-                    id={rolePopupData.email}
+                    id={rolePopupData.deleteEmail}
                     name="removeUser"
                     navigateRoute="users"
                     type="users"

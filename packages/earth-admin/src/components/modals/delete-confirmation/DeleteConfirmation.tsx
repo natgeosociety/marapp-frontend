@@ -55,6 +55,8 @@ export const DeleteConfirmation = (props: IProps) => {
   } = props;
   const { selectedGroup } = useAuth0();
 
+  console.log('@@@@@', id);
+
   async function handleDelete(e) {
     e.preventDefault();
     e.stopPropagation();
