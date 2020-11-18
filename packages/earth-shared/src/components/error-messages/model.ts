@@ -26,4 +26,5 @@ interface Error {
 
 export interface ErrorMessageProps {
   errors: Error[];
+  className?: string;
 }
