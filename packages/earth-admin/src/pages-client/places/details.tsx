@@ -150,6 +150,7 @@ export function PlaceDetail(props: IProps) {
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
+      setPanel('upload');
       await onDataChange();
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
