@@ -29,7 +29,6 @@ import { useAuth0 } from '@app/auth/auth0';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
-import { GeojsonUpload } from '@app/components/places/geojson-upload';
 import { ContentLayout } from '@app/layouts';
 import PlacesService from '@app/services/places';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
@@ -67,7 +66,6 @@ export function NewPlace(props: IProps) {
       geojson: geojsonValue,
     };
 
-    console.log(parsed, 'value');
     try {
       setIsLoading(true);
       const { data } = await PlacesService.addPlace(parsed, { group: selectedGroup });
