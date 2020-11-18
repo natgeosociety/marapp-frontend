@@ -74,7 +74,6 @@ export function NewLayer(props: IProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
-  const [layerConfig, setLayerConfig] = useState({});
 
   const [references, setReferences] = useState();
 

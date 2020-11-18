@@ -21,9 +21,9 @@ import 'codemirror/addon/lint/javascript-lint';
 import 'codemirror/addon/lint/json-lint';
 import 'codemirror/addon/lint/lint';
 import 'codemirror/mode/javascript/javascript';
+import { JSHINT } from 'jshint';
 import React, { useState } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-import { JSHINT } from 'jshint';
 
 import './styles.scss';
 

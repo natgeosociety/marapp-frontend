@@ -40,6 +40,7 @@ import { DetailList } from '@app/components/detail-list';
 import { DownloadFile } from '@app/components/download-file';
 import { ErrorBoundary } from '@app/components/error-boundary';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
+import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { MapComponent } from '@app/components/map';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
@@ -54,7 +55,6 @@ import { formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
 import { MapComponentContext } from '@app/utils/contexts';
 
 import { IPlace, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
-import { JsonEditor } from '@app/components/json-editor';
 
 interface IProps {
   path: string;

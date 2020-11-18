@@ -27,13 +27,13 @@ import { Card, ErrorMessages, Input, setupErrors, Spinner, Tab, Tabs } from '@ma
 
 import { useAuth0 } from '@app/auth/auth0';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
+import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
+import { GeojsonUpload } from '@app/components/places/geojson-upload';
 import { ContentLayout } from '@app/layouts';
 import PlacesService from '@app/services/places';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenObjectForSelect } from '@app/utils';
-import { JsonEditor } from '@app/components/json-editor';
-import { GeojsonUpload } from '@app/components/places/geojson-upload';
 
 interface IProps {
   path: string;

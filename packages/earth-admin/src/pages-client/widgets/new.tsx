@@ -69,7 +69,6 @@ export function NewWidget(props: IProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
-  const [layerConfig, setLayerConfig] = useState({});
 
   const onSubmit = async (values: any) => {
     const { layers, metrics } = values;
