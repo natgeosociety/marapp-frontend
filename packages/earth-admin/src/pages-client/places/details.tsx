@@ -25,6 +25,7 @@ import useSWR from 'swr';
 
 import {
   AuthzGuards,
+  Card,
   ErrorMessages,
   InlineEditCard,
   Input,
@@ -33,7 +34,6 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { DetailList } from '@app/components/detail-list';
 import { DownloadFile } from '@app/components/download-file';
 import { ErrorBoundary } from '@app/components/error-boundary';
@@ -43,13 +43,13 @@ import { MapComponent } from '@app/components/map';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Metrics } from '@app/components/places';
 import { Toggle } from '@app/components/toggle';
+import { PUBLIC_ORG } from '@app/config';
 import { ContentLayout } from '@app/layouts';
 import { generateCacheKey } from '@app/services';
 import MetricService from '@app/services/metrics';
 import PlacesService from '@app/services/places';
 import { formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
 import { MapComponentContext } from '@app/utils/contexts';
-import { PUBLIC_ORG } from '@app/config';
 
 import { IPlace, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
 
@@ -73,9 +73,11 @@ export function PlaceDetail(props: IProps) {
   const query = merge(PLACE_DETAIL_QUERY, { group: selectedGroup });
   const cacheKey = generateCacheKey(`locations/${page}`, query);
 
-  const { data, error, mutate, revalidate } = useSWR(cacheKey, () =>
-    PlacesService.getPlace(page, query).then((response: any) => response.data)
-  );
+  const fetcher = () => PlacesService.getPlace(page, query).then((response: any) => response.data);
+  const setter = (data) =>
+    PlacesService.handlePlaceForm(false, data, id, query).then((response: any) => response.data);
+
+  const { data, error, revalidate, mutate } = useSWR(cacheKey, fetcher);
 
   const [place, setPlace] = useState<IPlace>({});
   const [mapData, setMapData] = useState({});
@@ -139,11 +141,12 @@ export function PlaceDetail(props: IProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await PlacesService.handlePlaceForm(false, parsed, id, { group: selectedGroup });
-      revalidate();
+
+      await mutate(setter(parsed), false);
+
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
-      onDataChange();
+      await onDataChange();
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
       const fallbackError = [
@@ -347,6 +350,7 @@ export function PlaceDetail(props: IProps) {
                               <DownloadFile
                                 data={geojson}
                                 fileName={slug}
+                                type="geojson"
                                 className="ng-align-right ng-margin-top"
                               >
                                 Download GeoJSON
@@ -354,6 +358,7 @@ export function PlaceDetail(props: IProps) {
                               <div className="ng-width-1-1 ng-margin-medium-top">
                                 <FakeJsonUpload
                                   name="geojson"
+                                  type=".geojson"
                                   label="Place shape*"
                                   ref={register({
                                     required: 'GeoJSON is required',

@@ -20,9 +20,8 @@
 import React, { useContext } from 'react';
 import Helmet from 'react-helmet';
 
-import { favicon, Spinner, UserMenu } from '@marapp/earth-shared';
+import { Card, favicon, Spinner, UserMenu } from '@marapp/earth-shared';
 
-import { Card } from '@marapp/earth-shared';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { MAP_PATH } from '@app/config';
 import { Auth0Context } from '@app/utils/contexts';

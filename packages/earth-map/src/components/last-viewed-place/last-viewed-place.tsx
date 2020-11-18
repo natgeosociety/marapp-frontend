@@ -18,10 +18,9 @@
 */
 
 import ListItem from 'components/list-item';
+import { ILastViewedPlace } from 'modules/global/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { ILastViewedPlace } from 'modules/global/model';
 
 interface IProps {
   place: ILastViewedPlace;
