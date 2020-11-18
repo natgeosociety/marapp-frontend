@@ -457,7 +457,7 @@ export function UsersHome(props: any) {
                     id={rolePopupData.deleteEmail}
                     name="removeUser"
                     navigateRoute="users"
-                    type="users"
+                    type="user"
                     toggleModal={() => setShowRemoveUser(!showRemoveUser)}
                     onDelete={toggleRolePopup}
                     visibility={showRemoveUser}
