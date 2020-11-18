@@ -1,12 +1,13 @@
-import React from 'react';
-import { push } from 'redux-first-router';
-
 import BackToLocation from 'components/back-to-location';
 import FilterBy from 'components/filter-by';
 import InfiniteList from 'components/infinite-list';
 import ListItem from 'components/list-item';
 import SearchBox from 'components/searchbox';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
+import { LocationTypeEnum } from 'modules/places/model';
+import { EarthRoutes } from 'modules/router/model';
+import React from 'react';
+import { push } from 'redux-first-router';
 import { hasFilters } from 'utils/filters';
 
 interface IProps {
@@ -123,7 +124,13 @@ const Places = (props: IProps) => {
               hint={$searchHint.name}
               title={name}
               key={`${slug}-${organization}`}
-              linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
+              linkTo={{
+                type:
+                  type === LocationTypeEnum.COLLECTION
+                    ? EarthRoutes.COLLECTION
+                    : EarthRoutes.LOCATION,
+                payload: { slug, id, organization },
+              }}
               organization={group.length > 1 && organization}
               labels={[type]}
             />

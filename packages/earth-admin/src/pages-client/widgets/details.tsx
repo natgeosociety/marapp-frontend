@@ -28,6 +28,7 @@ import {
   alphaNumericDashesRule,
   AsyncSelect,
   AuthzGuards,
+  Card,
   ErrorMessages,
   InlineEditCard,
   Input,
@@ -35,7 +36,6 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { DetailList } from '@app/components/detail-list';
 import { HtmlEditor } from '@app/components/html-editor';
 import { JsonEditor } from '@app/components/json-editor';
@@ -66,9 +66,12 @@ export function WidgetsDetail(props: WidgetProps) {
   const query = merge(WIDGET_DETAIL_QUERY, { group: selectedGroup });
   const cacheKey = generateCacheKey(`widgets/${page}`, query);
 
-  const { data, error, mutate } = useSWR(cacheKey, () =>
-    WidgetsService.getWidget(page, query).then((res: any) => res.data)
-  );
+  const fetcher = () =>
+    WidgetsService.getWidget(page, query).then((response: any) => response.data);
+  const setter = (data) =>
+    WidgetsService.handleWidgetForm(false, data, id, query).then((response: any) => response.data);
+
+  const { data, error, revalidate, mutate } = useSWR(cacheKey, fetcher);
 
   const [widget, setWidget] = useState<Widget>({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -122,11 +125,12 @@ export function WidgetsDetail(props: WidgetProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await WidgetsService.handleWidgetForm(false, parsed, id, { group: selectedGroup });
-      await mutate();
-      onDataChange();
+
+      await mutate(setter(parsed), false);
+
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
+      await onDataChange();
     } catch (error) {
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data.errors);

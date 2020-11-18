@@ -55,7 +55,6 @@ const SearchBox = (props: SearchBoxProps) => {
           onFocus={() => setFocus(true)}
           onChange={(e) => handleSearchChange(e.target.value)}
           value={searchValue}
-          ref={(input) => input && input.getBoundingClientRect().top > 0 && input.focus()}
         />
       </div>
     </div>

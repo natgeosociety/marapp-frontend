@@ -25,10 +25,10 @@ import Select from 'react-select';
 
 import {
   AuthzGuards,
+  Card,
   EmailInput,
   ErrorMessages,
   Spinner,
-  Card,
   useDomWatcher,
 } from '@marapp/earth-shared';
 

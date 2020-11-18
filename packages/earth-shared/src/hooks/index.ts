@@ -20,7 +20,7 @@
 import { useEffect, useRef } from 'react';
 
 export function useDomWatcher(
-  callback: () => any,
+  callback: Function,
   skip?: boolean,
   targetSelector?: string
 ): React.RefObject<any> {

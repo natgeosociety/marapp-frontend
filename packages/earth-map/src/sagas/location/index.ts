@@ -19,6 +19,7 @@
 
 import groupBy from 'lodash/groupBy';
 import { persistData, setLastViewedPlace } from 'modules/global/actions';
+import { EMainType } from 'modules/global/model';
 import { setMapBounds } from 'modules/map/actions';
 import { setMetrics, setMetricsLoading } from 'modules/metrics/actions';
 import {
@@ -36,7 +37,6 @@ import { call, cancelled, delay, put, select, takeLatest } from 'redux-saga/effe
 import { loadDataIndexes } from 'sagas/layers';
 import { ignoreRedirectsTo } from 'sagas/saga-utils';
 import PlacesService from 'services/PlacesService';
-import { EMainType } from 'modules/global/model';
 
 let PREV_SLUG = null;
 const ignoreRedirectsToLocation = ignoreRedirectsTo('LOCATION');

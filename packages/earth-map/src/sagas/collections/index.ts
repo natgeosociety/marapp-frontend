@@ -17,16 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { persistData, setLastViewedPlace } from 'modules/global/actions';
 import { setCollectionData, setCollectionsLoading } from 'modules/collections/actions';
-import { takeLatest, call, put } from 'redux-saga/effects';
-import { replace } from 'redux-first-router';
-
+import { persistData, setLastViewedPlace } from 'modules/global/actions';
+import { EMainType, SubType } from 'modules/global/model';
 import { setMapBounds } from 'modules/map/actions';
 import { setPlacesSearch } from 'modules/places/actions';
-import { fetchCollection } from 'services/CollectionsService';
-import { EMainType, SubType } from 'modules/global/model';
 import { EarthRoutes } from 'modules/router/model';
+import { replace } from 'redux-first-router';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import PlacesService from 'services/PlacesService';
 
 export default function* collections() {
   // @ts-ignore
@@ -38,7 +37,7 @@ function* loadCollection({ payload }) {
 
   try {
     yield put(setCollectionsLoading(true));
-    const { data } = yield call(fetchCollection, slug, {
+    const { data } = yield call(PlacesService.fetchPlaceById, slug, {
       group: organization,
       include: 'locations',
       select: 'locations.slug,locations.name',

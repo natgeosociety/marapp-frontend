@@ -17,25 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { resetCollection } from 'modules/collections/actions';
-import { resetLayers } from 'modules/layers/actions';
-import { resetMap } from 'modules/map/actions';
-import { resetPlace, setPlacesSearch } from 'modules/places/actions';
-import { setSidebarOpen } from 'modules/sidebar/actions';
 import { connect } from 'react-redux';
 
-import SidebarComponent from './component';
+import { CollectionDelete } from './CollectionDelete';
 
-export default connect(
-  (state: any) => ({
-    ...state.sidebar,
-  }),
-  {
-    setSidebarOpen,
-    setPlacesSearch,
-    resetMap,
-    resetPlace,
-    resetCollection,
-    resetLayers,
-  }
-)(SidebarComponent);
+// We just need the disapatch
+export default connect(null, null)(CollectionDelete);

@@ -17,11 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { setCollectionData } from 'modules/collections/actions';
+import { setMapBounds } from 'modules/map/actions';
 import { connect } from 'react-redux';
 
 import CollectionDetails from './CollectionDetails';
-import { setCollectionData } from 'modules/collections/actions';
-import { setMapBounds } from 'modules/map/actions';
 
 export default connect(
   (state: any) => ({

@@ -23,10 +23,9 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
-import { ErrorMessages, Input, setupErrors, Spinner } from '@marapp/earth-shared';
+import { Card, ErrorMessages, Input, setupErrors, Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
@@ -167,6 +166,7 @@ export function NewPlace(props: IProps) {
             <p>Choose a GeoJSON to calculate shape maths and geographic relationships.</p>
             <FakeJsonUpload
               name="geojson"
+              type=".geojson"
               label="Place shape*"
               ref={register({
                 required: 'GeoJSON is required',

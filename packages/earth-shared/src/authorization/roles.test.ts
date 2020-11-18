@@ -4,6 +4,9 @@ import {
   isAdminAuthz,
   mapRoleGroups,
   mapAuthorizedRoleGroups,
+  getPrivateGroups,
+  getPublicGroups,
+  RoleEnum,
 } from './roles';
 
 describe('Roles', () => {
@@ -55,5 +58,38 @@ describe('Roles', () => {
     expect(mapAuthorizedRoleGroups(['MARAPP:Owner'])).toEqual(['MARAPP']);
     expect(mapAuthorizedRoleGroups(['MARAPP:Public', 'TEST:Admin'])).toEqual(['TEST']);
     expect(mapAuthorizedRoleGroups(['MARAPP:Viewer', 'TEST:Owner'])).toEqual(['TEST']);
+  });
+
+  test('getPrivateGroups() should return groups where role is above VIEWER', () => {
+    const onlyPublic = {
+      MARAPP: [RoleEnum.PUBLIC],
+    };
+    const publicAndPrivate = {
+      ...onlyPublic,
+      NGS: [RoleEnum.EDITOR],
+    };
+    const withSuperAdmin = {
+      ...publicAndPrivate,
+      '*': [RoleEnum.SUPER_ADMIN],
+    };
+    const withMultipleRoles = {
+      ...onlyPublic,
+      NGS: [RoleEnum.PUBLIC, RoleEnum.ADMIN],
+    };
+    expect(getPrivateGroups(onlyPublic)).toEqual([]);
+    expect(getPrivateGroups(publicAndPrivate)).toEqual(['NGS']);
+    expect(getPrivateGroups(withSuperAdmin)).toEqual(['NGS']);
+    expect(getPrivateGroups(withMultipleRoles)).toEqual(['NGS']);
+  });
+
+  test('getPublicGroups() should return groups that have PUBLIC role', () => {
+    const groupsWithRoles = {
+      MARAPP: [RoleEnum.PUBLIC],
+      TEST1: [RoleEnum.EDITOR],
+      TEST2: [RoleEnum.ADMIN],
+      TEST3: [RoleEnum.OWNER, RoleEnum.PUBLIC],
+      '*': [RoleEnum.SUPER_ADMIN],
+    };
+    expect(getPublicGroups(groupsWithRoles)).toEqual(['MARAPP', 'TEST3']);
   });
 });

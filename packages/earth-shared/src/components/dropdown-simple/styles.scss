@@ -17,25 +17,40 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { resetCollection } from 'modules/collections/actions';
-import { resetLayers } from 'modules/layers/actions';
-import { resetMap } from 'modules/map/actions';
-import { resetPlace, setPlacesSearch } from 'modules/places/actions';
-import { setSidebarOpen } from 'modules/sidebar/actions';
-import { connect } from 'react-redux';
+@import '~styles/config';
 
-import SidebarComponent from './component';
+.dropdown-simple {
 
-export default connect(
-  (state: any) => ({
-    ...state.sidebar,
-  }),
-  {
-    setSidebarOpen,
-    setPlacesSearch,
-    resetMap,
-    resetPlace,
-    resetCollection,
-    resetLayers,
+  .dropdown-simple-menu {
+    background: $marapp-gray-7;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    padding: 0;
+    position: absolute;
+    right: 0;
+    transform: translateY(5px);
+    z-index: 100;
+    ul {
+      padding: 0!important;
+    }
+    li {
+      display: block;
+      position: relative;
+      border-bottom: 1px solid $marapp-gray-8;
+      color: $marapp-gray-1;
+      font-family: $marapp-secondary-font;
+      font-size: 16px;
+      white-space: nowrap;
+      > a {
+        padding: 10px 25px;
+      }
+      &:hover {
+        background: $marapp-gray-6;
+      }
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
   }
-)(SidebarComponent);
+
+}

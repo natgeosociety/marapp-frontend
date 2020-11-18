@@ -18,9 +18,8 @@
 */
 
 import ListItem from 'components/list-item';
-import React from 'react';
-
 import { ILastViewedPlace } from 'modules/global/model';
+import React from 'react';
 
 interface IProps {
   place: ILastViewedPlace;

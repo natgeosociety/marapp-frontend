@@ -17,25 +17,25 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { resetCollection } from 'modules/collections/actions';
-import { resetLayers } from 'modules/layers/actions';
-import { resetMap } from 'modules/map/actions';
-import { resetPlace, setPlacesSearch } from 'modules/places/actions';
-import { setSidebarOpen } from 'modules/sidebar/actions';
-import { connect } from 'react-redux';
+@import '~styles/config';
 
-import SidebarComponent from './component';
-
-export default connect(
-  (state: any) => ({
-    ...state.sidebar,
-  }),
-  {
-    setSidebarOpen,
-    setPlacesSearch,
-    resetMap,
-    resetPlace,
-    resetCollection,
-    resetLayers,
+.change-page {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url('../../images/blur.jpg');
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  color: $marapp-gray-0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  .change-container {
+    box-shadow: 0px 16px 48px rgba(0, 0, 0, 0.175);
+    background: $marapp-gray-7;
+    max-width: 375px;
+    padding: 30px;
   }
-)(SidebarComponent);
+}
