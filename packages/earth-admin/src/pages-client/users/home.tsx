@@ -455,7 +455,7 @@ export function UsersHome(props: any) {
                   )}
                   <DeleteConfirmation
                     id={rolePopupData.deleteEmail}
-                    name="removeUser"
+                    name={rolePopupData.deleteEmail}
                     navigateRoute="users"
                     type="user"
                     toggleModal={() => setShowRemoveUser(!showRemoveUser)}
