@@ -64,3 +64,15 @@ export const downloadCSVFile = (data) => {
   const csvBlob = new Blob([csv]);
   return URL.createObjectURL(csvBlob);
 };
+
+/**
+ * Get initials from user name
+ */
+export const getInitials = (name: string): string => {
+  const emptySpace = ' ';
+  const segments = name.split(emptySpace);
+  const firstName = segments[0] || emptySpace;
+  const lastName = (segments.length > 1 && segments[segments.length - 1]) || emptySpace;
+
+  return `${firstName[0]}${lastName[0]}`.toUpperCase();
+};

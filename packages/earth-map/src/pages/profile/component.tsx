@@ -227,6 +227,7 @@ export function ProfileComponent(props: IProps) {
 
         <UserMenu
           selected={page}
+          userName={userData.name}
           isAuthenticated={isAuthenticated}
           profileLink={<Link to={{ type: 'PROFILE' }}>Profile</Link>}
           onLogin={login}

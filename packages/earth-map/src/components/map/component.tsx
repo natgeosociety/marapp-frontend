@@ -358,12 +358,13 @@ class MapComponent extends React.Component<IMap, IMapState> {
 // This only exists to make use of 'useContext()' inside of it
 function UserMenuWrapper(props) {
   const { selected } = props;
-  const { logout, login, isAuthenticated } = useContext(Auth0Context);
+  const { logout, login, isAuthenticated, userData } = useContext(Auth0Context);
 
   return (
     <UserMenu
       selected={selected}
       isAuthenticated={isAuthenticated}
+      userName={userData.name}
       profileLink={<Link to={{ type: 'PROFILE' }}>Profile</Link>}
       onLogin={login}
       onLogout={logout}
