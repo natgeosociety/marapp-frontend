@@ -86,7 +86,6 @@ export function NewLayer(props: IProps) {
       ...(category && { category: flattenArrayForSelect(category, 'value') }),
       ...(type && { type: flattenObjectForSelect(type) }),
       ...(provider && { provider: flattenObjectForSelect(provider) }),
-      ...(!!layerConfig && { config: layerConfig }),
       ...(!!references && { references: flattenArrayForSelect(references, 'id') }),
     };
 
@@ -109,21 +108,6 @@ export function NewLayer(props: IProps) {
     } catch (error) {
       setServerErrors(error.data.errors);
     }
-  };
-
-  const handleJsonChange = (json) => {
-    try {
-      JSON.parse(json);
-    } catch (err) {
-      setJsonError(true);
-    }
-    if (!JSHINT.errors.length) {
-      const parsedJson = JSON.parse(json);
-      setLayerConfig(parsedJson);
-      setJsonError(false);
-      return parsedJson;
-    }
-    setJsonError(true);
   };
 
   return (
@@ -259,7 +243,7 @@ export function NewLayer(props: IProps) {
                 className="marapp-qa-config"
                 name="config"
                 control={control}
-                onChange={(layerConfig) => handleJsonChange(layerConfig)}
+                onError={(e) => setJsonError(e)}
                 as={<JsonEditor json="" />}
               />
             </div>

@@ -137,21 +137,6 @@ export function WidgetsDetail(props: WidgetProps) {
     }
   }
 
-  const handleJsonChange = (json) => {
-    try {
-      JSON.parse(json);
-    } catch (err) {
-      setJsonError(true);
-    }
-    if (!JSHINT.errors.length) {
-      const parsedJson = JSON.parse(json);
-      setWidgetConfig(parsedJson);
-      setJsonError(false);
-      return parsedJson;
-    }
-    setJsonError(true);
-  };
-
   function handleDeleteToggle() {
     setShowDeleteModal(!showDeleteModal);
   }
@@ -400,7 +385,7 @@ export function WidgetsDetail(props: WidgetProps) {
                           name="config"
                           control={control}
                           defaultValue={widgetConfig}
-                          onChange={handleJsonChange}
+                          onError={(e) => setJsonError(e)}
                           as={<JsonEditor json={widgetConfig} />}
                         />
                       </div>

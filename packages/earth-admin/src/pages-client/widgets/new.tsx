@@ -78,7 +78,6 @@ export function NewWidget(props: IProps) {
       ...values,
       ...(!!layers && { layers: [flattenObjectForSelect(layers, 'id')] }),
       ...(!!metrics && { metrics: [metrics.value] }),
-      ...(!!layerConfig && { config: layerConfig }),
     };
 
     try {
@@ -100,21 +99,6 @@ export function NewWidget(props: IProps) {
     } catch (error) {
       setServerErrors(error.data.errors);
     }
-  };
-
-  const handleJsonChange = (json) => {
-    try {
-      JSON.parse(json);
-    } catch (err) {
-      setJsonError(true);
-    }
-    if (!JSHINT.errors.length) {
-      const parsedJson = JSON.parse(json);
-      setLayerConfig(parsedJson);
-      setJsonError(false);
-      return parsedJson;
-    }
-    setJsonError(true);
   };
 
   return (
@@ -230,10 +214,9 @@ export function NewWidget(props: IProps) {
           <Card className="ng-margin-medium-bottom">
             <label htmlFor="config">Widget Config*</label>
             <Controller
-              className="marapp-qa-config"
               name="config"
               control={control}
-              onChange={handleJsonChange}
+              onError={(e) => setJsonError(e)}
               as={<JsonEditor json="" />}
             />
           </Card>

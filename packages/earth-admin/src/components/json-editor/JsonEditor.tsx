@@ -34,7 +34,7 @@ interface JsonEditorProps {
   onError?: (err: boolean) => any;
 }
 
-export const JsonEditor = React.forwardRef((props: JsonEditorProps, ref: any) => {
+export const JsonEditor = (props: JsonEditorProps) => {
   const [jsonValue, setJsonValue] = useState('');
   const [error, setError] = useState('');
 
@@ -47,16 +47,16 @@ export const JsonEditor = React.forwardRef((props: JsonEditorProps, ref: any) =>
   const handleBlur = () => {
     try {
       JSON.parse(jsonValue);
+      if (!JSHINT.errors.length) {
+        const parsedJson = JSON.parse(jsonValue);
+
+        onChange && onChange(parsedJson);
+        onError && onError(false);
+        setError('');
+      }
     } catch (err) {
       setError(err.toString());
       onError && onError(true);
-    }
-    if (!JSHINT.errors.length) {
-      const parsedJson = JSON.parse(jsonValue);
-
-      onChange && onChange(parsedJson);
-      onError && onError(false);
-      setError('');
     }
   };
 
@@ -79,4 +79,4 @@ export const JsonEditor = React.forwardRef((props: JsonEditorProps, ref: any) =>
       {error && <div className="ng-form-error-block">{error}</div>}
     </div>
   );
-});
+};

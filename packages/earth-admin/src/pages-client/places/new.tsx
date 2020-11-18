@@ -173,7 +173,7 @@ export function NewPlace(props: IProps) {
               <Tabs
                 value={panel}
                 onChange={setPanel}
-                className="ng-padding-medium-horizontal ng-padding-bottom ng-ep-background-dark"
+                className="ng-padding-bottom ng-ep-background-dark"
               >
                 <Tab label="Shape File" value="upload" />
                 <Tab label="Json editor" value="json" />
@@ -199,9 +199,8 @@ export function NewPlace(props: IProps) {
               {panel === 'json' && (
                 <div className="ng-margin-medium-bottom">
                   <JsonEditor
-                    onChange={(json) => {
-                      setGeojson(json);
-                    }}
+                    json=""
+                    onChange={(json) => setGeojson(json)}
                     onError={(e) => setJsonError(e)}
                   />
                 </div>

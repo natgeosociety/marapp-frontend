@@ -352,7 +352,7 @@ export function PlaceDetail(props: IProps) {
                             <Tabs
                               value={panel}
                               onChange={setPanel}
-                              className="ng-padding-medium-horizontal ng-padding-bottom ng-ep-background-dark"
+                              className="ng-padding-bottom ng-ep-background-dark"
                             >
                               <Tab label="Shape File" value="upload" />
                               <Tab label="Json editor" value="json" />
@@ -421,9 +421,7 @@ export function PlaceDetail(props: IProps) {
                               <div className="ng-margin-medium-bottom">
                                 <JsonEditor
                                   json={geojson}
-                                  onChange={(json) => {
-                                    setGeojson(json);
-                                  }}
+                                  onChange={(json) => setGeojson(json)}
                                   onError={(e) => setJsonError(e)}
                                 />
                               </div>
