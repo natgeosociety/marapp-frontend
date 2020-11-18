@@ -7,6 +7,7 @@ import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
 import { LocationTypeEnum } from 'modules/places/model';
 import { EarthRoutes } from 'modules/router/model';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
 import { hasFilters } from 'utils/filters';
 
@@ -32,6 +33,7 @@ interface IProps {
 }
 
 const Places = (props: IProps) => {
+  const { t } = useTranslation();
   const {
     panelExpanded,
     search,
@@ -87,7 +89,7 @@ const Places = (props: IProps) => {
         <>
           <SearchBox
             value={search.search}
-            placeholder="search places"
+            placeholder={t('search places')}
             onChange={handleChange}
             onReset={handleReset}
             onFocus={() => setSidebarPanelExpanded(true)}
@@ -113,7 +115,7 @@ const Places = (props: IProps) => {
     >
       {showSearchResults ? (
         <InfiniteList
-          title="Search results"
+          title={t('Search results')}
           data={results}
           loading={search.loading}
           nextPageCursor={nextPageCursor}

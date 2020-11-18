@@ -26,6 +26,7 @@ import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
 import { debounce, sortBy } from 'lodash';
 import { EPanels } from 'modules/sidebar/model';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import './styles.scss';
 
@@ -90,6 +91,7 @@ const Layers = (props: IProps) => {
     nextLayersPage,
     setLayersSearchOpen,
   } = props;
+  const { t } = useTranslation();
 
   const { loading, search, listActive, nextPageCursor } = layers;
 
@@ -142,7 +144,7 @@ const Layers = (props: IProps) => {
         <>
           <SearchBox
             value={search.search}
-            placeholder="search layers"
+            placeholder={t('search layers')}
             onChange={handleChange}
             onReset={handleReset}
             onFocus={() => setSidebarPanelExpanded(true)}
@@ -170,23 +172,23 @@ const Layers = (props: IProps) => {
         <>
           <div className="marapp-qa-other ng-section-background ng-position-relative ng-padding-medium-bottom">
             <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-              Other
+              {t('Other')}
             </h2>
             <ListItem
-              title="Labels"
+              title={t('Labels')}
               active={mapLabels}
               key="labels"
               onClick={debounce(onLabels, 200)}
             />
             <ListItem
-              title="Roads"
+              title={t('Roads')}
               active={mapRoads}
               key="roads"
               onClick={debounce(onRoads, 200)}
             />
           </div>
           <InfiniteList
-            title="Widget layers"
+            title={t('Widget layers')}
             data={layers.results}
             loading={loading}
             nextPageCursor={nextPageCursor}

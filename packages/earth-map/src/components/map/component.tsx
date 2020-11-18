@@ -24,6 +24,7 @@ import { API_URL, MAPBOX_TOKEN } from 'config';
 import experienceIMG from 'images/pins/experience-marker.svg';
 import debounce from 'lodash/debounce';
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { renderToString } from 'react-dom/server';
 import isEqual from 'react-fast-compare';
 import Link from 'redux-first-router-link';
@@ -358,13 +359,14 @@ class MapComponent extends React.Component<IMap, IMapState> {
 // This only exists to make use of 'useContext()' inside of it
 function UserMenuWrapper(props) {
   const { selected } = props;
+  const { t } = useTranslation();
   const { logout, login, isAuthenticated } = useContext(Auth0Context);
 
   return (
     <UserMenu
       selected={selected}
       isAuthenticated={isAuthenticated}
-      profileLink={<Link to={{ type: 'PROFILE' }}>Profile</Link>}
+      profileLink={<Link to={{ type: 'PROFILE' }}>{t('Profile')}</Link>}
       onLogin={login}
       onLogout={logout}
       onSignUp={() => login({ initialScreen: 'signUp' })}

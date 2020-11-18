@@ -21,6 +21,7 @@ import 'core-js/stable';
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import TagManager from 'react-gtm-module';
+import 'locales';
 import 'styles/index.scss';
 
 import App from './App';

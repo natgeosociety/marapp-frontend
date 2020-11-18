@@ -19,6 +19,7 @@
 
 import classnames from 'classnames';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface IWidgetFooter {
   active: boolean;
@@ -28,29 +29,27 @@ interface IWidgetFooter {
   onCollapse: (active: boolean) => {};
 }
 
-class WidgetFooterComponent extends React.PureComponent<IWidgetFooter> {
-  public onToggleLayer = () => {
-    const { active, onToggleLayer } = this.props;
+function WidgetFooterComponent(props: IWidgetFooter) {
+  const { active, onToggleLayer } = props;
+  const { t } = useTranslation();
+
+  const toggleLayer = () => {
     onToggleLayer(active);
   };
 
-  public render() {
-    const { active } = this.props;
-
-    return (
-      <footer className="marapp-qa-widgetfooter widget--footer">
-        <button
-          className={classnames({
-            'ng-button ng-button-secondary': true,
-            active,
-          })}
-          onClick={this.onToggleLayer}
-        >
-          {active ? 'Remove from map' : 'Show on map'}
-        </button>
-      </footer>
-    );
-  }
+  return (
+    <footer className="marapp-qa-widgetfooter widget--footer">
+      <button
+        className={classnames({
+          'ng-button ng-button-secondary': true,
+          active,
+        })}
+        onClick={toggleLayer}
+      >
+        {active ? t('Remove from map') : t('Show on map')}
+      </button>
+    </footer>
+  );
 }
 
 export default WidgetFooterComponent;

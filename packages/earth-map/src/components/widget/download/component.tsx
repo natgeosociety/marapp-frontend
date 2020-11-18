@@ -19,6 +19,7 @@
 
 import classNames from 'classnames';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { downloadCSVFile, downloadJSONFile, useDomWatcher } from '@marapp/earth-shared';
 
@@ -29,6 +30,7 @@ interface IMetric {
 }
 
 const WidgetDownload = (props: IMetric) => {
+  const { t } = useTranslation();
   const [showDropdown, setShowDropdown] = useState(false);
 
   const {
@@ -57,7 +59,7 @@ const WidgetDownload = (props: IMetric) => {
           className={classNames('ng-ep-download-dropdown', { 'ng-display-block': showDropdown })}
         >
           <p className="ng-text-display-s ng-padding-medium-horizontal ng-padding-vertical ng-margin-remove">
-            Download metric as a:
+            {t('Download metric as a')}:
           </p>
           <ul className="marapp-qa-dropdown">
             <li>

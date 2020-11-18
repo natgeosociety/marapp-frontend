@@ -19,6 +19,7 @@
 
 import classnames from 'classnames';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { cleanFilters, countFilters } from 'utils/filters';
 
 import './styles.scss';
@@ -32,6 +33,7 @@ interface IProps {
 
 const FilterBy = (props: IProps) => {
   const { data, open, onOpenToggle, onChange } = props;
+  const { t } = useTranslation();
   const { filters, availableFilters } = data;
   const numberOfFilters = countFilters(filters);
 
@@ -62,14 +64,14 @@ const FilterBy = (props: IProps) => {
           className="marapp-qa-filterbyopen ng-text-display-s ng-body-color ng-margin-bottom ng-margin-small-right ng-c-cursor-pointer"
           onClick={openToggle}
         >
-          Filters
+          {t('Filters')}
         </h2>
         {numberOfFilters > 0 && (
           <a
             className="marapp-qa-filterbyclear ng-link ng-nohover ng-text-weight-regular ng-text-capital"
             onClick={clearCheckedFilters}
           >
-            Clear {`(${numberOfFilters})`}
+            {t('Clear')} {`(${numberOfFilters})`}
           </a>
         )}
         <i
