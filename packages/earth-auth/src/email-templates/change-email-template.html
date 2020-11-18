@@ -122,6 +122,19 @@ specific language governing permissions and limitations under the License.
               <!-- Signup email content -->
               {% if send == 'link' or send == 'link_ios' or send == 'link_android' %}
 
+              <h1
+                id="mainTitle"
+                style="
+                  margin-bottom: 20px;
+                  padding: 10px;
+                  text-align: center;
+                  font-size: 20px;
+                  font-weight: 700;
+                "
+              >
+                Update Account Email
+              </h1>
+
               <p
                 style="
                   font-size: 1.2em;
@@ -135,19 +148,7 @@ specific language governing permissions and limitations under the License.
               </p>
 
               <p>
-                <a
-                  id="mainCta"
-                  href="{{ url }}"
-                  style="
-                    display: block;
-                    width: 200px;
-                    font-size: 12px;
-                    font-weight: 500;
-                    padding: 13px 0;
-                    text-decoration: none;
-                  "
-                  >Sign in to {{ application.name }}</a
-                >
+                <a id="mainCta" href="{{ link }}">Sign in to {{ application.name }}</a>
               </p>
 
               <p style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">

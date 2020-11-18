@@ -117,6 +117,10 @@ body {
 }
 
 // Custom CSS
+p {
+  margin: 20px 0;
+}
+
 #mainTitle {
   background-color: $marapp-secondary-color;
   color: $marapp-gray-9;
@@ -125,10 +129,29 @@ body {
 #mainCta {
   background-color: $marapp-primary-color;
   color: $marapp-gray-9;
-
-  &:hover {
-    opacity: .9;
-  }
+  margin: 0;
+  overflow: visible;
+  font: inherit;
+  font-family: "Roboto";
+  color: #000;
+  text-transform: uppercase;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 0 35px;
+  vertical-align: middle;
+  line-height: 38px;
+  min-height: 40px;
+  text-decoration: none;
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -webkit-transition-duration: .4s;
+  border-radius: 0;
+  text-shadow: none;
+  font-weight: 500;
+  font-size: .75rem;
+  transition-duration: .4s;
+  letter-spacing: .15em;
+  word-spacing: .22em;
 }
 
 #helperMessage {
