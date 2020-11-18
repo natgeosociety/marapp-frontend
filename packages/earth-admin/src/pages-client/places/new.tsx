@@ -58,6 +58,12 @@ export function NewPlace(props: IProps) {
   const { selectedGroup } = useAuth0();
   const renderErrorFor = setupErrors(errors, touched);
 
+  const switchGeojsonTab = (e) => {
+    setPanel(e);
+    setGeojson(null);
+    setJsonError(false);
+  };
+
   async function onSubmit(values) {
     const { type } = values;
     const parsed = {
@@ -170,7 +176,7 @@ export function NewPlace(props: IProps) {
             <>
               <Tabs
                 value={panel}
-                onChange={setPanel}
+                onChange={switchGeojsonTab}
                 className="ng-padding-bottom ng-ep-background-dark"
               >
                 <Tab label="Shape File" value="upload" />
@@ -197,7 +203,7 @@ export function NewPlace(props: IProps) {
               {panel === 'json' && (
                 <div className="ng-margin-medium-bottom">
                   <JsonEditor
-                    json=""
+                    json={geojsonValue}
                     onChange={(json) => setGeojson(json)}
                     onError={(e) => setJsonError(e)}
                   />

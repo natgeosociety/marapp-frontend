@@ -93,6 +93,12 @@ export function PlaceDetail(props: IProps) {
   const [metricsLoading, setMetricsLoading] = useState(false);
   const [panel, setPanel] = useState('upload');
 
+  const switchGeojsonTab = (e) => {
+    setPanel(e);
+    setGeojson(null);
+    setJsonError(false);
+  };
+
   useEffect(() => {
     data && setPlace(data);
   }, [data]);
@@ -352,7 +358,7 @@ export function PlaceDetail(props: IProps) {
                           <>
                             <Tabs
                               value={panel}
-                              onChange={setPanel}
+                              onChange={switchGeojsonTab}
                               className="ng-padding-bottom ng-ep-background-dark"
                             >
                               <Tab label="Shape File" value="upload" />
