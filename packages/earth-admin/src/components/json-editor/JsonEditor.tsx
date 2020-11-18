@@ -21,6 +21,7 @@ import 'codemirror/addon/lint/javascript-lint';
 import 'codemirror/addon/lint/json-lint';
 import 'codemirror/addon/lint/lint';
 import 'codemirror/mode/javascript/javascript';
+import { JSHINT } from 'jshint';
 import React, { useState } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 
@@ -30,19 +31,33 @@ interface JsonEditorProps {
   json?: {};
   onChange?: (data: string) => any;
   readOnly?: boolean;
+  onError?: (err: boolean) => any;
 }
 
-export default function JsonEditor(props: JsonEditorProps) {
+export const JsonEditor = (props: JsonEditorProps) => {
   const [jsonValue, setJsonValue] = useState('');
+  const [error, setError] = useState('');
 
-  const { json, onChange, readOnly } = props;
+  const { json, onChange, readOnly, onError } = props;
 
   const handleChange = (e, data, value) => {
     setJsonValue(value);
   };
 
   const handleBlur = () => {
-    onChange && onChange(jsonValue);
+    try {
+      JSON.parse(jsonValue);
+      if (!JSHINT.errors.length) {
+        const parsedJson = JSON.parse(jsonValue);
+
+        onChange && onChange(parsedJson);
+        onError && onError(false);
+        setError('');
+      }
+    } catch (err) {
+      setError(err.toString());
+      onError && onError(true);
+    }
   };
 
   return (
@@ -61,6 +76,7 @@ export default function JsonEditor(props: JsonEditorProps) {
         }}
         onChange={handleChange}
       />
+      {error && <div className="ng-form-error-block">{error}</div>}
     </div>
   );
-}
+};

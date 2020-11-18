@@ -28,7 +28,6 @@ import Map from 'components/map';
 import Places from 'components/places';
 import FeaturedPlaces from 'components/places/featured-places';
 import Sidebar from 'components/sidebar';
-import { Tab, Tabs } from 'components/tabs';
 import Url from 'components/url';
 import { union } from 'lodash';
 import { ILastViewedPlace } from 'modules/global/model';
@@ -36,6 +35,8 @@ import { EarthRoutes, IRouter } from 'modules/router/model';
 import { EPanels } from 'modules/sidebar/model';
 import React from 'react';
 import { Icons as VizzIcons } from 'vizzuality-components';
+
+import { Tab, Tabs } from '@marapp/earth-shared';
 
 import { URL_PROPS } from './url';
 

@@ -157,21 +157,6 @@ export function LayerDetail(props: any) {
     }
   }
 
-  const handleJsonChange = (json) => {
-    try {
-      JSON.parse(json);
-    } catch (err) {
-      setJsonError(true);
-    }
-    if (!JSHINT.errors.length) {
-      const parsedJson = JSON.parse(json);
-      setLayerConfig(parsedJson);
-      setJsonError(false);
-      return parsedJson;
-    }
-    setJsonError(true);
-  };
-
   function handleDeleteToggle() {
     setShowDeleteModal(!showDeleteModal);
   }
@@ -439,7 +424,7 @@ export function LayerDetail(props: any) {
                           name="config"
                           control={control}
                           defaultValue={layerConfig}
-                          onChange={handleJsonChange}
+                          onError={(e) => setJsonError(e)}
                           as={<JsonEditor json={layerConfig} />}
                         />
                       </div>
