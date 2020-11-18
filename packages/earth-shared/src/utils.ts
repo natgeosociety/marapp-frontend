@@ -64,3 +64,11 @@ export const downloadCSVFile = (data) => {
   const csvBlob = new Blob([csv]);
   return URL.createObjectURL(csvBlob);
 };
+
+/**
+ * Generic way of rendering a date in our apps YYYY-MM-DD
+ */
+export const getGenericDate = (date: string): string => {
+  const parsed = new Date(date);
+  return `${parsed.getFullYear()}-${parsed.getMonth()}-${parsed.getDay()}`;
+};

@@ -22,7 +22,14 @@ import { isEmpty } from 'lodash';
 import { ICollection } from 'modules/collections/model';
 import React, { useState } from 'react';
 
-import { Card, DropdownSimple, Pill, Spinner, TitleHero } from '@marapp/earth-shared';
+import {
+  Card,
+  DropdownSimple,
+  Pill,
+  Spinner,
+  TitleHero,
+  getGenericDate,
+} from '@marapp/earth-shared';
 
 import CollectionDelete from '../collection-delete';
 import { CollectionEditPlaces } from '../collection-editplaces';
@@ -69,7 +76,7 @@ const CollectionDetails = (props: IProps) => {
     </DropdownSimple>
   );
 
-  const { id, organization, name, locations } = data;
+  const { id, organization, name, locations, updatedAt } = data;
   const hasLocations = locations.length > 0;
 
   return (
@@ -80,6 +87,7 @@ const CollectionDetails = (props: IProps) => {
           subtitle={organization}
           extra="Collection"
           actions={canEdit ? editActions : null}
+          finePrint={`Updated: ${getGenericDate(updatedAt)}`}
         />
       </Card>
 
