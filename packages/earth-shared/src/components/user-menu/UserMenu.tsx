@@ -24,7 +24,7 @@ import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 import compose from 'lodash/fp/compose';
 import noop from 'lodash/noop';
 
-import { useDomWatcher } from '@marapp/earth-shared';
+import { useDomWatcher, Elang } from '@marapp/earth-shared';
 
 import './styles.scss';
 
@@ -106,28 +106,28 @@ export const UserMenu = (props: IProps) => {
                   </li>
                   <li
                     className={classnames({
-                      selected: selectedLanguage === 'en',
+                      selected: selectedLanguage === Elang.EN,
                     })}
                   >
-                    <a className="marapp-qa-lang-en" onClick={(e) => changeLanguage(e, 'en')}>
+                    <a className="marapp-qa-lang-en" onClick={(e) => changeLanguage(e, Elang.EN)}>
                       English
                     </a>
                   </li>
                   <li
                     className={classnames({
-                      selected: selectedLanguage === 'es',
+                      selected: selectedLanguage === Elang.ES,
                     })}
                   >
-                    <a className="marapp-qa-lang-es" onClick={(e) => changeLanguage(e, 'es')}>
+                    <a className="marapp-qa-lang-es" onClick={(e) => changeLanguage(e, Elang.ES)}>
                       Español
                     </a>
                   </li>
                   <li
                     className={classnames({
-                      selected: selectedLanguage === 'fr',
+                      selected: selectedLanguage === Elang.FR,
                     })}
                   >
-                    <a className="marapp-qa-lang-fr" onClick={(e) => changeLanguage(e, 'fr')}>
+                    <a className="marapp-qa-lang-fr" onClick={(e) => changeLanguage(e, Elang.FR)}>
                       Français
                     </a>
                   </li>

@@ -21,8 +21,7 @@ import 'core-js/stable';
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import TagManager from 'react-gtm-module';
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import 'locales';
 import 'styles/index.scss';
 
 import App from './App';
@@ -31,30 +30,6 @@ import { onFailureHook, onRedirectCallback, onSuccessHook } from './auth/hooks';
 import { GTM_TAG } from './config';
 import auth0 from './config/auth0';
 import * as serviceWorker from './serviceWorker';
-
-import translationEN from 'locales/en/translation.json';
-import translationES from 'locales/es/translation.json';
-import translationFR from 'locales/fr/translation.json';
-
-i18n.use(initReactI18next).init({
-  resources: {
-    en: {
-      translation: translationEN,
-    },
-    es: {
-      translation: translationES,
-    },
-    fr: {
-      translation: translationFR,
-    },
-  },
-  lng: 'en',
-  fallbackLng: 'en',
-  interpolation: {
-    escapeValue: false,
-  },
-  keySeparator: false,
-});
 
 if (GTM_TAG) {
   const tagManagerArgs = { gtmId: GTM_TAG };
