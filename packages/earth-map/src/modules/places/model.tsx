@@ -41,12 +41,12 @@ export interface IPlace {
 }
 
 export enum LocationTypeEnum {
-  CONTINENT = 'Continent',
   COUNTRY = 'Country',
   JURISDICTION = 'Jurisdiction',
   BIOME = 'Biome',
   PROTECTED_AREA = 'Protected Area',
   SPECIES_AREA = 'Species Area',
+  COLLECTION = 'Collection',
 }
 
 export interface MetricProps {

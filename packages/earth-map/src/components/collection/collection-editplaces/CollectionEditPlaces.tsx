@@ -18,9 +18,9 @@
  */
 
 import { ICollection } from 'modules/collections/model';
+import { LocationTypeEnum } from 'modules/places/model';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { updateCollection } from 'services/CollectionsService';
 import PlacesService from 'services/PlacesService';
 
 import { AsyncSelect, Card, TitleHero } from '@marapp/earth-shared';
@@ -65,7 +65,9 @@ export function CollectionEditPlaces(props: IProps) {
             loadFunction={(query) =>
               PlacesService.fetchPlaces({
                 ...query,
+                filter: ['type', '!=', LocationTypeEnum.COLLECTION].join(''),
                 group: placesFromGroups.join(','),
+                select: ['id', 'slug', 'name', 'organization'].join(','),
               })
             }
             selectedGroup={organization}
@@ -105,7 +107,7 @@ export function CollectionEditPlaces(props: IProps) {
     };
 
     try {
-      const { data } = await updateCollection(id, parsedValues, {
+      const { data } = await PlacesService.updateCollection(id, parsedValues, {
         group: organization,
         include: 'locations',
         select: 'locations.slug,locations.name',
