@@ -61,7 +61,7 @@ export function NewPlace(props: IProps) {
   const switchGeojsonTab = (e) => {
     setPanel(e);
     setGeojson(null);
-    setJsonError(false);
+    setJsonError(true);
   };
 
   async function onSubmit(values) {

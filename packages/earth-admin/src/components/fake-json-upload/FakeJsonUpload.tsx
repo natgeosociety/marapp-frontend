@@ -37,7 +37,7 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
   const handleJsonChange = (json) => {
     try {
       const parsedJson = JSON.parse(json);
-      if (!JSHINT.errors) {
+      if (!!JSHINT.errors) {
         onChange(parsedJson);
         setError('');
       }

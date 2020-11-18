@@ -95,7 +95,7 @@ export function PlaceDetail(props: IProps) {
 
   const switchGeojsonTab = (e) => {
     setPanel(e);
-    setGeojson(null);
+    setGeojson(geojsonValue);
     setJsonError(false);
   };
 
