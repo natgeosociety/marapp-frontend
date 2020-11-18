@@ -17,13 +17,13 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import { ICollection } from 'modules/collections/model';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { replace } from 'redux-first-router';
+import PlacesService from 'services/PlacesService';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
-import { updateCollection } from 'services/CollectionsService';
-import { ICollection } from 'modules/collections/model';
 
 interface IProps {
   collection: ICollection;
@@ -86,7 +86,7 @@ export function CollectionRename(props: IProps) {
 
   async function onSubmit(values) {
     try {
-      const { data } = await updateCollection(
+      const { data } = await PlacesService.updatePlace(
         id,
         {
           name: values.name,

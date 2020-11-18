@@ -17,17 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useState } from 'react';
-import { isEmpty } from 'lodash';
 import cn from 'classnames';
-
-import { Card, Spinner, TitleHero, Pill, DropdownSimple } from '@marapp/earth-shared';
-
+import { isEmpty } from 'lodash';
 import { ICollection } from 'modules/collections/model';
-import { CollectionRename } from '../collection-rename';
-import { CollectionEditPlaces } from '../collection-editplaces';
-import CollectionDelete from '../collection-delete';
+import React, { useState } from 'react';
 
+import { Card, DropdownSimple, Pill, Spinner, TitleHero } from '@marapp/earth-shared';
+
+import CollectionDelete from '../collection-delete';
+import { CollectionEditPlaces } from '../collection-editplaces';
+import { CollectionRename } from '../collection-rename';
 import './styles.scss';
 
 interface IProps {

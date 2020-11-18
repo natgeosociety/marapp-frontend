@@ -25,7 +25,7 @@ import { setPlacesSearch } from 'modules/places/actions';
 import { EarthRoutes } from 'modules/router/model';
 import { replace } from 'redux-first-router';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { fetchCollection } from 'services/CollectionsService';
+import PlacesService from 'services/PlacesService';
 
 export default function* collections() {
   // @ts-ignore
@@ -37,7 +37,7 @@ function* loadCollection({ payload }) {
 
   try {
     yield put(setCollectionsLoading(true));
-    const { data } = yield call(fetchCollection, slug, {
+    const { data } = yield call(PlacesService.fetchPlaceById, slug, {
       group: organization,
       include: 'locations',
       select: 'locations.slug,locations.name',

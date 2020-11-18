@@ -22,11 +22,11 @@ import React from 'react';
 import { ErrorMessageProps } from './model';
 
 export default function ErrorMessages(props: ErrorMessageProps) {
-  const { errors } = props;
+  const { errors, className } = props;
   return (
     <div className="marapp-qa-errormessages ng-form-error-block ng-margin-medium-bottom">
       {errors.map((error, index) => (
-        <div key={index}>
+        <div key={index} className={className}>
           <span>{error.detail}</span>
         </div>
       ))}

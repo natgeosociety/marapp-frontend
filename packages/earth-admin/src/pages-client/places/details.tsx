@@ -73,9 +73,11 @@ export function PlaceDetail(props: IProps) {
   const query = merge(PLACE_DETAIL_QUERY, { group: selectedGroup });
   const cacheKey = generateCacheKey(`locations/${page}`, query);
 
-  const { data, error, mutate, revalidate } = useSWR(cacheKey, () =>
-    PlacesService.getPlace(page, query).then((response: any) => response.data)
-  );
+  const fetcher = () => PlacesService.getPlace(page, query).then((response: any) => response.data);
+  const setter = (data) =>
+    PlacesService.handlePlaceForm(false, data, id, query).then((response: any) => response.data);
+
+  const { data, error, revalidate, mutate } = useSWR(cacheKey, fetcher);
 
   const [place, setPlace] = useState<IPlace>({});
   const [mapData, setMapData] = useState({});
@@ -139,11 +141,12 @@ export function PlaceDetail(props: IProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await PlacesService.handlePlaceForm(false, parsed, id, { group: selectedGroup });
-      revalidate();
+
+      await mutate(setter(parsed), false);
+
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
-      onDataChange();
+      await onDataChange();
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
       const fallbackError = [
@@ -347,6 +350,7 @@ export function PlaceDetail(props: IProps) {
                               <DownloadFile
                                 data={geojson}
                                 fileName={slug}
+                                type="geojson"
                                 className="ng-align-right ng-margin-top"
                               >
                                 Download GeoJSON
@@ -354,6 +358,7 @@ export function PlaceDetail(props: IProps) {
                               <div className="ng-width-1-1 ng-margin-medium-top">
                                 <FakeJsonUpload
                                   name="geojson"
+                                  type=".geojson"
                                   label="Place shape*"
                                   ref={register({
                                     required: 'GeoJSON is required',

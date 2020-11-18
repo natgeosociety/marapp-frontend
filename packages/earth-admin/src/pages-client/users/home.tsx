@@ -18,7 +18,7 @@
 */
 
 import List from '@researchgate/react-intersection-list';
-import { navigate } from 'gatsby';
+import classnames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
@@ -29,7 +29,7 @@ import {
   EmailInput,
   ErrorMessages,
   Spinner,
-  validEmail,
+  useDomWatcher,
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
@@ -38,8 +38,20 @@ import UsersService from '@app/services/users';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { encodeQueryToURL, normalizeGroupName } from '@app/utils';
 import { useInfiniteListPaged } from '@app/utils/hooks';
+import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 
 const PAGE_SIZE = 10;
+
+interface RolePopupData {
+  x?: number;
+  y?: number;
+  email?: string;
+  deleteEmail?: string;
+  group?: string;
+  visible?: boolean;
+  isLoading?: boolean;
+  error?: { data?: any[] };
+}
 
 export function UsersHome(props: any) {
   const { getPermissions, selectedGroup } = useAuth0();
@@ -49,6 +61,8 @@ export function UsersHome(props: any) {
   const [availableGroups, setAvailableGroups] = useState([]);
   const [serverErrors, setServerErrors] = useState([]);
   const [usersFeedback, setUsersFeedback] = useState([]);
+  const [rolePopupData, setRolePopupData] = useState({} as RolePopupData);
+  const [showRemoveUser, setShowRemoveUser] = useState(false);
 
   const getQueryFn = (pageIndex) => {
     const query = {
@@ -161,6 +175,73 @@ export function UsersHome(props: any) {
     setUsersFeedback([]);
   };
 
+  const toggleRolePopup = (e?: any, user?: any) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    } else {
+      mutate();
+    }
+
+    if (!user || user.email === rolePopupData.email) {
+      setRolePopupData({
+        visible: false,
+        isLoading: false,
+      });
+
+      return;
+    }
+
+    const scrollContainer = document.querySelector('.ng-page-container');
+
+    const containerBoundingRect = scrollContainer.getBoundingClientRect();
+    const boundingRect = e.target.getBoundingClientRect();
+
+    setRolePopupData({
+      email: user.email,
+      deleteEmail: user.email,
+      group: normalizeGroupName(user.groups[0].name),
+      x: boundingRect.left - containerBoundingRect.left,
+      y: boundingRect.bottom + scrollContainer.scrollTop,
+      visible: true,
+    });
+  };
+
+  const handleRoleError = (err: any) => {
+    setRolePopupData({
+      error: {
+        data: err?.data?.errors || [],
+      },
+    });
+  };
+
+  const updateUserHandler = async (group: string) => {
+    setRolePopupData({
+      ...rolePopupData,
+      isLoading: true,
+    });
+
+    try {
+      await UsersService.updateUser(
+        rolePopupData.email,
+        { groups: [group] },
+        { group: selectedGroup }
+      );
+
+      await mutate();
+
+      toggleRolePopup();
+    } catch (err) {
+      handleRoleError(err);
+    }
+  };
+
+  useDomWatcher(
+    () => setRolePopupData({ deleteEmail: rolePopupData.deleteEmail }),
+    !rolePopupData.visible,
+    '.role-popup'
+  );
+
   return (
     writePermissions && (
       <ContentLayout className="marapp-qa-usershome">
@@ -255,11 +336,29 @@ export function UsersHome(props: any) {
               </div>
               <div className="ng-width-1-1 ng-margin-top">
                 <Card>
+                  {!!rolePopupData.error && (
+                    <div className="ng-background-danger ng-padding-medium">
+                      {rolePopupData.error.data.length > 0 ? (
+                        <ErrorMessages
+                          errors={rolePopupData.error.data}
+                          className="ng-color-white"
+                        />
+                      ) : (
+                        <span>Something went wrong! Unknown error.</span>
+                      )}
+                      <button
+                        className="marapp-qa-error-dismiss ng-background-danger ng-border-remove ng-text-display-m ng-text-weight-thin ng-position-absolute ng-position-top-right ng-padding ng-margin-medium-right ng-margin-medium-top"
+                        onClick={() => setRolePopupData({})}
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  )}
                   <table className="ng-table">
                     <thead>
                       <tr>
-                        <th className="ng-border-remove ng-width-1-2">Organization Members</th>
-                        <th className="ng-border-remove ng-width-1-2">Member Roles</th>
+                        <th className="ng-border-remove ng-width-1-2">Email</th>
+                        <th className="ng-border-remove ng-width-1-2">Role &amp; Access</th>
                       </tr>
                     </thead>
                     <List
@@ -282,22 +381,88 @@ export function UsersHome(props: any) {
                       renderItem={(index) => {
                         const user = userListProps.data[index];
                         return (
-                          <tr
-                            key={user.email}
-                            className="ng-c-cursor-pointer"
-                            onClick={() => navigate(`/${selectedGroup}/users/${user.email}`)}
-                          >
+                          <tr key={user.email}>
                             <td className="ng-border-remove">{user.email}</td>
                             <td className="ng-border-remove">
-                              {user.groups
-                                .map((group) => normalizeGroupName(group.name))
-                                .join(', ')}
+                              {normalizeGroupName(user.groups[0].name)}
+                              {availableGroups.find(
+                                (group) => group.label === normalizeGroupName(user.groups[0].name)
+                              ) && (
+                                <button
+                                  className="ng-border-remove ng-background-ultradkgray ng-color-light role-popup"
+                                  onClick={(e) => toggleRolePopup(e, user)}
+                                  disabled={rolePopupData.isLoading}
+                                >
+                                  <i
+                                    className={classnames('ng-icon ng-color-white', {
+                                      'ng-icon-directionup': rolePopupData.email === user.email,
+                                      'ng-icon-directiondown': rolePopupData.email !== user.email,
+                                    })}
+                                  />
+                                </button>
+                              )}
                             </td>
                           </tr>
                         );
                       }}
                     />
                   </table>
+                  {rolePopupData.visible && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        left: rolePopupData.x,
+                        top: rolePopupData.y - 280,
+                      }}
+                      className={classnames({
+                        'role-popup': true,
+                        'ng-inline-card-loading': rolePopupData.isLoading,
+                      })}
+                    >
+                      <ul className="ng-default-dropdown">
+                        {rolePopupData.isLoading && (
+                          <div className="ng-inline-card-spinner">
+                            <i className="ng-icon-spinner ng-icon-spin" />
+                          </div>
+                        )}
+                        {availableGroups.map((group) => (
+                          <li
+                            className={classnames({
+                              selected: group.label === rolePopupData.group,
+                            })}
+                          >
+                            <a
+                              className={`marapp-qa-role-${group.label}`}
+                              onClick={() => updateUserHandler(group.value)}
+                            >
+                              {group.label}
+                            </a>
+                          </li>
+                        ))}
+                        <li>
+                          <hr className="ng-margin-remove" />
+                        </li>
+                        <li>
+                          <a
+                            className="marapp-qa-remove-user"
+                            onClick={() => setShowRemoveUser(true)}
+                          >
+                            Remove User
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                  <DeleteConfirmation
+                    id={rolePopupData.deleteEmail}
+                    name={rolePopupData.deleteEmail}
+                    navigateRoute="users"
+                    type="user"
+                    toggleModal={() => setShowRemoveUser(!showRemoveUser)}
+                    onDelete={toggleRolePopup}
+                    visibility={showRemoveUser}
+                    error={handleRoleError}
+                  />
                 </Card>
               </div>
             </div>
