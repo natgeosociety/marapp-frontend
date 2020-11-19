@@ -96,7 +96,7 @@ export function PlaceDetail(props: IProps) {
   const switchGeojsonTab = (e) => {
     setPanel(e);
     setGeojson(geojsonValue);
-    setJsonError(false);
+    setJsonError(true);
   };
 
   useEffect(() => {
@@ -352,6 +352,7 @@ export function PlaceDetail(props: IProps) {
                       <InlineEditCard
                         editButtonText="View and upload shape"
                         onSubmit={onSubmit}
+                        onCancel={() => setPanel('upload')}
                         submitButtonText="Update Shape"
                         validForm={formValid && !jsonError}
                         render={({ setIsEditing, setIsLoading, setServerErrors }) => (
