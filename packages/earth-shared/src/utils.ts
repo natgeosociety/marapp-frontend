@@ -70,5 +70,5 @@ export const downloadCSVFile = (data) => {
  */
 export const getGenericDate = (date: string): string => {
   const parsed = new Date(date);
-  return `${parsed.getFullYear()}-${parsed.getMonth()}-${parsed.getDay()}`;
+  return `${parsed.getFullYear()}-${parsed.getMonth()}-${parsed.getDate()}`;
 };
