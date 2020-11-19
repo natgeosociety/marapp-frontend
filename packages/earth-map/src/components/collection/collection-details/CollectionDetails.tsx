@@ -21,6 +21,7 @@ import cn from 'classnames';
 import { isEmpty } from 'lodash';
 import { ICollection } from 'modules/collections/model';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   Card,
@@ -49,6 +50,7 @@ interface IProps {
 
 const CollectionDetails = (props: IProps) => {
   const { placesFromGroups, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
+  const { t } = useTranslation();
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -85,7 +87,7 @@ const CollectionDetails = (props: IProps) => {
         <TitleHero
           title={name}
           subtitle={organization}
-          extra="Collection"
+          extra={t('Collection')}
           actions={canEdit ? editActions : null}
           finePrint={`Updated: ${getGenericDate(updatedAt)}`}
         />
@@ -98,11 +100,11 @@ const CollectionDetails = (props: IProps) => {
               className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
               onClick={toggleEditPlaces}
             >
-              edit
+              {t('edit')}
             </button>
           )}
           <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
-            Collection places ({locations.length})
+            {t('Collection places')} ({locations.length})
           </h2>
           <p>
             {locations
@@ -119,13 +121,15 @@ const CollectionDetails = (props: IProps) => {
       ) : (
         <Card className="c-legend-item-group">
           <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
-            Collection places {hasLocations && locations.length}
+            {t('Collection places')} {hasLocations && locations.length}
           </h2>
           <p>
             {canEdit
-              ? `You currently don’t have any places added to your collection. Add places to your
-            collection to access data metrics and share your insights with your team.`
-              : `There are no places added to this collection.`}
+              ? t(
+                  `You currently don’t have any places added to your collection. Add places to your collection to access data metrics and share your insights with your team`
+                )
+              : t(`There are no places added to this collection`)}
+            .
           </p>
           {canEdit && (
             <button
@@ -133,7 +137,7 @@ const CollectionDetails = (props: IProps) => {
               className="marapp-qa-actionaddplaces ng-button ng-button-secondary ng-margin-right"
               onClick={toggleEditPlaces}
             >
-              Add places
+              {t('Add places')}
             </button>
           )}
         </Card>
