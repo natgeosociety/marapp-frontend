@@ -20,6 +20,7 @@
 import { ICollection } from 'modules/collections/model';
 import { LocationTypeEnum } from 'modules/places/model';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
 import PlacesService from 'services/PlacesService';
 
@@ -35,6 +36,7 @@ interface IProps {
 
 export function CollectionEditPlaces(props: IProps) {
   const { collection, placesFromGroups, setCollectionData, setMapBounds, toggleEditPlaces } = props;
+  const { t } = useTranslation();
   const { id, organization, name, locations } = collection;
   const [saveError, setSaveError] = useState('');
   const { control, handleSubmit, formState } = useForm({
@@ -45,18 +47,18 @@ export function CollectionEditPlaces(props: IProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full">
       <Card elevation="high" className="ng-margin-bottom">
-        <TitleHero title={name} subtitle={organization} extra="Collection" />
+        <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
       </Card>
 
       <div className="scroll-container">
         <Card elevation="raised">
-          <label>Add places:</label>
+          <label>{t('Add places')}:</label>
           <Controller
             as={AsyncSelect}
             name="locations"
             type="places"
-            label="Add places"
-            placeholder="Add places to your collection"
+            label={t('Add places')}
+            placeholder={t('Add places to your collection')}
             className="marapp-qa-locationsdropdown ng-margin-medium-bottom"
             control={control}
             defaultValue={locations}
@@ -66,8 +68,9 @@ export function CollectionEditPlaces(props: IProps) {
               PlacesService.fetchPlaces({
                 ...query,
                 filter: ['type', '!=', LocationTypeEnum.COLLECTION].join(''),
-                group: placesFromGroups.join(','),
                 select: ['id', 'slug', 'name', 'organization'].join(','),
+                group: organization,
+                public: true,
               })
             }
             selectedGroup={organization}
@@ -84,13 +87,13 @@ export function CollectionEditPlaces(props: IProps) {
             className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-right"
             disabled={!isValid || isSubmitting || !dirty}
           >
-            {isSubmitting ? 'Saving' : 'Save'}
+            {isSubmitting ? t('Saving') : t('Save')}
           </button>
           <button
             className="marapp-qa-actioncancel ng-button ng-button-secondary"
             onClick={toggleEditPlaces}
           >
-            Cancel
+            {t('Cancel')}
           </button>
         </Card>
       </div>
