@@ -35,6 +35,7 @@ import { ILastViewedPlace } from 'modules/global/model';
 import { EarthRoutes, IRouter } from 'modules/router/model';
 import { EPanels } from 'modules/sidebar/model';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Icons as VizzIcons } from 'vizzuality-components';
 
 import { URL_PROPS } from './url';
@@ -55,6 +56,7 @@ const { EARTH, COLLECTION, LOCATION, NEW_COLLECTION } = EarthRoutes;
 
 const EarthPage = (props: IProps) => {
   const { setSidebarPanel, panel, router, lastViewedPlace, group, collection } = props;
+  const { t } = useTranslation();
   const { groups, privateGroups, publicGroups } = useAuth0();
   const { type } = router;
   const selectedOpen = [LOCATION, COLLECTION, NEW_COLLECTION].includes(type);
@@ -77,8 +79,8 @@ const EarthPage = (props: IProps) => {
               onChange={setSidebarPanel}
               className="ng-padding-medium-horizontal ng-padding-bottom ng-ep-background-dark"
             >
-              <Tab label="Places" value="places" />
-              <Tab label="Layers" value="layers" />
+              <Tab label={t('Places')} value="places" />
+              <Tab label={t('Layers')} value="layers" />
             </Tabs>
             {panel === EPanels.PLACES && (
               <>
