@@ -19,6 +19,7 @@
 import queryStringEncode from 'query-string-encode';
 import flatten from 'flat';
 import { Parser } from 'json2csv';
+import { last } from 'lodash';
 
 /**
  * Serialize filters in the format
@@ -63,4 +64,15 @@ export const downloadCSVFile = (data) => {
   const csv = json2csvParser.parse(flatten(data));
   const csvBlob = new Blob([csv]);
   return URL.createObjectURL(csvBlob);
+};
+
+/**
+ * Get initials from user name
+ */
+export const getInitials = (name: string): string => {
+  const emptySpace = ' ';
+  const [firstName = emptySpace, ...rest] = name.split(emptySpace);
+  const lastName = last(rest) || emptySpace;
+
+  return `${firstName[0]}${lastName[0]}`.toUpperCase();
 };
