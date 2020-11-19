@@ -20,11 +20,13 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import { Elang } from '@marapp/earth-shared';
+import { Elang, SessionStorage } from '@marapp/earth-shared';
 
 import translationEN from './en/translation.json';
 import translationES from './es/translation.json';
 import translationFR from './fr/translation.json';
+
+const lang = SessionStorage.get('lang') || Elang.EN;
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -38,10 +40,12 @@ i18n.use(initReactI18next).init({
       translation: translationFR,
     },
   },
-  lng: Elang.EN,
+  lng: lang,
   fallbackLng: Elang.EN,
   interpolation: {
     escapeValue: false,
   },
   keySeparator: false,
 });
+
+i18n.on('languageChanged', (lng) => SessionStorage.add('lang', lng));

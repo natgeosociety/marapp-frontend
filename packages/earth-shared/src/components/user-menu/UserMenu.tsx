@@ -56,7 +56,8 @@ export const UserMenu = (props: IProps) => {
   const [showDrop, setShowDrop] = useState(false);
   const [showLangDrop, setShowLangDrop] = useState(false);
 
-  const menuRef = useDomWatcher(() => setShowDrop(false), !showDrop);
+  const profileMenuRef = useDomWatcher(() => setShowDrop(false), !showDrop);
+  const langMenuRef = useDomWatcher(() => setShowLangDrop(false), !showLangDrop);
 
   const toggleDrop = (e) => {
     e.preventDefault();
@@ -76,125 +77,128 @@ export const UserMenu = (props: IProps) => {
   const selectedLanguage = i18n.language;
 
   return (
-    <div className="marapp-qa-useraccount ng-user-account" ref={menuRef}>
-      {!!selectedLanguage && (
-        <>
-          <button
-            className="ng-background-ultradkgray ng-color-light ng-padding-medium-horizontal ng-padding-small-vertical ng-margin-medium-right"
-            onClick={toggleLangDrop}
-          >
-            <span className="ng-text-weight-medium ng-text-uppercase">{selectedLanguage}</span>
-            <i
-              className={classnames('ng-icon ng-color-white ng-margin-left', {
-                'ng-icon-directionup': showLangDrop,
-                'ng-icon-directiondown': !showLangDrop,
-              })}
-            />
-          </button>
-          <Dropdown native={true} state={`${showLangDrop}`}>
-            {({ x, ...props }) => (
-              <animated.div
-                style={{
-                  transform: x.interpolate((x) => `translate3d(85px, ${x},0)`),
-                  position: 'absolute',
-                  ...props,
-                }}
-              >
-                <ul className="ng-user-profile-dropdown">
-                  <li>
-                    <h4 className="ng-text-display-s ng-margin-remove">{t('Languages')}</h4>
-                  </li>
-                  <li
-                    className={classnames({
-                      selected: selectedLanguage === Elang.EN,
-                    })}
-                  >
-                    <a className="marapp-qa-lang-en" onClick={(e) => changeLanguage(e, Elang.EN)}>
-                      English
-                    </a>
-                  </li>
-                  <li
-                    className={classnames({
-                      selected: selectedLanguage === Elang.ES,
-                    })}
-                  >
-                    <a className="marapp-qa-lang-es" onClick={(e) => changeLanguage(e, Elang.ES)}>
-                      Español
-                    </a>
-                  </li>
-                  <li
-                    className={classnames({
-                      selected: selectedLanguage === Elang.FR,
-                    })}
-                  >
-                    <a className="marapp-qa-lang-fr" onClick={(e) => changeLanguage(e, Elang.FR)}>
-                      Français
-                    </a>
-                  </li>
-                </ul>
-              </animated.div>
-            )}
-          </Dropdown>
-        </>
-      )}
-
-      <button
-        className="ng-user-profile ng-background-ultraltgray ng-color-black"
-        onClick={toggleDrop}
-      >
-        <i
-          className={classnames({
-            'ng-icon-account': isAuthenticated,
-            'ng-icon-account-outline': !isAuthenticated,
-          })}
-        />
-      </button>
-      <Dropdown native={true} state={`${showDrop}`}>
-        {({ x, ...props }) => (
-          <animated.div
-            style={{
-              transform: x.interpolate((x) => `translate3d(0,${x},0)`),
-              ...props,
-            }}
-          >
-            <ul className="ng-user-profile-dropdown">
-              <li>
-                <h4 className="ng-text-display-s ng-margin-remove ng-text-uppercase">
-                  {t('Account')}
-                </h4>
-              </li>
-              {isAuthenticated ? (
-                <>
-                  <li
-                    className={classnames({
-                      selected: selected === 'profile',
-                    })}
-                  >
-                    {profileLink}
-                  </li>
-
-                  <li>
-                    <hr className="ng-margin-remove" />
-                  </li>
-
-                  <li className="marapp-qa-signout">
-                    <a onClick={compose(onLogout, toggleDrop)}>{t('Sign Out')}</a>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li className="marapp-qa-signin">
-                    <a onClick={compose(onLogin, toggleDrop)}>{t('Sign in')}</a>
-                  </li>
-                  <li className="marapp-qa-signup">
-                    <a onClick={compose(onSignUp, toggleDrop)}>{t('Sign up')}</a>
-                  </li>
-                </>
+    <div className="marapp-qa-useraccount ng-user-account">
+      <div className="ng-display-inline" ref={langMenuRef}>
+        {!!selectedLanguage && (
+          <>
+            <button
+              className="ng-background-ultradkgray ng-color-light ng-padding-medium-horizontal ng-padding-small-vertical ng-margin-medium-right"
+              onClick={toggleLangDrop}
+            >
+              <span className="ng-text-weight-medium ng-text-uppercase">{selectedLanguage}</span>
+              <i
+                className={classnames('ng-icon ng-color-white ng-margin-left', {
+                  'ng-icon-directionup': showLangDrop,
+                  'ng-icon-directiondown': !showLangDrop,
+                })}
+              />
+            </button>
+            <Dropdown native={true} state={`${showLangDrop}`}>
+              {({ x, ...props }) => (
+                <animated.div
+                  style={{
+                    transform: x.interpolate((x) => `translate3d(85px, ${x},0)`),
+                    position: 'absolute',
+                    ...props,
+                  }}
+                >
+                  <ul className="ng-user-profile-dropdown">
+                    <li>
+                      <h4 className="ng-text-display-s ng-margin-remove">{t('Languages')}</h4>
+                    </li>
+                    <li
+                      className={classnames({
+                        selected: selectedLanguage === Elang.EN,
+                      })}
+                    >
+                      <a className="marapp-qa-lang-en" onClick={(e) => changeLanguage(e, Elang.EN)}>
+                        English
+                      </a>
+                    </li>
+                    <li
+                      className={classnames({
+                        selected: selectedLanguage === Elang.ES,
+                      })}
+                    >
+                      <a className="marapp-qa-lang-es" onClick={(e) => changeLanguage(e, Elang.ES)}>
+                        Español
+                      </a>
+                    </li>
+                    <li
+                      className={classnames({
+                        selected: selectedLanguage === Elang.FR,
+                      })}
+                    >
+                      <a className="marapp-qa-lang-fr" onClick={(e) => changeLanguage(e, Elang.FR)}>
+                        Français
+                      </a>
+                    </li>
+                  </ul>
+                </animated.div>
               )}
-            </ul>
-          </animated.div>
+            </Dropdown>
+          </>
         )}
-      </Dropdown>
+      </div>
+      <div className="ng-display-inline" ref={profileMenuRef}>
+        <button
+          className="ng-user-profile ng-background-ultraltgray ng-color-black"
+          onClick={toggleDrop}
+        >
+          <i
+            className={classnames({
+              'ng-icon-account': isAuthenticated,
+              'ng-icon-account-outline': !isAuthenticated,
+            })}
+          />
+        </button>
+        <Dropdown native={true} state={`${showDrop}`}>
+          {({ x, ...props }) => (
+            <animated.div
+              style={{
+                transform: x.interpolate((x) => `translate3d(0,${x},0)`),
+                ...props,
+              }}
+            >
+              <ul className="ng-user-profile-dropdown">
+                <li>
+                  <h4 className="ng-text-display-s ng-margin-remove ng-text-uppercase">
+                    {t('Account')}
+                  </h4>
+                </li>
+                {isAuthenticated ? (
+                  <>
+                    <li
+                      className={classnames({
+                        selected: selected === 'profile',
+                      })}
+                    >
+                      {profileLink}
+                    </li>
+
+                    <li>
+                      <hr className="ng-margin-remove" />
+                    </li>
+
+                    <li className="marapp-qa-signout">
+                      <a onClick={compose(onLogout, toggleDrop)}>{t('Sign Out')}</a>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="marapp-qa-signin">
+                      <a onClick={compose(onLogin, toggleDrop)}>{t('Sign in')}</a>
+                    </li>
+                    <li className="marapp-qa-signup">
+                      <a onClick={compose(onSignUp, toggleDrop)}>{t('Sign up')}</a>
+                    </li>
+                  </>
+                )}
+              </ul>
+            </animated.div>
+          )}
+        </Dropdown>
+      </div>
     </div>
   );
 };

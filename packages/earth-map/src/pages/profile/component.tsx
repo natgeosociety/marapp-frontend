@@ -369,13 +369,13 @@ export function ProfileComponent(props: IProps) {
                       <p className="ng-margin-remove">{userData.email}</p>
                       <br />
                       <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                        New Email (Pending Confirmation)
+                        {t('New Email')} ({t('Pending Confirmation')})
                         <button
                           onClick={onCancelEmailChange}
                           type="button"
                           className="marapp-qa-actioncancelupdate ng-button ng-button-link ng-text-transform-remove ng-color-mdgray ng-margin-small-left"
                         >
-                          cancel update
+                          {t('cancel update')}
                         </button>
                       </h3>
                       <p className="marapp-qa-user-pending-email ng-margin-remove">
