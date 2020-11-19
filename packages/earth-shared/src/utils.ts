@@ -19,6 +19,7 @@
 import queryStringEncode from 'query-string-encode';
 import flatten from 'flat';
 import { Parser } from 'json2csv';
+import { last } from 'lodash';
 
 /**
  * Serialize filters in the format
@@ -70,9 +71,8 @@ export const downloadCSVFile = (data) => {
  */
 export const getInitials = (name: string): string => {
   const emptySpace = ' ';
-  const segments = name.split(emptySpace);
-  const firstName = segments[0] || emptySpace;
-  const lastName = (segments.length > 1 && segments[segments.length - 1]) || emptySpace;
+  const [firstName = emptySpace, ...rest] = name.split(emptySpace);
+  const lastName = last(rest) || emptySpace;
 
   return `${firstName[0]}${lastName[0]}`.toUpperCase();
 };
