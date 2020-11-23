@@ -38,7 +38,6 @@ import { loadDataIndexes } from 'sagas/layers';
 import { ignoreRedirectsTo } from 'sagas/saga-utils';
 import PlacesService from 'services/PlacesService';
 
-let PREV_SLUG = null;
 const ignoreRedirectsToLocation = ignoreRedirectsTo('LOCATION');
 
 export default function* location() {
@@ -50,14 +49,6 @@ export default function* location() {
 
 function* toLocation({ payload, meta }) {
   const { organization, slug } = payload;
-
-  if (!meta.query) {
-    PREV_SLUG = null;
-  }
-
-  if (!slug || slug === PREV_SLUG) {
-    return;
-  }
 
   yield put(setSidebarPanelExpanded(false));
   yield put(setPlacesLoading(true));
@@ -113,8 +104,6 @@ function* toLocation({ payload, meta }) {
   } finally {
     if (yield cancelled()) {
       console.error('Cancelled!!!!!!!');
-    } else {
-      PREV_SLUG = slug;
     }
   }
 }
