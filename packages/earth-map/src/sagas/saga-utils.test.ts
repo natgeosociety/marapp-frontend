@@ -21,16 +21,18 @@ import { ignoreRedirectsTo } from './saga-utils';
 
 describe('[saga-utils] ignoreRedirectsTo()', () => {
   const mockedAction = {
-    type: 'OTHER_RESOURCE',
+    type: 'OTHER_ACTION',
     meta: {
       location: {
         current: {
+          type: 'CURRENT_ACTION',
           payload: {
             organization: 'ORG_A',
             slug: 'slug_X',
           },
         },
         prev: {
+          type: 'PREV_ACTION',
           payload: {
             organization: 'ORG_A',
             slug: 'slug_X',
@@ -41,19 +43,25 @@ describe('[saga-utils] ignoreRedirectsTo()', () => {
   };
 
   it('should ignore external actions', () => {
-    const ignoreRedirectsToResource = ignoreRedirectsTo('RESOURCE_WE_CARE_ABOUT');
+    const ignoreRedirectsToResource = ignoreRedirectsTo('ACTION_WE_CARE_ABOUT');
     expect(ignoreRedirectsToResource(mockedAction)).toBe(false);
   });
 
   it('should ignore same resource actions', () => {
-    const ignoreRedirectsToResource = ignoreRedirectsTo('RESOURCE_WE_CARE_ABOUT');
+    const ignoreRedirectsToResource = ignoreRedirectsTo('ACTION_WE_CARE_ABOUT');
     expect(ignoreRedirectsToResource(mockedAction)).toBe(false);
   });
 
   it('should forward actions from different resources', () => {
-    const ignoreRedirectsToResource = ignoreRedirectsTo('RESOURCE_WE_CARE_ABOUT');
-    mockedAction.type = 'RESOURCE_WE_CARE_ABOUT';
+    const ignoreRedirectsToResource = ignoreRedirectsTo('ACTION_WE_CARE_ABOUT');
+    mockedAction.type = 'ACTION_WE_CARE_ABOUT';
     mockedAction.meta.location.current.payload.slug = 'slug_Y';
+    expect(ignoreRedirectsToResource(mockedAction)).toBe(true);
+  });
+
+  it('should forward actions for the initial request', () => {
+    const ignoreRedirectsToResource = ignoreRedirectsTo('ACTION_WE_CARE_ABOUT');
+    mockedAction.meta.location.prev.type = '';
     expect(ignoreRedirectsToResource(mockedAction)).toBe(true);
   });
 });

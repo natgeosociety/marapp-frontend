@@ -30,12 +30,18 @@ export const ignoreRedirectsTo = (actionName: string): Function => {
     if (!actionWeCareAbout) {
       return false;
     }
-    const currentPayload = action.meta.location.current.payload;
-    const prevPayload = action.meta.location.prev.payload;
+
+    const { current, prev } = action.meta.location;
+    if (!prev.type) {
+      return true;
+    }
     const isSameResource =
-      `${currentPayload.organization}/${currentPayload.slug}` ===
-      `${prevPayload.organization}/${prevPayload.slug}`;
-    return !isSameResource;
+      `${current.payload.organization}/${current.payload.slug}` ===
+      `${prev.payload.organization}/${prev.payload.slug}`;
+    if (isSameResource) {
+      return false;
+    }
+    return true;
   };
 };
 
