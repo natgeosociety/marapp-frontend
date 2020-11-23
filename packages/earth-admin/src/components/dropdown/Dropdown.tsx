@@ -30,8 +30,8 @@ interface IDropdownComponent {
 }
 
 const DropdownPanel: any = Keyframes.Spring({
-  close: { x: -1000, delay: 0 },
-  open: { x: 0, from: { x: 0 } },
+  close: { x: -1000, delay: 0, config: { duration: 0 } },
+  open: { x: 0, from: { x: 0 }, config: { duration: 0 } },
 });
 
 export const DropdownComponent = (props: IDropdownComponent) => {
