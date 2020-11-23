@@ -18,12 +18,11 @@
 */
 
 import 'codemirror/addon/lint/javascript-lint';
-import 'codemirror/addon/lint/json-lint';
 import 'codemirror/addon/lint/lint';
 import 'codemirror/mode/javascript/javascript';
-import { JSHINT } from 'jshint';
 import React, { useState } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
+import jsonlint from 'jsonlint';
 
 import './styles.scss';
 
@@ -46,15 +45,13 @@ export const JsonEditor = (props: JsonEditorProps) => {
 
   const handleBlur = () => {
     try {
-      JSON.parse(jsonValue);
-      if (!JSHINT.errors.length) {
-        const parsedJson = JSON.parse(jsonValue);
+      const parsedJson = jsonlint.parse(jsonValue);
 
-        onChange && onChange(parsedJson);
-        onError && onError(false);
-        setError('');
-      }
+      onChange(parsedJson);
+      onError && onError(false);
+      setError('');
     } catch (err) {
+      console.log(err, 'error');
       setError(err.toString());
       onError && onError(true);
     }
@@ -70,7 +67,7 @@ export const JsonEditor = (props: JsonEditorProps) => {
           theme: 'material-darker',
           gutters: ['CodeMirror-lint-markers'],
           lineNumbers: true,
-          lint: true,
+          lint: false,
           lineWrapping: true,
           readOnly,
         }}
