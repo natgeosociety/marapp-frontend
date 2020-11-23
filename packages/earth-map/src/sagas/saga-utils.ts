@@ -22,6 +22,7 @@ import { ILayer, ILayerRaw } from 'modules/layers/model';
 /**
  * https://redux-saga.js.org/docs/api/#takepattern
  * A pattern function passed to saga effects to ignore action routes that are just redirects. Eg: when a layer is toggled
+ * returning true means the action will propagate, false means the action is blocked
  */
 export const ignoreRedirectsTo = (actionName: string): Function => {
   return (action): boolean => {
@@ -29,14 +30,12 @@ export const ignoreRedirectsTo = (actionName: string): Function => {
     if (!actionWeCareAbout) {
       return false;
     }
-    // not an action fired by the router, just match it by name
-    if (!action.meta) {
-      console.warn(
-        `${actionName} is not an action fired by the router. You can remove ignoreRedirectsTo() function`
-      );
-      return true;
-    }
-    return !(action.meta.location.kind === 'redirect');
+    const currentPayload = action.meta.location.current.payload;
+    const prevPayload = action.meta.location.prev.payload;
+    const isSameResource =
+      `${currentPayload.organization}/${currentPayload.slug}` ===
+      `${prevPayload.organization}/${prevPayload.slug}`;
+    return !isSameResource;
   };
 };
 
