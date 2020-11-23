@@ -30,7 +30,6 @@ export const ignoreRedirectsTo = (actionName: string): Function => {
     if (!actionWeCareAbout) {
       return false;
     }
-
     const { current, prev } = action.meta.location;
     if (!prev.type) {
       return true;
@@ -38,10 +37,7 @@ export const ignoreRedirectsTo = (actionName: string): Function => {
     const isSameResource =
       `${current.payload.organization}/${current.payload.slug}` ===
       `${prev.payload.organization}/${prev.payload.slug}`;
-    if (isSameResource) {
-      return false;
-    }
-    return true;
+    return !isSameResource;
   };
 };
 
