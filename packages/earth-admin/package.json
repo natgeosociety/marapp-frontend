@@ -44,7 +44,10 @@
     "swr": "^0.3.2",
     "system": "^2.0.1",
     "ts-jsonapi": "^2.1.2",
-    "url-join": "^4.0.1"
+    "url-join": "^4.0.1",
+    "jsonlint": "^1.6.3",
+    "file": "^0.2.2",
+    "system": "^2.0.1"
   },
   "devDependencies": {
     "typescript": "^3.7.2"
