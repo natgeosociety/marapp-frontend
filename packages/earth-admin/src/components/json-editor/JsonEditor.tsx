@@ -17,13 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import 'codemirror/addon/lint/javascript-lint';
-import 'codemirror/addon/lint/json-lint';
-import 'codemirror/addon/lint/lint';
 import 'codemirror/mode/javascript/javascript';
-import { JSHINT } from 'jshint';
 import React, { useState } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
+import jsonlint from 'jsonlint';
 
 import './styles.scss';
 
@@ -37,25 +34,31 @@ interface JsonEditorProps {
 export const JsonEditor = (props: JsonEditorProps) => {
   const [jsonValue, setJsonValue] = useState('');
   const [error, setError] = useState('');
+  const [errorLine, setErrorLine] = useState(null);
 
   const { json, onChange, readOnly, onError } = props;
 
-  const handleChange = (e, data, value) => {
+  const handleChange = (editor, data, value) => {
+    console.error('handleChange: ' + errorLine);
+    if (errorLine) {
+      editor.addLineClass(10, 'wrap', 'CodeMirror-activeline-background');
+    }
     setJsonValue(value);
   };
 
   const handleBlur = () => {
     try {
-      JSON.parse(jsonValue);
-      if (!JSHINT.errors.length) {
-        const parsedJson = JSON.parse(jsonValue);
-
+      if (jsonValue) {
+        const parsedJson = jsonlint.parse(jsonValue);
         onChange && onChange(parsedJson);
         onError && onError(false);
         setError('');
       }
     } catch (err) {
-      setError(err.toString());
+      const error = err.message.split(':')[0];
+      const errorLine = parseInt(error.match(/\d+/gi).join(''));
+      setError(error);
+      setErrorLine(errorLine);
       onError && onError(true);
     }
   };
@@ -70,7 +73,6 @@ export const JsonEditor = (props: JsonEditorProps) => {
           theme: 'material-darker',
           gutters: ['CodeMirror-lint-markers'],
           lineNumbers: true,
-          lint: true,
           lineWrapping: true,
           readOnly,
         }}
