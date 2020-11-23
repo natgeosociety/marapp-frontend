@@ -32,51 +32,52 @@ interface JsonEditorProps {
 }
 
 export const JsonEditor = (props: JsonEditorProps) => {
-  const [jsonValue, setJsonValue] = useState('');
   const [error, setError] = useState('');
-  const [errorLine, setErrorLine] = useState(null);
-
   const { json, onChange, readOnly, onError } = props;
 
-  const handleChange = (editor, data, value) => {
-    console.error('handleChange: ' + errorLine);
-    if (errorLine) {
-      editor.addLineClass(10, 'wrap', 'CodeMirror-activeline-background');
-    }
-    setJsonValue(value);
-  };
+  function makeMarker() {
+    const marker = typeof document !== `undefined` ? document.createElement('div') : null;
+    marker.style.color = '#FC4349';
+    marker.innerHTML = '●';
+    return marker;
+  }
 
-  const handleBlur = () => {
+  const handleBlur = (e) => {
+    const json = e.getValue();
+
+    e.clearGutter('error-gutter');
+
     try {
-      if (jsonValue) {
-        const parsedJson = jsonlint.parse(jsonValue);
+      if (json) {
+        const parsedJson = jsonlint.parse(json);
         onChange && onChange(parsedJson);
         onError && onError(false);
+
         setError('');
       }
     } catch (err) {
       const error = err.message.split(':')[0];
-      const errorLine = parseInt(error.match(/\d+/gi).join(''));
+      const errorLine = parseInt(error.match(/\d+/gi).join('')) - 1;
+      e.setGutterMarker(errorLine, 'error-gutter', makeMarker());
       setError(error);
-      setErrorLine(errorLine);
       onError && onError(true);
     }
   };
 
   return (
-    <div className="marapp-qa-jsoneditor" onBlur={handleBlur}>
+    <div className="marapp-qa-jsoneditor">
       <CodeMirror
         value={json ? JSON.stringify(json, null, 2) : null}
         options={{
           mode: 'javascript',
           json: true,
           theme: 'material-darker',
-          gutters: ['CodeMirror-lint-markers'],
+          gutters: ['CodeMirror-lint-markers', 'error-gutter'],
           lineNumbers: true,
           lineWrapping: true,
           readOnly,
         }}
-        onChange={handleChange}
+        onBlur={handleBlur}
       />
       {error && <div className="ng-form-error-block">{error}</div>}
     </div>
