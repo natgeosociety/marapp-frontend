@@ -33,12 +33,12 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
+import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { ContentLayout } from '@app/layouts';
 import UsersService from '@app/services/users';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { encodeQueryToURL, normalizeGroupName } from '@app/utils';
 import { useInfiniteListPaged } from '@app/utils/hooks';
-import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 
 const PAGE_SIZE = 10;
 
@@ -61,7 +61,7 @@ export function UsersHome(props: any) {
   const [availableGroups, setAvailableGroups] = useState([]);
   const [serverErrors, setServerErrors] = useState([]);
   const [usersFeedback, setUsersFeedback] = useState([]);
-  const [rolePopupData, setRolePopupData] = useState({} as RolePopupData);
+  const [rolePopupData, setRolePopupData] = useState<RolePopupData>({});
   const [showRemoveUser, setShowRemoveUser] = useState(false);
 
   const getQueryFn = (pageIndex) => {

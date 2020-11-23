@@ -18,9 +18,9 @@
 */
 
 import 'codemirror/mode/javascript/javascript';
+import jsonlint from 'jsonlint';
 import React, { useState } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-import jsonlint from 'jsonlint';
 
 import './styles.scss';
 
@@ -57,7 +57,7 @@ export const JsonEditor = (props: JsonEditorProps) => {
       }
     } catch (err) {
       const error = err.message.split(':')[0];
-      const errorLine = parseInt(error.match(/\d+/gi).join('')) - 1;
+      const errorLine = parseInt(error.match(/\d+/gi).join(''), 10) - 1;
       e.setGutterMarker(errorLine, 'error-gutter', makeMarker());
       setError(error);
       onError && onError(true);
