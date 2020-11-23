@@ -68,8 +68,9 @@ export function CollectionEditPlaces(props: IProps) {
               PlacesService.fetchPlaces({
                 ...query,
                 filter: ['type', '!=', LocationTypeEnum.COLLECTION].join(''),
-                group: placesFromGroups.join(','),
                 select: ['id', 'slug', 'name', 'organization'].join(','),
+                group: organization,
+                public: true,
               })
             }
             selectedGroup={organization}
