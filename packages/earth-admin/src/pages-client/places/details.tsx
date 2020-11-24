@@ -360,7 +360,7 @@ export function PlaceDetail(props: IProps) {
                             <Tabs
                               value={panel}
                               onChange={switchGeojsonTab}
-                              className="ng-padding-bottom ng-ep-background-dark"
+                              className="ng-ep-background-dark"
                             >
                               <Tab label="Shape File" value="upload" />
                               <Tab label="Json editor" value="json" />

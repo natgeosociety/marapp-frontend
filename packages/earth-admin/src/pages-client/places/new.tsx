@@ -174,11 +174,7 @@ export function NewPlace(props: IProps) {
 
           <Card className="ng-margin-medium-bottom">
             <>
-              <Tabs
-                value={panel}
-                onChange={switchGeojsonTab}
-                className="ng-padding-bottom ng-ep-background-dark"
-              >
+              <Tabs value={panel} onChange={switchGeojsonTab} className="ng-ep-background-dark">
                 <Tab label="Shape File" value="upload" />
                 <Tab label="Json editor" value="json" />
               </Tabs>
