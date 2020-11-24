@@ -39,7 +39,7 @@ export const TitleHero = ({
   className = ' ',
 }: IProps) => (
   <div data-testid="title-hero" className={`title-hero ${className}`}>
-    <h3 className="ng-text-display-s ng-margin-bottom">
+    <h3 className="ng-text-display-s ng-margin-vertical">
       {subtitle} | <span className="ng-text-weight-regular">{extra}</span>
     </h3>
     <h2 className="ng-text-edit-m ng-body-color ng-margin-remove">{title}</h2>
