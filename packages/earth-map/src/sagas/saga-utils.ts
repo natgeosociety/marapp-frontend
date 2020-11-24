@@ -27,6 +27,7 @@ import { ILayer, ILayerRaw } from 'modules/layers/model';
 export const ignoreRedirectsTo = (actionName: string): Function => {
   return (action): boolean => {
     const actionWeCareAbout = action.type === actionName;
+
     if (!actionWeCareAbout) {
       return false;
     }
@@ -34,10 +35,17 @@ export const ignoreRedirectsTo = (actionName: string): Function => {
     if (!prev.type) {
       return true;
     }
-    const isSameResource =
-      `${current.payload.organization}/${current.payload.slug}` ===
+
+    const isDifferentAction = current.type !== prev.type;
+    if (isDifferentAction) {
+      return true;
+    }
+
+    const isDifferentResource =
+      `${current.payload.organization}/${current.payload.slug}` !==
       `${prev.payload.organization}/${prev.payload.slug}`;
-    return !isSameResource;
+
+    return isDifferentResource;
   };
 };
 

@@ -52,6 +52,14 @@ describe('[saga-utils] ignoreRedirectsTo()', () => {
     expect(ignoreRedirectsToResource(mockedAction)).toBe(false);
   });
 
+  it('should ignore actions with the same type', () => {
+    const ignoreRedirectsToResource = ignoreRedirectsTo('ACTION_WE_CARE_ABOUT');
+    mockedAction.type = 'ACTION_WE_CARE_ABOUT';
+    mockedAction.meta.location.current.type = 'SAME_ACTION';
+    mockedAction.meta.location.prev.type = 'SAME_ACTION';
+    expect(ignoreRedirectsToResource(mockedAction)).toBe(false);
+  });
+
   it('should forward actions from different resources', () => {
     const ignoreRedirectsToResource = ignoreRedirectsTo('ACTION_WE_CARE_ABOUT');
     mockedAction.type = 'ACTION_WE_CARE_ABOUT';
