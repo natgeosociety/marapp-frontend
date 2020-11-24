@@ -30,8 +30,8 @@ import './styles.scss';
 
 // TODO Replace this with a propper dropdown component
 const Dropdown: any = Keyframes.Spring({
-  false: { x: `-100vh` },
-  true: { x: '0vh' },
+  false: { x: `-100vh`, config: { duration: 0 } },
+  true: { x: '0vh', config: { duration: 0 } },
 });
 
 interface IProps {
