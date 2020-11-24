@@ -76,7 +76,7 @@ const EarthPage = (props: IProps) => {
             <Tabs
               value={panel}
               onChange={setSidebarPanel}
-              className="ng-padding-medium-horizontal ng-padding-bottom ng-ep-background-dark"
+              className="ng-padding-medium-horizontal ng-ep-background-dark"
             >
               <Tab label="Places" value="places" />
               <Tab label="Layers" value="layers" />
