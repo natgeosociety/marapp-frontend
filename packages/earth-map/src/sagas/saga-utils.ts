@@ -31,7 +31,6 @@ export const ignoreRedirectsTo = (actionName: string): Function => {
     if (!actionWeCareAbout) {
       return false;
     }
-
     const { current, prev } = action.meta.location;
     if (!prev.type) {
       return true;
