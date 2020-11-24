@@ -31,6 +31,8 @@ import {
   Input,
   noSpecialCharsOrSpaceRule,
   setupErrors,
+  Tab,
+  Tabs,
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
@@ -38,6 +40,7 @@ import { DetailList } from '@app/components/detail-list';
 import { DownloadFile } from '@app/components/download-file';
 import { ErrorBoundary } from '@app/components/error-boundary';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
+import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { MapComponent } from '@app/components/map';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
@@ -88,6 +91,13 @@ export function PlaceDetail(props: IProps) {
   const [formValid, setFormValid] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [metricsLoading, setMetricsLoading] = useState(false);
+  const [panel, setPanel] = useState('upload');
+
+  const switchGeojsonTab = (e) => {
+    setPanel(e);
+    setGeojson(geojsonValue);
+    setJsonError(true);
+  };
 
   useEffect(() => {
     data && setPlace(data);
@@ -146,6 +156,7 @@ export function PlaceDetail(props: IProps) {
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
+      setPanel('upload');
       await onDataChange();
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
@@ -341,67 +352,89 @@ export function PlaceDetail(props: IProps) {
                       <InlineEditCard
                         editButtonText="View and upload shape"
                         onSubmit={onSubmit}
+                        onCancel={() => setPanel('upload')}
                         submitButtonText="Update Shape"
                         validForm={formValid && !jsonError}
                         render={({ setIsEditing, setIsLoading, setServerErrors }) => (
-                          <div className="ng-grid">
-                            <div className="ng-width-1-2">
-                              <MapComponent height="235px" />
-                              <DownloadFile
-                                data={geojson}
-                                fileName={slug}
-                                type="geojson"
-                                className="ng-align-right ng-margin-top"
-                              >
-                                Download GeoJSON
-                              </DownloadFile>
-                              <div className="ng-width-1-1 ng-margin-medium-top">
-                                <FakeJsonUpload
-                                  name="geojson"
-                                  type=".geojson"
-                                  label="Place shape*"
-                                  ref={register({
-                                    required: 'GeoJSON is required',
-                                  })}
-                                  onChange={(json) => {
-                                    setGeojson(json);
-                                    setJsonError(false);
-                                  }}
-                                  onError={(err) => setJsonError(true)}
+                          <>
+                            <Tabs
+                              value={panel}
+                              onChange={switchGeojsonTab}
+                              className="ng-ep-background-dark"
+                            >
+                              <Tab label="Shape File" value="upload" />
+                              <Tab label="Json editor" value="json" />
+                            </Tabs>
+                            {panel === 'upload' && (
+                              <div className="ng-grid">
+                                <div className="ng-width-1-2">
+                                  <MapComponent height="235px" />
+                                  <DownloadFile
+                                    data={geojson}
+                                    fileName={slug}
+                                    type="geojson"
+                                    className="ng-align-right ng-margin-top"
+                                  >
+                                    Download GeoJSON
+                                  </DownloadFile>
+                                  <div className="ng-width-1-1 ng-margin-medium-top">
+                                    <FakeJsonUpload
+                                      name="geojson"
+                                      type=".geojson"
+                                      label="Place shape*"
+                                      ref={register({
+                                        required: 'GeoJSON is required',
+                                      })}
+                                      onChange={(json) => {
+                                        setGeojson(json);
+                                        setJsonError(false);
+                                      }}
+                                      onError={(err) => setJsonError(true)}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="ng-width-1-2">
+                                  {areaKm2 && (
+                                    <p className="ng-margin-bottom ng-margin-top-remove">
+                                      <span className="ng-text-weight-bold ng-color-mdgray">
+                                        Area ha:
+                                      </span>{' '}
+                                      {km2toHa(areaKm2)}
+                                    </p>
+                                  )}
+                                  {bbox2d && (
+                                    <p className="ng-margin-bottom ng-margin-top-remove">
+                                      <span className="ng-text-weight-bold ng-color-mdgray">
+                                        Area Bbox:
+                                      </span>{' '}
+                                      {formatArrayToParentheses(bbox2d, 'rounded', 2)}
+                                    </p>
+                                  )}
+                                  {centroid && (
+                                    <p className="ng-margin-bottom ng-margin-top-remove">
+                                      <span className="ng-text-weight-bold ng-color-mdgray">
+                                        Centroid:
+                                      </span>{' '}
+                                      {formatArrayToParentheses(
+                                        centroid.geometry.coordinates,
+                                        'brackets',
+                                        1
+                                      )}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                            {panel === 'json' && (
+                              <div className="ng-margin-medium-bottom">
+                                <JsonEditor
+                                  json={geojson}
+                                  onChange={(json) => setGeojson(json)}
+                                  onError={(e) => setJsonError(e)}
                                 />
                               </div>
-                            </div>
-                            <div className="ng-width-1-2">
-                              {areaKm2 && (
-                                <p className="ng-margin-bottom ng-margin-top-remove">
-                                  <span className="ng-text-weight-bold ng-color-mdgray">
-                                    Area ha:
-                                  </span>{' '}
-                                  {km2toHa(areaKm2)}
-                                </p>
-                              )}
-                              {bbox2d && (
-                                <p className="ng-margin-bottom ng-margin-top-remove">
-                                  <span className="ng-text-weight-bold ng-color-mdgray">
-                                    Area Bbox:
-                                  </span>{' '}
-                                  {formatArrayToParentheses(bbox2d, 'rounded', 2)}
-                                </p>
-                              )}
-                              {centroid && (
-                                <p className="ng-margin-bottom ng-margin-top-remove">
-                                  <span className="ng-text-weight-bold ng-color-mdgray">
-                                    Centroid:
-                                  </span>{' '}
-                                  {formatArrayToParentheses(
-                                    centroid.geometry.coordinates,
-                                    'brackets',
-                                    1
-                                  )}
-                                </p>
-                              )}
-                            </div>
-                          </div>
+                            )}
+                          </>
                         )}
                       >
                         <br />
