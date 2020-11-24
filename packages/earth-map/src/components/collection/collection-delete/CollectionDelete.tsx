@@ -20,6 +20,7 @@
 import { ICollection } from 'modules/collections/model';
 import { EPanels } from 'modules/sidebar/model';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import PlacesService from 'services/PlacesService';
 
 import { Modal } from '@marapp/earth-shared';
@@ -34,12 +35,17 @@ interface IProps {
 export function CollectionDelete(props: IProps) {
   const [saveError, setSaveError] = useState('');
   const { collection, isDeleting, setIsDeleting, dispatch } = props;
+  const { t } = useTranslation();
   const { id, organization, name } = collection;
 
   return (
     <Modal isOpen={isDeleting} className="marapp-qa-DeleteConfirmation ng-text-center">
-      <h4 className="ng-text-display-s ng-margin-bottom">Delete {name}</h4>
-      <p className="ng-space-wrap">Are you sure you want to permanently delete this collection?</p>
+      <h4 className="ng-text-display-s ng-margin-bottom">
+        {t('Delete')} {name}
+      </h4>
+      <p className="ng-space-wrap">
+        {t('Are you sure you want to permanently delete this collection')}?
+      </p>
       <div className="ng-flex ng-flex-center">
         <button
           autoFocus={true}
@@ -47,13 +53,13 @@ export function CollectionDelete(props: IProps) {
           className="marapp-qa-actioncancel ng-button ng-button-secondary ng-margin-medium-right"
           onClick={() => setIsDeleting(false)}
         >
-          Cancel
+          {t('Cancel')}
         </button>
         <button
           className="marapp-qa-actiondelete ng-button ng-button-primary"
           onClick={handleDelete}
         >
-          Delete
+          {t('Delete')}
         </button>
       </div>
       {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
