@@ -67,6 +67,17 @@ export const downloadCSVFile = (data) => {
 };
 
 /**
+ * Generic way of rendering a date in our apps YYYY-MM-DD
+ */
+export const getGenericDate = (date: string): string => {
+  const parsed = new Date(date);
+  // getMonth() is zero based
+  const month = parsed.getMonth() + 1;
+
+  return `${parsed.getFullYear()}-${month}-${parsed.getDate()}`;
+};
+
+/**
  * Get initials from user name
  */
 export const getInitials = (name: string): string => {

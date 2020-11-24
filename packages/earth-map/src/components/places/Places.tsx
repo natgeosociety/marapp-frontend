@@ -126,6 +126,10 @@ const Places = (props: IProps) => {
               hint={$searchHint.name}
               title={name}
               key={`${slug}-${organization}`}
+              onClick={() => {
+                setSidebarPanelExpanded(false);
+                setPlacesSearch({ search: name });
+              }}
               linkTo={{
                 type:
                   type === LocationTypeEnum.COLLECTION

@@ -77,7 +77,7 @@ function* loadPlaces() {
 function* loadCollections() {
   const group = yield select(getGroup);
   const { data }: { data: ICollection[] } = yield call(PlacesService.fetchPlaces, {
-    select: 'slug,name,id,organization,type',
+    select: 'slug,name,id,organization,type,updatedAt',
     filter: ['type', '==', LocationTypeEnum.COLLECTION].join(''),
     page: { size: 5 },
     sort: '-updatedAt',

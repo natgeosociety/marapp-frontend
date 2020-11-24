@@ -17,18 +17,14 @@
  * specific language governing permissions and limitations under the License.
  */
 
-@import '~styles/config';
+import { getGenericDate } from './utils';
 
-.title-hero {
-  &-actions {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-  }
-  &-fineprint {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    color: $marapp-gray-5;
-  }
-}
+describe('utils', () => {
+  test('getGenericDate() should return date in YYYY-MM-DD format', () => {
+    const on20201119 = '2020-11-19T10:24:09.735Z';
+    const on20201017 = '2020-10-17T18:19:09.059Z';
+
+    expect(getGenericDate(on20201119)).toEqual('2020-11-19');
+    expect(getGenericDate(on20201017)).toEqual('2020-10-17');
+  });
+});
