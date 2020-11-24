@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { JSHINT } from 'jshint';
+import jsonlint from 'jsonlint';
 import { noop } from 'lodash';
 import React, { useState } from 'react';
 
@@ -36,9 +36,10 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
 
   const handleJsonChange = (json) => {
     try {
-      const parsedJson = JSON.parse(json);
-      if (!!JSHINT.errors) {
-        onChange(parsedJson);
+      if (json) {
+        const parsedJson = jsonlint.parse(json);
+
+        onChange && onChange(parsedJson);
         setError('');
       }
     } catch (err) {
