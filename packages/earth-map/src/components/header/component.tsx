@@ -92,7 +92,7 @@ const Header = (props: IProps) => {
 
   // Same as the action from <SearchBox /> find a way to reuse bundled actions
   const handleResetLocation = () => {
-    resetPlace();
+    resetPlace({ keepCache: true });
     resetCollection();
     setPlacesSearch({ search: '' });
     setLayersSearch({ search: '' });
