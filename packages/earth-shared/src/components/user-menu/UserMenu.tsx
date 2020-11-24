@@ -23,6 +23,7 @@ import classnames from 'classnames';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 import compose from 'lodash/fp/compose';
 import noop from 'lodash/noop';
+import { getInitials } from '../../utils';
 
 import { useDomWatcher, Elang } from '@marapp/earth-shared';
 
@@ -36,6 +37,7 @@ const Dropdown: any = Keyframes.Spring({
 
 interface IProps {
   profileLink: React.ReactElement;
+  userName?: string;
   onLogin?: () => {};
   onLogout?: () => {};
   onSignUp?: () => {};
@@ -52,6 +54,7 @@ export const UserMenu = (props: IProps) => {
     onSignUp = noop,
     selected,
     profileLink,
+    userName,
   } = props;
   const [showDrop, setShowDrop] = useState(false);
   const [showLangDrop, setShowLangDrop] = useState(false);
@@ -145,12 +148,16 @@ export const UserMenu = (props: IProps) => {
           className="ng-user-profile ng-background-ultraltgray ng-color-black"
           onClick={toggleDrop}
         >
-          <i
-            className={classnames({
-              'ng-icon-account': isAuthenticated,
-              'ng-icon-account-outline': !isAuthenticated,
-            })}
-          />
+          {userName ? (
+            <span className="ng-user-account-name">{getInitials(userName)}</span>
+          ) : (
+            <i
+              className={classnames({
+                'ng-icon-account': isAuthenticated,
+                'ng-icon-account-outline': !isAuthenticated,
+              })}
+            />
+          )}
         </button>
         <Dropdown native={true} state={`${showDrop}`}>
           {({ x, ...props }) => (

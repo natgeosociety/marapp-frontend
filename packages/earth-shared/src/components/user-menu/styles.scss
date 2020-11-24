@@ -30,6 +30,13 @@
       outline: none;
     }
   }
+  .ng-user-account-name {
+    color: $marapp-gray-9;
+    font-weight: bold;
+    font-size: 13px;
+    text-align: center;
+    text-transform: uppercase;
+  }
 }
 
 .ng-user-profile {

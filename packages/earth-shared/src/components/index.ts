@@ -48,3 +48,4 @@ export { AppContextSwitcher } from './app-context-switcher';
 export { Input } from './input';
 export { EmailInput } from './email-input';
 export { default as NotFoundComponent } from './not-found';
+export { Tabs, Tab } from './tabs';

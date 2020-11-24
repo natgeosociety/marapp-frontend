@@ -61,7 +61,7 @@ export function UsersHome(props: any) {
   const [availableGroups, setAvailableGroups] = useState([]);
   const [serverErrors, setServerErrors] = useState([]);
   const [usersFeedback, setUsersFeedback] = useState([]);
-  const [rolePopupData, setRolePopupData] = useState({});
+  const [rolePopupData, setRolePopupData] = useState<RolePopupData>({});
   const [showRemoveUser, setShowRemoveUser] = useState(false);
 
   const getQueryFn = (pageIndex) => {
