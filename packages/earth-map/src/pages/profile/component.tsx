@@ -451,7 +451,6 @@ export function ProfileComponent(props: IProps) {
                                       : 'marapp-qa-leaveorg',
                                     'ng-button ng-button-link ng-text-lowercase'
                                   )}
-                                  disabled={userRoles[org].includes('Owner')}
                                   onClick={(e) => switchMarkOrgForLeave(e, org)}
                                 >
                                   {markedOrgsForLeave[org] ? t('cancel') : t('leave organization')}
