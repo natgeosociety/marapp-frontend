@@ -17,29 +17,33 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { ICollection } from 'modules/collections/model';
-import { LocationTypeEnum } from 'modules/places/model';
-import React, { useState } from 'react';
+import React, { BaseSyntheticEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
+import isBoolean from 'lodash/isBoolean';
+
+import { ICollection } from 'modules/collections/model';
+import { LocationTypeEnum } from 'modules/places/model';
 import PlacesService from 'services/PlacesService';
 
-import { AsyncSelect, Card, TitleHero } from '@marapp/earth-shared';
+import { AsyncSelect, Card, TitleHero, Modal } from '@marapp/earth-shared';
 
 interface IProps {
   collection: ICollection;
-  placesFromGroups: string[];
   setMapBounds: (payload: any) => void;
   setCollectionData: (payload: any) => void;
   toggleEditPlaces: () => void;
+  onRefresh: (payload: any) => void;
 }
 
 export function CollectionEditPlaces(props: IProps) {
-  const { collection, placesFromGroups, setCollectionData, setMapBounds, toggleEditPlaces } = props;
+  const { collection, setCollectionData, setMapBounds, toggleEditPlaces, onRefresh } = props;
   const { t } = useTranslation();
-  const { id, organization, name, locations } = collection;
+  const { slug, organization, name, locations } = collection;
   const [saveError, setSaveError] = useState('');
-  const { control, handleSubmit, formState } = useForm({
+  const [isOverwriting, setIsOverwriting] = useState(false);
+  const [isSaveConflict, setIsSaveConflict] = useState(true);
+  const { control, handleSubmit, formState, getValues } = useForm({
     mode: 'onChange',
   });
   const { isValid, isSubmitting, dirty } = formState;
@@ -83,7 +87,6 @@ export function CollectionEditPlaces(props: IProps) {
           {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
 
           <button
-            type="submit"
             className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-right"
             disabled={!isValid || isSubmitting || !dirty}
           >
@@ -96,27 +99,61 @@ export function CollectionEditPlaces(props: IProps) {
             {t('Cancel')}
           </button>
         </Card>
+
+        {isSaveConflict && (
+          <Modal
+            parentSelector={() => document.querySelector('.sidebar-content-full')}
+            isOpen={true}
+            className="ng-text-center save-collection-modal"
+          >
+            <h4 className="ng-text-display-s ng-margin-bottom">{t('Update warning')}</h4>
+            <p className="ng-space-wrap">
+              {t(
+                'An update to this collection was made while you were in edit mode. Saving your edits will overide any other updates that were made to the collection. Please refresh this page to view updates made by others, or continue saving.'
+              )}
+            </p>
+            <button
+              tabIndex={0}
+              className="marapp-qa-actionrefresh ng-button ng-button-primary ng-margin-medium-right"
+              onClick={refresh}
+            >
+              {t('Refresh')}
+            </button>
+            <button
+              className="marapp-qa-actionsaveanyway ng-button ng-button-secondary"
+              onClick={saveAnyway}
+              disabled={isOverwriting}
+            >
+              {isOverwriting ? t('Saving') : t('Save anyway')}
+            </button>
+          </Modal>
+        )}
+        <div id="inner-modal"></div>
       </div>
     </form>
   );
 
-  async function onSubmit(values) {
+  /**
+   * Receives event when called by react-hook-form and boolean when called by us
+   */
+  async function onSubmit(values, optional: BaseSyntheticEvent | boolean) {
+    const shouldOverwrite = isBoolean(optional);
     const parsedValues = {
       ...values,
 
       // The api expects an array of ids or an empty array
       // should this be handled by AsyncSelect?
       ...(values.locations ? { locations: values.locations.map((x) => x.id) } : { locations: [] }),
+      version: shouldOverwrite ? null : collection.version,
     };
 
     try {
-      const { data } = await PlacesService.updateCollection(id, parsedValues, {
+      const { data } = await PlacesService.updateCollection(slug, parsedValues, {
         group: organization,
         include: 'locations',
-        select: 'locations.slug,locations.name',
       });
       setCollectionData(data);
-      setSaveError(null);
+      resetErrors();
 
       if (data.bbox2d.length) {
         setMapBounds({ bbox: data.bbox2d });
@@ -126,5 +163,22 @@ export function CollectionEditPlaces(props: IProps) {
       setSaveError('Something went wrong');
       console.log(e);
     }
+  }
+
+  function refresh() {
+    onRefresh({ organization, slug });
+    toggleEditPlaces();
+  }
+
+  function saveAnyway() {
+    const values = getValues();
+    setIsOverwriting(true);
+    onSubmit(values, true);
+  }
+
+  function resetErrors() {
+    setSaveError(null);
+    setIsSaveConflict(false);
+    setIsOverwriting(false);
   }
 }

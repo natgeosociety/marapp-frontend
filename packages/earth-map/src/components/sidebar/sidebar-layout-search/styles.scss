@@ -27,6 +27,11 @@
   .scroll-container {
     flex: 1 1 auto;
     overflow: auto;
+
+    // Collection save conflict modal
+    .ReactModal__Overlay {
+      top: 110px;
+    }
   }
 
   .ng-c-text-body {

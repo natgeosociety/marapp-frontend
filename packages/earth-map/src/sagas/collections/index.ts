@@ -17,7 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setCollectionData, setCollectionsLoading } from 'modules/collections/actions';
+import {
+  reloadCollection,
+  setCollectionData,
+  setCollectionsLoading,
+} from 'modules/collections/actions';
 import { persistData, setLastViewedPlace } from 'modules/global/actions';
 import { EMainType, SubType } from 'modules/global/model';
 import { setMapBounds } from 'modules/map/actions';
@@ -33,6 +37,7 @@ const ignoreRedirectsToCollection = ignoreRedirectsTo(EarthRoutes.COLLECTION);
 export default function* collections() {
   // @ts-ignore
   yield takeLatest(ignoreRedirectsToCollection, loadCollection);
+  yield takeLatest(reloadCollection, loadCollection);
 }
 
 function* loadCollection({ payload }) {

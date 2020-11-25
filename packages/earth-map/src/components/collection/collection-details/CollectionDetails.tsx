@@ -38,18 +38,18 @@ import { CollectionRename } from '../collection-rename';
 import './styles.scss';
 
 interface IProps {
-  placesFromGroups: string[];
   privateGroups: string[];
   data?: ICollection;
   loading?: boolean;
   error?: any;
 
+  reloadCollection?: (payload: ICollection) => void;
   setCollectionData?: (payload: ICollection) => void;
   setMapBounds?: (payload: any) => void;
 }
 
 const CollectionDetails = (props: IProps) => {
-  const { placesFromGroups, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
+  const { reloadCollection, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
   const { t } = useTranslation();
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
@@ -148,10 +148,10 @@ const CollectionDetails = (props: IProps) => {
       {isAddingPlaces && (
         <CollectionEditPlaces
           collection={data}
-          placesFromGroups={placesFromGroups}
           setCollectionData={setCollectionData}
           setMapBounds={setMapBounds}
           toggleEditPlaces={toggleEditPlaces}
+          onRefresh={reloadCollection}
         />
       )}
 
