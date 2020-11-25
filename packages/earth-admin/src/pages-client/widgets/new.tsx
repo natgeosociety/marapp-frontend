@@ -195,6 +195,7 @@ export function NewWidget(props: IProps) {
                   as={Select}
                   control={control}
                   className="marapp-qa-metricslug"
+                  classNamePrefix="marapp-qa-asyncselect"
                   name="metrics"
                   options={metricsOptions}
                   placeholder="Select metric slug"
