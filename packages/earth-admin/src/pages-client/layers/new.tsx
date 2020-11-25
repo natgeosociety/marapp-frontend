@@ -166,6 +166,7 @@ export function NewLayer(props: IProps) {
                 as={Select}
                 control={control}
                 className="marapp-qa-category"
+                classNamePrefix="marapp-qa-asyncselect"
                 name="category"
                 options={layerCategoryOptions}
                 isSearchable={true}
@@ -203,6 +204,7 @@ export function NewLayer(props: IProps) {
                 as={Select}
                 control={control}
                 className="marapp-qa-provider"
+                classNamePrefix="marapp-qa-asyncselect"
                 name="provider"
                 options={layerProviderOptions}
                 isSearchable={true}
@@ -221,6 +223,7 @@ export function NewLayer(props: IProps) {
                 as={Select}
                 control={control}
                 className="marapp-qa-type"
+                classNamePrefix="marapp-qa-asyncselect"
                 name="type"
                 options={layerTypeOptions}
                 isSearchable={true}

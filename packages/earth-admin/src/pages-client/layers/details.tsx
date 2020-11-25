@@ -262,6 +262,7 @@ export function LayerDetail(props: any) {
                           as={Select}
                           control={control}
                           className="marapp-qa-category"
+                          classNamePrefix="marapp-qa-asyncselect"
                           name="category"
                           options={layerCategoryOptions}
                           defaultValue={layerCategory}
@@ -365,6 +366,7 @@ export function LayerDetail(props: any) {
                           as={Select}
                           control={control}
                           className="marapp-qa-provider"
+                          classNamePrefix="marapp-qa-asyncselect"
                           name="provider"
                           options={layerProviderOptions}
                           defaultValue={layerProvider}
@@ -384,6 +386,7 @@ export function LayerDetail(props: any) {
                           as={Select}
                           control={control}
                           className="marapp-qa-type"
+                          classNamePrefix="marapp-qa-asyncselect"
                           name="type"
                           options={layerTypeOptions}
                           defaultValue={layerType}
