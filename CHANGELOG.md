@@ -1,3 +1,62 @@
+# [1.15.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.14.1...v1.15.0) (2020-11-25)
+
+
+### Bug Fixes
+
+* **admin:** design qa [EP-3471] ([e96bc7a](https://github.com/natgeosociety/marapp-frontend/commit/e96bc7a51ee8a3a7d948448f95366b84235bd6b8))
+* **admin:** design qa for json editor [EP-3471] ([16b56ee](https://github.com/natgeosociety/marapp-frontend/commit/16b56eee06b0167da495e6661cb8d8a2f8b22194))
+* **admin:** include user's email in remove dialog ([ff7660b](https://github.com/natgeosociety/marapp-frontend/commit/ff7660bbd8c800c302e9cb83ee11c16c5fc41f90))
+* **admin:** jsoneditor errors [EP-3471] ([516dc7c](https://github.com/natgeosociety/marapp-frontend/commit/516dc7c106e1c36beb315ec09c1c57743a8b3f66))
+* **admin:** Remove initial focus on sidebar search [EP-3167] ([4be8efb](https://github.com/natgeosociety/marapp-frontend/commit/4be8efb30959558ec3705a0aa87462767cb2cfd7))
+* **admin:** The json editor is displayed when the user clicks on view and upload shape button, after a shape edit [EP-3460] ([d103f4b](https://github.com/natgeosociety/marapp-frontend/commit/d103f4b16450df216b8861b2e866f410fa84e169))
+* **admin:** The shape cannot be added/updated after an error from the json editor is dismissed [EP-2777] ([f324d88](https://github.com/natgeosociety/marapp-frontend/commit/f324d888c1906f0c470d77bc9ef2004809da49de))
+* **admin:** The shape cannot be added/updated after an error from the json editor is dismissed [EP-2777] ([ae0a279](https://github.com/natgeosociety/marapp-frontend/commit/ae0a279a1a88f3ef30d838a0d8f1392bb0d77a56))
+* **admin:** The shape cannot be added/updated after an error from the json editor is dismissed [EP-2777] ([1b7af3d](https://github.com/natgeosociety/marapp-frontend/commit/1b7af3d28239d2daf373403dca657e118e9ff94c))
+* **admin:** typo remove user dialog ([3b3f5d0](https://github.com/natgeosociety/marapp-frontend/commit/3b3f5d022ce074e9ec6582e3dba760acc9ee1138))
+* **admin:** update remove user [EP-3453] & remove name [EP-3434] ([52aa4f3](https://github.com/natgeosociety/marapp-frontend/commit/52aa4f39591ac958d67ff09342c9cb31007f9245))
+* **auth:** Fixed bugs on Email Templates ([3794b0e](https://github.com/natgeosociety/marapp-frontend/commit/3794b0e6994ab36073b9873c67e024f6f8e248f4))
+* **map:** Changes after design QA ([8218ab9](https://github.com/natgeosociety/marapp-frontend/commit/8218ab9cd34f0287b111bb85a6e036f64dcfbc4a))
+* **map:** Design fixes on last updated at [EP-3470] ([1651c05](https://github.com/natgeosociety/marapp-frontend/commit/1651c05618cbe4e12a51d6774eafa8c3548a3a6a))
+* **map:** Fixed last updated at date ([f684be7](https://github.com/natgeosociety/marapp-frontend/commit/f684be77a87676264aba2be614ce56c1354704c2))
+* **map:** Fixed navigation to a collection from search results [EP-3445] ([8f58813](https://github.com/natgeosociety/marapp-frontend/commit/8f588135577fc0e5fceacc9772b887a03c2cdd19))
+* **map:** Fixed navigation to a collection from search results [EP-3445] ([9d58ede](https://github.com/natgeosociety/marapp-frontend/commit/9d58ede9c16a4cdc789cd3aa0b17660942e4cfdf))
+* **map:** Slight refactoring to sagas and list item [EP3525][EP-3526] ([9d9f012](https://github.com/natgeosociety/marapp-frontend/commit/9d9f01206bddc2fe716d20760421a054317b2b35))
+* **map:** translation for collection actions [EP-3455] ([#317](https://github.com/natgeosociety/marapp-frontend/issues/317)) ([b6a1eed](https://github.com/natgeosociety/marapp-frontend/commit/b6a1eed236a5de4b9c949c39dd683becb9b45503))
+* **shared:** Fixed getGeneric date and added unit tests for it ([f3c3702](https://github.com/natgeosociety/marapp-frontend/commit/f3c3702aeb79026b62e5aad882af5f2558f95775))
+* add enum type values ([a9e6a31](https://github.com/natgeosociety/marapp-frontend/commit/a9e6a3150d5b57bb42e305e63353464dc0edd708))
+* add enum type values ([ed722af](https://github.com/natgeosociety/marapp-frontend/commit/ed722aff666fb17769185a679c9b2c1e34ebb329))
+* add enum type values ([9cb437c](https://github.com/natgeosociety/marapp-frontend/commit/9cb437c7332e80946d4e72e61567b16933493046))
+* error handling ([#281](https://github.com/natgeosociety/marapp-frontend/issues/281)) ([86b0032](https://github.com/natgeosociety/marapp-frontend/commit/86b0032cf4c6352918396f1202d1156857154d30))
+* error message template ([fdb9e3f](https://github.com/natgeosociety/marapp-frontend/commit/fdb9e3f1b8b6a5ccbe4398f71d72a34965187cd7))
+* support public flag on fetch places [EP-3452] ([093112a](https://github.com/natgeosociety/marapp-frontend/commit/093112a1b33ebd8760f0900b6d0f436a71d1ef73))
+* **map:** Wrong button label displayed in the validate email page [EP-3412] ([5ee9154](https://github.com/natgeosociety/marapp-frontend/commit/5ee9154d60f15add44cdb1db4a4d28792f758aee))
+
+
+### Features
+
+* **admin:** bring json editor back [EP-2777] ([#298](https://github.com/natgeosociety/marapp-frontend/issues/298)) ([a804b6e](https://github.com/natgeosociety/marapp-frontend/commit/a804b6ed7fbdc856a9524fce121047c7607e8e24))
+* **admin:** Restrict Shape uploading and downloading to .geojson files ([#292](https://github.com/natgeosociety/marapp-frontend/issues/292)) ([68c6d96](https://github.com/natgeosociety/marapp-frontend/commit/68c6d960d3043ba9d797d2c30370033412839ca4))
+* **admin:** Restrict Shape uploading and downloading to .geojson files only [EP-3265] ([#288](https://github.com/natgeosociety/marapp-frontend/issues/288)) ([7e7b4ae](https://github.com/natgeosociety/marapp-frontend/commit/7e7b4ae9230bdc83df0daa65068c4ee8d820c51c))
+* **admin:** Reuse PUT/POST response instead of triggering another GET [EP-3292] ([485caf6](https://github.com/natgeosociety/marapp-frontend/commit/485caf6d2d9752e9a24f66c7309aa9717da388da))
+* **admin:** Reuse PUT/POST response instead of triggering another GET [EP-3292] ([#293](https://github.com/natgeosociety/marapp-frontend/issues/293)) ([3f02ad5](https://github.com/natgeosociety/marapp-frontend/commit/3f02ad5c61ead475bf89b57aa9ae8a5c0ebd3eaa))
+* **admin:** user role inline edit [EP-3011] ([#295](https://github.com/natgeosociety/marapp-frontend/issues/295)) ([c9d0a8f](https://github.com/natgeosociety/marapp-frontend/commit/c9d0a8f3cba725bc42764384dbf5c41d447f4aa9))
+* **auth:** change email flows [EP-3114] ([#280](https://github.com/natgeosociety/marapp-frontend/issues/280)) ([5d03697](https://github.com/natgeosociety/marapp-frontend/commit/5d03697b4bb852bd6de066fbda509fa896c19cda))
+* **auth:** Redesign Auth0 templates  [EP-3112][EP-3113][EP-3165] ([219824a](https://github.com/natgeosociety/marapp-frontend/commit/219824a2f15ab5720ed9f3f7577940304f79bc7b))
+* **map:** Add Collection actions menu [EP-3174] ([dab8c9b](https://github.com/natgeosociety/marapp-frontend/commit/dab8c9b11c807f07814a05547ed16f3274b13c44))
+* **map:** Added last updated at for collections [EP-3320] ([45f9e3d](https://github.com/natgeosociety/marapp-frontend/commit/45f9e3d7d8641ca23decdf25373115619cd4854b))
+* **map:** Change label - Splash Screen button to show "Launch" [EP-3430] ([1674702](https://github.com/natgeosociety/marapp-frontend/commit/16747022c58b91fdfe7179185e31cedd523bc66b))
+* **map:** Collection actions [EP-3174] ([3e3e77c](https://github.com/natgeosociety/marapp-frontend/commit/3e3e77ccafa601a3223cb3cc345c00944969cf6d))
+* **map:** Display collections in search results and filters [EP-2995] ([e1c34aa](https://github.com/natgeosociety/marapp-frontend/commit/e1c34aa66ef5ee2a9c619c7e224df44119d5040b))
+* **map & admin:** instant animation [EP-2763] ([#309](https://github.com/natgeosociety/marapp-frontend/issues/309)) ([4dad756](https://github.com/natgeosociety/marapp-frontend/commit/4dad7563fef460ec3f7764ce00ad98620871ff4b))
+* **map & profile:** support for i18n [EP-3258] ([c296e02](https://github.com/natgeosociety/marapp-frontend/commit/c296e02a7f21cfd0dec89daafbb403e0d17c9ed5))
+* **profile:** allow owner to leave when others are available [EP-3255] ([#319](https://github.com/natgeosociety/marapp-frontend/issues/319)) ([d12722c](https://github.com/natgeosociety/marapp-frontend/commit/d12722c74eb4564090af40e04d502a0782a5f599))
+* **profile:** Update Account icon for authenticated users with user … ([#300](https://github.com/natgeosociety/marapp-frontend/issues/300)) ([28c009e](https://github.com/natgeosociety/marapp-frontend/commit/28c009e9f66caec346668c994017f99e4568ccb6))
+
+
+### Performance Improvements
+
+* reduce query fields on collection edit fetch places ([d236519](https://github.com/natgeosociety/marapp-frontend/commit/d2365197127795ddf48b62c95ef6bbbded832efa))
+
 ## [1.14.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.14.0...v1.14.1) (2020-11-06)
 
 
