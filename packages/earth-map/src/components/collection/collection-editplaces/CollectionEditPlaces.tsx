@@ -37,7 +37,7 @@ interface IProps {
 export function CollectionEditPlaces(props: IProps) {
   const { collection, placesFromGroups, setCollectionData, setMapBounds, toggleEditPlaces } = props;
   const { t } = useTranslation();
-  const { id, organization, name, locations } = collection;
+  const { id, organization, name, locations, version } = collection;
   const [saveError, setSaveError] = useState('');
   const { control, handleSubmit, formState } = useForm({
     mode: 'onChange',
@@ -107,6 +107,8 @@ export function CollectionEditPlaces(props: IProps) {
       // The api expects an array of ids or an empty array
       // should this be handled by AsyncSelect?
       ...(values.locations ? { locations: values.locations.map((x) => x.id) } : { locations: [] }),
+
+      version, // Handle concurrent update conflicts by sending the current version;
     };
 
     try {

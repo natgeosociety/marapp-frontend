@@ -34,7 +34,7 @@ interface IProps {
 export function CollectionRename(props: IProps) {
   const { collection, onCancel } = props;
   const { t } = useTranslation();
-  const { id, name, organization } = collection;
+  const { id, name, organization, version } = collection;
   const [saveError, setSaveError] = useState('');
   const { register, errors, handleSubmit, formState } = useForm({
     mode: 'onChange',
@@ -91,6 +91,7 @@ export function CollectionRename(props: IProps) {
       const { data } = await PlacesService.updatePlace(
         id,
         {
+          version, // Handle concurrent update conflicts by sending the current version;
           name: values.name,
           slug: null,
         },
