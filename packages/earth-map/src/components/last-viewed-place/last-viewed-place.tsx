@@ -18,9 +18,9 @@
 */
 
 import ListItem from 'components/list-item';
-import React from 'react';
-
 import { ILastViewedPlace } from 'modules/global/model';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   place: ILastViewedPlace;
@@ -28,11 +28,12 @@ interface IProps {
 
 export const LastViewedPlace = ({ place }: IProps) => {
   const { name, slug, id, organization, mainType, subType } = place;
+  const { t } = useTranslation();
 
   return (
     <div className="marapp-qa-lastviewedplace ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
       <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-        Last viewed place
+        {t('Last viewed place')}
       </h2>
       <ListItem
         title={name}

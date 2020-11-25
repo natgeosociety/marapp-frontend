@@ -17,27 +17,29 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { JSHINT } from 'jshint';
+import jsonlint from 'jsonlint';
 import { noop } from 'lodash';
 import React, { useState } from 'react';
 
 interface IProps {
   name: string;
+  type: string;
   label?: string;
   onChange?: (json: Object) => Promise<any> | void;
   onError?: (err: any) => void;
 }
 
 export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
-  const { name, label, onChange = noop, onError = noop } = props;
+  const { name, label, type, onChange = noop, onError = noop } = props;
   const [error, setError] = useState('');
   const id = `input-${name}`;
 
   const handleJsonChange = (json) => {
     try {
-      const parsedJson = JSON.parse(json);
-      if (!JSHINT.errors) {
-        onChange(parsedJson);
+      if (json) {
+        const parsedJson = jsonlint.parse(json);
+
+        onChange && onChange(parsedJson);
         setError('');
       }
     } catch (err) {
@@ -62,14 +64,7 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
   return (
     <div className="marapp-qa-fakejsonupload ng-flex-inline ng-flex-column">
       {label && <label htmlFor={id}>{label}</label>}
-      <input
-        type="file"
-        accept=".json,.geojson"
-        id={id}
-        name={name}
-        onChange={handleUpload}
-        ref={ref}
-      />
+      <input type="file" accept={type} id={id} name={name} onChange={handleUpload} ref={ref} />
       {error && <div className="ng-form-error-block">{error}</div>}
     </div>
   );

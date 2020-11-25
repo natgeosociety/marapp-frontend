@@ -28,6 +28,7 @@ import {
   alphaNumericDashesRule,
   AsyncSelect,
   AuthzGuards,
+  Card,
   ErrorMessages,
   InlineEditCard,
   Input,
@@ -36,7 +37,6 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { DetailList } from '@app/components/detail-list';
 import { HtmlEditor } from '@app/components/html-editor';
 import { JsonEditor } from '@app/components/json-editor';
@@ -72,9 +72,12 @@ export function LayerDetail(props: any) {
   const query = merge(LAYER_DETAIL_QUERY, { group: selectedGroup });
   const cacheKey = generateCacheKey(`layers/${page}`, query);
 
-  const { data, error, mutate } = useSWR(cacheKey, () =>
-    LayersService.getLayer(page, query).then((res: any) => res.data)
-  );
+  const fetcher = () => LayersService.getLayer(page, query).then((response: any) => response.data);
+
+  const setter = (data) =>
+    LayersService.handleLayerForm(false, data, id, query).then((response: any) => response.data);
+
+  const { data, error, revalidate, mutate } = useSWR(cacheKey, fetcher);
 
   const [layer, setLayer] = useState<ILayer>({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -141,31 +144,18 @@ export function LayerDetail(props: any) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await LayersService.handleLayerForm(false, parsed, id, { group: selectedGroup });
-      mutate();
+
+      await mutate(setter(parsed), false);
+
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
-      onDataChange();
+
+      await onDataChange();
     } catch (error) {
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data.errors);
     }
   }
-
-  const handleJsonChange = (json) => {
-    try {
-      JSON.parse(json);
-    } catch (err) {
-      setJsonError(true);
-    }
-    if (!JSHINT.errors.length) {
-      const parsedJson = JSON.parse(json);
-      setLayerConfig(parsedJson);
-      setJsonError(false);
-      return parsedJson;
-    }
-    setJsonError(true);
-  };
 
   function handleDeleteToggle() {
     setShowDeleteModal(!showDeleteModal);
@@ -434,7 +424,7 @@ export function LayerDetail(props: any) {
                           name="config"
                           control={control}
                           defaultValue={layerConfig}
-                          onChange={handleJsonChange}
+                          onError={(e) => setJsonError(e)}
                           as={<JsonEditor json={layerConfig} />}
                         />
                       </div>

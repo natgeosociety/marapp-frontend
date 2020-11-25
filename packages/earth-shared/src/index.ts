@@ -25,3 +25,4 @@ export * from './validations';
 export * from './hooks';
 export * from './assets';
 export * from './theme';
+export * from './locales';

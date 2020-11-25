@@ -7,6 +7,7 @@
     "start": "lerna run start --stream",
     "build": "lerna run build --stream",
     "test": "NODE_ENV=development lerna run test --parallel",
+    "test:watch": "NODE_ENV=development lerna run test:watch --parallel",
     "test-coverage": "lerna run test-coverage --parallel",
     "clean": "rm -fr node_modules && rm -fr packages/*/node_modules",
     "typecheck": "lerna run typecheck --stream",
@@ -17,7 +18,7 @@
   "dependencies": {
     "@kunukn/react-collapse": "^2.2.9",
     "@loadable/component": "^5.6.1",
-    "@natgeosociety/marapp-uikit": "^1.0.11",
+    "@natgeosociety/marapp-uikit": "1.0.12",
     "@testing-library/jest-dom": "^5.11.4",
     "assert": "^2.0.0",
     "axios": "^0.18.0",

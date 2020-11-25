@@ -19,7 +19,11 @@
 
 import { useEffect, useRef } from 'react';
 
-export function useDomWatcher(callback: () => any, skip?: boolean): React.RefObject<any> {
+export function useDomWatcher(
+  callback: Function,
+  skip?: boolean,
+  targetSelector?: string
+): React.RefObject<any> {
   const ref: React.RefObject<any> = useRef();
 
   useEffect(() => {
@@ -28,7 +32,10 @@ export function useDomWatcher(callback: () => any, skip?: boolean): React.RefObj
     }
 
     const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (
+        (ref.current && !ref.current.contains(event.target)) ||
+        (targetSelector && !event.target.closest(targetSelector))
+      ) {
         callback && callback();
       }
     };

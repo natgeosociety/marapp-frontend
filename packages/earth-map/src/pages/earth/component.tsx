@@ -16,27 +16,28 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-import React from 'react';
-import { Icons as VizzIcons } from 'vizzuality-components';
-import { union } from 'lodash';
-
 import { useAuth0 } from 'auth/auth0';
-import FeaturedPlaces from 'components/places/featured-places';
+import CollectionDetails from 'components/collection/collection-details';
+import CollectionNew from 'components/collection/collection-new';
 import CollectionsCard from 'components/collection/collections-card';
 import Header from 'components/header';
+import IndexSidebar from 'components/index-sidebar';
+import LastViewedPlace from 'components/last-viewed-place';
 import Layers from 'components/layers';
 import Map from 'components/map';
 import Places from 'components/places';
-import LastViewedPlace from 'components/last-viewed-place';
+import FeaturedPlaces from 'components/places/featured-places';
 import Sidebar from 'components/sidebar';
-import { Tab, Tabs } from 'components/tabs';
 import Url from 'components/url';
-import IndexSidebar from 'components/index-sidebar';
-import CollectionNew from 'components/collection/collection-new';
-import CollectionDetails from 'components/collection/collection-details';
-import { EPanels } from 'modules/sidebar/model';
+import { union } from 'lodash';
 import { ILastViewedPlace } from 'modules/global/model';
 import { EarthRoutes, IRouter } from 'modules/router/model';
+import { EPanels } from 'modules/sidebar/model';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Icons as VizzIcons } from 'vizzuality-components';
+
+import { Tab, Tabs } from '@marapp/earth-shared';
 
 import { URL_PROPS } from './url';
 
@@ -56,6 +57,7 @@ const { EARTH, COLLECTION, LOCATION, NEW_COLLECTION } = EarthRoutes;
 
 const EarthPage = (props: IProps) => {
   const { setSidebarPanel, panel, router, lastViewedPlace, group, collection } = props;
+  const { t } = useTranslation();
   const { groups, privateGroups, publicGroups } = useAuth0();
   const { type } = router;
   const selectedOpen = [LOCATION, COLLECTION, NEW_COLLECTION].includes(type);
@@ -76,10 +78,10 @@ const EarthPage = (props: IProps) => {
             <Tabs
               value={panel}
               onChange={setSidebarPanel}
-              className="ng-padding-medium-horizontal ng-padding-bottom ng-ep-background-dark"
+              className="ng-padding-medium-horizontal ng-ep-background-dark"
             >
-              <Tab label="Places" value="places" />
-              <Tab label="Layers" value="layers" />
+              <Tab label={t('Places')} value="places" />
+              <Tab label={t('Layers')} value="layers" />
             </Tabs>
             {panel === EPanels.PLACES && (
               <>

@@ -17,16 +17,24 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import cn from 'classnames';
 import { isEmpty } from 'lodash';
-
-import { Card, Spinner, TitleHero, AsyncSelect, Pill } from '@marapp/earth-shared';
-
 import { ICollection } from 'modules/collections/model';
-import { updateCollection } from 'services/CollectionsService';
-import PlacesService from 'services/PlacesService';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import {
+  Card,
+  DropdownSimple,
+  Pill,
+  Spinner,
+  TitleHero,
+  getGenericDate,
+} from '@marapp/earth-shared';
+
+import CollectionDelete from '../collection-delete';
+import { CollectionEditPlaces } from '../collection-editplaces';
+import { CollectionRename } from '../collection-rename';
 import './styles.scss';
 
 interface IProps {
@@ -42,25 +50,47 @@ interface IProps {
 
 const CollectionDetails = (props: IProps) => {
   const { placesFromGroups, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
+  const { t } = useTranslation();
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
-  const [saveError, setSaveError] = useState('');
-  const { control, handleSubmit, formState } = useForm({
-    mode: 'onChange',
-  });
-  const { isValid, isSubmitting, dirty } = formState;
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const canEdit = privateGroups.includes(data.organization);
 
   if (loading || isEmpty(data)) {
     return <Spinner />;
   }
 
-  const { id, organization, name, locations } = data;
+  const editActions = (
+    <DropdownSimple
+      trigger={(open) => (
+        <i
+          className={cn({
+            'ng-icon-ellipse ng-toolbar-button': true,
+            'ng-toolbar-button-raised': true,
+            'ng-toolbar-button-open': open,
+          })}
+        />
+      )}
+    >
+      <a onClick={() => setIsRenaming(true)}>{t('Rename Collection')}</a>
+      <a onClick={() => setIsDeleting(true)}>{t('Delete')}</a>
+    </DropdownSimple>
+  );
+
+  const { id, organization, name, locations, updatedAt } = data;
   const hasLocations = locations.length > 0;
 
   return (
     <div className="marapp-qa-collection-details">
       <Card elevation="flush" className="ng-widget-header">
-        <TitleHero title={name} subtitle={organization} extra="Collection" />
+        <TitleHero
+          title={name}
+          subtitle={organization}
+          extra={t('Collection')}
+          actions={canEdit ? editActions : null}
+          finePrint={`Updated: ${getGenericDate(updatedAt)}`}
+        />
       </Card>
 
       {hasLocations ? (
@@ -70,11 +100,11 @@ const CollectionDetails = (props: IProps) => {
               className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
               onClick={toggleEditPlaces}
             >
-              edit
+              {t('edit')}
             </button>
           )}
           <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
-            Collection places ({locations.length})
+            {t('Collection places')} ({locations.length})
           </h2>
           <p>
             {locations
@@ -82,6 +112,7 @@ const CollectionDetails = (props: IProps) => {
               .map((location) => (
                 <Pill
                   label={location.name}
+                  key={location.id}
                   className="marapp-qa-locationpill ng-margin-small-right ng-margin-small-bottom"
                 />
               ))}
@@ -90,13 +121,15 @@ const CollectionDetails = (props: IProps) => {
       ) : (
         <Card className="c-legend-item-group">
           <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
-            Collection places {hasLocations && locations.length}
+            {t('Collection places')} {hasLocations && locations.length}
           </h2>
           <p>
             {canEdit
-              ? `You currently don’t have any places added to your collection. Add places to your
-            collection to access data metrics and share your insights with your team.`
-              : `There are no places added to this collection.`}
+              ? t(
+                  `You currently don’t have any places added to your collection. Add places to your collection to access data metrics and share your insights with your team`
+                )
+              : t(`There are no places added to this collection`)}
+            .
           </p>
           {canEdit && (
             <button
@@ -104,98 +137,32 @@ const CollectionDetails = (props: IProps) => {
               className="marapp-qa-actionaddplaces ng-button ng-button-secondary ng-margin-right"
               onClick={toggleEditPlaces}
             >
-              Add places
+              {t('Add places')}
             </button>
           )}
         </Card>
       )}
 
+      {isRenaming && <CollectionRename collection={data} onCancel={() => setIsRenaming(false)} />}
+
       {isAddingPlaces && (
-        <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full">
-          <Card elevation="high" className="ng-margin-bottom">
-            <TitleHero title={name} subtitle={organization} extra="Collection" />
-          </Card>
+        <CollectionEditPlaces
+          collection={data}
+          placesFromGroups={placesFromGroups}
+          setCollectionData={setCollectionData}
+          setMapBounds={setMapBounds}
+          toggleEditPlaces={toggleEditPlaces}
+        />
+      )}
 
-          <div className="scroll-container">
-            <Card elevation="raised">
-              <label>Add places:</label>
-              <Controller
-                as={AsyncSelect}
-                name="locations"
-                type="places"
-                label="Add places"
-                placeholder="Add places to your collection"
-                className="marapp-qa-locationsdropdown ng-margin-medium-bottom"
-                control={control}
-                defaultValue={locations}
-                getOptionLabel={(option) => option.name}
-                getOptionValue={(option) => option.id}
-                loadFunction={(query) =>
-                  PlacesService.fetchPlaces({
-                    ...query,
-                    group: placesFromGroups.join(','),
-                  })
-                }
-                selectedGroup={organization}
-                isClearable={true}
-                isSearchable={true}
-                isMulti={true}
-                closeMenuOnSelect={false}
-              />
-
-              {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
-
-              <button
-                type="submit"
-                className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-right"
-                disabled={!isValid || isSubmitting || !dirty}
-              >
-                {isSubmitting ? 'Saving' : 'Save'}
-              </button>
-              <button
-                className="marapp-qa-actioncancel ng-button ng-button-secondary"
-                onClick={toggleEditPlaces}
-              >
-                Cancel
-              </button>
-            </Card>
-          </div>
-        </form>
+      {isDeleting && (
+        <CollectionDelete collection={data} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />
       )}
     </div>
   );
 
-  async function onSubmit(values) {
-    const parsedValues = {
-      ...values,
-
-      // The api expects an array of ids or an empty array
-      // should this be handled by AsyncSelect?
-      ...(values.locations ? { locations: values.locations.map((x) => x.id) } : { locations: [] }),
-    };
-
-    try {
-      const { data } = await updateCollection(id, parsedValues, {
-        group: organization,
-        include: 'locations',
-        select: 'locations.slug,locations.name',
-      });
-      setCollectionData(data);
-      toggleEditPlaces();
-      setSaveError(null);
-
-      if (data.bbox2d.length) {
-        setMapBounds({ bbox: data.bbox2d });
-      }
-    } catch (e) {
-      setSaveError('Something went wrong');
-      console.log(e);
-    }
-  }
-
   function toggleEditPlaces() {
     setIsAddingPlaces(!isAddingPlaces);
-    setSaveError('');
   }
 };
 

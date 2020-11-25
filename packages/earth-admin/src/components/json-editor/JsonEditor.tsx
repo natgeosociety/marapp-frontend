@@ -17,10 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import 'codemirror/addon/lint/javascript-lint';
-import 'codemirror/addon/lint/json-lint';
-import 'codemirror/addon/lint/lint';
 import 'codemirror/mode/javascript/javascript';
+import jsonlint from 'jsonlint';
 import React, { useState } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 
@@ -30,37 +28,58 @@ interface JsonEditorProps {
   json?: {};
   onChange?: (data: string) => any;
   readOnly?: boolean;
+  onError?: (err: boolean) => any;
 }
 
-export default function JsonEditor(props: JsonEditorProps) {
-  const [jsonValue, setJsonValue] = useState('');
+export const JsonEditor = (props: JsonEditorProps) => {
+  const [error, setError] = useState('');
+  const { json, onChange, readOnly, onError } = props;
 
-  const { json, onChange, readOnly } = props;
+  function makeMarker() {
+    const marker = typeof document !== `undefined` ? document.createElement('div') : null;
+    marker.style.color = '#FC4349';
+    marker.innerHTML = '●';
+    return marker;
+  }
 
-  const handleChange = (e, data, value) => {
-    setJsonValue(value);
-  };
+  const handleBlur = (e) => {
+    const json = e.getValue();
 
-  const handleBlur = () => {
-    onChange && onChange(jsonValue);
+    e.clearGutter('error-gutter');
+
+    try {
+      if (json) {
+        const parsedJson = jsonlint.parse(json);
+        onChange && onChange(parsedJson);
+        onError && onError(false);
+
+        setError('');
+      }
+    } catch (err) {
+      const error = err.message.split(':')[0];
+      const errorLine = parseInt(error.match(/\d+/gi).join(''), 10) - 1;
+      e.setGutterMarker(errorLine, 'error-gutter', makeMarker());
+      setError(error);
+      onError && onError(true);
+    }
   };
 
   return (
-    <div className="marapp-qa-jsoneditor" onBlur={handleBlur}>
+    <div className="marapp-qa-jsoneditor">
       <CodeMirror
         value={json ? JSON.stringify(json, null, 2) : null}
         options={{
           mode: 'javascript',
           json: true,
           theme: 'material-darker',
-          gutters: ['CodeMirror-lint-markers'],
+          gutters: ['CodeMirror-lint-markers', 'error-gutter'],
           lineNumbers: true,
-          lint: true,
           lineWrapping: true,
           readOnly,
         }}
-        onChange={handleChange}
+        onBlur={handleBlur}
       />
+      {error && <div className="ng-form-error-block">{error}</div>}
     </div>
   );
-}
+};

@@ -20,9 +20,8 @@
 import React, { useContext } from 'react';
 import Helmet from 'react-helmet';
 
-import { favicon, Spinner, UserMenu } from '@marapp/earth-shared';
+import { Card, favicon, Spinner, UserMenu } from '@marapp/earth-shared';
 
-import { Card } from '@marapp/earth-shared';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { MAP_PATH } from '@app/config';
 import { Auth0Context } from '@app/utils/contexts';
@@ -57,7 +56,7 @@ const Unauthorized = (props: IUnauthorizedProps) => {
 };
 
 export default function ContentLayout(props: ILayoutProps) {
-  const { logout, login, isAuthenticated } = useContext(Auth0Context);
+  const { logout, login, isAuthenticated, userData } = useContext(Auth0Context);
 
   return (
     <div className={`ng-flex ${props.className || ''}`}>
@@ -68,6 +67,7 @@ export default function ContentLayout(props: ILayoutProps) {
       <div className="ng-page-container ng-background-gray-9">
         <UserMenu
           isAuthenticated={isAuthenticated}
+          userName={userData.name}
           profileLink={<a href={`${MAP_PATH}profile`}>Profile</a>}
           onLogin={login}
           onLogout={logout}

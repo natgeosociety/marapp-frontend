@@ -18,6 +18,7 @@
 */
 
 import Toggle from 'components/toggle';
+import { noop } from 'lodash';
 import React from 'react';
 import Link from 'redux-first-router-link';
 import { parseHintBold } from 'utils';
@@ -36,37 +37,20 @@ interface IProps {
   hint?: string;
   list?: any[];
   labels?: string[];
-  setPlacesSearch?: (payload) => void;
   onClick?: () => void;
 }
 
 const ListItem = (props: IProps) => {
-  const {
-    title,
-    hint,
-    labels,
-    organization,
-    linkTo,
-    key,
-    list,
-    setPlacesSearch,
-    onClick,
-    active,
-  } = props;
+  const { title, hint, labels, organization, linkTo, key, onClick = noop, active } = props;
 
   const showToggle = typeof active !== 'undefined';
 
   const Wrapper = linkTo ? Link : 'div';
 
-  // Default click action. Can be overritten by passing onClick prop
-  const onClickIndex = () => {
-    setPlacesSearch({ search: title });
-  };
-
   return (
     <Wrapper
       to={linkTo}
-      onClick={onClick || onClickIndex}
+      onClick={onClick}
       key={key}
       className="marapp-qa-listitem ng-list-item ng-padding-small-vertical ng-padding-medium-horizontal ng-cursor-pointer"
     >

@@ -17,14 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
+import ListItem from 'components/list-item';
+import { ICollection } from 'modules/collections/model';
+import { EMainType, SubType } from 'modules/global/model';
+import { EarthRoutes } from 'modules/router/model';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
 
-import { Card } from '@marapp/earth-shared';
-import { EarthRoutes } from 'modules/router/model';
-import { ICollection } from 'modules/collections/model';
-import ListItem from 'components/list-item';
-import { EMainType, SubType } from 'modules/global/model';
+import { Card, getGenericDate } from '@marapp/earth-shared';
 
 const { NEW_COLLECTION } = EarthRoutes;
 
@@ -38,6 +39,7 @@ interface IProps {
 
 export const CollectionsCard = (props: IProps) => {
   const { canCreate, featured, group } = props;
+  const { t } = useTranslation();
   const { data } = featured;
   const hasCollections = !!data.length;
 
@@ -45,18 +47,18 @@ export const CollectionsCard = (props: IProps) => {
     return (
       <Card expanded={true} className="ng-margin-bottom ng-padding-medium-bottom">
         <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-          Collections
+          {t('Collections')}
         </h2>
         {canCreate && (
           <Link
             to={{ type: NEW_COLLECTION }}
             className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
           >
-            create new
+            {t('create new')}
           </Link>
         )}
-        {data.map((collection: any) => {
-          const { slug, name, id, organization } = collection;
+        {data.map((collection) => {
+          const { slug, name, id, organization, updatedAt } = collection;
 
           return (
             <ListItem
@@ -64,7 +66,7 @@ export const CollectionsCard = (props: IProps) => {
               key={`${slug}-${organization}`}
               linkTo={{ type: EMainType.COLLECTION, payload: { slug, id, organization } }}
               organization={group.length > 1 && organization}
-              labels={[SubType.COLLECTION]}
+              labels={[getGenericDate(updatedAt)]}
             />
           );
         })}
@@ -74,16 +76,16 @@ export const CollectionsCard = (props: IProps) => {
 
   return (
     <Card className="ng-margin-bottom">
-      <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">Collections</h2>
+      <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">{t('Collections')}</h2>
       <p>
-        You currently do not have any collections in your organizations.
+        {t('You currently do not have any collections in your organizations')}.
         {canCreate &&
-          `Create a collection and start sharing your insights with your
-        organization members.`}
+          t(`Create a collection and start sharing your insights with your organization members`)}
+        .
       </p>
       {canCreate && (
         <Link to={{ type: NEW_COLLECTION }} className="ng-button ng-button-secondary">
-          Create New Collection
+          {t('Create New Collection')}
         </Link>
       )}
     </Card>

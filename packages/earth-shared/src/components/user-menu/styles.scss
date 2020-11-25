@@ -30,6 +30,13 @@
       outline: none;
     }
   }
+  .ng-user-account-name {
+    color: $marapp-gray-9;
+    font-weight: bold;
+    font-size: 13px;
+    text-align: center;
+    text-transform: uppercase;
+  }
 }
 
 .ng-user-profile {
@@ -39,7 +46,7 @@
   width: 30px;
 }
 
-.ng-user-profile-dropdown {
+.ng-user-profile-dropdown, .ng-default-dropdown {
   box-shadow: 0 0 5px 0 rgba($marapp-gray-100, 0.5);
   background: $marapp-gray-7;
   list-style-type: none;

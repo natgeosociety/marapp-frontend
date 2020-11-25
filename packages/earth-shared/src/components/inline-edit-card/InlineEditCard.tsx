@@ -19,6 +19,7 @@
 
 import classnames from 'classnames';
 import React, { ReactNode, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
 import { ErrorMessages } from '@marapp/earth-shared';
@@ -60,14 +61,15 @@ const Card: any = Keyframes.Spring({
 });
 
 export default function InlineEditCard(props: InlineCardProps) {
+  const { t } = useTranslation();
   const {
     children,
     render,
-    editButtonText = 'edit',
+    editButtonText = t('edit'),
     onSubmit = noop,
     onCancel = noop,
-    submitButtonText = 'Save',
-    cancelButtonText = 'Cancel',
+    submitButtonText = t('Save'),
+    cancelButtonText = t('Cancel'),
     submitButtonVariant,
     validForm,
     manualOpen,

@@ -27,6 +27,7 @@ import Select from 'react-select';
 import {
   alphaNumericDashesRule,
   AsyncSelect,
+  Card,
   ErrorMessages,
   Input,
   setupErrors,
@@ -34,7 +35,6 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { HtmlEditor } from '@app/components/html-editor';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
@@ -74,7 +74,6 @@ export function NewLayer(props: IProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
-  const [layerConfig, setLayerConfig] = useState({});
 
   const [references, setReferences] = useState();
 
@@ -86,7 +85,6 @@ export function NewLayer(props: IProps) {
       ...(category && { category: flattenArrayForSelect(category, 'value') }),
       ...(type && { type: flattenObjectForSelect(type) }),
       ...(provider && { provider: flattenObjectForSelect(provider) }),
-      ...(!!layerConfig && { config: layerConfig }),
       ...(!!references && { references: flattenArrayForSelect(references, 'id') }),
     };
 
@@ -109,21 +107,6 @@ export function NewLayer(props: IProps) {
     } catch (error) {
       setServerErrors(error.data.errors);
     }
-  };
-
-  const handleJsonChange = (json) => {
-    try {
-      JSON.parse(json);
-    } catch (err) {
-      setJsonError(true);
-    }
-    if (!JSHINT.errors.length) {
-      const parsedJson = JSON.parse(json);
-      setLayerConfig(parsedJson);
-      setJsonError(false);
-      return parsedJson;
-    }
-    setJsonError(true);
   };
 
   return (
@@ -259,7 +242,7 @@ export function NewLayer(props: IProps) {
                 className="marapp-qa-config"
                 name="config"
                 control={control}
-                onChange={(layerConfig) => handleJsonChange(layerConfig)}
+                onError={(e) => setJsonError(e)}
                 as={<JsonEditor json="" />}
               />
             </div>

@@ -2,17 +2,17 @@
 
 .ng-ep-tabs {
   display: flex;
+  padding-bottom: 20px;
   user-select: none;
-  min-height: 36px;
-
   .ng-ep-tab {
+    cursor: pointer;
     font-size: 16px;
     font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 2.6px;
+    margin-right: 30px;
+    padding-bottom: 3px;
     text-transform: uppercase;
-    padding: 2px;
-    cursor: pointer;
-    margin-right: 25px;
-
     &.ng-ep-tab-selected {
       border-bottom: 2px solid $marapp-primary-color;
     }

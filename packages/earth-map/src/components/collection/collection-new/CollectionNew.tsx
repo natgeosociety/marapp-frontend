@@ -18,12 +18,13 @@
 */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useForm } from 'react-hook-form';
 import { replace } from 'redux-first-router';
 import Link from 'redux-first-router-link';
-import { useForm } from 'react-hook-form';
+import PlacesService from 'services/PlacesService';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
-import { createCollection } from 'services/CollectionsService';
 
 interface IProps {
   privateGroups: string[];
@@ -31,6 +32,7 @@ interface IProps {
 
 const CollectionNew = (props: IProps) => {
   const { privateGroups } = props;
+  const { t } = useTranslation();
   const canCreateCollection = !!privateGroups.length;
   const [saveError, setSaveError] = useState(null);
   const { handleSubmit, register, errors, formState } = useForm({ mode: 'onChange' });
@@ -39,7 +41,7 @@ const CollectionNew = (props: IProps) => {
 
   const onSubmit = async (values) => {
     try {
-      const { data } = await createCollection(values, {
+      const { data } = await PlacesService.addCollection(values, {
         group: values.organization,
       });
       replace(`/collection/${data.organization}/${data.slug}`);
@@ -59,15 +61,15 @@ const CollectionNew = (props: IProps) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Card elevation="high" className="ng-margin-bottom">
-        <h3 className="ng-text-edit-s ng-margin-remove">Create a Collection</h3>
+        <h3 className="ng-text-edit-s ng-margin-remove">{t('Create a Collection')}</h3>
       </Card>
 
       {canCreateCollection && (
         <Card className="ng-margin-bottom">
           <label>
             <Input
-              label="Name Collection"
-              placeholder="enter a name for your collection"
+              label={t('Name Collection')}
+              placeholder={t('enter a name for your collection')}
               name="name"
               error={renderErrorFor('name')}
               ref={register({
@@ -79,13 +81,16 @@ const CollectionNew = (props: IProps) => {
       )}
 
       <Card className="c-legend-item-group">
-        <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">Select an Organization</h2>
+        <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
+          {t('Select an Organization')}
+        </h2>
         <p>
           {canCreateCollection
-            ? `Please select an organization to create a collection under. After selecting an
-          organization, you will be able to select places and share insights with members of your
-          selected organization. Organizations can not be edited once picked.`
-            : `You don't have rights to create a new collection`}
+            ? t(
+                `Please select an organization to create a collection under. After selecting an organization, you will be able to select places and share insights with members of your selected organization. Organizations can not be edited once picked`
+              )
+            : t(`You don't have rights to create a new collection`)}
+          .
         </p>
         <div className="legend-item-group--radio ng-padding-medium-left">
           {privateGroups.map((group) => (
@@ -115,13 +120,13 @@ const CollectionNew = (props: IProps) => {
           type="submit"
           className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
         >
-          Create Collection
+          {t('Create Collection')}
         </button>
         <Link
           to={{ type: 'EARTH' }}
           className="marapp-qa-cancel-collection ng-button ng-button-secondary"
         >
-          Cancel
+          {t('Cancel')}
         </Link>
       </Card>
     </form>

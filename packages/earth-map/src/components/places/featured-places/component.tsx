@@ -19,6 +19,7 @@
 
 import ListItem from 'components/list-item';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Spinner } from '@marapp/earth-shared';
 
@@ -32,11 +33,12 @@ interface IFeaturedPlaces {
 
 const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
   const { featured, group } = props;
+  const { t } = useTranslation();
 
   return (
     <div className="marapp-qa-featuredplaces ng-section-background ng-position-relative ng-padding-medium-bottom">
       <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-        Featured places
+        {t('Featured places')}
       </h2>
       <div>
         {!featured?.data.length && !featured?.meta && (

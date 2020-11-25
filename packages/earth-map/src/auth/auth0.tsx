@@ -25,12 +25,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { routeToPage } from 'utils';
 
 import {
+  getPrivateGroups,
+  getPublicGroups,
   isAuthz,
   mapAuthzScopes,
   mapRoleGroups,
   SessionStorage,
-  getPrivateGroups,
-  getPublicGroups,
 } from '@marapp/earth-shared';
 
 import { Auth0 } from './model';
@@ -161,11 +161,13 @@ export const Auth0Provider = ({
    */
   const login = (options = {}) => {
     SessionStorage.remove('ephemeral');
+    SessionStorage.remove('lang');
     return client.loginWithRedirect(options);
   };
 
   const logout = (options = {}) => {
     SessionStorage.remove('ephemeral');
+    SessionStorage.remove('lang');
     // force the user to log out of their identity provider;
     return client.logout({ ...options, federated: true });
   };

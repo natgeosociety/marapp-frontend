@@ -23,6 +23,7 @@ import { ADMIN_URL, APP_NAME } from 'config';
 import { remove } from 'lodash';
 import { EPanels } from 'modules/sidebar/model';
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
 import OrganizationService from 'services/OrganizationService';
 import { APP_LOGO } from 'theme';
@@ -46,6 +47,7 @@ interface IProps {
 }
 
 const Header = (props: IProps) => {
+  const { t } = useTranslation();
   const {
     roles,
     userData: { allGroups },
@@ -90,7 +92,7 @@ const Header = (props: IProps) => {
 
   // Same as the action from <SearchBox /> find a way to reuse bundled actions
   const handleResetLocation = () => {
-    resetPlace();
+    resetPlace({ keepCache: true });
     resetCollection();
     setPlacesSearch({ search: '' });
     setLayersSearch({ search: '' });
@@ -169,8 +171,8 @@ const Header = (props: IProps) => {
             <div>
               {g.name}
               <span className="ng-display-block ng-color-mdgray">
-                Places ({g.locations})<strong className="ng-icon-bullet" />
-                Layers ({g.layers})
+                {t('Places')} ({g.locations})<strong className="ng-icon-bullet" />
+                {t('Layers')} ({g.layers})
               </span>
             </div>
           </label>
@@ -182,13 +184,13 @@ const Header = (props: IProps) => {
   return (
     <AppContextSwitcher
       logo={logo}
-      label="Map View"
+      label={t('Map View')}
       value="map-view"
       checkedCount={selectedGroups.length}
       renderDropdown={isAuthenticated}
       onChange={(g) => window.location.assign(`${ADMIN_URL}${g}`)}
     >
-      <Option value="map-view">Map View</Option>
+      <Option value="map-view">{t('Map View')}</Option>
       {orgCheckBoxes}
       {Object.keys(roles).map(
         (g) =>

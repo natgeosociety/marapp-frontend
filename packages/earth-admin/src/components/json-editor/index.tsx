@@ -17,6 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-import JsonEditor from './JsonEditor';
-
-export { JsonEditor };
+export { JsonEditor } from './JsonEditor';

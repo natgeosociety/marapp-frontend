@@ -2,9 +2,6 @@ module.exports = {
   preset: 'ts-jest',
   testPathIgnorePatterns: ["node_modules", "coverage"],
 
-  // react-slick requirement
-  setupFiles: ['<rootDir>/__mocks__/matchMedia.js'],
-
   globals: {
     'ts-jest': {
 
@@ -12,6 +9,9 @@ module.exports = {
       diagnostics: false
     }
   },
+
+  // react-slick requirement
+  setupFiles: ['<rootDir>/__mocks__/matchMedia.js'],
 
   // adds extra assertions like expect().toBeInTheDocument()
   setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"],

@@ -17,10 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { SIDEBAR_WIDTH_WIDE } from 'config';
 import isEmpty from 'lodash/isEmpty';
 import { createSelector } from 'reselect';
-
-import { SIDEBAR_WIDTH_WIDE } from 'config';
 
 const latlng = (state) => state.map.latlng;
 const bbox = (state) => state.map.bounds.bbox;

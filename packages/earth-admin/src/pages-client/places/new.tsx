@@ -23,11 +23,11 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
-import { ErrorMessages, Input, setupErrors, Spinner } from '@marapp/earth-shared';
+import { Card, ErrorMessages, Input, setupErrors, Spinner, Tab, Tabs } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
+import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { ContentLayout } from '@app/layouts';
 import PlacesService from '@app/services/places';
@@ -54,8 +54,15 @@ export function NewPlace(props: IProps) {
   const [geojsonValue, setGeojson] = useState(null);
   const [serverErrors, setServerErrors] = useState([]);
   const [jsonError, setJsonError] = useState(false);
+  const [panel, setPanel] = useState('upload');
   const { selectedGroup } = useAuth0();
   const renderErrorFor = setupErrors(errors, touched);
+
+  const switchGeojsonTab = (e) => {
+    setPanel(e);
+    setGeojson(null);
+    setJsonError(true);
+  };
 
   async function onSubmit(values) {
     const { type } = values;
@@ -64,6 +71,7 @@ export function NewPlace(props: IProps) {
       ...(type && { type: flattenObjectForSelect(type, 'value') }),
       geojson: geojsonValue,
     };
+
     try {
       setIsLoading(true);
       const { data } = await PlacesService.addPlace(parsed, { group: selectedGroup });
@@ -79,6 +87,7 @@ export function NewPlace(props: IProps) {
       setServerErrors(error?.data.errors || fallbackError);
     }
   }
+
   const generateSlug = async (e) => {
     e.preventDefault();
     try {
@@ -164,19 +173,39 @@ export function NewPlace(props: IProps) {
           </Card>
 
           <Card className="ng-margin-medium-bottom">
-            <p>Choose a GeoJSON to calculate shape maths and geographic relationships.</p>
-            <FakeJsonUpload
-              name="geojson"
-              label="Place shape*"
-              ref={register({
-                required: 'GeoJSON is required',
-              })}
-              onChange={(json) => {
-                setGeojson(json);
-                setJsonError(false);
-              }}
-              onError={(err) => setJsonError(true)}
-            />
+            <>
+              <Tabs value={panel} onChange={switchGeojsonTab} className="ng-ep-background-dark">
+                <Tab label="Shape File" value="upload" />
+                <Tab label="Json editor" value="json" />
+              </Tabs>
+              {panel === 'upload' && (
+                <>
+                  <p>Choose a GeoJSON to calculate shape maths and geographic relationships.</p>
+                  <FakeJsonUpload
+                    name="geojson"
+                    type=".geojson"
+                    label="Place shape*"
+                    ref={register({
+                      required: 'GeoJSON is required',
+                    })}
+                    onChange={(json) => {
+                      setGeojson(json);
+                      setJsonError(false);
+                    }}
+                    onError={(err) => setJsonError(true)}
+                  />
+                </>
+              )}
+              {panel === 'json' && (
+                <div className="ng-margin-medium-bottom">
+                  <JsonEditor
+                    json={geojsonValue}
+                    onChange={(json) => setGeojson(json)}
+                    onError={(e) => setJsonError(e)}
+                  />
+                </div>
+              )}
+            </>
           </Card>
 
           {!!serverErrors.length && <ErrorMessages errors={serverErrors} />}

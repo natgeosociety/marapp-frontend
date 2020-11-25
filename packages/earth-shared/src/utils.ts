@@ -19,6 +19,7 @@
 import queryStringEncode from 'query-string-encode';
 import flatten from 'flat';
 import { Parser } from 'json2csv';
+import { last } from 'lodash';
 
 /**
  * Serialize filters in the format
@@ -63,4 +64,26 @@ export const downloadCSVFile = (data) => {
   const csv = json2csvParser.parse(flatten(data));
   const csvBlob = new Blob([csv]);
   return URL.createObjectURL(csvBlob);
+};
+
+/**
+ * Generic way of rendering a date in our apps YYYY-MM-DD
+ */
+export const getGenericDate = (date: string): string => {
+  const parsed = new Date(date);
+  // getMonth() is zero based
+  const month = parsed.getMonth() + 1;
+
+  return `${parsed.getFullYear()}-${month}-${parsed.getDate()}`;
+};
+
+/**
+ * Get initials from user name
+ */
+export const getInitials = (name: string): string => {
+  const emptySpace = ' ';
+  const [firstName = emptySpace, ...rest] = name.split(emptySpace);
+  const lastName = last(rest) || emptySpace;
+
+  return `${firstName[0]}${lastName[0]}`.toUpperCase();
 };

@@ -24,6 +24,7 @@ import {
   alphaNumericDashesRule,
   AsyncSelect,
   AuthzGuards,
+  Card,
   ErrorMessages,
   InlineEditCard,
   Input,
@@ -31,7 +32,6 @@ import {
 } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { Card } from '@marapp/earth-shared';
 import { DetailList } from '@app/components/detail-list';
 import { HtmlEditor } from '@app/components/html-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
@@ -64,9 +64,14 @@ export function DashboardDetail(props: IProps) {
   const query = merge(DASHBOARD_DETAIL_QUERY, { group: selectedGroup });
   const cacheKey = generateCacheKey(`dashboards/${page}`, query);
 
-  const { data, error, mutate } = useSWR(cacheKey, () =>
-    DashboardsService.getDashboard(page, query).then((res: any) => res.data)
-  );
+  const fetcher = () =>
+    DashboardsService.getDashboard(page, query).then((response: any) => response.data);
+  const setter = (data) =>
+    DashboardsService.handleDashboardForm(false, data, id, query).then(
+      (response: any) => response.data
+    );
+
+  const { data, error, revalidate, mutate } = useSWR(cacheKey, fetcher);
 
   const [dashboard, setDashboard] = useState({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -109,11 +114,12 @@ export function DashboardDetail(props: IProps) {
 
     try {
       setIsLoading && setIsLoading(true);
-      await DashboardsService.handleDashboardForm(false, parsed, id, { group: selectedGroup });
-      mutate();
+
+      await mutate(setter(parsed), false);
+
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
-      onDataChange();
+      await onDataChange();
     } catch (error) {
       setIsLoading && setIsLoading(false);
       setServerErrors && setServerErrors(error.data.errors);
