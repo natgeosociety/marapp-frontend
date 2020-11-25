@@ -23,7 +23,14 @@ import { ICollection } from 'modules/collections/model';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Card, DropdownSimple, Pill, Spinner, TitleHero } from '@marapp/earth-shared';
+import {
+  Card,
+  DropdownSimple,
+  Pill,
+  Spinner,
+  TitleHero,
+  getGenericDate,
+} from '@marapp/earth-shared';
 
 import CollectionDelete from '../collection-delete';
 import { CollectionEditPlaces } from '../collection-editplaces';
@@ -66,12 +73,12 @@ const CollectionDetails = (props: IProps) => {
         />
       )}
     >
-      <a onClick={() => setIsRenaming(true)}>Rename Collection</a>
-      <a onClick={() => setIsDeleting(true)}>Delete</a>
+      <a onClick={() => setIsRenaming(true)}>{t('Rename Collection')}</a>
+      <a onClick={() => setIsDeleting(true)}>{t('Delete')}</a>
     </DropdownSimple>
   );
 
-  const { id, organization, name, locations } = data;
+  const { id, organization, name, locations, updatedAt } = data;
   const hasLocations = locations.length > 0;
 
   return (
@@ -82,6 +89,7 @@ const CollectionDetails = (props: IProps) => {
           subtitle={organization}
           extra={t('Collection')}
           actions={canEdit ? editActions : null}
+          finePrint={`Updated: ${getGenericDate(updatedAt)}`}
         />
       </Card>
 

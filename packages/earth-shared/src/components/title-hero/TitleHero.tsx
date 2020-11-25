@@ -26,15 +26,24 @@ interface IProps {
   subtitle: string;
   title: string;
   actions?: React.ReactElement;
+  finePrint?: string;
   className?: string;
 }
 
-export const TitleHero = ({ extra, subtitle, title, className = ' ', actions }: IProps) => (
+export const TitleHero = ({
+  extra,
+  subtitle,
+  title,
+  actions,
+  finePrint,
+  className = ' ',
+}: IProps) => (
   <div data-testid="title-hero" className={`title-hero ${className}`}>
-    <h3 className="ng-text-display-s ng-margin-bottom">
+    <h3 className="ng-text-display-s ng-margin-vertical">
       {subtitle} | <span className="ng-text-weight-regular">{extra}</span>
     </h3>
     <h2 className="ng-text-edit-m ng-body-color ng-margin-remove">{title}</h2>
     {!!actions && <div className="title-hero-actions">{actions}</div>}
+    {!!finePrint && <div className="title-hero-fineprint ng-text-small">{finePrint}</div>}
   </div>
 );

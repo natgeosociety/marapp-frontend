@@ -17,18 +17,4 @@
  * specific language governing permissions and limitations under the License.
  */
 
-@import '~styles/config';
-
-.title-hero {
-  &-actions {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-  }
-  &-fineprint {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    color: $marapp-gray-5;
-  }
-}
+import './styles.scss';

@@ -25,7 +25,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
 
-import { Card } from '@marapp/earth-shared';
+import { Card, getGenericDate } from '@marapp/earth-shared';
 
 const { NEW_COLLECTION } = EarthRoutes;
 
@@ -57,8 +57,8 @@ export const CollectionsCard = (props: IProps) => {
             {t('create new')}
           </Link>
         )}
-        {data.map((collection: any) => {
-          const { slug, name, id, organization } = collection;
+        {data.map((collection) => {
+          const { slug, name, id, organization, updatedAt } = collection;
 
           return (
             <ListItem
@@ -66,7 +66,7 @@ export const CollectionsCard = (props: IProps) => {
               key={`${slug}-${organization}`}
               linkTo={{ type: EMainType.COLLECTION, payload: { slug, id, organization } }}
               organization={group.length > 1 && organization}
-              labels={[SubType.COLLECTION]}
+              labels={[getGenericDate(updatedAt)]}
             />
           );
         })}
