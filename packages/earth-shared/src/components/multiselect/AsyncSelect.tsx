@@ -75,6 +75,7 @@ const AsyncSelect = (props: AsyncSelectProps) => {
   return (
     <AsyncPaginate
       className={classnames('marapp-qa-asyncselect', className)}
+      classNamePrefix="marapp-qa-asyncselect"
       placeholder={`Select ${type}`}
       loadOptions={loadOptions}
       shouldLoadMore={shouldLoadMore}

@@ -26,6 +26,7 @@ export function ReactSelect(props) {
   return (
     <Select
       styles={CUSTOM_STYLES}
+      classNamePrefix="marapp-qa-asyncselect"
       theme={(theme) => ({
         ...theme,
         ...SELECT_THEME,
