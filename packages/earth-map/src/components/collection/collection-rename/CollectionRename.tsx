@@ -110,10 +110,11 @@ export function CollectionRename(props: IProps) {
     } catch (e) {
       if (!e) {
         setSaveError('Something went wrong');
+      } else if (e.status === 404) {
+        replace('/404');
       } else if (e.data.errors.find((err) => err.title === 'DocumentVersionError')) {
         setIsSaveConflict(true);
       }
-      console.log(e);
     }
   }
 

@@ -19,6 +19,7 @@
 
 import React, { BaseSyntheticEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { replace } from 'redux-first-router';
 import { Controller, useForm } from 'react-hook-form';
 import isBoolean from 'lodash/isBoolean';
 
@@ -136,6 +137,8 @@ export function CollectionEditPlaces(props: IProps) {
     } catch (e) {
       if (!e) {
         setSaveError('Something went wrong');
+      } else if (e.status === 404) {
+        replace('/404');
       } else if (e.data.errors.find((err) => err.title === 'DocumentVersionError')) {
         setIsSaveConflict(true);
       }
