@@ -18,28 +18,51 @@
  */
 
 import { ICollection } from 'modules/collections/model';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
-import { replace } from 'redux-first-router';
-import PlacesService from 'services/PlacesService';
 
-import { TitleHero, Card, AsyncSelect, setupErrors } from '@marapp/earth-shared';
+import { TitleHero, Card } from '@marapp/earth-shared';
+import MetricService from 'services/MetricService';
+import { ReactSelect } from '@marapp/earth-shared';
+
+import JSZip from 'jszip';
+import FileSaver from 'file-saver';
+import json2csv from 'json2csv';
+import { groupBy, omit } from 'lodash';
+import flatten from 'flat';
 
 interface IProps {
   collection: ICollection;
+  onCancel: () => void;
+  onDownloadStart: () => void;
+  onDownloadEnd: () => void;
+  onDownloadError: (err: string) => void;
 }
 
 export function CollectionDownloadMetrics(props: IProps) {
-  const { collection } = props;
+  const { collection, onCancel, onDownloadStart, onDownloadEnd, onDownloadError } = props;
   const { t } = useTranslation();
-  const { id, name, organization } = collection;
-  const [saveError, setSaveError] = useState('');
-  const { register, errors, handleSubmit, formState, control } = useForm({
+  const { name, organization, slug: collectionSlug } = collection;
+  const [metricSlugs, setMetricSlugs] = useState([]);
+  const [isLoadingMetricSlugs, setIsLoadingMetricSlugs] = useState(false);
+  const { register, handleSubmit, formState, control, watch } = useForm({
     mode: 'onChange',
   });
-  const { touched, dirty, isValid, isSubmitting } = formState;
-  const renderErrorFor = setupErrors(errors, touched);
+  const { dirty, isValid, isSubmitting } = formState;
+  const metricsWatcher = watch('metrics');
+
+  useEffect(() => {
+    (async () => {
+      setIsLoadingMetricSlugs(true);
+
+      const data = await MetricService.fetchMetricSlugs({ group: organization });
+
+      setMetricSlugs(data.map((item) => ({ value: item.slug, label: item.slug })));
+
+      setIsLoadingMetricSlugs(false);
+    })();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full ng-form ng-form-dark">
@@ -51,25 +74,15 @@ export function CollectionDownloadMetrics(props: IProps) {
         <Card elevation="raised">
           <label>{t('Select metrics for download')}</label>
           <Controller
-            as={AsyncSelect}
+            as={ReactSelect}
             name="metrics"
             type="metrics"
             placeholder={t('Select metrics to download data files')}
             className="marapp-qa-downloadmetricsdropdown ng-margin-medium-bottom"
+            options={metricSlugs}
+            isLoading={isLoadingMetricSlugs}
+            defaultValue={[]}
             control={control}
-            // defaultValue={locations}
-            getOptionLabel={(option) => option.name}
-            getOptionValue={(option) => option.id}
-            // loadFunction={(query) =>
-            //   PlacesService.fetchPlaces({
-            //     ...query,
-            //     filter: ['type', '!=', LocationTypeEnum.COLLECTION].join(''),
-            //     select: ['id', 'slug', 'name', 'organization'].join(','),
-            //     group: organization,
-            //     public: true,
-            //   })
-            // }
-            selectedGroup={organization}
             isClearable={true}
             isSearchable={true}
             isMulti={true}
@@ -81,11 +94,12 @@ export function CollectionDownloadMetrics(props: IProps) {
               <input
                 type="radio"
                 id={`radio-csv`}
-                value={'CSV'}
-                name="organization"
+                value={'csv'}
+                name="fileType"
                 ref={register({
                   required: true,
                 })}
+                className="marapp-qa-downloadmetricscsv"
               />
               <label htmlFor={`radio-csv`}>
                 <span className="legend-item-group--symbol" />
@@ -96,11 +110,12 @@ export function CollectionDownloadMetrics(props: IProps) {
               <input
                 type="radio"
                 id={`radio-json`}
-                value={'JSON'}
-                name="organization"
+                value={'json'}
+                name="fileType"
                 ref={register({
                   required: true,
                 })}
+                className="marapp-qa-downloadmetricsjson"
               />
               <label htmlFor={`radio-json`}>
                 <span className="legend-item-group--symbol" />
@@ -108,19 +123,16 @@ export function CollectionDownloadMetrics(props: IProps) {
               </label>
             </div>
           </div>
-
-          {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
-
           <button
             type="submit"
-            className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-right"
-            disabled={!isValid || isSubmitting || !dirty}
+            className="marapp-qa-actiondownload ng-button ng-button-primary ng-margin-right"
+            disabled={!isValid || isSubmitting || !dirty || !metricsWatcher?.length}
           >
             {t('Download')}
           </button>
           <button
             className="marapp-qa-actioncancel ng-button ng-button-secondary"
-            // onClick={toggleEditPlaces}
+            onClick={onCancel}
           >
             {t('Cancel')}
           </button>
@@ -130,19 +142,55 @@ export function CollectionDownloadMetrics(props: IProps) {
   );
 
   async function onSubmit(values) {
-    // try {
-    //   const { data } = await PlacesService.updatePlace(
-    //     id,
-    //     {
-    //       name: values.name,
-    //       slug: null,
-    //     },
-    //     { group: organization }
-    //   );
-    //   replace(`/collection/${organization}/${data.slug}`);
-    // } catch (e) {
-    //   setSaveError('Something went wrong');
-    //   console.log(e);
-    // }
+    onDownloadStart();
+
+    const { metrics, fileType } = values;
+
+    try {
+      const data = await MetricService.downloadMetrics(collectionSlug, {
+        filter: `slug==${metrics.map((metric) => metric.value).join(';')}`,
+        group: organization,
+        include: 'location',
+        select: 'location.name',
+      });
+
+      const zip = new JSZip();
+
+      const metricTypes = groupBy(data, 'slug');
+
+      Object.keys(metricTypes).forEach((metricType) => {
+        const normalizedData = metricTypes[metricType].map((item) => ({
+          '#': item.location.name,
+          ...item.metric,
+        }));
+        const fileName = `${metricType}.${fileType}`;
+
+        if (fileType === 'csv') {
+          const json2csvParser = new json2csv.Parser();
+
+          zip.file(
+            fileName,
+            json2csvParser.parse(
+              normalizedData.map((item) => ({
+                '#': item['#'],
+                ...flatten(omit(item, '#')),
+              }))
+            )
+          );
+        } else {
+          zip.file(fileName, JSON.stringify(normalizedData));
+        }
+      });
+
+      const zipName = `${collectionSlug}-metrics.zip`;
+      const zipContent = await zip.generateAsync({ type: 'blob' });
+
+      FileSaver.saveAs(zipContent, zipName);
+    } catch (e) {
+      onDownloadError('Something went wrong');
+      console.log(e);
+    }
+
+    onDownloadEnd();
   }
 }
