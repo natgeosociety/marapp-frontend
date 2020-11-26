@@ -23,4 +23,12 @@ const fetchMetricById = async (id: string, query?: RequestQuery): Promise<any> =
   return BaseAPIService.request(`/metrics/${id}`, { query });
 };
 
-export default { fetchMetricById };
+const fetchMetricSlugs = async (query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request(`/metrics/slugs`, { query });
+};
+
+const downloadMetrics = async (collectionId: string, query?: RequestQuery): Promise<any> => {
+  return BaseAPIService.request(`/metrics/${collectionId}/collection`, { query });
+};
+
+export default { fetchMetricById, fetchMetricSlugs, downloadMetrics };

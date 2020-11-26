@@ -56,6 +56,8 @@ const CollectionDetails = (props: IProps) => {
   const [isRenaming, setIsRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isOnDownloadMetrics, setIsOnDownloadMetrics] = useState(false);
+  const [isDownloadingMetrics, setIsDownloadingMetrics] = useState(false);
+  const [downloadError, setDownloadError] = useState('');
 
   const canEdit = privateGroups.includes(data.organization);
 
@@ -124,19 +126,36 @@ const CollectionDetails = (props: IProps) => {
           <Card className="c-legend-item-group ng-margin-top">
             <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
               {t('Download metrics')}
+              &nbsp;
+              <i className="ng-icon-download-outline" style={{ verticalAlign: 'middle' }} />
             </h2>
             <p>
-              {t(
-                'Individual metrics related to each of the places in your collection can be viewed once downloaded'
+              {isDownloadingMetrics ? (
+                <>{t('Your selected metric files should be ready soon')}.</>
+              ) : (
+                <>
+                  {t(
+                    'Individual metrics related to each of the places in your collection can be viewed once downloaded'
+                  )}
+                  .{t('Select single or multiple metric data files for download')}.
+                </>
               )}
-              .{t('Select single or multiple metric data files for download')}.
             </p>
             <button
               className="marapp-qa-actiondownloadmetrics ng-button ng-button-secondary"
               onClick={() => setIsOnDownloadMetrics(true)}
+              disabled={isDownloadingMetrics}
             >
-              {t('Download metric data files')}
+              {isDownloadingMetrics ? (
+                <>
+                  <Spinner size="nano" position="relative" className="ng-display-inline" />
+                  {t('Downloading metrics')}
+                </>
+              ) : (
+                <>{t('Download metric data files')}</>
+              )}
             </button>
+            {downloadError && <p className="ng-form-error-block ng-margin-top">{downloadError}</p>}
           </Card>
         </>
       ) : (
@@ -180,7 +199,15 @@ const CollectionDetails = (props: IProps) => {
         <CollectionDelete collection={data} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />
       )}
 
-      {isOnDownloadMetrics && <CollectionDownloadMetrics collection={data} />}
+      {isOnDownloadMetrics && (
+        <CollectionDownloadMetrics
+          collection={data}
+          onCancel={() => setIsOnDownloadMetrics(false)}
+          onDownloadStart={() => [setIsDownloadingMetrics(true), setIsOnDownloadMetrics(false)]}
+          onDownloadEnd={() => setIsDownloadingMetrics(false)}
+          onDownloadError={(err) => setDownloadError(err)}
+        />
+      )}
     </div>
   );
 
