@@ -25,24 +25,24 @@ import isBoolean from 'lodash/isBoolean';
 import { ICollection } from 'modules/collections/model';
 import { LocationTypeEnum } from 'modules/places/model';
 import PlacesService from 'services/PlacesService';
+import { CollectionConflict } from '../collection-conflict';
 
-import { AsyncSelect, Card, TitleHero, Modal } from '@marapp/earth-shared';
+import { AsyncSelect, Card, TitleHero } from '@marapp/earth-shared';
 
 interface IProps {
   collection: ICollection;
-  setMapBounds: (payload: any) => void;
-  setCollectionData: (payload: any) => void;
+  setMapBounds: (payload?: any) => void;
+  setCollectionData: (payload?: any) => void;
   toggleEditPlaces: () => void;
-  onRefresh: (payload: any) => void;
+  reloadCollection: (payload?: any) => void;
 }
 
 export function CollectionEditPlaces(props: IProps) {
-  const { collection, setCollectionData, setMapBounds, toggleEditPlaces, onRefresh } = props;
+  const { collection, setCollectionData, setMapBounds, toggleEditPlaces, reloadCollection } = props;
   const { t } = useTranslation();
-  const { slug, organization, name, locations } = collection;
+  const { slug, organization, name, locations, version } = collection;
   const [saveError, setSaveError] = useState('');
-  const [isOverwriting, setIsOverwriting] = useState(false);
-  const [isSaveConflict, setIsSaveConflict] = useState(true);
+  const [isSaveConflict, setIsSaveConflict] = useState(false);
   const { control, handleSubmit, formState, getValues } = useForm({
     mode: 'onChange',
   });
@@ -100,35 +100,7 @@ export function CollectionEditPlaces(props: IProps) {
           </button>
         </Card>
 
-        {isSaveConflict && (
-          <Modal
-            parentSelector={() => document.querySelector('.sidebar-content-full')}
-            isOpen={true}
-            className="ng-text-center save-collection-modal"
-          >
-            <h4 className="ng-text-display-s ng-margin-bottom">{t('Update warning')}</h4>
-            <p className="ng-space-wrap">
-              {t(
-                'An update to this collection was made while you were in edit mode. Saving your edits will overide any other updates that were made to the collection. Please refresh this page to view updates made by others, or continue saving.'
-              )}
-            </p>
-            <button
-              tabIndex={0}
-              className="marapp-qa-actionrefresh ng-button ng-button-primary ng-margin-medium-right"
-              onClick={refresh}
-            >
-              {t('Refresh')}
-            </button>
-            <button
-              className="marapp-qa-actionsaveanyway ng-button ng-button-secondary"
-              onClick={saveAnyway}
-              disabled={isOverwriting}
-            >
-              {isOverwriting ? t('Saving') : t('Save anyway')}
-            </button>
-          </Modal>
-        )}
-        <div id="inner-modal"></div>
+        {isSaveConflict && <CollectionConflict onRefresh={refresh} onOverwrite={saveAnyway} />}
       </div>
     </form>
   );
@@ -144,7 +116,9 @@ export function CollectionEditPlaces(props: IProps) {
       // The api expects an array of ids or an empty array
       // should this be handled by AsyncSelect?
       ...(values.locations ? { locations: values.locations.map((x) => x.id) } : { locations: [] }),
-      version: shouldOverwrite ? null : collection.version,
+      // Sending the version to the backend will kick in the version validation
+      // To keep the api backwards compatible, when no version is passed, we overwrite
+      ...(!shouldOverwrite && { version }),
     };
 
     try {
@@ -160,25 +134,27 @@ export function CollectionEditPlaces(props: IProps) {
       }
       toggleEditPlaces();
     } catch (e) {
-      setSaveError('Something went wrong');
+      if (!e) {
+        setSaveError('Something went wrong');
+      } else if (e.data.errors.find((err) => err.title === 'DocumentVersionError')) {
+        setIsSaveConflict(true);
+      }
       console.log(e);
     }
   }
 
   function refresh() {
-    onRefresh({ organization, slug });
+    reloadCollection({ organization, slug });
     toggleEditPlaces();
   }
 
   function saveAnyway() {
     const values = getValues();
-    setIsOverwriting(true);
     onSubmit(values, true);
   }
 
   function resetErrors() {
     setSaveError(null);
     setIsSaveConflict(false);
-    setIsOverwriting(false);
   }
 }

@@ -17,24 +17,29 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { ICollection } from 'modules/collections/model';
-import React, { useState } from 'react';
+import React, { useState, BaseSyntheticEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { replace } from 'redux-first-router';
-import PlacesService from 'services/PlacesService';
+import isBoolean from 'lodash/isBoolean';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
+import { ICollection } from 'modules/collections/model';
+import PlacesService from 'services/PlacesService';
+import { CollectionConflict } from '../collection-conflict';
 
 interface IProps {
   collection: ICollection;
   onCancel: () => void;
+  toggleRenaming: (payload?: any) => void;
+  reloadCollection: (payload?: any) => void;
 }
 
 export function CollectionRename(props: IProps) {
-  const { collection, onCancel } = props;
-  const { id, name, organization } = collection;
+  const { collection, onCancel, reloadCollection, toggleRenaming } = props;
+  const { slug, name, organization, version } = collection;
   const [saveError, setSaveError] = useState('');
-  const { register, errors, handleSubmit, formState } = useForm({
+  const [isSaveConflict, setIsSaveConflict] = useState(false);
+  const { register, errors, handleSubmit, formState, getValues } = useForm({
     mode: 'onChange',
   });
   const { touched, dirty, isValid, isSubmitting } = formState;
@@ -80,25 +85,45 @@ export function CollectionRename(props: IProps) {
             Cancel
           </button>
         </Card>
+
+        {isSaveConflict && <CollectionConflict onRefresh={refresh} onOverwrite={saveAnyway} />}
       </div>
     </form>
   );
 
-  async function onSubmit(values) {
+  async function onSubmit(values, optional: BaseSyntheticEvent | boolean) {
+    const shouldOverwrite = isBoolean(optional);
     try {
       const { data } = await PlacesService.updatePlace(
-        id,
+        slug,
         {
           name: values.name,
           slug: null,
+          // Sending the version to the backend will kick in the version validation
+          // To keep the api backwards compatible, when no version is passed, we overwrite
+          ...(!shouldOverwrite && { version }),
         },
         { group: organization }
       );
       replace(`/collection/${organization}/${data.slug}`);
       onCancel();
     } catch (e) {
-      setSaveError('Something went wrong');
+      if (!e) {
+        setSaveError('Something went wrong');
+      } else if (e.data.errors.find((err) => err.title === 'DocumentVersionError')) {
+        setIsSaveConflict(true);
+      }
       console.log(e);
     }
+  }
+
+  function refresh() {
+    reloadCollection({ organization, slug });
+    toggleRenaming();
+  }
+
+  function saveAnyway() {
+    const values = getValues();
+    onSubmit(values, true);
   }
 }

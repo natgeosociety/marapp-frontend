@@ -143,7 +143,14 @@ const CollectionDetails = (props: IProps) => {
         </Card>
       )}
 
-      {isRenaming && <CollectionRename collection={data} onCancel={() => setIsRenaming(false)} />}
+      {isRenaming && (
+        <CollectionRename
+          collection={data}
+          onCancel={() => setIsRenaming(false)}
+          toggleRenaming={toggleRenaming}
+          reloadCollection={reloadCollection}
+        />
+      )}
 
       {isAddingPlaces && (
         <CollectionEditPlaces
@@ -151,7 +158,7 @@ const CollectionDetails = (props: IProps) => {
           setCollectionData={setCollectionData}
           setMapBounds={setMapBounds}
           toggleEditPlaces={toggleEditPlaces}
-          onRefresh={reloadCollection}
+          reloadCollection={reloadCollection}
         />
       )}
 
@@ -160,6 +167,10 @@ const CollectionDetails = (props: IProps) => {
       )}
     </div>
   );
+
+  function toggleRenaming() {
+    setIsRenaming(!isRenaming);
+  }
 
   function toggleEditPlaces() {
     setIsAddingPlaces(!isAddingPlaces);
