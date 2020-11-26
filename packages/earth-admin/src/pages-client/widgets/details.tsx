@@ -345,6 +345,7 @@ export function WidgetsDetail(props: WidgetProps) {
                       <Controller
                         as={Select}
                         control={control}
+                        classNamePrefix="marapp-qa-asyncselect"
                         className="marapp-qa-metricslug"
                         name="metrics"
                         options={metricsOptions}

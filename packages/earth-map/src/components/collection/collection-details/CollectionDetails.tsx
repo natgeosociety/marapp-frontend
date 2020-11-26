@@ -73,8 +73,8 @@ const CollectionDetails = (props: IProps) => {
         />
       )}
     >
-      <a onClick={() => setIsRenaming(true)}>Rename Collection</a>
-      <a onClick={() => setIsDeleting(true)}>Delete</a>
+      <a onClick={() => setIsRenaming(true)}>{t('Rename Collection')}</a>
+      <a onClick={() => setIsDeleting(true)}>{t('Delete')}</a>
     </DropdownSimple>
   );
 

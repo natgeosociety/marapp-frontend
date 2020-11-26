@@ -18,6 +18,7 @@
  */
 
 import React, { useState, BaseSyntheticEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { replace } from 'redux-first-router';
 import isBoolean from 'lodash/isBoolean';
@@ -37,6 +38,7 @@ interface IProps {
 export function CollectionRename(props: IProps) {
   const { collection, onCancel, reloadCollection, toggleRenaming } = props;
   const { slug, name, organization, version } = collection;
+  const { t } = useTranslation();
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
   const { register, errors, handleSubmit, formState, getValues } = useForm({
@@ -48,20 +50,20 @@ export function CollectionRename(props: IProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full ng-form ng-form-dark">
       <Card elevation="high" className="ng-margin-bottom">
-        <h3 className="ng-text-edit-s ng-margin-remove">Rename Collection</h3>
+        <h3 className="ng-text-edit-s ng-margin-remove">{t('Rename Collection')}</h3>
       </Card>
 
       <div className="scroll-container">
         <Card elevation="raised">
           <label>
             <Input
-              label="Name Collection"
-              placeholder="enter a name for your collection"
+              label={t('Name Collection')}
+              placeholder={t('enter a name for your collection')}
               name="name"
               defaultValue={name}
               error={renderErrorFor('name')}
               ref={register({
-                required: 'Collection name is required',
+                required: t('Collection name is required') as string,
               })}
             />
           </label>
@@ -75,14 +77,14 @@ export function CollectionRename(props: IProps) {
             disabled={!dirty || !isValid || isSubmitting}
             className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
           >
-            {isSubmitting ? 'Renaming collection' : 'Rename Collection'}
+            {isSubmitting ? t('Renaming collection') : t('Rename Collection')}
           </button>
 
           <button
             className="marapp-qa-cancel-collection ng-button ng-button-secondary"
             onClick={onCancel}
           >
-            Cancel
+            {t('Cancel')}
           </button>
         </Card>
 

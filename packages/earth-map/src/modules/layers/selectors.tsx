@@ -69,6 +69,7 @@ export const getLegendLayers = createSelector(
         sqlConfig,
         decodeConfig,
         timelineConfig,
+        decodeFunction,
         type,
       } = layer;
 
@@ -138,7 +139,7 @@ export const getLegendLayers = createSelector(
             }),
 
             ...(!!decodeConfig && {
-              decodeFunction: decodes[decodeConfig.type],
+              decodeFunction: decodeFunction ? decodeFunction : decodes[decodeConfig.type],
             }),
 
             ...(!!timelineConfig && {
@@ -176,7 +177,14 @@ export const getActiveLayers = createSelector(
 
         const { source } = layer;
         const { legendConfig } = layer;
-        const { type, paramsConfig, sqlConfig, decodeConfig, timelineConfig } = layer;
+        const {
+          type,
+          paramsConfig,
+          sqlConfig,
+          decodeConfig,
+          timelineConfig,
+          decodeFunction,
+        } = layer;
         const settings = _settings[layer.slug] || {};
 
         // @ts-ignore
@@ -212,7 +220,7 @@ export const getActiveLayers = createSelector(
           }),
 
           ...(!!decodeConfig && {
-            decodeFunction: decodes[decodeConfig.type],
+            decodeFunction: decodeFunction ? decodeFunction : decodes[decodeConfig.type],
           }),
 
           ...(!!timelineConfig && {

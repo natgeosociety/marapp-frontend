@@ -27,6 +27,7 @@ export interface ILayer {
   category: LayerCategory[];
   legendConfig: object;
   layerConfig: ILayerConfig;
+  decodeFunction?: any;
   interactionConfig: any;
   published: boolean;
   createdAt: Date;
