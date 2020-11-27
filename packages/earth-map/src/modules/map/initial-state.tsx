@@ -17,10 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { APP_BASEMAPS } from '../../theme';
-import { extractCoordinatesFromUrl, isValidUrlCoordinateGroup } from '../../utils/map';
+import { extractCoordinatesFromUrl, isValidUrlCoordinateGroup } from 'utils/map';
 
-const urlParams = extractCoordinatesFromUrl();
+import { APP_BASEMAPS } from '../../theme';
+
+const coordinatesFromUrl = extractCoordinatesFromUrl();
 
 export const INITIAL_VIEW_PORT = {
   latitude: 20,
@@ -33,7 +34,7 @@ export default {
   viewport: {
     ...INITIAL_VIEW_PORT,
     // set initial state based on URL, otherwise s short URL flicker wold be visible
-    ...(isValidUrlCoordinateGroup(urlParams) && urlParams),
+    ...(isValidUrlCoordinateGroup(coordinatesFromUrl) && coordinatesFromUrl),
   },
   bounds: {},
   interactions: {},
