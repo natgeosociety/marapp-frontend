@@ -37,7 +37,7 @@ interface IProps {
 
 export function CollectionRename(props: IProps) {
   const { collection, onCancel, reloadCollection, toggleRenaming } = props;
-  const { slug, name, organization, version } = collection;
+  const { id, slug, name, organization, version } = collection;
   const { t } = useTranslation();
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
@@ -48,7 +48,10 @@ export function CollectionRename(props: IProps) {
   const renderErrorFor = setupErrors(errors, touched);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full ng-form ng-form-dark">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="sidebar-content-full ng-form ng-form-dark collection-rename"
+    >
       <Card elevation="high" className="ng-margin-bottom">
         <h3 className="ng-text-edit-s ng-margin-remove">{t('Rename Collection')}</h3>
       </Card>
@@ -97,7 +100,7 @@ export function CollectionRename(props: IProps) {
     const shouldOverwrite = isBoolean(optional);
     try {
       const { data } = await PlacesService.updatePlace(
-        slug,
+        id,
         {
           name: values.name,
           slug: null,
@@ -121,7 +124,7 @@ export function CollectionRename(props: IProps) {
   }
 
   function refresh() {
-    reloadCollection({ organization, slug });
+    reloadCollection({ organization, id, slug });
     toggleRenaming();
   }
 

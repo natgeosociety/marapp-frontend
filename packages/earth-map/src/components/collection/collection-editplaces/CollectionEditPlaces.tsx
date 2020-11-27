@@ -41,7 +41,7 @@ interface IProps {
 export function CollectionEditPlaces(props: IProps) {
   const { collection, setCollectionData, setMapBounds, toggleEditPlaces, reloadCollection } = props;
   const { t } = useTranslation();
-  const { slug, organization, name, locations, version } = collection;
+  const { id, slug, organization, name, locations, version } = collection;
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
   const { control, handleSubmit, formState, getValues } = useForm({
@@ -50,7 +50,7 @@ export function CollectionEditPlaces(props: IProps) {
   const { isValid, isSubmitting, dirty } = formState;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full">
+    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-edit-places">
       <Card elevation="high" className="ng-margin-bottom">
         <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
       </Card>
@@ -123,12 +123,17 @@ export function CollectionEditPlaces(props: IProps) {
     };
 
     try {
-      const { data } = await PlacesService.updateCollection(slug, parsedValues, {
+      const { data } = await PlacesService.updateCollection(id, parsedValues, {
         group: organization,
         include: 'locations',
       });
       setCollectionData(data);
       resetErrors();
+
+      // someone changed the slug, redirect to the new collection
+      if (slug !== data.slug) {
+        replace(`/collection/${organization}/${data.slug}`);
+      }
 
       if (data.bbox2d.length) {
         setMapBounds({ bbox: data.bbox2d });
@@ -147,7 +152,7 @@ export function CollectionEditPlaces(props: IProps) {
   }
 
   function refresh() {
-    reloadCollection({ organization, slug });
+    reloadCollection({ organization, id, slug });
     toggleEditPlaces();
   }
 

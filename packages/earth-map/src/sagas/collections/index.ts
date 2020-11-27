@@ -41,17 +41,23 @@ export default function* collections() {
 }
 
 function* loadCollection({ payload }) {
-  const { slug, organization } = payload;
+  // id is only received on reloadCollection action
+  const { id, slug, organization } = payload;
 
   try {
     yield put(setSidebarPanelExpanded(false));
     yield put(setCollectionsLoading(true));
 
-    const { data } = yield call(PlacesService.fetchPlaceById, slug, {
+    const { data } = yield call(PlacesService.fetchPlaceById, id || slug, {
       group: organization,
       include: 'locations',
       select: 'locations.slug,locations.name',
     });
+
+    // someone changed the slug, redirect to the new collection
+    if (slug !== data.slug) {
+      replace(`/collection/${organization}/${data.slug}`);
+    }
 
     if (data.bbox2d.length) {
       yield put(setMapBounds({ bbox: data.bbox2d }));
