@@ -51,7 +51,7 @@ export function CollectionEditPlaces(props: IProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-edit-places">
-      <Card elevation="high" className="ng-margin-bottom">
+      <Card elevation="high" className="ng-margin-bottom header-card">
         <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
       </Card>
 

@@ -27,21 +27,15 @@
   .scroll-container {
     flex: 1 1 auto;
     overflow: auto;
+
+    .header-card {
+      z-index: 20;
+    }
+
+    .ReactModal__Overlay {
+      z-index: 10;
+    }
   }
-
-    // Collection save conflict modal
-    .collection-edit-places {
-      .ReactModal__Overlay {
-        top: 110px;
-      }
-    }
-
-    // Collection save conflict modal
-    .collection-rename {
-      .ReactModal__Overlay {
-        top: 68px;
-      }
-    }
 
   .ng-c-text-body {
     font-family: $marapp-secondary-font, Helvetica, Arial, sans-serif;

@@ -52,7 +52,7 @@ export function CollectionRename(props: IProps) {
       onSubmit={handleSubmit(onSubmit)}
       className="sidebar-content-full ng-form ng-form-dark collection-rename"
     >
-      <Card elevation="high" className="ng-margin-bottom">
+      <Card elevation="high" className="ng-margin-bottom header-card">
         <h3 className="ng-text-edit-s ng-margin-remove">{t('Rename Collection')}</h3>
       </Card>
 
