@@ -33,7 +33,10 @@ export const getUrlFromParams = createSelector([urlProps, state], (_urlProps, _s
 
     return {
       ...acc,
-      [current.value]: value,
+      [current.value]:
+        current.mapValueToUrl && typeof current.mapValueToUrl === 'function'
+          ? current.mapValueToUrl(value)
+          : value,
     };
   }, {});
 });
@@ -47,11 +50,16 @@ export const getParamsFromUrl = createSelector([urlProps, state], (_urlProps, _s
     const value = query[current.value];
 
     if (type === 'array') {
-      const val = value || [];
+      let val = value || [];
+
+      val = Array.isArray(val) ? val : [val];
 
       return {
         ...acc,
-        [current.value]: Array.isArray(val) ? val : [val],
+        [current.value]:
+          current.mapUrlToValue && typeof current.mapUrlToValue === 'function'
+            ? current.mapUrlToValue(val)
+            : val,
       };
     }
 

@@ -18,6 +18,12 @@
 */
 
 import { setLayersActive } from 'modules/layers/actions';
+import { setMapViewport } from 'modules/map/actions';
+
+import {
+  mapReduxStoreViewportToUrlParams,
+  mapUrlParamsToReduxStoreViewport,
+} from '../../utils/map';
 
 export const URL_PROPS = [
   {
@@ -26,6 +32,15 @@ export const URL_PROPS = [
     redux: 'layers.active',
     action: setLayersActive,
     required: false,
+  },
+  {
+    type: 'array',
+    value: 'coordinates',
+    redux: 'map.viewport',
+    action: setMapViewport,
+    required: false,
+    mapValueToUrl: mapReduxStoreViewportToUrlParams,
+    mapUrlToValue: mapUrlParamsToReduxStoreViewport,
   },
 ];
 
