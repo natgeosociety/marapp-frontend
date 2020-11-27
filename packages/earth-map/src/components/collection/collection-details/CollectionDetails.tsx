@@ -127,7 +127,7 @@ const CollectionDetails = (props: IProps) => {
             <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
               {t('Download metrics')}
               &nbsp;
-              <i className="ng-icon-download-outline" style={{ verticalAlign: 'middle' }} />
+              <i className="ng-icon-download-outline ng-vertical-align-middle" />
             </h2>
             <p>
               {isDownloadingMetrics ? (
@@ -205,7 +205,8 @@ const CollectionDetails = (props: IProps) => {
           onCancel={() => setIsOnDownloadMetrics(false)}
           onDownloadStart={() => [setIsDownloadingMetrics(true), setIsOnDownloadMetrics(false)]}
           onDownloadEnd={() => setIsDownloadingMetrics(false)}
-          onDownloadError={(err) => setDownloadError(err)}
+          onDownloadError={setDownloadError}
+          onDownloadSuccess={() => setDownloadError('')}
         />
       )}
     </div>

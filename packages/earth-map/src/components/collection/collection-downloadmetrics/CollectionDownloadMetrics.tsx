@@ -22,14 +22,13 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
 
-import { TitleHero, Card } from '@marapp/earth-shared';
+import { TitleHero, Card, ReactSelect, serializeFilters } from '@marapp/earth-shared';
 import MetricService from 'services/MetricService';
-import { ReactSelect, serializeFilters } from '@marapp/earth-shared';
 
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
 import json2csv from 'json2csv';
-import { groupBy, omit } from 'lodash';
+import { groupBy } from 'lodash';
 import flatten from 'flat';
 
 interface IProps {
@@ -38,10 +37,18 @@ interface IProps {
   onDownloadStart: () => void;
   onDownloadEnd: () => void;
   onDownloadError: (err: string) => void;
+  onDownloadSuccess: () => void;
 }
 
 export function CollectionDownloadMetrics(props: IProps) {
-  const { collection, onCancel, onDownloadStart, onDownloadEnd, onDownloadError } = props;
+  const {
+    collection,
+    onCancel,
+    onDownloadStart,
+    onDownloadEnd,
+    onDownloadError,
+    onDownloadSuccess,
+  } = props;
   const { t } = useTranslation();
   const { name, organization, slug: collectionSlug } = collection;
   const [metricSlugs, setMetricSlugs] = useState([]);
@@ -159,10 +166,11 @@ export function CollectionDownloadMetrics(props: IProps) {
       const zip = new JSZip();
 
       const metricTypes = groupBy(data, 'slug');
+      const locationNameField = '#';
 
       Object.keys(metricTypes).forEach((metricType) => {
         const normalizedData = metricTypes[metricType].map((item) => ({
-          '#': item.location.name,
+          [locationNameField]: item.location.name,
           ...item.metric,
         }));
         const fileName = `${metricType}.${fileType}`;
@@ -173,9 +181,9 @@ export function CollectionDownloadMetrics(props: IProps) {
           zip.file(
             fileName,
             json2csvParser.parse(
-              normalizedData.map((item) => ({
-                '#': item['#'],
-                ...flatten(omit(item, '#')),
+              normalizedData.map(({ [locationNameField]: locationName, ...item }) => ({
+                [locationNameField]: locationName,
+                ...flatten(item),
               }))
             )
           );
@@ -188,6 +196,7 @@ export function CollectionDownloadMetrics(props: IProps) {
       const zipContent = await zip.generateAsync({ type: 'blob' });
 
       FileSaver.saveAs(zipContent, zipName);
+      onDownloadSuccess();
     } catch (e) {
       onDownloadError('Something went wrong');
       console.log(e);
