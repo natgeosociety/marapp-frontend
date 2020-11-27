@@ -50,8 +50,10 @@ export const getParamsFromUrl = createSelector([urlProps, state], (_urlProps, _s
     const value = query[current.value];
 
     if (type === 'array') {
+      // the extracted value should be an array
+      // from the URL parse a string could be received
+      // make sure to transform it into an array
       let val = value || [];
-
       val = Array.isArray(val) ? val : [val];
 
       return {

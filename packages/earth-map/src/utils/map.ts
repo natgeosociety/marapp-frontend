@@ -6,13 +6,15 @@ export interface IUrlCoordinates {
   zoom: number;
 }
 
-export const toUrlCoordinateNumber = (value) => Number(parseFloat(value).toFixed(7));
+export const toUrlCoordinateNumber = (value: string): number =>
+  Number(parseFloat(value).toFixed(7));
 
-export const isValidCoordinate = (value, limit) => value && value >= -1 * limit && value <= limit;
+export const isValidCoordinate = (value: number, limit: number): boolean =>
+  (value || value === 0) && value >= -1 * limit && value <= limit;
 
-export const isValidLatitude = (value) => isValidCoordinate(value, 90);
+export const isValidLatitude = (value: number): boolean => isValidCoordinate(value, 90);
 
-export const isValidLongitude = (value) => isValidCoordinate(value, 180);
+export const isValidLongitude = (value: number): boolean => isValidCoordinate(value, 180);
 
 // https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/?size=n_10_n#maxzoom
 export const isValidZoom = (value) => value && value >= 0 && value <= 24;
@@ -46,8 +48,8 @@ export const extractCoordinatesFromUrl = (): IUrlCoordinates => {
  */
 export const mapReduxStoreViewportToUrlParams = (value: IUrlCoordinates) => {
   return [
-    toUrlCoordinateNumber(value.latitude),
-    toUrlCoordinateNumber(value.longitude),
+    toUrlCoordinateNumber(String(value.latitude)),
+    toUrlCoordinateNumber(String(value.longitude)),
     parseInt(String(value.zoom), 10),
   ];
 };
@@ -56,7 +58,7 @@ export const mapReduxStoreViewportToUrlParams = (value: IUrlCoordinates) => {
  * Url params (from the URL component) are returned as an array
  * Create a valid viewport, based on the coordinates provided by the URL component
  */
-export const mapUrlParamsToReduxStoreViewport = (value): IUrlCoordinates => {
+export const mapUrlParamsToReduxStoreViewport = (value: number[]): IUrlCoordinates => {
   const [latitude, longitude, zoom] = value;
 
   return { latitude, longitude, zoom };

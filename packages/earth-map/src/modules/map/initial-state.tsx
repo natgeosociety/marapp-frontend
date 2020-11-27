@@ -18,12 +18,7 @@
 */
 
 import { APP_BASEMAPS } from '../../theme';
-import {
-  extractCoordinatesFromUrl,
-  isValidLatitude,
-  isValidLongitude,
-  isValidZoom,
-} from '../../utils/map';
+import { extractCoordinatesFromUrl, isValidUrlCoordinateGroup } from '../../utils/map';
 
 const urlParams = extractCoordinatesFromUrl();
 
@@ -38,11 +33,7 @@ export default {
   viewport: {
     ...INITIAL_VIEW_PORT,
     // set initial state based on URL, otherwise s short URL flicker wold be visible
-    latitude: isValidLatitude(urlParams.latitude) ? urlParams.latitude : INITIAL_VIEW_PORT.latitude,
-    longitude: isValidLongitude(urlParams.longitude)
-      ? urlParams.longitude
-      : INITIAL_VIEW_PORT.longitude,
-    zoom: isValidZoom(urlParams.zoom) ? urlParams.zoom : INITIAL_VIEW_PORT.zoom,
+    ...(isValidUrlCoordinateGroup(urlParams) && urlParams),
   },
   bounds: {},
   interactions: {},
