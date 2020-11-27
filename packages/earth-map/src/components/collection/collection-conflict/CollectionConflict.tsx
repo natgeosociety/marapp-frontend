@@ -63,7 +63,7 @@ export function CollectionConflict(props: IProps) {
           {isOverwriting ? t('Saving') : t('Save anyway')}
         </button>
       </Modal>
-      <div id="inner-modal"></div>
+      <div id="inner-modal" />
     </>
   );
 }

@@ -26,10 +26,10 @@ import { useTranslation } from 'react-i18next';
 import {
   Card,
   DropdownSimple,
+  getGenericDate,
   Pill,
   Spinner,
   TitleHero,
-  getGenericDate,
 } from '@marapp/earth-shared';
 
 import CollectionDelete from '../collection-delete';

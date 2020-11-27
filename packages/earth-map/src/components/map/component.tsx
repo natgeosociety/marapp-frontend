@@ -24,9 +24,9 @@ import { API_URL, MAPBOX_TOKEN } from 'config';
 import experienceIMG from 'images/pins/experience-marker.svg';
 import debounce from 'lodash/debounce';
 import React, { useContext } from 'react';
-import { useTranslation } from 'react-i18next';
 import { renderToString } from 'react-dom/server';
 import isEqual from 'react-fast-compare';
+import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
 import { APP_ABOUT } from 'theme';
 

@@ -17,15 +17,16 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import React, { useState, BaseSyntheticEvent } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useForm } from 'react-hook-form';
-import { replace } from 'redux-first-router';
 import isBoolean from 'lodash/isBoolean';
+import { ICollection } from 'modules/collections/model';
+import React, { BaseSyntheticEvent, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { replace } from 'redux-first-router';
+import PlacesService from 'services/PlacesService';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
-import { ICollection } from 'modules/collections/model';
-import PlacesService from 'services/PlacesService';
+
 import { CollectionConflict } from '../collection-conflict';
 
 interface IProps {
