@@ -17,26 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { BaseAPIService, RequestQuery, metaDeserializer } from './base/APIBase';
+import { BaseAPIService, RequestQuery } from './base/APIBase';
 
 const fetchMetricById = async (id: string, query?: RequestQuery): Promise<any> => {
-  return BaseAPIService.request(`/metrics/${id}`, { query }, metaDeserializer);
+  return BaseAPIService.request(`/metrics/${id}`, { query });
 };
 
-const fetchMetricSlugs = async (query?: RequestQuery): Promise<any> => {
-  return BaseAPIService.request(`/metrics/slugs`, { query });
-};
-
-const downloadMetrics = async (
-  collectionId: string,
-  query?: RequestQuery,
-  page = 1
-): Promise<any> => {
-  const { data, meta } = await fetchMetricById(collectionId, { ...query, 'page[number]': page });
-
-  return meta.pagination.page < meta.pagination.total
-    ? data.concat(await downloadMetrics(collectionId, query, page + 1))
-    : data;
-};
-
-export default { fetchMetricById, fetchMetricSlugs, downloadMetrics };
+export default { fetchMetricById };
