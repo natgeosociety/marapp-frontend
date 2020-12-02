@@ -213,8 +213,8 @@ export function ProfileComponent(props: IProps) {
             hasLeftOrg ? (
               <a href={`${PUBLIC_URL}earth`} className="ng-border-remove">
                 <img src={APP_LOGO} className="marapp-qa-logo ng-margin" alt="" />
-                <span className="ng-text-display-s ng-text-weight-regular ng-gray-1">
-                  | Return to map view
+                <span className="ng-text-display-s ng-text-weight-regular ng-color-ultraltgray">
+                  | {t('Return to map view')}
                 </span>
               </a>
             ) : (
@@ -225,8 +225,8 @@ export function ProfileComponent(props: IProps) {
                 }}
               >
                 <img src={APP_LOGO} className="marapp-qa-logo ng-margin" alt="" />
-                <span className="ng-text-display-s ng-text-weight-regular ng-gray-1">
-                  | Return to map view
+                <span className="ng-text-display-s ng-text-weight-regular ng-color-ultraltgray">
+                  | {t('Return to map view')}
                 </span>
               </Link>
             )
