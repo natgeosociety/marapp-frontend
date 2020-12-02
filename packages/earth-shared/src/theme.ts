@@ -66,6 +66,9 @@ export const CUSTOM_STYLES = {
     ...provided,
     borderRadius: '50px',
     display: 'flex',
+    '.dropdown-item-subtitle': {
+      display: 'none',
+    },
   }),
   multiValueRemove: () => ({
     color: 'var(--marapp-gray-9)',
