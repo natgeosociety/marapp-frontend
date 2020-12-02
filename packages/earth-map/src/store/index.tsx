@@ -76,10 +76,16 @@ const initStore = (initialState = {}) => {
     return reducers(state, action);
   };
 
+  const composeEnhancer = composeWithDevTools({
+    trace: true,
+    traceLimit: 10,
+  });
+
   const middlewares = applyMiddleware(thunk, routerMiddleware, sagaMiddleware);
-  const enhancers = composeWithDevTools(routerEnhancer, middlewares);
+  const enhancers = composeEnhancer(routerEnhancer, middlewares);
 
   // create store
+  // @ts-ignore
   const store: Store = createStore(rootReducer, initialState, enhancers);
 
   // restore state from sessionStorage

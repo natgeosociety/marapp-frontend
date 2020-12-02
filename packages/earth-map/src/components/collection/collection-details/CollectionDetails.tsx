@@ -35,6 +35,7 @@ import {
 import CollectionDelete from '../collection-delete';
 import { CollectionEditPlaces } from '../collection-editplaces';
 import { CollectionRename } from '../collection-rename';
+import { CollectionDownloadMetrics } from '../collection-downloadmetrics';
 import './styles.scss';
 
 interface IProps {
@@ -54,6 +55,9 @@ const CollectionDetails = (props: IProps) => {
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isOnDownloadMetrics, setIsOnDownloadMetrics] = useState(false);
+  const [isDownloadingMetrics, setIsDownloadingMetrics] = useState(false);
+  const [downloadError, setDownloadError] = useState('');
 
   const canEdit = privateGroups.includes(data.organization);
 
@@ -94,30 +98,66 @@ const CollectionDetails = (props: IProps) => {
       </Card>
 
       {hasLocations ? (
-        <Card className="c-legend-item-group">
-          {canEdit && (
+        <>
+          <Card className="c-legend-item-group">
+            {canEdit && (
+              <button
+                className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
+                onClick={toggleEditPlaces}
+              >
+                {t('edit')}
+              </button>
+            )}
+            <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
+              {t('Collection places')} ({locations.length})
+            </h2>
+            <p>
+              {locations
+                .filter((x) => !!x)
+                .map((location) => (
+                  <Pill
+                    label={location.name}
+                    key={location.id}
+                    className="marapp-qa-locationpill ng-margin-small-right ng-margin-small-bottom"
+                  />
+                ))}
+            </p>
+          </Card>
+          <Card className="c-legend-item-group ng-margin-top">
+            <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
+              {t('Download metrics')}
+              &nbsp;
+              <i className="ng-icon-download-outline ng-vertical-align-middle" />
+            </h2>
+            <p>
+              {isDownloadingMetrics ? (
+                <>{t('Your selected metric files should be ready soon')}.</>
+              ) : (
+                <>
+                  {t(
+                    'Individual metrics related to each of the places in your collection can be viewed once downloaded'
+                  )}
+                  .{t('Select single or multiple metric data files for download')}.
+                </>
+              )}
+            </p>
             <button
-              className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
-              onClick={toggleEditPlaces}
+              className="marapp-qa-actiondownloadmetrics ng-button ng-button-secondary"
+              onClick={() => setIsOnDownloadMetrics(true)}
+              disabled={isDownloadingMetrics}
             >
-              {t('edit')}
+              {isDownloadingMetrics ? (
+                <>
+                  <Spinner size="nano" position="relative" className="ng-display-inline" />
+                  {t('Downloading metrics')}
+                </>
+              ) : (
+                <>{t('Download metric data files')}</>
+              )}
             </button>
-          )}
-          <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
-            {t('Collection places')} ({locations.length})
-          </h2>
-          <p>
-            {locations
-              .filter((x) => !!x)
-              .map((location) => (
-                <Pill
-                  label={location.name}
-                  key={location.id}
-                  className="marapp-qa-locationpill ng-margin-small-right ng-margin-small-bottom"
-                />
-              ))}
-          </p>
-        </Card>
+            {downloadError && <p className="ng-form-error-block ng-margin-top">{downloadError}</p>}
+          </Card>
+        </>
       ) : (
         <Card className="c-legend-item-group">
           <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
@@ -164,6 +204,17 @@ const CollectionDetails = (props: IProps) => {
 
       {isDeleting && (
         <CollectionDelete collection={data} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />
+      )}
+
+      {isOnDownloadMetrics && (
+        <CollectionDownloadMetrics
+          collection={data}
+          onCancel={() => setIsOnDownloadMetrics(false)}
+          onDownloadStart={() => [setIsDownloadingMetrics(true), setIsOnDownloadMetrics(false)]}
+          onDownloadEnd={() => setIsDownloadingMetrics(false)}
+          onDownloadError={setDownloadError}
+          onDownloadSuccess={() => setDownloadError('')}
+        />
       )}
     </div>
   );

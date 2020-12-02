@@ -20,10 +20,49 @@
 import { PureComponent } from 'react';
 import { replace } from 'redux-first-router';
 
+export interface IUrlProp {
+  /**
+   * Provides the type of value encoded in the URL
+   */
+  type: string;
+
+  /**
+   * The name of the field encoded in the url
+   * e.q. "location" would be presented in the URL as ?location=some_value
+   */
+  value: string;
+
+  /**
+   * Selector for the redux store value that needs to be added in the URL
+   */
+  redux: string;
+
+  /**
+   * If set to true, and the value from 'redux' is undefined, this value won't be added in the URL
+   */
+  required: boolean;
+
+  /**
+   * Action dispatched once the URL value changes
+   */
+  action(payload?: any): any;
+
+  /**
+   * Optional - transform function that allows data modification before the value is added to the URL
+   */
+  mapValueToUrl?(reduxStoreValue: any): any;
+
+  /**
+   * Optional - transform function that modifies the received value from the url, before dispatching
+   * the redux action
+   */
+  mapUrlToValue?(urlValue: any): any;
+}
+
 interface IUrl {
   router: {};
   url: string;
-  urlProps: any;
+  urlProps: IUrlProp[];
   urlFromParams: {};
   paramsFromUrl: {};
 }
@@ -33,6 +72,7 @@ class UrlComponent extends PureComponent<IUrl, any> {
     const { urlProps, paramsFromUrl } = this.props;
 
     urlProps.forEach((r) => {
+      // @ts-ignore
       const action = this.props[r.action];
       const payload = paramsFromUrl[r.value];
 
