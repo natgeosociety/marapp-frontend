@@ -47,7 +47,7 @@ export function CollectionConflict(props: IProps) {
         </p>
         <button
           tabIndex={0}
-          className="marapp-qa-actionrefresh ng-button ng-button-primary ng-margin-medium-right"
+          className="marapp-qa-actionrefresh ng-button ng-button-primary ng-margin-right"
           onClick={onRefresh}
         >
           {t('Refresh')}
