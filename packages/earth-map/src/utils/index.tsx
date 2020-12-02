@@ -18,6 +18,7 @@
 */
 
 import { BASE_URL } from 'config';
+import qs from 'query-string';
 import React from 'react';
 import { Deserializer } from 'ts-jsonapi';
 import urljoin from 'url-join';
@@ -61,3 +62,7 @@ export const parseHintBold = (text: string = '') => {
  * Deserializer
  */
 export const deserializeData = (data) => DeserializerService.deserialize(data);
+
+export const getUrlQueryParams = () => {
+  return qs.parse(window.location.search);
+};

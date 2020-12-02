@@ -17,14 +17,24 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { extractCoordinatesFromUrl, isValidUrlCoordinateGroup } from 'utils/map';
+
 import { APP_BASEMAPS } from '../../theme';
+
+const coordinatesFromUrl = extractCoordinatesFromUrl();
+
+export const INITIAL_VIEW_PORT = {
+  latitude: 20,
+  longitude: 0,
+  zoom: 2,
+  minZoom: 2,
+};
 
 export default {
   viewport: {
-    zoom: 2,
-    minZoom: 2,
-    latitude: 20,
-    longitude: 0,
+    ...INITIAL_VIEW_PORT,
+    // set initial state based on URL, otherwise s short URL flicker wold be visible
+    ...(isValidUrlCoordinateGroup(coordinatesFromUrl) && coordinatesFromUrl),
   },
   bounds: {},
   interactions: {},
