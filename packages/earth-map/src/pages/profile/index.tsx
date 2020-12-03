@@ -17,6 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { connect } from 'react-redux';
+
 import { ProfileComponent } from './component';
 
-export default ProfileComponent;
+export default connect(null, (dispatch) => ({
+  resetStore: () => {
+    dispatch({ type: 'GLOBAL/resetStore' });
+  },
+}))(ProfileComponent);

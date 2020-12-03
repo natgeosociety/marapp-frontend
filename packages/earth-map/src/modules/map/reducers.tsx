@@ -18,7 +18,7 @@
 */
 
 import * as actions from './actions';
-import initialState from './initial-state';
+import initialState, { INITIAL_VIEW_PORT } from './initial-state';
 
 export default {
   [actions.setMap]: (state, { payload }) => ({ ...state, ...payload }),
@@ -89,6 +89,7 @@ export default {
     const { mapStyle, mapLabels, mapRoads } = state;
     return {
       ...initialState,
+      viewport: INITIAL_VIEW_PORT,
       mapStyle,
       mapLabels,
       mapRoads,

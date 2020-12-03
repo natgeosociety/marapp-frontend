@@ -17,15 +17,27 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { IUrlProp } from 'components/url/component';
 import { setLayersActive } from 'modules/layers/actions';
+import { setMapViewport } from 'modules/map/actions';
+import { mapReduxStoreViewportToUrlParams, mapUrlParamsToReduxStoreViewport } from 'utils/map';
 
-export const URL_PROPS = [
+export const URL_PROPS: IUrlProp[] = [
   {
     type: 'array',
     value: 'layers',
     redux: 'layers.active',
     action: setLayersActive,
     required: false,
+  },
+  {
+    type: 'array',
+    value: 'coordinates',
+    redux: 'map.viewport',
+    action: setMapViewport,
+    required: false,
+    mapValueToUrl: mapReduxStoreViewportToUrlParams,
+    mapUrlToValue: mapUrlParamsToReduxStoreViewport,
   },
 ];
 
