@@ -17,34 +17,43 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import isBoolean from 'lodash/isBoolean';
 import { ICollection } from 'modules/collections/model';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { BaseSyntheticEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
 import PlacesService from 'services/PlacesService';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
 
+import { CollectionConflict } from '../collection-conflict';
+
 interface IProps {
   collection: ICollection;
   onCancel: () => void;
+  toggleRenaming: (payload?: any) => void;
+  reloadCollection: (payload?: any) => void;
 }
 
 export function CollectionRename(props: IProps) {
-  const { collection, onCancel } = props;
+  const { collection, onCancel, reloadCollection, toggleRenaming } = props;
+  const { id, slug, name, organization, version } = collection;
   const { t } = useTranslation();
-  const { id, name, organization } = collection;
   const [saveError, setSaveError] = useState('');
-  const { register, errors, handleSubmit, formState } = useForm({
+  const [isSaveConflict, setIsSaveConflict] = useState(false);
+  const { register, errors, handleSubmit, formState, getValues } = useForm({
     mode: 'onChange',
   });
   const { touched, dirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full ng-form ng-form-dark">
-      <Card elevation="high" className="ng-margin-bottom">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="sidebar-content-full ng-form ng-form-dark collection-rename"
+    >
+      <Card elevation="high" className="ng-margin-bottom header-card">
         <h3 className="ng-text-edit-s ng-margin-remove">{t('Rename Collection')}</h3>
       </Card>
 
@@ -82,25 +91,46 @@ export function CollectionRename(props: IProps) {
             {t('Cancel')}
           </button>
         </Card>
+
+        {isSaveConflict && <CollectionConflict onRefresh={refresh} onOverwrite={saveAnyway} />}
       </div>
     </form>
   );
 
-  async function onSubmit(values) {
+  async function onSubmit(values, optional: BaseSyntheticEvent | boolean) {
+    const shouldOverwrite = isBoolean(optional);
     try {
       const { data } = await PlacesService.updatePlace(
         id,
         {
           name: values.name,
           slug: null,
+          // Sending the version to the backend will kick in the version validation
+          // To keep the api backwards compatible, when no version is passed, we overwrite
+          ...(!shouldOverwrite && { version }),
         },
         { group: organization }
       );
       replace(`/collection/${organization}/${data.slug}`);
       onCancel();
     } catch (e) {
-      setSaveError('Something went wrong');
-      console.log(e);
+      if (!e) {
+        setSaveError('Something went wrong');
+      } else if (e.status === 404) {
+        replace('/404');
+      } else if (e.data.errors.find((err) => err.title === 'DocumentVersionError')) {
+        setIsSaveConflict(true);
+      }
     }
+  }
+
+  function refresh() {
+    reloadCollection({ organization, id, slug });
+    toggleRenaming();
+  }
+
+  function saveAnyway() {
+    const values = getValues();
+    onSubmit(values, true);
   }
 }

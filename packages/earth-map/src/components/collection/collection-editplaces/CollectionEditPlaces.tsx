@@ -17,36 +17,41 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import isBoolean from 'lodash/isBoolean';
 import { ICollection } from 'modules/collections/model';
 import { LocationTypeEnum } from 'modules/places/model';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { BaseSyntheticEvent, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { replace } from 'redux-first-router';
 import PlacesService from 'services/PlacesService';
 
-import { AsyncSelect, Card, TitleHero } from '@marapp/earth-shared';
+import { AsyncSelect, Card, TitleHero, DropdownItem } from '@marapp/earth-shared';
+
+import { CollectionConflict } from '../collection-conflict';
 
 interface IProps {
   collection: ICollection;
-  placesFromGroups: string[];
-  setMapBounds: (payload: any) => void;
-  setCollectionData: (payload: any) => void;
+  setMapBounds: (payload?: any) => void;
+  setCollectionData: (payload?: any) => void;
   toggleEditPlaces: () => void;
+  reloadCollection: (payload?: any) => void;
 }
 
 export function CollectionEditPlaces(props: IProps) {
-  const { collection, placesFromGroups, setCollectionData, setMapBounds, toggleEditPlaces } = props;
+  const { collection, setCollectionData, setMapBounds, toggleEditPlaces, reloadCollection } = props;
   const { t } = useTranslation();
-  const { id, organization, name, locations } = collection;
+  const { id, slug, organization, name, locations, version } = collection;
   const [saveError, setSaveError] = useState('');
-  const { control, handleSubmit, formState } = useForm({
+  const [isSaveConflict, setIsSaveConflict] = useState(false);
+  const { control, handleSubmit, formState, getValues } = useForm({
     mode: 'onChange',
   });
   const { isValid, isSubmitting, dirty } = formState;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full">
-      <Card elevation="high" className="ng-margin-bottom">
+    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-edit-places">
+      <Card elevation="high" className="ng-margin-bottom header-card">
         <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
       </Card>
 
@@ -62,7 +67,9 @@ export function CollectionEditPlaces(props: IProps) {
             className="marapp-qa-locationsdropdown ng-margin-medium-bottom"
             control={control}
             defaultValue={locations}
-            getOptionLabel={(option) => option.name}
+            getOptionLabel={(option, extra) => (
+              <DropdownItem title={option.name} subtitle={option.organization} />
+            )}
             getOptionValue={(option) => option.id}
             loadFunction={(query) =>
               PlacesService.fetchPlaces({
@@ -83,7 +90,6 @@ export function CollectionEditPlaces(props: IProps) {
           {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
 
           <button
-            type="submit"
             className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-right"
             disabled={!isValid || isSubmitting || !dirty}
           >
@@ -96,35 +102,69 @@ export function CollectionEditPlaces(props: IProps) {
             {t('Cancel')}
           </button>
         </Card>
+
+        {isSaveConflict && <CollectionConflict onRefresh={refresh} onOverwrite={saveAnyway} />}
       </div>
     </form>
   );
 
-  async function onSubmit(values) {
+  /**
+   * Receives event when called by react-hook-form and boolean when called by us
+   */
+  async function onSubmit(values, optional: BaseSyntheticEvent | boolean) {
+    const shouldOverwrite = isBoolean(optional);
     const parsedValues = {
       ...values,
 
       // The api expects an array of ids or an empty array
       // should this be handled by AsyncSelect?
       ...(values.locations ? { locations: values.locations.map((x) => x.id) } : { locations: [] }),
+      // Sending the version to the backend will kick in the version validation
+      // To keep the api backwards compatible, when no version is passed, we overwrite
+      ...(!shouldOverwrite && { version }),
     };
 
     try {
       const { data } = await PlacesService.updateCollection(id, parsedValues, {
         group: organization,
         include: 'locations',
-        select: 'locations.slug,locations.name',
       });
       setCollectionData(data);
-      setSaveError(null);
+      resetErrors();
+
+      // someone changed the slug, redirect to the new collection
+      if (slug !== data.slug) {
+        replace(`/collection/${organization}/${data.slug}`);
+      }
 
       if (data.bbox2d.length) {
         setMapBounds({ bbox: data.bbox2d });
       }
       toggleEditPlaces();
     } catch (e) {
-      setSaveError('Something went wrong');
+      if (!e) {
+        setSaveError('Something went wrong');
+      } else if (e.status === 404) {
+        replace('/404');
+      } else if (e.data.errors.find((err) => err.title === 'DocumentVersionError')) {
+        setIsSaveConflict(true);
+      }
       console.log(e);
     }
+  }
+
+  function refresh() {
+    reloadCollection({ organization, id, slug });
+    toggleEditPlaces();
+  }
+
+  function saveAnyway() {
+    const values = getValues();
+    onSubmit(values, true);
+  }
+
+  function resetErrors() {
+    setSaveError(null);
+    setIsSaveConflict(false);
   }
 }

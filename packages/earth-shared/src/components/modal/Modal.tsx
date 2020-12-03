@@ -33,6 +33,7 @@ interface ModalProps {
   className: string;
   header: ReactNode;
   showCloseButton: boolean;
+  parentSelector?: () => HTMLDivElement;
   onAfterOpen: () => {};
 }
 
@@ -41,6 +42,7 @@ class ModalComponent extends PureComponent<ModalProps> {
     className: '',
     header: null,
     onAfterOpen: () => {},
+    parentSelector: () => document.body,
   };
 
   render() {
@@ -52,6 +54,7 @@ class ModalComponent extends PureComponent<ModalProps> {
       onAfterOpen,
       onRequestClose,
       showCloseButton = false,
+      parentSelector,
     } = this.props;
 
     const classNames = classnames('c-modal', 'marapp-qa-modal', {
@@ -67,6 +70,7 @@ class ModalComponent extends PureComponent<ModalProps> {
         ariaHideApp={false}
         onAfterOpen={onAfterOpen}
         onRequestClose={onRequestClose}
+        parentSelector={parentSelector}
       >
         {header}
 

@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setCollectionData } from 'modules/collections/actions';
+import { reloadCollection, setCollectionData } from 'modules/collections/actions';
 import { setMapBounds } from 'modules/map/actions';
 import { connect } from 'react-redux';
 
@@ -28,6 +28,7 @@ export default connect(
     ...state.collections,
   }),
   {
+    reloadCollection,
     setCollectionData,
     setMapBounds,
   }

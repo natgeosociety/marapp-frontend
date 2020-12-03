@@ -3,8 +3,8 @@ import classnames from 'classnames';
 import { PUBLIC_URL, REACT_APP_EXTERNAL_IDP_URL } from 'config';
 import { capitalize, identity, omit, pickBy } from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
 import ProfileService from 'services/ProfileService';
 import { APP_LOGO } from 'theme';
@@ -21,6 +21,7 @@ import {
 
 interface IProps {
   page: string;
+  resetStore?: () => void;
 }
 
 enum RESET_PASSWORD_STATE {
@@ -31,7 +32,7 @@ enum RESET_PASSWORD_STATE {
 }
 
 export function ProfileComponent(props: IProps) {
-  const { page } = props;
+  const { page, resetStore } = props;
   const { t } = useTranslation();
 
   const { getValues, register, formState, errors: formErrors } = useForm({
@@ -213,15 +214,22 @@ export function ProfileComponent(props: IProps) {
             hasLeftOrg ? (
               <a href={`${PUBLIC_URL}earth`} className="ng-border-remove">
                 <img src={APP_LOGO} className="marapp-qa-logo ng-margin" alt="" />
+                <span className="ng-text-display-s ng-text-weight-regular ng-color-ultraltgray">
+                  | {t('Return to map view')}
+                </span>
               </a>
             ) : (
               <Link
                 className="ng-border-remove"
+                onClick={resetStore}
                 to={{
                   type: 'EARTH',
                 }}
               >
                 <img src={APP_LOGO} className="marapp-qa-logo ng-margin" alt="" />
+                <span className="ng-text-display-s ng-text-weight-regular ng-color-ultraltgray">
+                  | {t('Return to map view')}
+                </span>
               </Link>
             )
           }
