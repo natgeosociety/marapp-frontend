@@ -20,6 +20,7 @@
 import { navigate } from 'gatsby';
 import { noop } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Modal } from '@marapp/earth-shared';
 
@@ -54,6 +55,7 @@ export const DeleteConfirmation = (props: IProps) => {
     onDelete = noop,
   } = props;
   const { selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
 
   async function handleDelete(e) {
     e.preventDefault();
@@ -109,8 +111,10 @@ export const DeleteConfirmation = (props: IProps) => {
       onRequestClose={handleModalToggle}
       className="marapp-qa-DeleteConfirmation ng-text-center"
     >
-      <h4 className="ng-text-display-s ng-margin-bottom">Delete {name}</h4>
-      <p className="ng-space-wrap">Are you sure you want to permanently delete this {type}?</p>
+      <h4 className="ng-text-display-s ng-margin-bottom">
+        {t('Delete resource', { value: name })}
+      </h4>
+      <p className="ng-space-wrap">{t('Delete confirmation', { value: t(type) })}</p>
       <div className="ng-flex ng-flex-center">
         <button
           autoFocus={true}
@@ -118,13 +122,13 @@ export const DeleteConfirmation = (props: IProps) => {
           className="marapp-qa-actioncancel ng-button ng-button-secondary ng-margin-medium-right"
           onClick={handleModalToggle}
         >
-          Cancel
+          {t('cancel')}
         </button>
         <button
           className="marapp-qa-actiondelete ng-button ng-button-primary"
           onClick={(e) => handleDelete(e)}
         >
-          Delete
+          {t('delete')}
         </button>
       </div>{' '}
     </Modal>
