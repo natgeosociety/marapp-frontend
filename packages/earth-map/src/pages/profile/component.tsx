@@ -21,6 +21,7 @@ import {
 
 interface IProps {
   page: string;
+  resetStore?: () => void;
 }
 
 enum RESET_PASSWORD_STATE {
@@ -31,7 +32,7 @@ enum RESET_PASSWORD_STATE {
 }
 
 export function ProfileComponent(props: IProps) {
-  const { page } = props;
+  const { page, resetStore } = props;
   const { t } = useTranslation();
 
   const { getValues, register, formState, errors: formErrors } = useForm({
@@ -220,6 +221,7 @@ export function ProfileComponent(props: IProps) {
             ) : (
               <Link
                 className="ng-border-remove"
+                onClick={resetStore}
                 to={{
                   type: 'EARTH',
                 }}
