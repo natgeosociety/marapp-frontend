@@ -21,6 +21,7 @@ import { groupBy, map, noop } from 'lodash';
 import { merge } from 'lodash/fp';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import useSWR from 'swr';
 
 import {
@@ -69,6 +70,7 @@ export function PlaceDetail(props: IProps) {
   const { page, onDataChange = noop, dynamicOptions } = props;
   const { type: placeTypeOptions = [] } = dynamicOptions;
   const { getPermissions, selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
   const metricsPermission = getPermissions(AuthzGuards.accessMetricsGuard);
   const writeMetricsPermission = getPermissions(AuthzGuards.writeMetricsGuard);
@@ -213,7 +215,7 @@ export function PlaceDetail(props: IProps) {
             to="/places"
           >
             <i className="ng-icon ng-icon-directionleft" />
-            return to places home
+            {t('return to home', { value: 'places' })}
           </LinkWithOrg>
           <form className="ng-form ng-form-dark ng-flex-column">
             <div className="ng-grid">
@@ -225,8 +227,9 @@ export function PlaceDetail(props: IProps) {
                     <>
                       <Input
                         name="name"
-                        placeholder="Place title"
-                        label="Title*"
+                        placeholder={t('Place title')}
+                        label="Title"
+                        required={true}
                         defaultValue={name}
                         className="ng-display-block"
                         error={renderErrorFor('name')}
@@ -281,8 +284,9 @@ export function PlaceDetail(props: IProps) {
                       <div className="ng-margin-medium-bottom">
                         <Input
                           name="slug"
-                          placeholder="Place slug"
-                          label="Slug*"
+                          placeholder={t('Place slug')}
+                          label="Slug"
+                          required={true}
                           defaultValue={slug}
                           className="ng-display-block"
                           error={renderErrorFor('slug')}
@@ -295,7 +299,7 @@ export function PlaceDetail(props: IProps) {
                         />
                       </div>
                       <div>
-                        <label htmlFor="type">Place type</label>
+                        <label htmlFor="type">{t('Place type')}</label>
                         <select
                           className="ng-width-1-1 ng-form-large"
                           id="type"
@@ -305,9 +309,9 @@ export function PlaceDetail(props: IProps) {
                           name="type"
                           defaultValue={type}
                         >
-                          {placeTypeOptions.map((t) => (
-                            <option key={t.value} value={t.value} selected={type === t.value}>
-                              {t.label}
+                          {placeTypeOptions.map((pt) => (
+                            <option key={pt.value} value={pt.value} selected={type === pt.value}>
+                              {t(pt.label)}
                             </option>
                           ))}
                         </select>
@@ -316,11 +320,11 @@ export function PlaceDetail(props: IProps) {
                   )}
                 >
                   <div className="ng-margin-medium-bottom">
-                    <p className="ng-text-weight-bold ng-margin-remove">Place slug</p>
+                    <p className="ng-text-weight-bold ng-margin-remove">{t('Place slug')}</p>
                     <p className="ng-margin-remove ng-padding-left">{slug}</p>
                   </div>
                   <div>
-                    <p className="ng-text-weight-bold ng-margin-remove">Place type</p>
+                    <p className="ng-text-weight-bold ng-margin-remove">{t('Place type')}</p>
                     <p className="ng-margin-remove ng-padding-left">{type}</p>
                   </div>
                 </InlineEditCard>
@@ -328,17 +332,20 @@ export function PlaceDetail(props: IProps) {
               <div className="ng-width-1-2">
                 <Card>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">ID:</span> {id}
+                    <span className="ng-text-weight-bold ng-color-mdgray">{t('ID')}:</span> {id}
                   </p>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">Version:</span> {version}
+                    <span className="ng-text-weight-bold ng-color-mdgray">{t('Version')}:</span>{' '}
+                    {version}
                   </p>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">Last Updated:</span>{' '}
+                    <span className="ng-text-weight-bold ng-color-mdgray">
+                      {t('Last Updated')}:
+                    </span>{' '}
                     {formatDate(updatedAt)}
                   </p>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">Created:</span>{' '}
+                    <span className="ng-text-weight-bold ng-color-mdgray">{t('Created')}:</span>{' '}
                     {formatDate(createdAt)}
                   </p>
                 </Card>
@@ -350,10 +357,10 @@ export function PlaceDetail(props: IProps) {
                   <div className="ng-margin-medium-bottom ng-width-1-1">
                     <ErrorBoundary>
                       <InlineEditCard
-                        editButtonText="View and upload shape"
+                        editButtonText={t('View and upload shape')}
                         onSubmit={onSubmit}
                         onCancel={() => setPanel('upload')}
-                        submitButtonText="Update Shape"
+                        submitButtonText={t('Update Shape')}
                         validForm={formValid && !jsonError}
                         render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                           <>
@@ -362,8 +369,8 @@ export function PlaceDetail(props: IProps) {
                               onChange={switchGeojsonTab}
                               className="ng-ep-background-dark"
                             >
-                              <Tab label="Shape File" value="upload" />
-                              <Tab label="Json editor" value="json" />
+                              <Tab label={t('Shape File')} value="upload" />
+                              <Tab label={t('Json editor')} value="json" />
                             </Tabs>
                             {panel === 'upload' && (
                               <div className="ng-grid">
@@ -375,13 +382,13 @@ export function PlaceDetail(props: IProps) {
                                     type="geojson"
                                     className="ng-align-right ng-margin-top"
                                   >
-                                    Download GeoJSON
+                                    {t('Download GeoJSON')}
                                   </DownloadFile>
                                   <div className="ng-width-1-1 ng-margin-medium-top">
                                     <FakeJsonUpload
                                       name="geojson"
                                       type=".geojson"
-                                      label="Place shape*"
+                                      label={`${t('Place shape')}*`}
                                       ref={register({
                                         required: 'GeoJSON is required',
                                       })}
@@ -397,7 +404,7 @@ export function PlaceDetail(props: IProps) {
                                   {areaKm2 && (
                                     <p className="ng-margin-bottom ng-margin-top-remove">
                                       <span className="ng-text-weight-bold ng-color-mdgray">
-                                        Area ha:
+                                        {t('Area ha')}:
                                       </span>{' '}
                                       {km2toHa(areaKm2)}
                                     </p>
@@ -405,7 +412,7 @@ export function PlaceDetail(props: IProps) {
                                   {bbox2d && (
                                     <p className="ng-margin-bottom ng-margin-top-remove">
                                       <span className="ng-text-weight-bold ng-color-mdgray">
-                                        Area Bbox:
+                                        {t('Area Bbox')}:
                                       </span>{' '}
                                       {formatArrayToParentheses(bbox2d, 'rounded', 2)}
                                     </p>
@@ -413,7 +420,7 @@ export function PlaceDetail(props: IProps) {
                                   {centroid && (
                                     <p className="ng-margin-bottom ng-margin-top-remove">
                                       <span className="ng-text-weight-bold ng-color-mdgray">
-                                        Centroid:
+                                        {t('Centroid')}:
                                       </span>{' '}
                                       {formatArrayToParentheses(
                                         centroid.geometry.coordinates,
@@ -452,7 +459,9 @@ export function PlaceDetail(props: IProps) {
               <Card>
                 {metrics && (
                   <>
-                    <p className="ng-text-weight-bold ng-margin-small-bottom">Place Metrics</p>
+                    <p className="ng-text-weight-bold ng-margin-small-bottom">
+                      {t('Place Metrics')}
+                    </p>
                     <div className="ng-flex ng-flex-wrap ng-place-metrics-container">
                       {metrics.map((metric) => (
                         <Metrics key={metric.id} data={metric} handlers={{ handleServerErrors }} />
@@ -467,7 +476,7 @@ export function PlaceDetail(props: IProps) {
                     className="marapp-qa-actioncalculate ng-button ng-button-primary ng-margin-medium-top"
                     onClick={(e) => handleCalculateAll(e, id)}
                   >
-                    Recalculate all
+                    {t('Recalculate all')}
                   </button>
                 )}
               </Card>
@@ -481,7 +490,7 @@ export function PlaceDetail(props: IProps) {
                     map(mappedIntersections, (intersections: PlaceIntersection[], idx) => (
                       <DetailList
                         key={idx}
-                        name={intersections[0].type}
+                        name={t(intersections[0].type)}
                         type="places"
                         data={intersections}
                       />
@@ -495,7 +504,7 @@ export function PlaceDetail(props: IProps) {
         {writePermissions && (
           <div className="ng-text-right">
             <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
-              Delete place
+              {t('Delete place')}
             </button>
           </div>
         )}

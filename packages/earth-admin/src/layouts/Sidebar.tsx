@@ -19,6 +19,7 @@
 
 import { navigate } from 'gatsby';
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import urljoin from 'url-join';
 
 import { AppContextSwitcher, Spinner } from '@marapp/earth-shared';
@@ -42,6 +43,7 @@ interface IProps {
 
 const SidebarLayout = (props: IProps) => {
   const { groups, selectedGroup } = useContext(Auth0Context);
+  const { t } = useTranslation('admin');
 
   const logo = (
     <LinkWithOrg to="/" className="ng-border-remove">
@@ -64,7 +66,7 @@ const SidebarLayout = (props: IProps) => {
             }
           }}
         >
-          <Option value="map-view">Map View</Option>
+          <Option value="map-view">{t('Map View')}</Option>
           {!!groups &&
             groups.map((g) => (
               <Option value={g} key={g}>

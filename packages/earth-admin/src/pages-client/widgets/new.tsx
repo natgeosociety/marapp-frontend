@@ -22,6 +22,7 @@ import { JSHINT } from 'jshint';
 import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
 
 import {
@@ -56,6 +57,7 @@ export function NewWidget(props: IProps) {
   const { onDataChange = noop, dynamicOptions = {} } = props;
   const { metrics: metricsOptions = [] } = dynamicOptions;
   const { selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
     mode: 'onChange',
   });
@@ -104,15 +106,16 @@ export function NewWidget(props: IProps) {
     <ContentLayout backTo="/dashboards" className="marapp-qa-newwidget">
       <div>
         <div className="ng-flex ng-flex-space-between">
-          <h2 className="ng-text-display-m ng-c-flex-grow-1">New Widget</h2>
+          <h2 className="ng-text-display-m ng-c-flex-grow-1">{t('New Widget')}</h2>
         </div>
 
         <form className="ng-form ng-form-dark ng-flex-column" onSubmit={handleSubmit(onSubmit)}>
           <Card className="ng-margin-medium-bottom">
             <Input
               name="name"
-              placeholder="Widget title"
-              label="Title*"
+              placeholder={t('Widget title')}
+              label="Title"
+              required={true}
               className="ng-display-block"
               error={renderErrorFor('name')}
               ref={register({
@@ -126,8 +129,9 @@ export function NewWidget(props: IProps) {
               <div className="ng-flex-item-1">
                 <Input
                   name="slug"
-                  placeholder="Widget slug"
-                  label="Slug*"
+                  placeholder={t('Widget slug')}
+                  label="Slug"
+                  required={true}
                   className="ng-display-block marapp-qa-inputslug"
                   error={renderErrorFor('slug')}
                   ref={register({
@@ -142,11 +146,11 @@ export function NewWidget(props: IProps) {
                 <button
                   onClick={generateSlug}
                   disabled={!watchName || !!errors.name}
-                  title={watchName ? 'Generate slug' : 'Add a title first'}
+                  title={t(watchName ? 'Generate slug' : 'Add a title first')}
                   className="ng-button ng-button-secondary ng-button-large ng-pointer marapp-qa-actiongenerateslug"
                   style={{ marginTop: '36px' }}
                 >
-                  Generate a slug name
+                  {t('Generate a slug name')}
                 </button>
               </div>
             </div>
@@ -155,7 +159,7 @@ export function NewWidget(props: IProps) {
           <Card className="ng-margin-medium-bottom">
             <div className="ng-width-1-1">
               <label className="ng-form-label" htmlFor="description">
-                Description
+                {t('Description')}
               </label>
 
               <Controller
@@ -170,7 +174,7 @@ export function NewWidget(props: IProps) {
           <div className="ng-grid ng-flex-top ng-margin-medium-bottom">
             <div className="ng-width-1-2">
               <Card className="ng-margin-medium-bottom">
-                <label htmlFor="provider">Widget Layer(s):</label>
+                <label htmlFor="provider">{t('Widget Layers')}:</label>
                 <Controller
                   as={AsyncSelect}
                   name="layers"
@@ -184,13 +188,13 @@ export function NewWidget(props: IProps) {
                   isClearable={true}
                   isSearchable={true}
                   closeMenuOnSelect={false}
-                  placeholder="Select layer(s)"
+                  placeholder={t('Select Widget Layers')}
                 />
               </Card>
             </div>
             <div className="ng-width-1-2">
               <Card>
-                <label htmlFor="metrics-select">Metric Slug*</label>
+                <label htmlFor="metrics-select">{t('Metric Slug')}*</label>
                 <Controller
                   as={Select}
                   control={control}
@@ -198,7 +202,7 @@ export function NewWidget(props: IProps) {
                   classNamePrefix="marapp-qa-asyncselect"
                   name="metrics"
                   options={metricsOptions}
-                  placeholder="Select metric slug"
+                  placeholder={t('Select metric slug')}
                   styles={CUSTOM_STYLES}
                   error={renderErrorFor('metrics')}
                   theme={(theme) => ({
@@ -212,7 +216,7 @@ export function NewWidget(props: IProps) {
           </div>
 
           <Card className="ng-margin-medium-bottom">
-            <label htmlFor="config">Widget Config*</label>
+            <label htmlFor="config">{t('Widget Config')}*</label>
             <Controller
               name="config"
               control={control}
@@ -232,14 +236,14 @@ export function NewWidget(props: IProps) {
                 className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
                 disabled={!isValid || !dirty || jsonError || !watchJson}
               >
-                Save and view details
+                {t('Save and view details')}
               </button>
 
               <LinkWithOrg
                 className="ng-button ng-button-secondary ng-button-large marapp-qa-back"
                 to="/widgets"
               >
-                Return to widgets home
+                {t('return to home', { value: t('widgets') })}
               </LinkWithOrg>
             </div>
           )}
