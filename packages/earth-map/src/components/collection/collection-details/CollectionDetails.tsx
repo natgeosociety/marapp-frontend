@@ -26,10 +26,10 @@ import { useTranslation } from 'react-i18next';
 import {
   Card,
   DropdownSimple,
+  getGenericDate,
   Pill,
   Spinner,
   TitleHero,
-  getGenericDate,
 } from '@marapp/earth-shared';
 
 import CollectionDelete from '../collection-delete';
@@ -39,18 +39,18 @@ import { CollectionDownloadMetrics } from '../collection-downloadmetrics';
 import './styles.scss';
 
 interface IProps {
-  placesFromGroups: string[];
   privateGroups: string[];
   data?: ICollection;
   loading?: boolean;
   error?: any;
 
+  reloadCollection?: (payload: ICollection) => void;
   setCollectionData?: (payload: ICollection) => void;
   setMapBounds?: (payload: any) => void;
 }
 
 const CollectionDetails = (props: IProps) => {
-  const { placesFromGroups, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
+  const { reloadCollection, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
   const { t } = useTranslation();
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
@@ -183,15 +183,22 @@ const CollectionDetails = (props: IProps) => {
         </Card>
       )}
 
-      {isRenaming && <CollectionRename collection={data} onCancel={() => setIsRenaming(false)} />}
+      {isRenaming && (
+        <CollectionRename
+          collection={data}
+          onCancel={() => setIsRenaming(false)}
+          toggleRenaming={toggleRenaming}
+          reloadCollection={reloadCollection}
+        />
+      )}
 
       {isAddingPlaces && (
         <CollectionEditPlaces
           collection={data}
-          placesFromGroups={placesFromGroups}
           setCollectionData={setCollectionData}
           setMapBounds={setMapBounds}
           toggleEditPlaces={toggleEditPlaces}
+          reloadCollection={reloadCollection}
         />
       )}
 
@@ -211,6 +218,10 @@ const CollectionDetails = (props: IProps) => {
       )}
     </div>
   );
+
+  function toggleRenaming() {
+    setIsRenaming(!isRenaming);
+  }
 
   function toggleEditPlaces() {
     setIsAddingPlaces(!isAddingPlaces);

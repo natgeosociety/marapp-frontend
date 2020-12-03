@@ -25,3 +25,6 @@ export const setCollectionsError = createAction('COLLECTIONS/setCollectionsError
 export const resetCollection = createAction('COLLECTIONS/resetCollection');
 
 export const setFeaturedCollections = createAction('COLLECTIONS/setFeaturedCollections');
+
+// only used in sagas
+export const reloadCollection = createAction('COLLECTIONS/reload');
