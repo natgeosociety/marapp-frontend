@@ -18,8 +18,8 @@
 */
 
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
 import Link from 'redux-first-router-link';
 import PlacesService from 'services/PlacesService';

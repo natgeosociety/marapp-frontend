@@ -41,6 +41,7 @@ export { ReactSelect } from './react-select';
 export { Pill } from './pill';
 export { InlineEditCard } from './inline-edit-card';
 export { DropdownSimple } from './dropdown-simple';
+export { DropdownItem } from './dropdown-item';
 export { ErrorMessages } from './error-messages';
 export { default as ErrorTemplate } from './error-template';
 export { UserMenu } from './user-menu';

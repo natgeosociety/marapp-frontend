@@ -17,36 +17,47 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setCollectionData, setCollectionsLoading } from 'modules/collections/actions';
+import {
+  reloadCollection,
+  setCollectionData,
+  setCollectionsLoading,
+} from 'modules/collections/actions';
 import { persistData, setLastViewedPlace } from 'modules/global/actions';
 import { EMainType, SubType } from 'modules/global/model';
 import { setMapBounds } from 'modules/map/actions';
-import { setSidebarPanelExpanded } from 'modules/sidebar/actions';
 import { setPlacesSearch } from 'modules/places/actions';
 import { EarthRoutes } from 'modules/router/model';
+import { setSidebarPanelExpanded } from 'modules/sidebar/actions';
 import { replace } from 'redux-first-router';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import PlacesService from 'services/PlacesService';
 import { ignoreRedirectsTo } from 'sagas/saga-utils';
+import PlacesService from 'services/PlacesService';
 
 const ignoreRedirectsToCollection = ignoreRedirectsTo(EarthRoutes.COLLECTION);
 export default function* collections() {
   // @ts-ignore
   yield takeLatest(ignoreRedirectsToCollection, loadCollection);
+  yield takeLatest(reloadCollection, loadCollection);
 }
 
 function* loadCollection({ payload }) {
-  const { slug, organization } = payload;
+  // id is only received on reloadCollection action
+  const { id, slug, organization } = payload;
 
   try {
     yield put(setSidebarPanelExpanded(false));
     yield put(setCollectionsLoading(true));
 
-    const { data } = yield call(PlacesService.fetchPlaceById, slug, {
+    const { data } = yield call(PlacesService.fetchPlaceById, id || slug, {
       group: organization,
       include: 'locations',
       select: 'locations.slug,locations.name',
     });
+
+    // someone changed the slug, redirect to the new collection
+    if (slug !== data.slug) {
+      replace(`/collection/${organization}/${data.slug}`);
+    }
 
     if (data.bbox2d.length) {
       yield put(setMapBounds({ bbox: data.bbox2d }));

@@ -27,6 +27,14 @@
   .scroll-container {
     flex: 1 1 auto;
     overflow: auto;
+
+    .header-card {
+      z-index: 20;
+    }
+
+    .ReactModal__Overlay {
+      z-index: 10;
+    }
   }
 
   .ng-c-text-body {
