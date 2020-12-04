@@ -21,6 +21,9 @@ import React from 'react';
 import { Auth0Provider } from './src/auth/auth0';
 import config from './src/auth/config';
 import { onRedirectCallback, onSuccessHook, onFailureHook } from './src/auth/hooks';
+import { TranslationService } from '@marapp/earth-shared';
+
+TranslationService.init();
 
 export const wrapRootElement = ({ element }) => (
   <Auth0Provider
