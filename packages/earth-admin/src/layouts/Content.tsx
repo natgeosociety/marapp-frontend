@@ -28,6 +28,7 @@ import { Auth0Context } from '@app/utils/contexts';
 
 import '../styles/app.scss';
 import { APP_NAME } from '../theme';
+import { useTranslation } from 'react-i18next';
 
 interface ILayoutProps {
   children?: any;
@@ -83,6 +84,7 @@ export default function ContentLayout(props: ILayoutProps) {
 
 const NotFound = (props: ILayoutProps) => {
   const { backTo = '/', errorPage } = props;
+  const { t } = useTranslation('admin');
 
   return (
     <div className="marapp-qa-recorderror">
@@ -91,15 +93,15 @@ const NotFound = (props: ILayoutProps) => {
         <div className="ng-width-1-2">
           <Card>
             <p>
-              The {errorPage} you are looking for could not be retrieved or doesn't exist. Return to{' '}
-              {errorPage}s home, search for {errorPage}s, or create a new {errorPage}.
+              {t('The page you are looking for may not exist', { value: errorPage })}.&nbsp;
+              {t('Return search create', { value: errorPage })}
             </p>
             <div className="ng-flex ng-flex-center">
               <LinkWithOrg
                 className="ng-button ng-button-secondary marapp-qa-actionreturn"
                 to={backTo}
               >
-                Return to {errorPage}s home
+                {t('return to home', { value: errorPage })}
               </LinkWithOrg>
             </div>
           </Card>
@@ -115,12 +117,13 @@ const Content = (props: ILayoutProps) => {
     errors = [],
     isLoading,
   } = props;
+  const { t } = useTranslation('admin');
 
   if (isLoading) {
     return <Spinner size="medium" />;
   }
   if (!permission) {
-    return <Unauthorized message="You are not authorized to view this page" />;
+    return <Unauthorized message={t('You are not authorized to view this page')} />;
   }
 
   if (errors.length) {

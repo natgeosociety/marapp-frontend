@@ -163,7 +163,11 @@ export function PlaceDetail(props: IProps) {
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
       const fallbackError = [
-        { detail: 'Something went wrong. Please make sure the selected file is under 6MB.' },
+        {
+          detail: `${t(
+            'Something went wrong'
+          )}. ${t('Please make sure the selected file is under MB', { value: 6 })}`,
+        },
       ];
 
       setIsLoading && setIsLoading(false);
@@ -311,7 +315,7 @@ export function PlaceDetail(props: IProps) {
                         >
                           {placeTypeOptions.map((pt) => (
                             <option key={pt.value} value={pt.value} selected={type === pt.value}>
-                              {t(pt.label)}
+                              (pt.label)
                             </option>
                           ))}
                         </select>
