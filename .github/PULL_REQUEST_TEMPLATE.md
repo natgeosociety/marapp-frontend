@@ -7,7 +7,7 @@ All boxes should be checked before the PR can be accepted. Exceptions can be mad
 
 - [ ] Ran the linter with `yarn lint`
 - [ ] No TypeScript warnings are introduced
-- [ ] Added `data-testid` on main containers and all actionable items like Buttons, Inputs, etc
+- [ ] Added QA classes on main containers and all actionable items like Buttons, Inputs, etc
 - [ ] Added/Updated unit tests for the code in `earth-shared`
 - [ ] Added/Updated end to end tests for the main functionality
 
