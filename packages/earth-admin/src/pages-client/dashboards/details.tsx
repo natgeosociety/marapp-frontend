@@ -168,7 +168,7 @@ export function DashboardDetail(props: IProps) {
                     <>
                       <Input
                         name="name"
-                        placeholder="Dashboard title"
+                        placeholder={t('Dashboard title')}
                         label="Title"
                         required={true}
                         defaultValue={name}
