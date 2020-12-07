@@ -40,8 +40,6 @@ class TranslationService implements ITranslationService {
   init() {
     const lang = SessionStorage.get('lang') || Elang.EN;
 
-    console.log('lang: ', lang);
-
     i18n.use(initReactI18next).init({
       resources: {
         [Elang.EN]: {
