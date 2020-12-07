@@ -74,10 +74,11 @@ export default function ChangeEmailComponent() {
           setErrorPage(ChangeEmailStates.ERROR);
         }
       } else if (error && !isAuthenticated) {
+        console.log('has error');
         setErrorPage(message);
       } else {
         console.log('finally');
-        replace('/profile');
+        //  replace('/profile');
       }
     };
     fn();
