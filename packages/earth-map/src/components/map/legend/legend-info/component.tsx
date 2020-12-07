@@ -33,7 +33,7 @@ class LegendInfoComponent extends React.Component<ILegendInfo> {
     return (
       <div className="marapp-qa-layerinfo c-layer-info">
         <h3 className="ng-text-display-m ng-body-color">{title}</h3>
-        <Html className="layer-info--html" html={description} />
+        <Html className="layer-info--html translate-content" html={description} />
       </div>
     );
   }
