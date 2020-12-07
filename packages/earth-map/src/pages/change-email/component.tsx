@@ -48,9 +48,11 @@ export default function ChangeEmailComponent() {
       const accessToken = params.get('access_token');
       const error = params.get('error');
 
+      console.log(accessToken, error, 'this');
       const message: string = error ? ChangeEmailStates.ERROR : ChangeEmailStates.PENDING;
 
       if (!isAuthenticated) {
+        console.log(isAuthenticated, 'is authenticated');
         // preserve path, query and hash params when redirecting;
         const target = window.location.href.replace(window.location.origin, '');
         // save target URL to redirect to after login;
@@ -74,6 +76,7 @@ export default function ChangeEmailComponent() {
       } else if (error && !isAuthenticated) {
         setErrorPage(message);
       } else {
+        console.log('finally');
         replace('/profile');
       }
     };
