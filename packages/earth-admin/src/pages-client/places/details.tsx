@@ -315,7 +315,7 @@ export function PlaceDetail(props: IProps) {
                         >
                           {placeTypeOptions.map((pt) => (
                             <option key={pt.value} value={pt.value} selected={type === pt.value}>
-                              (pt.label)
+                              {pt.label}
                             </option>
                           ))}
                         </select>

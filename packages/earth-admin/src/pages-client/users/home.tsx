@@ -94,7 +94,7 @@ export function UsersHome(props: any) {
     (async () => {
       const { data } = await UsersService.getAvailableGroups({ group: selectedGroup });
       const groups = data.map((item) => ({
-        label: t(normalizeGroupName(item.name)),
+        label: normalizeGroupName(item.name),
         value: item.id,
       }));
       setAvailableGroups(groups);
@@ -389,14 +389,13 @@ export function UsersHome(props: any) {
                       )}
                       renderItem={(index) => {
                         const user = userListProps.data[index];
+                        const userGroup = normalizeGroupName(user.groups[0].name);
                         return (
                           <tr key={user.email}>
                             <td className="ng-border-remove">{user.email}</td>
                             <td className="ng-border-remove">
-                              {t(normalizeGroupName(user.groups[0].name))}
-                              {availableGroups.find(
-                                (group) => group.label === normalizeGroupName(user.groups[0].name)
-                              ) && (
+                              {userGroup}
+                              {availableGroups.find((group) => group.label === userGroup) && (
                                 <button
                                   className="ng-border-remove ng-background-ultradkgray ng-color-light role-popup"
                                   onClick={(e) => toggleRolePopup(e, user)}
@@ -444,7 +443,7 @@ export function UsersHome(props: any) {
                               className={`marapp-qa-role-${group.label}`}
                               onClick={() => updateUserHandler(group.value)}
                             >
-                              {t(group.label)}
+                              {group.label}
                             </a>
                           </li>
                         ))}
