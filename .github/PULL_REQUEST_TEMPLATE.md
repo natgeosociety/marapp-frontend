@@ -1,11 +1,19 @@
-By submitting a PR to this repository, you agree to the terms within the [Code of Conduct](https://github.com/natgeosociety/marapp-frontend/blob/master/CODE-OF-CONDUCT.md). Please see the [contributing guidelines](https://github.com/natgeosociety/marapp-frontend/blob/master/CONTRIBUTING.md) for how to create and submit a high-quality PR for this repo.
-
 ### Description
 
-> Describe the purpose of this PR along with any background information and the impacts of the proposed change. For the benefit of the community, please do not assume prior context.
->
-> Provide details that support your chosen implementation, including: breaking changes, alternatives considered, changes to the API, etc.
+> Replace this with a simple description of the functionality
 
+### Checklist
+All boxes should be checked before the PR can be accepted. Exceptions can be made, but they need to be argumented and discussed with the reviewer
+
+- [ ] Ran the linter with `yarn lint`
+- [ ] No TypeScript warnings are introduced
+- [ ] Added `data-testid` on main containers and all actionable items like Buttons, Inputs, etc
+- [ ] Added/Updated unit tests for the code in `earth-shared`
+- [ ] Added/Updated end to end tests for the main functionality
+
+<br>
+<hr>
+<br>
 
 ### References
 
@@ -26,10 +34,4 @@ By submitting a PR to this repository, you agree to the terms within the [Code o
 >
 > Also include details of the environment this PR was developed in (language/platform/browser version).
 
-- [ ] This change adds test coverage for new/changed/fixed functionality
-
-### Checklist
-
-- [ ] I have added documentation for new/changed functionality in this PR or in /docs
-- [ ] All active GitHub checks for tests, formatting, and security are passing
-- [ ] The correct base branch is being used, if not `master`
+By submitting a PR to this repository, you agree to the terms within the [Code of Conduct](https://github.com/natgeosociety/marapp-frontend/blob/master/CODE-OF-CONDUCT.md). Please see the [contributing guidelines](https://github.com/natgeosociety/marapp-frontend/blob/master/CONTRIBUTING.md) for how to create and submit a high-quality PR for this repo.
