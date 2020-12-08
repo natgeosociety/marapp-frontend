@@ -38,8 +38,10 @@ interface IOptionsBag {
 }
 
 export interface InlineCardProps {
-  children: ReactNode;
+  // Pass children directly or use render props to have access to the edit state
+  children: (optionsBag: IOptionsBag) => React.ReactNode | ReactNode;
   render?: (optionsBag: IOptionsBag) => React.ReactNode;
+  hideEditButton?: boolean;
   editButtonText?: string;
   onSubmit?: (
     e: any,
@@ -52,7 +54,6 @@ export interface InlineCardProps {
   cancelButtonText?: string;
   submitButtonVariant?: string;
   validForm?: boolean;
-  manualOpen?: boolean;
 }
 
 const Card: any = Keyframes.Spring({
@@ -66,21 +67,17 @@ export default function InlineEditCard(props: InlineCardProps) {
     children,
     render,
     editButtonText = t('edit'),
+    hideEditButton = false,
     onSubmit = noop,
     onCancel = noop,
     submitButtonText = t('Save'),
     cancelButtonText = t('Cancel'),
     submitButtonVariant,
     validForm,
-    manualOpen,
   } = props;
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
-
-  useEffect(() => {
-    setIsEditing(manualOpen);
-  }, [manualOpen]);
 
   const state = isEditing ? 'open' : 'close';
 
@@ -129,7 +126,7 @@ export default function InlineEditCard(props: InlineCardProps) {
 
   const renderDefault = () => (
     <>
-      {render && isNil(manualOpen) && (
+      {render && !hideEditButton && (
         <button
           type="button"
           className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
@@ -138,7 +135,7 @@ export default function InlineEditCard(props: InlineCardProps) {
           {editButtonText}
         </button>
       )}
-      {children}
+      {typeof children === 'function' ? children(optionsBag) : children}
     </>
   );
 
