@@ -26,7 +26,14 @@ import translationEN from './en/translation.json';
 import translationES from './es/translation.json';
 import translationFR from './fr/translation.json';
 
+import * as weglot from './weglot';
+
 const lang = SessionStorage.get('lang') || Elang.EN;
+
+i18n.on('initialized', async (options) => {
+  await weglot.init();
+  weglot.changeLanguage(options.lng);
+});
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -48,4 +55,8 @@ i18n.use(initReactI18next).init({
   keySeparator: false,
 });
 
-i18n.on('languageChanged', (lng) => SessionStorage.add('lang', lng));
+i18n.on('languageChanged', (lng) => {
+  weglot.changeLanguage(lng);
+
+  SessionStorage.add('lang', lng);
+});
