@@ -38,6 +38,7 @@ The following environment variables are required by the application.
 | `REACT_APP_GTM_TAG` | Google Tag Manager ID |
 | `REACT_APP_ENABLE_PUBLIC_ACCESS` | Enable unauthenticated access |
 | `REACT_APP_EXTERNAL_IDP_URL` | External Identity Provider URL |
+| `REACT_APP_WEGLOT_API_KEY` | https://weglot.com/ - Weglot API Key |
 
 ## Getting started
 

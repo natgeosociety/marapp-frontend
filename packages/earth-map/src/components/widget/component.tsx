@@ -282,7 +282,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
 
           {/* CONTENT || INFO */}
 
-          <div className="widget--content ng-margin-large-bottom">
+          <div className="widget--content ng-margin-large-bottom translate-content">
             {children({
               ...this.props,
               ...data,
@@ -311,7 +311,9 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
           onRequestClose={() => this.setState({ activeInfo: !activeInfo })}
         >
           <h3 className="ng-text-display-m ng-body-color">{name}</h3>
-          {widgetDescription && <Html html={widgetDescription} className="widget--info" />}
+          {widgetDescription && (
+            <Html html={widgetDescription} className="widget--info translate-content" />
+          )}
         </ModalComponent>
       </div>
     );

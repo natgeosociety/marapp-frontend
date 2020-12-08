@@ -71,7 +71,7 @@ export default function ChangeEmailComponent() {
         } catch (err) {
           setErrorPage(ChangeEmailStates.ERROR);
         }
-      } else if (error && !isAuthenticated) {
+      } else if (error) {
         setErrorPage(message);
       } else {
         replace('/profile');
