@@ -25,7 +25,6 @@ body {
 body {
   background: $marapp-gray-9;
   position: relative;
-  overflow: hidden;
 }
 
 body {
@@ -47,12 +46,16 @@ body {
   width: 12px;
 }
 
-
 .ng-page-container {
-  height: 100vh;
-  overflow-y: auto;
   margin-left: $sidebar-width;
   width: calc(100% - #{$sidebar-width});
+}
+
+.top-right-corner {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  z-index: 10000;
 }
 
 .ng-space-wrap {
