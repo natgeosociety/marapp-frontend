@@ -51,13 +51,6 @@ body {
   width: calc(100% - #{$sidebar-width});
 }
 
-.top-right-corner {
-  position: fixed;
-  top: 10px;
-  right: 20px;
-  z-index: 10000;
-}
-
 .ng-space-wrap {
   white-space: normal;
 }
