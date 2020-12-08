@@ -18,21 +18,32 @@
 */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './styles.scss';
 
 const NotFoundComponent = ({ returnToHome, aboutLink, appName }) => {
+  const { t } = useTranslation('admin');
+
   return (
     <div className="marapp-qa-notfound ng-not-found ng-flex-center ng-flex">
       <div className="ng-grid ng-flex-center ng-flex-middle">
         <div className="ng-width-5-12 ng-flex-middle ng-flex ng-flex-column">
           <h1 className="ng-color-ultraltgray ng-text-display-xl ng-margin-medium-bottom">OOPS!</h1>
           <p className="ng-color-ultraltgray ng-text-center">
-            The page you are looking for may not exist, or we may be experiencing an error. We’re
-            terribly sorry. Please visit our <a onClick={returnToHome}>landing page</a> or learn{' '}
-            <a href={aboutLink}>about</a> our product.
+            {t('The page you are looking for may not exist, or we may be experiencing an error')}
+            &nbsp;
+            {t('We’re terribly sorry')}&nbsp;
+            <span
+              onClick={returnToHome}
+              dangerouslySetInnerHTML={{
+                __html: t('Please visit landing page or lear our product', {
+                  aboutLink,
+                }),
+              }}
+            />
           </p>
           <button className="ng-button ng-button-primary" onClick={returnToHome}>
-            Return to {appName}
+            {t('Return to app', { value: appName })}
           </button>
         </div>
       </div>

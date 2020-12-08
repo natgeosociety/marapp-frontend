@@ -16,12 +16,9 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
+const Weglot = window && window['Weglot'];
 
-import { WEGLOT_API_KEY } from '../config';
-
-const Weglot = window['Weglot'];
-
-export function init(): Promise<any> {
+export function init(weglotApiKey): Promise<any> {
   if (!Weglot) {
     return;
   }
@@ -29,7 +26,7 @@ export function init(): Promise<any> {
   const resolver = new Promise((resolve) => Weglot.on('initialized', resolve));
 
   Weglot.initialize({
-    api_key: WEGLOT_API_KEY,
+    api_key: weglotApiKey,
     dynamic: '.translate-content',
     exceptions: '.translate-content-ignore',
     hide_switcher: true,

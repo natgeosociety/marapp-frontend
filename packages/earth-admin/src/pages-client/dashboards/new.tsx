@@ -21,6 +21,7 @@ import { navigate } from 'gatsby';
 import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import {
   alphaNumericDashesRule,
@@ -49,6 +50,7 @@ interface IProps {
 export function NewDashboard(props: IProps) {
   const { onDataChange = noop } = props;
   const { selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
     mode: 'onChange',
   });
@@ -97,15 +99,16 @@ export function NewDashboard(props: IProps) {
     <ContentLayout backTo="/dashboards" className="marapp-qa-newdashboard">
       <div>
         <div className="ng-flex ng-flex-space-between">
-          <h2 className="ng-text-display-m ng-c-flex-grow-1">New dashboard</h2>
+          <h2 className="ng-text-display-m ng-c-flex-grow-1">{t('New dashboard')}</h2>
         </div>
 
         <form className="ng-form ng-form-dark ng-flex-column" onSubmit={handleSubmit(onSubmit)}>
           <Card className="ng-margin-medium-bottom">
             <Input
               name="name"
-              placeholder="Dashboard title"
-              label="Title*"
+              placeholder={t('Dashboard title')}
+              label="Title"
+              required={true}
               className="ng-display-block"
               error={renderErrorFor('name')}
               ref={register({
@@ -119,8 +122,9 @@ export function NewDashboard(props: IProps) {
               <div className="ng-flex-item-1">
                 <Input
                   name="slug"
-                  placeholder="Dashboard slug"
-                  label="Slug*"
+                  placeholder={t('Dashboard slug')}
+                  label="Slug"
+                  required={true}
                   className="ng-display-block marapp-qa-inputslug"
                   error={renderErrorFor('slug')}
                   ref={register({
@@ -135,11 +139,11 @@ export function NewDashboard(props: IProps) {
                 <button
                   onClick={generateSlug}
                   disabled={!watchName || !!errors.name}
-                  title={watchName ? 'Generate slug' : 'Add a title first'}
+                  title={t(watchName ? 'Generate slug' : 'Add a title first')}
                   className="ng-button ng-button-secondary ng-button-large ng-pointer marapp-qa-actiongenerateslug"
                   style={{ marginTop: '36px' }}
                 >
-                  Generate a slug name
+                  {t('Generate a slug name')}
                 </button>
               </div>
             </div>
@@ -148,7 +152,7 @@ export function NewDashboard(props: IProps) {
           <Card className="ng-margin-medium-bottom">
             <div className="ng-width-1-1">
               <label className="ng-form-label" htmlFor="description">
-                Dashboard description
+                {t('Dashboard description')}
               </label>
 
               <Controller
@@ -162,7 +166,7 @@ export function NewDashboard(props: IProps) {
 
           <Card className="ng-margin-medium-bottom">
             <div className="ng-width-1-1">
-              <label htmlFor="provider">Included Widgets:</label>
+              <label htmlFor="provider">{t('Included Widgets')}:</label>
               <Controller
                 name="widgets"
                 type="widgets"
@@ -178,7 +182,7 @@ export function NewDashboard(props: IProps) {
                 isSearchable={true}
                 isMulti={true}
                 closeMenuOnSelect={false}
-                placeholder="Select widgets"
+                placeholder={t('Select widgets')}
               />
             </div>
           </Card>
@@ -194,14 +198,14 @@ export function NewDashboard(props: IProps) {
                 className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
                 disabled={!isValid || !dirty}
               >
-                Save and view details
+                {t('Save and view details')}
               </button>
 
               <LinkWithOrg
                 className="ng-button ng-button-secondary ng-button-large marapp-qa-back"
                 to="/dashboards"
               >
-                Return to dashboards home
+                {t('return to home', { value: t('dashboards') })}
               </LinkWithOrg>
             </div>
           )}

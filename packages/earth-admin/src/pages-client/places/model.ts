@@ -67,7 +67,7 @@ export interface PlaceIntersectionProps {
 export interface PlaceIntersection {
   name: string;
   id: string;
-  type?: 'country' | 'jurisdiction' | 'continent';
+  type?: 'country' | 'jurisdiction' | 'continent' | 'collection';
 }
 
 export const PLACE_DETAIL_QUERY = {

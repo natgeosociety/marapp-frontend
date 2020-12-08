@@ -21,6 +21,7 @@ import classnames from 'classnames';
 import React, { useState } from 'react';
 
 import './styles.scss';
+import { useTranslation } from 'react-i18next';
 
 interface SearchBoxProps {
   searchValue: string;
@@ -30,6 +31,7 @@ interface SearchBoxProps {
 
 const SearchBox = (props: SearchBoxProps) => {
   const { searchValue, searchValueAction, pageTitle } = props;
+  const { t } = useTranslation('admin');
   const [focus, setFocus] = useState(false);
 
   const handleSearchChange = (newValue: string) => {
@@ -50,7 +52,7 @@ const SearchBox = (props: SearchBoxProps) => {
         <i className="ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal" />
         <input
           type=" text"
-          placeholder={`search ${pageTitle.toLowerCase()}...`}
+          placeholder={`${t('search')} ${t(pageTitle).toLowerCase()}...`}
           className=" ng-width-1-1 ng-search-box"
           onFocus={() => setFocus(true)}
           onChange={(e) => handleSearchChange(e.target.value)}
