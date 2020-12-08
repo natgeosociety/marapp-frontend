@@ -2,7 +2,7 @@ import { Auth0Context } from 'auth/auth0';
 import classnames from 'classnames';
 import { PUBLIC_URL, REACT_APP_EXTERNAL_IDP_URL } from 'config';
 import { capitalize, identity, omit, pickBy } from 'lodash';
-import React, { ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
@@ -10,7 +10,6 @@ import ProfileService from 'services/ProfileService';
 import { APP_LOGO } from 'theme';
 
 import {
-  Card,
   InlineEditCard,
   Input,
   setupErrors,
@@ -59,7 +58,6 @@ export function ProfileComponent(props: IProps) {
   const [hasLeftOrg, setHasLeftOrg] = useState(false); // detect when the user is leaving an org in order to
   // change the map link to a "native" one (classic navigation to reset the whole state)
   const [userRoles, setUserRoles] = useState({});
-  const [isDeletingAccountOpen, setIsDeletingAccountOpen] = useState(false);
   const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
 
   const { touched, isValid } = formState;
@@ -88,7 +86,6 @@ export function ProfileComponent(props: IProps) {
   const fetchUserProfile = useCallback(async () => {
     try {
       const response = await ProfileService.fetchProfile();
-
       setUserProfile(response.data);
       processUserName(response.data);
 
@@ -101,7 +98,6 @@ export function ProfileComponent(props: IProps) {
   const fetchUserGroups = useCallback(async () => {
     try {
       const response = await ProfileService.fetchProfile({ include: 'groups' });
-
       groupRolesByOrganization(response.data?.groups);
     } finally {
       setIsUserRolesLoading(false);
@@ -109,10 +105,8 @@ export function ProfileComponent(props: IProps) {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      await fetchUserProfile();
-      await fetchUserGroups();
-    })();
+    fetchUserProfile();
+    fetchUserGroups();
   }, []);
 
   async function onSubmitName(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
@@ -450,9 +444,8 @@ export function ProfileComponent(props: IProps) {
                 </InlineEditCard>
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
-                <OrganisationsCardWrapper
-                  isUserRolesLoading={isUserRolesLoading}
-                  userRoles={userRoles}
+                <InlineEditCard
+                  hideEditButton={isUserRolesLoading || !Object.keys(userRoles).length}
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
@@ -535,7 +528,7 @@ export function ProfileComponent(props: IProps) {
                       ))}
                     </div>
                   </>
-                </OrganisationsCardWrapper>
+                </InlineEditCard>
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard
@@ -568,26 +561,29 @@ export function ProfileComponent(props: IProps) {
                       </p>
                     </>
                   )}
+                  hideEditButton={true}
                   submitButtonText={t('DELETE')}
                   submitButtonVariant={'danger'}
-                  manualOpen={isDeletingAccountOpen}
                   onCancel={() => {
-                    setIsDeletingAccountOpen(false);
                     setConfirmDeleteAccount(false);
                   }}
                   onSubmit={deleteAccount}
                   validForm={confirmDeleteAccount}
                 >
-                  <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                    {t('Account access')}
-                  </h3>
-                  <button
-                    type="button"
-                    className="marapp-qa-deleteaccount ng-button ng-button-secondary ng-margin-top"
-                    onClick={() => setIsDeletingAccountOpen(true)}
-                  >
-                    {t('Delete your account')}
-                  </button>
+                  {({ setIsEditing }) => (
+                    <>
+                      <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                        {t('Account access')}
+                      </h3>
+                      <button
+                        type="button"
+                        className="marapp-qa-deleteaccount ng-button ng-button-secondary ng-margin-top"
+                        onClick={() => setIsEditing(true)}
+                      >
+                        {t('Delete your account')}
+                      </button>
+                    </>
+                  )}
                 </InlineEditCard>
               </div>
             </div>
@@ -597,20 +593,3 @@ export function ProfileComponent(props: IProps) {
     </div>
   );
 }
-
-interface IOrganisationsCardWrapperProps {
-  userRoles: object;
-  isUserRolesLoading: boolean;
-  children: ReactNode;
-  [any: string]: any;
-}
-
-const OrganisationsCardWrapper = (props: IOrganisationsCardWrapperProps) => {
-  const { userRoles, isUserRolesLoading, children, ...rest } = props;
-
-  return isUserRolesLoading || !Object.keys(userRoles).length ? (
-    <Card className="ng-background-ultradkgray ng-user-organisations-card">{children}</Card>
-  ) : (
-    <InlineEditCard {...rest}>{children}</InlineEditCard>
-  );
-};
