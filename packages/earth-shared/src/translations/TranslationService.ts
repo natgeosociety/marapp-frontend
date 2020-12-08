@@ -30,6 +30,8 @@ import translationENAdmin from './en/admin.translation.json';
 import translationESAdmin from './es/admin.translation.json';
 import translationFRAdmin from './fr/admin.translation.json';
 
+import * as weglot from './weglot';
+
 interface ITranslationService {
   init(): void;
 }
@@ -37,8 +39,14 @@ interface ITranslationService {
 class TranslationService implements ITranslationService {
   constructor() {}
 
-  init() {
+  init(weglotApiKey) {
     const lang = SessionStorage.get('lang') || Elang.EN;
+
+    i18n.on('initialized', async (options) => {
+      await weglot.init(weglotApiKey);
+
+      weglot.changeLanguage(options.lng);
+    });
 
     i18n.use(initReactI18next).init({
       resources: {
@@ -63,7 +71,11 @@ class TranslationService implements ITranslationService {
       keySeparator: false,
     });
 
-    i18n.on('languageChanged', (lng) => SessionStorage.add('lang', lng));
+    i18n.on('languageChanged', (lng) => {
+      weglot.changeLanguage(lng);
+
+      SessionStorage.add('lang', lng);
+    });
   }
 }
 
