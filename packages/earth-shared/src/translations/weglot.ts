@@ -16,7 +16,11 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-const Weglot = window && window['Weglot'];
+let Weglot;
+
+if (typeof window !== `undefined`) {
+  Weglot = window['Weglot'];
+}
 
 export function init(weglotApiKey): Promise<any> {
   if (!Weglot) {
