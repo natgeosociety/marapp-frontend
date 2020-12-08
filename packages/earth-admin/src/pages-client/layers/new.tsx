@@ -42,6 +42,7 @@ import { ContentLayout } from '@app/layouts';
 import LayersService from '@app/services/layers';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenArrayForSelect, flattenObjectForSelect } from '@app/utils';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   path?: string;
@@ -56,6 +57,7 @@ interface IProps {
 export function NewLayer(props: IProps) {
   const { onDataChange = noop, dynamicOptions } = props;
   const { selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
     mode: 'onChange',
   });
@@ -113,15 +115,16 @@ export function NewLayer(props: IProps) {
     <ContentLayout backTo="/layers" className="marapp-qa-newlayer">
       <div>
         <div className="ng-flex ng-flex-space-between">
-          <h2 className="ng-text-display-m ng-c-flex-grow-1">New layer</h2>
+          <h2 className="ng-text-display-m ng-c-flex-grow-1">{t('New layer')}</h2>
         </div>
 
         <form className="ng-form ng-form-dark ng-flex-column" onSubmit={handleSubmit(onSubmit)}>
           <Card className="ng-margin-medium-bottom">
             <Input
               name="name"
-              placeholder="Layer title"
-              label="Title*"
+              placeholder={t('Layer title')}
+              label="Title"
+              required={true}
               className="ng-display-block"
               error={renderErrorFor('name')}
               ref={register({
@@ -135,8 +138,9 @@ export function NewLayer(props: IProps) {
               <div className="ng-flex-item-1">
                 <Input
                   name="slug"
-                  placeholder="Layer slug"
-                  label="Slug*"
+                  placeholder={t('Layer slug')}
+                  label="Slug"
+                  required={true}
                   className="ng-display-block marapp-qa-inputslug"
                   error={renderErrorFor('slug')}
                   ref={register({
@@ -151,16 +155,16 @@ export function NewLayer(props: IProps) {
                 <button
                   onClick={generateSlug}
                   disabled={!watchName || !!errors.name}
-                  title={watchName ? 'Generate slug' : 'Add a title first'}
+                  title={t(watchName ? 'Generate slug' : 'Add a title first')}
                   className="ng-button ng-button-secondary ng-button-large ng-pointer marapp-qa-actiongenerateslug"
                   style={{ marginTop: '36px' }}
                 >
-                  Generate a slug name
+                  {t('Generate a slug name')}
                 </button>
               </div>
             </div>
             <div className="ng-width-1-1">
-              <label htmlFor="category">Layer category*</label>
+              <label htmlFor="category">{t('Layer category')}*</label>
 
               <Controller
                 as={Select}
@@ -171,7 +175,7 @@ export function NewLayer(props: IProps) {
                 options={layerCategoryOptions}
                 isSearchable={true}
                 isMulti={true}
-                placeholder="Select layer category"
+                placeholder={t('Select layer category')}
                 styles={CUSTOM_STYLES}
                 theme={(theme) => ({
                   ...theme,
@@ -185,7 +189,7 @@ export function NewLayer(props: IProps) {
           <Card className="ng-margin-medium-bottom">
             <div className="ng-width-1-1">
               <label className="ng-form-label" htmlFor="description">
-                Layer description
+                {t('Layer description')}
               </label>
 
               <Controller
@@ -199,7 +203,7 @@ export function NewLayer(props: IProps) {
 
           <Card className="ng-margin-medium-bottom">
             <div className="ng-width-1-1 ng-margin-medium-bottom">
-              <label htmlFor="provider">Layer provider*</label>
+              <label htmlFor="provider">{t('Layer provider')}*</label>
               <Controller
                 as={Select}
                 control={control}
@@ -208,7 +212,7 @@ export function NewLayer(props: IProps) {
                 name="provider"
                 options={layerProviderOptions}
                 isSearchable={true}
-                placeholder="Select layer provider"
+                placeholder={t('Select layer provider')}
                 styles={CUSTOM_STYLES}
                 theme={(theme) => ({
                   ...theme,
@@ -218,7 +222,7 @@ export function NewLayer(props: IProps) {
               />
             </div>
             <div className="ng-width-1-1">
-              <label htmlFor="type">Layer type*</label>
+              <label htmlFor="type">{t('Layer type')}*</label>
               <Controller
                 as={Select}
                 control={control}
@@ -227,7 +231,7 @@ export function NewLayer(props: IProps) {
                 name="type"
                 options={layerTypeOptions}
                 isSearchable={true}
-                placeholder="Select layer type"
+                placeholder={t('Select layer type')}
                 styles={CUSTOM_STYLES}
                 theme={(theme) => ({
                   ...theme,
@@ -240,7 +244,7 @@ export function NewLayer(props: IProps) {
 
           <Card className="ng-margin-medium-bottom">
             <div className="ng-margin-medium-bottom">
-              <label htmlFor="config">Layer Config*</label>
+              <label htmlFor="config">{t('Layer Config')}*</label>
               <Controller
                 className="marapp-qa-config"
                 name="config"
@@ -251,7 +255,7 @@ export function NewLayer(props: IProps) {
             </div>
 
             <div className="ng-width-1-1">
-              <label htmlFor="provider">Included layers:</label>
+              <label htmlFor="provider">{t('Included layers')}:</label>
               <Controller
                 as={AsyncSelect}
                 name="references"
@@ -267,7 +271,7 @@ export function NewLayer(props: IProps) {
                 isSearchable={true}
                 isMulti={true}
                 closeMenuOnSelect={false}
-                placeholder="Select layers"
+                placeholder={t('Select layers')}
               />
             </div>
           </Card>
@@ -283,14 +287,14 @@ export function NewLayer(props: IProps) {
                 className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
                 disabled={!isValid || jsonError || !dirty || !watchJson}
               >
-                Save and view details
+                {t('Save and view details')}
               </button>
 
               <LinkWithOrg
                 className="ng-button ng-button-secondary ng-button-large marapp-qa-back"
                 to="/layers"
               >
-                Return to layers home
+                {t('return to home', { value: t('layers') })}
               </LinkWithOrg>
             </div>
           )}

@@ -20,6 +20,7 @@
 import { Router } from '@reach/router';
 import { navigate } from 'gatsby';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { ProtectedRoute } from '@app/components/protected-route';
@@ -62,8 +63,10 @@ export default function IndexPage() {
  */
 const RedirectToOrgHomepage = () => {
   const { selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
+
   useEffect(() => {
     selectedGroup && navigate(`/${selectedGroup}`, { replace: true });
   }, [selectedGroup]);
-  return <div>This is homepage - should be redirected to /:org</div>;
+  return <div>{t('This is homepage - should be redirected to /:org')}</div>;
 };

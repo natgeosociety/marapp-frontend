@@ -18,6 +18,7 @@
 */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { AuthzGuards, Card } from '@marapp/earth-shared';
 
@@ -27,6 +28,7 @@ import { ContentLayout } from '@app/layouts';
 
 export function WidgetsHome(props: any) {
   const { getPermissions } = useAuth0();
+  const { t } = useTranslation('admin');
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
 
   return (
@@ -34,17 +36,19 @@ export function WidgetsHome(props: any) {
       <ContentLayout className="marapp-qa-widgetshome">
         {writePermissions && (
           <>
-            <h1 className="ng-text-display-m ng-margin-medium-bottom">WIDGETS</h1>
+            <h1 className="ng-text-display-m ng-margin-medium-bottom">{t('Widgets')}</h1>
             <div className="ng-grid">
               <div className="ng-width-1-2">
                 <Card>
-                  <p>Search a widget to view and edit details, or start creating a new widget.</p>
+                  <p>
+                    {t('Search a widget to view and edit details, or start creating a new widget')}
+                  </p>
                   <div className="ng-flex ng-flex-center">
                     <LinkWithOrg
                       className="marapp-qa-actioncreate ng-button ng-button-secondary"
                       to="widgets/new"
                     >
-                      Create a new widget
+                      {t('Create a new widget')}
                     </LinkWithOrg>
                   </div>
                 </Card>

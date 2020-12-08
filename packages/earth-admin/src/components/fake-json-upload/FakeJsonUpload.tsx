@@ -20,6 +20,7 @@
 import jsonlint from 'jsonlint';
 import { noop } from 'lodash';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   name: string;
@@ -32,6 +33,7 @@ interface IProps {
 export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
   const { name, label, type, onChange = noop, onError = noop } = props;
   const [error, setError] = useState('');
+  const { t } = useTranslation('admin');
   const id = `input-${name}`;
 
   const handleJsonChange = (json) => {
@@ -63,9 +65,9 @@ export const FakeJsonUpload = React.forwardRef((props: IProps, ref: any) => {
 
   return (
     <div className="marapp-qa-fakejsonupload ng-flex-inline ng-flex-column">
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && <label htmlFor={id}>{t(label)}</label>}
       <input type="file" accept={type} id={id} name={name} onChange={handleUpload} ref={ref} />
-      {error && <div className="ng-form-error-block">{error}</div>}
+      {error && <div className="ng-form-error-block">{t(error)}</div>}
     </div>
   );
 });

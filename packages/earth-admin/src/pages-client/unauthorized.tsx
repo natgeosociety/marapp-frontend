@@ -20,19 +20,22 @@
 import React from 'react';
 
 import { Auth0Context } from '@app/utils/contexts';
+import { useTranslation } from 'react-i18next';
 
 export default function UnauthorizedPage(props) {
+  const { t } = useTranslation(['translation', 'admin']);
+
   return (
     <div className="ng-background-ltgray ng-padding-large ng-height-viewport ng-flex ng-flex-center ng-text-center">
       <div className="ng-flex ng-flex-middle">
         <div>
           <h1>403</h1>
-          <h2 className="ng-text-edit-m">You don’t have permission to access this page.</h2>
+          <h2 className="ng-text-edit-m">{t('You don’t have permission to access this page')}</h2>
           <Auth0Context.Consumer>
             {({ logout }) => (
               <div className="ng-padding-medium">
                 <button onClick={() => logout()} className="ng-button ng-button-primary">
-                  <span className="ng-display-block">LOG OUT</span>
+                  <span className="ng-display-block">{t('Sign Out').toUpperCase()}</span>
                 </button>
               </div>
             )}

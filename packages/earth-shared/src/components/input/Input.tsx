@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   name: string;
@@ -10,6 +11,7 @@ interface IProps {
   size?: 'small' | 'large';
   className?: string;
   defaultValue?: string | number;
+  required?: boolean;
   [any: string]: any;
 }
 
@@ -23,9 +25,10 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
     size = 'large',
     className,
     defaultValue,
+    required,
     ...rest
   } = props;
-
+  const { t } = useTranslation('admin');
   const id = `input-${name}`;
   const rootClases = cn('marapp-qa-input input-component', {
     [className]: !!className,
@@ -40,7 +43,8 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
     <div className={rootClases}>
       {label && (
         <label className="ng-form-label ng-display-block" htmlFor={id}>
-          {label}
+          {t(label)}
+          {required && '*'}
         </label>
       )}
       <input
@@ -53,7 +57,7 @@ export const Input = React.forwardRef((props: IProps, ref: any) => {
         className={inputClases}
         {...rest}
       />
-      {error && <div className="ng-form-error-block">{error}</div>}
+      {error && <div className="ng-form-error-block">{t(error)}</div>}
     </div>
   );
 });

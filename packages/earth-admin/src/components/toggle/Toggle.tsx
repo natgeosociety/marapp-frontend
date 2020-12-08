@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 
 import './styles.scss';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   value: boolean;
@@ -13,6 +14,7 @@ interface IProps {
 
 export const Toggle = React.forwardRef((props: IProps, ref: any) => {
   const { className, value, label, onChange, name } = props;
+  const { t } = useTranslation('admin');
 
   const classes = classNames({
     '-active': value === true,
@@ -41,7 +43,7 @@ export const Toggle = React.forwardRef((props: IProps, ref: any) => {
         />
         <span />
       </span>
-      {label}
+      {t(label)}
     </label>
   );
 });

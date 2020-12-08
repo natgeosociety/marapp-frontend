@@ -28,6 +28,7 @@ import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { normalizeGroupName } from '@app/utils';
 
 import { UserProps } from '../model';
+import { useTranslation } from 'react-i18next';
 
 export default function UserDetails(props: UserProps) {
   const {
@@ -38,6 +39,7 @@ export default function UserDetails(props: UserProps) {
   const [serverErrors, setServerErrors] = useState(null);
 
   const { getPermissions } = useAuth0();
+  const { t } = useTranslation('admin');
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
 
   function handleDeleteToggle() {
@@ -65,16 +67,16 @@ export default function UserDetails(props: UserProps) {
       </div>
 
       <div className="ng-padding-medium ng-background-ultradkgray ng-margin-medium-bottom">
-        <h3 className="ng-text-display-s">User details</h3>
+        <h3 className="ng-text-display-s">{t('User details')}</h3>
 
         <p>
-          <span className="ng-text-weight-medium">Email:</span> {email || '-'}
+          <span className="ng-text-weight-medium">{t('Email')}:</span> {email || '-'}
         </p>
         <p>
-          <span className="ng-text-weight-medium">Name: </span> {name || '-'}
+          <span className="ng-text-weight-medium">{t('Name')}: </span> {name || '-'}
         </p>
         <p>
-          <span className="ng-text-weight-medium">Roles:</span>{' '}
+          <span className="ng-text-weight-medium">{t('Roles')}:</span>{' '}
           {groups.map((group) => normalizeGroupName(group.name)).join(', ') || '-'}
         </p>
       </div>
@@ -84,11 +86,11 @@ export default function UserDetails(props: UserProps) {
             to={`/users/${id}/edit`}
             className="marapp-qa-actionedit ng-button ng-button-primary ng-margin-medium-right"
           >
-            Edit user
+            {t('Edit user')}
           </LinkWithOrg>
         )}
         <LinkWithOrg className="marapp-qa-actionback ng-button ng-button-secondary" to="/users">
-          Go back to users list
+          {t('Go back to users list')}
         </LinkWithOrg>
       </div>
       {serverErrors && <ErrorMessages errors={serverErrors} />}
@@ -98,7 +100,7 @@ export default function UserDetails(props: UserProps) {
             className="marapp-qa-actiondelete ng-button ng-button-primary"
             onClick={handleDeleteToggle}
           >
-            Delete user
+            {t('Delete user')}
           </button>
         </div>
       )}

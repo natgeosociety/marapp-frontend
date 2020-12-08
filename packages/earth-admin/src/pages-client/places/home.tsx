@@ -18,6 +18,7 @@
 */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { AuthzGuards, Card } from '@marapp/earth-shared';
 
@@ -27,6 +28,7 @@ import { ContentLayout } from '@app/layouts';
 
 export function PlacesHome(props: any) {
   const { getPermissions } = useAuth0();
+  const { t } = useTranslation('admin');
   const permissions = getPermissions(AuthzGuards.accessPlacesGuard);
   const writePermissions = getPermissions(AuthzGuards.writePlacesGuard);
 
@@ -35,17 +37,19 @@ export function PlacesHome(props: any) {
       <ContentLayout className="marapp-qa-placeshome">
         {writePermissions && (
           <>
-            <h1 className="ng-text-display-m ng-margin-medium-bottom">PLACES</h1>
+            <h1 className="ng-text-display-m ng-margin-medium-bottom">{t('Places')}</h1>
             <div className="ng-grid">
               <div className="ng-width-1-2">
                 <Card>
-                  <p>Search a place to view and edit details, or start creating a new place.</p>
+                  <p>
+                    {t('Search a place to view and edit details, or start creating a new place')}
+                  </p>
                   <div className="ng-flex ng-flex-center">
                     <LinkWithOrg
                       className="marapp-qa-actioncreate ng-button ng-button-secondary"
                       to="places/new"
                     >
-                      Create new place
+                      {t('Create new place')}
                     </LinkWithOrg>
                   </div>
                 </Card>

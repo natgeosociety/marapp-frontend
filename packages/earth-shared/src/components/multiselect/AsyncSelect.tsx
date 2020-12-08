@@ -18,6 +18,7 @@
 */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
 
 import { AsyncPaginate } from 'react-select-async-paginate';
@@ -35,7 +36,7 @@ interface AsyncSelectProps {
 
 const AsyncSelect = (props: AsyncSelectProps) => {
   const { loadFunction, type, selectedGroup, onChange, className, ...rest } = props;
-
+  const { t } = useTranslation('admin');
   const [cursor, setCursor] = useState(-1);
 
   const loadOptions = async (search, prevOptions) => {
@@ -76,8 +77,9 @@ const AsyncSelect = (props: AsyncSelectProps) => {
     <AsyncPaginate
       className={classnames('marapp-qa-asyncselect', className)}
       classNamePrefix="marapp-qa-asyncselect"
-      placeholder={`Select ${type}`}
+      placeholder={`${t('Select')} ${type}`}
       loadOptions={loadOptions}
+      loadingMessage={() => `${t('Loading')}...`}
       shouldLoadMore={shouldLoadMore}
       onChange={(values) => onChange(values)}
       styles={CUSTOM_STYLES}
