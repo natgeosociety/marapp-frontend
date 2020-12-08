@@ -65,16 +65,14 @@ export default function ContentLayout(props: ILayoutProps) {
         <title>{APP_NAME}</title>
       </Helmet>
       <div className="ng-page-container ng-background-gray-9">
-        <div className="top-right-corner">
-          <UserMenu
-            isAuthenticated={isAuthenticated}
-            userName={userData.name}
-            profileLink={<a href={`${MAP_PATH}profile`}>Profile</a>}
-            onLogin={login}
-            onLogout={logout}
-            onSignUp={() => login({ initialScreen: 'signUp' })}
-          />
-        </div>
+        <UserMenu
+          isAuthenticated={isAuthenticated}
+          userName={userData.name}
+          profileLink={<a href={`${MAP_PATH}profile`}>Profile</a>}
+          onLogin={login}
+          onLogout={logout}
+          onSignUp={() => login({ initialScreen: 'signUp' })}
+        />
         <div className="ng-padding-large">
           <Content {...props} />
         </div>
