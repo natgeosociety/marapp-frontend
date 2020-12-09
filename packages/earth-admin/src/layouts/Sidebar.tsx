@@ -53,7 +53,7 @@ const SidebarLayout = (props: IProps) => {
 
   return (
     <div className="ng-sidebar ng-flex ng-flex-column ng-flex-top ng-shadow-medium">
-      <div className="ng-sidebar-header ng-shadow-large ng-background-dkgray ng-padding-bottom">
+      <div className="ng-sidebar-header ng-background-dkgray ng-padding-bottom">
         <AppContextSwitcher
           logo={logo}
           label={selectedGroup}
