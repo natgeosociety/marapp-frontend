@@ -25,7 +25,6 @@ import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { useTranslation } from 'react-i18next';
 
 import './styles.scss';
-import { useTranslation } from 'react-i18next';
 
 interface JsonEditorProps {
   json?: {};
