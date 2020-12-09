@@ -22,6 +22,7 @@ import auth0 from 'config/auth0';
 import get from 'lodash/get';
 import qs from 'query-string';
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { routeToPage } from 'utils';
 
 import {
@@ -31,6 +32,7 @@ import {
   mapAuthzScopes,
   mapRoleGroups,
   SessionStorage,
+  TranslationService,
 } from '@marapp/earth-shared';
 
 import { Auth0 } from './model';
@@ -84,6 +86,7 @@ export const Auth0Provider = ({
   const [permissions, setPermissions] = useState({});
   // TODO: rename this to selectedGroups
   const [selectedGroup, setSelectedGroup] = useState(null);
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     const initAuth0 = async () => {
@@ -161,13 +164,17 @@ export const Auth0Provider = ({
    */
   const login = (options = {}) => {
     SessionStorage.remove('ephemeral');
-    SessionStorage.remove('lang');
+
     return client.loginWithRedirect(options);
   };
 
   const logout = (options = {}) => {
     SessionStorage.remove('ephemeral');
-    SessionStorage.remove('lang');
+
+    // selected language is removed on logout, and default language is selected;
+    const defaultLanguage = TranslationService.getDefaultLanguage();
+    i18n.changeLanguage(defaultLanguage);
+
     // force the user to log out of their identity provider;
     return client.logout({ ...options, federated: true });
   };
