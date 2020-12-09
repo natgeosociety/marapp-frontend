@@ -5,11 +5,12 @@
 ### Checklist
 All boxes should be checked before the PR can be accepted. Exceptions can be made, but they need to be argumented and discussed with the reviewer
 
-- [ ] Ran the linter with `yarn lint`
-- [ ] No TypeScript warnings are introduced
 - [ ] Added QA classes on main containers and all actionable items like Buttons, Inputs, etc
+- [ ] Translated all the static user facing text
 - [ ] Added/Updated unit tests for the code in `earth-shared`
 - [ ] Added/Updated end to end tests for the main functionality
+- [ ] Ran the linter with `yarn lint`
+- [ ] No TypeScript warnings are introduced
 
 <br>
 <hr>
