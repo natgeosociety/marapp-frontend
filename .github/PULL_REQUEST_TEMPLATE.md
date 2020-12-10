@@ -8,10 +8,11 @@ All boxes should be checked before the PR can be accepted. Exceptions can be mad
 
 - [ ] **Translated** all the static user facing text
 - [ ] **Ran Unit and E2E tests** and they pass successfuly
-- [ ] Ran the linter with `yarn lint`
+- [ ] **Ran the linter** with `yarn lint`
 - [ ] No TypeScript warnings are introduced
 
 #### Not Needed
+- [ ] Drag here
 <hr>
 
 ### STORY
@@ -21,11 +22,12 @@ All boxes should be checked before the PR can be accepted. Exceptions can be mad
 - [ ] **Added QA classes** on main containers and all actionable items like Buttons, Inputs, etc
 - [ ] **Translated** all the static user facing text
 - [ ] **Ran Unit and E2E tests** and they pass successfuly
-- [ ] Added unit tests for the code in `earth-shared`
-- [ ] Ran the linter with `yarn lint`
+- [ ] **Added unit tests** for the code in **earth-shared**
+- [ ] **Ran the linter** with `yarn lint`
 - [ ] No TypeScript warnings are introduced
 
 #### Not Needed
+- [ ] Drag here
 - [ ] Added end to end tests for the main functionality
 
 <br>
