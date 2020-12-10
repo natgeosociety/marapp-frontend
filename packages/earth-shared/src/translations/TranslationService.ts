@@ -52,9 +52,11 @@ class TranslationService implements ITranslationService {
     const lang = SessionStorage.get('lang') || Elang.EN;
 
     i18n.on('initialized', async (options) => {
-      await weglot.init(weglotApiKey);
+      if (weglotApiKey) {
+        await weglot.init(weglotApiKey);
 
-      weglot.changeLanguage(options.lng);
+        weglot.changeLanguage(options.lng);
+      }
     });
 
     i18n.use(initReactI18next).init({
@@ -81,7 +83,7 @@ class TranslationService implements ITranslationService {
     });
 
     i18n.on('languageChanged', (lng) => {
-      weglot.changeLanguage(lng);
+      weglotApiKey && weglot.changeLanguage(lng);
 
       SessionStorage.add('lang', lng);
     });
