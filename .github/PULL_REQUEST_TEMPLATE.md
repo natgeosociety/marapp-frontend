@@ -1,16 +1,32 @@
-### Description
-
-> Replace this with a simple description of the functionality
-
-### Checklist
 All boxes should be checked before the PR can be accepted. Exceptions can be made, but they need to be argumented and discussed with the reviewer
 
-- [ ] Added QA classes on main containers and all actionable items like Buttons, Inputs, etc
-- [ ] Translated all the static user facing text
-- [ ] Added/Updated unit tests for the code in `earth-shared`
-- [ ] Added/Updated end to end tests for the main functionality
+<hr>
+
+### BUGFIX
+
+#### Required
+
+- [ ] **Translated** all the static user facing text
+- [ ] **Ran Unit and E2E tests** and they pass successfuly
 - [ ] Ran the linter with `yarn lint`
 - [ ] No TypeScript warnings are introduced
+
+#### Not Needed
+<hr>
+
+### STORY
+
+#### Required
+
+- [ ] **Added QA classes** on main containers and all actionable items like Buttons, Inputs, etc
+- [ ] **Translated** all the static user facing text
+- [ ] **Ran Unit and E2E tests** and they pass successfuly
+- [ ] Added unit tests for the code in `earth-shared`
+- [ ] Ran the linter with `yarn lint`
+- [ ] No TypeScript warnings are introduced
+
+#### Not Needed
+- [ ] Added end to end tests for the main functionality
 
 <br>
 <hr>
@@ -26,13 +42,5 @@ All boxes should be checked before the PR can be accepted. Exceptions can be mad
 > - Related pull requests/issues from other repos
 >
 > If there are no references, simply delete this section.
-
-### Testing
-
-> Describe how this can be tested by reviewers. Be specific about anything not tested and reasons why. If this library has unit and/or integration testing, tests should be added for new functionality and existing tests should complete without errors.
->
-> Please include any manual steps for testing end-to-end or functionality not covered by unit/integration tests.
->
-> Also include details of the environment this PR was developed in (language/platform/browser version).
 
 By submitting a PR to this repository, you agree to the terms within the [Code of Conduct](https://github.com/natgeosociety/marapp-frontend/blob/master/CODE-OF-CONDUCT.md). Please see the [contributing guidelines](https://github.com/natgeosociety/marapp-frontend/blob/master/CONTRIBUTING.md) for how to create and submit a high-quality PR for this repo.
