@@ -30,10 +30,28 @@ import { useInfiniteList } from '@app/utils/hooks';
 
 import { PlaceDetail } from './details';
 import { PlacesHome } from './home';
+import { LOCATION_TYPE } from './model';
 import { NewPlace } from './new';
 
 const PAGE_TYPE = setPage('Places');
 const PAGE_SIZE = 20;
+
+interface IDynamicProps {
+  type?: any[];
+}
+
+/**
+ * Currently the Collection resource is a Place with type === 'Collection'
+ * A collection should be handled separately from Places from an UI point of view.
+ * Exlude collections from Places admin
+ */
+const excludeCollectionTypeOption = (filters: IDynamicProps): IDynamicProps => {
+  if (filters?.type) {
+    filters.type = filters.type.filter((type) => type.value !== LOCATION_TYPE.COLLECTION);
+  }
+
+  return filters;
+};
 
 export default function PlacesPage(props) {
   const { selectedGroup } = useAuth0();
@@ -42,6 +60,7 @@ export default function PlacesPage(props) {
   const getQueryFn = (cursor: string): { query: RequestQuery; resourceType: string } => {
     const query = {
       search: searchValue,
+      filter: ['type', '!=', LOCATION_TYPE.COLLECTION].join(''),
       sort: 'name',
       page: { size: PAGE_SIZE, cursor },
       select: 'name,slug',
@@ -55,6 +74,8 @@ export default function PlacesPage(props) {
   // Matches everything after the resource name in the url.
   // In our case that's /resource-id or /new
   const selectedItem = props['*'];
+
+  const dynamicOptions = excludeCollectionTypeOption(filters);
 
   return (
     <>
@@ -72,8 +93,8 @@ export default function PlacesPage(props) {
       </SidebarLayout>
       <Router>
         <PlacesHome path="/" />
-        <NewPlace path="/new" onDataChange={mutate} dynamicOptions={filters} />
-        <PlaceDetail path="/:page" onDataChange={mutate} dynamicOptions={filters} />
+        <NewPlace path="/new" onDataChange={mutate} dynamicOptions={dynamicOptions} />
+        <PlaceDetail path="/:page" onDataChange={mutate} dynamicOptions={dynamicOptions} />
       </Router>
     </>
   );

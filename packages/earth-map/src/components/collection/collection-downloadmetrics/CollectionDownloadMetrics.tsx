@@ -17,19 +17,18 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import FileSaver from 'file-saver';
+import flatten from 'flat';
+import json2csv from 'json2csv';
+import JSZip from 'jszip';
+import { groupBy } from 'lodash';
 import { ICollection } from 'modules/collections/model';
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-
-import { TitleHero, Card, ReactSelect, serializeFilters } from '@marapp/earth-shared';
+import { useTranslation } from 'react-i18next';
 import MetricService from 'services/MetricService';
 
-import JSZip from 'jszip';
-import FileSaver from 'file-saver';
-import json2csv from 'json2csv';
-import { groupBy } from 'lodash';
-import flatten from 'flat';
+import { Card, ReactSelect, serializeFilters, TitleHero } from '@marapp/earth-shared';
 
 interface IProps {
   collection: ICollection;
