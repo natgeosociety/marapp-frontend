@@ -34,10 +34,19 @@ import * as weglot from './weglot';
 
 interface ITranslationService {
   init(): void;
+  getDefaultLanguage(): string;
 }
 
 class TranslationService implements ITranslationService {
   constructor() {}
+
+  getDefaultLanguage() {
+    const {
+      fallbackLng: [defaultLanguage],
+    } = i18n.options;
+
+    return defaultLanguage || Elang.EN;
+  }
 
   init(weglotApiKey) {
     const lang = SessionStorage.get('lang') || Elang.EN;
