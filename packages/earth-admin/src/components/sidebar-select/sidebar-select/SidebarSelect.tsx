@@ -19,6 +19,7 @@
 
 import classnames from 'classnames';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useDomWatcher } from '@marapp/earth-shared';
 
@@ -34,6 +35,7 @@ interface IProps {
 
 const SidebarSelect = (props: IProps) => {
   const [dropdownState, setDropdownState] = useState('close');
+  const { t } = useTranslation('admin');
   const currentPage = !!props.path ? props.path[0].key : 'Choose a page';
 
   const handleDropdownToggle = () => {
@@ -53,7 +55,7 @@ const SidebarSelect = (props: IProps) => {
           onClick={handleDropdownToggle}
           className="marapp-qa-actiontoggle ng-padding ng-c-cursor-pointer ng-flex ng-select-display-values"
         >
-          {currentPage || 'Choose a page'}
+          {t(currentPage || 'Choose a page')}
           <i
             className={classnames({
               'ng-icon-directiondown': dropdownState === 'close',

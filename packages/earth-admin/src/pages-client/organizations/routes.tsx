@@ -62,7 +62,7 @@ export default function PlacesPage(props) {
         <DataListing
           childComponent={DefaultListItem}
           categoryUrl="organizations"
-          pageTitle="ORGANIZATIONS"
+          pageTitle="organizations"
           pageSize={PAGE_SIZE}
           selectedItem={selectedItem}
           {...listProps}

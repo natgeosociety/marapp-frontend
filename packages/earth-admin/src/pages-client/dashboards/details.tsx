@@ -17,6 +17,7 @@ import { noop } from 'lodash';
 import { merge } from 'lodash/fp';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 import useSWR from 'swr';
 
@@ -59,6 +60,7 @@ interface IProps {
 export function DashboardDetail(props: IProps) {
   const { page, onDataChange = noop } = props;
   const { getPermissions, selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
   const query = merge(DASHBOARD_DETAIL_QUERY, { group: selectedGroup });
@@ -154,7 +156,7 @@ export function DashboardDetail(props: IProps) {
             to="/dashboards"
           >
             <i className="ng-icon ng-icon-directionleft" />
-            return to dashboards home
+            {t('return to home', { value: 'dashboards' })}
           </LinkWithOrg>
           <form className="ng-form ng-form-dark ng-flex-column">
             <div className="ng-grid">
@@ -166,8 +168,9 @@ export function DashboardDetail(props: IProps) {
                     <>
                       <Input
                         name="name"
-                        placeholder="Dashboard title"
-                        label="Title*"
+                        placeholder={t('Dashboard title')}
+                        label="Title"
+                        required={true}
                         defaultValue={name}
                         className="ng-display-block"
                         error={renderErrorFor('name')}
@@ -204,9 +207,10 @@ export function DashboardDetail(props: IProps) {
                       <div className="ng-margin-medium-bottom">
                         <Input
                           name="slug"
-                          placeholder="Dashboard slug"
-                          label="Slug*"
+                          placeholder={t('Dashboard slug')}
+                          label="Slug"
                           defaultValue={slug}
+                          required={true}
                           className="ng-display-block marapp-qa-inputslug"
                           error={renderErrorFor('slug')}
                           ref={register({
@@ -221,7 +225,7 @@ export function DashboardDetail(props: IProps) {
                   )}
                 >
                   <div className="ng-margin-medium-bottom">
-                    <p className="ng-text-weight-bold ng-margin-remove">Dashboard slug</p>
+                    <p className="ng-text-weight-bold ng-margin-remove">{t('Dashboard slug')}</p>
                     <p className="ng-margin-remove ng-padding-left">{slug}</p>
                   </div>
                 </InlineEditCard>
@@ -229,17 +233,20 @@ export function DashboardDetail(props: IProps) {
               <div className="ng-width-1-2">
                 <Card>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">ID:</span> {id}
+                    <span className="ng-text-weight-bold ng-color-mdgray">{t('ID')}:</span> {id}
                   </p>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">Version:</span> {version}
+                    <span className="ng-text-weight-bold ng-color-mdgray">{t('Version')}:</span>{' '}
+                    {version}
                   </p>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">Last Updated:</span>{' '}
+                    <span className="ng-text-weight-bold ng-color-mdgray">
+                      {t('Last Updated')}:
+                    </span>{' '}
                     {formatDate(updatedAt)}
                   </p>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">Created:</span>{' '}
+                    <span className="ng-text-weight-bold ng-color-mdgray">{t('Created')}:</span>{' '}
                     {formatDate(createdAt)}
                   </p>
                 </Card>
@@ -253,7 +260,7 @@ export function DashboardDetail(props: IProps) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <label className="ng-form-label" htmlFor="description">
-                        Dashboard description
+                        {t('Dashboard description')}
                       </label>
 
                       <Controller
@@ -266,9 +273,11 @@ export function DashboardDetail(props: IProps) {
                   )}
                 >
                   <div className="ng-margin-medium-bottom">
-                    <p className="ng-text-weight-bold ng-margin-remove">Dashboard description</p>
+                    <p className="ng-text-weight-bold ng-margin-remove">
+                      {t('Dashboard description')}
+                    </p>
                     <div className="ng-margin-remove ng-padding-left">
-                      {description ? renderHTML(description) : 'No description'}
+                      {description ? renderHTML(description) : t('No description')}
                     </div>
                   </div>
                 </InlineEditCard>
@@ -282,7 +291,7 @@ export function DashboardDetail(props: IProps) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <div className="ng-margin-medium-bottom">
-                        <label htmlFor="provider">Dashboard widgets:</label>
+                        <label htmlFor="provider">{t('Dashboard widgets')}:</label>
                         <Controller
                           name="widgets"
                           type="widgets"
@@ -299,7 +308,7 @@ export function DashboardDetail(props: IProps) {
                           isSearchable={true}
                           isMulti={true}
                           closeMenuOnSelect={false}
-                          placeholder="Select widgets"
+                          placeholder={t('Select widgets')}
                         />
                       </div>
                     </>
@@ -309,16 +318,16 @@ export function DashboardDetail(props: IProps) {
                     {!!widgets ? (
                       <DetailList
                         data={widgets}
-                        name="Dashboard Widgets"
+                        name={t('Dashboard Widgets')}
                         type="widgets"
                         className="ng-flex-column ng-flex-top"
                       />
                     ) : (
                       <div>
                         <p className="ng-text-weight-bold ng-margin-small-bottom">
-                          Dashboard widgets
+                          {t('Dashboard widgets')}
                         </p>
-                        <span className="ng-padding-left">No dashboard widgets</span>
+                        <span className="ng-padding-left">{t('No dashboard widgets')}</span>
                       </div>
                     )}
                   </div>
@@ -330,7 +339,7 @@ export function DashboardDetail(props: IProps) {
           {writePermissions && (
             <div className="ng-text-right ng-margin-medium-top">
               <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
-                Delete dashboard
+                {t('Delete dashboard')}
               </button>
             </div>
           )}

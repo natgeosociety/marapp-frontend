@@ -21,6 +21,7 @@ import { navigate } from 'gatsby';
 import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
 
 import { Card, ErrorMessages, Input, setupErrors, Spinner, Tab, Tabs } from '@marapp/earth-shared';
@@ -56,6 +57,7 @@ export function NewPlace(props: IProps) {
   const [jsonError, setJsonError] = useState(false);
   const [panel, setPanel] = useState('upload');
   const { selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
   const renderErrorFor = setupErrors(errors, touched);
 
   const switchGeojsonTab = (e) => {
@@ -80,7 +82,11 @@ export function NewPlace(props: IProps) {
     } catch (error) {
       // TODO: Remove this when the real "upload file" feature is available.
       const fallbackError = [
-        { detail: 'Something went wrong. Please make sure the selected file is under 6MB.' },
+        {
+          detail: `${t(
+            'Something went wrong'
+          )}. ${t('Please make sure the selected file is under MB', { value: 6 })}`,
+        },
       ];
 
       setIsLoading(false);
@@ -102,7 +108,7 @@ export function NewPlace(props: IProps) {
     <ContentLayout backTo="/places" className="marapp-qa-placesnew">
       <div>
         <div className="ng-flex ng-flex-space-between">
-          <h2 className="ng-text-display-m ng-c-flex-grow-1">New place</h2>
+          <h2 className="ng-text-display-m ng-c-flex-grow-1">{t('New place')}</h2>
         </div>
 
         <form
@@ -114,8 +120,9 @@ export function NewPlace(props: IProps) {
               <Card>
                 <Input
                   name="name"
-                  placeholder="Place title"
-                  label="Title*"
+                  placeholder={t('Place title')}
+                  label="Title"
+                  required={true}
                   className="ng-display-block"
                   error={renderErrorFor('name')}
                   ref={register({
@@ -128,13 +135,13 @@ export function NewPlace(props: IProps) {
 
           <Card className="ng-margin-medium-bottom">
             <div className="ng-margin-medium-bottom">
-              <label htmlFor="type">Place type*</label>
+              <label htmlFor="type">{t('Place type')}*</label>
               <Controller
                 as={Select}
                 control={control}
                 name="type"
                 options={placeTypeOptions}
-                placeholder="Select place type"
+                placeholder={t('Select place type')}
                 styles={CUSTOM_STYLES}
                 error={renderErrorFor('type')}
                 theme={(theme) => ({
@@ -149,12 +156,13 @@ export function NewPlace(props: IProps) {
               <div className="ng-flex-item-1">
                 <Input
                   name="slug"
-                  placeholder="Place slug"
-                  label="Slug*"
+                  placeholder={t('Place slug')}
+                  label="Slug"
+                  required={true}
                   className="ng-display-block"
                   error={renderErrorFor('slug')}
                   ref={register({
-                    required: 'Slug is required',
+                    required: 'Place slug is required',
                   })}
                 />
               </div>
@@ -162,11 +170,11 @@ export function NewPlace(props: IProps) {
                 <button
                   onClick={generateSlug}
                   disabled={!watchName || !!errors.name}
-                  title={watchName ? 'Generate slug' : 'Add a title first'}
+                  title={t(watchName ? 'Generate slug' : 'Add a title first')}
                   className="marapp-qa-actiongenerateslug ng-button ng-button-secondary ng-button-large ng-pointer"
                   style={{ marginTop: '36px' }}
                 >
-                  Generate a slug name
+                  {t('Generate a slug name')}
                 </button>
               </div>
             </div>
@@ -175,16 +183,18 @@ export function NewPlace(props: IProps) {
           <Card className="ng-margin-medium-bottom">
             <>
               <Tabs value={panel} onChange={switchGeojsonTab} className="ng-ep-background-dark">
-                <Tab label="Shape File" value="upload" />
-                <Tab label="Json editor" value="json" />
+                <Tab label={t('Shape File')} value="upload" />
+                <Tab label={t('Json editor')} value="json" />
               </Tabs>
               {panel === 'upload' && (
                 <>
-                  <p>Choose a GeoJSON to calculate shape maths and geographic relationships.</p>
+                  <p>
+                    {t('Choose a GeoJSON to calculate shape maths and geographic relationships')}
+                  </p>
                   <FakeJsonUpload
                     name="geojson"
                     type=".geojson"
-                    label="Place shape*"
+                    label={`${t('Place shape')}*`}
                     ref={register({
                       required: 'GeoJSON is required',
                     })}
@@ -220,14 +230,14 @@ export function NewPlace(props: IProps) {
                 className="marapp-qa-actionsave ng-button ng-button-primary ng-button-large ng-margin-medium-right"
                 disabled={!isValid || jsonError || !dirty}
               >
-                Save and view details
+                {t('Save and view details')}
               </button>
 
               <LinkWithOrg
                 className="marapp-qa-actionreturn ng-button ng-button-secondary ng-button-large"
                 to="/places"
               >
-                Return to places home
+                {t('return to home', { value: t('places') })}
               </LinkWithOrg>
             </div>
           )}

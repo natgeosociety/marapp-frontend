@@ -19,6 +19,7 @@
 
 import classnames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { LinkWithOrg } from '@app/components/link-with-org';
 import { Auth0Context } from '@app/utils/contexts';
@@ -27,6 +28,7 @@ export default function SidebarItem(props) {
   const [itemPermission, setItemPermission] = useState(false);
   const { item, selected } = props;
   const { getPermissions, selectedGroup } = useContext(Auth0Context);
+  const { t } = useTranslation('admin');
 
   useEffect(() => {
     setItemPermission(getPermissions(item.guard));
@@ -45,7 +47,7 @@ export default function SidebarItem(props) {
           state={{ refresh: true }}
           key={item.key}
         >
-          <span className="ng-display-block ng-dropdown-item">{item.key}</span>
+          <span className="ng-display-block ng-dropdown-item">{t(item.key)}</span>
         </LinkWithOrg>
       </li>
     )

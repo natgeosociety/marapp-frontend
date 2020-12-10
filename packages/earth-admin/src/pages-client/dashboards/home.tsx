@@ -18,6 +18,7 @@
 */
 
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { AuthzGuards, Card } from '@marapp/earth-shared';
 
@@ -27,6 +28,7 @@ import { ContentLayout } from '@app/layouts';
 
 export function DashboardsHome(props: any) {
   const { getPermissions } = useAuth0();
+  const { t } = useTranslation('admin');
   const writePermissions = getPermissions(AuthzGuards.writeDashboardsGuard);
 
   return (
@@ -34,19 +36,21 @@ export function DashboardsHome(props: any) {
       <ContentLayout className="marapp-qa-dashboardshome">
         {writePermissions && (
           <>
-            <h1 className="ng-text-display-m ng-margin-medium-bottom">Dashboards</h1>
+            <h1 className="ng-text-display-m ng-margin-medium-bottom">{t('Dashboards')}</h1>
             <div className="ng-grid">
               <div className="ng-width-1-2">
                 <Card>
                   <p>
-                    Search a dashboard to view and edit details, or start creating a new dashboard.
+                    {t(
+                      'Search a dashboard to view and edit details, or start creating a new dashboard'
+                    )}
                   </p>
                   <div className="ng-flex ng-flex-center">
                     <LinkWithOrg
                       className="marapp-qa-actioncreate ng-button ng-button-secondary"
                       to="dashboards/new"
                     >
-                      Create new dashboard
+                      {t('Create new dashboard')}
                     </LinkWithOrg>
                   </div>
                 </Card>

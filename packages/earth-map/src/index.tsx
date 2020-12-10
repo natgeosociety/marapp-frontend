@@ -18,7 +18,6 @@
 */
 
 import 'core-js/stable';
-import 'locales';
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import TagManager from 'react-gtm-module';

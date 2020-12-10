@@ -20,6 +20,7 @@
 import { Router } from '@reach/router';
 import { merge } from 'lodash/fp';
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import useSWR from 'swr';
 
 import { Card } from '@marapp/earth-shared';
@@ -42,7 +43,7 @@ const USER_DETAIL_QUERY = {
 
 export default function UsersPage(props) {
   const { org } = props;
-
+  const { t } = useTranslation('admin');
   const query = { group: org };
   const cacheKey = generateCacheKey(`organizations/stats`, query);
 
@@ -59,30 +60,30 @@ export default function UsersPage(props) {
               <h2 className="ng-text-display-m ng-margin-bottom-remove">{organization.name}</h2>
               <p className="ng-margin-bottom-large">{organization.description}</p>
               <p className="ng-margin-vertical">
-                <strong className="ng-color-mdgray">Slug: </strong>
+                <strong className="ng-color-mdgray">{t('Slug')}: </strong>
                 {organization.slug}
               </p>
 
               <hr className="ng-hr-small ng-hr" />
 
               <p className="ng-margin-vertical">
-                <strong className="ng-color-mdgray">Organization collections: </strong>
+                <strong className="ng-color-mdgray">{t('Organization collections')}: </strong>
                 {organization.collections}
               </p>
               <p className="ng-margin-vertical">
-                <strong className="ng-color-mdgray">Organization places: </strong>
+                <strong className="ng-color-mdgray">{t('Organization places')}: </strong>
                 {organization.locations}
               </p>
               <p className="ng-margin-vertical">
-                <strong className="ng-color-mdgray">Organization layers: </strong>
+                <strong className="ng-color-mdgray">{t('Organization layers')}: </strong>
                 {organization.layers}
               </p>
               <p className="ng-margin-vertical">
-                <strong className="ng-color-mdgray">Organization widgets: </strong>
+                <strong className="ng-color-mdgray">{t('Organization widgets')}: </strong>
                 {organization.widgets}
               </p>
               <p className="ng-margin-vertical">
-                <strong className="ng-color-mdgray">Organization dashboards: </strong>
+                <strong className="ng-color-mdgray">{t('Organization dashboards')}: </strong>
                 {organization.dashboards}
               </p>
             </>

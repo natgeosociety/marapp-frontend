@@ -86,15 +86,15 @@ export const validEmailRule = (errorMessage: string = 'Please add a valid email 
   compose(maybeShowError(errorMessage), validEmail);
 
 export const upperNumericDashesRule = (
-  errorMessage: string = 'Only upercase alphanumeric characters and hyphens allowed.'
+  errorMessage: string = 'Only upercase alphanumeric characters and hyphens allowed'
 ) => compose(maybeShowError(errorMessage), upperNumericDashes);
 
 export const lowerNumericDashesRule = (
-  errorMessage: string = 'Only lowercase alphanumeric characters and hyphens allowed.'
+  errorMessage: string = 'Only lowercase alphanumeric characters and hyphens allowed'
 ) => compose(maybeShowError(errorMessage), lowerNumericDashes);
 
 export const alphaNumericDashesRule = (
-  errorMessage: string = 'Only lowercase alphanumeric characters and hyphens allowed.'
+  errorMessage: string = 'Only lowercase alphanumeric characters and hyphens allowed'
 ) => compose(maybeShowError(errorMessage), alphaNumericDashes);
 
 export const noSpecialCharsOrSpaceRule = (

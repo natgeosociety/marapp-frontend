@@ -23,6 +23,7 @@ import React, { useState } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 import './styles.scss';
+import { useTranslation } from 'react-i18next';
 
 interface JsonEditorProps {
   json?: {};
@@ -33,6 +34,7 @@ interface JsonEditorProps {
 
 export const JsonEditor = (props: JsonEditorProps) => {
   const [error, setError] = useState('');
+  const { t } = useTranslation('admin');
   const { json, onChange, readOnly, onError } = props;
 
   function makeMarker() {
@@ -79,7 +81,7 @@ export const JsonEditor = (props: JsonEditorProps) => {
         }}
         onBlur={handleBlur}
       />
-      {error && <div className="ng-form-error-block">{error}</div>}
+      {error && <div className="ng-form-error-block">{t(error)}</div>}
     </div>
   );
 };

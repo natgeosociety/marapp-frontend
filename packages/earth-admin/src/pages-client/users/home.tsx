@@ -21,6 +21,8 @@ import List from '@researchgate/react-intersection-list';
 import classnames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+
 import Select from 'react-select';
 
 import {
@@ -31,7 +33,6 @@ import {
   Spinner,
   useDomWatcher,
 } from '@marapp/earth-shared';
-
 import { useAuth0 } from '@app/auth/auth0';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { ContentLayout } from '@app/layouts';
@@ -55,6 +56,7 @@ interface RolePopupData {
 
 export function UsersHome(props: any) {
   const { getPermissions, selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
   const writePermissions = getPermissions(AuthzGuards.writeUsersGuard);
 
   const [isLoadingInviteUsers, setIsLoadingInviteUsers] = useState(false);
@@ -193,7 +195,6 @@ export function UsersHome(props: any) {
     }
 
     const scrollContainer = document.querySelector('.ng-page-container');
-
     const containerBoundingRect = scrollContainer.getBoundingClientRect();
     const boundingRect = e.target.getBoundingClientRect();
 
@@ -202,7 +203,7 @@ export function UsersHome(props: any) {
       deleteEmail: user.email,
       group: normalizeGroupName(user.groups[0].name),
       x: boundingRect.left - containerBoundingRect.left,
-      y: boundingRect.bottom + scrollContainer.scrollTop,
+      y: boundingRect.bottom + window.scrollY,
       visible: true,
     });
   };
@@ -252,7 +253,9 @@ export function UsersHome(props: any) {
                 <Card>
                   <div className="ng-grid">
                     <div className="ng-width-1-1">
-                      <p className="ng-text-weight-bold">Add users to {selectedGroup}:</p>
+                      <p className="ng-text-weight-bold">
+                        {t('Add users to group', { value: selectedGroup })}:
+                      </p>
                     </div>
                     <div className="ng-width-10-12">
                       <Controller
@@ -261,7 +264,7 @@ export function UsersHome(props: any) {
                         control={control}
                         defaultValue={[]}
                         isMulti={true}
-                        placeholder="Enter existing emails to add users to this organization"
+                        placeholder={t('Enter existing emails to add users to this organization')}
                         className="marapp-qa-invite-users"
                         rules={{ required: true }}
                       />
@@ -274,7 +277,7 @@ export function UsersHome(props: any) {
                         name="role"
                         options={availableGroups}
                         isSearchable={false}
-                        placeholder="Select role"
+                        placeholder={t('Select role')}
                         styles={customStylesRoles}
                         theme={(theme) => ({
                           ...theme,
@@ -289,16 +292,19 @@ export function UsersHome(props: any) {
                         {usersFeedback.map((item) =>
                           item.skipped ? (
                             <p className="ng-margin-remove">
-                              The email, {item.title} already exists.
+                              {t('Email exists', { value: item.title })}
                             </p>
                           ) : item.hasSuccess ? (
                             <p className="ng-margin-remove">
-                              The email, {item.title} has been invited.
+                              {t('Email invited', { value: item.title })}
                             </p>
                           ) : (
                             item.hasError && (
                               <p className="ng-margin-remove">
-                                The email, {item.title} is unavailable. Details: {item.detail}
+                                {t('Email unavailable', {
+                                  value: item.title,
+                                  details: item.detail,
+                                })}
                               </p>
                             )
                           )
@@ -319,14 +325,14 @@ export function UsersHome(props: any) {
                             className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
                             disabled={!inviteUsersWatcher?.length}
                           >
-                            Add users
+                            {t('Add users')}
                           </button>
                           <button
                             className="ng-button ng-button-secondary ng-button-large ng-margin-medium-right marapp-qa-actioncancel"
                             onClick={cancelUsersHandler}
                             disabled={!inviteUsersWatcher?.length}
                           >
-                            cancel
+                            {t('cancel')}
                           </button>
                         </>
                       )}
@@ -344,7 +350,9 @@ export function UsersHome(props: any) {
                           className="ng-color-white"
                         />
                       ) : (
-                        <span>Something went wrong! Unknown error.</span>
+                        <span>
+                          {t('Something went wrong')}! {t('Unknown error')}.
+                        </span>
                       )}
                       <button
                         className="marapp-qa-error-dismiss ng-background-danger ng-border-remove ng-text-display-m ng-text-weight-thin ng-position-absolute ng-position-top-right ng-padding ng-margin-medium-right ng-margin-medium-top"
@@ -357,8 +365,8 @@ export function UsersHome(props: any) {
                   <table className="ng-table">
                     <thead>
                       <tr>
-                        <th className="ng-border-remove ng-width-1-2">Email</th>
-                        <th className="ng-border-remove ng-width-1-2">Role &amp; Access</th>
+                        <th className="ng-border-remove ng-width-1-2">{t('Email')}</th>
+                        <th className="ng-border-remove ng-width-1-2">{t('Role and access')}</th>
                       </tr>
                     </thead>
                     <List
@@ -380,14 +388,13 @@ export function UsersHome(props: any) {
                       )}
                       renderItem={(index) => {
                         const user = userListProps.data[index];
+                        const userGroup = normalizeGroupName(user.groups[0].name);
                         return (
                           <tr key={user.email}>
                             <td className="ng-border-remove">{user.email}</td>
                             <td className="ng-border-remove">
-                              {normalizeGroupName(user.groups[0].name)}
-                              {availableGroups.find(
-                                (group) => group.label === normalizeGroupName(user.groups[0].name)
-                              ) && (
+                              {userGroup}
+                              {availableGroups.find((group) => group.label === userGroup) && (
                                 <button
                                   className="ng-border-remove ng-background-ultradkgray ng-color-light role-popup"
                                   onClick={(e) => toggleRolePopup(e, user)}
@@ -447,7 +454,7 @@ export function UsersHome(props: any) {
                             className="marapp-qa-remove-user"
                             onClick={() => setShowRemoveUser(true)}
                           >
-                            Remove User
+                            {t('Remove User')}
                           </a>
                         </li>
                       </ul>

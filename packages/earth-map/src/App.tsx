@@ -20,11 +20,14 @@
 import React, { useContext } from 'react';
 import { Provider } from 'react-redux';
 
-import { Spinner } from '@marapp/earth-shared';
+import { Spinner, TranslationService } from '@marapp/earth-shared';
 
 import { Auth0Context, useAuth0 } from './auth/auth0';
+import { WEGLOT_API_KEY } from './config';
 import Main from './pages/main';
 import initStore from './store';
+
+TranslationService.init(WEGLOT_API_KEY);
 
 const App = () => {
   const { isLoading } = useAuth0();

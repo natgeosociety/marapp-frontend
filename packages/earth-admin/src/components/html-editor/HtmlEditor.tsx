@@ -18,10 +18,13 @@
 */
 
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import '@ckeditor/ckeditor5-build-classic/build/translations/fr';
+import '@ckeditor/ckeditor5-build-classic/build/translations/es';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import React from 'react';
 
 import './styles.scss';
+import { useTranslation } from 'react-i18next';
 
 interface HtmlEditorProps {
   html?: string;
@@ -31,6 +34,7 @@ interface HtmlEditorProps {
 
 export default function HtmlEditor(props: HtmlEditorProps) {
   const { html, onChange, className } = props;
+  const { i18n } = useTranslation('admin');
 
   const handleHtmlChange = (editor) => {
     const data = editor.getData();
@@ -53,6 +57,7 @@ export default function HtmlEditor(props: HtmlEditorProps) {
             'numberedList',
             'blockQuote',
           ],
+          language: i18n.language,
           heading: {
             options: [
               { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },

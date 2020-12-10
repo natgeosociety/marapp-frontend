@@ -18,6 +18,7 @@
 */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { AuthzGuards, Card } from '@marapp/earth-shared';
 
@@ -27,6 +28,7 @@ import { ContentLayout } from '@app/layouts';
 
 export function OrganizationHome() {
   const { getPermissions } = useAuth0();
+  const { t } = useTranslation('admin');
   const permissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
@@ -35,20 +37,21 @@ export function OrganizationHome() {
       <ContentLayout className="marapp-qa-organizationhome">
         {writePermissions && (
           <>
-            <h1 className="ng-text-display-m ng-margin-medium-bottom">ORGANIZATIONS</h1>
+            <h1 className="ng-text-display-m ng-margin-medium-bottom">{t('organizations')}</h1>
             <div className="ng-grid">
               <div className="ng-width-1-2">
                 <Card>
                   <p>
-                    Start creating a new organization for users to collaborate and share with each
-                    other
+                    {t(
+                      'Start creating a new organization for users to collaborate and share with each other'
+                    )}
                   </p>
                   <div className="ng-flex ng-flex-center">
                     <LinkWithOrg
                       className="marapp-qa-actioncreate ng-button ng-button-secondary"
                       to="organizations/new"
                     >
-                      Create new Organization
+                      {t('Create new Organization')}
                     </LinkWithOrg>
                   </div>
                 </Card>
