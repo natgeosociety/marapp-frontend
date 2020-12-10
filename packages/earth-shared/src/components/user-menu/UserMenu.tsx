@@ -25,7 +25,7 @@ import compose from 'lodash/fp/compose';
 import noop from 'lodash/noop';
 import { getInitials } from '../../utils';
 
-import { useDomWatcher, Elang } from '@marapp/earth-shared';
+import { useDomWatcher, Elang, TranslationService } from '@marapp/earth-shared';
 
 import './styles.scss';
 
@@ -75,6 +75,11 @@ export const UserMenu = (props: IProps) => {
   const changeLanguage = (e, lang) => {
     toggleLangDrop(e);
     i18n.changeLanguage(lang);
+  };
+
+  const handleLogout = (e) => {
+    const defaultLanguage = TranslationService.getDefaultLanguage();
+    changeLanguage(e, defaultLanguage);
   };
 
   const selectedLanguage = i18n.language;
@@ -188,7 +193,7 @@ export const UserMenu = (props: IProps) => {
                     </li>
 
                     <li className="marapp-qa-signout">
-                      <a onClick={compose(onLogout, toggleDrop)}>{t('Sign Out')}</a>
+                      <a onClick={compose(onLogout, handleLogout, toggleDrop)}>{t('Sign Out')}</a>
                     </li>
                   </>
                 ) : (
