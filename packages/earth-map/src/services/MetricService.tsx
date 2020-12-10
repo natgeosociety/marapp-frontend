@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { BaseAPIService, RequestQuery, metaDeserializer } from './base/APIBase';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
 const fetchMetricById = async (id: string, query?: RequestQuery): Promise<any> => {
   return BaseAPIService.request(`/metrics/${id}`, { query }, metaDeserializer);
