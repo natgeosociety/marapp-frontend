@@ -277,6 +277,7 @@ export function UsersHome(props: any) {
                         name="role"
                         options={availableGroups}
                         isSearchable={false}
+                        isLoading={availableGroups.length === 0}
                         placeholder={t('Select role')}
                         styles={customStylesRoles}
                         theme={(theme) => ({
