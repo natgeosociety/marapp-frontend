@@ -77,9 +77,9 @@ export const UserMenu = (props: IProps) => {
     i18n.changeLanguage(lang);
   };
 
-  const handleLogout = (e) => {
+  const handleLogout = () => {
     const defaultLanguage = TranslationService.getDefaultLanguage();
-    changeLanguage(e, defaultLanguage);
+    i18n.changeLanguage(defaultLanguage);
   };
 
   const selectedLanguage = i18n.language;
@@ -193,7 +193,7 @@ export const UserMenu = (props: IProps) => {
                     </li>
 
                     <li className="marapp-qa-signout">
-                      <a onClick={compose(onLogout, handleLogout, toggleDrop)}>{t('Sign Out')}</a>
+                      <a onClick={compose(handleLogout, onLogout, toggleDrop)}>{t('Sign Out')}</a>
                     </li>
                   </>
                 ) : (
