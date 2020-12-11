@@ -2,33 +2,38 @@ All boxes should be checked before the PR can be accepted. Exceptions can be mad
 
 <hr>
 
-### BUGFIX
-
-#### Required
-
-- [ ] **Translated** all the static user facing text
-- [ ] **Ran Unit and E2E tests** and they pass successfuly
-- [ ] **Ran the linter** with `yarn lint`
-- [ ] No TypeScript warnings are introduced
-
-#### Not Needed
-- [ ] Drag here
-<hr>
-
 ### STORY
 
 #### Required
 
 - [ ] **Added QA classes** on main containers and all actionable items like Buttons, Inputs, etc
-- [ ] **Translated** all the static user facing text
-- [ ] **Ran Unit and E2E tests** and they pass successfuly
+- [ ] **Translated** all the user facing text (static & dynamic)
+- [ ] **Ran Unit Tests** and they pass successfuly
 - [ ] **Added unit tests** for the code in **earth-shared**
 - [ ] **Ran the linter** with `yarn lint`
 - [ ] No TypeScript warnings are introduced
+- [ ] I have made corresponding changes to the documentation
 
 #### Not Needed
 - [ ] Drag here
-- [ ] Added end to end tests for the main functionality
+
+<br>
+<hr>
+<br>
+
+
+### BUGFIX
+
+#### Required
+
+- [ ] **Translated** all the user facing text (static & dynamic)
+- [ ] **Ran Unit Tests** and they pass successfuly
+- [ ] **Ran the linter** with `yarn lint`
+- [ ] No TypeScript warnings are introduced
+- [ ] I have made corresponding changes to the documentation
+
+#### Not Needed
+- [ ] Drag here
 
 <br>
 <hr>
