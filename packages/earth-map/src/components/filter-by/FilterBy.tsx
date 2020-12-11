@@ -68,7 +68,7 @@ const FilterBy = (props: IProps) => {
         </h2>
         {numberOfFilters > 0 && (
           <a
-            className="marapp-qa-filterbyclear ng-link ng-nohover ng-text-weight-regular ng-text-capital"
+            className="marapp-qa-filterbyclear ng-link ng-nohover ng-text-weight-regular ng-text-capital ng-margin-small-left"
             onClick={clearCheckedFilters}
           >
             {t('Clear')} {`(${numberOfFilters})`}
