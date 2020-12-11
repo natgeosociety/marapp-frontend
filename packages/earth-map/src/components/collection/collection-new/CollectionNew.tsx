@@ -20,8 +20,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { replace } from 'redux-first-router';
-import Link from 'redux-first-router-link';
+import { back, push, replace } from 'redux-first-router';
 import PlacesService from 'services/PlacesService';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
@@ -58,14 +57,17 @@ const CollectionNew = (props: IProps) => {
     }
   };
 
-  /*When navigating back to earth view keep track of the current coordinates and active layers, if available*/
-  const cancelLinkProps = {
-    type: 'EARTH',
-    ...(router.prev.query && {
-      meta: {
-        query: router.prev.query,
-      },
-    }),
+  const onCancel = () => {
+    // When navigating back to earth view keep track of the current coordinates and active layers, if available
+    const canGoBack = !!router.prev.pathname;
+
+    if (canGoBack) {
+      back();
+    }
+    // if the user just hit the /collection/new from the start
+    else {
+      push('/earth');
+    }
   };
 
   return (
@@ -135,12 +137,13 @@ const CollectionNew = (props: IProps) => {
         >
           {t('Create Collection')}
         </button>
-        <Link
-          to={cancelLinkProps}
+        <button
+          onClick={onCancel}
+          type="button"
           className="marapp-qa-cancel-collection ng-button ng-button-secondary"
         >
           {t('Cancel')}
-        </Link>
+        </button>
       </Card>
     </form>
   );
