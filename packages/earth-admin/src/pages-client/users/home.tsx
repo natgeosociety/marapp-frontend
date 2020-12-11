@@ -195,7 +195,6 @@ export function UsersHome(props: any) {
     }
 
     const scrollContainer = document.querySelector('.ng-page-container');
-
     const containerBoundingRect = scrollContainer.getBoundingClientRect();
     const boundingRect = e.target.getBoundingClientRect();
 
@@ -204,7 +203,7 @@ export function UsersHome(props: any) {
       deleteEmail: user.email,
       group: normalizeGroupName(user.groups[0].name),
       x: boundingRect.left - containerBoundingRect.left,
-      y: boundingRect.bottom + scrollContainer.scrollTop,
+      y: boundingRect.bottom + window.scrollY,
       visible: true,
     });
   };
@@ -278,6 +277,7 @@ export function UsersHome(props: any) {
                         name="role"
                         options={availableGroups}
                         isSearchable={false}
+                        isLoading={availableGroups.length === 0}
                         placeholder={t('Select role')}
                         styles={customStylesRoles}
                         theme={(theme) => ({
