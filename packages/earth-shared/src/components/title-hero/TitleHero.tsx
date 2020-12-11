@@ -42,8 +42,12 @@ export const TitleHero = ({
     <h3 className="ng-text-display-s ng-margin-vertical">
       {subtitle} | <span className="ng-text-weight-regular">{extra}</span>
     </h3>
-    <h2 className="ng-text-edit-m ng-body-color ng-margin-remove">{title}</h2>
+    <h2 className="ng-text-edit-m ng-body-color ng-margin-remove ng-width-3-4 ng-text-break">
+      {title}
+    </h2>
     {!!actions && <div className="title-hero-actions">{actions}</div>}
-    {!!finePrint && <div className="title-hero-fineprint ng-text-small">{finePrint}</div>}
+    {!!finePrint && (
+      <div className="title-hero-fineprint ng-text-small ng-width-1-4">{finePrint}</div>
+    )}
   </div>
 );
