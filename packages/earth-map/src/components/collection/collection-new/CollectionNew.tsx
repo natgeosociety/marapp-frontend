@@ -26,12 +26,15 @@ import PlacesService from 'services/PlacesService';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
 
+import { IRouter } from '../../../modules/router/model';
+
 interface IProps {
   privateGroups: string[];
+  router?: IRouter;
 }
 
 const CollectionNew = (props: IProps) => {
-  const { privateGroups } = props;
+  const { privateGroups, router } = props;
   const { t } = useTranslation();
   const canCreateCollection = !!privateGroups.length;
   const [saveError, setSaveError] = useState(null);
@@ -53,6 +56,16 @@ const CollectionNew = (props: IProps) => {
         return setSaveError(firstError.detail);
       }
     }
+  };
+
+  /*When navigating back to earth view keep track of the current coordinates and active layers, if available*/
+  const cancelLinkProps = {
+    type: 'EARTH',
+    ...(router.prev.query && {
+      meta: {
+        query: router.prev.query,
+      },
+    }),
   };
 
   return (
@@ -123,7 +136,7 @@ const CollectionNew = (props: IProps) => {
           {t('Create Collection')}
         </button>
         <Link
-          to={{ type: 'EARTH' }}
+          to={cancelLinkProps}
           className="marapp-qa-cancel-collection ng-button ng-button-secondary"
         >
           {t('Cancel')}
