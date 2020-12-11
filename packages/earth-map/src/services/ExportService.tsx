@@ -17,33 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
+import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
-import './styles.scss';
+const exportLayerForLocation = async (
+  layerId: string,
+  locationId: string,
+  query?: RequestQuery
+): Promise<any> => {
+  return BaseAPIService.request(
+    `/export/raster/${layerId}/${locationId}`,
+    { query },
+    metaDeserializer
+  );
+};
 
-interface IProps {
-  extra: string;
-  subtitle: string;
-  title: string;
-  actions?: React.ReactElement;
-  finePrint?: string;
-  className?: string;
-}
-
-export const TitleHero = ({
-  extra,
-  subtitle,
-  title,
-  actions,
-  finePrint,
-  className = ' ',
-}: IProps) => (
-  <div className={`marapp-qa-titlehero title-hero ${className}`}>
-    <h3 className="ng-text-display-s ng-margin-vertical">
-      {subtitle} | <span className="ng-text-weight-regular">{extra}</span>
-    </h3>
-    <h2 className="ng-text-edit-m ng-body-color ng-margin-remove">{title}</h2>
-    {!!actions && <div className="title-hero-actions">{actions}</div>}
-    {!!finePrint && <div className="title-hero-fineprint ng-text-small">{finePrint}</div>}
-  </div>
-);
+export default { exportLayerForLocation };

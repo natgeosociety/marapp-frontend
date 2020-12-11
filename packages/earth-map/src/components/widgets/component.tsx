@@ -17,19 +17,22 @@
   specific language governing permissions and limitations under the License.
 */
 
+import cn from 'classnames';
 import Widget from 'components/widget';
 import TEMPLATES from 'components/widget/templates';
 import CONFIGS from 'components/widget/templates/configs';
 import { IPlace } from 'modules/places/model';
 import { IWidget } from 'modules/widget/model';
-import React from 'react';
+import React, { useState } from 'react';
 import { InView } from 'react-intersection-observer';
+import { useTranslation } from 'react-i18next';
+import { ClipLayer } from '../clip-layer';
 
-import { TitleHero } from '@marapp/earth-shared';
+import { TitleHero, DropdownSimple } from '@marapp/earth-shared';
 
 import './styles.scss';
 
-interface IWidgets {
+interface IProps {
   groups?: string[];
   slugs?: Array<{}>;
   list?: IWidget[];
@@ -47,92 +50,106 @@ interface IWidgetsState {
   widgetId?: string;
 }
 
-class WidgetsComponent extends React.Component<IWidgets, IWidgetsState> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      collapsedState: {},
-      share: false,
-      widgetId: null,
-    };
-  }
+export default function WidgetsComponent(props: IProps) {
+  const { groups, place, list, embed, toolbar, toggleLayer, metrics = [{}] } = props;
+  const [widgetState, setWidgetState] = useState<IWidgetsState>({
+    collapsedState: {},
+    share: false,
+    widgetId: null,
+  });
+  const [isOnClipLayer, setIsOnClipLayer] = useState(false);
+  const { collapsedState } = widgetState;
+  const { t } = useTranslation();
+  // Find the right permission
+  const canEdit = true;
 
-  public render() {
-    const { groups, place, list, embed, toolbar, toggleLayer, metrics = [{}] } = this.props;
-    const { collapsedState } = this.state;
-
-    return (
-      <div className="marapp-qa-widgets c-widgets">
-        <div className="widgets--content">
-          <TitleHero
-            title={place.name}
-            subtitle={place.organization}
-            extra={place.type}
-            className="ng-widget-header ng-padding-medium"
-          />
-          {list.map((w: any, i) => {
-            const [widgetMetricName] = w.metrics;
-
-            const [filteredMetric] = metrics.filter(
-              (metric: any) => metric.slug === widgetMetricName
-            );
-
-            return (
-              <div key={`${w.slug}-${i}`} className="widgets--list-item ng-position-relative">
-                <InView threshold={0.2} triggerOnce={true}>
-                  {({ ref, inView }) => (
-                    <div style={{ minHeight: '40vh' }} ref={ref}>
-                      {inView && (
-                        <Widget
-                          {...w}
-                          {...(typeof collapsedState[widgetMetricName] !== 'undefined' && {
-                            collapsed: collapsedState[widgetMetricName],
-                          })}
-                          {...CONFIGS[widgetMetricName]}
-                          id={place.slug}
-                          place={place}
-                          widgetDescription={w.description}
-                          metric={!!filteredMetric ? filteredMetric : {}}
-                          showOrgLabel={groups.length > 1}
-                          embed={embed}
-                          toolbar={toolbar}
-                          activeDownload={false} // To be done, only if it's necessary
-                          onShare={() => this.setState({ share: true, widgetId: w.id })}
-                          onCollapse={(c) => {
-                            this.setState({
-                              collapsedState: { ...collapsedState, [widgetMetricName]: c },
-                            });
-                          }}
-                          onToggleLayer={(bool) => {
-                            const { layers } = w;
-
-                            if (layers[0]) {
-                              toggleLayer(layers[0]);
-                            }
-                          }}
-                        >
-                          {({ slug, data, ...props }) => (
-                            <React.Fragment>
-                              {/* Template */}
-                              {!!TEMPLATES[widgetMetricName] &&
-                                React.createElement(TEMPLATES[widgetMetricName], {
-                                  ...data,
-                                  ...props,
-                                })}
-                            </React.Fragment>
-                          )}
-                        </Widget>
-                      )}
-                    </div>
-                  )}
-                </InView>
-              </div>
-            );
+  const editActions = (
+    <DropdownSimple
+      trigger={(open) => (
+        <i
+          className={cn({
+            'ng-icon-ellipse ng-toolbar-button': true,
+            'ng-toolbar-button-raised': true,
+            'ng-toolbar-button-open': open,
           })}
-        </div>
-      </div>
-    );
-  }
-}
+        />
+      )}
+    >
+      <a onClick={() => setIsOnClipLayer(true)}>{t('Clip and Export Layers')}</a>
+    </DropdownSimple>
+  );
 
-export default WidgetsComponent;
+  return (
+    <div className="marapp-qa-widgets c-widgets">
+      {isOnClipLayer && <ClipLayer place={place} onCancel={() => setIsOnClipLayer(false)} />}
+      <div className="widgets--content">
+        <TitleHero
+          title={place.name}
+          subtitle={place.organization}
+          extra={place.type}
+          actions={canEdit ? editActions : null}
+          className="ng-widget-header ng-margin-medium"
+        />
+        {list.map((w: any, i) => {
+          const [widgetMetricName] = w.metrics;
+
+          const [filteredMetric] = metrics.filter(
+            (metric: any) => metric.slug === widgetMetricName
+          );
+
+          return (
+            <div key={`${w.slug}-${i}`} className="widgets--list-item ng-position-relative">
+              <InView threshold={0.2} triggerOnce={true}>
+                {({ ref, inView }) => (
+                  <div style={{ minHeight: '40vh' }} ref={ref}>
+                    {inView && (
+                      <Widget
+                        {...w}
+                        {...(typeof collapsedState[widgetMetricName] !== 'undefined' && {
+                          collapsed: collapsedState[widgetMetricName],
+                        })}
+                        {...CONFIGS[widgetMetricName]}
+                        id={place.slug}
+                        place={place}
+                        widgetDescription={w.description}
+                        metric={!!filteredMetric ? filteredMetric : {}}
+                        showOrgLabel={groups.length > 1}
+                        embed={embed}
+                        toolbar={toolbar}
+                        activeDownload={false} // To be done, only if it's necessary
+                        onShare={() => setWidgetState({ share: true, widgetId: w.id })}
+                        onCollapse={(c) => {
+                          setWidgetState({
+                            collapsedState: { ...collapsedState, [widgetMetricName]: c },
+                          });
+                        }}
+                        onToggleLayer={(bool) => {
+                          const { layers } = w;
+
+                          if (layers[0]) {
+                            toggleLayer(layers[0]);
+                          }
+                        }}
+                      >
+                        {({ slug, data, ...props }) => (
+                          <React.Fragment>
+                            {/* Template */}
+                            {!!TEMPLATES[widgetMetricName] &&
+                              React.createElement(TEMPLATES[widgetMetricName], {
+                                ...data,
+                                ...props,
+                              })}
+                          </React.Fragment>
+                        )}
+                      </Widget>
+                    )}
+                  </div>
+                )}
+              </InView>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

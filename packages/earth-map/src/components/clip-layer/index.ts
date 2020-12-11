@@ -17,20 +17,4 @@
  * specific language governing permissions and limitations under the License.
  */
 
-@import '~styles/config';
-
-.title-hero {
-  position: relative;
-
-  &-actions {
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-  &-fineprint {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    color: $marapp-gray-5;
-  }
-}
+export { ClipLayer } from './ClipLayer';
