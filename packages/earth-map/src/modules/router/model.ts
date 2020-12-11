@@ -1,6 +1,7 @@
 export interface IRouter {
   type: EarthRoutes;
   payload: any;
+  prev: any;
 }
 
 export enum EarthRoutes {
