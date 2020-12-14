@@ -27,11 +27,11 @@ import { routeToPage } from 'utils';
 import {
   getPrivateGroups,
   getPublicGroups,
+  hasAccess,
   isAuthz,
   mapAuthzScopes,
   mapRoleGroups,
   SessionStorage,
-  hasAccess,
 } from '@marapp/earth-shared';
 
 import { Auth0 } from './model';

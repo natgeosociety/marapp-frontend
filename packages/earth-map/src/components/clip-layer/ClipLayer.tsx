@@ -17,23 +17,23 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import FileSaver from 'file-saver';
+import { IPlace } from 'modules/places/model';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import FileSaver from 'file-saver';
+import ExportService from 'services/ExportService';
+import LayersService from 'services/LayersService';
 
 import {
-  TitleHero,
-  Card,
   AsyncSelect,
-  ReactSelect,
-  Spinner,
-  serializeFilters,
+  Card,
   DropdownItem,
+  ReactSelect,
+  serializeFilters,
+  Spinner,
+  TitleHero,
 } from '@marapp/earth-shared';
-import { IPlace } from 'modules/places/model';
-import LayersService from 'services/LayersService';
-import ExportService from 'services/ExportService';
 
 interface IProps {
   place: Partial<IPlace>;
@@ -60,7 +60,10 @@ export function ClipLayer(props: IProps) {
     isValid && selectedPrimaryLayer && (childLayers.length ? selectedChildLayer : true);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full ng-form ng-form-dark">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="marapp-qa-cliplayer sidebar-content-full ng-form ng-form-dark"
+    >
       <Card elevation="high" className="ng-margin-bottom">
         <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
       </Card>
@@ -74,7 +77,7 @@ export function ClipLayer(props: IProps) {
             as={AsyncSelect}
             id="layer-selector"
             name="primaryLayer"
-            className="marapp-qa-layers ng-margin-medium-bottom"
+            className="marapp-qa-primarylayers ng-margin-medium-bottom"
             placeholder={t('Select Widget Layers')}
             control={control}
             getOptionLabel={(option, extra) => (
@@ -102,7 +105,7 @@ export function ClipLayer(props: IProps) {
                 as={ReactSelect}
                 id="child-layer-selector"
                 name="childLayer"
-                className="marapp-qa-layers ng-margin-medium-bottom"
+                className="marapp-qa-childlayers ng-margin-medium-bottom"
                 placeholder={t('Select Widget Layers')}
                 options={childLayers}
                 control={control}
@@ -129,7 +132,7 @@ export function ClipLayer(props: IProps) {
                 ref={register({
                   required: true,
                 })}
-                className="marapp-qa-downloadmetricsgeotiff"
+                className="marapp-qa-downloadgeotiff"
               />
               <label htmlFor="radio-geotiff">
                 <span className="legend-item-group--symbol" />
@@ -145,7 +148,7 @@ export function ClipLayer(props: IProps) {
                 ref={register({
                   required: true,
                 })}
-                className="marapp-qa-downloadmetricsjpg"
+                className="marapp-qa-downloadjpg"
               />
               <label htmlFor="radio-jpg">
                 <span className="legend-item-group--symbol" />
@@ -154,7 +157,9 @@ export function ClipLayer(props: IProps) {
             </div>
           </div>
 
-          {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
+          {saveError && (
+            <p className="marapp-qa-formerror ng-form-error-block ng-margin-bottom">{saveError}</p>
+          )}
 
           <button
             type="submit"
