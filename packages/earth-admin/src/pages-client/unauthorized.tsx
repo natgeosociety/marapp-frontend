@@ -18,9 +18,9 @@
 */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Auth0Context } from '@app/utils/contexts';
-import { useTranslation } from 'react-i18next';
 
 export default function UnauthorizedPage(props) {
   const { t } = useTranslation(['translation', 'admin']);
