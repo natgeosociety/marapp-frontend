@@ -35,6 +35,7 @@
   "Email sent": "Email enviado",
   "enter a name for your collection": "ingrese un nombre para su colección",
   "erase all of your settings": "borra todas tus configuraciones",
+  "Failed to extract layer details": "No se pudieron extraer los detalles de {{value}}",
   "Featured places": "Lugares destacados",
   "Filters": "Filtros",
   "First Name": "Nombre de pila",
