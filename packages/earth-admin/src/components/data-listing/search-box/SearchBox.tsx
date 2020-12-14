@@ -19,9 +19,9 @@
 
 import classnames from 'classnames';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import './styles.scss';
-import { useTranslation } from 'react-i18next';
 
 interface SearchBoxProps {
   searchValue: string;

@@ -19,9 +19,9 @@
 
 import { Link } from 'gatsby';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { useTranslation } from 'react-i18next';
 
 export const NotFound = (props) => {
   const { groups } = useAuth0();

@@ -19,6 +19,7 @@
 
 import List from '@researchgate/react-intersection-list';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Spinner } from '@marapp/earth-shared';
 
@@ -26,7 +27,6 @@ import { useAuth0 } from '@app/auth/auth0';
 
 import { SearchBox } from './search-box';
 import './styles.scss';
-import { useTranslation } from 'react-i18next';
 
 interface DataListingProps {
   categoryUrl: string;

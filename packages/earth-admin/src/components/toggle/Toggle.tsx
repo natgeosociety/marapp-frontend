@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import './styles.scss';
-import { useTranslation } from 'react-i18next';
 
 interface IProps {
   value: boolean;

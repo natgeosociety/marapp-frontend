@@ -22,6 +22,7 @@ import { JSHINT } from 'jshint';
 import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
 
 import {
@@ -42,7 +43,6 @@ import { ContentLayout } from '@app/layouts';
 import LayersService from '@app/services/layers';
 import { CUSTOM_STYLES, SELECT_THEME } from '@app/theme';
 import { flattenArrayForSelect, flattenObjectForSelect } from '@app/utils';
-import { useTranslation } from 'react-i18next';
 
 interface IProps {
   path?: string;
