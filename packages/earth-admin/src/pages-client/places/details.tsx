@@ -154,7 +154,7 @@ export function PlaceDetail(props: IProps) {
     try {
       setIsLoading && setIsLoading(true);
 
-      await mutate(setter(parsed), false);
+      await mutate(await setter(parsed), false);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
