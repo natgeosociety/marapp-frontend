@@ -94,7 +94,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
       setOwnersFeedback([]);
       setIsLoading && setIsLoading(true);
 
-      await mutate(setter(parsed), false);
+      await mutate(await setter(parsed), false);
 
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
