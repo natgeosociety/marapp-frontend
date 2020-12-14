@@ -162,13 +162,13 @@ export const Auth0Provider = ({
    */
   const login = (options = {}) => {
     SessionStorage.remove('ephemeral');
-    SessionStorage.remove('lang');
+
     return client.loginWithRedirect(options);
   };
 
   const logout = (options = {}) => {
     SessionStorage.remove('ephemeral');
-    SessionStorage.remove('lang');
+
     // force the user to log out of their identity provider;
     return client.logout({ ...options, federated: true });
   };

@@ -19,9 +19,9 @@
 
 import classnames from 'classnames';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import './styles.scss';
-import { useTranslation } from 'react-i18next';
 
 interface SearchBoxProps {
   searchValue: string;
@@ -38,6 +38,10 @@ const SearchBox = (props: SearchBoxProps) => {
     searchValueAction(newValue);
   };
 
+  const onReset = () => {
+    handleSearchChange('');
+  };
+
   return (
     <div
       className="marapp-qa-searchbox searchable-listing-container ng-margin-bottom ng-background-dkgray
@@ -45,11 +49,11 @@ const SearchBox = (props: SearchBoxProps) => {
     >
       <div
         className={classnames({
-          'ng-input-container ng-c-flex-grow-1 ng-flex ng-flex-middle ng-padding-vertical': true,
+          'ng-input-container ng-c-flex-grow-1 ng-flex ng-flex-middle ng-padding ng-padding-right-remove': true,
           'is-focused': focus,
         })}
       >
-        <i className="ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal" />
+        <i className="ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal ng-margin-left-remove" />
         <input
           type=" text"
           placeholder={`${t('search')} ${t(pageTitle).toLowerCase()}...`}
@@ -58,6 +62,11 @@ const SearchBox = (props: SearchBoxProps) => {
           onChange={(e) => handleSearchChange(e.target.value)}
           value={searchValue}
         />
+        {searchValue && (
+          <div className="marapp-qa-searchboxclear ng-c-cursor-pointer" onClick={onReset}>
+            <i className="ng-color-mdgray ng-margin-horizontal ng-icon ng-icon-close ng-display-block" />
+          </div>
+        )}
       </div>
     </div>
   );

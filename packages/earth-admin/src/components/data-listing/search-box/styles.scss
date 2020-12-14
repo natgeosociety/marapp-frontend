@@ -21,6 +21,7 @@
 
 .ng-input-container {
   border: 1px solid $marapp-gray-5;
+  background: $marapp-gray-8;
   &.is-focused {
     border-color: $marapp-gray-0;
   }

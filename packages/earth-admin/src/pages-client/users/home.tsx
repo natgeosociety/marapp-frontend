@@ -22,7 +22,6 @@ import classnames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-
 import Select from 'react-select';
 
 import {
@@ -33,6 +32,7 @@ import {
   Spinner,
   useDomWatcher,
 } from '@marapp/earth-shared';
+
 import { useAuth0 } from '@app/auth/auth0';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { ContentLayout } from '@app/layouts';
@@ -277,6 +277,7 @@ export function UsersHome(props: any) {
                         name="role"
                         options={availableGroups}
                         isSearchable={false}
+                        isLoading={availableGroups.length === 0}
                         placeholder={t('Select role')}
                         styles={customStylesRoles}
                         theme={(theme) => ({

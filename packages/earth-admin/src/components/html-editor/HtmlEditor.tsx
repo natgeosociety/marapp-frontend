@@ -18,13 +18,13 @@
 */
 
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import '@ckeditor/ckeditor5-build-classic/build/translations/fr';
 import '@ckeditor/ckeditor5-build-classic/build/translations/es';
+import '@ckeditor/ckeditor5-build-classic/build/translations/fr';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import './styles.scss';
-import { useTranslation } from 'react-i18next';
 
 interface HtmlEditorProps {
   html?: string;

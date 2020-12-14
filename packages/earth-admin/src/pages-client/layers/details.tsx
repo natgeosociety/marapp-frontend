@@ -20,6 +20,7 @@ import { noop } from 'lodash';
 import { merge } from 'lodash/fp';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, ErrorMessage, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
 import useSWR from 'swr';
@@ -56,7 +57,6 @@ import {
 } from '@app/utils';
 
 import { ILayer } from './model';
-import { useTranslation } from 'react-i18next';
 
 const LAYER_DETAIL_QUERY = { include: 'references', select: 'references.name,references.id' };
 
