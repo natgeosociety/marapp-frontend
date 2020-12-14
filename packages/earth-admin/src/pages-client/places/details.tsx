@@ -363,7 +363,7 @@ export function PlaceDetail(props: IProps) {
                       <InlineEditCard
                         editButtonText={t('View and upload shape')}
                         onSubmit={onSubmit}
-                        onCancel={() => setPanel('upload')}
+                        onCancel={() => [setPanel('upload'), setGeojson(null)]}
                         submitButtonText={t('Update Shape')}
                         validForm={formValid && !jsonError}
                         render={({ setIsEditing, setIsLoading, setServerErrors }) => (
