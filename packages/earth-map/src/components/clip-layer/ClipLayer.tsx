@@ -44,6 +44,7 @@ interface IProps {
 export function ClipLayer(props: IProps) {
   const { onCancel, place, groups } = props;
   const { id, name, organization } = place;
+  const [saveError, setSaveError] = useState('');
   const [childLayers, setChildLayers] = useState([]);
   const { t } = useTranslation();
   const { register, handleSubmit, formState, control, watch, reset } = useForm({
@@ -53,8 +54,6 @@ export function ClipLayer(props: IProps) {
   const selectedPrimaryLayer = watch('primaryLayer');
   const selectedChildLayer = watch('childLayer');
   const exportType = watch('exportType');
-
-  console.log(selectedPrimaryLayer, selectedChildLayer, exportType);
 
   // unable to make layers dropdown required otherwise
   const isValidCustom =
@@ -154,6 +153,9 @@ export function ClipLayer(props: IProps) {
               </label>
             </div>
           </div>
+
+          {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
+
           <button
             type="submit"
             className="marapp-qa-actiondownload ng-button ng-button-primary ng-margin-right"
@@ -195,6 +197,11 @@ export function ClipLayer(props: IProps) {
 
       FileSaver.saveAs(blob, `${selectedLayer.name}${extension}`);
     } catch (e) {
+      if (!e) {
+        setSaveError(t('Something went wrong'));
+      } else if (e.status === 413) {
+        setSaveError(t('Could not download layer. Area too large'));
+      }
       console.log(e);
     }
   }
@@ -214,6 +221,7 @@ export function ClipLayer(props: IProps) {
 
       return primaryLayers;
     } catch (e) {
+      setSaveError(t('Something went wrong'));
       console.log(e);
     } finally {
     }
