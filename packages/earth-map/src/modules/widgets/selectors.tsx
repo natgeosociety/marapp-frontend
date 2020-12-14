@@ -16,8 +16,7 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-
-import compact from 'lodash/compact';
+import orderBy from 'lodash/orderBy';
 import { createSelector } from 'reselect';
 
 import { IWidget } from '../widget/model';
@@ -34,39 +33,38 @@ export const getWidgets = createSelector(
       return [];
     }
 
-    const filteredWidgets = compact(
-      _widgets.filter((w) => {
-        if (typeof _slugs !== 'undefined') {
-          const { widgetConfig, slug } = w;
-          const { location_types } = widgetConfig;
+    const filteredWidgets: IWidget[] = [];
 
-          const thereIsSlug = !!_slugs.find((s) => s.slug === slug);
-          const thereIsLocationType =
-            !!location_types && Array.isArray(location_types)
-              ? location_types.includes(_place.locationType.toLowerCase())
-              : true;
-          return thereIsSlug && thereIsLocationType;
+    _widgets.forEach((w) => {
+      if (typeof _slugs !== 'undefined') {
+        const { widgetConfig, slug } = w;
+        const { location_types } = widgetConfig;
+
+        const thereIsSlug = !!_slugs.find((s) => s.slug === slug);
+        const thereIsLocationType =
+          !!location_types && Array.isArray(location_types)
+            ? location_types.includes(_place.locationType.toLowerCase())
+            : true;
+
+        if (thereIsSlug && thereIsLocationType) {
+          const { widgetConfig, description } = w;
+
+          filteredWidgets.push({
+            ...w,
+            ...widgetConfig,
+            slug: w.slug,
+            description,
+
+            active: !!_activeLayers.find((l) => w.layers[0] && l === w.layers[0].slug),
+            params: {
+              id: _place.id,
+            },
+          });
         }
-
-        return false;
-      })
-    );
-
-    return [...filteredWidgets].map((w: IWidget) => {
-      const { widgetConfig, description } = w;
-
-      return {
-        ...w,
-        ...widgetConfig,
-        slug: w.slug,
-        description,
-
-        active: !!_activeLayers.find((l) => w.layers[0] && l === w.layers[0].slug),
-        params: {
-          id: _place.id,
-        },
-      };
+      }
     });
+
+    return orderBy([...filteredWidgets], ['organization', 'name']);
   }
 );
 
