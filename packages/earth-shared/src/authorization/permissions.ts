@@ -41,6 +41,7 @@ enum ScopesEnum {
   ReadOrganizations = 'read:organizations',
   WriteOrganizations = 'write:organizations',
   ReadStats = 'read:stats',
+  ReadExports = 'read:exports',
 }
 
 export const AuthzGuards = {
@@ -104,6 +105,7 @@ export const AuthzGuards = {
     [ScopesEnum.WriteAll],
   ],
   accessOrganizationsGuard: [[ScopesEnum.ReadOrganizations], [ScopesEnum.WriteOrganizations]],
+  readExportsGuard: [[ScopesEnum.ReadExports], [ScopesEnum.ReadAll]],
 };
 
 /**

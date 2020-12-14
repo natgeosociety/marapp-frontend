@@ -17,9 +17,10 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import FileSaver from 'file-saver';
 
 import {
   TitleHero,
@@ -28,6 +29,7 @@ import {
   ReactSelect,
   Spinner,
   serializeFilters,
+  DropdownItem,
 } from '@marapp/earth-shared';
 import { IPlace } from 'modules/places/model';
 import LayersService from 'services/LayersService';
@@ -36,22 +38,23 @@ import ExportService from 'services/ExportService';
 interface IProps {
   place: Partial<IPlace>;
   onCancel?: () => void;
+  groups?: string[];
 }
 
 export function ClipLayer(props: IProps) {
-  const { onCancel, place } = props;
-  const { name, organization } = place;
-  const [primaryLayers, setPrimaryLayers] = useState([]);
+  const { onCancel, place, groups } = props;
+  const { id, name, organization } = place;
   const [childLayers, setChildLayers] = useState([]);
   const { t } = useTranslation();
-  const { register, handleSubmit, formState, control, watch } = useForm({
+  const { register, handleSubmit, formState, control, watch, reset } = useForm({
     mode: 'onChange',
   });
   const { dirty, isValid, isSubmitting } = formState;
-  const selectedPrimaryLayer = watch('primary-layer');
-  const selectedChildLayer = watch('child-layer');
+  const selectedPrimaryLayer = watch('primaryLayer');
+  const selectedChildLayer = watch('childLayer');
+  const exportType = watch('exportType');
 
-  console.log(selectedPrimaryLayer, selectedChildLayer);
+  console.log(selectedPrimaryLayer, selectedChildLayer, exportType);
 
   // unable to make layers dropdown required otherwise
   const isValidCustom =
@@ -71,11 +74,13 @@ export function ClipLayer(props: IProps) {
           <Controller
             as={AsyncSelect}
             id="layer-selector"
-            name="primary-layer"
+            name="primaryLayer"
             className="marapp-qa-layers ng-margin-medium-bottom"
             placeholder={t('Select Widget Layers')}
             control={control}
-            getOptionLabel={(option) => option.name}
+            getOptionLabel={(option, extra) => (
+              <DropdownItem title={option.name} subtitle={option.organization} />
+            )}
             getOptionValue={(option) => option.id}
             loadFunction={fetchPrimaryLayers}
             selectedGroup={organization}
@@ -97,11 +102,12 @@ export function ClipLayer(props: IProps) {
               <Controller
                 as={ReactSelect}
                 id="child-layer-selector"
-                name="child-layer"
+                name="childLayer"
                 className="marapp-qa-layers ng-margin-medium-bottom"
                 placeholder={t('Select Widget Layers')}
                 options={childLayers}
                 control={control}
+                defaultValue={childLayers[0]}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id}
                 selectedGroup={organization}
@@ -120,7 +126,7 @@ export function ClipLayer(props: IProps) {
                 type="radio"
                 id="radio-geotiff"
                 value="geotiff"
-                name="fileType"
+                name="exportType"
                 ref={register({
                   required: true,
                 })}
@@ -135,8 +141,8 @@ export function ClipLayer(props: IProps) {
               <input
                 type="radio"
                 id="radio-jpg"
-                value="jpg"
-                name="fileType"
+                value="thumbnail"
+                name="exportType"
                 ref={register({
                   required: true,
                 })}
@@ -173,25 +179,42 @@ export function ClipLayer(props: IProps) {
     </form>
   );
 
-  function onSubmit(values) {
-    console.log(values);
+  async function onSubmit(values) {
+    const { exportType, primaryLayer } = values;
+    const { childLayer: selectedLayer = primaryLayer } = values;
+    const extension = exportType === 'geotiff' ? '.zip' : '.jpg';
+
+    try {
+      const { data } = await ExportService.exportLayerForLocation(selectedLayer.id, id, {
+        exportType,
+        group: groups.join(','),
+      });
+
+      const rawResponse = await fetch(data.downloadURL);
+      const blob = await rawResponse.blob();
+
+      FileSaver.saveAs(blob, `${selectedLayer.name}${extension}`);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async function fetchPrimaryLayers(query) {
     try {
       const primaryLayers = await LayersService.fetchLayers({
         ...query,
-        group: organization,
-        filters: serializeFilters({
+        group: groups.join(','),
+        filter: serializeFilters({
           primary: true,
           provider: 'gee',
         }),
         include: 'references',
-        select: 'name,references.name',
+        select: 'name,organization,references.name',
       });
 
       return primaryLayers;
     } catch (e) {
+      console.log(e);
     } finally {
     }
   }

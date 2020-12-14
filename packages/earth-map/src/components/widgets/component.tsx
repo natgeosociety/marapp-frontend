@@ -27,10 +27,12 @@ import React, { useState } from 'react';
 import { InView } from 'react-intersection-observer';
 import { useTranslation } from 'react-i18next';
 import { ClipLayer } from '../clip-layer';
+import { useAuth0 } from 'auth/auth0';
 
-import { TitleHero, DropdownSimple } from '@marapp/earth-shared';
+import { TitleHero, DropdownSimple, AuthzGuards } from '@marapp/earth-shared';
 
 import './styles.scss';
+import { ILayer } from 'modules/layers/model';
 
 interface IProps {
   groups?: string[];
@@ -57,11 +59,11 @@ export default function WidgetsComponent(props: IProps) {
     share: false,
     widgetId: null,
   });
+  const { getPermissions } = useAuth0();
   const [isOnClipLayer, setIsOnClipLayer] = useState(false);
   const { collapsedState } = widgetState;
   const { t } = useTranslation();
-  // Find the right permission
-  const canEdit = true;
+  const canExport = getPermissions(AuthzGuards.readExportsGuard, place.organization);
 
   const editActions = (
     <DropdownSimple
@@ -81,13 +83,15 @@ export default function WidgetsComponent(props: IProps) {
 
   return (
     <div className="marapp-qa-widgets c-widgets">
-      {isOnClipLayer && <ClipLayer place={place} onCancel={() => setIsOnClipLayer(false)} />}
+      {isOnClipLayer && (
+        <ClipLayer place={place} onCancel={() => setIsOnClipLayer(false)} groups={groups} />
+      )}
       <div className="widgets--content">
         <TitleHero
           title={place.name}
           subtitle={place.organization}
           extra={place.type}
-          actions={canEdit ? editActions : null}
+          actions={canExport ? editActions : null}
           className="ng-widget-header ng-margin-medium"
         />
         {list.map((w: any, i) => {
