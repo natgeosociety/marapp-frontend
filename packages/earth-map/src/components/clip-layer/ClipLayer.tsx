@@ -207,7 +207,6 @@ export function ClipLayer(props: IProps) {
       } else if (e.status === 413) {
         setSaveError(t('Could not download layer. Area too large'));
       }
-      console.log(e);
     }
   }
 
@@ -227,7 +226,6 @@ export function ClipLayer(props: IProps) {
       return primaryLayers;
     } catch (e) {
       setSaveError(t('Something went wrong'));
-      console.log(e);
     } finally {
     }
   }
