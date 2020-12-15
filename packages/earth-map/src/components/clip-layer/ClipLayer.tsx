@@ -19,7 +19,7 @@
 
 import FileSaver from 'file-saver';
 import { IPlace } from 'modules/places/model';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import ExportService from 'services/ExportService';
@@ -47,12 +47,23 @@ export function ClipLayer(props: IProps) {
   const [saveError, setSaveError] = useState('');
   const [childLayers, setChildLayers] = useState([]);
   const { t } = useTranslation();
-  const { register, handleSubmit, formState, control, watch } = useForm({
+  const { register, handleSubmit, formState, control, watch, setValue } = useForm({
     mode: 'onChange',
   });
   const { dirty, isValid, isSubmitting } = formState;
   const selectedPrimaryLayer = watch('primaryLayer');
   const selectedChildLayer = watch('childLayer');
+
+  // When primaryLayer changes, clear errors and set child layers
+  useEffect(() => {
+    setSaveError('');
+    setChildLayers(selectedPrimaryLayer?.references || []);
+  }, [selectedPrimaryLayer]);
+
+  // Pre-select the first child layer
+  useEffect(() => {
+    setValue('childLayer', childLayers[0]);
+  }, [childLayers]);
 
   // unable to make layers dropdown required otherwise
   const isValidCustom =
@@ -85,11 +96,6 @@ export function ClipLayer(props: IProps) {
             getOptionValue={(option) => option.id}
             loadFunction={fetchPrimaryLayers}
             selectedGroup={organization}
-            onChange={([selectedLayer]) => {
-              setSaveError('');
-              setChildLayers(selectedLayer?.references || []);
-              return selectedLayer;
-            }}
             isClearable={true}
             isSearchable={true}
           />
@@ -107,7 +113,6 @@ export function ClipLayer(props: IProps) {
                 placeholder={t('Select Widget Layers')}
                 options={childLayers}
                 control={control}
-                defaultValue={childLayers[0]}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id}
                 selectedGroup={organization}
