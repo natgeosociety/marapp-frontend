@@ -199,9 +199,13 @@ export function ClipLayer(props: IProps) {
       });
 
       const rawResponse = await fetch(data.downloadURL);
-      const blob = await rawResponse.blob();
 
-      FileSaver.saveAs(blob, `${selectedLayer.name}${extension}`);
+      if (rawResponse.status === 200) {
+        const blob = await rawResponse.blob();
+        FileSaver.saveAs(blob, `${selectedLayer.name}${extension}`);
+      } else {
+        setSaveError(t('Could not download layer. Area too large'));
+      }
     } catch (e) {
       if (!e) {
         setSaveError(t('Something went wrong'));
