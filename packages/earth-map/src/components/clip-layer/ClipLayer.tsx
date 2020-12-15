@@ -47,13 +47,12 @@ export function ClipLayer(props: IProps) {
   const [saveError, setSaveError] = useState('');
   const [childLayers, setChildLayers] = useState([]);
   const { t } = useTranslation();
-  const { register, handleSubmit, formState, control, watch, reset } = useForm({
+  const { register, handleSubmit, formState, control, watch } = useForm({
     mode: 'onChange',
   });
   const { dirty, isValid, isSubmitting } = formState;
   const selectedPrimaryLayer = watch('primaryLayer');
   const selectedChildLayer = watch('childLayer');
-  const exportType = watch('exportType');
 
   // unable to make layers dropdown required otherwise
   const isValidCustom =
@@ -87,6 +86,7 @@ export function ClipLayer(props: IProps) {
             loadFunction={fetchPrimaryLayers}
             selectedGroup={organization}
             onChange={([selectedLayer]) => {
+              setSaveError('');
               setChildLayers(selectedLayer?.references || []);
               return selectedLayer;
             }}
