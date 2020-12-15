@@ -90,10 +90,8 @@ export function ClipLayer(props: IProps) {
               setChildLayers(selectedLayer?.references || []);
               return selectedLayer;
             }}
-            isMulti={false}
             isClearable={true}
             isSearchable={true}
-            closeMenuOnSelect={false}
           />
 
           {!!childLayers.length && (
@@ -113,10 +111,8 @@ export function ClipLayer(props: IProps) {
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id}
                 selectedGroup={organization}
-                isMulti={false}
                 isClearable={true}
                 isSearchable={true}
-                closeMenuOnSelect={false}
               />
             </>
           )}
