@@ -163,7 +163,7 @@ export function WidgetsDetail(props: WidgetProps) {
         />
         <div className="ng-padding-medium-horizontal">
           <LinkWithOrg
-            className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block"
+            className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-inline-block"
             to="/widgets"
           >
             <i className="ng-icon ng-icon-directionleft" />
