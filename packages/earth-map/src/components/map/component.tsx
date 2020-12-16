@@ -28,7 +28,7 @@ import { renderToString } from 'react-dom/server';
 import isEqual from 'react-fast-compare';
 import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
-import { APP_ABOUT } from 'theme';
+import { APP_ABOUT, RESOURCE_WATCH_URL } from 'theme';
 
 import { Map, Spinner, UserMenu } from '@marapp/earth-shared';
 
@@ -61,6 +61,7 @@ interface IMap {
   setMapBounds?: (data: any) => void;
   setMapHoverInteractions?: (data: any) => void;
   selectedOpen?: boolean;
+  t?: (text: string, opt?: any) => string;
   page?: string;
   activeInteractiveLayersIds?: any;
 }
@@ -317,6 +318,7 @@ class MapComponent extends React.Component<IMap, IMapState> {
       mapboxConfig,
       page,
       activeInteractiveLayersIds,
+      t,
     } = this.props;
 
     // @ts-ignore
@@ -344,7 +346,11 @@ class MapComponent extends React.Component<IMap, IMapState> {
           onReady={this.onReady}
           mapOptions={{
             customAttribution: `
-              <a href="${APP_ABOUT}" target="_blank">About</a>
+              <a href="${RESOURCE_WATCH_URL}" target="_blank" class="marapp-qa-resource-watch-link">${t(
+              'Powered by',
+              { value: 'Resource Watch' }
+            )}</a> |
+              <a href="${APP_ABOUT}" target="_blank">${t('About')}</a>
               ${renderToString(
                 <Spinner
                   size="nano"

@@ -39,3 +39,5 @@ export const APP_BASEMAPS = [
 ];
 
 export const APP_ABOUT = 'https://github.com/natgeosociety/marapp-frontend/blob/master/ABOUT.md';
+
+export const RESOURCE_WATCH_URL = 'http://resourcewatch.org';

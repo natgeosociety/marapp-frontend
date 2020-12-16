@@ -1,4 +1,5 @@
 {
+  "About": "Acerca de",
   "Account": "Cuenta",
   "Account access": "Acceso a la cuenta",
   "Add places": "Agregar lugares",
@@ -62,6 +63,7 @@
   "Places": "Lugares",
   "Please enter a valid email": "Por favor introduzca una dirección de correo electrónico válida",
   "Please select an organization to create a collection under. After selecting an organization, you will be able to select places and share insights with members of your selected organization. Organizations can not be edited once picked": "Seleccione una organización para crear una colección. Después de seleccionar una organización, podrá seleccionar lugares y compartir información con miembros de su organización seleccionada. Las organizaciones no se pueden editar una vez seleccionadas",
+  "Powered by": "Energizado por {{value}}",
   "Profile": "Perfil",
   "Refresh": "Refresh",
   "Remove from map": "Quitar del mapa",
