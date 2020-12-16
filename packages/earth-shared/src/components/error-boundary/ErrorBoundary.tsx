@@ -28,7 +28,7 @@ interface IErrorBoundaryState {
   error?: any;
 }
 
-class ErrorBoundary extends PureComponent<IErrorBoundaryProps, IErrorBoundaryState> {
+export class ErrorBoundary extends PureComponent<IErrorBoundaryProps, IErrorBoundaryState> {
   constructor(props) {
     super(props);
     this.state = { error: null };
