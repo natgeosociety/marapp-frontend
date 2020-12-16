@@ -19,6 +19,7 @@
 
 import { noop } from 'lodash';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { AuthzGuards, ErrorMessages } from '@marapp/earth-shared';
 
@@ -28,7 +29,6 @@ import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { normalizeGroupName } from '@app/utils';
 
 import { UserProps } from '../model';
-import { useTranslation } from 'react-i18next';
 
 export default function UserDetails(props: UserProps) {
   const {

@@ -19,6 +19,7 @@
 
 import React, { useContext } from 'react';
 import Helmet from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 
 import { Card, favicon, Spinner, UserMenu } from '@marapp/earth-shared';
 
@@ -28,7 +29,6 @@ import { Auth0Context } from '@app/utils/contexts';
 
 import '../styles/app.scss';
 import { APP_NAME } from '../theme';
-import { useTranslation } from 'react-i18next';
 
 interface ILayoutProps {
   children?: any;

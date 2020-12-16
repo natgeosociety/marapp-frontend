@@ -75,3 +75,12 @@ export const PLACE_DETAIL_QUERY = {
   select: 'intersections.id,intersections.name,intersections.type,-metrics.metric',
   sort: 'intersections.name,metrics.slug,-metrics.version',
 };
+
+export const LOCATION_TYPE = {
+  COUNTRY: 'Country',
+  JURISDICTION: 'Jurisdiction',
+  BIOME: 'Biome',
+  PROTECTED_AREA: 'Protected Area',
+  SPECIES_AREA: 'Species Area',
+  COLLECTION: 'Collection',
+};

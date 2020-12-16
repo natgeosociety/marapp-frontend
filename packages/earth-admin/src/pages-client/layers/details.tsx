@@ -20,6 +20,7 @@ import { noop } from 'lodash';
 import { merge } from 'lodash/fp';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, ErrorMessage, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
 import useSWR from 'swr';
@@ -56,7 +57,6 @@ import {
 } from '@app/utils';
 
 import { ILayer } from './model';
-import { useTranslation } from 'react-i18next';
 
 const LAYER_DETAIL_QUERY = { include: 'references', select: 'references.name,references.id' };
 
@@ -147,7 +147,7 @@ export function LayerDetail(props: any) {
     try {
       setIsLoading && setIsLoading(true);
 
-      await mutate(setter(parsed), false);
+      await mutate(await setter(parsed), false);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
@@ -183,7 +183,7 @@ export function LayerDetail(props: any) {
         />
         <div className="ng-padding-medium-horizontal">
           <LinkWithOrg
-            className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block"
+            className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-inline-block"
             to="/layers"
           >
             <i className="ng-icon ng-icon-directionleft" />

@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
 import PlacesService from 'services/PlacesService';
 
-import { AsyncSelect, Card, TitleHero, DropdownItem } from '@marapp/earth-shared';
+import { AsyncSelect, Card, DropdownItem, TitleHero } from '@marapp/earth-shared';
 
 import { CollectionConflict } from '../collection-conflict';
 

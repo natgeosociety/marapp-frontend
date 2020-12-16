@@ -154,7 +154,7 @@ export function PlaceDetail(props: IProps) {
     try {
       setIsLoading && setIsLoading(true);
 
-      await mutate(setter(parsed), false);
+      await mutate(await setter(parsed), false);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
@@ -215,7 +215,7 @@ export function PlaceDetail(props: IProps) {
         />
         <div className="ng-padding-medium-horizontal">
           <LinkWithOrg
-            className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block"
+            className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-inline-block"
             to="/places"
           >
             <i className="ng-icon ng-icon-directionleft" />
@@ -363,7 +363,7 @@ export function PlaceDetail(props: IProps) {
                       <InlineEditCard
                         editButtonText={t('View and upload shape')}
                         onSubmit={onSubmit}
-                        onCancel={() => setPanel('upload')}
+                        onCancel={() => [setPanel('upload'), setGeojson(null)]}
                         submitButtonText={t('Update Shape')}
                         validForm={formValid && !jsonError}
                         render={({ setIsEditing, setIsLoading, setServerErrors }) => (
