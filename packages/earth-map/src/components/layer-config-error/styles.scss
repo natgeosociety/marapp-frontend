@@ -17,9 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-// NEEDS TO BE DUMB COMPONENT DONT CONNECT REDUX
-import { withTranslation } from 'react-i18next';
+@import '~styles/config';
 
-import WidgetComponent from './component';
+.layer-config-error {
+  background-color: $marapp-gray-8;
+  min-height: 100vh;
 
-export default withTranslation()(WidgetComponent);
+  .marapp-card {
+    background-color: $marapp-gray-9;
+  }
+}

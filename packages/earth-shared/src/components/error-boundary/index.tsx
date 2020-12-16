@@ -17,9 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-// NEEDS TO BE DUMB COMPONENT DONT CONNECT REDUX
-import { withTranslation } from 'react-i18next';
+import ErrorBoundary from './ErrorBoundary';
 
-import WidgetComponent from './component';
-
-export default withTranslation()(WidgetComponent);
+export default ErrorBoundary;
