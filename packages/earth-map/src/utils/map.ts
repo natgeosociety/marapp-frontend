@@ -1,5 +1,5 @@
-import { getUrlQueryParams } from './index';
 import { INITIAL_VIEW_PORT } from '../modules/map/initial-state';
+import { getUrlQueryParams } from './index';
 
 export interface IUrlCoordinates {
   latitude: number;
