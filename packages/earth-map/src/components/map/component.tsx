@@ -90,13 +90,13 @@ class MapComponent extends React.Component<IMap, IMapState> {
     const initialUrlCoordinates = extractCoordinatesFromUrl();
 
     const loadingTilesIntervalRef = setInterval(() => {
-      const isLoadingTiles = !this.map.areTilesLoaded();
+      const isLoadingTiles = !this.map?.areTilesLoaded();
       const loadingIndicatorNode = document.querySelector('.map-load-indicator');
 
       if (isLoadingTiles) {
-        loadingIndicatorNode.classList.remove('ng-hidden');
+        loadingIndicatorNode?.classList?.remove('ng-hidden');
       } else {
-        loadingIndicatorNode.classList.add('ng-hidden');
+        loadingIndicatorNode?.classList?.add('ng-hidden');
       }
     }, 100);
 
