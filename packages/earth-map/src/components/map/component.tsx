@@ -153,9 +153,9 @@ class MapComponent extends React.Component<IMap, IMapState> {
   }
 
   public onZoomChange = (zoom) => {
-    const { viewport, setMapViewport } = this.props;
+    const { viewport } = this.props;
 
-    setMapViewport({
+    this.onViewportChange({
       ...viewport,
       zoom,
       transitionDuration: 500,
