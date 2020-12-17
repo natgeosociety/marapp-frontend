@@ -123,12 +123,12 @@ const EarthPage = (props: IProps) => {
           </>
         )}
 
-        {newCollectionLayout && <CollectionNew privateGroups={privateGroups} />}
+        {newCollectionLayout && <CollectionNew privateGroups={privateGroups} router={router} />}
       </Sidebar>
 
       <div className="l-content">
         <ErrorBoundary fallbackComponent={<LayerConfigError selectedOpen={selectedOpen} />}>
-          <Map page={props.page} selectedOpen={selectedOpen} />
+          <Map page={props.page} selectedOpen={selectedOpen} t={t} />
         </ErrorBoundary>
       </div>
     </main>

@@ -94,7 +94,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
       setOwnersFeedback([]);
       setIsLoading && setIsLoading(true);
 
-      await mutate(setter(parsed), false);
+      await mutate(await setter(parsed), false);
 
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
@@ -161,7 +161,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
 
       <div className="marapp-qa-organizationdetails ng-padding-medium-horizontal">
         <LinkWithOrg
-          className="ng-border-remove ng-margin-bottom ng-display-block"
+          className="ng-border-remove ng-margin-bottom ng-display-inline-block"
           to="/organizations"
         >
           <i className="ng-icon ng-icon-directionleft" />
