@@ -126,7 +126,7 @@ const EarthPage = (props: IProps) => {
       </Sidebar>
 
       <div className="l-content">
-        <Map page={props.page} selectedOpen={selectedOpen} />
+        <Map page={props.page} selectedOpen={selectedOpen} t={t} />
       </div>
     </main>
   );
