@@ -21,6 +21,7 @@ import { navigate } from 'gatsby';
 import { noop } from 'lodash';
 import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import {
   Card,
@@ -44,6 +45,7 @@ interface IProps {
 
 export function NewOrganization(props: IProps) {
   const { onDataChange = noop } = props;
+  const { t } = useTranslation('admin');
   const [serverErrors, setServerErrors] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [ownersFeedback, setOwnersFeedback] = useState([]);
@@ -107,7 +109,7 @@ export function NewOrganization(props: IProps) {
     <ContentLayout backTo="/organizations">
       <div>
         <div className="ng-flex ng-flex-space-between">
-          <h2 className="ng-text-display-m">Add organization</h2>
+          <h2 className="ng-text-display-m">{t('Add organization')}</h2>
         </div>
 
         <form
@@ -117,8 +119,9 @@ export function NewOrganization(props: IProps) {
           <Card className="ng-margin-medium-bottom">
             <Input
               name="name"
-              placeholder="Organization name"
-              label="Organization name*"
+              placeholder={t('Organization name')}
+              label="Organization name"
+              required={true}
               className="marapp-qa-inputname ng-display-block"
               maxLength="64"
               disabled={isLoading}
@@ -132,13 +135,14 @@ export function NewOrganization(props: IProps) {
           <Card className="ng-margin-medium-bottom">
             <Input
               name="slug"
-              placeholder="short-org-name-or-initials"
-              label="Slug*"
+              placeholder={t('short-org-name-or-initials')}
+              label="Slug"
+              required={true}
               className="marapp-qa-inputslug ng-display-block"
               disabled={isLoading}
               error={renderErrorFor('slug')}
               ref={register({
-                required: 'Slug name is required',
+                required: 'Slug is required',
                 validate: {
                   lowerNumericDashesRule: lowerNumericDashesRule(),
                 },
@@ -147,14 +151,14 @@ export function NewOrganization(props: IProps) {
           </Card>
 
           <Card className="ng-margin-medium-bottom">
-            <p className="ng-text-weight-bold ng-margin-remove">Owner(s)*</p>
+            <p className="ng-text-weight-bold ng-margin-remove">{t('Owners')}*</p>
             <Controller
               as={EmailInput}
               name="owners"
               control={control}
               defaultValue={[]}
               isMulti={true}
-              placeholder="Emails"
+              placeholder={t('Emails')}
               isDisabled={isLoading}
               className="marapp-qa-owners"
               rules={{ required: true }}
@@ -164,7 +168,7 @@ export function NewOrganization(props: IProps) {
                 (item) =>
                   item.hasError && (
                     <p className="ng-margin-remove">
-                      The email, {item.title} is unavailable. Details: {item.detail}
+                      {t('Email unavailable', { value: item.title, details: item.detail })}
                     </p>
                   )
               )}
@@ -183,10 +187,10 @@ export function NewOrganization(props: IProps) {
                 className="ng-button ng-button-primary ng-margin-medium-right"
                 disabled={!isValid || ownersWatcher?.length < 1}
               >
-                Save and view details
+                {t('Save and view details')}
               </button>
               <LinkWithOrg className="ng-button ng-button-secondary" to="/organizations">
-                return to organizations home
+                {t('return to home', { value: t('organizations') })}
               </LinkWithOrg>
             </div>
           )}

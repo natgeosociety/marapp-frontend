@@ -23,6 +23,7 @@ import CollectionsCard from 'components/collection/collections-card';
 import Header from 'components/header';
 import IndexSidebar from 'components/index-sidebar';
 import LastViewedPlace from 'components/last-viewed-place';
+import LayerConfigError from 'components/layer-config-error';
 import Layers from 'components/layers';
 import Map from 'components/map';
 import Places from 'components/places';
@@ -37,7 +38,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icons as VizzIcons } from 'vizzuality-components';
 
-import { Tab, Tabs } from '@marapp/earth-shared';
+import { ErrorBoundary, Tab, Tabs } from '@marapp/earth-shared';
 
 import { URL_PROPS } from './url';
 
@@ -105,10 +106,7 @@ const EarthPage = (props: IProps) => {
                     locationName={collection.name}
                     locationOrganization={collection.organization}
                   >
-                    <CollectionDetails
-                      placesFromGroups={union([collection.organization], publicGroups)}
-                      privateGroups={privateGroups}
-                    />
+                    <CollectionDetails privateGroups={privateGroups} />
                   </Places>
                 )}
               </>
@@ -125,11 +123,13 @@ const EarthPage = (props: IProps) => {
           </>
         )}
 
-        {newCollectionLayout && <CollectionNew privateGroups={privateGroups} />}
+        {newCollectionLayout && <CollectionNew privateGroups={privateGroups} router={router} />}
       </Sidebar>
 
       <div className="l-content">
-        <Map page={props.page} selectedOpen={selectedOpen} />
+        <ErrorBoundary fallbackComponent={<LayerConfigError selectedOpen={selectedOpen} />}>
+          <Map page={props.page} selectedOpen={selectedOpen} t={t} />
+        </ErrorBoundary>
       </div>
     </main>
   );

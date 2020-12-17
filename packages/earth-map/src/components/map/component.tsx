@@ -24,14 +24,19 @@ import { API_URL, MAPBOX_TOKEN } from 'config';
 import experienceIMG from 'images/pins/experience-marker.svg';
 import debounce from 'lodash/debounce';
 import React, { useContext } from 'react';
-import { useTranslation } from 'react-i18next';
 import { renderToString } from 'react-dom/server';
 import isEqual from 'react-fast-compare';
+import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
-import { APP_ABOUT } from 'theme';
+import { APP_ABOUT, RESOURCE_WATCH_URL } from 'theme';
 
 import { Map, Spinner, UserMenu } from '@marapp/earth-shared';
 
+import {
+  extractCoordinatesFromUrl,
+  isValidUrlCoordinateGroup,
+  IUrlCoordinates,
+} from '../../utils/map';
 import BasemapComponent from '../basemap';
 import MapControls from './controls';
 import RecenterControl from './controls/recenter';
@@ -56,11 +61,13 @@ interface IMap {
   setMapBounds?: (data: any) => void;
   setMapHoverInteractions?: (data: any) => void;
   selectedOpen?: boolean;
+  t?: (text: string, opt?: any) => string;
   page?: string;
   activeInteractiveLayersIds?: any;
 }
 
 interface IMapState {
+  initialUrlCoordinates?: IUrlCoordinates;
   loadingTilesIntervalRef?: NodeJS.Timeout;
 }
 
@@ -81,18 +88,21 @@ class MapComponent extends React.Component<IMap, IMapState> {
   }
 
   public componentDidMount() {
+    const initialUrlCoordinates = extractCoordinatesFromUrl();
+
     const loadingTilesIntervalRef = setInterval(() => {
-      const isLoadingTiles = !this.map.areTilesLoaded();
+      const isLoadingTiles = !this.map?.areTilesLoaded();
       const loadingIndicatorNode = document.querySelector('.map-load-indicator');
 
       if (isLoadingTiles) {
-        loadingIndicatorNode.classList.remove('ng-hidden');
+        loadingIndicatorNode?.classList?.remove('ng-hidden');
       } else {
-        loadingIndicatorNode.classList.add('ng-hidden');
+        loadingIndicatorNode?.classList?.add('ng-hidden');
       }
     }, 100);
 
     this.setState({
+      initialUrlCoordinates,
       loadingTilesIntervalRef,
     });
   }
@@ -144,9 +154,10 @@ class MapComponent extends React.Component<IMap, IMapState> {
   }
 
   public onZoomChange = (zoom) => {
-    const { setMapViewport } = this.props;
+    const { viewport, setMapViewport } = this.props;
 
     setMapViewport({
+      ...viewport,
       zoom,
       transitionDuration: 500,
     });
@@ -281,6 +292,23 @@ class MapComponent extends React.Component<IMap, IMapState> {
     });
   };
 
+  /**
+   * Once the map is loaded, check if there were any valid coordinates provided in the URL.
+   * If so, set the viewport in accordance with those coordinates
+   */
+  public onLoad = () => {
+    const { initialUrlCoordinates } = this.state;
+
+    if (isValidUrlCoordinateGroup(initialUrlCoordinates)) {
+      this.onViewportChange({
+        ...initialUrlCoordinates,
+        transitionDuration: 800,
+      });
+
+      this.onViewportChange.flush(); // execute directly the last call
+    }
+  };
+
   public render() {
     const {
       selectedOpen,
@@ -290,6 +318,7 @@ class MapComponent extends React.Component<IMap, IMapState> {
       mapboxConfig,
       page,
       activeInteractiveLayersIds,
+      t,
     } = this.props;
 
     // @ts-ignore
@@ -313,10 +342,15 @@ class MapComponent extends React.Component<IMap, IMapState> {
           onViewportChange={this.onViewportChange}
           onClick={this.onClick}
           onHover={this.onHover}
+          onLoad={this.onLoad}
           onReady={this.onReady}
           mapOptions={{
             customAttribution: `
-              <a href="${APP_ABOUT}" target="_blank">About</a>
+              <a href="${RESOURCE_WATCH_URL}" target="_blank" class="marapp-qa-resource-watch-link">${t(
+              'Powered by',
+              { value: 'Resource Watch' }
+            )}</a> |
+              <a href="${APP_ABOUT}" target="_blank">${t('About')}</a>
               ${renderToString(
                 <Spinner
                   size="nano"
@@ -325,7 +359,6 @@ class MapComponent extends React.Component<IMap, IMapState> {
               )}
             `,
           }}
-          // onLoad={this.onLoad}
           transformRequest={this.onTransformRequest}
         >
           {(map) => {

@@ -20,6 +20,7 @@ import { noop } from 'lodash';
 import { merge } from 'lodash/fp';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
 import useSWR from 'swr';
@@ -61,6 +62,7 @@ export function WidgetsDetail(props: WidgetProps) {
   const { page, onDataChange = noop, dynamicOptions = {} } = props;
   const { metrics: metricsOptions = [] } = dynamicOptions;
   const { getPermissions, selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
   const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
 
   const query = merge(WIDGET_DETAIL_QUERY, { group: selectedGroup });
@@ -126,7 +128,7 @@ export function WidgetsDetail(props: WidgetProps) {
     try {
       setIsLoading && setIsLoading(true);
 
-      await mutate(setter(parsed), false);
+      await mutate(await setter(parsed), false);
 
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
@@ -161,11 +163,11 @@ export function WidgetsDetail(props: WidgetProps) {
         />
         <div className="ng-padding-medium-horizontal">
           <LinkWithOrg
-            className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block"
+            className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-inline-block"
             to="/widgets"
           >
             <i className="ng-icon ng-icon-directionleft" />
-            return to widgets home
+            {t('return to home', { value: 'widgets' })}
           </LinkWithOrg>
           <form className="ng-form ng-form-dark ng-flex-column">
             <div className="ng-grid">
@@ -177,8 +179,9 @@ export function WidgetsDetail(props: WidgetProps) {
                     <>
                       <Input
                         name="name"
-                        placeholder="Widget title"
-                        label="Title*"
+                        placeholder={t('Widget title')}
+                        label="Title"
+                        required={true}
                         defaultValue={name}
                         className="ng-display-block"
                         error={renderErrorFor('name')}
@@ -215,8 +218,9 @@ export function WidgetsDetail(props: WidgetProps) {
                       <div className="ng-margin-medium-bottom">
                         <Input
                           name="slug"
-                          placeholder="Slug"
+                          placeholder={t('Slug')}
                           label="Slug"
+                          required={true}
                           defaultValue={slug}
                           className="ng-display-block marapp-qa-inputslug"
                           error={renderErrorFor('slug')}
@@ -232,7 +236,7 @@ export function WidgetsDetail(props: WidgetProps) {
                   )}
                 >
                   <div className="ng-margin-medium-bottom">
-                    <p className="ng-text-weight-bold ng-margin-remove">Slug</p>
+                    <p className="ng-text-weight-bold ng-margin-remove">{t('Slug')}</p>
                     <p className="ng-margin-remove ng-padding-left">{slug}</p>
                   </div>
                 </InlineEditCard>
@@ -240,17 +244,20 @@ export function WidgetsDetail(props: WidgetProps) {
               <div className="ng-width-1-2">
                 <Card>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">ID:</span> {id}
+                    <span className="ng-text-weight-bold ng-color-mdgray">{t('ID')}:</span> {id}
                   </p>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">Version:</span> {version}
+                    <span className="ng-text-weight-bold ng-color-mdgray">{t('Version')}:</span>{' '}
+                    {version}
                   </p>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">Last Updated:</span>{' '}
+                    <span className="ng-text-weight-bold ng-color-mdgray">
+                      {t('Last Updated')}:
+                    </span>{' '}
                     {formatDate(updatedAt)}
                   </p>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">Created:</span>{' '}
+                    <span className="ng-text-weight-bold ng-color-mdgray">{t('Created')}:</span>{' '}
                     {formatDate(createdAt)}
                   </p>
                 </Card>
@@ -264,7 +271,7 @@ export function WidgetsDetail(props: WidgetProps) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <label className="ng-form-label" htmlFor="description">
-                        Description
+                        {t('Description')}
                       </label>
 
                       <Controller
@@ -277,9 +284,9 @@ export function WidgetsDetail(props: WidgetProps) {
                   )}
                 >
                   <div className="ng-margin-medium-bottom">
-                    <p className="ng-text-weight-bold ng-margin-remove">Description</p>
+                    <p className="ng-text-weight-bold ng-margin-remove">{t('Description')}</p>
                     <div className="ng-margin-remove ng-padding-left">
-                      {description ? renderHTML(description) : 'No description'}
+                      {description ? renderHTML(description) : t('No description')}
                     </div>
                   </div>
                 </InlineEditCard>
@@ -294,7 +301,7 @@ export function WidgetsDetail(props: WidgetProps) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <div className="ng-margin-medium-bottom">
-                        <label htmlFor="provider">Widget Layer(s)</label>
+                        <label htmlFor="provider">{t('Widget Layers')}</label>
                         <Controller
                           as={AsyncSelect}
                           name="layers"
@@ -310,7 +317,7 @@ export function WidgetsDetail(props: WidgetProps) {
                           isClearable={true}
                           isSearchable={true}
                           closeMenuOnSelect={false}
-                          placeholder="Select layer(s)"
+                          placeholder={t('Select Widget Layers')}
                         />
                       </div>
                     </>
@@ -320,16 +327,16 @@ export function WidgetsDetail(props: WidgetProps) {
                     {!!layers ? (
                       <DetailList
                         data={layers}
-                        name="Widget Layer(s)"
+                        name={t('Widget Layers')}
                         type="layers"
                         className="ng-flex-column ng-flex-top"
                       />
                     ) : (
                       <div>
                         <p className="ng-text-weight-bold ng-margin-small-bottom">
-                          Widget Layer(s)
+                          {t('Widget Layers')}
                         </p>
-                        <span className="ng-padding-left">No layer references</span>
+                        <span className="ng-padding-left">{t('No layer references')}</span>
                       </div>
                     )}
                   </div>
@@ -341,10 +348,11 @@ export function WidgetsDetail(props: WidgetProps) {
                   validForm={isValid}
                   render={() => (
                     <>
-                      <label htmlFor="metrics-select">Metric Slug*</label>
+                      <label htmlFor="metrics-select">{t('Metric Slug')}*</label>
                       <Controller
                         as={Select}
                         control={control}
+                        classNamePrefix="marapp-qa-asyncselect"
                         className="marapp-qa-metricslug"
                         name="metrics"
                         options={metricsOptions}
@@ -352,7 +360,7 @@ export function WidgetsDetail(props: WidgetProps) {
                           value: selectedMetrics[0],
                           label: selectedMetrics[0],
                         }}
-                        placeholder="Select metric slug"
+                        placeholder={t('Select metric slug')}
                         styles={CUSTOM_STYLES}
                         error={renderErrorFor('metrics')}
                         theme={(theme) => ({
@@ -365,7 +373,7 @@ export function WidgetsDetail(props: WidgetProps) {
                   )}
                 >
                   <div>
-                    <p className="ng-text-weight-bold ng-margin-small-bottom">Metric Slug</p>
+                    <p className="ng-text-weight-bold ng-margin-small-bottom">{t('Metric Slug')}</p>
                     <div className="ng-margin-remove ng-padding-left">{selectedMetrics}</div>
                   </div>
                 </InlineEditCard>
@@ -380,7 +388,7 @@ export function WidgetsDetail(props: WidgetProps) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <div className="ng-margin-medium-bottom">
-                        <label htmlFor="config">Widget Config</label>
+                        <label htmlFor="config">{t('Widget Config')}</label>
                         <Controller
                           name="config"
                           control={control}
@@ -396,7 +404,7 @@ export function WidgetsDetail(props: WidgetProps) {
                     {config && (
                       <div>
                         <p className="ng-flex">
-                          <span className="ng-text-weight-medium">Widget Config</span>
+                          <span className="ng-text-weight-medium">{t('Widget Config')}</span>
                           <span>
                             <i
                               onClick={(e) => copyToClipboard(e, textAreaRef, setCopySuccess)}
@@ -439,7 +447,7 @@ export function WidgetsDetail(props: WidgetProps) {
           {writePermissions && (
             <div className="ng-text-right ng-margin-medium-top">
               <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
-                Delete widget
+                {t('Delete widget')}
               </button>
             </div>
           )}

@@ -17,4 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { ErrorBoundary } from './ErrorBoundary';
+@import '~styles/config';
+
+.layer-config-error {
+  background-color: $marapp-gray-8;
+  min-height: 100vh;
+
+  .marapp-card {
+    background-color: $marapp-gray-9;
+  }
+}

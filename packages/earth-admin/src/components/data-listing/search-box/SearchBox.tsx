@@ -19,6 +19,7 @@
 
 import classnames from 'classnames';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import './styles.scss';
 
@@ -30,10 +31,15 @@ interface SearchBoxProps {
 
 const SearchBox = (props: SearchBoxProps) => {
   const { searchValue, searchValueAction, pageTitle } = props;
+  const { t } = useTranslation('admin');
   const [focus, setFocus] = useState(false);
 
   const handleSearchChange = (newValue: string) => {
     searchValueAction(newValue);
+  };
+
+  const onReset = () => {
+    handleSearchChange('');
   };
 
   return (
@@ -43,19 +49,24 @@ const SearchBox = (props: SearchBoxProps) => {
     >
       <div
         className={classnames({
-          'ng-input-container ng-c-flex-grow-1 ng-flex ng-flex-middle ng-padding-vertical': true,
+          'ng-input-container ng-c-flex-grow-1 ng-flex ng-flex-middle ng-padding ng-padding-right-remove': true,
           'is-focused': focus,
         })}
       >
-        <i className="ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal" />
+        <i className="ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal ng-margin-left-remove" />
         <input
           type=" text"
-          placeholder={`search ${pageTitle.toLowerCase()}...`}
+          placeholder={`${t('search')} ${t(pageTitle).toLowerCase()}...`}
           className=" ng-width-1-1 ng-search-box"
           onFocus={() => setFocus(true)}
           onChange={(e) => handleSearchChange(e.target.value)}
           value={searchValue}
         />
+        {searchValue && (
+          <div className="marapp-qa-searchboxclear ng-c-cursor-pointer" onClick={onReset}>
+            <i className="ng-color-mdgray ng-margin-horizontal ng-icon ng-icon-close ng-display-block" />
+          </div>
+        )}
       </div>
     </div>
   );

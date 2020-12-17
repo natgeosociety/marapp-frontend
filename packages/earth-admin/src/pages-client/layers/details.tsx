@@ -20,6 +20,7 @@ import { noop } from 'lodash';
 import { merge } from 'lodash/fp';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, ErrorMessage, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
 import useSWR from 'swr';
@@ -62,6 +63,7 @@ const LAYER_DETAIL_QUERY = { include: 'references', select: 'references.name,ref
 export function LayerDetail(props: any) {
   const { page, onDataChange = noop, dynamicOptions } = props;
   const { getPermissions, selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
   const writePermissions = getPermissions(AuthzGuards.writeLayersGuard);
   const {
     category: layerCategoryOptions = [],
@@ -145,7 +147,7 @@ export function LayerDetail(props: any) {
     try {
       setIsLoading && setIsLoading(true);
 
-      await mutate(setter(parsed), false);
+      await mutate(await setter(parsed), false);
 
       setIsEditing && setIsEditing(false);
       setIsLoading && setIsLoading(false);
@@ -181,11 +183,11 @@ export function LayerDetail(props: any) {
         />
         <div className="ng-padding-medium-horizontal">
           <LinkWithOrg
-            className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-block"
+            className="marapp-qa-actionreturn ng-border-remove ng-margin-bottom ng-display-inline-block"
             to="/layers"
           >
             <i className="ng-icon ng-icon-directionleft" />
-            return to layers home
+            {t('return to home', { value: 'layers' })}
           </LinkWithOrg>
           <form className="ng-form ng-form-dark ng-flex-column">
             <div className="ng-grid">
@@ -197,8 +199,9 @@ export function LayerDetail(props: any) {
                     <>
                       <Input
                         name="name"
-                        placeholder="Layer title"
-                        label="Title*"
+                        placeholder={t('Layer title')}
+                        label="Title"
+                        required={true}
                         defaultValue={name}
                         className="ng-display-block"
                         error={renderErrorFor('name')}
@@ -243,8 +246,9 @@ export function LayerDetail(props: any) {
                       <div className="ng-margin-medium-bottom">
                         <Input
                           name="slug"
-                          placeholder="Layer slug"
-                          label="Slug*"
+                          placeholder={t('Layer slug')}
+                          label="Slug"
+                          required={true}
                           defaultValue={slug}
                           className="ng-display-block marapp-qa-inputslug"
                           error={renderErrorFor('slug')}
@@ -257,17 +261,18 @@ export function LayerDetail(props: any) {
                         />
                       </div>
                       <div>
-                        <label htmlFor="category">Layer category</label>
+                        <label htmlFor="category">{t('Layer category')}</label>
                         <Controller
                           as={Select}
                           control={control}
                           className="marapp-qa-category"
+                          classNamePrefix="marapp-qa-asyncselect"
                           name="category"
                           options={layerCategoryOptions}
                           defaultValue={layerCategory}
                           isSearchable={true}
                           isMulti={true}
-                          placeholder="Select layer category"
+                          placeholder={t('Select layer category')}
                           styles={CUSTOM_STYLES}
                           error={renderErrorFor('category')}
                           theme={(theme) => ({
@@ -277,7 +282,7 @@ export function LayerDetail(props: any) {
                           rules={{
                             required: true,
                             validate: {
-                              notEmptyRule: notEmptyRule('Layer category cannot be empty'),
+                              notEmptyRule: notEmptyRule(t('Layer category cannot be empty')),
                             },
                           }}
                         />
@@ -285,7 +290,7 @@ export function LayerDetail(props: any) {
                           <ErrorMessage
                             errors={errors}
                             name="category"
-                            message="Layer category cannot be empty"
+                            message={t('Layer category cannot be empty')}
                           />
                         </div>
                       </div>
@@ -293,11 +298,11 @@ export function LayerDetail(props: any) {
                   )}
                 >
                   <div className="ng-margin-medium-bottom">
-                    <p className="ng-text-weight-bold ng-margin-remove">Layer slug</p>
+                    <p className="ng-text-weight-bold ng-margin-remove">{t('Layer slug')}</p>
                     <p className="ng-margin-remove ng-padding-left">{slug}</p>
                   </div>
                   <div>
-                    <p className="ng-text-weight-bold ng-margin-remove">Layer category</p>
+                    <p className="ng-text-weight-bold ng-margin-remove">{t('Layer category')}</p>
                     {category && (
                       <p className="ng-margin-remove ng-padding-left">{category.join(', ')}</p>
                     )}
@@ -307,17 +312,20 @@ export function LayerDetail(props: any) {
               <div className="ng-width-1-2">
                 <Card>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">ID:</span> {id}
+                    <span className="ng-text-weight-bold ng-color-mdgray">{t('ID')}:</span> {id}
                   </p>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">Version:</span> {version}
+                    <span className="ng-text-weight-bold ng-color-mdgray">{t('Version')}:</span>{' '}
+                    {version}
                   </p>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">Last Updated:</span>{' '}
+                    <span className="ng-text-weight-bold ng-color-mdgray">
+                      {t('Last Updated')}:
+                    </span>{' '}
                     {formatDate(updatedAt)}
                   </p>
                   <p className="ng-margin-bottom ng-margin-top-remove">
-                    <span className="ng-text-weight-bold ng-color-mdgray">Created:</span>{' '}
+                    <span className="ng-text-weight-bold ng-color-mdgray">{t('Created')}:</span>{' '}
                     {formatDate(createdAt)}
                   </p>
                 </Card>
@@ -331,7 +339,7 @@ export function LayerDetail(props: any) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <label className="ng-form-label" htmlFor="description">
-                        Layer description
+                        {t('Layer description')}
                       </label>
 
                       <Controller
@@ -344,9 +352,9 @@ export function LayerDetail(props: any) {
                   )}
                 >
                   <div className="ng-margin-medium-bottom">
-                    <p className="ng-text-weight-bold ng-margin-remove">Layer description</p>
+                    <p className="ng-text-weight-bold ng-margin-remove">{t('Layer description')}</p>
                     <div className="ng-margin-remove ng-padding-left">
-                      {description ? renderHTML(description) : 'No description'}
+                      {description ? renderHTML(description) : t('No description')}
                     </div>
                   </div>
                 </InlineEditCard>
@@ -360,16 +368,17 @@ export function LayerDetail(props: any) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <div>
-                        <label htmlFor="type">Layer provider</label>
+                        <label htmlFor="type">{t('Layer provider')}</label>
                         <Controller
                           as={Select}
                           control={control}
                           className="marapp-qa-provider"
+                          classNamePrefix="marapp-qa-asyncselect"
                           name="provider"
                           options={layerProviderOptions}
                           defaultValue={layerProvider}
                           isSearchable={true}
-                          placeholder="Select layer provider"
+                          placeholder={t('Select layer provider')}
                           styles={CUSTOM_STYLES}
                           theme={(theme) => ({
                             ...theme,
@@ -379,16 +388,17 @@ export function LayerDetail(props: any) {
                         />
                       </div>
                       <div>
-                        <label htmlFor="type">Layer type</label>
+                        <label htmlFor="type">{t('Layer type')}</label>
                         <Controller
                           as={Select}
                           control={control}
                           className="marapp-qa-type"
+                          classNamePrefix="marapp-qa-asyncselect"
                           name="type"
                           options={layerTypeOptions}
                           defaultValue={layerType}
                           isSearchable={true}
-                          placeholder="Select layer type"
+                          placeholder={t('Select layer type')}
                           styles={CUSTOM_STYLES}
                           theme={(theme) => ({
                             ...theme,
@@ -401,11 +411,11 @@ export function LayerDetail(props: any) {
                   )}
                 >
                   <div className="ng-margin-medium-bottom">
-                    <p className="ng-text-weight-bold ng-margin-remove">Layer provider</p>
+                    <p className="ng-text-weight-bold ng-margin-remove">{t('Layer provider')}</p>
                     <p className="ng-margin-remove ng-padding-left">{provider}</p>
                   </div>
                   <div>
-                    <p className="ng-text-weight-bold ng-margin-remove">Later type</p>
+                    <p className="ng-text-weight-bold ng-margin-remove">{t('Layer type')}</p>
                     <p className="ng-margin-remove ng-padding-left">{type}</p>
                   </div>
                 </InlineEditCard>
@@ -419,7 +429,7 @@ export function LayerDetail(props: any) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <div className="ng-margin-medium-bottom">
-                        <label htmlFor="config">Layer Config</label>
+                        <label htmlFor="config">{t('Layer Config')}</label>
                         <Controller
                           name="config"
                           control={control}
@@ -435,7 +445,7 @@ export function LayerDetail(props: any) {
                     {config && (
                       <div>
                         <p className="ng-flex">
-                          <span className="ng-text-weight-medium">Layer config</span>
+                          <span className="ng-text-weight-medium">{t('Layer config')}</span>
                           <span>
                             <i
                               onClick={(e) => copyToClipboard(e, textAreaRef, setCopySuccess)}
@@ -472,7 +482,7 @@ export function LayerDetail(props: any) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <div className="ng-margin-medium-bottom">
-                        <label htmlFor="provider">Included layers:</label>
+                        <label htmlFor="provider">{t('Included layers')}:</label>
                         <Controller
                           as={AsyncSelect}
                           name="references"
@@ -489,7 +499,7 @@ export function LayerDetail(props: any) {
                           isSearchable={true}
                           isMulti={true}
                           closeMenuOnSelect={false}
-                          placeholder="Select layers"
+                          placeholder={t('Select layers')}
                         />
                       </div>
                     </>
@@ -499,16 +509,16 @@ export function LayerDetail(props: any) {
                     {!!references ? (
                       <DetailList
                         data={references}
-                        name="Layer References"
+                        name={t('Layer References')}
                         type="layers"
                         className="ng-flex-column ng-flex-top"
                       />
                     ) : (
                       <div>
                         <p className="ng-text-weight-bold ng-margin-small-bottom">
-                          Layer references
+                          {t('Layer references')}
                         </p>
-                        <span className="ng-padding-left">No layer references</span>
+                        <span className="ng-padding-left">{t('No layer references')}</span>
                       </div>
                     )}
                   </div>
@@ -528,7 +538,7 @@ export function LayerDetail(props: any) {
           {writePermissions && (
             <div className="ng-text-right ng-margin-medium-top">
               <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
-                Delete layer
+                {t('Delete layer')}
               </button>
             </div>
           )}

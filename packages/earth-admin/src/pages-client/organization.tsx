@@ -20,6 +20,7 @@
 import { Link } from 'gatsby';
 import { JSHINT } from 'jshint';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { isSuperAdmin, isValidGroup, Spinner } from '@marapp/earth-shared';
 
@@ -36,6 +37,7 @@ interface IProps {
 const Organization = (props: IProps) => {
   const { org, children } = props;
   const { isLoading, groups, setupUserOrg, setIsLoading, userData } = useAuth0();
+  const { t } = useTranslation('admin');
 
   // CodeMirror is not working without window.JSHINT
   useEffect(() => {
@@ -55,7 +57,7 @@ const Organization = (props: IProps) => {
   }, [groups, org]);
 
   if (!org || !isValidGroup(groups, org, allowSuperAdminGroup)) {
-    return <OrgSwitcherPage groups={groups} />;
+    return <OrgSwitcherPage groups={groups} t={t} />;
   }
 
   if (org === '*' && !location.pathname.startsWith(`${BASE_URL}*/organizations`)) {
@@ -71,11 +73,11 @@ const Organization = (props: IProps) => {
   return children;
 };
 
-const OrgSwitcherPage = ({ groups }) => (
+const OrgSwitcherPage = ({ groups, t }) => (
   <div className="marapp-qa-organizationpage ng-orgswitcher-page">
     <div>
-      <h3>Invalid Organization</h3>
-      <h6>Please select a valid one:</h6>
+      <h3>{t('Invalid Organization')}</h3>
+      <h6>{t('Please select a valid one')}</h6>
       <ul>
         {groups.map((g) => (
           <li>

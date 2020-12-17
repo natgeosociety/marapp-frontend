@@ -67,11 +67,20 @@ export interface PlaceIntersectionProps {
 export interface PlaceIntersection {
   name: string;
   id: string;
-  type?: 'country' | 'jurisdiction' | 'continent';
+  type?: 'country' | 'jurisdiction' | 'continent' | 'collection';
 }
 
 export const PLACE_DETAIL_QUERY = {
   include: 'metrics,intersections',
   select: 'intersections.id,intersections.name,intersections.type,-metrics.metric',
   sort: 'intersections.name,metrics.slug,-metrics.version',
+};
+
+export const LOCATION_TYPE = {
+  COUNTRY: 'Country',
+  JURISDICTION: 'Jurisdiction',
+  BIOME: 'Biome',
+  PROTECTED_AREA: 'Protected Area',
+  SPECIES_AREA: 'Species Area',
+  COLLECTION: 'Collection',
 };

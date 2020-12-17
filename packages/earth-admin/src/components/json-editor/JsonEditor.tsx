@@ -19,8 +19,10 @@
 
 import 'codemirror/mode/javascript/javascript';
 import jsonlint from 'jsonlint';
+import debounce from 'lodash/debounce';
 import React, { useState } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
+import { useTranslation } from 'react-i18next';
 
 import './styles.scss';
 
@@ -33,6 +35,7 @@ interface JsonEditorProps {
 
 export const JsonEditor = (props: JsonEditorProps) => {
   const [error, setError] = useState('');
+  const { t } = useTranslation('admin');
   const { json, onChange, readOnly, onError } = props;
 
   function makeMarker() {
@@ -42,7 +45,7 @@ export const JsonEditor = (props: JsonEditorProps) => {
     return marker;
   }
 
-  const handleBlur = (e) => {
+  const handleChange = debounce((e) => {
     const json = e.getValue();
 
     e.clearGutter('error-gutter');
@@ -62,7 +65,7 @@ export const JsonEditor = (props: JsonEditorProps) => {
       setError(error);
       onError && onError(true);
     }
-  };
+  }, 1000);
 
   return (
     <div className="marapp-qa-jsoneditor">
@@ -77,9 +80,9 @@ export const JsonEditor = (props: JsonEditorProps) => {
           lineWrapping: true,
           readOnly,
         }}
-        onBlur={handleBlur}
+        onChange={handleChange}
       />
-      {error && <div className="ng-form-error-block">{error}</div>}
+      {error && <div className="ng-form-error-block">{t(error)}</div>}
     </div>
   );
 };

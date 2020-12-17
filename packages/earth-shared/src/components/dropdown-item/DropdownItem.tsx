@@ -17,35 +17,25 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import React from 'react';
 
-import { Elang, SessionStorage } from '@marapp/earth-shared';
+interface IProps {
+  title: string;
+  subtitle?: string;
+}
 
-import translationEN from './en/translation.json';
-import translationES from './es/translation.json';
-import translationFR from './fr/translation.json';
+export function DropdownItem(props: IProps) {
+  const { title, subtitle } = props;
 
-const lang = SessionStorage.get('lang') || Elang.EN;
-
-i18n.use(initReactI18next).init({
-  resources: {
-    [Elang.EN]: {
-      translation: translationEN,
-    },
-    [Elang.ES]: {
-      translation: translationES,
-    },
-    [Elang.FR]: {
-      translation: translationFR,
-    },
-  },
-  lng: lang,
-  fallbackLng: Elang.EN,
-  interpolation: {
-    escapeValue: false,
-  },
-  keySeparator: false,
-});
-
-i18n.on('languageChanged', (lng) => SessionStorage.add('lang', lng));
+  return (
+    <div key={`${title}-${subtitle}`}>
+      <span>{title}</span>
+      {!!subtitle && (
+        <span className="ng-color-mdgray dropdown-item-subtitle">
+          <strong className="ng-icon-bullet" />
+          {subtitle}
+        </span>
+      )}
+    </div>
+  );
+}

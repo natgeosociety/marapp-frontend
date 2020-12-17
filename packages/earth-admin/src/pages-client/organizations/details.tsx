@@ -20,6 +20,7 @@
 import { noop } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import useSWR from 'swr';
 
 import { AuthzGuards, EmailInput, InlineEditCard, Input, setupErrors } from '@marapp/earth-shared';
@@ -39,6 +40,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   const [localOrgData, setLocalOrgData] = useState({});
   const [ownersFeedback, setOwnersFeedback] = useState([]);
   const { getPermissions, selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
   const query = { include: 'owners' };
@@ -92,7 +94,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
       setOwnersFeedback([]);
       setIsLoading && setIsLoading(true);
 
-      await mutate(setter(parsed), false);
+      await mutate(await setter(parsed), false);
 
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
@@ -159,11 +161,12 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
 
       <div className="marapp-qa-organizationdetails ng-padding-medium-horizontal">
         <LinkWithOrg
-          className="ng-border-remove ng-margin-bottom ng-display-block"
+          className="ng-border-remove ng-margin-bottom ng-display-inline-block"
           to="/organizations"
         >
           <i className="ng-icon ng-icon-directionleft" />
-          return to organizations home
+
+          {t('return to home', { value: 'organisations' })}
         </LinkWithOrg>
 
         <form className="ng-form ng-form-dark ng-flex-column">
@@ -176,8 +179,9 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                   <>
                     <Input
                       name="name"
-                      placeholder="Organization name is required"
-                      label="Organization name*"
+                      placeholder={t('Organization name is required')}
+                      label="Organization name"
+                      required={true}
                       className="marapp-qa-inputname ng-display-block"
                       error={renderErrorFor('name')}
                       defaultValue={name}
@@ -200,14 +204,14 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                 validForm={!formErrors.owners && formState.dirty && ownersWatcher?.length > 0}
                 render={() => (
                   <>
-                    <p className="ng-text-weight-bold ng-margin-remove">Owner(s)*</p>
+                    <p className="ng-text-weight-bold ng-margin-remove">{t('Owners')}*</p>
                     <Controller
                       as={EmailInput}
                       name="owners"
                       control={control}
                       defaultValue={owners.map((owner) => ({ label: owner, value: owner }))}
                       isMulti={true}
-                      placeholder="Emails"
+                      placeholder={t('Emails')}
                       className="marapp-qa-owners"
                       rules={{ required: true }}
                     />
@@ -216,7 +220,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                         (item) =>
                           item.hasError && (
                             <p className="ng-margin-remove">
-                              The email, {item.title} is unavailable. Details: {item.detail}
+                              {t('Email unavailable', { value: item.title, details: item.detail })}
                             </p>
                           )
                       )}
@@ -225,7 +229,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                 )}
               >
                 <div className="ng-margin-medium-bottom">
-                  <p className="ng-text-weight-bold ng-margin-remove">Owner(s)</p>
+                  <p className="ng-text-weight-bold ng-margin-remove">{t('Owners')}</p>
                   {owners.map((owner) => (
                     <p className="ng-margin-remove ng-padding-left">{owner}</p>
                   ))}
@@ -235,14 +239,14 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
             <div className="ng-width-1-2">
               <InlineEditCard>
                 <div className="ng-margin-medium-bottom">
-                  <p className="ng-text-weight-bold ng-margin-remove">ID</p>
+                  <p className="ng-text-weight-bold ng-margin-remove">{t('ID')}</p>
                   <p className="ng-margin-remove ng-padding-left">{id}</p>
                 </div>
                 <div>
-                  <p className="ng-text-weight-bold ng-margin-remove">Slug</p>
+                  <p className="ng-text-weight-bold ng-margin-remove">{t('Slug')}</p>
                   <p className="ng-margin-remove ng-padding-left">{slug}</p>
                   <small className="ng-text-muted">
-                    The slug name cannot be edited after creation
+                    {t('The slug name cannot be edited after creation')}
                   </small>
                 </div>
               </InlineEditCard>
@@ -258,7 +262,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
               className="marapp-qa-actiondelete ng-button ng-button-secondary"
               onClick={handleDeleteToggle}
             >
-              Delete organization
+              {t('Delete organization')}
             </button>
           </div>
         )}

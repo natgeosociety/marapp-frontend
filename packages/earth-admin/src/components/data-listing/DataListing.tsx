@@ -19,6 +19,7 @@
 
 import List from '@researchgate/react-intersection-list';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Spinner } from '@marapp/earth-shared';
 
@@ -63,6 +64,7 @@ const DataListing = (props: DataListingProps) => {
     ...otherProps
   } = props;
   const { selectedGroup } = useAuth0();
+  const { t } = useTranslation('admin');
 
   return (
     <>
@@ -77,7 +79,7 @@ const DataListing = (props: DataListingProps) => {
         {!!totalResults && (
           <div className="ng-padding-medium-horizontal ng-padding-medium-top ng-padding-bottom ng-background-ultradkgray">
             <h4 className="ng-text-display-s ng-color-ultraltgray ng-margin-remove">
-              {selectedGroup} {pageTitle} &nbsp;
+              {selectedGroup} {t(pageTitle)} &nbsp;
               <span className="ng-color-mdgray">({totalResults})</span>
             </h4>
           </div>
@@ -106,7 +108,7 @@ const DataListing = (props: DataListingProps) => {
           {!searchValue && isNoMore && (
             <div className=" ng-text-center">
               <p className=" ng-color-gray-3 ng-margin-medium-top ng-margin-bottom-remove">
-                - end -
+                - {t('end')} -
               </p>
             </div>
           )}

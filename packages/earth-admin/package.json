@@ -39,6 +39,7 @@
     "query-string-encode": "^1.0.1",
     "react-codemirror2": "^7.1.0",
     "react-helmet": "^6.1.0",
+    "react-i18next": "^11.7.3",
     "swr": "^0.3.2",
     "ts-jsonapi": "^2.1.2",
     "url-join": "^4.0.1",

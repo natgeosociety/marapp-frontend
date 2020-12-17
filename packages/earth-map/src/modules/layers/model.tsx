@@ -23,10 +23,12 @@ export interface ILayer {
   name?: string;
   description: string;
   type?: LayerType;
+  organization?: string;
   provider?: LayerProvider;
   category: LayerCategory[];
   legendConfig: object;
   layerConfig: ILayerConfig;
+  decodeFunction?: any;
   interactionConfig: any;
   published: boolean;
   createdAt: Date;

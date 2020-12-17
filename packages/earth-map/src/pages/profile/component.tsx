@@ -2,9 +2,9 @@ import { Auth0Context } from 'auth/auth0';
 import classnames from 'classnames';
 import { PUBLIC_URL, REACT_APP_EXTERNAL_IDP_URL } from 'config';
 import { capitalize, identity, omit, pickBy } from 'lodash';
-import React, { useContext, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
 import ProfileService from 'services/ProfileService';
 import { APP_LOGO } from 'theme';
@@ -19,8 +19,11 @@ import {
   valueChangedRule,
 } from '@marapp/earth-shared';
 
+import './styles.scss';
+
 interface IProps {
   page: string;
+  resetStore?: () => void;
 }
 
 enum RESET_PASSWORD_STATE {
@@ -31,7 +34,7 @@ enum RESET_PASSWORD_STATE {
 }
 
 export function ProfileComponent(props: IProps) {
-  const { page } = props;
+  const { page, resetStore } = props;
   const { t } = useTranslation();
 
   const { getValues, register, formState, errors: formErrors } = useForm({
@@ -40,6 +43,7 @@ export function ProfileComponent(props: IProps) {
 
   const { userData, logout, login, isAuthenticated, updateToken } = useContext(Auth0Context);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUserRolesLoading, setIsUserRolesLoading] = useState(true);
   const [userName, setUserName] = useState('');
   const [pendingEmail, setPendingEmail] = useState(null);
   const [serverErrors, setServerErrors] = useState();
@@ -54,7 +58,6 @@ export function ProfileComponent(props: IProps) {
   const [hasLeftOrg, setHasLeftOrg] = useState(false); // detect when the user is leaving an org in order to
   // change the map link to a "native" one (classic navigation to reset the whole state)
   const [userRoles, setUserRoles] = useState({});
-  const [isDeletingAccountOpen, setIsDeletingAccountOpen] = useState(false);
   const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
 
   const { touched, isValid } = formState;
@@ -80,18 +83,30 @@ export function ProfileComponent(props: IProps) {
     setUserRoles(result);
   };
 
-  useEffect(() => {
-    (async () => {
-      const response = await ProfileService.fetchProfile({ include: 'groups' });
-
+  const fetchUserProfile = useCallback(async () => {
+    try {
+      const response = await ProfileService.fetchProfile();
       setUserProfile(response.data);
       processUserName(response.data);
-      groupRolesByOrganization(response.data?.groups);
 
       response.data?.pendingEmail && setPendingEmail(response.data.pendingEmail);
-
+    } finally {
       setIsLoading(false);
-    })();
+    }
+  }, []);
+
+  const fetchUserGroups = useCallback(async () => {
+    try {
+      const response = await ProfileService.fetchProfile({ include: 'groups' });
+      groupRolesByOrganization(response.data?.groups);
+    } finally {
+      setIsUserRolesLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUserProfile();
+    fetchUserGroups();
   }, []);
 
   async function onSubmitName(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
@@ -213,15 +228,22 @@ export function ProfileComponent(props: IProps) {
             hasLeftOrg ? (
               <a href={`${PUBLIC_URL}earth`} className="ng-border-remove">
                 <img src={APP_LOGO} className="marapp-qa-logo ng-margin" alt="" />
+                <span className="ng-text-display-s ng-text-weight-regular ng-color-ultraltgray">
+                  | {t('Return to map view')}
+                </span>
               </a>
             ) : (
               <Link
                 className="ng-border-remove"
+                onClick={resetStore}
                 to={{
                   type: 'EARTH',
                 }}
               >
                 <img src={APP_LOGO} className="marapp-qa-logo ng-margin" alt="" />
+                <span className="ng-text-display-s ng-text-weight-regular ng-color-ultraltgray">
+                  | {t('Return to map view')}
+                </span>
               </Link>
             )
           }
@@ -242,6 +264,7 @@ export function ProfileComponent(props: IProps) {
           <h1 className="ng-margin-medium-bottom ng-text-center ng-text-uppercase ng-ep-text-gray-1 ng-text-display-m user-profile-title">
             {t('Manage your account')}
           </h1>
+
           <form className="ng-form ng-form-dark">
             <div className="ng-grid">
               {resetPasswordState === RESET_PASSWORD_STATE.SENT && (
@@ -420,59 +443,81 @@ export function ProfileComponent(props: IProps) {
                   </button>
                 </InlineEditCard>
               </div>
-              {Object.keys(userRoles).length > 0 && (
-                <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
-                  <InlineEditCard
-                    render={({ setIsEditing, setIsLoading, setServerErrors }) => (
-                      <>
-                        <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                          {t('Organizations')}
-                        </h3>
-                        <div className="ng-grid ng-margin-top">
+              <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
+                <InlineEditCard
+                  hideEditButton={isUserRolesLoading || !Object.keys(userRoles).length}
+                  render={({ setIsEditing, setIsLoading, setServerErrors }) => (
+                    <>
+                      <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                        {t('Organizations')}
+                      </h3>
+
+                      <div className="ng-grid ng-margin-top">
+                        <div className="ng-width-1-2 ng-text-weight-bold">
+                          {t('Organization name')}
+                        </div>
+                        <div className="ng-width-1-4 ng-text-weight-bold">{t('Role')}</div>
+                        {Object.keys(userRoles).map((org) => (
+                          <>
+                            <div className="ng-width-1-2 ng-margin-top">{org}</div>
+                            <div className="ng-width-1-4 ng-margin-top">
+                              {markedOrgsForLeave[org] ? (
+                                <span className="ng-color-mdgray">{t('marked for removal')}</span>
+                              ) : (
+                                userRoles[org].join(', ')
+                              )}
+                            </div>
+                            <div className="ng-width-1-4 ng-margin-top">
+                              <button
+                                className={classnames(
+                                  markedOrgsForLeave[org]
+                                    ? 'marapp-qa-cancelorgaction'
+                                    : 'marapp-qa-leaveorg',
+                                  'ng-button ng-button-link ng-text-lowercase'
+                                )}
+                                onClick={(e) => switchMarkOrgForLeave(e, org)}
+                              >
+                                {markedOrgsForLeave[org] ? t('Cancel') : t('leave organization')}
+                              </button>
+                            </div>
+                          </>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                  validForm={Object.keys(markedOrgsForLeave).length > 0}
+                  onSubmit={onSubmitOrgLeave}
+                  onCancel={() => setMarkedOrgsForLeave({})}
+                >
+                  <>
+                    <div className="ng-flex ng-flex-space-between">
+                      <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                        {t('Organizations')}
+                      </h3>
+
+                      {isUserRolesLoading && (
+                        <Spinner
+                          size="nano"
+                          position="relative"
+                          className="ng-user-organisations-spinner"
+                        />
+                      )}
+                    </div>
+
+                    <div className="ng-grid ng-margin-top">
+                      {isUserRolesLoading ? null : Object.keys(userRoles).length ? (
+                        <>
                           <div className="ng-width-1-2 ng-text-weight-bold">
                             {t('Organization name')}
                           </div>
-                          <div className="ng-width-1-4 ng-text-weight-bold">{t('Role')}</div>
-                          {Object.keys(userRoles).map((org) => (
-                            <>
-                              <div className="ng-width-1-2 ng-margin-top">{org}</div>
-                              <div className="ng-width-1-4 ng-margin-top">
-                                {markedOrgsForLeave[org] ? (
-                                  <span className="ng-color-mdgray">{t('marked for removal')}</span>
-                                ) : (
-                                  userRoles[org].join(', ')
-                                )}
-                              </div>
-                              <div className="ng-width-1-4 ng-margin-top">
-                                <button
-                                  className={classnames(
-                                    markedOrgsForLeave[org]
-                                      ? 'marapp-qa-cancelorgaction'
-                                      : 'marapp-qa-leaveorg',
-                                    'ng-button ng-button-link ng-text-lowercase'
-                                  )}
-                                  onClick={(e) => switchMarkOrgForLeave(e, org)}
-                                >
-                                  {markedOrgsForLeave[org] ? t('cancel') : t('leave organization')}
-                                </button>
-                              </div>
-                            </>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                    validForm={Object.keys(markedOrgsForLeave).length > 0}
-                    onSubmit={onSubmitOrgLeave}
-                    onCancel={() => setMarkedOrgsForLeave({})}
-                  >
-                    <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                      {t('Organizations')}
-                    </h3>
-                    <div className="ng-grid ng-margin-top">
-                      <div className="ng-width-1-2 ng-text-weight-bold">
-                        {t('Organization name')}
-                      </div>
-                      <div className="ng-width-1-2 ng-text-weight-bold">{t('Role')}</div>
+                          <div className="ng-width-1-2 ng-text-weight-bold">{t('Role')}</div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="ng-width-1-2">{t('No organisations available')}</div>
+                        </>
+                      )}
+
                       {Object.keys(userRoles).map((org) => (
                         <>
                           <div className="ng-width-1-2 ng-margin-top">{org}</div>
@@ -482,9 +527,9 @@ export function ProfileComponent(props: IProps) {
                         </>
                       ))}
                     </div>
-                  </InlineEditCard>
-                </div>
-              )}
+                  </>
+                </InlineEditCard>
+              </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
@@ -516,26 +561,29 @@ export function ProfileComponent(props: IProps) {
                       </p>
                     </>
                   )}
+                  hideEditButton={true}
                   submitButtonText={t('DELETE')}
                   submitButtonVariant={'danger'}
-                  manualOpen={isDeletingAccountOpen}
                   onCancel={() => {
-                    setIsDeletingAccountOpen(false);
                     setConfirmDeleteAccount(false);
                   }}
                   onSubmit={deleteAccount}
                   validForm={confirmDeleteAccount}
                 >
-                  <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
-                    {t('Account access')}
-                  </h3>
-                  <button
-                    type="button"
-                    className="marapp-qa-deleteaccount ng-button ng-button-secondary ng-margin-top"
-                    onClick={() => setIsDeletingAccountOpen(true)}
-                  >
-                    {t('Delete your account')}
-                  </button>
+                  {({ setIsEditing }) => (
+                    <>
+                      <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                        {t('Account access')}
+                      </h3>
+                      <button
+                        type="button"
+                        className="marapp-qa-deleteaccount ng-button ng-button-secondary ng-margin-top"
+                        onClick={() => setIsEditing(true)}
+                      >
+                        {t('Delete your account')}
+                      </button>
+                    </>
+                  )}
                 </InlineEditCard>
               </div>
             </div>

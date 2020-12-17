@@ -19,19 +19,21 @@
 
 import { Link } from 'gatsby';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAuth0 } from '@app/auth/auth0';
 
 export const NotFound = (props) => {
   const { groups } = useAuth0();
+  const { t } = useTranslation('admin');
 
   return (
     <div className="marapp-qa-orgswitcherpage ng-orgswitcher-page">
       <div>
-        <h3>404 - Page not found</h3>
+        <h3>404 - {t('Page not found')}</h3>
         {groups && (
           <>
-            <h6>Please select a valid one:</h6>
+            <h6>{t('Please select a valid one')}</h6>
             <ul>
               {groups.map((g) => (
                 <li>
