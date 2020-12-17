@@ -17,27 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import grayscale from './images/layers/grayscale.png';
-import satellite from './images/layers/satellite.png';
+import { resetLayersActive } from 'modules/layers/actions';
+import { connect } from 'react-redux';
 
-export const APP_LOGO = require('images/unbl_logo.svg');
-export const PAGE_SIZE = 30;
+import LayerConfigError from './component';
 
-export const APP_BASEMAPS = [
+export default connect(
+  (state: any) => ({
+    ...state.sidebar,
+  }),
   {
-    slug: 'grayscale',
-    name: 'Grayscale',
-    background: grayscale,
-    id: 'mapbox://styles/ngsmapbox-gf/ckbwix5xv165q1htdbvkrmxug',
-  },
-  {
-    slug: 'satellite',
-    name: 'Satellite',
-    background: satellite,
-    id: 'mapbox://styles/ngsmapbox-gf/cke00tz1h09as19pr3bjatugw',
-  },
-];
-
-export const APP_ABOUT = 'https://github.com/natgeosociety/marapp-frontend/blob/master/ABOUT.md';
-
-export const RESOURCE_WATCH_URL = 'http://resourcewatch.org';
+    resetLayersActive,
+  }
+)(LayerConfigError);

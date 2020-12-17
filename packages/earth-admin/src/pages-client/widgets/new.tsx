@@ -187,7 +187,6 @@ export function NewWidget(props: IProps) {
                   selectedGroup={selectedGroup}
                   isClearable={true}
                   isSearchable={true}
-                  closeMenuOnSelect={false}
                   placeholder={t('Select Widget Layers')}
                 />
               </Card>
