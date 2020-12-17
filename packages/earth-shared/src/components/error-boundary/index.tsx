@@ -17,4 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-export { ErrorBoundary } from './ErrorBoundary';
+import ErrorBoundary from './ErrorBoundary';
+
+export default ErrorBoundary;

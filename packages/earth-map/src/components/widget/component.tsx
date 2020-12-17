@@ -63,6 +63,7 @@ interface IWidgetTemplate {
   // Functions
   onCollapse?: () => {};
   onToggleLayer?: () => {};
+  t?: (text: any, opt?: any) => string;
 }
 
 interface IWidgetState {
@@ -169,17 +170,25 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
   };
 
   public fetchWidget = () => {
-    const { config, parse, params, widgetConfig, place, metric = {} } = this.props;
+    const { config, name, parse, params, widgetConfig, place, metric = {}, t } = this.props;
 
-    if (!config) {
-      return this.setState({ loading: false });
+    const newState: IWidgetState = { loading: false };
+
+    try {
+      if (!config) {
+        return this.setState(newState);
+      }
+
+      newState.loaded = true;
+
+      newState.data = parse(metric, params, widgetConfig, place);
+    } catch (e) {
+      newState.error = t('Failed to extract layer details', { value: name });
+    } finally {
+      this.setState({
+        ...newState,
+      });
     }
-
-    this.setState({
-      loaded: true,
-      loading: false,
-      data: parse(metric, params, widgetConfig, place),
-    });
   };
 
   public onChangeParams = (params) => {
@@ -221,6 +230,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
       // FUNCTIONS
       onCollapse,
       onToggleLayer,
+      t,
     } = this.props;
 
     const {
@@ -278,6 +288,10 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
                 />
               )}
             </header>
+          )}
+
+          {error && (
+            <div className="marapp-qa-widget-config-error ng-form-error-block">{t(error)}</div>
           )}
 
           {/* CONTENT || INFO */}

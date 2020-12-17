@@ -17,9 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-// NEEDS TO BE DUMB COMPONENT DONT CONNECT REDUX
-import { withTranslation } from 'react-i18next';
+import { resetLayersActive } from 'modules/layers/actions';
+import { connect } from 'react-redux';
 
-import WidgetComponent from './component';
+import LayerConfigError from './component';
 
-export default withTranslation()(WidgetComponent);
+export default connect(
+  (state: any) => ({
+    ...state.sidebar,
+  }),
+  {
+    resetLayersActive,
+  }
+)(LayerConfigError);
