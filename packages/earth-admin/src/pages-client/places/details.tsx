@@ -27,6 +27,7 @@ import useSWR from 'swr';
 import {
   AuthzGuards,
   Card,
+  ErrorBoundary,
   ErrorMessages,
   InlineEditCard,
   Input,
@@ -39,7 +40,6 @@ import {
 import { useAuth0 } from '@app/auth/auth0';
 import { DetailList } from '@app/components/detail-list';
 import { DownloadFile } from '@app/components/download-file';
-import { ErrorBoundary } from '@app/components/error-boundary';
 import { FakeJsonUpload } from '@app/components/fake-json-upload';
 import { JsonEditor } from '@app/components/json-editor';
 import { LinkWithOrg } from '@app/components/link-with-org';
