@@ -32,10 +32,11 @@ interface AsyncSelectProps {
   onChange?: (e: any) => void;
   value?: [] | string;
   className?: string;
+  isMulti?: boolean;
 }
 
 const AsyncSelect = (props: AsyncSelectProps) => {
-  const { loadFunction, type, selectedGroup, onChange, className, ...rest } = props;
+  const { loadFunction, type, selectedGroup, onChange, className, isMulti, ...rest } = props;
   const { t } = useTranslation('admin');
   const [cursor, setCursor] = useState(-1);
 
@@ -79,6 +80,8 @@ const AsyncSelect = (props: AsyncSelectProps) => {
       classNamePrefix="marapp-qa-asyncselect"
       placeholder={`${t('Select')} ${type}`}
       loadOptions={loadOptions}
+      isMulti={isMulti}
+      closeMenuOnSelect={!isMulti}
       loadingMessage={() => `${t('Loading')}...`}
       shouldLoadMore={shouldLoadMore}
       onChange={(values) => onChange(values)}
