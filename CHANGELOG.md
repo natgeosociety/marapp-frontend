@@ -1,3 +1,34 @@
+# [1.16.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.15.0...v1.16.0) (2020-12-17)
+
+
+### Bug Fixes
+
+* **admin:** Fix scrolling while in edit mode [EP-3146] ([1f3be9d](https://github.com/natgeosociety/marapp-frontend/commit/1f3be9ded109bde30df0dee096cd5b708b856f15))
+* **admin:** fix sidenav search box styling ([#346](https://github.com/natgeosociety/marapp-frontend/issues/346)) ([1afcb1a](https://github.com/natgeosociety/marapp-frontend/commit/1afcb1a05faf2b464f89d063c4ac1825c5a7a460))
+* **admin:** handle SSR request for window usage ([1d67f43](https://github.com/natgeosociety/marapp-frontend/commit/1d67f43dfa16aa54b087405e2a21a5fd6accf9b2))
+* **admin:** hide collections from places ([#351](https://github.com/natgeosociety/marapp-frontend/issues/351)) ([613994b](https://github.com/natgeosociety/marapp-frontend/commit/613994be734641c5b62ea0e3586d98a20dbb7572))
+* **admin:** loading indicator on user role [EP-3424] ([c9d5dec](https://github.com/natgeosociety/marapp-frontend/commit/c9d5decb39517cd920c4ad9e44ecabe5fd8ee32e))
+* **admin:** place edit reset geojson on cancel [EP-3025] ([047af4b](https://github.com/natgeosociety/marapp-frontend/commit/047af4b9a3792d46fee62d7db40ed0de712855da))
+* **auth:** Error message is not displayed when a invalid link from the email is clicked [EP-3443] ([#338](https://github.com/natgeosociety/marapp-frontend/issues/338)) ([1ed7fe5](https://github.com/natgeosociety/marapp-frontend/commit/1ed7fe56d428fc96bc03be773be47da22391f1f6))
+* **map:** collection long name overlap [EP-3595] ([a4c906b](https://github.com/natgeosociety/marapp-frontend/commit/a4c906b824a9e7f3bfc0968804459278d76ac4c0))
+* **map:** preserve language on refresh or app change ([#345](https://github.com/natgeosociety/marapp-frontend/issues/345)) ([32294bb](https://github.com/natgeosociety/marapp-frontend/commit/32294bb882574f9048ae9f9357f55cbb8076376f))
+* **map:** support for decodeFunction on layers ([b6b98ed](https://github.com/natgeosociety/marapp-frontend/commit/b6b98ed9bacab161894e4492e2836491c1fa46fa))
+* **profile:** split profile fetching and display a visual loading ind… ([#340](https://github.com/natgeosociety/marapp-frontend/issues/340)) ([9b1d1fa](https://github.com/natgeosociety/marapp-frontend/commit/9b1d1fa3baa03f890f305dd277a0964b84e8efe0))
+
+
+### Features
+
+* **map:** Clip and export layers [EP-3594] ([7a118c8](https://github.com/natgeosociety/marapp-frontend/commit/7a118c8633539ec4a34ec3f08cdec9e6708e4477))
+* **map:** download collection metrics [EP-3002] ([#328](https://github.com/natgeosociety/marapp-frontend/issues/328)) ([7815e82](https://github.com/natgeosociety/marapp-frontend/commit/7815e82f3c0a80127bd4137159b122b6beeb3df1))
+* **map:** download collection metrics [EP-3002] ([#333](https://github.com/natgeosociety/marapp-frontend/issues/333)) ([cbc780c](https://github.com/natgeosociety/marapp-frontend/commit/cbc780c88bc3ddc383c51dfc560864137eeef9e7))
+* **map:** keep map coordinates in url ([#331](https://github.com/natgeosociety/marapp-frontend/issues/331)) ([2c8cec8](https://github.com/natgeosociety/marapp-frontend/commit/2c8cec8e33f847e67ff123beb3632727042e4779))
+* **map:** weglot support [EP-3441] ([#341](https://github.com/natgeosociety/marapp-frontend/issues/341)) ([5905af3](https://github.com/natgeosociety/marapp-frontend/commit/5905af3a5d19809aab72c9d72ac87eead4160f67))
+
+
+### Reverts
+
+* Revert "feat(map): download collection metrics [EP-3002] (#328)" (#332) ([a6da184](https://github.com/natgeosociety/marapp-frontend/commit/a6da18410f99163bf6f442d6b3b4a63667a555c6)), closes [#328](https://github.com/natgeosociety/marapp-frontend/issues/328) [#332](https://github.com/natgeosociety/marapp-frontend/issues/332)
+
 # [1.15.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.14.1...v1.15.0) (2020-11-25)
 
 
