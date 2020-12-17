@@ -1,3 +1,10 @@
+## [1.16.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.16.0...v1.16.1) (2020-12-17)
+
+
+### Bug Fixes
+
+* semantic-release version ([dc0943d](https://github.com/natgeosociety/marapp-frontend/commit/dc0943d6e89ecb6257ab6c24984ab23c2757eb81))
+
 # [1.16.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.15.0...v1.16.0) (2020-12-17)
 
 
