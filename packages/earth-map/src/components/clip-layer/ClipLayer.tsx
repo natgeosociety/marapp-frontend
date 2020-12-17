@@ -190,7 +190,12 @@ export function ClipLayer(props: IProps) {
   async function onSubmit(values) {
     const { exportType, primaryLayer } = values;
     const { childLayer: selectedLayer = primaryLayer } = values;
+    const { config } = selectedLayer;
     const extension = exportType === 'geotiff' ? '.zip' : '.jpg';
+
+    if (config.decodeConfig || config.decodeFunction) {
+      return setSaveError(t('Selected layers are currently not supported'));
+    }
 
     try {
       const { data } = await ExportService.exportLayerForLocation(selectedLayer.id, id, {
@@ -225,7 +230,7 @@ export function ClipLayer(props: IProps) {
           provider: 'gee',
         }),
         include: 'references',
-        select: 'name,organization,references.name',
+        select: 'name,organization,config,references.name,references.config',
       });
 
       return primaryLayers;
