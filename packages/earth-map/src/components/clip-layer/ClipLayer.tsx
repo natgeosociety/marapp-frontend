@@ -193,11 +193,11 @@ export function ClipLayer(props: IProps) {
     const { config } = selectedLayer;
     const extension = exportType === 'geotiff' ? '.zip' : '.jpg';
 
-    if (config.decodeConfig || config.decodeFunction) {
-      return setSaveError(t('Selected layers are currently not supported'));
-    }
-
     try {
+      if (config.decodeConfig || config.decodeFunction) {
+        throw new Error(t('Selected layers are currently not supported'));
+      }
+
       const { data } = await ExportService.exportLayerForLocation(selectedLayer.id, id, {
         exportType,
         group: groups.join(','),
@@ -209,13 +209,15 @@ export function ClipLayer(props: IProps) {
         const blob = await rawResponse.blob();
         FileSaver.saveAs(blob, `${selectedLayer.name}${extension}`);
       } else {
-        setSaveError(t('Could not download layer. Area too large'));
+        throw new Error(t('Could not download layer. Area too large'));
       }
     } catch (e) {
       if (!e) {
         setSaveError(t('Something went wrong'));
       } else if (e.status === 413) {
         setSaveError(t('Could not download layer. Area too large'));
+      } else {
+        setSaveError(e.message);
       }
     }
   }
