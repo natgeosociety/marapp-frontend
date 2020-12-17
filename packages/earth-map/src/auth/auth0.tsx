@@ -27,6 +27,7 @@ import { routeToPage } from 'utils';
 import {
   getPrivateGroups,
   getPublicGroups,
+  hasAccess,
   isAuthz,
   mapAuthzScopes,
   mapRoleGroups,
@@ -191,6 +192,10 @@ export const Auth0Provider = ({
     onSuccessHook({ accessToken });
   };
 
+  const getPermissions = (type: string[], org: string) => {
+    return hasAccess(permissions[org], type) || hasAccess(permissions['*'], type);
+  };
+
   return (
     <Auth0Context.Provider
       value={{
@@ -211,6 +216,7 @@ export const Auth0Provider = ({
         getUser,
         getAccessToken,
         updateToken,
+        getPermissions,
         setupUserOrg: setSelectedGroup,
       }}
     >

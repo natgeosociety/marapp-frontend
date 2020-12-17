@@ -477,7 +477,7 @@ export function ProfileComponent(props: IProps) {
                                 )}
                                 onClick={(e) => switchMarkOrgForLeave(e, org)}
                               >
-                                {markedOrgsForLeave[org] ? t('cancel') : t('leave organization')}
+                                {markedOrgsForLeave[org] ? t('Cancel') : t('leave organization')}
                               </button>
                             </div>
                           </>
