@@ -43,8 +43,6 @@ export class ErrorBoundary extends PureComponent<IErrorBoundaryProps, IErrorBoun
     this.setState({ error: null });
   }
 
-  // componentDidCatch(error, errorInfo) {}
-
   render() {
     const { error } = this.state;
     const { children, fallbackComponent } = this.props;
