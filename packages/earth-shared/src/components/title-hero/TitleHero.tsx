@@ -38,7 +38,7 @@ export const TitleHero = ({
   finePrint,
   className = ' ',
 }: IProps) => (
-  <div data-testid="title-hero" className={`title-hero ${className}`}>
+  <div className={`marapp-qa-titlehero title-hero ${className}`}>
     <h3 className="ng-text-display-s ng-margin-vertical">
       {subtitle} | <span className="ng-text-weight-regular">{extra}</span>
     </h3>

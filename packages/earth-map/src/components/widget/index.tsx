@@ -18,6 +18,8 @@
 */
 
 // NEEDS TO BE DUMB COMPONENT DONT CONNECT REDUX
+import { withTranslation } from 'react-i18next';
+
 import WidgetComponent from './component';
 
-export default WidgetComponent;
+export default withTranslation()(WidgetComponent);
