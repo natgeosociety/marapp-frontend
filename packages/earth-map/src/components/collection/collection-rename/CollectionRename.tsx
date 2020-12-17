@@ -76,20 +76,22 @@ export function CollectionRename(props: IProps) {
         <Card elevation="flush">
           {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
 
-          <button
-            type="submit"
-            disabled={!dirty || !isValid || isSubmitting}
-            className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
-          >
-            {isSubmitting ? t('Renaming collection') : t('Rename Collection')}
-          </button>
+          <div className="ng-flex">
+            <button
+              type="submit"
+              disabled={!dirty || !isValid || isSubmitting}
+              className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
+            >
+              {isSubmitting ? t('Renaming collection') : t('Rename Collection')}
+            </button>
 
-          <button
-            className="marapp-qa-cancel-collection ng-button ng-button-secondary"
-            onClick={onCancel}
-          >
-            {t('Cancel')}
-          </button>
+            <button
+              className="marapp-qa-cancel-collection ng-button ng-button-secondary"
+              onClick={onCancel}
+            >
+              {t('Cancel')}
+            </button>
+          </div>
         </Card>
 
         {isSaveConflict && <CollectionConflict onRefresh={refresh} onOverwrite={saveAnyway} />}
