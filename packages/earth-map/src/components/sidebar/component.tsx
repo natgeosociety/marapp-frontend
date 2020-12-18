@@ -22,6 +22,7 @@ import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from 'config';
 import React from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
+import CompanyRedirect from './company-redirect';
 import SidebarToggle from './sidebar-toggle';
 import './styles.scss';
 
@@ -92,6 +93,7 @@ class Sidebar extends React.Component<ISidebarPanel> {
               ...props,
             }}
           >
+            <CompanyRedirect />
             <SidebarToggle open={open} setSidebarOpen={setSidebarOpen} />
             {children}
           </animated.div>
