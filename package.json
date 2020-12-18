@@ -18,7 +18,7 @@
   "dependencies": {
     "@kunukn/react-collapse": "^2.2.9",
     "@loadable/component": "^5.6.1",
-    "@natgeosociety/marapp-uikit": "1.0.12",
+    "@natgeosociety/marapp-uikit": "1.1.1",
     "@testing-library/jest-dom": "^5.11.4",
     "assert": "^2.0.0",
     "axios": "^0.18.0",
