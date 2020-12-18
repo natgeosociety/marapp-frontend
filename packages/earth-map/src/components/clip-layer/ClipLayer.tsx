@@ -53,12 +53,17 @@ export function ClipLayer(props: IProps) {
   const { dirty, isValid, isSubmitting } = formState;
   const selectedPrimaryLayer = watch('primaryLayer');
   const selectedChildLayer = watch('childLayer');
+  const selectedExportType = watch('exportType');
 
-  // When primaryLayer changes, clear errors and set child layers
+  // When primaryLayer changes set child layers
   useEffect(() => {
-    setSaveError('');
     setChildLayers(selectedPrimaryLayer?.references || []);
   }, [selectedPrimaryLayer]);
+
+  // clear errors when form changes
+  useEffect(() => {
+    setSaveError('');
+  }, [selectedPrimaryLayer, selectedChildLayer, selectedExportType]);
 
   // Pre-select the first child layer
   useEffect(() => {
@@ -208,7 +213,6 @@ export function ClipLayer(props: IProps) {
       if (rawResponse.status === 200) {
         const blob = await rawResponse.blob();
         FileSaver.saveAs(blob, `${selectedLayer.name}${extension}`);
-        setSaveError('');
       } else {
         throw new Error(t('Could not download layer. Area too large'));
       }
