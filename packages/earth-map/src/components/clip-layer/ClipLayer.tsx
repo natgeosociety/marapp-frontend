@@ -208,6 +208,7 @@ export function ClipLayer(props: IProps) {
       if (rawResponse.status === 200) {
         const blob = await rawResponse.blob();
         FileSaver.saveAs(blob, `${selectedLayer.name}${extension}`);
+        setSaveError('');
       } else {
         throw new Error(t('Could not download layer. Area too large'));
       }
