@@ -29,6 +29,7 @@ export const ADMIN_URL = process.env.REACT_APP_ADMIN_URL;
 export const APP_NAME = process.env.REACT_APP_NAME;
 export const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 export const WEGLOT_API_KEY = process.env.REACT_APP_WEGLOT_API_KEY;
+export const COMPANY_URL = process.env.REACT_APP_COMPANY_URL;
 
 export const GTM_TAG = process.env.REACT_APP_GTM_TAG;
 export const ENABLE_PUBLIC_ACCESS = yn(process.env.REACT_APP_ENABLE_PUBLIC_ACCESS, {
