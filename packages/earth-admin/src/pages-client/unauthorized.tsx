@@ -26,8 +26,8 @@ export default function UnauthorizedPage(props) {
   const { t } = useTranslation(['translation', 'admin']);
 
   return (
-    <div className="ng-background-ltgray ng-padding-large ng-height-viewport ng-flex ng-flex-center ng-text-center">
-      <div className="ng-flex ng-flex-middle">
+    <div className="marapp-qa-unauthorized ng-not-found ng-flex ng-flex-center ng-text-center">
+      <div className="ng-padding-large ng-position-z-index ng-flex ng-flex-middle">
         <div>
           <h1>403</h1>
           <h2 className="ng-text-edit-m">{t('You don’t have permission to access this page')}</h2>
