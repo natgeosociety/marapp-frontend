@@ -179,7 +179,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
                   <>
                     <Input
                       name="name"
-                      placeholder={t('Organization name is required')}
+                      placeholder={t('Organization name')}
                       label="Organization name"
                       required={true}
                       className="marapp-qa-inputname ng-display-block"
