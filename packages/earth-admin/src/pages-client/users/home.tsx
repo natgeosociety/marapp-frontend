@@ -172,7 +172,7 @@ export function UsersHome(props: any) {
   };
 
   const cancelUsersHandler = () => {
-    setValue('users', []);
+    setValue('users', [], true);
     setServerErrors([]);
     setUsersFeedback([]);
   };
