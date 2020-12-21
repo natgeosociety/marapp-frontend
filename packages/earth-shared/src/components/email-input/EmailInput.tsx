@@ -73,7 +73,7 @@ export function EmailInput(props: EmailInputProps) {
   const [creatableRef, setCreatableRef] = useState({} as any);
 
   const isEmailInList = (email: string): boolean => {
-    return (creatableRef.state.value || []).find((x) => x.value === email);
+    return (props.value || []).find((x) => x.value === email);
   };
 
   const appendEmailToList = (email: string): void => {
