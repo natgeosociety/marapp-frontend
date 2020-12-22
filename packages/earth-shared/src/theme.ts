@@ -38,7 +38,11 @@ export const CUSTOM_STYLES = {
   }),
   placeholder: () => ({
     color: 'var(--marapp-gray-5)',
+    maxWidth: 'calc(100% - 20px)',
+    overflow: 'hidden',
     position: 'absolute',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   }),
   input: () => ({
     boxShadow: 'none',
