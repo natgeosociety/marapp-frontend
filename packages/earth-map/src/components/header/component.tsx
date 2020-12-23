@@ -34,6 +34,7 @@ const { Option } = AppContextSwitcher;
 
 interface IProps {
   group?: string[];
+  navigateToAdmin?: Function;
   resetPlace?: Function;
   resetCollection?: Function;
   setPlacesSearch?: Function;
@@ -56,6 +57,7 @@ const Header = (props: IProps) => {
   } = useContext(Auth0Context);
   const {
     group,
+    navigateToAdmin,
     resetPlacesFeatured,
     resetLayerCache,
     resetMap,
@@ -188,10 +190,7 @@ const Header = (props: IProps) => {
       value="map-view"
       checkedCount={selectedGroups.length}
       renderDropdown={isAuthenticated}
-      onChange={(g) => {
-        handleResetLocation();
-        window.location.assign(`${ADMIN_URL}${g}`);
-      }}
+      onChange={navigateToAdmin}
     >
       <Option value="map-view">{t('Map View')}</Option>
       {orgCheckBoxes}

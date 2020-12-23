@@ -18,6 +18,7 @@
 */
 
 import { resetCollection } from 'modules/collections/actions';
+import { navigateToAdmin } from 'modules/global/actions';
 import { resetLayerCache, resetLayers, setLayersSearch } from 'modules/layers/actions';
 import { resetMap } from 'modules/map/actions';
 import { resetPlace, resetPlacesFeatured, setPlacesSearch } from 'modules/places/actions';
@@ -33,6 +34,7 @@ export default connect(
     ...state.sidebar,
   }),
   {
+    navigateToAdmin,
     setUserGroup,
     setPlacesSearch,
     resetPlace,
