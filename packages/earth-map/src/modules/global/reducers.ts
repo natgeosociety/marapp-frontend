@@ -17,6 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { ADMIN_URL } from 'config';
+
 import * as actions from './actions';
 import { ILastViewedPlace } from './model';
 
@@ -25,6 +27,11 @@ interface LastViewedPlacePayload {
 }
 
 export default {
+  [actions.navigateToAdmin]: (state, { payload }) => {
+    window.location.assign(`${ADMIN_URL}${payload}`);
+
+    return state;
+  },
   [actions.persistData]: (state, { payload }) => {
     return state;
   },
