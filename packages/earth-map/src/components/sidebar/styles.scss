@@ -30,6 +30,10 @@
   left: $c-sidebar-width;
   z-index: $z-index-3;
 
+  .ng-ep-tabs {
+    flex: 0 0 auto;
+  }
+
   .sidebar-panel--btn-close {
     position: absolute;
     top: $space-1 * 2.5;
