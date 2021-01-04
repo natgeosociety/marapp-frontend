@@ -38,7 +38,7 @@ interface AsyncSelectProps {
 const AsyncSelect = (props: AsyncSelectProps) => {
   const { loadFunction, type, selectedGroup, onChange, className, isMulti, ...rest } = props;
   const { t } = useTranslation('admin');
-  const selectRef = useRef();
+  const selectRef: any = useRef();
   const [cursor, setCursor] = useState(-1);
   const [hasMore, setHasMore] = useState(true);
 
@@ -78,9 +78,7 @@ const AsyncSelect = (props: AsyncSelectProps) => {
    */
   const hasMoreOptionsAvailable = (bottomBorder: number): boolean => {
     if (isMulti) {
-      // @ts-ignore
       const availableOptions = selectRef?.current?.props?.options;
-      // @ts-ignore
       const selectedValue = selectRef?.current?.props?.value;
 
       return bottomBorder === 0 && hasMore && selectedValue.length === availableOptions.length;
