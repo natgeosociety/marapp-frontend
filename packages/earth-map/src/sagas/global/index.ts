@@ -22,6 +22,8 @@ import { select, takeLatest } from 'redux-saga/effects';
 import { getAll } from 'sagas/saga-utils';
 import { IEphemeralState } from 'store/ephemeral-state';
 
+import { ADMIN_URL } from '../../config';
+
 export default function* global() {
   yield takeLatest('GLOBAL/persistData', persistData);
   yield takeLatest(navigateToAdmin, onNavigateToAdmin);
@@ -55,7 +57,7 @@ function* persistData() {
 /**
  * When switching between the map and admin apps, reset ephemeral state
  */
-function* onNavigateToAdmin() {
+function* onNavigateToAdmin({ payload }) {
   const ephemeralState = JSON.parse(sessionStorage.getItem('ephemeral'));
 
   ephemeralState.places = {
@@ -64,4 +66,6 @@ function* onNavigateToAdmin() {
   };
 
   sessionStorage.setItem('ephemeral', JSON.stringify(ephemeralState));
+
+  window.location.assign(`${ADMIN_URL}${payload}`);
 }
