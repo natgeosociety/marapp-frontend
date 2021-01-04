@@ -71,7 +71,14 @@ const initStore = (initialState = {}) => {
 
   const rootReducer = (state, action) => {
     if (action.type === 'GLOBAL/resetStore') {
-      state = initialState;
+      state = {
+        ...initialState,
+        global: {
+          // @ts-ignore
+          ...initialState.global,
+          ...(state.global.lastViewedPlace && { lastViewedPlace: state.global.lastViewedPlace }),
+        },
+      };
     }
     return reducers(state, action);
   };
