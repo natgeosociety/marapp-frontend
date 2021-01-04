@@ -136,9 +136,13 @@ export const Auth0Provider = ({
       const authorized = isAuthz(roles);
       setIsAuthorized(authorized);
 
+      const givenName = get(idToken, 'given_name', '');
+      const familyName = get(idToken, 'family_name', '');
+
       const userData = {
         email: get(idToken, 'email', ''),
-        name: get(idToken, 'name', ''),
+        name:
+          givenName || familyName ? `${givenName} ${familyName}`.trim() : get(idToken, 'name', ''),
         picture: get(idToken, 'picture', ''),
         allGroups: roleGroups,
         roles: mappedRoles,
