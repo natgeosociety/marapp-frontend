@@ -32,6 +32,18 @@ body {
   scrollbar-color: $marapp-gray-7 $marapp-gray-8;
 }
 
+input,
+button {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  outline: none;
+}
+
 ::-webkit-scrollbar-track {
   background: $marapp-gray-8;
 }
