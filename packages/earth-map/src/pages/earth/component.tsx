@@ -30,7 +30,6 @@ import Places from 'components/places';
 import FeaturedPlaces from 'components/places/featured-places';
 import Sidebar from 'components/sidebar';
 import Url from 'components/url';
-import { union } from 'lodash';
 import { ILastViewedPlace } from 'modules/global/model';
 import { EarthRoutes, IRouter } from 'modules/router/model';
 import { EPanels } from 'modules/sidebar/model';
@@ -40,6 +39,7 @@ import { Icons as VizzIcons } from 'vizzuality-components';
 
 import { ErrorBoundary, Tab, Tabs } from '@marapp/earth-shared';
 
+import './styles.scss';
 import { URL_PROPS } from './url';
 
 interface IProps {
@@ -79,7 +79,7 @@ const EarthPage = (props: IProps) => {
             <Tabs
               value={panel}
               onChange={setSidebarPanel}
-              className="ng-padding-medium-horizontal ng-ep-background-dark"
+              className="ng-earth-sidenav-tabs ng-padding-medium-horizontal ng-ep-background-dark"
             >
               <Tab label={t('Places')} value="places" />
               <Tab label={t('Layers')} value="layers" />

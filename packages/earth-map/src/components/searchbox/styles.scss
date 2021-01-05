@@ -19,6 +19,13 @@
 
 @import "~styles/config";
 
+.ng-c-input-container {
+  .ng-icon-close {
+    color: $marapp-gray-1;
+    line-height: 100%;
+  }
+}
+
 .ng-icon-toggle-layer {
   min-width: 50px;
   .ng-icon-label {
@@ -32,5 +39,6 @@
 }
 
 .ng-search-box {
-  min-height: 36px;
+  min-height: 28px;
+  padding-left: 3.5px;
 }
