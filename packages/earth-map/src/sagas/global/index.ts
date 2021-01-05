@@ -60,12 +60,14 @@ function* persistData() {
 function* onNavigateToAdmin({ payload }) {
   const ephemeralState = JSON.parse(sessionStorage.getItem('ephemeral'));
 
-  ephemeralState.places = {
-    search: '',
-    filters: {},
-  };
+  if (ephemeralState) {
+    ephemeralState.places = {
+      search: '',
+      filters: {},
+    };
 
-  sessionStorage.setItem('ephemeral', JSON.stringify(ephemeralState));
+    sessionStorage.setItem('ephemeral', JSON.stringify(ephemeralState));
+  }
 
   window.location.assign(`${ADMIN_URL}${payload}`);
 }
