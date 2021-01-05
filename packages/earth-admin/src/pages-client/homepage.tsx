@@ -58,10 +58,6 @@ const Homepage = (props) => {
               <hr className="ng-hr-small ng-hr" />
 
               <p className="ng-margin-vertical">
-                <strong className="ng-color-mdgray">{t('Organization collections')}: </strong>
-                {organization.collections}
-              </p>
-              <p className="ng-margin-vertical">
                 <strong className="ng-color-mdgray">{t('Organization places')}: </strong>
                 {organization.locations}
               </p>
