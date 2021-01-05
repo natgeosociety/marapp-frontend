@@ -150,6 +150,7 @@ export function NewPlace(props: IProps) {
                 })}
                 rules={{ required: true }}
                 className="marapp-qa-placetype"
+                classNamePrefix="marapp-qa-asyncselect"
               />
             </div>
 
