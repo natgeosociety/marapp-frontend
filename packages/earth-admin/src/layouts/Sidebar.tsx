@@ -24,7 +24,6 @@ import urljoin from 'url-join';
 
 import { AppContextSwitcher, Spinner } from '@marapp/earth-shared';
 
-import { LinkWithOrg } from '@app/components/link-with-org';
 import { SidebarSelect } from '@app/components/sidebar-select';
 import { IAdminPage } from '@app/components/sidebar-select/model';
 import { MAP_PATH } from '@app/config';
@@ -46,9 +45,9 @@ const SidebarLayout = (props: IProps) => {
   const { t } = useTranslation('admin');
 
   const logo = (
-    <LinkWithOrg to="/" className="ng-border-remove">
+    <a href={urljoin(MAP_PATH, 'earth')} className="ng-border-remove">
       <img src={APP_LOGO} alt={APP_NAME} className="ng-margin-remove ng-display-block" />
-    </LinkWithOrg>
+    </a>
   );
 
   return (
@@ -60,7 +59,7 @@ const SidebarLayout = (props: IProps) => {
           value={selectedGroup}
           onChange={(selectedValue) => {
             if (selectedValue === 'map-view') {
-              window.location.assign(urljoin(MAP_PATH, 'earth'));
+              window.location.assign();
             } else {
               navigate(`/${selectedValue}`);
             }
