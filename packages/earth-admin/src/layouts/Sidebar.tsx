@@ -40,12 +40,14 @@ interface IProps {
   page?: IAdminPage[];
 }
 
+const EARTH_MAP_URL = urljoin(MAP_PATH, 'earth');
+
 const SidebarLayout = (props: IProps) => {
   const { groups, selectedGroup } = useContext(Auth0Context);
   const { t } = useTranslation('admin');
 
   const logo = (
-    <a href={urljoin(MAP_PATH, 'earth')} className="ng-border-remove">
+    <a href={EARTH_MAP_URL} className="ng-border-remove">
       <img src={APP_LOGO} alt={APP_NAME} className="ng-margin-remove ng-display-block" />
     </a>
   );
@@ -59,7 +61,7 @@ const SidebarLayout = (props: IProps) => {
           value={selectedGroup}
           onChange={(selectedValue) => {
             if (selectedValue === 'map-view') {
-              window.location.assign();
+              window.location.assign(EARTH_MAP_URL);
             } else {
               navigate(`/${selectedValue}`);
             }
