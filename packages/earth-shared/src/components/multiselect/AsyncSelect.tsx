@@ -78,10 +78,9 @@ const AsyncSelect = (props: AsyncSelectProps) => {
    */
   const hasMoreOptionsAvailable = (bottomBorder: number): boolean => {
     if (isMulti) {
-      const availableOptions = selectRef?.current?.props?.options;
-      const selectedValue = selectRef?.current?.props?.value;
+      const { options = [], value = [] } = selectRef.current.props;
 
-      return bottomBorder === 0 && hasMore && selectedValue.length === availableOptions.length;
+      return bottomBorder === 0 && hasMore && value.length === options.length;
     }
 
     return false;
