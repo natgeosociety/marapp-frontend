@@ -45,10 +45,16 @@ export const CUSTOM_STYLES = {
   }),
   container: () => ({
     boxShadow: 'none',
+    position: 'relative',
   }),
   menu: () => ({
     border: '1px solid var(--marapp-gray-1)',
     boxShadow: 'none',
+    position: 'absolute',
+    backgroundColor: 'var(--marapp-gray-8)',
+    zIndex: 100,
+    left: 0,
+    right: 0,
   }),
   option: (provided, state) => ({
     ...provided,
