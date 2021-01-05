@@ -17,6 +17,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import { ENABLE_PUBLIC_ACCESS } from 'config';
 import isBoolean from 'lodash/isBoolean';
 import { ICollection } from 'modules/collections/model';
 import { LocationTypeEnum } from 'modules/places/model';
@@ -67,9 +68,17 @@ export function CollectionEditPlaces(props: IProps) {
             className="marapp-qa-locationsdropdown ng-margin-medium-bottom"
             control={control}
             defaultValue={locations}
-            getOptionLabel={(option, extra) => (
-              <DropdownItem title={option.name} subtitle={option.organization} />
-            )}
+            getOptionLabel={(option, extra) => {
+              const itemProps: any = {
+                title: option.name,
+              };
+
+              if (ENABLE_PUBLIC_ACCESS) {
+                itemProps.subtitle = option.organization;
+              }
+
+              return <DropdownItem {...itemProps} />;
+            }}
             getOptionValue={(option) => option.id}
             loadFunction={(query) =>
               PlacesService.fetchPlaces({
