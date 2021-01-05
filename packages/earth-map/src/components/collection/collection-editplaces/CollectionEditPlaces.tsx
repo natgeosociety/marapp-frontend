@@ -67,9 +67,7 @@ export function CollectionEditPlaces(props: IProps) {
             className="marapp-qa-locationsdropdown ng-margin-medium-bottom"
             control={control}
             defaultValue={locations}
-            getOptionLabel={(option, extra) => (
-              <DropdownItem title={option.name} subtitle={option.organization} />
-            )}
+            getOptionLabel={(option, extra) => <DropdownItem title={option.name} />}
             getOptionValue={(option) => option.id}
             loadFunction={(query) =>
               PlacesService.fetchPlaces({
