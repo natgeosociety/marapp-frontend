@@ -1,3 +1,14 @@
+## [1.16.2](https://github.com/natgeosociety/marapp-frontend/compare/v1.16.1...v1.16.2) (2021-01-06)
+
+
+### Bug Fixes
+
+* Display correct initials in the user menu [EP-3467] ([fd5d719](https://github.com/natgeosociety/marapp-frontend/commit/fd5d719751297f529530e170183196d4ac860712))
+* Fix app crash caused by dropdown in certain cases [EP-3651] ([2175804](https://github.com/natgeosociety/marapp-frontend/commit/2175804f30356d165e7e7c4ad8c5ad3bc00fecdd))
+* **map:** Clear clipping errors when form changes [EP-3639] ([75788f2](https://github.com/natgeosociety/marapp-frontend/commit/75788f2909e58ccda3060411972d72ef9fbfa0ff))
+* **map:** space filters clear button [EP-2489] ([c8117d6](https://github.com/natgeosociety/marapp-frontend/commit/c8117d6160fd7486dc390e8b6f7b940cf5af48bb))
+* Updated translations [EP-3610] ([5a712fc](https://github.com/natgeosociety/marapp-frontend/commit/5a712fc01b8ccb1136a81e85af496a2a5c84b479))
+
 ## [1.16.1](https://github.com/natgeosociety/marapp-frontend/compare/v1.16.0...v1.16.1) (2020-12-17)
 
 
