@@ -21,7 +21,6 @@ import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Tooltip } from 'vizzuality-components';
 
 import WidgetDownload from '../download';
 import './styles.scss';
@@ -58,22 +57,15 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
          ng-flex-middle ng-margin-left ${classNames}`}
       >
         {!isEmpty(data) && <WidgetDownload data={data} />}
-        <Tooltip
-          placement="top"
-          overlay={<span>Info</span>}
-          overlayClassName="c-rc-tooltip -default"
-          mouseLeaveDelay={0}
+        <button
+          className={classnames('ng-toolbar-button', {
+            '-active': !!activeInfo,
+          })}
+          type="button"
+          onClick={onInfo}
         >
-          <button
-            className={classnames('ng-toolbar-button', {
-              '-active': !!activeInfo,
-            })}
-            type="button"
-            onClick={onInfo}
-          >
-            <i className="ng-icon-info-circle" />
-          </button>
-        </Tooltip>
+          <i className="ng-icon-info-circle" />
+        </button>
       </div>
     );
   }

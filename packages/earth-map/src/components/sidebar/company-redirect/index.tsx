@@ -17,35 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import '~styles/config';
-
-.c-sidebar {
-  box-shadow: 0 0 5px 0 $marapp-gray-9;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  width: 375px;
-  top: 0;
-  bottom: 0;
-  left: $c-sidebar-width;
-  z-index: $z-index-3;
-
-  .ng-ep-tabs {
-    flex: 0 0 auto;
-  }
-
-  .sidebar-panel--btn-close {
-    position: absolute;
-    top: $space-1 * 2.5;
-    right: $space-1 * 3;
-    fill: $marapp-gray-100;
-    z-index: $z-index-3;
-
-    > svg {
-      display: block;
-    }
-  }
-  &.expanded {
-    width: 500px;
-  }
-}
+export { default } from './component';

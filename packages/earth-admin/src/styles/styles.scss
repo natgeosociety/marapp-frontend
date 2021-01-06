@@ -19,17 +19,29 @@
 
 html,
 body {
+  background: $marapp-gray-9;
   height: 100%;
 }
 
 body {
-  background: $marapp-gray-9;
   position: relative;
 }
 
 body {
   scrollbar-width: thin;
   scrollbar-color: $marapp-gray-7 $marapp-gray-8;
+}
+
+input,
+button {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  outline: none;
 }
 
 ::-webkit-scrollbar-track {

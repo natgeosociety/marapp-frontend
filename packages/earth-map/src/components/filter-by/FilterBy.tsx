@@ -60,12 +60,12 @@ const FilterBy = (props: IProps) => {
   return (
     <div className="ng-filter-by marapp-qa-filterby ng-padding-vertical ng-padding-medium-horizontal ng-ep-background-dark ng-padding-top-remove ng-overflow-hidden">
       <div className="ng-flex search-title">
-        <h2
+        <p
           className="marapp-qa-filterbyopen ng-text-display-s ng-body-color ng-margin-bottom ng-margin-small-right ng-c-cursor-pointer"
           onClick={openToggle}
         >
           {t('Filters')}
-        </h2>
+        </p>
         {numberOfFilters > 0 && (
           <a
             className="marapp-qa-filterbyclear ng-link ng-nohover ng-text-weight-regular ng-text-capital"

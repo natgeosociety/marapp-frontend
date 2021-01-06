@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
 
@@ -38,7 +38,9 @@ interface AsyncSelectProps {
 const AsyncSelect = (props: AsyncSelectProps) => {
   const { loadFunction, type, selectedGroup, onChange, className, isMulti, ...rest } = props;
   const { t } = useTranslation('admin');
+  const selectRef: any = useRef();
   const [cursor, setCursor] = useState(-1);
+  const [hasMore, setHasMore] = useState(true);
 
   const loadOptions = async (search, prevOptions) => {
     const query = {
@@ -62,16 +64,32 @@ const AsyncSelect = (props: AsyncSelectProps) => {
 
     const hasMore = !!meta.pagination.nextCursor;
 
+    setHasMore(hasMore);
+
     return {
       options: filteredOptions,
       hasMore,
     };
   };
 
+  /**
+   * Utility function to load more options if the user didn't trigger the load options
+   * via scrolling to the end of the options list
+   */
+  const hasMoreOptionsAvailable = (bottomBorder: number): boolean => {
+    if (isMulti) {
+      const { options = [], value = [] } = selectRef.current.props;
+
+      return bottomBorder === 0 && hasMore && value.length === options.length;
+    }
+
+    return false;
+  };
+
   const shouldLoadMore = (scrollHeight, clientHeight, scrollTop) => {
     const bottomBorder = (scrollHeight - clientHeight) / 2;
 
-    return bottomBorder < scrollTop;
+    return bottomBorder < scrollTop || hasMoreOptionsAvailable(bottomBorder);
   };
 
   return (
@@ -86,6 +104,7 @@ const AsyncSelect = (props: AsyncSelectProps) => {
       shouldLoadMore={shouldLoadMore}
       onChange={(values) => onChange(values)}
       styles={CUSTOM_STYLES}
+      selectRef={selectRef}
       theme={(theme) => ({
         ...theme,
         ...SELECT_THEME,
