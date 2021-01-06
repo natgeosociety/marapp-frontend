@@ -174,7 +174,7 @@ export function NewWidget(props: IProps) {
           <div className="ng-grid ng-flex-top ng-margin-medium-bottom">
             <div className="ng-width-1-2">
               <Card className="ng-margin-medium-bottom">
-                <label htmlFor="provider">{t('Widget Layers')}:</label>
+                <label htmlFor="provider">{t('Widget Layer')}:</label>
                 <Controller
                   as={AsyncSelect}
                   name="layers"
@@ -187,7 +187,7 @@ export function NewWidget(props: IProps) {
                   selectedGroup={selectedGroup}
                   isClearable={true}
                   isSearchable={true}
-                  placeholder={t('Select Widget Layers')}
+                  placeholder={t('Select Widget Layer')}
                 />
               </Card>
             </div>
