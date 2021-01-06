@@ -49,6 +49,7 @@ const SearchBox = (props: ISearchbox) => {
     'ng-background-ultradkgray',
     'ng-background-ultradkgray',
     'ng-padding-vertical',
+    'ng-padding-small-horizontal',
     'ng-c-flex-grow-1',
     'ng-flex',
     'ng-flex-middle',
