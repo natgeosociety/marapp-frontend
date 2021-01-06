@@ -39,35 +39,39 @@ const AsyncSelect = (props: AsyncSelectProps) => {
   const { loadFunction, type, selectedGroup, onChange, className, isMulti, ...rest } = props;
   const { t } = useTranslation('admin');
   const selectRef: any = useRef();
-  const [cursor, setCursor] = useState(-1);
+  const [prevSearch, setPrevSearch] = useState(null);
+  const [cursor, setCursor] = useState(null);
   const [hasMore, setHasMore] = useState(true);
 
-  const loadOptions = async (search, prevOptions) => {
+  /**
+   * Called on both new search and next page
+   * We keep prevSearch state to know when it's a new search
+   */
+  const loadOptions = async (search) => {
+    const isNextPage = search === prevSearch;
     const query = {
-      search,
       sort: 'name',
-      page: { size: 30, cursor },
+      search,
+      page: {
+        size: 30,
+        cursor: isNextPage ? cursor : -1,
+      },
       group: selectedGroup,
     };
+
+    setPrevSearch(search);
+
     const response = await loadFunction(query);
     const { data, meta } = response;
 
     setCursor(meta.pagination.nextCursor);
-
-    let filteredOptions = [];
-
-    if (!search) {
-      filteredOptions = [...filteredOptions, ...data];
-    } else {
-      filteredOptions = data;
-    }
 
     const hasMore = !!meta.pagination.nextCursor;
 
     setHasMore(hasMore);
 
     return {
-      options: filteredOptions,
+      options: data,
       hasMore,
     };
   };
