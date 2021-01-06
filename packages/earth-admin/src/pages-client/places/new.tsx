@@ -123,7 +123,7 @@ export function NewPlace(props: IProps) {
                   placeholder={t('Place title')}
                   label="Title"
                   required={true}
-                  className="ng-display-block"
+                  className="marapp-qa-placetitle ng-display-block"
                   error={renderErrorFor('name')}
                   ref={register({
                     required: 'Place title is required',
@@ -149,6 +149,8 @@ export function NewPlace(props: IProps) {
                   ...SELECT_THEME,
                 })}
                 rules={{ required: true }}
+                className="marapp-qa-placetype"
+                classNamePrefix="marapp-qa-asyncselect"
               />
             </div>
 
@@ -159,7 +161,7 @@ export function NewPlace(props: IProps) {
                   placeholder={t('Place slug')}
                   label="Slug"
                   required={true}
-                  className="ng-display-block"
+                  className="marapp-qa-placeslug ng-display-block"
                   error={renderErrorFor('slug')}
                   ref={register({
                     required: 'Place slug is required',
