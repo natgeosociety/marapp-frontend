@@ -132,11 +132,14 @@ export function PlaceDetail(props: IProps) {
   const renderErrorFor = setupErrors(errors, touched);
 
   useEffect(() => {
-    place && setMapData({ geojson, bbox: bbox2d });
-    place &&
-      setMappedIntersections(
-        filter(groupBy(intersections, 'type'), (item, type) => type !== LOCATION_TYPE.COLLECTION)
-      );
+    if (place) {
+      setMapData({ geojson, bbox: bbox2d });
+
+      const groupedIntersections = groupBy(intersections, 'type');
+      const excludeCollection = (item, type) => type !== LOCATION_TYPE.COLLECTION;
+
+      setMappedIntersections(filter(groupedIntersections, excludeCollection));
+    }
   }, [place]);
 
   useEffect(() => {
