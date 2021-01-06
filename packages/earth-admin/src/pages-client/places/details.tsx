@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { groupBy, map, noop } from 'lodash';
+import { filter, groupBy, isEmpty, map, noop } from 'lodash';
 import { merge } from 'lodash/fp';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -55,7 +55,7 @@ import PlacesService from '@app/services/places';
 import { formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
 import { MapComponentContext } from '@app/utils/contexts';
 
-import { IPlace, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
+import { IPlace, LOCATION_TYPE, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
 
 interface IProps {
   path: string;
@@ -86,7 +86,7 @@ export function PlaceDetail(props: IProps) {
 
   const [place, setPlace] = useState<IPlace>({});
   const [mapData, setMapData] = useState({});
-  const [mappedIntersections, setMappedIntersections] = useState();
+  const [mappedIntersections, setMappedIntersections] = useState({} as any);
   const [geojsonValue, setGeojson] = useState(null);
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState();
@@ -133,7 +133,10 @@ export function PlaceDetail(props: IProps) {
 
   useEffect(() => {
     place && setMapData({ geojson, bbox: bbox2d });
-    place && setMappedIntersections(groupBy(intersections, 'type'));
+    place &&
+      setMappedIntersections(
+        filter(groupBy(intersections, 'type'), (item, type) => type !== LOCATION_TYPE.COLLECTION)
+      );
   }, [place]);
 
   useEffect(() => {
@@ -486,7 +489,7 @@ export function PlaceDetail(props: IProps) {
               </Card>
             )}
           </div>
-          {!!intersections && (
+          {!isEmpty(mappedIntersections) && (
             <div className="ng-margin-medium-bottom">
               <Card>
                 <div className="">
