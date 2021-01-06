@@ -151,7 +151,7 @@ export default function InlineEditCard(props: InlineCardProps) {
             }
           )}
           style={{
-            transform: x.interpolate((x) => `scale(${x})`),
+            transform: x.interpolate((x) => `scale3d(${x}, ${x}, ${x})`),
             ...props,
           }}
         >
