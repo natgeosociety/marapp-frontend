@@ -175,6 +175,7 @@ export function NewLayer(props: IProps) {
                 options={layerCategoryOptions}
                 isSearchable={true}
                 isMulti={true}
+                closeMenuOnSelect={false}
                 placeholder={t('Select layer category')}
                 styles={CUSTOM_STYLES}
                 theme={(theme) => ({
