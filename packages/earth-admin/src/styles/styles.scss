@@ -75,6 +75,8 @@ input[type=file]::file-selector-button {
 
 .ng-page-container {
   margin-left: $sidebar-width;
+  min-height: 100vh;
+  position: relative;
   width: calc(100% - #{$sidebar-width});
 }
 
