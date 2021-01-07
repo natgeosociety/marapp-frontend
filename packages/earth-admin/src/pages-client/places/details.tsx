@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { groupBy, map, noop } from 'lodash';
+import { filter, groupBy, isEmpty, map, noop } from 'lodash';
 import { merge } from 'lodash/fp';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -55,7 +55,7 @@ import PlacesService from '@app/services/places';
 import { formatArrayToParentheses, formatDate, km2toHa } from '@app/utils';
 import { MapComponentContext } from '@app/utils/contexts';
 
-import { IPlace, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
+import { IPlace, LOCATION_TYPE, PLACE_DETAIL_QUERY, PlaceIntersection } from './model';
 
 interface IProps {
   path: string;
@@ -86,7 +86,7 @@ export function PlaceDetail(props: IProps) {
 
   const [place, setPlace] = useState<IPlace>({});
   const [mapData, setMapData] = useState({});
-  const [mappedIntersections, setMappedIntersections] = useState();
+  const [mappedIntersections, setMappedIntersections] = useState({} as any);
   const [geojsonValue, setGeojson] = useState(null);
   const [jsonError, setJsonError] = useState(false);
   const [serverErrors, setServerErrors] = useState();
@@ -132,8 +132,14 @@ export function PlaceDetail(props: IProps) {
   const renderErrorFor = setupErrors(errors, touched);
 
   useEffect(() => {
-    place && setMapData({ geojson, bbox: bbox2d });
-    place && setMappedIntersections(groupBy(intersections, 'type'));
+    if (place) {
+      setMapData({ geojson, bbox: bbox2d });
+
+      const groupedIntersections = groupBy(intersections, 'type');
+      const excludeCollection = (item, type) => type !== LOCATION_TYPE.COLLECTION;
+
+      setMappedIntersections(filter(groupedIntersections, excludeCollection));
+    }
   }, [place]);
 
   useEffect(() => {
@@ -235,7 +241,7 @@ export function PlaceDetail(props: IProps) {
                         label="Title"
                         required={true}
                         defaultValue={name}
-                        className="ng-display-block"
+                        className="marapp-qa-placetitle ng-display-block"
                         error={renderErrorFor('name')}
                         ref={register({
                           required: 'Place title is required',
@@ -244,7 +250,9 @@ export function PlaceDetail(props: IProps) {
                     </>
                   )}
                 >
-                  <h1 className="ng-text-display-m ng-margin-remove">{name}</h1>
+                  <h1 className="marapp-qa-placetitle-text ng-text-display-m ng-margin-remove">
+                    {name}
+                  </h1>
                 </InlineEditCard>
               </div>
               <div className="ng-width-1-4">
@@ -253,7 +261,7 @@ export function PlaceDetail(props: IProps) {
                     name="featured"
                     label="Featured"
                     value={featured}
-                    className="ng-display-block"
+                    className="marapp-qa-placefeatured ng-display-block"
                     onChange={onSubmit}
                     ref={register({})}
                   />
@@ -261,7 +269,7 @@ export function PlaceDetail(props: IProps) {
                     name="published"
                     label="Published"
                     value={published}
-                    className="ng-display-block"
+                    className="marapp-qa-placepublished ng-display-block"
                     onChange={onSubmit}
                     ref={register({})}
                   />
@@ -270,7 +278,7 @@ export function PlaceDetail(props: IProps) {
                       name="publicResource"
                       label="Public"
                       value={publicResource}
-                      className="ng-display-block"
+                      className="marapp-qa-placepublic ng-display-block"
                       onChange={onSubmit}
                       ref={register({})}
                     />
@@ -292,7 +300,7 @@ export function PlaceDetail(props: IProps) {
                           label="Slug"
                           required={true}
                           defaultValue={slug}
-                          className="ng-display-block"
+                          className="marapp-qa-placeslug ng-display-block"
                           error={renderErrorFor('slug')}
                           ref={register({
                             required: 'Place slug is required',
@@ -305,7 +313,7 @@ export function PlaceDetail(props: IProps) {
                       <div>
                         <label htmlFor="type">{t('Place type')}</label>
                         <select
-                          className="ng-width-1-1 ng-form-large"
+                          className="marapp-qa-placetype ng-width-1-1 ng-form-large"
                           id="type"
                           ref={register({
                             required: true,
@@ -325,30 +333,34 @@ export function PlaceDetail(props: IProps) {
                 >
                   <div className="ng-margin-medium-bottom">
                     <p className="ng-text-weight-bold ng-margin-remove">{t('Place slug')}</p>
-                    <p className="ng-margin-remove ng-padding-left">{slug}</p>
+                    <p className="marapp-qa-placeslug-text ng-margin-remove ng-padding-left">
+                      {slug}
+                    </p>
                   </div>
                   <div>
                     <p className="ng-text-weight-bold ng-margin-remove">{t('Place type')}</p>
-                    <p className="ng-margin-remove ng-padding-left">{type}</p>
+                    <p className="marapp-qa-placetype-text ng-margin-remove ng-padding-left">
+                      {type}
+                    </p>
                   </div>
                 </InlineEditCard>
               </div>
               <div className="ng-width-1-2">
                 <Card>
-                  <p className="ng-margin-bottom ng-margin-top-remove">
+                  <p className="marapp-qa-placeid-text ng-margin-bottom ng-margin-top-remove">
                     <span className="ng-text-weight-bold ng-color-mdgray">{t('ID')}:</span> {id}
                   </p>
-                  <p className="ng-margin-bottom ng-margin-top-remove">
+                  <p className="marapp-qa-placeversion-text ng-margin-bottom ng-margin-top-remove">
                     <span className="ng-text-weight-bold ng-color-mdgray">{t('Version')}:</span>{' '}
                     {version}
                   </p>
-                  <p className="ng-margin-bottom ng-margin-top-remove">
+                  <p className="marapp-qa-placeupdated-text ng-margin-bottom ng-margin-top-remove">
                     <span className="ng-text-weight-bold ng-color-mdgray">
                       {t('Last Updated')}:
                     </span>{' '}
                     {formatDate(updatedAt)}
                   </p>
-                  <p className="ng-margin-bottom ng-margin-top-remove">
+                  <p className="marapp-qa-placecreated-text ng-margin-bottom ng-margin-top-remove">
                     <span className="ng-text-weight-bold ng-color-mdgray">{t('Created')}:</span>{' '}
                     {formatDate(createdAt)}
                   </p>
@@ -384,7 +396,7 @@ export function PlaceDetail(props: IProps) {
                                     data={geojson}
                                     fileName={slug}
                                     type="geojson"
-                                    className="ng-align-right ng-margin-top"
+                                    className="marapp-qa-downloadgeojson ng-align-right ng-margin-top"
                                   >
                                     {t('Download GeoJSON')}
                                   </DownloadFile>
@@ -406,7 +418,7 @@ export function PlaceDetail(props: IProps) {
                                 </div>
                                 <div className="ng-width-1-2">
                                   {areaKm2 && (
-                                    <p className="ng-margin-bottom ng-margin-top-remove">
+                                    <p className="marapp-qa-placearea-text ng-margin-bottom ng-margin-top-remove">
                                       <span className="ng-text-weight-bold ng-color-mdgray">
                                         {t('Area ha')}:
                                       </span>{' '}
@@ -414,7 +426,7 @@ export function PlaceDetail(props: IProps) {
                                     </p>
                                   )}
                                   {bbox2d && (
-                                    <p className="ng-margin-bottom ng-margin-top-remove">
+                                    <p className="marapp-qa-placebbox-text ng-margin-bottom ng-margin-top-remove">
                                       <span className="ng-text-weight-bold ng-color-mdgray">
                                         {t('Area Bbox')}:
                                       </span>{' '}
@@ -422,7 +434,7 @@ export function PlaceDetail(props: IProps) {
                                     </p>
                                   )}
                                   {centroid && (
-                                    <p className="ng-margin-bottom ng-margin-top-remove">
+                                    <p className="marapp-qa-placecentroid-text ng-margin-bottom ng-margin-top-remove">
                                       <span className="ng-text-weight-bold ng-color-mdgray">
                                         {t('Centroid')}:
                                       </span>{' '}
@@ -486,7 +498,7 @@ export function PlaceDetail(props: IProps) {
               </Card>
             )}
           </div>
-          {!!intersections && (
+          {!isEmpty(mappedIntersections) && (
             <div className="ng-margin-medium-bottom">
               <Card>
                 <div className="">
@@ -507,7 +519,10 @@ export function PlaceDetail(props: IProps) {
 
         {writePermissions && (
           <div className="ng-text-right">
-            <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
+            <button
+              className="marapp-qa-actiondelete ng-button ng-button-secondary"
+              onClick={handleDeleteToggle}
+            >
               {t('Delete place')}
             </button>
           </div>
