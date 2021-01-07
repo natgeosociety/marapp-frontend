@@ -272,6 +272,7 @@ export function LayerDetail(props: any) {
                           defaultValue={layerCategory}
                           isSearchable={true}
                           isMulti={true}
+                          closeMenuOnSelect={false}
                           placeholder={t('Select layer category')}
                           styles={CUSTOM_STYLES}
                           error={renderErrorFor('category')}
