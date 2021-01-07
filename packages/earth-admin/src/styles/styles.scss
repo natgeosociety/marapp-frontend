@@ -44,6 +44,21 @@ button {
   outline: none;
 }
 
+input[type="file"] {
+  background-color: $marapp-gray-7 !important;
+}
+
+input[type=file]::file-selector-button {
+  background-color: $marapp-primary-color;
+  border-color: transparent;
+  outline: none;
+  padding: 0 35px;
+  margin-right: 16px;
+  line-height: 35px;
+  font-size: 0.75rem;
+}
+
+
 ::-webkit-scrollbar-track {
   background: $marapp-gray-8;
 }
