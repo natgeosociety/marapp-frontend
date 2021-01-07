@@ -18,7 +18,7 @@
 */
 
 import { navigate } from 'gatsby';
-import { noop, result } from 'lodash';
+import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
