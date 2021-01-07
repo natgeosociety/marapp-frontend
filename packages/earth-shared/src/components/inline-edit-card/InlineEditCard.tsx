@@ -18,7 +18,8 @@
 */
 
 import classnames from 'classnames';
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import FocusTrap from 'focus-trap-react';
+import React, { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
@@ -78,7 +79,6 @@ export default function InlineEditCard(props: InlineCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
-  const cardRef: any = useRef();
 
   const state = isEditing ? 'open' : 'close';
 
@@ -99,30 +99,32 @@ export default function InlineEditCard(props: InlineCardProps) {
   };
 
   const renderEditable = () => (
-    <>
-      {render(optionsBag)}
-      {serverErrors && <ErrorMessages errors={serverErrors} />}
-      <InlineCardOverlay />
-      <div className="ng-margin-medium-top">
-        <button
-          className={classnames(
-            'marapp-qa-actionsaveinline ng-button ng-button-primary ng-margin-right',
-            submitButtonVariant && `ng-button-${submitButtonVariant}`
-          )}
-          disabled={!validForm}
-          onClick={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}
-        >
-          {submitButtonText}
-        </button>
-        <button
-          type="button"
-          className="marapp-qa-actioncancelinline ng-button ng-button-secondary"
-          onClick={handleCancel}
-        >
-          {cancelButtonText}
-        </button>
+    <FocusTrap>
+      <div>
+        {render(optionsBag)}
+        {serverErrors && <ErrorMessages errors={serverErrors} />}
+        <InlineCardOverlay />
+        <div className="ng-margin-medium-top">
+          <button
+            className={classnames(
+              'marapp-qa-actionsaveinline ng-button ng-button-primary ng-margin-right',
+              submitButtonVariant && `ng-button-${submitButtonVariant}`
+            )}
+            disabled={!validForm}
+            onClick={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}
+          >
+            {submitButtonText}
+          </button>
+          <button
+            type="button"
+            className="marapp-qa-actioncancelinline ng-button ng-button-secondary"
+            onClick={handleCancel}
+          >
+            {cancelButtonText}
+          </button>
+        </div>
       </div>
-    </>
+    </FocusTrap>
   );
 
   const renderDefault = () => (
@@ -140,49 +142,30 @@ export default function InlineEditCard(props: InlineCardProps) {
     </>
   );
 
-  useEffect(() => {
-    const parentForm = cardRef?.current.closest('form');
-
-    if (parentForm) {
-      const formButtons = parentForm.querySelectorAll('button');
-
-      if (isEditing) {
-        const cardButtons = cardRef.current.querySelectorAll('button');
-
-        formButtons.forEach((button) => (button.tabIndex = -1));
-        cardButtons.forEach((button) => button.removeAttribute('tabIndex'));
-      } else {
-        formButtons.forEach((button) => (button.tabIndex = 1));
-      }
-    }
-  }, [isEditing]);
-
   return (
-    <div ref={cardRef}>
-      <Card native={true} state={state}>
-        {({ x, ...props }) => (
-          <animated.div
-            className={classnames(
-              'marapp-qa-inlineeditcard ng-padding-medium ng-inline-card ng-shadow-small ng-background-ultradkgray',
-              {
-                'ng-inline-card-editing': isEditing,
-                'ng-inline-card-loading': isLoading,
-              }
-            )}
-            style={{
-              transform: x.interpolate((x) => `scale3d(${x}, ${x}, ${x})`),
-              ...props,
-            }}
-          >
-            {isEditing ? renderEditable() : renderDefault()}
-            {isLoading && (
-              <div className="ng-inline-card-spinner">
-                <i className="ng-icon-spinner ng-icon-spin" />
-              </div>
-            )}
-          </animated.div>
-        )}
-      </Card>
-    </div>
+    <Card native={true} state={state}>
+      {({ x, ...props }) => (
+        <animated.div
+          className={classnames(
+            'marapp-qa-inlineeditcard ng-padding-medium ng-inline-card ng-shadow-small ng-background-ultradkgray',
+            {
+              'ng-inline-card-editing': isEditing,
+              'ng-inline-card-loading': isLoading,
+            }
+          )}
+          style={{
+            transform: x.interpolate((x) => `scale3d(${x}, ${x}, ${x})`),
+            ...props,
+          }}
+        >
+          {isEditing ? renderEditable() : renderDefault()}
+          {isLoading && (
+            <div className="ng-inline-card-spinner">
+              <i className="ng-icon-spinner ng-icon-spin" />
+            </div>
+          )}
+        </animated.div>
+      )}
+    </Card>
   );
 }

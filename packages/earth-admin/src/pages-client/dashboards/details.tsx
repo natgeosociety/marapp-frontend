@@ -335,14 +335,17 @@ export function DashboardDetail(props: IProps) {
               </div>
             </div>
             {serverErrors && <ErrorMessages key={id} errors={serverErrors} />}
-            {writePermissions && (
-              <div className="ng-text-right ng-margin-medium-top">
-                <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
-                  {t('Delete dashboard')}
-                </button>
-              </div>
-            )}
           </form>
+          {writePermissions && (
+            <div className="ng-text-right ng-margin-medium-top">
+              <button
+                className="marapp-qa-actiondelete ng-button ng-button-secondary"
+                onClick={handleDeleteToggle}
+              >
+                {t('Delete dashboard')}
+              </button>
+            </div>
+          )}
         </div>
       </ContentLayout>
     )

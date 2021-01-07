@@ -435,14 +435,6 @@ export function WidgetsDetail(props: WidgetProps) {
             </div>
 
             {serverErrors && <ErrorMessages key={id} errors={serverErrors} />}
-
-            {writePermissions && (
-              <div className="ng-text-right ng-margin-medium-top">
-                <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
-                  {t('Delete widget')}
-                </button>
-              </div>
-            )}
           </form>
           {/*hidden input to store config needed for copy to clipboard function*/}
           <input
@@ -452,6 +444,16 @@ export function WidgetsDetail(props: WidgetProps) {
             readOnly={true}
             style={{ position: 'absolute', left: '-10000px', top: '-10000px' }}
           />
+          {writePermissions && (
+            <div className="ng-text-right ng-margin-medium-top">
+              <button
+                className="marapp-qa-actiondelete ng-button ng-button-secondary"
+                onClick={handleDeleteToggle}
+              >
+                {t('Delete widget')}
+              </button>
+            </div>
+          )}
         </div>
       </ContentLayout>
     )

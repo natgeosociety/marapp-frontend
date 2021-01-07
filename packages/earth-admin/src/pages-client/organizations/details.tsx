@@ -252,20 +252,20 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
               </InlineEditCard>
             </div>
           </div>
-
-          <div>
-            {writePermissions && (
-              <div className="ng-padding-medium ultradkgray ng-text-right">
-                <button
-                  className="marapp-qa-actiondelete ng-button ng-button-secondary"
-                  onClick={handleDeleteToggle}
-                >
-                  {t('Delete organization')}
-                </button>
-              </div>
-            )}
-          </div>
         </form>
+      </div>
+
+      <div>
+        {writePermissions && (
+          <div className="ng-padding-medium ultradkgray ng-text-right">
+            <button
+              className="marapp-qa-actiondelete ng-button ng-button-secondary"
+              onClick={handleDeleteToggle}
+            >
+              {t('Delete organization')}
+            </button>
+          </div>
+        )}
       </div>
     </ContentLayout>
   );
