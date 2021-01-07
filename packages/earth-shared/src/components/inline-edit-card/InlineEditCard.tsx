@@ -18,7 +18,8 @@
 */
 
 import classnames from 'classnames';
-import React, { ReactNode, useEffect, useState } from 'react';
+import FocusTrap from 'focus-trap-react';
+import React, { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
@@ -98,30 +99,32 @@ export default function InlineEditCard(props: InlineCardProps) {
   };
 
   const renderEditable = () => (
-    <>
-      {render(optionsBag)}
-      {serverErrors && <ErrorMessages errors={serverErrors} />}
-      <InlineCardOverlay />
-      <div className="ng-margin-medium-top">
-        <button
-          className={classnames(
-            'marapp-qa-actionsaveinline ng-button ng-button-primary ng-margin-right',
-            submitButtonVariant && `ng-button-${submitButtonVariant}`
-          )}
-          disabled={!validForm}
-          onClick={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}
-        >
-          {submitButtonText}
-        </button>
-        <button
-          type="button"
-          className="marapp-qa-actioncancelinline ng-button ng-button-secondary"
-          onClick={handleCancel}
-        >
-          {cancelButtonText}
-        </button>
+    <FocusTrap>
+      <div>
+        {render(optionsBag)}
+        {serverErrors && <ErrorMessages errors={serverErrors} />}
+        <InlineCardOverlay />
+        <div className="ng-margin-medium-top">
+          <button
+            className={classnames(
+              'marapp-qa-actionsaveinline ng-button ng-button-primary ng-margin-right',
+              submitButtonVariant && `ng-button-${submitButtonVariant}`
+            )}
+            disabled={!validForm}
+            onClick={(e) => onSubmit(e, setIsEditing, setIsLoading, setServerErrors)}
+          >
+            {submitButtonText}
+          </button>
+          <button
+            type="button"
+            className="marapp-qa-actioncancelinline ng-button ng-button-secondary"
+            onClick={handleCancel}
+          >
+            {cancelButtonText}
+          </button>
+        </div>
       </div>
-    </>
+    </FocusTrap>
   );
 
   const renderDefault = () => (
