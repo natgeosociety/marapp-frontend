@@ -18,7 +18,7 @@
 */
 
 import classnames from 'classnames';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
@@ -78,6 +78,7 @@ export default function InlineEditCard(props: InlineCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
+  const cardRef: any = useRef();
 
   const state = isEditing ? 'open' : 'close';
 
@@ -139,30 +140,49 @@ export default function InlineEditCard(props: InlineCardProps) {
     </>
   );
 
+  useEffect(() => {
+    const parentForm = cardRef?.current.closest('form');
+
+    if (parentForm) {
+      const formButtons = parentForm.querySelectorAll('button');
+
+      if (isEditing) {
+        const cardButtons = cardRef.current.querySelectorAll('button');
+
+        formButtons.forEach((button) => (button.tabIndex = -1));
+        cardButtons.forEach((button) => button.removeAttribute('tabIndex'));
+      } else {
+        formButtons.forEach((button) => (button.tabIndex = 1));
+      }
+    }
+  }, [isEditing]);
+
   return (
-    <Card native={true} state={state}>
-      {({ x, ...props }) => (
-        <animated.div
-          className={classnames(
-            'marapp-qa-inlineeditcard ng-padding-medium ng-inline-card ng-shadow-small ng-background-ultradkgray',
-            {
-              'ng-inline-card-editing': isEditing,
-              'ng-inline-card-loading': isLoading,
-            }
-          )}
-          style={{
-            transform: x.interpolate((x) => `scale3d(${x}, ${x}, ${x})`),
-            ...props,
-          }}
-        >
-          {isEditing ? renderEditable() : renderDefault()}
-          {isLoading && (
-            <div className="ng-inline-card-spinner">
-              <i className="ng-icon-spinner ng-icon-spin" />
-            </div>
-          )}
-        </animated.div>
-      )}
-    </Card>
+    <div ref={cardRef}>
+      <Card native={true} state={state}>
+        {({ x, ...props }) => (
+          <animated.div
+            className={classnames(
+              'marapp-qa-inlineeditcard ng-padding-medium ng-inline-card ng-shadow-small ng-background-ultradkgray',
+              {
+                'ng-inline-card-editing': isEditing,
+                'ng-inline-card-loading': isLoading,
+              }
+            )}
+            style={{
+              transform: x.interpolate((x) => `scale3d(${x}, ${x}, ${x})`),
+              ...props,
+            }}
+          >
+            {isEditing ? renderEditable() : renderDefault()}
+            {isLoading && (
+              <div className="ng-inline-card-spinner">
+                <i className="ng-icon-spinner ng-icon-spin" />
+              </div>
+            )}
+          </animated.div>
+        )}
+      </Card>
+    </div>
   );
 }

@@ -526,6 +526,13 @@ export function LayerDetail(props: any) {
               </div>
             </div>
             {serverErrors && <ErrorMessages key={id} errors={serverErrors} />}
+            {writePermissions && (
+              <div className="ng-text-right ng-margin-medium-top">
+                <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
+                  {t('Delete layer')}
+                </button>
+              </div>
+            )}
           </form>
           {/*hidden input to store config needed for copy to clipboard function*/}
           <input
@@ -535,13 +542,6 @@ export function LayerDetail(props: any) {
             readOnly={true}
             style={{ position: 'absolute', left: '-10000px', top: '-10000px' }}
           />
-          {writePermissions && (
-            <div className="ng-text-right ng-margin-medium-top">
-              <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
-                {t('Delete layer')}
-              </button>
-            </div>
-          )}
         </div>
       </ContentLayout>
     )
