@@ -111,7 +111,7 @@ export const DeleteConfirmation = (props: IProps) => {
       onRequestClose={handleModalToggle}
       className="marapp-qa-DeleteConfirmation ng-text-center"
     >
-      <h4 className="ng-text-display-s ng-margin-bottom">
+      <h4 className="ng-text-display-s ng-margin-bottom ng-text-truncate">
         {t('Delete resource', { value: name })}
       </h4>
       <p className="ng-space-wrap">{t('Delete confirmation', { value: t(type) })}</p>
