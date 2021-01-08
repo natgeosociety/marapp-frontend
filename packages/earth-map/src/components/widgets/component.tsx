@@ -86,13 +86,15 @@ export default function WidgetsComponent(props: IProps) {
         <ClipLayer place={place} onCancel={() => setIsOnClipLayer(false)} groups={groups} />
       )}
       <div className="widgets--content">
-        <TitleHero
-          title={place.name}
-          subtitle={place.organization}
-          extra={place.type}
-          actions={canExport ? editActions : null}
-          className="ng-widget-header ng-margin-medium"
-        />
+        <div className="ng-widget-title-container">
+          <TitleHero
+            title={place.name}
+            subtitle={place.organization}
+            extra={place.type}
+            actions={canExport ? editActions : null}
+            className="ng-widget-header ng-margin-medium "
+          />
+        </div>
         {list.map((w: any, i) => {
           const [widgetMetricName] = w.metrics;
 

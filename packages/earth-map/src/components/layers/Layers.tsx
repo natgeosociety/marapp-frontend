@@ -188,7 +188,7 @@ const Layers = (props: IProps) => {
             />
           </div>
           <InfiniteList
-            title={t('Widget layers')}
+            title={t('Layers')}
             data={layers.results}
             loading={loading}
             nextPageCursor={nextPageCursor}

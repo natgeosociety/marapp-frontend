@@ -301,7 +301,7 @@ export function WidgetsDetail(props: WidgetProps) {
                   render={({ setIsEditing, setIsLoading, setServerErrors }) => (
                     <>
                       <div className="ng-margin-medium-bottom">
-                        <label htmlFor="provider">{t('Widget Layers')}</label>
+                        <label htmlFor="provider">{t('Widget Layer')}</label>
                         <Controller
                           as={AsyncSelect}
                           name="layers"
@@ -316,8 +316,8 @@ export function WidgetsDetail(props: WidgetProps) {
                           onChange={([e]) => e}
                           isClearable={true}
                           isSearchable={true}
-                          closeMenuOnSelect={false}
-                          placeholder={t('Select Widget Layers')}
+                          closeMenuOnSelect={true}
+                          placeholder={t('Select Widget Layer')}
                         />
                       </div>
                     </>
@@ -327,16 +327,16 @@ export function WidgetsDetail(props: WidgetProps) {
                     {!!layers ? (
                       <DetailList
                         data={layers}
-                        name={t('Widget Layers')}
+                        name={t('Widget Layer')}
                         type="layers"
                         className="ng-flex-column ng-flex-top"
                       />
                     ) : (
                       <div>
                         <p className="ng-text-weight-bold ng-margin-small-bottom">
-                          {t('Widget Layers')}
+                          {t('Widget Layer')}
                         </p>
-                        <span className="ng-padding-left">{t('No layer references')}</span>
+                        <span className="ng-padding-left">{t('No layer reference')}</span>
                       </div>
                     )}
                   </div>
@@ -446,7 +446,10 @@ export function WidgetsDetail(props: WidgetProps) {
           />
           {writePermissions && (
             <div className="ng-text-right ng-margin-medium-top">
-              <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
+              <button
+                className="marapp-qa-actiondelete ng-button ng-button-secondary"
+                onClick={handleDeleteToggle}
+              >
                 {t('Delete widget')}
               </button>
             </div>
