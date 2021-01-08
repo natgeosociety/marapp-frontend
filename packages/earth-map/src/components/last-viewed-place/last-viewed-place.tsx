@@ -24,9 +24,10 @@ import { useTranslation } from 'react-i18next';
 
 interface IProps {
   place: ILastViewedPlace;
+  group: any;
 }
 
-export const LastViewedPlace = ({ place }: IProps) => {
+export const LastViewedPlace = ({ place, group }: IProps) => {
   const { name, slug, id, organization, mainType, subType } = place;
   const { t } = useTranslation();
 
@@ -39,7 +40,7 @@ export const LastViewedPlace = ({ place }: IProps) => {
         title={name}
         key={`${slug}-${organization}`}
         linkTo={{ type: mainType, payload: { slug, id, organization } }}
-        organization={organization}
+        organization={group.length > 1 && organization}
         labels={[subType]}
       />
     </div>
