@@ -32,6 +32,7 @@
   "dashboards": "tableros",
   "Dashboards": "Tableros",
   "delete": "eliminar",
+  "deleting": "borrar",
   "Delete confirmation": "¿Estás seguro de que deseas eliminar este {{value}} de forma permanente?",
   "Delete dashboard": "Eliminar panel",
   "Delete layer": "Eliminar capa",
