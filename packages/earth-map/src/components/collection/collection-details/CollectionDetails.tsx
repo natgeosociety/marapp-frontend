@@ -70,6 +70,7 @@ const CollectionDetails = (props: IProps) => {
       trigger={(open) => (
         <i
           className={cn({
+            'marapp-qa-collection-actions': true,
             'ng-icon-ellipse ng-toolbar-button': true,
             'ng-toolbar-button-raised': true,
             'ng-toolbar-button-open': open,
@@ -77,8 +78,12 @@ const CollectionDetails = (props: IProps) => {
         />
       )}
     >
-      <a onClick={() => setIsRenaming(true)}>{t('Rename Collection')}</a>
-      <a onClick={() => setIsDeleting(true)}>{t('Delete')}</a>
+      <a className="marapp-qa-action-rename" onClick={() => setIsRenaming(true)}>
+        {t('Rename Collection')}
+      </a>
+      <a className="marapp-qa-action-delete" onClick={() => setIsDeleting(true)}>
+        {t('Delete')}
+      </a>
     </DropdownSimple>
   );
 
