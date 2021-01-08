@@ -27,5 +27,5 @@ interface IProps {
 import './styles.scss';
 
 export const Pill = ({ label, className = '' }: IProps) => (
-  <span className={`pill ${className}`}>{label}</span>
+  <span className={`pill ng-text-truncate ${className}`}>{label}</span>
 );
