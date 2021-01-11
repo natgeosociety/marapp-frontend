@@ -22,6 +22,7 @@ import createAuth0Client, {
   GetTokenSilentlyOptions,
   GetUserOptions,
 } from '@auth0/auth0-spa-js';
+import jwt from 'jsonwebtoken';
 import get from 'lodash/get';
 import qs from 'query-string';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
@@ -82,12 +83,13 @@ export const Auth0Provider = ({
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isAppBootstrapped, setIsAppBootstrapped] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [userData, setUserData] = useState({});
 
   const [groups, setGroups] = useState([]);
   const [roles, setRoles] = useState({});
   const [permissions, setPermissions] = useState({});
   const [selectedGroup, setSelectedGroup] = useState(null);
+
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     const initAuth0 = async () => {
@@ -115,44 +117,12 @@ export const Auth0Provider = ({
 
       if (isAuthenticated) {
         const accessToken = await auth0FromHook.getTokenSilently();
-        onSuccessHook({ accessToken, authClient: auth0FromHook });
-
         const idToken = await auth0FromHook.getUser();
 
-        const roles = get(idToken, `${NAMESPACE}/roles`, []);
-        const mappedRoles = mapAuthzScopes(roles);
-        setRoles(mappedRoles);
+        setAccessTokenContext(accessToken);
+        setIdTokenContext(idToken);
 
-        const groups = get(idToken, `${NAMESPACE}/groups`);
-        // special case where no groups and only super-admin role assigned;
-        const roleGroups = mapAuthorizedRoleGroups(roles, ['*']).length
-          ? mapAuthorizedRoleGroups(roles, ['*'])
-          : mapAuthorizedRoleGroups(roles);
-        setGroups(roleGroups);
-
-        const permissions = get(idToken, `${NAMESPACE}/permissions`, []);
-        setPermissions(mapAuthzScopes(permissions));
-
-        const authorized = isAdminAuthz(roles);
-        setIsAuthorized(authorized);
-
-        const givenName = get(idToken, 'given_name', '');
-        const familyName = get(idToken, 'family_name', '');
-
-        const userData = {
-          email: get(idToken, 'email', ''),
-          name:
-            givenName || familyName
-              ? `${givenName} ${familyName}`.trim()
-              : get(idToken, 'name', ''),
-          picture: get(idToken, 'picture', ''),
-          allGroups: roleGroups,
-          roles: mappedRoles,
-        };
-        setUserData(userData);
-
-        const [selected] = roleGroups;
-        setSelectedGroup(selected);
+        onSuccessHook({ accessToken, authClient: auth0FromHook });
       }
 
       // needed for the <Org/> to render and check if org is valid
@@ -200,6 +170,55 @@ export const Auth0Provider = ({
     [client]
   );
 
+  const setAccessTokenContext = (accessToken: string) => {
+    const decoded = jwt.decode(accessToken);
+
+    const rawGroups = get(decoded, `${NAMESPACE}/groups`);
+    const rawRoles = get(decoded, `${NAMESPACE}/roles`, []);
+    const rawPermissions = get(decoded, `${NAMESPACE}/permissions`, []);
+
+    // special case where no groups and only super-admin role assigned;
+    const roleGroups = mapAuthorizedRoleGroups(rawRoles, ['*']).length
+      ? mapAuthorizedRoleGroups(rawRoles, ['*'])
+      : mapAuthorizedRoleGroups(rawRoles);
+    setGroups(roleGroups);
+
+    const roles = mapAuthzScopes(rawRoles);
+    setRoles(roles);
+
+    const permissions = mapAuthzScopes(rawPermissions);
+    setPermissions(permissions);
+
+    const authorized = isAdminAuthz(rawRoles);
+    setIsAuthorized(authorized);
+
+    const [selected] = roleGroups;
+    setSelectedGroup(selected);
+  };
+
+  const setIdTokenContext = (idToken: { [key: string]: any }) => {
+    const givenName = get(idToken, 'given_name', '');
+    const familyName = get(idToken, 'family_name', '');
+
+    const userData = {
+      email: get(idToken, 'email', ''),
+      name:
+        givenName || familyName ? `${givenName} ${familyName}`.trim() : get(idToken, 'name', ''),
+      picture: get(idToken, 'picture', ''),
+    };
+    setUserData(userData);
+  };
+
+  const updateToken = useCallback(async () => {
+    if (isAuthenticated) {
+      const accessToken = await getAccessToken({ ignoreCache: true });
+
+      setAccessTokenContext(accessToken);
+
+      onSuccessHook({ accessToken, authClient: client });
+    }
+  }, [isAuthenticated]);
+
   const getPermissions = (type: string[]) => {
     return hasAccess(permissions[selectedGroup], type) || hasAccess(permissions['*'], type);
   };
@@ -223,6 +242,7 @@ export const Auth0Provider = ({
         setIsLoading,
         setupUserOrg: setSelectedGroup,
         getPermissions,
+        updateToken,
       }}
     >
       {children}
