@@ -105,6 +105,7 @@ function* toLocation({ payload, meta }) {
 
       if (lastViewedPlace?.slug === slug) {
         yield put(setLastViewedPlace(null));
+        yield put(persistData());
       }
 
       replace('/404');
