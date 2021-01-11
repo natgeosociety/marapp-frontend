@@ -17,6 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 import { useAuth0 } from 'auth/auth0';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import CollectionDetails from 'components/collection/collection-details';
 import CollectionNew from 'components/collection/collection-new';
 import CollectionsCard from 'components/collection/collections-card';
@@ -37,13 +39,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icons as VizzIcons } from 'vizzuality-components';
 
-import { ErrorBoundary, Tab, Tabs } from '@marapp/earth-shared';
+import { ErrorBoundary } from '@marapp/earth-shared';
 
 import './styles.scss';
 import { URL_PROPS } from './url';
 
 interface IProps {
-  setSidebarPanel?: () => void;
+  setSidebarPanel?: (payload: any) => void;
   panel?: EPanels;
   page?: string;
   layersPanel?: boolean;
@@ -76,14 +78,12 @@ const EarthPage = (props: IProps) => {
             <Url type="EARTH" urlProps={URL_PROPS} />
 
             <Header />
-            <Tabs
-              value={panel}
-              onChange={setSidebarPanel}
-              className="ng-padding-bottom ng-padding-medium-horizontal ng-ep-background-dark"
-            >
+
+            <Tabs value={panel} onChange={(_, newValue) => setSidebarPanel(newValue)}>
               <Tab label={t('Places')} value="places" />
               <Tab label={t('Layers')} value="layers" />
             </Tabs>
+
             {panel === EPanels.PLACES && (
               <>
                 {type === EARTH && (
