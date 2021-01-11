@@ -27,6 +27,9 @@ export default createMuiTheme({
       main: '#0099A1',
       light: '#33adb3',
     },
+    text: {
+      primary: 'rgb(255,255,255)',
+    },
     background: {
       paper: '#495057',
     },

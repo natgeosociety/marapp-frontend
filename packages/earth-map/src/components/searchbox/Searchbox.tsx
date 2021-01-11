@@ -29,7 +29,6 @@ import IconMagnify from 'mdi-material-ui/Magnify';
 import IconClose from 'mdi-material-ui/Close';
 
 const useStyles = makeStyles((theme) => {
-  console.log('theme: ', theme);
   return {
     root: {
       // @ts-ignore

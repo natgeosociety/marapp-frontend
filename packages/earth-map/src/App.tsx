@@ -20,6 +20,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { Spinner, TranslationService } from '@marapp/earth-shared';
 
@@ -46,11 +47,13 @@ const App = () => {
 
     return (
       // @ts-ignore
-      <ThemeProvider theme={theme}>
-        <Provider store={store}>
-          <Main />
-        </Provider>
-      </ThemeProvider>
+      <>
+        <ThemeProvider theme={theme}>
+          <Provider store={store}>
+            <Main />
+          </Provider>
+        </ThemeProvider>
+      </>
     );
   }
 

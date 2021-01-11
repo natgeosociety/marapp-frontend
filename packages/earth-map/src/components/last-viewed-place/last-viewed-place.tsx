@@ -17,6 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import ListItem from 'components/list-item';
 import { ILastViewedPlace } from 'modules/global/model';
 import React from 'react';
@@ -32,17 +36,23 @@ export const LastViewedPlace = ({ place, group }: IProps) => {
   const { t } = useTranslation();
 
   return (
-    <div className="marapp-qa-lastviewedplace ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
-      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-        {t('Last viewed place')}
-      </h2>
-      <ListItem
-        title={name}
-        key={`${slug}-${organization}`}
-        linkTo={{ type: mainType, payload: { slug, id, organization } }}
-        organization={group.length > 1 && organization}
-        labels={[subType]}
-      />
-    </div>
+    <Box mb={1}>
+      <Paper className="marapp-qa-lastviewedplace" square={true}>
+        <Box p={2} pb={0}>
+          <Typography variant="subtitle1">{t('Last viewed place')}</Typography>
+        </Box>
+
+        {/*ToDo remove component div once we get rid of NG-Kit*/}
+        <List component="div" disablePadding={true}>
+          <ListItem
+            title={name}
+            key={`${slug}-${organization}`}
+            linkTo={{ type: mainType, payload: { slug, id, organization } }}
+            organization={group.length > 1 && organization}
+            labels={[subType]}
+          />
+        </List>
+      </Paper>
+    </Box>
   );
 };

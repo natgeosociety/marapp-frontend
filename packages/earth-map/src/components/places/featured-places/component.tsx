@@ -17,6 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import ListItem from 'components/list-item';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -36,18 +40,20 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
   const { t } = useTranslation();
 
   return (
-    <div className="marapp-qa-featuredplaces ng-section-background ng-position-relative ng-padding-medium-bottom">
-      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-        {t('Featured places')}
-      </h2>
-      <div>
-        {!featured?.data.length && !featured?.meta && (
-          <div className="ng-padding-large ng-position-relative">
-            <Spinner />
-          </div>
-        )}
-        {!!featured.data.length &&
-          featured.data.map((place: any) => {
+    <Paper className="marapp-qa-featuredplaces" square={true}>
+      <Box p={2} pb={0}>
+        <Typography variant="subtitle1">{t('Featured places')}</Typography>
+      </Box>
+
+      {!featured?.data.length && !featured?.meta && (
+        <div className="ng-padding-large ng-position-relative">
+          <Spinner />
+        </div>
+      )}
+      {!!featured.data.length && (
+        /*ToDo remove component div once we get rid of NG-Kit*/
+        <List component="div" disablePadding={true}>
+          {featured.data.map((place: any) => {
             const { slug, name, id, organization, type } = place;
 
             return (
@@ -60,8 +66,9 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
               />
             );
           })}
-      </div>
-    </div>
+        </List>
+      )}
+    </Paper>
   );
 };
 
