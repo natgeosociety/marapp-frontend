@@ -36,7 +36,7 @@ interface IProps {
 
 const Organization = (props: IProps) => {
   const { org, children } = props;
-  const { isLoading, groups, setupUserOrg, setIsLoading, userData } = useAuth0();
+  const { isLoading, groups, setupUserOrg, setIsLoading, roles } = useAuth0();
   const { t } = useTranslation('admin');
 
   // CodeMirror is not working without window.JSHINT
@@ -47,7 +47,7 @@ const Organization = (props: IProps) => {
 
   // Important check for valid ORG and sets it on the context.
   // Happens everytime org changes (runtime/refresh)
-  const allowSuperAdminGroup = isSuperAdmin(userData.roles);
+  const allowSuperAdminGroup = isSuperAdmin(roles);
 
   useEffect(() => {
     if (org && isValidGroup(groups, org, allowSuperAdminGroup)) {

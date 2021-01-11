@@ -49,7 +49,7 @@ export function NewOrganization(props: IProps) {
   const [serverErrors, setServerErrors] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [ownersFeedback, setOwnersFeedback] = useState([]);
-  const { selectedGroup } = useContext(Auth0Context);
+  const { selectedGroup, updateToken } = useContext(Auth0Context);
   const { handleSubmit, register, errors, formState, setValue, control, watch } = useForm({
     mode: 'onChange',
   });
@@ -69,6 +69,7 @@ export function NewOrganization(props: IProps) {
         },
         { group: selectedGroup }
       );
+      await updateToken(); // refresh context state;
       onDataChange();
       await navigate(`/${selectedGroup}/organizations/${data.id}`);
     } catch (err) {
