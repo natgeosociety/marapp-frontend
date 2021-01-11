@@ -89,7 +89,9 @@ const EarthPage = (props: IProps) => {
                 {type === EARTH && (
                   <Places selected={selectedOpen}>
                     <>
-                      {showLastViewedPlace && <LastViewedPlace place={lastViewedPlace} />}
+                      {showLastViewedPlace && (
+                        <LastViewedPlace place={lastViewedPlace} group={group} />
+                      )}
                       <CollectionsCard group={group} canCreate={canCreateCollections} />
                       <FeaturedPlaces />
                     </>
