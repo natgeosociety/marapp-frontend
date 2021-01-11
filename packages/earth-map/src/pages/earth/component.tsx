@@ -19,6 +19,7 @@
 import { useAuth0 } from 'auth/auth0';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Paper from '@material-ui/core/Paper';
 import CollectionDetails from 'components/collection/collection-details';
 import CollectionNew from 'components/collection/collection-new';
 import CollectionsCard from 'components/collection/collections-card';
@@ -79,10 +80,12 @@ const EarthPage = (props: IProps) => {
 
             <Header />
 
-            <Tabs value={panel} onChange={(_, newValue) => setSidebarPanel(newValue)}>
-              <Tab label={t('Places')} value="places" />
-              <Tab label={t('Layers')} value="layers" />
-            </Tabs>
+            <Paper square={true} elevation={0}>
+              <Tabs value={panel} onChange={(_, newValue) => setSidebarPanel(newValue)}>
+                <Tab label={t('Places')} value="places" />
+                <Tab label={t('Layers')} value="layers" />
+              </Tabs>
+            </Paper>
 
             {panel === EPanels.PLACES && (
               <>

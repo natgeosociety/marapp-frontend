@@ -22,6 +22,37 @@ import { createMuiTheme } from '@material-ui/core';
 export default createMuiTheme({
   palette: {
     type: 'dark',
+    secondary: {
+      dark: '#006b70',
+      main: '#0099A1',
+      light: '#33adb3',
+    },
+    background: {
+      paper: '#495057',
+    },
+    // grey: {
+    //   50: '#F8F9FA',
+    //   100: '#E9ECEF',
+    //   200: '#DEE2E6',
+    //   300: '#CED4DA',
+    //   400: '#ADB5BD',
+    //   500: '#6C757D',
+    //   600: '#495057',
+    //   700: '#343A40',
+    //   800: '#212529',
+    //   900: '#212529',
+    //   A100: '#d5d5d5',
+    //   A200: '#aaaaaa',
+    //   A400: '#303030',
+    //   A700: '#616161',
+    // }
+  },
+  overrides: {
+    MuiOutlinedInput: {
+      root: {
+        backgroundColor: '#343a40',
+      },
+    },
   },
   // @ts-ignore
   colors: {
