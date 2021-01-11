@@ -35,7 +35,7 @@ import { setSidebarPanelExpanded } from 'modules/sidebar/actions';
 import { replace } from 'redux-first-router';
 import { call, cancelled, delay, put, select, takeLatest } from 'redux-saga/effects';
 import { loadDataIndexes } from 'sagas/layers';
-import { ignoreRedirectsTo } from 'sagas/saga-utils';
+import { getAll, ignoreRedirectsTo } from 'sagas/saga-utils';
 import PlacesService from 'services/PlacesService';
 
 const ignoreRedirectsToLocation = ignoreRedirectsTo('LOCATION');
@@ -99,6 +99,14 @@ function* toLocation({ payload, meta }) {
   } catch (e) {
     // TODO better error handling for sagas
     if ([403, 404].includes(e.request.status)) {
+      const {
+        global: { lastViewedPlace },
+      } = yield select(getAll);
+
+      if (lastViewedPlace?.slug === slug) {
+        yield put(setLastViewedPlace(null));
+      }
+
       replace('/404');
     }
   } finally {
