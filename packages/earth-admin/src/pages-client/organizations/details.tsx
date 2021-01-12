@@ -39,7 +39,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [localOrgData, setLocalOrgData] = useState({});
   const [ownersFeedback, setOwnersFeedback] = useState([]);
-  const { getPermissions, selectedGroup } = useAuth0();
+  const { getPermissions, updateToken } = useAuth0();
   const { t } = useTranslation('admin');
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
@@ -99,11 +99,10 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
 
+      await updateToken(); // refresh context state;
       await onDataChange();
     } catch (err) {
       const errors = err.data?.errors;
-
-      console.log(err, errors);
 
       setIsLoading && setIsLoading(false);
       processOwnersFeedback(errors ? [] : err.data);
