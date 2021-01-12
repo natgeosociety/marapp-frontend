@@ -37,7 +37,23 @@ import { CollectionDownloadMetrics } from '../collection-downloadmetrics';
 import { CollectionEditPlaces } from '../collection-editplaces';
 import { CollectionRename } from '../collection-rename';
 import './styles.scss';
-import { Box, Button, Chip, Grid, Paper, Typography } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Menu from '@material-ui/core/Menu';
+import Fab from '@material-ui/core/Fab';
+import Chip from '@material-ui/core/Chip';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  cardEditButton: {
+    position: 'absolute',
+    right: theme.spacing(2),
+    top: theme.spacing(2),
+  },
+}));
 
 interface IProps {
   privateGroups: string[];
@@ -53,6 +69,7 @@ interface IProps {
 const CollectionDetails = (props: IProps) => {
   const { reloadCollection, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
   const { t } = useTranslation();
+  const classes = useStyles();
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -109,16 +126,19 @@ const CollectionDetails = (props: IProps) => {
             <Paper>
               <Box position="relative" p={2}>
                 {canEdit && (
-                  <button
-                    className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
+                  <Button
+                    size="small"
+                    className={`${classes.cardEditButton} marapp-qa-actioneditinline`}
                     onClick={toggleEditPlaces}
                   >
                     {t('edit')}
-                  </button>
+                  </Button>
                 )}
-                <Typography variant="subtitle1">
-                  {t('Collection places')} ({locations.length})
-                </Typography>
+                <Box mb={1}>
+                  <Typography variant="subtitle1">
+                    {t('Collection places')} ({locations.length})
+                  </Typography>
+                </Box>
                 <Grid container={true} spacing={1}>
                   {locations
                     .filter((x) => !!x)
@@ -138,12 +158,14 @@ const CollectionDetails = (props: IProps) => {
           <Grid item={true}>
             <Paper>
               <Box position="relative" p={2}>
-                <Typography variant="subtitle1">
-                  {t('Download metrics')}
-                  &nbsp;
-                  <i className="ng-icon-download-outline ng-vertical-align-middle" />
-                </Typography>
-                <Typography>
+                <Box mb={1}>
+                  <Typography variant="subtitle1">
+                    {t('Download metrics')}
+                    &nbsp;
+                    <i className="ng-icon-download-outline ng-vertical-align-middle" />
+                  </Typography>
+                </Box>
+                <Typography paragraph={true}>
                   {isDownloadingMetrics ? (
                     <>{t('Your selected metric files should be ready soon')}.</>
                   ) : (

@@ -51,6 +51,14 @@ export default createMuiTheme({
       // A700: '#616161',
     },
   },
+  typography: {
+    subtitle1: {
+      textTransform: 'uppercase',
+      fontWeight: 800,
+      fontSize: 14,
+      letterSpacing: 1.1,
+    },
+  },
   overrides: {
     MuiTab: {
       textColorPrimary: {

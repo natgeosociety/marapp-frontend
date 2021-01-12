@@ -30,9 +30,18 @@ import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
 
 import { Card, getGenericDate } from '@marapp/earth-shared';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 
 const { NEW_COLLECTION } = EarthRoutes;
+
+const useStyles = makeStyles((theme) => ({
+  cardEditButton: {
+    position: 'absolute',
+    right: theme.spacing(2),
+    top: theme.spacing(2),
+  },
+}));
 
 interface IProps {
   canCreate: boolean;
@@ -47,6 +56,7 @@ export const CollectionsCard = (props: IProps) => {
   const { t } = useTranslation();
   const { data } = featured;
   const hasCollections = !!data.length;
+  const classes = useStyles();
 
   if (hasCollections) {
     return (
@@ -56,12 +66,14 @@ export const CollectionsCard = (props: IProps) => {
             <Typography variant="subtitle1">{t('Collections')}</Typography>
           </Box>
           {canCreate && (
-            <Link
+            <Button
+              component={Link}
+              size="small"
               to={{ type: NEW_COLLECTION }}
-              className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
+              className={`${classes.cardEditButton} marapp-qa-actioneditinline`}
             >
               {t('create new')}
-            </Link>
+            </Button>
           )}
 
           <List component="div">
