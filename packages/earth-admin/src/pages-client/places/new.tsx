@@ -64,6 +64,7 @@ export function NewPlace(props: IProps) {
     setPanel(e);
     setGeojson(null);
     setJsonError(true);
+    setServerErrors([]);
   };
 
   async function onSubmit(values) {
