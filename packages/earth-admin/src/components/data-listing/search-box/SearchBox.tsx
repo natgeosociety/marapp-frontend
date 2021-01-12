@@ -44,7 +44,7 @@ const SearchBox = (props: SearchBoxProps) => {
 
   return (
     <div
-      className="marapp-qa-searchbox searchable-listing-container ng-margin-bottom ng-background-dkgray
+      className="marapp-qa-searchbox searchable-listing-container ng-background-dkgray
       ng-padding-medium-horizontal ng-padding-medium-bottom ng-shadow-large"
     >
       <div

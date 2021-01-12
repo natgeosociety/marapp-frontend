@@ -12,7 +12,7 @@
     "typecheck": "tsc --emitDeclarationOnly"
   },
   "dependencies": {
-    "@auth0/auth0-spa-js": "^1.12.1",
+    "@auth0/auth0-spa-js": "^1.13.6",
     "@fullpage/react-fullpage": "^0.1.14",
     "@marapp/earth-shared": "*",
     "@researchgate/react-intersection-list": "^3.0.10",

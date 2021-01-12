@@ -83,7 +83,7 @@ export function EmailInput(props: EmailInputProps) {
 
     creatableRef.onChange(
       [
-        ...creatableRef.state.value,
+        ...(props.value || []),
         {
           label: email,
           value: email,

@@ -99,6 +99,19 @@ input[type=file]::file-selector-button {
   background: $marapp-gray-9;
 }
 
+.ng-button-primary {
+  color: $marapp-gray-100;
+
+  &:active, &:focus, &.active, &:hover {
+    color: $marapp-gray-100;
+  }
+
+  &:disabled {
+    color: $marapp-gray-0;
+    opacity: .65;
+  }
+}
+
 .ng-button-secondary {
   background: $marapp-gray-8;
   border: 1px solid $marapp-gray-3;
