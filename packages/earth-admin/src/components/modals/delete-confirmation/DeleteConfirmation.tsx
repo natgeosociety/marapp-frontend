@@ -54,7 +54,7 @@ export const DeleteConfirmation = (props: IProps) => {
     error,
     onDelete = noop,
   } = props;
-  const { selectedGroup } = useAuth0();
+  const { selectedGroup, updateToken } = useAuth0();
   const { t } = useTranslation('admin');
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -88,6 +88,7 @@ export const DeleteConfirmation = (props: IProps) => {
         }
         case 'organizations': {
           await OrganizationsService.deleteOrganization(id);
+          await updateToken(); // refresh context state;
           break;
         }
       }
