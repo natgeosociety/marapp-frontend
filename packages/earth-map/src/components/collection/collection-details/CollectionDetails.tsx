@@ -37,6 +37,7 @@ import { CollectionDownloadMetrics } from '../collection-downloadmetrics';
 import { CollectionEditPlaces } from '../collection-editplaces';
 import { CollectionRename } from '../collection-rename';
 import './styles.scss';
+import { Box, Button, Chip, Grid, Paper, Typography } from '@material-ui/core';
 
 interface IProps {
   privateGroups: string[];
@@ -103,89 +104,103 @@ const CollectionDetails = (props: IProps) => {
       </Card>
 
       {hasLocations ? (
-        <>
-          <Card className="c-legend-item-group">
+        <Grid container={true} direction="column" spacing={1}>
+          <Grid item={true}>
+            <Paper>
+              <Box position="relative" p={2}>
+                {canEdit && (
+                  <button
+                    className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
+                    onClick={toggleEditPlaces}
+                  >
+                    {t('edit')}
+                  </button>
+                )}
+                <Typography variant="subtitle1">
+                  {t('Collection places')} ({locations.length})
+                </Typography>
+                <Grid container={true} spacing={1}>
+                  {locations
+                    .filter((x) => !!x)
+                    .map((location) => (
+                      <Grid item={true}>
+                        <Chip
+                          label={location.name}
+                          size="small"
+                          className="marapp-qa-locationpill"
+                        />
+                      </Grid>
+                    ))}
+                </Grid>
+              </Box>
+            </Paper>
+          </Grid>
+          <Grid item={true}>
+            <Paper>
+              <Box position="relative" p={2}>
+                <Typography variant="subtitle1">
+                  {t('Download metrics')}
+                  &nbsp;
+                  <i className="ng-icon-download-outline ng-vertical-align-middle" />
+                </Typography>
+                <Typography>
+                  {isDownloadingMetrics ? (
+                    <>{t('Your selected metric files should be ready soon')}.</>
+                  ) : (
+                    <>
+                      {t(
+                        'Individual metrics related to each of the places in your collection can be viewed once downloaded'
+                      )}
+                      .{t('Select single or multiple metric data files for download')}.
+                    </>
+                  )}
+                </Typography>
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsOnDownloadMetrics(true)}
+                  disabled={isDownloadingMetrics}
+                >
+                  {isDownloadingMetrics ? (
+                    <>
+                      <Spinner size="nano" position="relative" className="ng-display-inline" />
+                      {t('Downloading metrics')}
+                    </>
+                  ) : (
+                    <>{t('Download metric data files')}</>
+                  )}
+                </Button>
+                {downloadError && (
+                  <p className="ng-form-error-block ng-margin-top">{downloadError}</p>
+                )}
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+      ) : (
+        <Paper>
+          <Box position="relative" p={2}>
+            <Typography variant="subtitle1">
+              {t('Collection places')} {hasLocations && locations.length}
+            </Typography>
+            <Typography>
+              {canEdit
+                ? t(
+                    `You currently don’t have any places added to your collection. Add places to your collection to access data metrics and share your insights with your team`
+                  )
+                : t(`There are no places added to this collection`)}
+              .
+            </Typography>
             {canEdit && (
               <button
-                className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
+                type="submit"
+                className="marapp-qa-actionaddplaces ng-button ng-button-secondary ng-margin-right"
                 onClick={toggleEditPlaces}
               >
-                {t('edit')}
+                {t('Add places')}
               </button>
             )}
-            <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
-              {t('Collection places')} ({locations.length})
-            </h2>
-            <p>
-              {locations
-                .filter((x) => !!x)
-                .map((location) => (
-                  <Pill
-                    label={location.name}
-                    key={location.id}
-                    className="marapp-qa-locationpill ng-margin-small-right ng-margin-small-bottom"
-                  />
-                ))}
-            </p>
-          </Card>
-          <Card className="c-legend-item-group ng-margin-top">
-            <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
-              {t('Download metrics')}
-              &nbsp;
-              <i className="ng-icon-download-outline ng-vertical-align-middle" />
-            </h2>
-            <p>
-              {isDownloadingMetrics ? (
-                <>{t('Your selected metric files should be ready soon')}.</>
-              ) : (
-                <>
-                  {t(
-                    'Individual metrics related to each of the places in your collection can be viewed once downloaded'
-                  )}
-                  .{t('Select single or multiple metric data files for download')}.
-                </>
-              )}
-            </p>
-            <button
-              className="marapp-qa-actiondownloadmetrics ng-button ng-button-secondary"
-              onClick={() => setIsOnDownloadMetrics(true)}
-              disabled={isDownloadingMetrics}
-            >
-              {isDownloadingMetrics ? (
-                <>
-                  <Spinner size="nano" position="relative" className="ng-display-inline" />
-                  {t('Downloading metrics')}
-                </>
-              ) : (
-                <>{t('Download metric data files')}</>
-              )}
-            </button>
-            {downloadError && <p className="ng-form-error-block ng-margin-top">{downloadError}</p>}
-          </Card>
-        </>
-      ) : (
-        <Card className="c-legend-item-group">
-          <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
-            {t('Collection places')} {hasLocations && locations.length}
-          </h2>
-          <p>
-            {canEdit
-              ? t(
-                  `You currently don’t have any places added to your collection. Add places to your collection to access data metrics and share your insights with your team`
-                )
-              : t(`There are no places added to this collection`)}
-            .
-          </p>
-          {canEdit && (
-            <button
-              type="submit"
-              className="marapp-qa-actionaddplaces ng-button ng-button-secondary ng-margin-right"
-              onClick={toggleEditPlaces}
-            >
-              {t('Add places')}
-            </button>
-          )}
-        </Card>
+          </Box>
+        </Paper>
       )}
 
       {isRenaming && (

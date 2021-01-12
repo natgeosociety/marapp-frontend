@@ -64,6 +64,12 @@ export default createMuiTheme({
         backgroundColor: '#343a40',
       },
     },
+    MuiChip: {
+      root: {
+        backgroundColor: '#F8F9FA',
+        color: '#212529',
+      },
+    },
   },
   // @ts-ignore
   colors: {

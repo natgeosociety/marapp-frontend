@@ -48,6 +48,7 @@ const App = () => {
     return (
       // @ts-ignore
       <>
+        <CssBaseline />
         <ThemeProvider theme={theme}>
           <Provider store={store}>
             <Main />
