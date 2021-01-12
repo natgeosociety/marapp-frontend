@@ -38,7 +38,7 @@ const CollectionNew = (props: IProps) => {
   const canCreateCollection = !!privateGroups.length;
   const [saveError, setSaveError] = useState(null);
   const { handleSubmit, register, errors, formState } = useForm({ mode: 'onChange' });
-  const { touched, dirty, isValid, isSubmitting } = formState;
+  const { touched, isDirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   const onSubmit = async (values) => {
@@ -131,7 +131,7 @@ const CollectionNew = (props: IProps) => {
       <Card elevation="flush">
         {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
         <button
-          disabled={!isValid || !dirty || isSubmitting || !canCreateCollection}
+          disabled={!isValid || !isDirty || isSubmitting || !canCreateCollection}
           type="submit"
           className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
         >

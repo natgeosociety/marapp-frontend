@@ -45,7 +45,7 @@ export function CollectionRename(props: IProps) {
   const { register, errors, handleSubmit, formState, getValues } = useForm({
     mode: 'onChange',
   });
-  const { touched, dirty, isValid, isSubmitting } = formState;
+  const { touched, isDirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   return (
@@ -79,7 +79,7 @@ export function CollectionRename(props: IProps) {
           <div className="ng-flex">
             <button
               type="submit"
-              disabled={!dirty || !isValid || isSubmitting}
+              disabled={!isDirty || !isValid || isSubmitting}
               className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
             >
               {isSubmitting ? t('Renaming collection') : t('Rename Collection')}

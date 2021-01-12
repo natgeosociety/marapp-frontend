@@ -324,7 +324,7 @@ export function ProfileComponent(props: IProps) {
                         </div>
                       </>
                     ),
-                    validForm: isValid && formState.dirty,
+                    validForm: isValid && formState.isDirty,
                     onSubmit: onSubmitName,
                   })}
                 >

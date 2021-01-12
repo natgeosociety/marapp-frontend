@@ -50,7 +50,7 @@ export function ClipLayer(props: IProps) {
   const { register, handleSubmit, formState, control, watch, setValue } = useForm({
     mode: 'onChange',
   });
-  const { dirty, isValid, isSubmitting } = formState;
+  const { isDirty, isValid, isSubmitting } = formState;
   const selectedPrimaryLayer = watch('primaryLayer');
   const selectedChildLayer = watch('childLayer');
   const selectedExportType = watch('exportType');
@@ -170,7 +170,7 @@ export function ClipLayer(props: IProps) {
           <button
             type="submit"
             className="marapp-qa-actiondownload ng-button ng-button-primary ng-margin-right"
-            disabled={!isValidCustom || isSubmitting || !dirty}
+            disabled={!isValidCustom || isSubmitting || !isDirty}
           >
             {isSubmitting ? (
               <>

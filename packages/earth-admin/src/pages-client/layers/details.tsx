@@ -13,13 +13,14 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { ErrorMessage } from '@hookform/error-message';
 import Collapse from '@kunukn/react-collapse';
 import classnames from 'classnames';
 import { JSHINT } from 'jshint';
 import { noop } from 'lodash';
 import { merge } from 'lodash/fp';
 import React, { useEffect, useRef, useState } from 'react';
-import { Controller, ErrorMessage, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 import Select from 'react-select';
