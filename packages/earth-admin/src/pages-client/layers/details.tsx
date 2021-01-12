@@ -272,6 +272,7 @@ export function LayerDetail(props: any) {
                           defaultValue={layerCategory}
                           isSearchable={true}
                           isMulti={true}
+                          closeMenuOnSelect={false}
                           placeholder={t('Select layer category')}
                           styles={CUSTOM_STYLES}
                           error={renderErrorFor('category')}
@@ -537,7 +538,10 @@ export function LayerDetail(props: any) {
           />
           {writePermissions && (
             <div className="ng-text-right ng-margin-medium-top">
-              <button className="ng-button ng-button-secondary" onClick={handleDeleteToggle}>
+              <button
+                className="marapp-qa-actiondelete ng-button ng-button-secondary"
+                onClick={handleDeleteToggle}
+              >
                 {t('Delete layer')}
               </button>
             </div>

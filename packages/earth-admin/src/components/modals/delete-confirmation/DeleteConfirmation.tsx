@@ -19,10 +19,10 @@
 
 import { navigate } from 'gatsby';
 import { noop } from 'lodash';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Modal } from '@marapp/earth-shared';
+import { Modal, Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
 import DashboardsService from '@app/services/dashboards';
@@ -54,12 +54,15 @@ export const DeleteConfirmation = (props: IProps) => {
     error,
     onDelete = noop,
   } = props;
-  const { selectedGroup } = useAuth0();
+  const { selectedGroup, updateToken } = useAuth0();
   const { t } = useTranslation('admin');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   async function handleDelete(e) {
     e.preventDefault();
     e.stopPropagation();
+
+    setIsDeleting(true);
 
     try {
       switch (navigateRoute) {
@@ -85,6 +88,7 @@ export const DeleteConfirmation = (props: IProps) => {
         }
         case 'organizations': {
           await OrganizationsService.deleteOrganization(id);
+          await updateToken(); // refresh context state;
           break;
         }
       }
@@ -98,10 +102,16 @@ export const DeleteConfirmation = (props: IProps) => {
       error && error(err);
     }
 
+    setIsDeleting(false);
+
     toggleModal();
   }
 
   const handleModalToggle = (): void => {
+    if (isDeleting) {
+      return;
+    }
+
     toggleModal();
   };
 
@@ -111,7 +121,7 @@ export const DeleteConfirmation = (props: IProps) => {
       onRequestClose={handleModalToggle}
       className="marapp-qa-DeleteConfirmation ng-text-center"
     >
-      <h4 className="ng-text-display-s ng-margin-bottom">
+      <h4 className="ng-text-display-s ng-margin-bottom ng-text-truncate">
         {t('Delete resource', { value: name })}
       </h4>
       <p className="ng-space-wrap">{t('Delete confirmation', { value: t(type) })}</p>
@@ -121,14 +131,23 @@ export const DeleteConfirmation = (props: IProps) => {
           tabIndex={0}
           className="marapp-qa-actioncancel ng-button ng-button-secondary ng-margin-medium-right"
           onClick={handleModalToggle}
+          disabled={isDeleting}
         >
           {t('cancel')}
         </button>
         <button
           className="marapp-qa-actiondelete ng-button ng-button-primary"
           onClick={(e) => handleDelete(e)}
+          disabled={isDeleting}
         >
-          {t('delete')}
+          {isDeleting ? (
+            <>
+              <Spinner size="pico" position="relative" className="ng-display-inline" />
+              {t('deleting')}
+            </>
+          ) : (
+            <>{t('delete')}</>
+          )}
         </button>
       </div>{' '}
     </Modal>

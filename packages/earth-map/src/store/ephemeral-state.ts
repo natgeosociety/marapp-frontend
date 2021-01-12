@@ -18,22 +18,11 @@
 */
 
 import { setLastViewedPlace } from 'modules/global/actions';
-import { setLayersSearch } from 'modules/layers/actions';
 import { setMapStyle } from 'modules/map/actions';
-import { setPlacesSearch } from 'modules/places/actions';
 import { IPlace } from 'modules/places/model';
-import { setUserGroup } from 'modules/user/actions';
 import { Store } from 'redux';
 
 export interface IEphemeralState {
-  places?: {
-    search?: any;
-    filters?: any;
-  };
-  layers?: {
-    search?: any;
-    filters?: any;
-  };
   global?: {
     lastViewedPlace?: IPlace;
   };
@@ -47,37 +36,11 @@ export interface IEphemeralState {
  * Put state from ephemeralState back into the store at init time by dispatching actions
  */
 export default (store: Store, ephemeralState: IEphemeralState): void => {
-  /**
-   * Utility function to restore search state for either Places or Layers
-   */
-  const restoreSearchFor = (panel: string, setGenericSearch: (value: any) => any): void => {
-    const scopedSearch = ephemeralState[panel];
-    if (!scopedSearch) {
-      return;
-    }
-
-    const { search, filters } = scopedSearch;
-    const hasFilters = search.length || Object.keys(filters).length;
-
-    store.dispatch(
-      setGenericSearch({
-        ...scopedSearch,
-        ...(hasFilters && {
-          open: true,
-        }),
-      })
-    );
-  };
   // Put data from sessionStorage into redux store before triggering the sagas
   if (ephemeralState) {
-    restoreSearchFor('places', setPlacesSearch);
-    restoreSearchFor('layers', setLayersSearch);
-
     if (ephemeralState.global && ephemeralState.global.lastViewedPlace) {
       store.dispatch(setLastViewedPlace(ephemeralState.global.lastViewedPlace));
     }
-
-    ephemeralState.user && store.dispatch(setUserGroup(ephemeralState.user.group));
 
     ephemeralState.map && store.dispatch(setMapStyle(ephemeralState.map.mapStyle));
   }
