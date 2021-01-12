@@ -17,6 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import ListItem from 'components/list-item';
 import { ICollection } from 'modules/collections/model';
 import { EMainType, SubType } from 'modules/global/model';
@@ -26,6 +30,7 @@ import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
 
 import { Card, getGenericDate } from '@marapp/earth-shared';
+import { Button } from '@material-ui/core';
 
 const { NEW_COLLECTION } = EarthRoutes;
 
@@ -45,49 +50,62 @@ export const CollectionsCard = (props: IProps) => {
 
   if (hasCollections) {
     return (
-      <Card expanded={true} className="ng-margin-bottom ng-padding-medium-bottom">
-        <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-          {t('Collections')}
-        </h2>
-        {canCreate && (
-          <Link
-            to={{ type: NEW_COLLECTION }}
-            className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
-          >
-            {t('create new')}
-          </Link>
-        )}
-        {data.map((collection) => {
-          const { slug, name, id, organization, updatedAt } = collection;
+      <Box mb={2}>
+        <Paper className="marapp-qa-other" square={true}>
+          <Box p={2} pb={0}>
+            <Typography variant="subtitle1">{t('Collections')}</Typography>
+          </Box>
+          {canCreate && (
+            <Link
+              to={{ type: NEW_COLLECTION }}
+              className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
+            >
+              {t('create new')}
+            </Link>
+          )}
 
-          return (
-            <ListItem
-              title={name}
-              key={`${slug}-${organization}`}
-              linkTo={{ type: EMainType.COLLECTION, payload: { slug, id, organization } }}
-              organization={group.length > 1 && organization}
-              labels={[getGenericDate(updatedAt)]}
-            />
-          );
-        })}
-      </Card>
+          <List component="div">
+            {data.map((collection) => {
+              const { slug, name, id, organization, updatedAt } = collection;
+
+              return (
+                <ListItem
+                  title={name}
+                  key={`${slug}-${organization}`}
+                  linkTo={{ type: EMainType.COLLECTION, payload: { slug, id, organization } }}
+                  organization={group.length > 1 && organization}
+                  labels={[getGenericDate(updatedAt)]}
+                />
+              );
+            })}
+          </List>
+        </Paper>
+      </Box>
     );
   }
 
   return (
-    <Card className="ng-margin-bottom">
-      <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">{t('Collections')}</h2>
-      <p>
-        {t('You currently do not have any collections in your organizations')}.
-        {canCreate &&
-          t(`Create a collection and start sharing your insights with your organization members`)}
-        .
-      </p>
-      {canCreate && (
-        <Link to={{ type: NEW_COLLECTION }} className="ng-button ng-button-secondary">
-          {t('Create New Collection')}
-        </Link>
-      )}
-    </Card>
+    <Box mb={2}>
+      <Paper className="marapp-qa-other" square={true}>
+        <Box p={2} pb={0}>
+          <Typography variant="subtitle1">{t('Collections')}</Typography>
+        </Box>
+        <Box p={2} pt={0}>
+          <Typography gutterBottom={true}>
+            {t('You currently do not have any collections in your organizations')}.
+            {canCreate &&
+              t(
+                `Create a collection and start sharing your insights with your organization members`
+              )}
+            .
+          </Typography>
+          {canCreate && (
+            <Button variant="outlined" component={Link} to={{ type: NEW_COLLECTION }}>
+              {t('Create New Collection')}
+            </Button>
+          )}
+        </Box>
+      </Paper>
+    </Box>
   );
 };

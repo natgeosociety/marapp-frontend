@@ -18,11 +18,11 @@
 */
 
 import MuiListItem from '@material-ui/core/ListItem';
+import { makeStyles } from '@material-ui/core/styles';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles } from '@material-ui/core/styles';
+import Switch from '@material-ui/core/Switch';
 import classnames from 'classnames';
-import Toggle from 'components/toggle';
 import { noop } from 'lodash';
 import IconCircleSmall from 'mdi-material-ui/CircleSmall';
 import React from 'react';
@@ -30,11 +30,19 @@ import Link from 'redux-first-router-link';
 import { parseHintBold } from 'utils';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    '&:last-child': {
-      borderBottom: 'none',
-    },
+  root: (props: any) => {
+    const rootStyles: any = {
+      borderBottom: `1px solid ${theme.palette.divider}`,
+      '&:last-child': {
+        borderBottom: 'none',
+      },
+    };
+
+    if (props?.showToggle) {
+      rootStyles.paddingRight = theme.spacing(9);
+    }
+
+    return rootStyles;
   },
 }));
 
@@ -55,19 +63,18 @@ interface IProps {
 
 const ListItem = (props: IProps) => {
   const { title, hint, labels, organization, linkTo, key, onClick = noop, active } = props;
-  const classes = useStyles();
-
   const showToggle = typeof active !== 'undefined';
+  const classes = useStyles({ ...props, showToggle });
 
   const listItemProps: any = {
     key,
     onClick,
     className: classnames(classes.root, 'marapp-qa-listitem'),
     component: linkTo ? Link : 'div',
+    button: true,
   };
 
   if (linkTo) {
-    listItemProps.button = true;
     listItemProps.to = linkTo;
   }
 
@@ -92,8 +99,8 @@ const ListItem = (props: IProps) => {
       />
 
       {showToggle && (
-        <ListItemSecondaryAction>
-          <Toggle className="ng-margin-right" active={active} />
+        <ListItemSecondaryAction onClick={onClick}>
+          <Switch checked={active} />
         </ListItemSecondaryAction>
       )}
     </MuiListItem>
