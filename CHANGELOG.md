@@ -1,3 +1,24 @@
+## [1.16.3](https://github.com/natgeosociety/marapp-frontend/compare/v1.16.2...v1.16.3) (2021-01-12)
+
+
+### Bug Fixes
+
+* **admin:** dashboard widgets empty value [EP-3658] ([#410](https://github.com/natgeosociety/marapp-frontend/issues/410)) ([674b45d](https://github.com/natgeosociety/marapp-frontend/commit/674b45d589ddc8458c756aa44920b03131b54b68))
+* **admin:** email component reset state [EP-3299] ([#422](https://github.com/natgeosociety/marapp-frontend/issues/422)) ([0d3e5a4](https://github.com/natgeosociety/marapp-frontend/commit/0d3e5a424c91450ac6f51231257343d6d73b4bd7))
+* **admin:** filter collection on intersections [EP-3653] ([#407](https://github.com/natgeosociety/marapp-frontend/issues/407)) ([502c655](https://github.com/natgeosociety/marapp-frontend/commit/502c655d73e742b209c5441c121580a3963d69ef))
+* **admin:** loading indicator when performing delete [EP-2592] ([#412](https://github.com/natgeosociety/marapp-frontend/issues/412)) ([f19818f](https://github.com/natgeosociety/marapp-frontend/commit/f19818fd2d8182e170d8bb14bd1d2490bc9ce0ef))
+* **admin:** primary button font color [EP-3160] ([#423](https://github.com/natgeosociety/marapp-frontend/issues/423)) ([a739ef9](https://github.com/natgeosociety/marapp-frontend/commit/a739ef9e9a367a674805746838367140f20e1924))
+* **admin:** reset server error when switching geojson tabs [EP-3652] ([#429](https://github.com/natgeosociety/marapp-frontend/issues/429)) ([b30cf79](https://github.com/natgeosociety/marapp-frontend/commit/b30cf79055ab7a3d822c4a518a92da25ff1fb14c))
+* **admin:** update org-switcher context on editing org owners [EP-3671] ([ed32c14](https://github.com/natgeosociety/marapp-frontend/commit/ed32c142da3d67bca9259f8e23e08c861a31c495))
+* **admin:** update org-switcher context on org update [EP-3402] ([c47d889](https://github.com/natgeosociety/marapp-frontend/commit/c47d889f0b6854f4d90f3a401606841c91911d4e))
+* **admin:** widget layer dropdown & translation [EP-3654] ([#403](https://github.com/natgeosociety/marapp-frontend/issues/403)) ([234fa0b](https://github.com/natgeosociety/marapp-frontend/commit/234fa0beccad370838edcfefb2398cb9a28f86c6))
+* **map:** Fix app crash when deleting a selected org [EP-3333] ([6830a0c](https://github.com/natgeosociety/marapp-frontend/commit/6830a0cce4787a889f4eafc96c652b77389c71b8))
+* **map:** layers subheader [EP-3657] ([#408](https://github.com/natgeosociety/marapp-frontend/issues/408)) ([e0a114c](https://github.com/natgeosociety/marapp-frontend/commit/e0a114cf1f247dec45e1441b94141d91f10e9fd0))
+* **map:** left panel remove shadow [EP-3268] ([#427](https://github.com/natgeosociety/marapp-frontend/issues/427)) ([5415dc6](https://github.com/natgeosociety/marapp-frontend/commit/5415dc641c2941e8593c09d277342b3867ca5044))
+* **map:** remove last viewed place when unavailable [EP-2272] ([#426](https://github.com/natgeosociety/marapp-frontend/issues/426)) ([643cd55](https://github.com/natgeosociety/marapp-frontend/commit/643cd55ad14dc47eaeee460f2c284e0b199ddd94))
+* **map:** Removed places and layers from Session Storage [EP-3605] ([aef4002](https://github.com/natgeosociety/marapp-frontend/commit/aef400293dadb26dece267bd25390aee1dcfd61b))
+* Fix multiselect search [EP-3625] ([0b3c1db](https://github.com/natgeosociety/marapp-frontend/commit/0b3c1db909470e9b2de1a7f3361b90a2a8e889bc))
+
 ## [1.16.2](https://github.com/natgeosociety/marapp-frontend/compare/v1.16.1...v1.16.2) (2021-01-06)
 
 

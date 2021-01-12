@@ -1,6 +1,6 @@
 {
   "name": "marapp-fe",
-  "version": "1.16.2",
+  "version": "1.16.3",
   "private": true,
   "scripts": {
     "bootstrap": "lerna clean -y && lerna bootstrap",
