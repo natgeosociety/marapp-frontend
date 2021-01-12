@@ -42,8 +42,12 @@ interface IProps {
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    backgroundColor: theme.palette.grey['600'],
     '&$expanded': {
       margin: 0,
+    },
+    '&:before': {
+      display: 'none',
     },
   },
   expanded: {},

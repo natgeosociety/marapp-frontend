@@ -19,7 +19,7 @@
 import { useAuth0 } from 'auth/auth0';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
 import CollectionDetails from 'components/collection/collection-details';
 import CollectionNew from 'components/collection/collection-new';
 import CollectionsCard from 'components/collection/collections-card';
@@ -45,6 +45,12 @@ import { ErrorBoundary } from '@marapp/earth-shared';
 import './styles.scss';
 import { URL_PROPS } from './url';
 
+const useStyles = makeStyles((theme) => ({
+  tabs: {
+    backgroundColor: theme.palette.grey['600'],
+  },
+}));
+
 interface IProps {
   setSidebarPanel?: (payload: any) => void;
   panel?: EPanels;
@@ -62,6 +68,7 @@ const { EARTH, COLLECTION, LOCATION, NEW_COLLECTION } = EarthRoutes;
 const EarthPage = (props: IProps) => {
   const { setSidebarPanel, panel, router, lastViewedPlace, group, collection } = props;
   const { t } = useTranslation();
+  const classes = useStyles();
   const { groups, privateGroups, publicGroups } = useAuth0();
   const { type } = router;
   const selectedOpen = [LOCATION, COLLECTION, NEW_COLLECTION].includes(type);
@@ -80,12 +87,15 @@ const EarthPage = (props: IProps) => {
 
             <Header />
 
-            <Paper square={true} elevation={0}>
-              <Tabs value={panel} onChange={(_, newValue) => setSidebarPanel(newValue)}>
-                <Tab label={t('Places')} value="places" />
-                <Tab label={t('Layers')} value="layers" />
-              </Tabs>
-            </Paper>
+            <Tabs
+              className={classes.tabs}
+              textColor="primary"
+              value={panel}
+              onChange={(_, newValue) => setSidebarPanel(newValue)}
+            >
+              <Tab label={t('Places')} value="places" />
+              <Tab label={t('Layers')} value="layers" />
+            </Tabs>
 
             {panel === EPanels.PLACES && (
               <>
