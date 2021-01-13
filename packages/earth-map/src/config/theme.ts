@@ -22,13 +22,16 @@ import { createMuiTheme } from '@material-ui/core';
 export default createMuiTheme({
   palette: {
     type: 'dark',
+    primary: {
+      main: '#FFFFFF',
+    },
     secondary: {
       dark: '#006b70',
       main: '#0099A1',
       light: '#33adb3',
     },
     text: {
-      primary: 'rgb(255,255,255)',
+      primary: '#FFFFFF',
     },
     background: {
       default: '#212529',

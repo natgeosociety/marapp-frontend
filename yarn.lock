@@ -16664,6 +16664,13 @@ matchmediaquery@^0.3.0:
   dependencies:
     css-mediaquery "^0.1.2"
 
+material-ui-toggle-icon@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/material-ui-toggle-icon/-/material-ui-toggle-icon-1.1.1.tgz#97a66900f03b33860f83ddcd5eb1a7cdd618e200"
+  integrity sha512-0Qf6mop5BAL3LOr/w0oOnTyFvBd5M9DwSvUR+CONhwyZ6N8Z9+9oSOr/4tJx69dBv72eaiPQwztVMbv5X+z1BQ==
+  dependencies:
+    prop-types "^15.5.10"
+
 math-expression-evaluator@^1.2.14:
   version "1.2.22"
   resolved "https://registry.yarnpkg.com/math-expression-evaluator/-/math-expression-evaluator-1.2.22.tgz#c14dcb3d8b4d150e5dcea9c68c8dad80309b0d5e"

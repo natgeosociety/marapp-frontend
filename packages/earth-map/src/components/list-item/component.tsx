@@ -62,12 +62,11 @@ interface IProps {
 }
 
 const ListItem = (props: IProps) => {
-  const { title, hint, labels, organization, linkTo, key, onClick = noop, active } = props;
+  const { title, hint, labels, organization, linkTo, onClick = noop, active } = props;
   const showToggle = typeof active !== 'undefined';
   const classes = useStyles({ ...props, showToggle });
 
   const listItemProps: any = {
-    key,
     onClick,
     className: classnames(classes.root, 'marapp-qa-listitem'),
     component: linkTo ? Link : 'div',

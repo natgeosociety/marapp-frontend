@@ -17,8 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Checkbox from '@material-ui/core/Checkbox';
+import Divider from '@material-ui/core/Divider';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import { Auth0Context } from 'auth/auth0';
-import classNames from 'classnames';
 import { ADMIN_URL, APP_NAME } from 'config';
 import { remove } from 'lodash';
 import { EPanels } from 'modules/sidebar/model';
@@ -101,13 +106,13 @@ const Header = (props: IProps) => {
     resetMap();
   };
 
-  const onOrgChange = (e) => {
-    const exists = selectedGroups.includes(e.target.value);
+  const onOrgChange = (org) => {
+    const exists = selectedGroups.includes(org);
     let temp = [...selectedGroups];
 
     let newSelection;
     if (exists) {
-      remove(temp, (g) => g === e.target.value);
+      remove(temp, (g) => g === org);
       newSelection = temp;
 
       if (temp.length <= 0) {
@@ -115,7 +120,7 @@ const Header = (props: IProps) => {
         newSelection = [];
       }
     } else {
-      temp.push(e.target.value);
+      temp.push(org);
       newSelection = temp;
     }
 
@@ -146,40 +151,34 @@ const Header = (props: IProps) => {
       />
     </Link>
   );
+
   const orgCheckBoxes = (
-    <li className="marapp-qa-orglist ng-form ng-form-dark">
-      <div className="ng-padding-medium-horizontal ng-padding-top">
+    <div>
+      <List component="div" className="marapp-qa-orglist">
         {availableGroups.map((g, i) => (
-          <label
-            htmlFor={g.name}
-            className={classNames('ng-padding-bottom ng-flex', {
-              'ng-c-cursor-pointer': hasMultipleGroups,
-            })}
-            key={i}
-          >
+          <ListItem key={i} dense={true} button={true} onClick={() => onOrgChange(g.name)}>
             {hasMultipleGroups && (
-              <input
-                className="ng-checkbox-input ng-flex-item-none ng-margin-top-remove"
-                type="checkbox"
-                id={g.name}
-                value={g.name}
-                checked={!!selectedGroups.find((x) => x === g.name)}
-                name={g.name}
-                onChange={(e) => onOrgChange(e)}
-              />
+              <ListItemIcon>
+                <Checkbox checked={!!selectedGroups.find((x) => x === g.name)} />
+              </ListItemIcon>
             )}
-            <div>
-              {g.name}
-              <span className="ng-display-block ng-color-mdgray">
-                {t('Places')} ({g.locations})<strong className="ng-icon-bullet" />
-                {t('Layers')} ({g.layers})
-              </span>
-            </div>
-          </label>
+            <ListItemText
+              primary={g.name}
+              secondary={
+                <span>
+                  {t('Places')} ({g.locations})<strong className="ng-icon-bullet" />
+                  {t('Layers')} ({g.layers})
+                </span>
+              }
+            />
+          </ListItem>
         ))}
-      </div>
-    </li>
+      </List>
+      <Divider />
+    </div>
   );
+
+  const adminOrgs = Object.keys(roles).filter((group) => checkAdminRole(roles[group]));
 
   return (
     <AppContextSwitcher
@@ -190,16 +189,15 @@ const Header = (props: IProps) => {
       renderDropdown={isAuthenticated}
       onChange={(g) => window.location.assign(`${ADMIN_URL}${g}`)}
     >
-      <Option value="map-view">{t('Map View')}</Option>
+      <Option value="map-view" divider={true}>
+        {t('Map View')}
+      </Option>
       {orgCheckBoxes}
-      {Object.keys(roles).map(
-        (g) =>
-          checkAdminRole(roles[g]) && (
-            <Option value={g} key={g}>
-              {g} - ADMIN
-            </Option>
-          )
-      )}
+      {adminOrgs.map((group, index) => (
+        <Option value={group} key={group} divider={index < adminOrgs.length - 1}>
+          {group} - ADMIN
+        </Option>
+      ))}
     </AppContextSwitcher>
   );
 };
