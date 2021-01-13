@@ -67,6 +67,7 @@ export const CollectionsCard = (props: IProps) => {
           </Box>
           {canCreate && (
             <Button
+              variant="outlined"
               component={Link}
               size="small"
               to={{ type: NEW_COLLECTION }}

@@ -81,7 +81,9 @@ const CollectionNew = (props: IProps) => {
   return (
     <form className="marapp-qa-collection-new" onSubmit={handleSubmit(onSubmit)}>
       <Card elevation="high" className="ng-margin-bottom">
-        <h3 className="ng-text-edit-s ng-margin-remove">{t('Create a Collection')}</h3>
+        <Typography variant="h5" component="h2" color="textPrimary">
+          {t('Create a Collection')}
+        </Typography>
       </Card>
 
       <Paper>
@@ -103,7 +105,9 @@ const CollectionNew = (props: IProps) => {
             </Grid>
 
             <Grid item={true}>
-              <Typography gutterBottom={true}>{t('Select an Organization')}</Typography>
+              <Typography variant="subtitle1" gutterBottom={true}>
+                {t('Select an Organization')}
+              </Typography>
               <Typography>
                 {canCreateCollection
                   ? t(

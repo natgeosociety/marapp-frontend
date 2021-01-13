@@ -33,6 +33,7 @@ import TextField from '@material-ui/core/TextField';
 import { CollectionConflict } from '../collection-conflict';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 interface IProps {
   collection: ICollection;
@@ -56,7 +57,9 @@ export function CollectionRename(props: IProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-rename">
       <Card elevation="high" className="ng-margin-bottom header-card">
-        <h3 className="ng-text-edit-s ng-margin-remove">{t('Rename Collection')}</h3>
+        <Typography variant="h5" component="h2" color="textPrimary">
+          {t('Rename Collection')}
+        </Typography>
       </Card>
 
       <div className="scroll-container">
