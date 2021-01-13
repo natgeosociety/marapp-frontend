@@ -18,6 +18,7 @@
 */
 
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
 
 import './styles.scss';
 
@@ -39,12 +40,15 @@ export const TitleHero = ({
   className = ' ',
 }: IProps) => (
   <div className={`marapp-qa-titlehero title-hero ${className}`}>
-    <h3 className="ng-text-display-s ng-margin-vertical">
-      {subtitle} | <span className="ng-text-weight-regular">{extra}</span>
-    </h3>
-    <h2 className="ng-text-edit-m ng-body-color ng-margin-remove ng-width-3-4 ng-text-break">
+    <Typography variant="subtitle1" color="textPrimary" gutterBottom={true}>
+      {subtitle} |{' '}
+      <Typography component="span" variant="subtitle1" color="textSecondary">
+        {extra}
+      </Typography>
+    </Typography>
+    <Typography variant="h5" component="h2" color="textPrimary" noWrap={true}>
       {title}
-    </h2>
+    </Typography>
     {!!actions && <div className="title-hero-actions">{actions}</div>}
     {!!finePrint && (
       <div className="title-hero-fineprint ng-text-small ng-width-1-4">{finePrint}</div>

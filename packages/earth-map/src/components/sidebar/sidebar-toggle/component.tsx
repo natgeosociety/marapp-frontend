@@ -19,6 +19,9 @@
 
 import classNames from 'classnames';
 import React from 'react';
+import ToggleIcon from 'material-ui-toggle-icon';
+import IconLeft from 'mdi-material-ui/ChevronLeft';
+import IconRight from 'mdi-material-ui/ChevronRight';
 
 import './styles.scss';
 
@@ -33,12 +36,10 @@ const SidebarToggle = (props: ISidebarToggle) => {
   return (
     <div className="marapp-qa-sidebarclose c-sidebar-close">
       <button type="button" onClick={() => setSidebarOpen(!open)} className="sidebar--btn">
-        <i
-          className={classNames({
-            'ng-body-color ng-text-bold ng-icon-small': true,
-            'ng-icon-directionleft': open,
-            'ng-icon-directionright': !open,
-          })}
+        <ToggleIcon
+          on={open}
+          onIcon={<IconLeft color="primary" />}
+          offIcon={<IconRight color="primary" />}
         />
       </button>
     </div>

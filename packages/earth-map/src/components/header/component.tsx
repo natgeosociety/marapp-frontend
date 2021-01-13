@@ -189,7 +189,7 @@ const Header = (props: IProps) => {
       renderDropdown={isAuthenticated}
       onChange={(g) => window.location.assign(`${ADMIN_URL}${g}`)}
     >
-      <Option value="map-view" divider={true}>
+      <Option value="map-view" divider={true} disabled={true}>
         {t('Map View')}
       </Option>
       {orgCheckBoxes}
