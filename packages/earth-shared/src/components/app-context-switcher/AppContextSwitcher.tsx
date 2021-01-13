@@ -103,6 +103,7 @@ const AppContextSwitcher = (props: IProps) => {
                 anchorEl={anchorEl}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                marginThreshold={48} // hack to push the menu below the trigger button
                 getContentAnchorEl={null}
                 onClose={closeDropdown}
                 className="marapp-qa-dropdown"

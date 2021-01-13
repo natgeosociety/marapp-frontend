@@ -82,6 +82,7 @@ const FilterBy = (props: IProps) => {
 
   return (
     <Accordion
+      style={{ marginTop: '-16px' }}
       classes={{
         root: classes.root,
         expanded: classes.expanded,
