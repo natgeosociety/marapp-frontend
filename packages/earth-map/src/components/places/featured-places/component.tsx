@@ -22,6 +22,7 @@ import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ListItem from 'components/list-item';
+import MenuItemSkeleton from 'components/MenuItemSkeleton';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -38,6 +39,26 @@ interface IFeaturedPlaces {
 const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
   const { featured, group } = props;
   const { t } = useTranslation();
+
+  if (!featured.data) {
+    return (
+      <Box mb={1} position="relative">
+        <Paper className="marapp-qa-other" square={true}>
+          <Box p={2} pb={0}>
+            <Typography variant="subtitle1">{t('Collections')}</Typography>
+          </Box>
+
+          <List>
+            {Array(5)
+              .fill(null)
+              .map(() => (
+                <MenuItemSkeleton />
+              ))}
+          </List>
+        </Paper>
+      </Box>
+    );
+  }
 
   return (
     <Paper className="marapp-qa-featuredplaces" square={true}>

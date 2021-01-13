@@ -22,6 +22,7 @@ import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ListItem from 'components/list-item';
+import MenuItemSkeleton from 'components/MenuItemSkeleton';
 import { ICollection } from 'modules/collections/model';
 import { EMainType, SubType } from 'modules/global/model';
 import { EarthRoutes } from 'modules/router/model';
@@ -55,8 +56,28 @@ export const CollectionsCard = (props: IProps) => {
   const { canCreate, featured, group } = props;
   const { t } = useTranslation();
   const { data } = featured;
-  const hasCollections = !!data.length;
+  const hasCollections = !!data?.length;
   const classes = useStyles();
+
+  if (!data) {
+    return (
+      <Box mb={1} position="relative">
+        <Paper className="marapp-qa-other" square={true}>
+          <Box p={2} pb={0}>
+            <Typography variant="subtitle1">{t('Collections')}</Typography>
+          </Box>
+
+          <List>
+            {Array(3)
+              .fill(null)
+              .map(() => (
+                <MenuItemSkeleton />
+              ))}
+          </List>
+        </Paper>
+      </Box>
+    );
+  }
 
   if (hasCollections) {
     return (

@@ -17,6 +17,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import type from '@material-ui/lab/themeAugmentation';
 import { createMuiTheme } from '@material-ui/core';
 
 export default createMuiTheme({
