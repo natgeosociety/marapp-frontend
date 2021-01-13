@@ -17,7 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import classNames from 'classnames';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
+import IconDownload from 'mdi-material-ui/Download';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -32,7 +36,7 @@ interface IMetric {
 const WidgetDownload = (props: IMetric) => {
   const { t } = useTranslation();
   const [showDropdown, setShowDropdown] = useState(false);
-
+  const popupState = usePopupState({ variant: 'popover', popupId: 'demoMenu' });
   const {
     data: { metric, slug },
   } = props;
@@ -42,47 +46,39 @@ const WidgetDownload = (props: IMetric) => {
   const blobUrl = downloadJSONFile(metric);
   const csvBlobUrl = downloadCSVFile(metric);
 
-  return (
-    <div className="ng-position-relative marapp-qa-downloaddropdown" ref={closeOnClickOutside}>
-      <i
-        className={classNames(
-          'ng-c-cursor-pointer ng-toolbar-button ng-icon-download-outline marapp-qa-actiondownload',
-          {
-            'ng-toolbar-button-open': showDropdown,
-          }
-        )}
-        onClick={(e) => setShowDropdown(!showDropdown)}
-      />
+  if (!metric) {
+    return null;
+  }
 
-      {metric && (
-        <div
-          className={classNames('ng-ep-download-dropdown', { 'ng-display-block': showDropdown })}
+  return (
+    <div className="marapp-qa-downloaddropdown" ref={closeOnClickOutside}>
+      <IconButton className="marapp-qa-actiondownload" {...bindTrigger(popupState)}>
+        <IconDownload fontSize="small" />
+      </IconButton>
+
+      <Menu className="marapp-qa-dropdown" {...bindMenu(popupState)}>
+        <MenuItem disabled={true}>{t('Download metric as a')}:</MenuItem>
+
+        <MenuItem
+          component="a"
+          href={csvBlobUrl}
+          download={`${slug}.csv`}
+          className="marapp-qa-actioncsv"
+          onClick={popupState.close}
         >
-          <p className="ng-text-display-s ng-padding-medium-horizontal ng-padding-vertical ng-margin-remove">
-            {t('Download metric as a')}:
-          </p>
-          <ul className="marapp-qa-dropdown">
-            <li>
-              <a
-                href={csvBlobUrl}
-                download={`${slug}.csv`}
-                className="ng-border-remove ng-display-block marapp-qa-actioncsv"
-              >
-                CSV
-              </a>
-            </li>
-            <li>
-              <a
-                href={blobUrl}
-                download={`${slug}.json`}
-                className="ng-border-remove ng-display-block marapp-qa-actionjson"
-              >
-                JSON
-              </a>
-            </li>
-          </ul>
-        </div>
-      )}
+          CSV
+        </MenuItem>
+
+        <MenuItem
+          component="a"
+          href={blobUrl}
+          download={`${slug}.json`}
+          className="marapp-qa-actionjson"
+          onClick={popupState.close}
+        >
+          JSON
+        </MenuItem>
+      </Menu>
     </div>
   );
 };

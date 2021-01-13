@@ -31,8 +31,7 @@ import IconClose from 'mdi-material-ui/Close';
 const useStyles = makeStyles((theme) => {
   return {
     root: {
-      // @ts-ignore
-      backgroundColor: theme.colors.gray7,
+      backgroundColor: theme.palette.grey['600'],
     },
   };
 });

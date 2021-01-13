@@ -45,8 +45,7 @@ interface IProps {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // @ts-ignore
-    backgroundColor: theme.colors.gray7,
+    backgroundColor: theme.palette.grey['600'],
   },
   menuRoot: {
     paddingLeft: '0px !important',
@@ -75,7 +74,7 @@ const AppContextSwitcher = (props: IProps) => {
   const isOpen = !!anchorEl;
 
   return (
-    <Box className={classes.root} p={1} pb={0}>
+    <Box className={classes.root} p={1} pl={2} pb={0}>
       <Grid
         container={true}
         className="marapp-qa-context-switcher"
@@ -102,7 +101,8 @@ const AppContextSwitcher = (props: IProps) => {
               <Menu
                 open={isOpen}
                 anchorEl={anchorEl}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 getContentAnchorEl={null}
                 onClose={closeDropdown}
                 className="marapp-qa-dropdown"

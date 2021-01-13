@@ -93,8 +93,4 @@ export default createMuiTheme({
       },
     },
   },
-  // @ts-ignore
-  colors: {
-    gray7: '#495057',
-  },
 });

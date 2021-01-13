@@ -16,9 +16,19 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
-import ModalComponent from 'components/modal';
+import IconDown from 'mdi-material-ui/ChevronDown';
 import { IWidgetConfig } from 'modules/widget/model';
 import React from 'react';
 import isEqual from 'react-fast-compare';
@@ -75,6 +85,7 @@ interface IWidgetState {
   activeInfo?: boolean;
   activeDownload?: boolean;
   activeShare?: boolean;
+  expanded?: boolean;
 
   // DATA
   data?: any;
@@ -117,6 +128,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
       activeInfo: false,
       activeDownload: false,
       activeShare: false,
+      expanded: true,
 
       // DATA
       data: {
@@ -167,6 +179,11 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
       activeDownload: false,
       activeShare: !activeShare,
     });
+  };
+
+  public toggleExpanded = () => {
+    const { expanded } = this.state;
+    this.setState({ expanded: !expanded });
   };
 
   public fetchWidget = () => {
@@ -241,6 +258,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
       activeInfo,
       activeShare,
       data,
+      expanded,
     } = this.state;
 
     const classNames = classnames('marapp-qa-widget c-widget ng-ep-border-bottom', {
@@ -255,81 +273,93 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
     }
 
     return (
-      <div id={`widget-${id}`} className={classNames}>
-        {/* Spinner */}
-        {loading && <Spinner size="medium" />}
-
-        <div className="widget--container ng-padding-large-vertical ng-padding-medium-horizontal">
-          {/* HEADER */}
-          {header && (
-            <header className="ng-flex ng-flex-middle ng-flex-space-between ng-padding-medium-bottom">
-              <div className="widget--header-title">
-                <h4 className="ng-text-display-s ng-body-color ng-margin-remove">
+      <>
+        <Accordion
+          id={`widget-${id}`}
+          className={classNames}
+          defaultExpanded={true}
+          expanded={expanded}
+        >
+          <AccordionSummary expandIcon={<IconDown onClick={this.toggleExpanded} />}>
+            <Grid alignItems="center" container={true}>
+              <Grid item={true} xs={true}>
+                <Typography variant="subtitle1">
                   {showOrgLabel && `${organization} -`} {name}
-                </h4>
-
-                {subtitle && (
-                  <h4 className="widget--subtitle">
-                    <em>{subtitle}</em>
-                  </h4>
-                )}
-              </div>
+                </Typography>
+              </Grid>
 
               {toolbar && (
-                <Toolbar
-                  className={className}
-                  activeInfo={activeInfo}
-                  activeDownload={false}
-                  activeShare={activeShare}
-                  onInfo={this.onInfo}
-                  data={metric}
-                  onDownload={this.onDownload}
-                  onShare={this.onShare}
+                <Grid xs={false}>
+                  <Toolbar
+                    className={className}
+                    activeInfo={activeInfo}
+                    activeDownload={false}
+                    activeShare={activeShare}
+                    onInfo={this.onInfo}
+                    data={metric}
+                    onDownload={this.onDownload}
+                    onShare={this.onShare}
+                  />
+                </Grid>
+              )}
+
+              <Divider flexItem={true} orientation="vertical" />
+            </Grid>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div>
+              {subtitle && (
+                <h4 className="widget--subtitle">
+                  <em>{subtitle}</em>
+                </h4>
+              )}
+
+              {error && (
+                <div className="marapp-qa-widget-config-error ng-form-error-block">{t(error)}</div>
+              )}
+
+              {/* CONTENT || INFO */}
+
+              <div className="widget--content ng-margin-large-bottom translate-content">
+                {children({
+                  ...this.props,
+                  ...data,
+                  loading,
+                  loaded,
+                  error,
+                  params,
+                  onChangeParams: this.onChangeParams,
+                })}
+              </div>
+
+              {/* FOOTER */}
+              {!!layers?.length && footer && (
+                <Footer
+                  collapsed={collapsed}
+                  active={active}
+                  color={color}
+                  onCollapse={onCollapse}
+                  onToggleLayer={onToggleLayer}
                 />
               )}
-            </header>
-          )}
+            </div>
+          </AccordionDetails>
+        </Accordion>
 
-          {error && (
-            <div className="marapp-qa-widget-config-error ng-form-error-block">{t(error)}</div>
-          )}
+        <Dialog open={!!activeInfo} onClose={() => this.setState({ activeInfo: !activeInfo })}>
+          <DialogTitle>{name}</DialogTitle>
 
-          {/* CONTENT || INFO */}
-
-          <div className="widget--content ng-margin-large-bottom translate-content">
-            {children({
-              ...this.props,
-              ...data,
-              loading,
-              loaded,
-              error,
-              params,
-              onChangeParams: this.onChangeParams,
-            })}
-          </div>
-
-          {/* FOOTER */}
-          {!!layers?.length && footer && (
-            <Footer
-              collapsed={collapsed}
-              active={active}
-              color={color}
-              onCollapse={onCollapse}
-              onToggleLayer={onToggleLayer}
-            />
-          )}
-        </div>
-
-        <ModalComponent
-          isOpen={activeInfo}
-          onRequestClose={() => this.setState({ activeInfo: !activeInfo })}
-        >
-          <h3 className="ng-text-display-m ng-body-color">{name}</h3>
           {widgetDescription && (
-            <Html html={widgetDescription} className="widget--info translate-content" />
+            <DialogContent>
+              <Html html={widgetDescription} className="widget--info translate-content" />
+            </DialogContent>
           )}
-        </ModalComponent>
-      </div>
+
+          <DialogActions>
+            <Button onClick={() => this.setState({ activeInfo: !activeInfo })}>{t('Close')}</Button>
+          </DialogActions>
+        </Dialog>
+      </>
     );
   }
 }

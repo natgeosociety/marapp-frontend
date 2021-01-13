@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 import { useAuth0 } from 'auth/auth0';
+import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { makeStyles } from '@material-ui/core/styles';
@@ -45,11 +46,24 @@ import { ErrorBoundary } from '@marapp/earth-shared';
 import './styles.scss';
 import { URL_PROPS } from './url';
 
-const useStyles = makeStyles((theme) => ({
-  tabs: {
-    backgroundColor: theme.palette.grey['600'],
-  },
-}));
+const useStyles = makeStyles((theme) => {
+  const minTabHeight = theme.spacing(4.5);
+
+  return {
+    tabContainer: {
+      backgroundColor: theme.palette.grey['600'],
+    },
+    tabs: {
+      minHeight: minTabHeight,
+      '& button': {
+        minWidth: 0,
+        paddingLeft: theme.spacing(2.5),
+        paddingRight: theme.spacing(2.5),
+        minHeight: minTabHeight,
+      },
+    },
+  };
+});
 
 interface IProps {
   setSidebarPanel?: (payload: any) => void;
@@ -87,15 +101,17 @@ const EarthPage = (props: IProps) => {
 
             <Header />
 
-            <Tabs
-              className={classes.tabs}
-              textColor="primary"
-              value={panel}
-              onChange={(_, newValue) => setSidebarPanel(newValue)}
-            >
-              <Tab label={t('Places')} value="places" />
-              <Tab label={t('Layers')} value="layers" />
-            </Tabs>
+            <Box px={2} className={classes.tabContainer}>
+              <Tabs
+                className={classes.tabs}
+                textColor="primary"
+                value={panel}
+                onChange={(_, newValue) => setSidebarPanel(newValue)}
+              >
+                <Tab label={t('Places')} value="places" />
+                <Tab label={t('Layers')} value="layers" />
+              </Tabs>
+            </Box>
 
             {panel === EPanels.PLACES && (
               <>

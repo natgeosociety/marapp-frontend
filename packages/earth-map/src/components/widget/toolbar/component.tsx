@@ -17,6 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
+import IconInfo from 'mdi-material-ui/InformationOutline';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
@@ -52,21 +55,18 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
     });
 
     return (
-      <div
-        className={`marapp-qa-widgettoolbar c-widget-toolbar ng-flex
-         ng-flex-middle ng-margin-left ${classNames}`}
+      <Box
+        ml={1}
+        display="flex"
+        alignItems="center"
+        flexDirection="row"
+        className={`marapp-qa-widgettoolbar  ${classNames}`}
       >
         {!isEmpty(data) && <WidgetDownload data={data} />}
-        <button
-          className={classnames('ng-toolbar-button', {
-            '-active': !!activeInfo,
-          })}
-          type="button"
-          onClick={onInfo}
-        >
-          <i className="ng-icon-info-circle" />
-        </button>
-      </div>
+        <IconButton onClick={onInfo}>
+          <IconInfo fontSize="small" />
+        </IconButton>
+      </Box>
     );
   }
 }
