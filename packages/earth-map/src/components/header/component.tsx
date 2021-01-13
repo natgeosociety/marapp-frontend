@@ -174,7 +174,7 @@ const Header = (props: IProps) => {
     <div>
       <List
         className="marapp-qa-orglist"
-        subheader={<ListSubheader>{t('Map View')}</ListSubheader>}
+        subheader={<ListSubheader>{t('Organizations')}</ListSubheader>}
       >
         {availableGroups.map((g, i) => (
           <ListItem
@@ -206,7 +206,7 @@ const Header = (props: IProps) => {
               }
             />
             <ListItemSecondaryAction>
-              <Button variant="outlined" size="small">
+              <Button component="a" href={`${ADMIN_URL}${g.name}`} variant="outlined" size="small">
                 Admin
               </Button>
             </ListItemSecondaryAction>
