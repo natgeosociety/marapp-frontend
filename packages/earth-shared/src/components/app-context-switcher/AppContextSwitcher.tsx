@@ -43,14 +43,19 @@ interface IProps {
   onChange?: () => {};
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.grey['600'],
-  },
-  menuRoot: {
-    paddingLeft: '0px !important',
-  },
-}));
+const useStyles = makeStyles((theme) => {
+  return {
+    root: {
+      backgroundColor: theme.palette.grey['600'],
+    },
+    menuRoot: {
+      paddingLeft: '0px !important',
+    },
+    menuPopOver: {
+      background: 'rgba(0,0,0,0.5)',
+    },
+  };
+});
 
 const AppContextSwitcher = (props: IProps) => {
   const {
@@ -107,6 +112,9 @@ const AppContextSwitcher = (props: IProps) => {
                 getContentAnchorEl={null}
                 onClose={closeDropdown}
                 className="marapp-qa-dropdown"
+                PopoverClasses={{
+                  root: classes.menuPopOver,
+                }}
                 classes={{
                   list: classes.menuRoot,
                 }}

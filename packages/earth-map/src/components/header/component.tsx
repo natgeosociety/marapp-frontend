@@ -19,7 +19,9 @@
 
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -40,6 +42,9 @@ import { AppContextSwitcher, checkAdminRole } from '@marapp/earth-shared';
 const { Option } = AppContextSwitcher;
 
 const useStyles = makeStyles((theme) => ({
+  organisationListItem: {
+    paddingRight: 100,
+  },
   organisationSelectionIconContainer: {
     minWidth: theme.spacing(5),
   },
@@ -174,7 +179,15 @@ const Header = (props: IProps) => {
         subheader={<ListSubheader>{t('Map View')}</ListSubheader>}
       >
         {availableGroups.map((g, i) => (
-          <ListItem key={i} dense={true} button={true} onClick={() => onOrgChange(g.name)}>
+          <ListItem
+            key={i}
+            dense={true}
+            button={true}
+            onClick={() => onOrgChange(g.name)}
+            classes={{
+              root: classes.organisationListItem,
+            }}
+          >
             {hasMultipleGroups && (
               <ListItemIcon className={classes.organisationSelectionIconContainer}>
                 <Checkbox
@@ -194,6 +207,11 @@ const Header = (props: IProps) => {
                 </span>
               }
             />
+            <ListItemSecondaryAction>
+              <Button variant="outlined" size="small">
+                Admin
+              </Button>
+            </ListItemSecondaryAction>
           </ListItem>
         ))}
       </List>
@@ -219,7 +237,7 @@ const Header = (props: IProps) => {
       ) : null}
 
       {orgCheckBoxes}
-      {adminOrgs?.length ? (
+      {/* {adminOrgs?.length ? (
         <List subheader={<ListSubheader>{t('Administration')}</ListSubheader>}>
           {adminOrgs.map((group, index) => (
             <Option value={group} key={group} divider={index === adminOrgs.length - 1}>
@@ -227,7 +245,7 @@ const Header = (props: IProps) => {
             </Option>
           ))}
         </List>
-      ) : null}
+      ) : null} */}
 
       <Option value="map-view" divider={true} component="a" href={COMPANY_URL} title={APP_NAME}>
         <strong>{t('About')}</strong>
