@@ -53,7 +53,7 @@ export function CollectionDownloadMetrics(props: IProps) {
   const [metricSlugs, setMetricSlugs] = useState([]);
   const [isLoadingMetricSlugs, setIsLoadingMetricSlugs] = useState(false);
   const { register, handleSubmit, formState, control, watch } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
   const { isDirty, isValid, isSubmitting } = formState;
   const metricsWatcher = watch('metrics');

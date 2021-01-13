@@ -108,7 +108,7 @@ export function WidgetsDetail(props: WidgetProps) {
   }, [widget]);
 
   const { getValues, register, formState, errors, control } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
   const { touched, isDirty, isValid } = formState;

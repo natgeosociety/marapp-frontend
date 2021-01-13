@@ -96,7 +96,7 @@ export function DashboardDetail(props: IProps) {
   }, [data]);
 
   const { getValues, register, formState, errors, control } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
   const { touched, isDirty, isValid } = formState;

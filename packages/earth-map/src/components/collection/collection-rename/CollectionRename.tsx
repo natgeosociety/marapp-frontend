@@ -43,7 +43,7 @@ export function CollectionRename(props: IProps) {
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
   const { register, errors, handleSubmit, formState, getValues } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
   const { touched, isDirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);

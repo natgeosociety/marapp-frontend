@@ -47,10 +47,9 @@ export function NewPlace(props: IProps) {
   const { onDataChange = noop, dynamicOptions } = props;
   const { type: placeTypeOptions = [] } = dynamicOptions;
   const { register, handleSubmit, watch, formState, errors, setValue, reset, control } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
   const { touched, isDirty, isValid } = formState;
-  console.log('@@@@@@', isDirty, isValid);
   const watchName = watch('name');
   const [isLoading, setIsLoading] = useState(false);
   const [geojsonValue, setGeojson] = useState(null);

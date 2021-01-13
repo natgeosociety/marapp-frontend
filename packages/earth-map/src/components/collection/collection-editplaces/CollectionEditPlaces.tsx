@@ -46,7 +46,7 @@ export function CollectionEditPlaces(props: IProps) {
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
   const { control, handleSubmit, formState, getValues } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
   const { isValid, isSubmitting, isDirty } = formState;
 

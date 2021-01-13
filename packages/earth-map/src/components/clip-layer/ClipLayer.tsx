@@ -48,7 +48,7 @@ export function ClipLayer(props: IProps) {
   const [childLayers, setChildLayers] = useState([]);
   const { t } = useTranslation();
   const { register, handleSubmit, formState, control, watch, setValue } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
   const { isDirty, isValid, isSubmitting } = formState;
   const selectedPrimaryLayer = watch('primaryLayer');

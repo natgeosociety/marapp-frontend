@@ -37,7 +37,7 @@ const CollectionNew = (props: IProps) => {
   const { t } = useTranslation();
   const canCreateCollection = !!privateGroups.length;
   const [saveError, setSaveError] = useState(null);
-  const { handleSubmit, register, errors, formState } = useForm({ mode: 'onChange' });
+  const { handleSubmit, register, errors, formState } = useForm({ mode: 'all' });
   const { touched, isDirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 

@@ -126,7 +126,7 @@ export function PlaceDetail(props: IProps) {
   } = place;
 
   const { getValues, register, formState, errors } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
   const { touched, isDirty, isValid } = formState;

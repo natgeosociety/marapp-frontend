@@ -68,7 +68,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     watch,
     reset,
   } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
   const { touched } = formState;

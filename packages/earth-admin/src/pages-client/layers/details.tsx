@@ -124,7 +124,7 @@ export function LayerDetail(props: any) {
   }, [layer]);
 
   const { getValues, register, formState, errors, control } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
   const { touched, isDirty, isValid } = formState;

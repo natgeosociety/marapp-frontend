@@ -59,7 +59,7 @@ export function NewLayer(props: IProps) {
   const { selectedGroup } = useAuth0();
   const { t } = useTranslation('admin');
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
   const {
     category: layerCategoryOptions = [],

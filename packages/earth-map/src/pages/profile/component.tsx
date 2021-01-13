@@ -38,7 +38,7 @@ export function ProfileComponent(props: IProps) {
   const { t } = useTranslation();
 
   const { getValues, register, formState, errors: formErrors } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
   const { userData, logout, login, isAuthenticated, updateToken } = useContext(Auth0Context);
