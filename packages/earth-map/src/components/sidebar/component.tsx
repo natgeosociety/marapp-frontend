@@ -98,7 +98,7 @@ class Sidebar extends React.Component<ISidebarPanel> {
               ...props,
             }}
           >
-            <CompanyRedirect />
+            {/*<CompanyRedirect />*/}
             <SidebarToggle open={open} setSidebarOpen={setSidebarOpen} />
             {children}
           </animated.div>

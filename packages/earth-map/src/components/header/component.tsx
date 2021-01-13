@@ -23,9 +23,10 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import { makeStyles } from '@material-ui/core/styles';
 import { Auth0Context } from 'auth/auth0';
-import { ADMIN_URL, APP_NAME } from 'config';
+import { ADMIN_URL, APP_NAME, COMPANY_URL } from 'config';
 import { remove } from 'lodash';
 import { EPanels } from 'modules/sidebar/model';
 import React, { useContext, useEffect, useState } from 'react';
@@ -166,7 +167,10 @@ const Header = (props: IProps) => {
 
   const orgCheckBoxes = (
     <div>
-      <List component="div" className="marapp-qa-orglist">
+      <List
+        className="marapp-qa-orglist"
+        subheader={<ListSubheader>{t('Map View')}</ListSubheader>}
+      >
         {availableGroups.map((g, i) => (
           <ListItem key={i} dense={true} button={true} onClick={() => onOrgChange(g.name)}>
             {hasMultipleGroups && (
@@ -206,15 +210,30 @@ const Header = (props: IProps) => {
       renderDropdown={isAuthenticated}
       onChange={(g) => window.location.assign(`${ADMIN_URL}${g}`)}
     >
-      <Option value="map-view" divider={true} disabled={true}>
-        {t('Map View')}
-      </Option>
-      {orgCheckBoxes}
-      {adminOrgs.map((group, index) => (
-        <Option value={group} key={group} divider={index < adminOrgs.length - 1}>
-          {group} - ADMIN
+      {COMPANY_URL ? (
+        <Option value="map-view" divider={true} component="a" href={COMPANY_URL} title={APP_NAME}>
+          <strong>{t('Home')}</strong>
         </Option>
-      ))}
+      ) : null}
+
+      {orgCheckBoxes}
+      {adminOrgs?.length ? (
+        <List subheader={<ListSubheader>{t('Administration')}</ListSubheader>}>
+          {adminOrgs.map((group, index) => (
+            <Option value={group} key={group} divider={index === adminOrgs.length - 1}>
+              {group}
+            </Option>
+          ))}
+        </List>
+      ) : null}
+
+      <Option value="map-view" divider={true} component="a" href={COMPANY_URL} title={APP_NAME}>
+        <strong>{t('About')}</strong>
+      </Option>
+
+      <Option value="map-view" component="a" href={COMPANY_URL} title={APP_NAME}>
+        <strong>{t('Support')}</strong>
+      </Option>
     </AppContextSwitcher>
   );
 };

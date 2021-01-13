@@ -67,9 +67,10 @@ export const CollectionsCard = (props: IProps) => {
           </Box>
           {canCreate && (
             <Button
-              variant="outlined"
+              variant="contained"
               component={Link}
               size="small"
+              color="secondary"
               to={{ type: NEW_COLLECTION }}
               className={`${classes.cardEditButton} marapp-qa-actioneditinline`}
             >
