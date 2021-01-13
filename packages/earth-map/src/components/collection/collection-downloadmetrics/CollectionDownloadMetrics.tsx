@@ -53,9 +53,9 @@ export function CollectionDownloadMetrics(props: IProps) {
   const [metricSlugs, setMetricSlugs] = useState([]);
   const [isLoadingMetricSlugs, setIsLoadingMetricSlugs] = useState(false);
   const { register, handleSubmit, formState, control, watch } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
-  const { dirty, isValid, isSubmitting } = formState;
+  const { isDirty, isValid, isSubmitting } = formState;
   const metricsWatcher = watch('metrics');
 
   useEffect(() => {
@@ -132,7 +132,7 @@ export function CollectionDownloadMetrics(props: IProps) {
           <button
             type="submit"
             className="marapp-qa-actiondownload ng-button ng-button-primary ng-margin-right"
-            disabled={!isValid || isSubmitting || !dirty || !metricsWatcher?.length}
+            disabled={!isValid || isSubmitting || !isDirty || !metricsWatcher?.length}
           >
             {t('Download')}
           </button>

@@ -80,7 +80,7 @@ export function UsersHome(props: any) {
   );
 
   const { watch, setValue, control, getValues } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
   const inviteUsersWatcher = watch('users');
@@ -172,7 +172,7 @@ export function UsersHome(props: any) {
   };
 
   const cancelUsersHandler = () => {
-    setValue('users', [], true);
+    setValue('users', [], { shouldDirty: true, shouldValidate: true });
     setServerErrors([]);
     setUsersFeedback([]);
   };

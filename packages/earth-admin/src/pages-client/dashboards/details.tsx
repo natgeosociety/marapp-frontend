@@ -96,10 +96,10 @@ export function DashboardDetail(props: IProps) {
   }, [data]);
 
   const { getValues, register, formState, errors, control } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
-  const { touched, dirty, isValid } = formState;
+  const { touched, isDirty, isValid } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
@@ -113,6 +113,10 @@ export function DashboardDetail(props: IProps) {
       ...formData,
       ...(widgets && { widgets: flattenArrayForSelect(widgets, 'id') }),
     };
+
+    if (parsed.widgets === null) {
+      parsed.widgets = [];
+    }
 
     try {
       setIsLoading && setIsLoading(true);
@@ -303,7 +307,6 @@ export function DashboardDetail(props: IProps) {
                           defaultValue={widgets}
                           selectedGroup={selectedGroup}
                           as={AsyncSelect}
-                          onChange={([e]) => e || []}
                           isClearable={true}
                           isSearchable={true}
                           isMulti={true}
