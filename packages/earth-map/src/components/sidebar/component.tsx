@@ -21,10 +21,17 @@ import classNames from 'classnames';
 import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from 'config';
 import React from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
+import { withStyles } from '@material-ui/core/styles';
 
 import CompanyRedirect from './company-redirect';
 import SidebarToggle from './sidebar-toggle';
 import './styles.scss';
+
+const styles = (theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.default,
+  },
+});
 
 // Creates a spring with predefined animation slots
 const SidebarPanel: any = Keyframes.Spring({
@@ -47,6 +54,7 @@ interface ISidebarPanel {
   resetCollection?: () => void;
   resetLayers?: () => void;
   selectedOpen?: boolean;
+  classes?: any;
 }
 
 class Sidebar extends React.Component<ISidebarPanel> {
@@ -66,7 +74,7 @@ class Sidebar extends React.Component<ISidebarPanel> {
   };
 
   public render() {
-    const { children, open, selectedOpen, layersPanel, setSidebarOpen } = this.props;
+    const { children, open, selectedOpen, layersPanel, setSidebarOpen, classes } = this.props;
     let state;
 
     if (open) {
@@ -82,18 +90,15 @@ class Sidebar extends React.Component<ISidebarPanel> {
       <SidebarPanel native={true} state={state}>
         {({ x, ...props }) => (
           <animated.div
-            className={classNames(
-              'marapp-qa-sidebar c-sidebar ng-c-sidebar ng-subsection-background',
-              {
-                'no-scroll': layersPanel,
-              }
-            )}
+            className={classNames(classes.root, 'marapp-qa-sidebar c-sidebar ng-c-sidebar', {
+              'no-scroll': layersPanel,
+            })}
             style={{
               transform: x.interpolate((x) => `translate3d(${x}%,0,0)`),
               ...props,
             }}
           >
-            <CompanyRedirect />
+            {/*<CompanyRedirect />*/}
             <SidebarToggle open={open} setSidebarOpen={setSidebarOpen} />
             {children}
           </animated.div>
@@ -103,4 +108,4 @@ class Sidebar extends React.Component<ISidebarPanel> {
   }
 }
 
-export default Sidebar;
+export default withStyles(styles)(Sidebar);

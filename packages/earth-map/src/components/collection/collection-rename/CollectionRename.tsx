@@ -20,14 +20,20 @@
 import isBoolean from 'lodash/isBoolean';
 import { ICollection } from 'modules/collections/model';
 import React, { BaseSyntheticEvent, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
 import PlacesService from 'services/PlacesService';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import TextField from '@material-ui/core/TextField';
 
 import { CollectionConflict } from '../collection-conflict';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 interface IProps {
   collection: ICollection;
@@ -42,57 +48,55 @@ export function CollectionRename(props: IProps) {
   const { t } = useTranslation();
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
-  const { register, errors, handleSubmit, formState, getValues } = useForm({
+  const { register, errors, handleSubmit, formState, getValues, control } = useForm({
     mode: 'onChange',
   });
   const { touched, dirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="sidebar-content-full ng-form ng-form-dark collection-rename"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-rename">
       <Card elevation="high" className="ng-margin-bottom header-card">
-        <h3 className="ng-text-edit-s ng-margin-remove">{t('Rename Collection')}</h3>
+        <Typography variant="h5" component="h2" color="textPrimary">
+          {t('Rename Collection')}
+        </Typography>
       </Card>
 
       <div className="scroll-container">
-        <Card elevation="raised">
-          <label>
-            <Input
-              label={t('Name Collection')}
-              placeholder={t('enter a name for your collection')}
-              name="name"
-              defaultValue={name}
-              error={renderErrorFor('name')}
-              ref={register({
-                required: t('Collection name is required') as string,
-              })}
-            />
-          </label>
-        </Card>
+        <Paper>
+          <Box p={2} mb={1}>
+            <Box mb={2}>
+              <Controller
+                as={TextField}
+                name="name"
+                label={t('Name Collection')}
+                variant="outlined"
+                fullWidth={true}
+                placeholder={t('enter a name for your collection')}
+                error={renderErrorFor('name')}
+                control={control}
+              />
+            </Box>
 
-        <Card elevation="flush">
-          {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
+            {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
 
-          <div className="ng-flex">
-            <button
-              type="submit"
-              disabled={!dirty || !isValid || isSubmitting}
-              className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
-            >
-              {isSubmitting ? t('Renaming collection') : t('Rename Collection')}
-            </button>
-
-            <button
-              className="marapp-qa-cancel-collection ng-button ng-button-secondary"
-              onClick={onCancel}
-            >
-              {t('Cancel')}
-            </button>
-          </div>
-        </Card>
+            <Grid container={true} spacing={1}>
+              <Grid item={true}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                  disabled={!dirty || !isValid || isSubmitting}
+                >
+                  {isSubmitting ? t('Renaming collection') : t('Rename Collection')}
+                </Button>
+              </Grid>
+              <Grid item={true}>
+                <Button onClick={onCancel}>{t('Cancel')}</Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </Paper>
 
         {isSaveConflict && <CollectionConflict onRefresh={refresh} onOverwrite={saveAnyway} />}
       </div>

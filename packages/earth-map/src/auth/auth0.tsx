@@ -151,8 +151,13 @@ export const Auth0Provider = ({
       setEmail(userData.email);
 
       const { user } = SessionStorage.getObject('ephemeral');
-      const selected = user && user.group ? user.group : mapRoleGroups(roles, ['*']);
-      setSelectedGroup(selected);
+
+      // only select orgs that are available in the token
+      const selected =
+        user && user.group ? roleGroups.filter((g) => user.group.includes(g)) : roleGroups;
+
+      // if no orgs remain in the list, apply all the orgs from the token
+      setSelectedGroup(selected.length ? selected : roleGroups);
 
       setIsLoading(false);
     };

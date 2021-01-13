@@ -17,6 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 import { useAuth0 } from 'auth/auth0';
+import Box from '@material-ui/core/Box';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import { makeStyles } from '@material-ui/core/styles';
 import CollectionDetails from 'components/collection/collection-details';
 import CollectionNew from 'components/collection/collection-new';
 import CollectionsCard from 'components/collection/collections-card';
@@ -37,13 +41,32 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icons as VizzIcons } from 'vizzuality-components';
 
-import { ErrorBoundary, Tab, Tabs } from '@marapp/earth-shared';
+import { ErrorBoundary } from '@marapp/earth-shared';
 
 import './styles.scss';
 import { URL_PROPS } from './url';
 
+const useStyles = makeStyles((theme) => {
+  const minTabHeight = theme.spacing(4.5);
+
+  return {
+    tabContainer: {
+      backgroundColor: theme.palette.grey['600'],
+    },
+    tabs: {
+      minHeight: minTabHeight,
+      '& button': {
+        minWidth: 0,
+        paddingLeft: theme.spacing(2.5),
+        paddingRight: theme.spacing(2.5),
+        minHeight: minTabHeight,
+      },
+    },
+  };
+});
+
 interface IProps {
-  setSidebarPanel?: () => void;
+  setSidebarPanel?: (payload: any) => void;
   panel?: EPanels;
   page?: string;
   layersPanel?: boolean;
@@ -59,6 +82,7 @@ const { EARTH, COLLECTION, LOCATION, NEW_COLLECTION } = EarthRoutes;
 const EarthPage = (props: IProps) => {
   const { setSidebarPanel, panel, router, lastViewedPlace, group, collection } = props;
   const { t } = useTranslation();
+  const classes = useStyles();
   const { groups, privateGroups, publicGroups } = useAuth0();
   const { type } = router;
   const selectedOpen = [LOCATION, COLLECTION, NEW_COLLECTION].includes(type);
@@ -76,14 +100,19 @@ const EarthPage = (props: IProps) => {
             <Url type="EARTH" urlProps={URL_PROPS} />
 
             <Header />
-            <Tabs
-              value={panel}
-              onChange={setSidebarPanel}
-              className="ng-padding-bottom ng-padding-medium-horizontal ng-ep-background-dark"
-            >
-              <Tab label={t('Places')} value="places" />
-              <Tab label={t('Layers')} value="layers" />
-            </Tabs>
+
+            <Box px={2} className={classes.tabContainer}>
+              <Tabs
+                className={classes.tabs}
+                textColor="primary"
+                value={panel}
+                onChange={(_, newValue) => setSidebarPanel(newValue)}
+              >
+                <Tab label={t('Places')} value="places" />
+                <Tab label={t('Layers')} value="layers" />
+              </Tabs>
+            </Box>
+
             {panel === EPanels.PLACES && (
               <>
                 {type === EARTH && (

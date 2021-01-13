@@ -25,6 +25,7 @@
   "dependencies": {
     "focus-trap-react": "^8.3.2",
     "lodash": "^4.17.20",
+    "material-ui-toggle-icon": "^1.1.1",
     "webfonts-loader": "^5.2.2"
   }
 }

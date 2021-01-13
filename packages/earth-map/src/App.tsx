@@ -17,12 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useContext } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { Spinner, TranslationService } from '@marapp/earth-shared';
 
-import { Auth0Context, useAuth0 } from './auth/auth0';
+import { useAuth0 } from './auth/auth0';
+import theme from './config/theme';
 import { WEGLOT_API_KEY } from './config';
 import Main from './pages/main';
 import initStore from './store';
@@ -30,8 +33,7 @@ import initStore from './store';
 TranslationService.init(WEGLOT_API_KEY);
 
 const App = () => {
-  const { isLoading } = useAuth0();
-  const { selectedGroup } = useContext(Auth0Context);
+  const { isLoading, selectedGroup } = useAuth0();
 
   const initialState = {
     user: {
@@ -45,9 +47,14 @@ const App = () => {
 
     return (
       // @ts-ignore
-      <Provider store={store}>
-        <Main />
-      </Provider>
+      <>
+        <CssBaseline />
+        <ThemeProvider theme={theme}>
+          <Provider store={store}>
+            <Main />
+          </Provider>
+        </ThemeProvider>
+      </>
     );
   }
 

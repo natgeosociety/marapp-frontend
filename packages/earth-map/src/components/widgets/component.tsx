@@ -106,7 +106,7 @@ export default function WidgetsComponent(props: IProps) {
             <div key={`${w.slug}-${i}`} className="widgets--list-item ng-position-relative">
               <InView threshold={0.2} triggerOnce={true}>
                 {({ ref, inView }) => (
-                  <div style={{ minHeight: '40vh' }} ref={ref}>
+                  <div style={{ minHeight: inView ? 0 : '40vh' }} ref={ref}>
                     {inView && (
                       <Widget
                         {...w}

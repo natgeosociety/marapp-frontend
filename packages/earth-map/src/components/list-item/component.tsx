@@ -17,13 +17,34 @@
   specific language governing permissions and limitations under the License.
 */
 
-import Toggle from 'components/toggle';
+import MuiListItem from '@material-ui/core/ListItem';
+import { makeStyles } from '@material-ui/core/styles';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Switch from '@material-ui/core/Switch';
+import classnames from 'classnames';
 import { noop } from 'lodash';
+import IconCircleSmall from 'mdi-material-ui/CircleSmall';
 import React from 'react';
 import Link from 'redux-first-router-link';
 import { parseHintBold } from 'utils';
 
-import './style.scss';
+const useStyles = makeStyles((theme) => ({
+  root: (props: any) => {
+    const rootStyles: any = {
+      borderBottom: `1px solid ${theme.palette.divider}`,
+      '&:last-child': {
+        borderBottom: 'none',
+      },
+    };
+
+    if (props?.showToggle) {
+      rootStyles.paddingRight = theme.spacing(9);
+    }
+
+    return rootStyles;
+  },
+}));
 
 interface IProps {
   title: string;
@@ -41,39 +62,47 @@ interface IProps {
 }
 
 const ListItem = (props: IProps) => {
-  const { title, hint, labels, organization, linkTo, key, onClick = noop, active } = props;
-
+  const { title, hint, labels, organization, linkTo, onClick = noop, active } = props;
   const showToggle = typeof active !== 'undefined';
+  const classes = useStyles({ ...props, showToggle });
 
-  const Wrapper = linkTo ? Link : 'div';
+  const listItemProps: any = {
+    onClick,
+    className: classnames(classes.root, 'marapp-qa-listitem'),
+    component: linkTo ? Link : 'div',
+    button: true,
+  };
+
+  if (linkTo) {
+    listItemProps.to = linkTo;
+  }
 
   return (
-    <Wrapper
-      to={linkTo}
-      onClick={onClick}
-      key={key}
-      className="marapp-qa-listitem ng-list-item ng-padding-small-vertical ng-padding-medium-horizontal ng-cursor-pointer"
-    >
-      {showToggle && <Toggle className="ng-margin-right" active={active} />}
-      <div className="ng-list-item-content">
-        <span className="ng-display-block ng-list-item-title">{parseHintBold(hint || title)}</span>
-        {organization && (
-          <span className="ng-color-mdgray" key={`${organization}`}>
-            {organization}
-            <strong className="ng-icon-bullet" />
+    <MuiListItem {...listItemProps}>
+      <ListItemText
+        primary={parseHintBold(hint || title)}
+        secondary={
+          <span>
+            {organization && (
+              <span key={`${organization}`}>
+                {organization}
+                <IconCircleSmall />
+              </span>
+            )}
+
+            {labels?.length && <span>{labels.join(', ')}</span>}
           </span>
-        )}
-        {labels?.map((label, i, all) => {
-          const last = i === all.length - 1;
-          return (
-            <span className="ng-color-mdgray" key={`${label}`}>
-              {label}
-              {!last && ', '}
-            </span>
-          );
-        })}
-      </div>
-    </Wrapper>
+        }
+        primaryTypographyProps={{ noWrap: true }}
+        secondaryTypographyProps={{ noWrap: true }}
+      />
+
+      {showToggle && (
+        <ListItemSecondaryAction onClick={onClick}>
+          <Switch checked={active} />
+        </ListItemSecondaryAction>
+      )}
+    </MuiListItem>
   );
 };
 

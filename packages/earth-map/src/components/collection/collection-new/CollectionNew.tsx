@@ -18,14 +18,22 @@
 */
 
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { back, push, replace } from 'redux-first-router';
 import PlacesService from 'services/PlacesService';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
 
-import { Card, Input, setupErrors } from '@marapp/earth-shared';
+import { Card, setupErrors } from '@marapp/earth-shared';
 
 import { IRouter } from '../../../modules/router/model';
+import { Button, Grid } from '@material-ui/core';
 
 interface IProps {
   privateGroups: string[];
@@ -37,7 +45,7 @@ const CollectionNew = (props: IProps) => {
   const { t } = useTranslation();
   const canCreateCollection = !!privateGroups.length;
   const [saveError, setSaveError] = useState(null);
-  const { handleSubmit, register, errors, formState } = useForm({ mode: 'onChange' });
+  const { handleSubmit, register, errors, formState, control } = useForm({ mode: 'onChange' });
   const { touched, dirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
@@ -71,80 +79,80 @@ const CollectionNew = (props: IProps) => {
   };
 
   return (
-    <form
-      className="marapp-qa-collection-new ng-form ng-form-dark"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form className="marapp-qa-collection-new" onSubmit={handleSubmit(onSubmit)}>
       <Card elevation="high" className="ng-margin-bottom">
-        <h3 className="ng-text-edit-s ng-margin-remove">{t('Create a Collection')}</h3>
+        <Typography variant="h5" component="h2" color="textPrimary">
+          {t('Create a Collection')}
+        </Typography>
       </Card>
 
-      {canCreateCollection && (
-        <Card className="ng-margin-bottom">
-          <label>
-            <Input
-              label={t('Name Collection')}
-              placeholder={t('enter a name for your collection')}
-              name="name"
-              error={renderErrorFor('name')}
-              ref={register({
-                required: 'Collection name is required',
-              })}
-            />
-          </label>
-        </Card>
-      )}
+      <Paper>
+        <Box p={2} mb={1}>
+          <Grid container={true} direction="column" spacing={3}>
+            <Grid item={true}>
+              {canCreateCollection && (
+                <Controller
+                  as={TextField}
+                  name="name"
+                  label={t('Name Collection')}
+                  variant="outlined"
+                  fullWidth={true}
+                  placeholder={t('enter a name for your collection')}
+                  error={renderErrorFor('name')}
+                  control={control}
+                />
+              )}
+            </Grid>
 
-      <Card className="c-legend-item-group">
-        <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
-          {t('Select an Organization')}
-        </h2>
-        <p>
-          {canCreateCollection
-            ? t(
-                `Please select an organization to create a collection under. After selecting an organization, you will be able to select places and share insights with members of your selected organization. Organizations can not be edited once picked`
-              )
-            : t(`You don't have rights to create a new collection`)}
-          .
-        </p>
-        <div className="legend-item-group--radio ng-padding-medium-left">
-          {privateGroups.map((group) => (
-            <div>
-              <input
-                type="radio"
-                id={`radio-${group}`}
-                value={group}
+            <Grid item={true}>
+              <Typography variant="subtitle1" gutterBottom={true}>
+                {t('Select an Organization')}
+              </Typography>
+              <Typography>
+                {canCreateCollection
+                  ? t(
+                      `Please select an organization to create a collection under. After selecting an organization, you will be able to select places and share insights with members of your selected organization. Organizations can not be edited once picked`
+                    )
+                  : t(`You don't have rights to create a new collection`)}
+                .
+              </Typography>
+            </Grid>
+
+            <Grid item={true}>
+              <Controller
                 name="organization"
-                ref={register({
-                  required: true,
-                })}
+                control={control}
+                as={
+                  <RadioGroup>
+                    {privateGroups.map((group) => (
+                      <FormControlLabel value={group} control={<Radio />} label={group} />
+                    ))}
+                  </RadioGroup>
+                }
               />
-              <label htmlFor={`radio-${group}`}>
-                <span className="legend-item-group--symbol" />
-                <span className="legend-item-group--name">{group}</span>
-              </label>
-            </div>
-          ))}
-        </div>
-      </Card>
+            </Grid>
 
-      <Card elevation="flush">
-        {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
-        <button
-          disabled={!isValid || !dirty || isSubmitting || !canCreateCollection}
-          type="submit"
-          className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
-        >
-          {t('Create Collection')}
-        </button>
-        <button
-          onClick={onCancel}
-          type="button"
-          className="marapp-qa-cancel-collection ng-button ng-button-secondary"
-        >
-          {t('Cancel')}
-        </button>
-      </Card>
+            <Grid item={true}>
+              {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
+              <Grid container={true} spacing={1}>
+                <Grid item={true}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    type="submit"
+                    disabled={!isValid || !dirty || isSubmitting || !canCreateCollection}
+                  >
+                    {t('Create Collection')}
+                  </Button>
+                </Grid>
+                <Grid item={true}>
+                  <Button onClick={onCancel}>{t('Cancel')}</Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
     </form>
   );
 };

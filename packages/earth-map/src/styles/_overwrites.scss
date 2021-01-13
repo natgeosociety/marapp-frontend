@@ -17,6 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
+a:hover, .ng-link:hover {
+  border-bottom-color: inherit;
+}
+
+h1, h2, h3, h4, h5, h6, em {
+  color: inherit;
+  text-transform: inherit;
+}
+
+ul, ol {
+  padding-left: 0 !important;
+}
+
 .ng-button-secondary {
   background: $marapp-gray-8;
   border: 1px solid $marapp-gray-3;

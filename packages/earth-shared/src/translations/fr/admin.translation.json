@@ -32,6 +32,7 @@
   "dashboards": "tableaux de bord",
   "Dashboards": "Tableaux de bord",
   "delete": "supprimer",
+  "deleting": "suppression",
   "Delete confirmation": "Voulez-vous vraiment supprimer définitivement ce {{value}}?",
   "Delete dashboard": "Supprimer le tableau de bord",
   "Delete layer": "Supprimer le calque",

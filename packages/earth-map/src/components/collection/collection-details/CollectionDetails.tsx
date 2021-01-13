@@ -37,6 +37,27 @@ import { CollectionDownloadMetrics } from '../collection-downloadmetrics';
 import { CollectionEditPlaces } from '../collection-editplaces';
 import { CollectionRename } from '../collection-rename';
 import './styles.scss';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Fab from '@material-ui/core/Fab';
+import Chip from '@material-ui/core/Chip';
+import { makeStyles } from '@material-ui/core/styles';
+import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
+import IconDotsHorizontal from 'mdi-material-ui/DotsHorizontal';
+import IconDownload from 'mdi-material-ui/Download';
+
+const useStyles = makeStyles((theme) => ({
+  cardEditButton: {
+    position: 'absolute',
+    right: theme.spacing(2),
+    top: theme.spacing(2),
+  },
+}));
 
 interface IProps {
   privateGroups: string[];
@@ -52,6 +73,8 @@ interface IProps {
 const CollectionDetails = (props: IProps) => {
   const { reloadCollection, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
   const { t } = useTranslation();
+  const classes = useStyles();
+  const popupState = usePopupState({ variant: 'popover', popupId: 'demoMenu' });
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -66,25 +89,29 @@ const CollectionDetails = (props: IProps) => {
   }
 
   const editActions = (
-    <DropdownSimple
-      trigger={(open) => (
-        <i
-          className={cn({
-            'marapp-qa-collection-actions': true,
-            'ng-icon-ellipse ng-toolbar-button': true,
-            'ng-toolbar-button-raised': true,
-            'ng-toolbar-button-open': open,
-          })}
-        />
-      )}
-    >
-      <a className="marapp-qa-action-rename" onClick={() => setIsRenaming(true)}>
-        {t('Rename Collection')}
-      </a>
-      <a className="marapp-qa-action-delete" onClick={() => setIsDeleting(true)}>
-        {t('Delete')}
-      </a>
-    </DropdownSimple>
+    <>
+      <Fab size="small" {...bindTrigger(popupState)}>
+        <IconDotsHorizontal />
+      </Fab>
+      <Menu {...bindMenu(popupState)}>
+        <MenuItem
+          onClick={() => {
+            setIsRenaming(true);
+            popupState.close();
+          }}
+        >
+          {t('Rename Collection')}
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setIsDeleting(true);
+            popupState.close();
+          }}
+        >
+          {t('Delete')}
+        </MenuItem>
+      </Menu>
+    </>
   );
 
   const { id, organization, name, locations, updatedAt } = data;
@@ -103,89 +130,110 @@ const CollectionDetails = (props: IProps) => {
       </Card>
 
       {hasLocations ? (
-        <>
-          <Card className="c-legend-item-group">
+        <Grid container={true} direction="column" spacing={1}>
+          <Grid item={true}>
+            <Paper>
+              <Box position="relative" p={2}>
+                {canEdit && (
+                  <Button
+                    color="secondary"
+                    size="small"
+                    variant="contained"
+                    className={`${classes.cardEditButton} marapp-qa-actioneditinline`}
+                    onClick={toggleEditPlaces}
+                  >
+                    {t('edit')}
+                  </Button>
+                )}
+                <Box mb={1}>
+                  <Typography variant="subtitle1">
+                    {t('Collection places')} ({locations.length})
+                  </Typography>
+                </Box>
+                <Grid container={true} spacing={1}>
+                  {locations
+                    .filter((x) => !!x)
+                    .map((location) => (
+                      <Grid item={true}>
+                        <Chip
+                          label={location.name}
+                          size="small"
+                          className="marapp-qa-locationpill"
+                        />
+                      </Grid>
+                    ))}
+                </Grid>
+              </Box>
+            </Paper>
+          </Grid>
+          <Grid item={true}>
+            <Paper>
+              <Box position="relative" p={2}>
+                <Box mb={1}>
+                  <Typography variant="subtitle1">
+                    {t('Download metrics')}
+                    &nbsp;
+                    <IconDownload />
+                  </Typography>
+                </Box>
+                <Typography paragraph={true}>
+                  {isDownloadingMetrics ? (
+                    <>{t('Your selected metric files should be ready soon')}.</>
+                  ) : (
+                    <>
+                      {t(
+                        'Individual metrics related to each of the places in your collection can be viewed once downloaded'
+                      )}
+                      .{t('Select single or multiple metric data files for download')}.
+                    </>
+                  )}
+                </Typography>
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsOnDownloadMetrics(true)}
+                  disabled={isDownloadingMetrics}
+                >
+                  {isDownloadingMetrics ? (
+                    <>
+                      <Spinner size="nano" position="relative" className="ng-display-inline" />
+                      {t('Downloading metrics')}
+                    </>
+                  ) : (
+                    <>{t('Download metric data files')}</>
+                  )}
+                </Button>
+                {downloadError && (
+                  <p className="ng-form-error-block ng-margin-top">{downloadError}</p>
+                )}
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+      ) : (
+        <Paper>
+          <Box position="relative" p={2}>
+            <Typography variant="subtitle1">
+              {t('Collection places')} {hasLocations && locations.length}
+            </Typography>
+            <Typography>
+              {canEdit
+                ? t(
+                    `You currently don’t have any places added to your collection. Add places to your collection to access data metrics and share your insights with your team`
+                  )
+                : t(`There are no places added to this collection`)}
+              .
+            </Typography>
             {canEdit && (
               <button
-                className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
+                type="submit"
+                className="marapp-qa-actionaddplaces ng-button ng-button-secondary ng-margin-right"
                 onClick={toggleEditPlaces}
               >
-                {t('edit')}
+                {t('Add places')}
               </button>
             )}
-            <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
-              {t('Collection places')} ({locations.length})
-            </h2>
-            <p>
-              {locations
-                .filter((x) => !!x)
-                .map((location) => (
-                  <Pill
-                    label={location.name}
-                    key={location.id}
-                    className="marapp-qa-locationpill ng-margin-small-right ng-margin-small-bottom"
-                  />
-                ))}
-            </p>
-          </Card>
-          <Card className="c-legend-item-group ng-margin-top">
-            <h2 className="ng-text-display-s ng-body-color ng-margin-medium-bottom ng-margin-top-remove">
-              {t('Download metrics')}
-              &nbsp;
-              <i className="ng-icon-download-outline ng-vertical-align-middle" />
-            </h2>
-            <p>
-              {isDownloadingMetrics ? (
-                <>{t('Your selected metric files should be ready soon')}.</>
-              ) : (
-                <>
-                  {t(
-                    'Individual metrics related to each of the places in your collection can be viewed once downloaded'
-                  )}
-                  .{t('Select single or multiple metric data files for download')}.
-                </>
-              )}
-            </p>
-            <button
-              className="marapp-qa-actiondownloadmetrics ng-button ng-button-secondary"
-              onClick={() => setIsOnDownloadMetrics(true)}
-              disabled={isDownloadingMetrics}
-            >
-              {isDownloadingMetrics ? (
-                <>
-                  <Spinner size="nano" position="relative" className="ng-display-inline" />
-                  {t('Downloading metrics')}
-                </>
-              ) : (
-                <>{t('Download metric data files')}</>
-              )}
-            </button>
-            {downloadError && <p className="ng-form-error-block ng-margin-top">{downloadError}</p>}
-          </Card>
-        </>
-      ) : (
-        <Card className="c-legend-item-group">
-          <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
-            {t('Collection places')} {hasLocations && locations.length}
-          </h2>
-          <p>
-            {canEdit
-              ? t(
-                  `You currently don’t have any places added to your collection. Add places to your collection to access data metrics and share your insights with your team`
-                )
-              : t(`There are no places added to this collection`)}
-            .
-          </p>
-          {canEdit && (
-            <button
-              type="submit"
-              className="marapp-qa-actionaddplaces ng-button ng-button-secondary ng-margin-right"
-              onClick={toggleEditPlaces}
-            >
-              {t('Add places')}
-            </button>
-          )}
-        </Card>
+          </Box>
+        </Paper>
       )}
 
       {isRenaming && (

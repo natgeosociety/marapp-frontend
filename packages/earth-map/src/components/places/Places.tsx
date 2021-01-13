@@ -2,6 +2,7 @@ import BackToLocation from 'components/back-to-location';
 import FilterBy from 'components/filter-by';
 import InfiniteList from 'components/infinite-list';
 import ListItem from 'components/list-item';
+import MenuItemSkeleton from 'components/MenuItemSkeleton';
 import SearchBox from 'components/searchbox';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
 import { LocationTypeEnum } from 'modules/places/model';
@@ -83,6 +84,12 @@ const Places = (props: IProps) => {
     push('/earth');
   };
 
+  const fakeResultsMapping = {
+    '1': 10,
+    '2': 5,
+    '3': 2,
+  };
+
   return (
     <SidebarLayoutSearch
       fixedContent={
@@ -116,31 +123,43 @@ const Places = (props: IProps) => {
       {showSearchResults ? (
         <InfiniteList
           title={t('Search results')}
-          data={results}
-          loading={search.loading}
+          data={
+            search.loading
+              ? Array(fakeResultsMapping[search.search.length] || 1).fill(null)
+              : results
+          }
+          loading={false}
           nextPageCursor={nextPageCursor}
           onNextPage={nextPlacesPage}
         >
-          {({ id, $searchHint, name, slug, organization, type }) => (
-            <ListItem
-              hint={$searchHint.name}
-              title={name}
-              key={`${slug}-${organization}`}
-              onClick={() => {
-                setSidebarPanelExpanded(false);
-                setPlacesSearch({ search: name });
-              }}
-              linkTo={{
-                type:
-                  type === LocationTypeEnum.COLLECTION
-                    ? EarthRoutes.COLLECTION
-                    : EarthRoutes.LOCATION,
-                payload: { slug, id, organization },
-              }}
-              organization={group.length > 1 && organization}
-              labels={[type]}
-            />
-          )}
+          {(item) =>
+            search.loading ? (
+              <MenuItemSkeleton />
+            ) : (
+              <ListItem
+                hint={item.$searchHint.name}
+                title={item.name}
+                key={`${item.slug}-${item.organization}`}
+                onClick={() => {
+                  setSidebarPanelExpanded(false);
+                  setPlacesSearch({ search: item.name });
+                }}
+                linkTo={{
+                  type:
+                    item.type === LocationTypeEnum.COLLECTION
+                      ? EarthRoutes.COLLECTION
+                      : EarthRoutes.LOCATION,
+                  payload: {
+                    slug: item.slug,
+                    id: item.id,
+                    organization: item.organization,
+                  },
+                }}
+                organization={group.length > 1 && item.organization}
+                labels={[item.type]}
+              />
+            )
+          }
         </InfiniteList>
       ) : (
         children

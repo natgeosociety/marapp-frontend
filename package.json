@@ -18,6 +18,8 @@
   "dependencies": {
     "@kunukn/react-collapse": "^2.2.9",
     "@loadable/component": "^5.6.1",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "@natgeosociety/marapp-uikit": "1.1.1",
     "@testing-library/jest-dom": "^5.11.4",
     "assert": "^2.0.0",
@@ -34,6 +36,8 @@
     "layer-manager": "^3.0.6",
     "lodash": "^4.17.11",
     "luma.gl": "7.3.2",
+    "material-ui-popup-state": "^1.7.1",
+    "mdi-material-ui": "^6.21.0",
     "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "photo-sphere-viewer": "3.5.1",

@@ -26,6 +26,6 @@ export default {
   results: [],
 
   featured: {
-    data: [],
+    data: null,
   },
 };

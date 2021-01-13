@@ -17,7 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
 import BackToLocation from 'components/back-to-location';
+import Typography from '@material-ui/core/Typography';
 import FilterBy from 'components/filter-by';
 import InfiniteList from 'components/infinite-list';
 import ListItem from 'components/list-item';
@@ -169,11 +173,12 @@ const Layers = (props: IProps) => {
       }
     >
       {(!selected || panelExpanded) && (
-        <>
-          <div className="marapp-qa-other ng-section-background ng-position-relative ng-padding-medium-bottom">
-            <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-              {t('Other')}
-            </h2>
+        <Paper className="marapp-qa-other" square={true}>
+          <Box p={2} pb={0}>
+            <Typography variant="subtitle1">{t('Other')}</Typography>
+          </Box>
+
+          <List>
             <ListItem
               title={t('Labels')}
               active={mapLabels}
@@ -186,7 +191,8 @@ const Layers = (props: IProps) => {
               key="roads"
               onClick={debounce(onRoads, 200)}
             />
-          </div>
+          </List>
+
           <InfiniteList
             title={t('Layers')}
             data={layers.results}
@@ -206,7 +212,7 @@ const Layers = (props: IProps) => {
               />
             )}
           </InfiniteList>
-        </>
+        </Paper>
       )}
     </SidebarLayoutSearch>
   );

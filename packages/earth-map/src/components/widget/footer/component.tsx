@@ -18,6 +18,7 @@
 */
 
 import classnames from 'classnames';
+import Button from '@material-ui/core/Button';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -39,15 +40,13 @@ function WidgetFooterComponent(props: IWidgetFooter) {
 
   return (
     <footer className="marapp-qa-widgetfooter widget--footer">
-      <button
-        className={classnames({
-          'ng-button ng-button-secondary': true,
-          active,
-        })}
+      <Button
+        variant={active ? 'contained' : 'outlined'}
+        color={active ? 'secondary' : 'default'}
         onClick={toggleLayer}
       >
         {active ? t('Remove from map') : t('Show on map')}
-      </button>
+      </Button>
     </footer>
   );
 }
