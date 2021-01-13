@@ -99,7 +99,7 @@ export function DashboardDetail(props: IProps) {
     mode: 'onChange',
   });
 
-  const { touched, dirty, isValid } = formState;
+  const { touched, isDirty, isValid } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {

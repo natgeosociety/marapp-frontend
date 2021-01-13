@@ -201,7 +201,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
               <InlineEditCard
                 onSubmit={onSubmit}
                 onCancel={() => [reset(), setOwnersFeedback([])]}
-                validForm={!formErrors.owners && formState.dirty && ownersWatcher?.length > 0}
+                validForm={!formErrors.owners && formState.isDirty && ownersWatcher?.length > 0}
                 render={() => (
                   <>
                     <p className="ng-text-weight-bold ng-margin-remove">{t('Owners')}*</p>
