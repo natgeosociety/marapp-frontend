@@ -137,6 +137,7 @@ const CollectionDetails = (props: IProps) => {
                 {canEdit && (
                   <Button
                     size="small"
+                    variant="outlined"
                     className={`${classes.cardEditButton} marapp-qa-actioneditinline`}
                     onClick={toggleEditPlaces}
                   >
