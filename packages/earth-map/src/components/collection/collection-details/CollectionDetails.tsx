@@ -43,9 +43,13 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Fab from '@material-ui/core/Fab';
 import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
+import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
+import IconDotsHorizontal from 'mdi-material-ui/DotsHorizontal';
+import IconDownload from 'mdi-material-ui/Download';
 
 const useStyles = makeStyles((theme) => ({
   cardEditButton: {
@@ -70,6 +74,7 @@ const CollectionDetails = (props: IProps) => {
   const { reloadCollection, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
   const { t } = useTranslation();
   const classes = useStyles();
+  const popupState = usePopupState({ variant: 'popover', popupId: 'demoMenu' });
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -84,25 +89,29 @@ const CollectionDetails = (props: IProps) => {
   }
 
   const editActions = (
-    <DropdownSimple
-      trigger={(open) => (
-        <i
-          className={cn({
-            'marapp-qa-collection-actions': true,
-            'ng-icon-ellipse ng-toolbar-button': true,
-            'ng-toolbar-button-raised': true,
-            'ng-toolbar-button-open': open,
-          })}
-        />
-      )}
-    >
-      <a className="marapp-qa-action-rename" onClick={() => setIsRenaming(true)}>
-        {t('Rename Collection')}
-      </a>
-      <a className="marapp-qa-action-delete" onClick={() => setIsDeleting(true)}>
-        {t('Delete')}
-      </a>
-    </DropdownSimple>
+    <>
+      <Fab size="small" {...bindTrigger(popupState)}>
+        <IconDotsHorizontal />
+      </Fab>
+      <Menu {...bindMenu(popupState)}>
+        <MenuItem
+          onClick={() => {
+            setIsRenaming(true);
+            popupState.close();
+          }}
+        >
+          {t('Rename Collection')}
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setIsDeleting(true);
+            popupState.close();
+          }}
+        >
+          {t('Delete')}
+        </MenuItem>
+      </Menu>
+    </>
   );
 
   const { id, organization, name, locations, updatedAt } = data;
@@ -162,7 +171,7 @@ const CollectionDetails = (props: IProps) => {
                   <Typography variant="subtitle1">
                     {t('Download metrics')}
                     &nbsp;
-                    <i className="ng-icon-download-outline ng-vertical-align-middle" />
+                    <IconDownload />
                   </Typography>
                 </Box>
                 <Typography paragraph={true}>

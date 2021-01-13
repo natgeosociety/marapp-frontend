@@ -51,8 +51,7 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
         </div>
       )}
       {!!featured.data.length && (
-        /*ToDo remove component div once we get rid of NG-Kit*/
-        <List component="div" disablePadding={true}>
+        <List disablePadding={true}>
           {featured.data.map((place: any) => {
             const { slug, name, id, organization, type } = place;
 

@@ -42,8 +42,7 @@ export const LastViewedPlace = ({ place, group }: IProps) => {
           <Typography variant="subtitle1">{t('Last viewed place')}</Typography>
         </Box>
 
-        {/*ToDo remove component div once we get rid of NG-Kit*/}
-        <List component="div" disablePadding={true}>
+        <List disablePadding={true}>
           <ListItem
             title={name}
             key={`${slug}-${organization}`}

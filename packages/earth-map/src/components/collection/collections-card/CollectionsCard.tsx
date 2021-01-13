@@ -76,7 +76,7 @@ export const CollectionsCard = (props: IProps) => {
             </Button>
           )}
 
-          <List component="div">
+          <List>
             {data.map((collection) => {
               const { slug, name, id, organization, updatedAt } = collection;
 

@@ -22,6 +22,11 @@ import { createMuiTheme } from '@material-ui/core';
 export default createMuiTheme({
   palette: {
     type: 'dark',
+    primary: {
+      light: '#F8F9FA',
+      main: '#E9ECEF',
+      dark: '#DEE2E6',
+    },
     secondary: {
       dark: '#006b70',
       main: '#0099A1',
@@ -76,6 +81,15 @@ export default createMuiTheme({
       root: {
         backgroundColor: '#F8F9FA',
         color: '#212529',
+      },
+    },
+    MuiFab: {
+      root: {
+        backgroundColor: '#343a40',
+        color: '#F8F9FA',
+        '&:hover': {
+          backgroundColor: '#495057',
+        },
       },
     },
   },

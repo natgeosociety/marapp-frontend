@@ -52,11 +52,7 @@ const InfiniteList = (props: IProps) => {
         pageSize={pageSize}
         itemCount={data.length}
         renderItem={(index) => children(data[index])}
-        itemsRenderer={(items, ref) => (
-          <MuiList component="div" ref={ref}>
-            {items}
-          </MuiList>
-        )}
+        itemsRenderer={(items, ref) => <MuiList ref={ref}>{items}</MuiList>}
         onIntersection={onIntersection}
       />
       {loading && <Spinner position="relative" />}

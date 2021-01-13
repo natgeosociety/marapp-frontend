@@ -178,8 +178,7 @@ const Layers = (props: IProps) => {
             <Typography variant="subtitle1">{t('Other')}</Typography>
           </Box>
 
-          {/*ToDo remove component div once we get rid of NG-Kit*/}
-          <List component="div">
+          <List>
             <ListItem
               title={t('Labels')}
               active={mapLabels}
