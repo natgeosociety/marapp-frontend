@@ -114,6 +114,10 @@ export function DashboardDetail(props: IProps) {
       ...(widgets && { widgets: flattenArrayForSelect(widgets, 'id') }),
     };
 
+    if (parsed.widgets === null) {
+      parsed.widgets = [];
+    }
+
     try {
       setIsLoading && setIsLoading(true);
 
@@ -303,7 +307,6 @@ export function DashboardDetail(props: IProps) {
                           defaultValue={widgets}
                           selectedGroup={selectedGroup}
                           as={AsyncSelect}
-                          onChange={([e]) => e || []}
                           isClearable={true}
                           isSearchable={true}
                           isMulti={true}
