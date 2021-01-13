@@ -23,7 +23,9 @@ export default createMuiTheme({
   palette: {
     type: 'dark',
     primary: {
-      main: '#FFFFFF',
+      light: '#F8F9FA',
+      main: '#E9ECEF',
+      dark: '#DEE2E6',
     },
     secondary: {
       dark: '#006b70',
@@ -79,6 +81,15 @@ export default createMuiTheme({
       root: {
         backgroundColor: '#F8F9FA',
         color: '#212529',
+      },
+    },
+    MuiFab: {
+      root: {
+        backgroundColor: '#343a40',
+        color: '#F8F9FA',
+        '&:hover': {
+          backgroundColor: '#495057',
+        },
       },
     },
   },
