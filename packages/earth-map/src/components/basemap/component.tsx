@@ -18,6 +18,7 @@
 */
 
 import React from 'react';
+import Paper from '@material-ui/core/Paper';
 import { APP_BASEMAPS } from 'theme';
 
 import { Layer } from '@marapp/earth-shared';
@@ -52,7 +53,7 @@ class BasemapComponent extends React.PureComponent<IBasemap> {
     return (
       <div className="layers--list marapp-qa-basemap">
         {APP_BASEMAPS.filter((l) => l.id !== mapStyle).map((basemap) => (
-          <div key={basemap.id}>
+          <Paper elevation={3} key={basemap.id}>
             <Layer
               {...basemap}
               key={basemap.slug}
@@ -60,7 +61,7 @@ class BasemapComponent extends React.PureComponent<IBasemap> {
                 this.onBasemap(basemap);
               }}
             />
-          </div>
+          </Paper>
         ))}
       </div>
     );

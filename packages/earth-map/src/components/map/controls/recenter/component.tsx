@@ -19,6 +19,10 @@
 
 import classnames from 'classnames';
 import React from 'react';
+import Box from '@material-ui/core/Box';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Paper from '@material-ui/core/Paper';
+import IconRecenter from 'mdi-material-ui/CrosshairsGps';
 
 import './styles.scss';
 
@@ -40,11 +44,15 @@ class RecenterControl extends React.PureComponent<IRecenter> {
     });
 
     return (
-      <div className={classNames}>
-        <button type="button" className="recenter-control--btn" onClick={onClick}>
-          <i className="ng-body-color ng-icon-geolocate" />
-        </button>
-      </div>
+      <Box mb={0.5}>
+        <ButtonBase onClick={onClick}>
+          <Paper className={classNames}>
+            <Box p={0.5}>
+              <IconRecenter fontSize="small" />
+            </Box>
+          </Paper>
+        </ButtonBase>
+      </Box>
     );
   }
 }

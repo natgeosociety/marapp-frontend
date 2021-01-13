@@ -23,6 +23,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles } from '@material-ui/core/styles';
 import { Auth0Context } from 'auth/auth0';
 import { ADMIN_URL, APP_NAME } from 'config';
 import { remove } from 'lodash';
@@ -36,6 +37,15 @@ import { APP_LOGO } from 'theme';
 import { AppContextSwitcher, checkAdminRole } from '@marapp/earth-shared';
 
 const { Option } = AppContextSwitcher;
+
+const useStyles = makeStyles((theme) => ({
+  organisationSelectionIconContainer: {
+    minWidth: theme.spacing(5),
+  },
+  organisationCheckbox: {
+    padding: 0,
+  },
+}));
 
 interface IProps {
   group?: string[];
@@ -79,6 +89,8 @@ const Header = (props: IProps) => {
   const [availableGroups, setAvailableGroups] = useState(
     groups.map((group) => ({ name: group, layers: 'N/A', locations: 'N/A' }))
   );
+
+  const classes = useStyles();
 
   useEffect(() => {
     (async () => {
@@ -158,8 +170,13 @@ const Header = (props: IProps) => {
         {availableGroups.map((g, i) => (
           <ListItem key={i} dense={true} button={true} onClick={() => onOrgChange(g.name)}>
             {hasMultipleGroups && (
-              <ListItemIcon>
-                <Checkbox checked={!!selectedGroups.find((x) => x === g.name)} />
+              <ListItemIcon className={classes.organisationSelectionIconContainer}>
+                <Checkbox
+                  checked={!!selectedGroups.find((x) => x === g.name)}
+                  classes={{
+                    root: classes.organisationCheckbox,
+                  }}
+                />
               </ListItemIcon>
             )}
             <ListItemText
