@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 import { useAuth0 } from 'auth/auth0';
+import { Tab, Tabs } from 'carbon-components-react';
 import CollectionDetails from 'components/collection/collection-details';
 import CollectionNew from 'components/collection/collection-new';
 import CollectionsCard from 'components/collection/collections-card';
@@ -37,7 +38,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icons as VizzIcons } from 'vizzuality-components';
 
-import { ErrorBoundary, Tab, Tabs } from '@marapp/earth-shared';
+import { ErrorBoundary } from '@marapp/earth-shared';
 
 import './styles.scss';
 import { URL_PROPS } from './url';
@@ -56,6 +57,8 @@ interface IProps {
 
 const { EARTH, COLLECTION, LOCATION, NEW_COLLECTION } = EarthRoutes;
 
+const SIDEBAR_TABS = ['places', 'layers'];
+
 const EarthPage = (props: IProps) => {
   const { setSidebarPanel, panel, router, lastViewedPlace, group, collection } = props;
   const { t } = useTranslation();
@@ -66,7 +69,7 @@ const EarthPage = (props: IProps) => {
   const newCollectionLayout = [NEW_COLLECTION].includes(type);
   const showLastViewedPlace = lastViewedPlace && group.includes(lastViewedPlace.organization);
   const canCreateCollections = !!privateGroups.length;
-
+  const activeTab = SIDEBAR_TABS.findIndex((tab) => tab === panel);
   return (
     <main className="marapp-qa-earth l-page marapp-qa-pageearth" role="main">
       <Sidebar selectedOpen={selectedOpen}>
@@ -76,52 +79,51 @@ const EarthPage = (props: IProps) => {
             <Url type="EARTH" urlProps={URL_PROPS} />
 
             <Header />
+
             <Tabs
-              value={panel}
-              onChange={setSidebarPanel}
+              selected={activeTab}
+              onSelectionChange={(index) => setSidebarPanel(SIDEBAR_TABS[index])}
               className="ng-padding-bottom ng-padding-medium-horizontal ng-ep-background-dark"
             >
-              <Tab label={t('Places')} value="places" />
-              <Tab label={t('Layers')} value="layers" />
+              <Tab label={t('Places')}>
+                <>
+                  {type === EARTH && (
+                    <Places selected={selectedOpen}>
+                      <>
+                        {showLastViewedPlace && (
+                          <LastViewedPlace place={lastViewedPlace} group={group} />
+                        )}
+                        <CollectionsCard group={group} canCreate={canCreateCollections} />
+                        <FeaturedPlaces />
+                      </>
+                    </Places>
+                  )}
+                  {type === LOCATION && (
+                    <Places selected={selectedOpen}>
+                      <IndexSidebar {...props} selectedOpen={selectedOpen} />
+                    </Places>
+                  )}
+                  {type === COLLECTION && (
+                    <Places
+                      selected={selectedOpen}
+                      locationName={collection.name}
+                      locationOrganization={collection.organization}
+                    >
+                      <CollectionDetails privateGroups={privateGroups} />
+                    </Places>
+                  )}
+                </>
+              </Tab>
+              <Tab label={t('Layers')}>
+                <Layers
+                  selected={selectedOpen}
+                  {...(type === COLLECTION && {
+                    locationName: collection.name,
+                    locationOrganization: collection.organization,
+                  })}
+                />
+              </Tab>
             </Tabs>
-            {panel === EPanels.PLACES && (
-              <>
-                {type === EARTH && (
-                  <Places selected={selectedOpen}>
-                    <>
-                      {showLastViewedPlace && (
-                        <LastViewedPlace place={lastViewedPlace} group={group} />
-                      )}
-                      <CollectionsCard group={group} canCreate={canCreateCollections} />
-                      <FeaturedPlaces />
-                    </>
-                  </Places>
-                )}
-                {type === LOCATION && (
-                  <Places selected={selectedOpen}>
-                    <IndexSidebar {...props} selectedOpen={selectedOpen} />
-                  </Places>
-                )}
-                {type === COLLECTION && (
-                  <Places
-                    selected={selectedOpen}
-                    locationName={collection.name}
-                    locationOrganization={collection.organization}
-                  >
-                    <CollectionDetails privateGroups={privateGroups} />
-                  </Places>
-                )}
-              </>
-            )}
-            {panel === EPanels.LAYERS && (
-              <Layers
-                selected={selectedOpen}
-                {...(type === COLLECTION && {
-                  locationName: collection.name,
-                  locationOrganization: collection.organization,
-                })}
-              />
-            )}
           </>
         )}
 

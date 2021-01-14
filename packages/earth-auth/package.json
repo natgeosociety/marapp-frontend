@@ -23,5 +23,10 @@
     "ts-loader": "^8.0.7",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "carbon-components": "^10.26.0",
+    "carbon-components-react": "^7.26.0",
+    "carbon-icons": "^7.0.7"
   }
 }
