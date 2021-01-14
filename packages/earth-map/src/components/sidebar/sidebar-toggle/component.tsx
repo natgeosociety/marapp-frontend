@@ -26,15 +26,16 @@ import IconRight from 'mdi-material-ui/ChevronRight';
 import './styles.scss';
 
 interface ISidebarToggle {
+  className?: any;
   open?: boolean;
   setSidebarOpen?: (o: boolean) => void;
 }
 
 const SidebarToggle = (props: ISidebarToggle) => {
-  const { open, setSidebarOpen } = props;
+  const { className, open, setSidebarOpen } = props;
 
   return (
-    <div className="marapp-qa-sidebarclose c-sidebar-close">
+    <div className={classNames(className, 'marapp-qa-sidebarclose c-sidebar-close')}>
       <button type="button" onClick={() => setSidebarOpen(!open)} className="sidebar--btn">
         <ToggleIcon
           on={open}

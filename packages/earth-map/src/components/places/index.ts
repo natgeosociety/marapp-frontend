@@ -6,7 +6,7 @@ import {
   setPlacesSearch,
   setPlacesSearchOpen,
 } from 'modules/places/actions';
-import { setSidebarPanelExpanded } from 'modules/sidebar/actions';
+import { setSidebarPanelExpanded, setSidebarOpen } from 'modules/sidebar/actions';
 import { connect } from 'react-redux';
 
 import Places from './Places';
@@ -28,6 +28,7 @@ export default connect(
     setPlacesSearch,
     nextPlacesPage,
     setSidebarPanelExpanded,
+    setSidebarOpen,
     setPlacesSearchOpen,
   }
 )(Places);
