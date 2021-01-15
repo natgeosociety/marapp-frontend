@@ -46,9 +46,9 @@ export function CollectionEditPlaces(props: IProps) {
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
   const { control, handleSubmit, formState, getValues } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
-  const { isValid, isSubmitting, dirty } = formState;
+  const { isValid, isSubmitting, isDirty } = formState;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-edit-places">
@@ -100,7 +100,7 @@ export function CollectionEditPlaces(props: IProps) {
 
           <button
             className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-right"
-            disabled={!isValid || isSubmitting || !dirty}
+            disabled={!isValid || isSubmitting || !isDirty}
           >
             {isSubmitting ? t('Saving') : t('Save')}
           </button>

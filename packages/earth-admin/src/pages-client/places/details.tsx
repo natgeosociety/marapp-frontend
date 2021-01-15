@@ -126,10 +126,10 @@ export function PlaceDetail(props: IProps) {
   } = place;
 
   const { getValues, register, formState, errors } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
-  const { touched, dirty, isValid } = formState;
+  const { touched, isDirty, isValid } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   useEffect(() => {

@@ -52,7 +52,7 @@ export const CollectionsCard = (props: IProps) => {
         {canCreate && (
           <Link
             to={{ type: NEW_COLLECTION }}
-            className="marapp-qa-actioneditinline ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
+            className="marapp-qa-create-collection  ng-button ng-button-link ng-edit-card-button ng-text-transform-remove"
           >
             {t('create new')}
           </Link>
@@ -84,7 +84,10 @@ export const CollectionsCard = (props: IProps) => {
         .
       </p>
       {canCreate && (
-        <Link to={{ type: NEW_COLLECTION }} className="ng-button ng-button-secondary">
+        <Link
+          to={{ type: NEW_COLLECTION }}
+          className="marapp-qa-create-collection ng-button ng-button-secondary"
+        >
           {t('Create New Collection')}
         </Link>
       )}

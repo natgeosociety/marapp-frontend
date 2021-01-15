@@ -59,7 +59,7 @@ export function NewLayer(props: IProps) {
   const { selectedGroup } = useAuth0();
   const { t } = useTranslation('admin');
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
   const {
     category: layerCategoryOptions = [],
@@ -67,7 +67,7 @@ export function NewLayer(props: IProps) {
     provider: layerProviderOptions = [],
   } = dynamicOptions;
 
-  const { touched, dirty, isValid } = formState;
+  const { touched, isDirty, isValid } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   const watchName = watch('name');
@@ -105,7 +105,7 @@ export function NewLayer(props: IProps) {
     e.preventDefault();
     try {
       const { data } = await LayersService.getLayerSlug(watchName, { group: selectedGroup });
-      setValue('slug', data.slug, true);
+      setValue('slug', data.slug, { shouldDirty: true, shouldValidate: true });
     } catch (error) {
       setServerErrors(error.data.errors);
     }
@@ -286,7 +286,7 @@ export function NewLayer(props: IProps) {
             <div className="ng-flex">
               <button
                 className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
-                disabled={!isValid || jsonError || !dirty || !watchJson}
+                disabled={!isValid || jsonError || !isDirty || !watchJson}
               >
                 {t('Save and view details')}
               </button>
