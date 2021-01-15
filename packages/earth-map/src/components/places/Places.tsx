@@ -10,6 +10,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
 import { hasFilters } from 'utils/filters';
+import useSWR from 'swr';
+import { merge } from 'lodash/fp';
+import { generateCacheKey } from 'services/base/APIBase';
+import { LOCATION_QUERY } from 'sagas/model';
+import PlacesService from 'services/PlacesService';
 
 interface IProps {
   selected: boolean;
@@ -37,12 +42,12 @@ const Places = (props: IProps) => {
   const {
     panelExpanded,
     search,
-    results,
-    nextPageCursor,
+    // results,
+    // nextPageCursor,
     group,
     locationName,
     locationOrganization,
-    nextPlacesPage,
+    // nextPlacesPage,
     resetPlace,
     resetCollection,
     resetMap,
@@ -52,6 +57,23 @@ const Places = (props: IProps) => {
     selected,
     children,
   } = props;
+
+  const nextPageCursor = 'x';
+
+  const nextPlacesPage = () => {
+    console.log('!!next places page');
+  };
+
+  const page = 0;
+
+  const query = merge(LOCATION_QUERY, { group: group.join(), search: search.search });
+  const cacheKey = generateCacheKey(`places/${page}`, query);
+
+  const fetcher = () => PlacesService.fetchPlaces(query).then((response: any) => response.data);
+
+  const { data: results = [], error, revalidate, mutate } = useSWR(cacheKey, fetcher);
+
+  console.log('#####', results);
 
   const hasSearchTerm = !!search.search;
   const showX = selected || hasSearchTerm;

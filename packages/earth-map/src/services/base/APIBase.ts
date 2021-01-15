@@ -92,3 +92,12 @@ export const metaDeserializer = (response: AxiosResponse): any => {
     meta: response?.data?.meta,
   };
 };
+
+/**
+ * Generate a cache key based on URL path and query params.
+ * @param path
+ * @param query
+ */
+export const generateCacheKey = (path: string, query: RequestQuery): string => {
+  return encodeQueryToURL(path, query);
+};
