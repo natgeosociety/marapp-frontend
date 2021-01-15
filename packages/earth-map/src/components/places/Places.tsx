@@ -73,8 +73,6 @@ const Places = (props: IProps) => {
 
   const { data: results = [], error, revalidate, mutate } = useSWR(cacheKey, fetcher);
 
-  console.log('#####', results);
-
   const hasSearchTerm = !!search.search;
   const showX = selected || hasSearchTerm;
   const showFilter = !selected || panelExpanded;

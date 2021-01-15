@@ -24,15 +24,13 @@ import { useTranslation } from 'react-i18next';
 import { Spinner } from '@marapp/earth-shared';
 
 interface IFeaturedPlaces {
-  featured?: {
-    data: [];
-    meta?: object;
-  };
+  data: [];
+  meta?: object;
   group?: string;
 }
 
 const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
-  const { featured, group } = props;
+  const { group, data, meta } = props;
   const { t } = useTranslation();
 
   return (
@@ -41,25 +39,24 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
         {t('Featured places')}
       </h2>
       <div>
-        {!featured?.data.length && !featured?.meta && (
+        {!data?.length && !meta && (
           <div className="ng-padding-large ng-position-relative">
             <Spinner />
           </div>
         )}
-        {!!featured.data.length &&
-          featured.data.map((place: any) => {
-            const { slug, name, id, organization, type } = place;
+        {data?.map((place: any) => {
+          const { slug, name, id, organization, type } = place;
 
-            return (
-              <ListItem
-                title={name}
-                key={`${slug}-${organization}`}
-                linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
-                organization={group.length > 1 && organization}
-                labels={[type]}
-              />
-            );
-          })}
+          return (
+            <ListItem
+              title={name}
+              key={`${slug}-${organization}`}
+              linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
+              organization={group.length > 1 && organization}
+              labels={[type]}
+            />
+          );
+        })}
       </div>
     </div>
   );

@@ -17,16 +17,33 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setIndexesList } from 'modules/indexes/actions';
-import { setSidebarPanel } from 'modules/sidebar/actions';
-import { connect } from 'react-redux';
+import React from 'react';
+import useSWR from 'swr';
+import queryStringEncode from 'query-string-encode';
+import { BaseAPIService, metaDeserializer } from 'services/base/APIBase';
 
 import FeaturedPlacesComponent from './component';
 
-export default connect(
-  (state: any) => ({
-    featured: state.places.cache.featured,
-    group: state.user.group,
-  }),
-  { setSidebarPanel, setIndexesList }
-)(FeaturedPlacesComponent);
+export default function WithData(props) {
+  const { group } = props;
+
+  const cacheKey = `/locations?${queryStringEncode({
+    select: 'slug,name,id,organization,type',
+    page: { size: 100 },
+    filter: 'featured==true',
+    sort: 'name',
+    group: group.toString(),
+  })}`;
+
+  const { data } = useSWR(cacheKey, (url) =>
+    BaseAPIService.requestSWR(url, undefined, metaDeserializer)
+  );
+
+  const componentProps = {
+    ...props,
+    data: data?.data,
+    meta: data?.meta,
+  };
+
+  return <FeaturedPlacesComponent {...componentProps} />;
+}

@@ -74,6 +74,37 @@ export const BaseAPIService = {
     });
   },
   /**
+   * Creates an axios request based on path and request options.
+   * @param path: identifies the specific resource in the host
+   * @param config
+   * @param deserializer: JSON:API deserializer
+   */
+  requestSWR: (
+    path: string,
+    config: RequestConfig,
+    deserializer: (response: AxiosResponse) => any = BaseAPIService.deserialize
+  ) => {
+    const defaults = { query: {}, method: 'get', data: {} };
+    const params = merge(defaults, config);
+
+    const options: AxiosRequestConfig = {
+      baseURL: API_URL,
+      url: path,
+      method: params.method,
+      data: params.data,
+      timeout: TIMEOUT,
+    };
+
+    return new Promise((resolve, reject) => {
+      axios
+        .request(options)
+        .then((response) => resolve(deserializer(response)))
+        .catch((error) =>
+          reject(error?.response?.data?.data ? deserializer(error?.response) : error?.response)
+        );
+    });
+  },
+  /**
    * JSON:API deserializer
    * @param response
    */

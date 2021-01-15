@@ -36,17 +36,11 @@ const ignoreRedirectsToEarth = ignoreRedirectsTo('EARTH');
 
 export default function* earth() {
   // @ts-ignore
-  yield takeLatest(ignoreRedirectsToEarth, loadPlaces);
-  // @ts-ignore
-  yield takeLatest(ignoreRedirectsToEarth, loadCollections);
-  // @ts-ignore
   yield takeLatest(ignoreRedirectsToEarth, loadDataIndexes);
   // @ts-ignore
   yield takeLatest(ignoreRedirectsToEarth, preloadFilters);
 
   // WARNING - will execute on any page from the app, not just on /EARTH
-  yield takeLatest(resetPlacesFeatured, loadPlaces);
-  yield takeLatest(resetPlacesFeatured, loadCollections);
   yield takeLatest(resetLayerCache, loadDataIndexes);
 }
 
@@ -55,38 +49,4 @@ function* preloadFilters() {
     payload: {},
   });
   yield put(setPlacesSearchAvailableFilters(meta.filters));
-}
-
-function* loadPlaces() {
-  const group = yield select(getGroup);
-
-  // PLACES
-  const places: IPlace[] = yield all({
-    featured: call(PlacesService.fetchPlaces, {
-      select: 'slug,name,id,organization,type',
-      page: { size: 100 },
-      filter: 'featured==true',
-      sort: 'name',
-      group: group.toString(),
-    }),
-  });
-
-  yield put(setPlacesCache(places));
-}
-
-function* loadCollections() {
-  const group = yield select(getGroup);
-  const { data }: { data: ICollection[] } = yield call(PlacesService.fetchPlaces, {
-    select: 'slug,name,id,organization,type,updatedAt',
-    filter: ['type', '==', LocationTypeEnum.COLLECTION].join(''),
-    page: { size: 5 },
-    sort: '-updatedAt',
-    group: group.toString(),
-  });
-
-  yield put(
-    setFeaturedCollections({
-      data,
-    })
-  );
 }
