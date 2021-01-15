@@ -26,7 +26,7 @@ import { SidebarLayout } from '@app/layouts';
 import { RequestQuery } from '@app/services';
 import WidgetsService from '@app/services/widgets';
 import { setPage } from '@app/utils';
-import { useInfiniteList } from '@app/utils/hooks';
+import { useInfiniteList } from '@marapp/earth-shared';
 
 import { WidgetsDetail } from './details';
 import { WidgetsHome } from './home';

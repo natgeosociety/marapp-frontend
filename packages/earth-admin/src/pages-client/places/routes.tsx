@@ -26,7 +26,7 @@ import { SidebarLayout } from '@app/layouts';
 import { RequestQuery } from '@app/services';
 import PlacesService from '@app/services/places';
 import { setPage } from '@app/utils';
-import { useInfiniteList } from '@app/utils/hooks';
+import { useInfiniteList } from '@marapp/earth-shared';
 
 import { PlaceDetail } from './details';
 import { PlacesHome } from './home';

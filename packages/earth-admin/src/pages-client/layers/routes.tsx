@@ -26,7 +26,7 @@ import { SidebarLayout } from '@app/layouts';
 import { RequestQuery } from '@app/services';
 import LayersService from '@app/services/layers';
 import { setPage } from '@app/utils';
-import { useInfiniteList } from '@app/utils/hooks';
+import { useInfiniteList } from '@marapp/earth-shared';
 
 import { LayerDetail } from './details';
 import { LayersHome } from './home';

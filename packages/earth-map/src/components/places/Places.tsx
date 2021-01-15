@@ -15,7 +15,7 @@ import { merge } from 'lodash/fp';
 import { generateCacheKey } from 'services/base/APIBase';
 import { LOCATION_QUERY } from 'sagas/model';
 import PlacesService from 'services/PlacesService';
-
+import PlacesSearchResults from './search-results';
 interface IProps {
   selected: boolean;
   children: any;
@@ -133,38 +133,7 @@ const Places = (props: IProps) => {
         </>
       }
     >
-      {showSearchResults ? (
-        <InfiniteList
-          title={t('Search results')}
-          data={results}
-          loading={search.loading}
-          nextPageCursor={nextPageCursor}
-          onNextPage={nextPlacesPage}
-        >
-          {({ id, $searchHint, name, slug, organization, type }) => (
-            <ListItem
-              hint={$searchHint.name}
-              title={name}
-              key={`${slug}-${organization}`}
-              onClick={() => {
-                setSidebarPanelExpanded(false);
-                setPlacesSearch({ search: name });
-              }}
-              linkTo={{
-                type:
-                  type === LocationTypeEnum.COLLECTION
-                    ? EarthRoutes.COLLECTION
-                    : EarthRoutes.LOCATION,
-                payload: { slug, id, organization },
-              }}
-              organization={group.length > 1 && organization}
-              labels={[type]}
-            />
-          )}
-        </InfiniteList>
-      ) : (
-        children
-      )}
+      {showSearchResults ? <PlacesSearchResults search={search.search} group={group} /> : children}
     </SidebarLayoutSearch>
   );
 };
