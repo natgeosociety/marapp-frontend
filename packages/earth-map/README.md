@@ -21,8 +21,6 @@ The following environment variables are required by the application.
 | **Key** | **Description** |
 | ------------- |:----------------|
 | `NODE_ENV` | Node.js environment (e.g. `development`, `production`) |
-| `NODE_PATH` | https://nodejs.org/api/modules.html#modules_loading_from_the_global_folders (e.g. `src`) |
-| `SASS_PATH` | https://create-react-app.dev/docs/adding-a-sass-stylesheet/ (e.g. `node_modules:src`) |
 | `PUBLIC_URL` | The public URL (e.g. `/`) |
 | `GATSBY_APP_NAME` | The name of the app (e.g. `marapp`) |
 | `GATSBY_APP_BASE_URL` | The base URL (e.g. `/`) |

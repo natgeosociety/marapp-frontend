@@ -31,7 +31,6 @@ module.exports = {
     '^services(.*)$': '<rootDir>/src/services$1',
     '^store(.*)$': '<rootDir>/src/store$1',
     '^utils(.*)$': '<rootDir>/src/utils$1',
-    '^utils(.*)$': '<rootDir>/src/utils$1',
 
     // why is constants not working?
     // "^constants(.*)$": "<rootDir>/src/constants$1",

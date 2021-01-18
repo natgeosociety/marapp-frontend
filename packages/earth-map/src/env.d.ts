@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-/// <reference types="react-scripts" />
 declare module '@marapp/earth-shared';
 declare module '@fullpage/react-fullpage';
 declare module 'layer-manager';
