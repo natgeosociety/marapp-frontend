@@ -494,7 +494,7 @@ export function LayerDetail(props: any) {
                           getOptionLabel={(option) => option.name}
                           getOptionValue={(option) => option.id}
                           loadFunction={LayersService.getAllLayers}
-                          defaultValue={references}
+                          defaultValue={references || []}
                           selectedGroup={selectedGroup}
                           onChange={([e]) => e}
                           isClearable={true}

@@ -97,7 +97,7 @@ const FilterBy = (props: IProps) => {
 
                 return (
                   <div
-                    className="ng-width-1-2 ng-margin-bottom"
+                    className={`marapp-qa-filter-option ng-width-1-2 ng-margin-bottom`}
                     key={`${filter.key}-${filter.value}`}
                   >
                     <label
@@ -109,7 +109,7 @@ const FilterBy = (props: IProps) => {
                       })}
                     >
                       <input
-                        className="ng-checkbox-input"
+                        className={`marapp-qa-filter-option-${i} ng-checkbox-input`}
                         type="checkbox"
                         disabled={disabled}
                         checked={checked}
