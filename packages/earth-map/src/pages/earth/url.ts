@@ -20,6 +20,7 @@
 import { IUrlProp } from '../../components/url/component';
 import { setLayersActive } from '../../modules/layers/actions';
 import { setMapViewport } from '../../modules/map/actions';
+import { INITIAL_VIEW_PORT } from '../../modules/map/initial-state';
 import {
   mapReduxStoreViewportToUrlParams,
   mapUrlParamsToReduxStoreViewport,
@@ -40,7 +41,7 @@ export const URL_PROPS: IUrlProp[] = [
     action: setMapViewport,
     required: false,
     mapValueToUrl: mapReduxStoreViewportToUrlParams,
-    mapUrlToValue: mapUrlParamsToReduxStoreViewport,
+    mapUrlToValue: mapUrlParamsToReduxStoreViewport(INITIAL_VIEW_PORT),
   },
 ];
 
