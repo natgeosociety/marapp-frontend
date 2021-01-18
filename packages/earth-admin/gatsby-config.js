@@ -24,7 +24,7 @@ const GATSBY_ACTIVE_ENV = process.env.GATSBY_ACTIVE_ENV || '.env';
 require('dotenv').config({ path: GATSBY_ACTIVE_ENV });
 
 module.exports = {
-  pathPrefix: process.env.GATSBY_APP_BASE_URL,
+  pathPrefix: process.env.GATSBY_APP_ADMIN_BASE_URL,
   siteMetadata: {
     siteName: 'Admin',
   },

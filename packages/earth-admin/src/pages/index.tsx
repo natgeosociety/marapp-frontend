@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useAuth0 } from '@app/auth/auth0';
 import { ProtectedRoute } from '@app/components/protected-route';
-import { GATSBY_APP_BASE_URL } from '@app/config';
+import { ADMIN_BASE_URL } from '@app/config';
 import NotFound from '@app/pages-client/404';
 import DashboardsPage from '@app/pages-client/dashboards/routes';
 import Homepage from '@app/pages-client/homepage';
@@ -41,7 +41,7 @@ import WidgetsPage from '@app/pages-client/widgets/routes';
  */
 export default function IndexPage() {
   return (
-    <Router basepath={GATSBY_APP_BASE_URL}>
+    <Router basepath={ADMIN_BASE_URL}>
       <ProtectedRoute exact={true} path="/" component={RedirectToOrgHomepage} />
       <ProtectedRoute exact={true} path="/:org" component={Organization}>
         <Homepage exact={true} path="/" />

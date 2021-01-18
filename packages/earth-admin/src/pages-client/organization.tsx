@@ -25,7 +25,7 @@ import { useTranslation } from 'react-i18next';
 import { isSuperAdmin, isValidGroup, Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { BASE_URL } from '@app/config';
+import { ADMIN_BASE_URL } from '@app/config';
 
 import './styles.scss';
 
@@ -60,8 +60,8 @@ const Organization = (props: IProps) => {
     return <OrgSwitcherPage groups={groups} t={t} />;
   }
 
-  if (org === '*' && !location.pathname.startsWith(`${BASE_URL}*/organizations`)) {
-    window.location.assign(`${BASE_URL}*/organizations`);
+  if (org === '*' && !location.pathname.startsWith(`${ADMIN_BASE_URL}*/organizations`)) {
+    window.location.assign(`${ADMIN_BASE_URL}*/organizations`);
 
     return null;
   }
