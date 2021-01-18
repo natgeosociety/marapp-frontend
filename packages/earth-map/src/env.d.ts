@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-declare module '@marapp/earth-shared';
-declare module '@fullpage/react-fullpage';
-declare module 'layer-manager';
-declare module 'vizzuality-components';
+// declare module '@marapp/earth-shared';
+// declare module '@fullpage/react-fullpage';
+// declare module 'layer-manager';
+// declare module 'vizzuality-components';

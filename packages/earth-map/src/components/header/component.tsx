@@ -25,11 +25,11 @@ import Link from 'redux-first-router-link';
 
 import { AppContextSwitcher, checkAdminRole } from '@marapp/earth-shared';
 
-import { Auth0Context } from '../../auth/auth0';
-import { ADMIN_URL, APP_NAME } from '../../config';
+import { MAP_ADMIN_URL, MAP_APP_NAME } from '../../config';
 import { EPanels } from '../../modules/sidebar/model';
 import OrganizationService from '../../services/OrganizationService';
 import { APP_LOGO } from '../../theme';
+import { Auth0Context } from '../../utils/contexts';
 
 const { Option } = AppContextSwitcher;
 
@@ -141,7 +141,7 @@ const Header = (props: IProps) => {
     >
       <img
         src={APP_LOGO}
-        alt={APP_NAME}
+        alt={MAP_APP_NAME}
         className="ng-margin-remove ng-display-block"
         onClick={handleResetLocation}
       />
@@ -189,7 +189,7 @@ const Header = (props: IProps) => {
       value="map-view"
       checkedCount={selectedGroups.length}
       renderDropdown={isAuthenticated}
-      onChange={(g) => window.location.assign(`${ADMIN_URL}${g}`)}
+      onChange={(g) => window.location.assign(`${MAP_ADMIN_URL}${g}`)}
     >
       <Option value="map-view">{t('Map View')}</Option>
       {orgCheckBoxes}

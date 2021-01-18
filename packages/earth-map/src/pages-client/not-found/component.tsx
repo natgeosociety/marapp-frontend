@@ -17,19 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import urljoin from 'url-join';
+import React from 'react';
 
-import { windowPropertySSR } from '../utils';
+import { NotFoundComponent } from '@marapp/earth-shared';
 
-const config = {
-  domain: process.env.GATSBY_APP_MAP_AUTH0_DOMAIN,
-  clientId: process.env.GATSBY_APP_MAP_AUTH0_CLIENT_ID,
-  redirectUri: urljoin(
-    windowPropertySSR('location.origin', '/'),
-    process.env.GATSBY_APP_MAP_BASE_URL || '/'
-  ),
-  audience: process.env.GATSBY_APP_MAP_AUTH0_AUDIENCE,
-  namespace: process.env.GATSBY_APP_MAP_AUTH0_NAMESPACE,
-};
+import { MAP_APP_NAME } from '../../config';
+import { APP_ABOUT } from '../../theme';
 
-export default { config };
+const NotFoundPage = ({ returnToHome }) => (
+  <NotFoundComponent returnToHome={returnToHome} aboutLink={APP_ABOUT} appName={MAP_APP_NAME} />
+);
+
+export default NotFoundPage;

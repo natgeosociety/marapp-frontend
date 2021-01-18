@@ -21,15 +21,15 @@ import classNames from 'classnames';
 import React from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
-import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from '../../config';
+import { MAP_SIDEBAR_WIDTH, MAP_SIDEBAR_WIDTH_WIDE } from '../../config';
 import CompanyRedirect from './company-redirect';
 import SidebarToggle from './sidebar-toggle';
 import './styles.scss';
 
 // Creates a spring with predefined animation slots
 const SidebarPanel: any = Keyframes.Spring({
-  open: { x: 0, width: SIDEBAR_WIDTH, from: { x: -100 }, delay: 0 },
-  openW: { x: 0, width: SIDEBAR_WIDTH_WIDE, from: { x: 0 }, delay: 0 },
+  open: { x: 0, width: MAP_SIDEBAR_WIDTH, from: { x: -100 }, delay: 0 },
+  openW: { x: 0, width: MAP_SIDEBAR_WIDTH_WIDE, from: { x: 0 }, delay: 0 },
   close: { x: -100, delay: 100 },
 });
 

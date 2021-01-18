@@ -25,7 +25,7 @@ import { replace } from 'redux-first-router';
 
 import { AsyncSelect, Card, DropdownItem, TitleHero } from '@marapp/earth-shared';
 
-import { ENABLE_PUBLIC_ACCESS } from '../../../config';
+import { MAP_ENABLE_PUBLIC_ACCESS } from '../../../config';
 import { ICollection } from '../../../modules/collections/model';
 import { LocationTypeEnum } from '../../../modules/places/model';
 import PlacesService from '../../../services/PlacesService';
@@ -73,7 +73,7 @@ export function CollectionEditPlaces(props: IProps) {
                 title: option.name,
               };
 
-              if (ENABLE_PUBLIC_ACCESS) {
+              if (MAP_ENABLE_PUBLIC_ACCESS) {
                 itemProps.subtitle = option.organization;
               }
 

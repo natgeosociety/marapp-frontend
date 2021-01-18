@@ -17,19 +17,20 @@
   specific language governing permissions and limitations under the License.
 */
 
-import urljoin from 'url-join';
+import { connect } from 'react-redux';
 
-import { windowPropertySSR } from '../utils';
+import { setSidebarPanel } from '../../modules/sidebar/actions';
+import EarthComponent from './component';
 
-const config = {
-  domain: process.env.GATSBY_APP_MAP_AUTH0_DOMAIN,
-  clientId: process.env.GATSBY_APP_MAP_AUTH0_CLIENT_ID,
-  redirectUri: urljoin(
-    windowPropertySSR('location.origin', '/'),
-    process.env.GATSBY_APP_MAP_BASE_URL || '/'
-  ),
-  audience: process.env.GATSBY_APP_MAP_AUTH0_AUDIENCE,
-  namespace: process.env.GATSBY_APP_MAP_AUTH0_NAMESPACE,
-};
-
-export default { config };
+export default connect(
+  (state: any) => ({
+    ...state.sidebar,
+    router: state.router,
+    group: state.user.group,
+    lastViewedPlace: state.global.lastViewedPlace,
+    collection: state.collections.data,
+  }),
+  {
+    setSidebarPanel,
+  }
+)(EarthComponent);

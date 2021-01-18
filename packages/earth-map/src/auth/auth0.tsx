@@ -34,14 +34,13 @@ import {
 
 import auth0 from '../config/auth0';
 import { routeToPage } from '../utils';
-import { Auth0 } from './model';
+import { Auth0Context } from '../utils/contexts';
 
 // Auth0 will enforce namespacing when performing OIDC-conformant
 // login flows, meaning that any custom claims without HTTP/HTTPS
 // namespaces will be silently excluded from tokens.
 const NAMESPACE = auth0.config.namespace;
 
-export const Auth0Context = React.createContext<Auth0>(null);
 export const useAuth0 = () => useContext(Auth0Context);
 
 interface Auth0ProviderOptions {

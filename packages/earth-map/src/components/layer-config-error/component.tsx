@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Card } from '@marapp/earth-shared';
 
-import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from '../../config';
+import { MAP_SIDEBAR_WIDTH, MAP_SIDEBAR_WIDTH_WIDE } from '../../config';
 import './styles.scss';
 
 interface IProps {
@@ -39,10 +39,10 @@ const LayerConfigError = (props: IProps) => {
   };
 
   if (open) {
-    containerStyle.marginLeft = SIDEBAR_WIDTH;
+    containerStyle.marginLeft = MAP_SIDEBAR_WIDTH;
 
     if (selectedOpen) {
-      containerStyle.marginLeft = SIDEBAR_WIDTH_WIDE;
+      containerStyle.marginLeft = MAP_SIDEBAR_WIDTH_WIDE;
     }
   }
 

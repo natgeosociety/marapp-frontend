@@ -17,19 +17,25 @@
   specific language governing permissions and limitations under the License.
 */
 
-import urljoin from 'url-join';
+@import '~styles/config';
 
-import { windowPropertySSR } from '../utils';
-
-const config = {
-  domain: process.env.GATSBY_APP_MAP_AUTH0_DOMAIN,
-  clientId: process.env.GATSBY_APP_MAP_AUTH0_CLIENT_ID,
-  redirectUri: urljoin(
-    windowPropertySSR('location.origin', '/'),
-    process.env.GATSBY_APP_MAP_BASE_URL || '/'
-  ),
-  audience: process.env.GATSBY_APP_MAP_AUTH0_AUDIENCE,
-  namespace: process.env.GATSBY_APP_MAP_AUTH0_NAMESPACE,
-};
-
-export default { config };
+.verified-page {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url('../../images/blur.jpg');
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  color: $marapp-gray-0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  .verified-container {
+    box-shadow: 0px 16px 48px rgba(0, 0, 0, 0.175);
+    background: $marapp-gray-7;
+    max-width: 375px;
+    padding: 30px;
+  }
+}

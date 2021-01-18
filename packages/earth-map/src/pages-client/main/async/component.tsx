@@ -17,19 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import urljoin from 'url-join';
+import loadable from '@loadable/component';
 
-import { windowPropertySSR } from '../utils';
-
-const config = {
-  domain: process.env.GATSBY_APP_MAP_AUTH0_DOMAIN,
-  clientId: process.env.GATSBY_APP_MAP_AUTH0_CLIENT_ID,
-  redirectUri: urljoin(
-    windowPropertySSR('location.origin', '/'),
-    process.env.GATSBY_APP_MAP_BASE_URL || '/'
-  ),
-  audience: process.env.GATSBY_APP_MAP_AUTH0_AUDIENCE,
-  namespace: process.env.GATSBY_APP_MAP_AUTH0_NAMESPACE,
-};
-
-export default { config };
+const AsyncPage = loadable((props: any) => import(`@app/pages-client/${props.page}`));
+export default AsyncPage;

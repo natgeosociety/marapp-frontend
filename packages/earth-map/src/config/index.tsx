@@ -19,24 +19,40 @@
 
 import yn from 'yn';
 
-export const NODE_ENV = process.env.NODE_ENV;
-export const PUBLIC_URL = process.env.PUBLIC_URL;
+const NODE_ENV: string = process.env.NODE_ENV;
+const PUBLIC_URL: string = process.env.PUBLIC_URL;
 
-export const BASE_URL = process.env.GATSBY_APP_BASE_URL || '/';
-export const API_URL = process.env.GATSBY_APP_API_URL;
-export const FULLPAGE_LICENSE = process.env.GATSBY_APP_FULLPAGE_LICENSE;
-export const ADMIN_URL = process.env.GATSBY_APP_ADMIN_URL;
-export const APP_NAME = process.env.GATSBY_APP_NAME;
-export const MAPBOX_TOKEN = process.env.GATSBY_APP_MAPBOX_TOKEN;
-export const WEGLOT_API_KEY = process.env.GATSBY_APP_WEGLOT_API_KEY;
-export const COMPANY_URL = process.env.GATSBY_APP_COMPANY_URL;
-
-export const GTM_TAG = process.env.GATSBY_APP_GTM_TAG;
-export const ENABLE_PUBLIC_ACCESS = yn(process.env.GATSBY_APP_ENABLE_PUBLIC_ACCESS, {
+const MAP_BASE_URL: string = process.env.GATSBY_APP_MAP_BASE_URL || '/';
+const MAP_API_URL: string = process.env.GATSBY_APP_MAP_API_URL;
+const MAP_FULLPAGE_LICENSE: string = process.env.GATSBY_APP_MAP_FULLPAGE_LICENSE;
+const MAP_ADMIN_URL: string = process.env.GATSBY_APP_MAP_ADMIN_URL;
+const MAP_APP_NAME: string = process.env.GATSBY_APP_MAP_NAME;
+const MAP_MAPBOX_TOKEN: string = process.env.GATSBY_APP_MAP_MAPBOX_TOKEN;
+const MAP_WEGLOT_API_KEY: string = process.env.GATSBY_APP_MAP_WEGLOT_API_KEY;
+const MAP_COMPANY_URL: string = process.env.GATSBY_APP_MAP_COMPANY_URL;
+const MAP_EXTERNAL_IDP_URL: string = process.env.GATSBY_APP_MAP_EXTERNAL_IDP_URL || '';
+const MAP_GTM_TAG: string = process.env.GATSBY_APP_MAP_GTM_TAG;
+const MAP_ENABLE_PUBLIC_ACCESS: boolean = yn(process.env.GATSBY_APP_MAP_ENABLE_PUBLIC_ACCESS, {
   default: false,
 });
 
-export const SIDEBAR_WIDTH = 375;
-export const SIDEBAR_WIDTH_WIDE = 500;
+const MAP_SIDEBAR_WIDTH = 375;
+const MAP_SIDEBAR_WIDTH_WIDE = 500;
 
-export const GATSBY_APP_EXTERNAL_IDP_URL = process.env.GATSBY_APP_EXTERNAL_IDP_URL || '';
+export {
+  NODE_ENV,
+  PUBLIC_URL,
+  MAP_BASE_URL,
+  MAP_API_URL,
+  MAP_FULLPAGE_LICENSE,
+  MAP_ADMIN_URL,
+  MAP_APP_NAME,
+  MAP_MAPBOX_TOKEN,
+  MAP_WEGLOT_API_KEY,
+  MAP_COMPANY_URL,
+  MAP_EXTERNAL_IDP_URL,
+  MAP_GTM_TAG,
+  MAP_ENABLE_PUBLIC_ACCESS,
+  MAP_SIDEBAR_WIDTH,
+  MAP_SIDEBAR_WIDTH_WIDE,
+};

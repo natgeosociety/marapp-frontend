@@ -17,19 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import urljoin from 'url-join';
+import React from 'react';
 
-import { windowPropertySSR } from '../utils';
+import Home from '../../components/home';
 
-const config = {
-  domain: process.env.GATSBY_APP_MAP_AUTH0_DOMAIN,
-  clientId: process.env.GATSBY_APP_MAP_AUTH0_CLIENT_ID,
-  redirectUri: urljoin(
-    windowPropertySSR('location.origin', '/'),
-    process.env.GATSBY_APP_MAP_BASE_URL || '/'
-  ),
-  audience: process.env.GATSBY_APP_MAP_AUTH0_AUDIENCE,
-  namespace: process.env.GATSBY_APP_MAP_AUTH0_NAMESPACE,
-};
+class HomePage extends React.PureComponent {
+  public render() {
+    return (
+      <div className="marapp-qa-pagehome l-page">
+        <div style={{ position: 'fixed', width: '80px', height: '100%', top: '0', left: '0' }} />
+        <div className="l-content">
+          <Home />
+        </div>
+      </div>
+    );
+  }
+}
 
-export default { config };
+export default HomePage;

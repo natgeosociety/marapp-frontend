@@ -17,12 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { get } from 'lodash';
 import qs from 'query-string';
 import React from 'react';
 import { Deserializer } from 'ts-jsonapi';
 import urljoin from 'url-join';
 
-import { BASE_URL } from '../config';
+import { MAP_BASE_URL } from '../config';
 
 const DeserializerService = new Deserializer({
   keyForAttribute: (attribute: any) => {
@@ -41,7 +42,7 @@ export const routeToPage = ({
   basePath?: string;
   targetPath?: string;
 }) => {
-  const base = basePath ? basePath : BASE_URL;
+  const base = basePath ? basePath : MAP_BASE_URL;
   const target = targetPath ? urljoin(base, targetPath) : base;
 
   window.history.replaceState({}, document.title, target);
@@ -65,5 +66,12 @@ export const parseHintBold = (text: string = '') => {
 export const deserializeData = (data) => DeserializerService.deserialize(data);
 
 export const getUrlQueryParams = () => {
-  return qs.parse(window.location.search);
+  return qs.parse(windowPropertySSR('location.search', ''));
 };
+
+/**
+ * Load "browser globals" like window (during SSR).
+ * See: https://www.gatsbyjs.com/docs/debugging-html-builds/#how-to-check-if-window-is-defined
+ */
+export const windowPropertySSR = (path?: string, fallback: any = null) =>
+  typeof window !== 'undefined' ? (path ? get(window, path, fallback) : window) : fallback;

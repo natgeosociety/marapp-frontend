@@ -24,7 +24,7 @@ const GATSBY_ACTIVE_ENV = process.env.GATSBY_ACTIVE_ENV || '.env';
 require('dotenv').config({ path: GATSBY_ACTIVE_ENV });
 
 module.exports = {
-  pathPrefix: process.env.GATSBY_APP_BASE_URL,
+  pathPrefix: process.env.GATSBY_APP_MAP_BASE_URL,
   siteMetadata: {
     siteName: 'Map',
   },
@@ -55,6 +55,7 @@ module.exports = {
         '@app/images': path.join(__dirname, 'src/images'),
         '@app/modules': path.join(__dirname, 'src/modules'),
         '@app/pages': path.join(__dirname, 'src/pages'),
+        '@app/pages-client': path.join(__dirname, 'src/pages-client'),
         '@app/sagas': path.join(__dirname, 'src/sagas'),
         '@app/services': path.join(__dirname, 'src/services'),
         '@app/store': path.join(__dirname, 'src/store'),

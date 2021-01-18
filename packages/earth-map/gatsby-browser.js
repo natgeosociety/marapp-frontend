@@ -26,10 +26,10 @@ import { Auth0Provider } from './src/auth/auth0';
 import { onRedirectCallback, onSuccessHook, onFailureHook } from './src/auth/hooks';
 import auth0 from './src/config/auth0';
 
-import { GTM_TAG } from './src/config';
+import { MAP_GTM_TAG } from './src/config';
 
-if (GTM_TAG) {
-  const tagManagerArgs = { gtmId: GTM_TAG };
+if (MAP_GTM_TAG) {
+  const tagManagerArgs = { gtmId: MAP_GTM_TAG };
   TagManager.initialize(tagManagerArgs);
 }
 

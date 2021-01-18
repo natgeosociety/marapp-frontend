@@ -24,6 +24,8 @@ import createSagaMiddleware from 'redux-saga';
 import thunk from 'redux-thunk';
 import { handleModule } from 'vizzuality-redux-tools';
 
+import { SessionStorage } from '@marapp/earth-shared';
+
 import * as collections from '../modules/collections';
 import * as global from '../modules/global';
 import * as indexes from '../modules/indexes';
@@ -92,7 +94,7 @@ const initStore = (initialState = {}) => {
   const store: Store = createStore(rootReducer, initialState, enhancers);
 
   // restore state from sessionStorage
-  const ephemeralState = JSON.parse(sessionStorage.getItem('ephemeral'));
+  const ephemeralState = SessionStorage.getObject('ephemeral');
   restoreState(store, ephemeralState);
 
   // run the sagas && initialDispatch

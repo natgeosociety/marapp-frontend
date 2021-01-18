@@ -17,19 +17,26 @@
   specific language governing permissions and limitations under the License.
 */
 
-import urljoin from 'url-join';
+import React from 'react';
 
-import { windowPropertySSR } from '../utils';
+import { Button, ErrorTemplate } from '@marapp/earth-shared';
 
-const config = {
-  domain: process.env.GATSBY_APP_MAP_AUTH0_DOMAIN,
-  clientId: process.env.GATSBY_APP_MAP_AUTH0_CLIENT_ID,
-  redirectUri: urljoin(
-    windowPropertySSR('location.origin', '/'),
-    process.env.GATSBY_APP_MAP_BASE_URL || '/'
-  ),
-  audience: process.env.GATSBY_APP_MAP_AUTH0_AUDIENCE,
-  namespace: process.env.GATSBY_APP_MAP_AUTH0_NAMESPACE,
+import { useAuth0 } from '../../auth/auth0';
+
+const Unauthorized = () => {
+  const { logout } = useAuth0();
+
+  return (
+    <ErrorTemplate type="403" message="You don’t have permission to access this page.">
+      <ul className="not-found--links--list">
+        <li>
+          <Button onClick={logout} className="-light -fullwidth">
+            Log out
+          </Button>
+        </li>
+      </ul>
+    </ErrorTemplate>
+  );
 };
 
-export default { config };
+export default Unauthorized;

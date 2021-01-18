@@ -28,10 +28,10 @@ import Link from 'redux-first-router-link';
 
 import { Map, Spinner, UserMenu } from '@marapp/earth-shared';
 
-import { Auth0Context } from '../../auth/auth0';
-import { API_URL, MAPBOX_TOKEN } from '../../config';
+import { MAP_API_URL, MAP_MAPBOX_TOKEN } from '../../config';
 import experienceIMG from '../../images/pins/experience-marker.svg';
 import { APP_ABOUT, RESOURCE_WATCH_URL } from '../../theme';
+import { Auth0Context } from '../../utils/contexts';
 import {
   extractCoordinatesFromUrl,
   isValidUrlCoordinateGroup,
@@ -212,7 +212,7 @@ class MapComponent extends React.Component<IMap, IMapState> {
   };
 
   public onTransformRequest = (url, resourceType) => {
-    if (resourceType === 'Source' && url.includes(API_URL)) {
+    if (resourceType === 'Source' && url.includes(MAP_API_URL)) {
       return {
         url,
         headers: { Authorization: axios.defaults.headers.common.Authorization },
@@ -331,7 +331,7 @@ class MapComponent extends React.Component<IMap, IMapState> {
         <UserMenuWrapper selected={page} />
 
         <Map
-          mapboxApiAccessToken={MAPBOX_TOKEN}
+          mapboxApiAccessToken={MAP_MAPBOX_TOKEN}
           // Attributtes
           mapStyle={mapStyle}
           viewport={viewport}

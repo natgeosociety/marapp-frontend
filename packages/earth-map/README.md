@@ -22,21 +22,21 @@ The following environment variables are required by the application.
 | ------------- |:----------------|
 | `NODE_ENV` | Node.js environment (e.g. `development`, `production`) |
 | `PUBLIC_URL` | The public URL (e.g. `/`) |
-| `GATSBY_APP_NAME` | The name of the app (e.g. `marapp`) |
-| `GATSBY_APP_BASE_URL` | The base URL (e.g. `/`) |
-| `GATSBY_APP_ASSETS_URL` | The assets URL |
-| `GATSBY_APP_API_URL` | The API URL |
-| `GATSBY_APP_FULLPAGE_LICENSE` | https://alvarotrigo.com/fullPage/ - fullPage.js License KEY |
-| `GATSBY_APP_MAPBOX_TOKEN` | https://docs.mapbox.com/help/glossary/access-token - Mapbox access token |
-| `GATSBY_APP_AUTH0_DOMAIN` | https://auth0.com/docs/custom-domains - Auth0 domain |
-| `GATSBY_APP_AUTH0_CLIENT_ID`| https://auth0.com/docs/flows/concepts/client-credentials - Auth0 Client ID |
-| `GATSBY_APP_AUTH0_AUDIENCE` | https://auth0.com/docs/tokens/guides/get-access-tokens - Auth0 audience |
-| `GATSBY_APP_AUTH0_NAMESPACE` | https://auth0.com/docs/tokens/guides/create-namespaced-custom-claims - Auth0 namespace |
-| `GATSBY_APP_ADMIN_URL` | The URL for admin component (e.g. `/admin/`) |
-| `GATSBY_APP_GTM_TAG` | Google Tag Manager ID |
-| `GATSBY_APP_ENABLE_PUBLIC_ACCESS` | Enable unauthenticated access |
-| `GATSBY_APP_EXTERNAL_IDP_URL` | External Identity Provider URL |
-| `GATSBY_APP_WEGLOT_API_KEY` | https://weglot.com/ - Weglot API Key |
+| `GATSBY_APP_MAP_NAME` | The name of the app (e.g. `marapp`) |
+| `GATSBY_APP_MAP_BASE_URL` | The base URL (e.g. `/`) |
+| `GATSBY_APP_MAP_ASSETS_URL` | The assets URL |
+| `GATSBY_APP_MAP_API_URL` | The API URL |
+| `GATSBY_APP_MAP_FULLPAGE_LICENSE` | https://alvarotrigo.com/fullPage/ - fullPage.js License KEY |
+| `GATSBY_APP_MAP_MAPBOX_TOKEN` | https://docs.mapbox.com/help/glossary/access-token - Mapbox access token |
+| `GATSBY_APP_MAP_AUTH0_DOMAIN` | https://auth0.com/docs/custom-domains - Auth0 domain |
+| `GATSBY_APP_MAP_AUTH0_CLIENT_ID`| https://auth0.com/docs/flows/concepts/client-credentials - Auth0 Client ID |
+| `GATSBY_APP_MAP_AUTH0_AUDIENCE` | https://auth0.com/docs/tokens/guides/get-access-tokens - Auth0 audience |
+| `GATSBY_APP_MAP_AUTH0_NAMESPACE` | https://auth0.com/docs/tokens/guides/create-namespaced-custom-claims - Auth0 namespace |
+| `GATSBY_APP_MAP_ADMIN_URL` | The URL for admin component (e.g. `/admin/`) |
+| `GATSBY_APP_MAP_GTM_TAG` | Google Tag Manager ID |
+| `GATSBY_APP_MAP_ENABLE_PUBLIC_ACCESS` | Enable unauthenticated access |
+| `GATSBY_APP_MAP_EXTERNAL_IDP_URL` | External Identity Provider URL |
+| `GATSBY_APP_MAP_WEGLOT_API_KEY` | https://weglot.com/ - Weglot API Key |
 
 ## Getting started
 
