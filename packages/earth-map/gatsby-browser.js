@@ -19,24 +19,21 @@
 
 import 'core-js/stable';
 import React from 'react';
-import * as ReactDOM from 'react-dom';
 import TagManager from 'react-gtm-module';
 import 'styles/index.scss';
 
-import App from './App';
-import { Auth0Provider } from './auth/auth0';
-import { onFailureHook, onRedirectCallback, onSuccessHook } from './auth/hooks';
-import { GTM_TAG } from './config';
-import auth0 from './config/auth0';
-import * as serviceWorker from './serviceWorker';
+import { Auth0Provider } from './src/auth/auth0';
+import { onRedirectCallback, onSuccessHook, onFailureHook } from './src/auth/hooks';
+import auth0 from './src/config/auth0';
+
+import { GTM_TAG } from './src/config';
 
 if (GTM_TAG) {
   const tagManagerArgs = { gtmId: GTM_TAG };
   TagManager.initialize(tagManagerArgs);
 }
 
-ReactDOM.render(
-  // @ts-ignore
+export const wrapRootElement = ({ element }) => (
   <Auth0Provider
     domain={auth0.config.domain}
     client_id={auth0.config.clientId}
@@ -48,12 +45,6 @@ ReactDOM.render(
     useRefreshTokens={true}
     cacheLocation={'memory'}
   >
-    <App />
-  </Auth0Provider>,
-  document.getElementById('root')
+    {element}
+  </Auth0Provider>
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();

@@ -18,10 +18,10 @@
 */
 
 import classNames from 'classnames';
-import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from 'config';
 import React from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
+import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from '../../config';
 import CompanyRedirect from './company-redirect';
 import SidebarToggle from './sidebar-toggle';
 import './styles.scss';

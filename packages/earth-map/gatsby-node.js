@@ -17,18 +17,27 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
+exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+  actions.setWebpackConfig({
+    node: {
+      fs: 'empty',
+    },
+  });
 
-import { setPlacesSearch } from '../../modules/places/actions';
-import { setRouter } from '../../modules/router/actions';
-import SearchBoxComponent from './Searchbox';
-
-export default connect(
-  (state: any) => ({
-    ...state.places.search,
-  }),
-  {
-    setRouter,
-    setPlacesSearch,
+  if (stage === 'build-html') {
+    actions.setWebpackConfig({
+      module: {
+        rules: [
+          {
+            test: /@auth0/,
+            use: loaders.null(),
+          },
+          {
+            test: /@auth0-spa-js/,
+            use: loaders.null(),
+          },
+        ],
+      },
+    });
   }
-)(SearchBoxComponent);
+};

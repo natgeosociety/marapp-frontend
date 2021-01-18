@@ -17,14 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import Widgets from 'components/widgets';
 import isEmpty from 'lodash/isEmpty';
 import sortBy from 'lodash/sortBy';
-import { IWidget } from 'modules/widget/model';
 import React from 'react';
 
 import { Spinner } from '@marapp/earth-shared';
 
+import Widgets from '../../components/widgets';
+import { IWidget } from '../../modules/widget/model';
 import './styles.scss';
 
 interface ILIst {

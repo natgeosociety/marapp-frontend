@@ -22,13 +22,14 @@ import flatten from 'flat';
 import json2csv from 'json2csv';
 import JSZip from 'jszip';
 import { groupBy } from 'lodash';
-import { ICollection } from 'modules/collections/model';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import MetricService from 'services/MetricService';
 
 import { Card, ReactSelect, serializeFilters, TitleHero } from '@marapp/earth-shared';
+
+import { ICollection } from '../../../modules/collections/model';
+import MetricService from '../../../services/MetricService';
 
 interface IProps {
   collection: ICollection;

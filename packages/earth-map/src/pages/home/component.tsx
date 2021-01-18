@@ -17,8 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import Home from 'components/home';
 import React from 'react';
+
+import Home from '../../components/home';
 
 class HomePage extends React.PureComponent {
   public render() {

@@ -18,12 +18,9 @@
  */
 
 import FileSaver from 'file-saver';
-import { IPlace } from 'modules/places/model';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import ExportService from 'services/ExportService';
-import LayersService from 'services/LayersService';
 
 import {
   AsyncSelect,
@@ -34,6 +31,10 @@ import {
   Spinner,
   TitleHero,
 } from '@marapp/earth-shared';
+
+import { IPlace } from '../../modules/places/model';
+import ExportService from '../../services/ExportService';
+import LayersService from '../../services/LayersService';
 
 interface IProps {
   place: Partial<IPlace>;

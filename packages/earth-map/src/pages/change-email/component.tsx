@@ -17,16 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useAuth0 } from 'auth/auth0';
-import { PUBLIC_URL } from 'config';
 import React, { useEffect, useState } from 'react';
 import { replace } from 'redux-first-router';
 import Link from 'redux-first-router-link';
-import ProfileService from 'services/ProfileService';
-import { APP_LOGO } from 'theme';
 
 import { Spinner } from '@marapp/earth-shared';
 
+import { useAuth0 } from '../../auth/auth0';
+import { PUBLIC_URL } from '../../config';
+import ProfileService from '../../services/ProfileService';
+import { APP_LOGO } from '../../theme';
 import './styles.scss';
 
 enum ChangeEmailStates {

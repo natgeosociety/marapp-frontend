@@ -17,18 +17,37 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
+import React from 'react';
+import { Provider } from 'react-redux';
 
-import { setPlacesSearch } from '../../modules/places/actions';
-import { setRouter } from '../../modules/router/actions';
-import SearchBoxComponent from './Searchbox';
+import { Spinner, TranslationService } from '@marapp/earth-shared';
 
-export default connect(
-  (state: any) => ({
-    ...state.places.search,
-  }),
-  {
-    setRouter,
-    setPlacesSearch,
+import { useAuth0 } from '../auth/auth0';
+import { WEGLOT_API_KEY } from '../config';
+import initStore from '../store';
+import Main from './main';
+
+TranslationService.init(WEGLOT_API_KEY);
+
+const IndexPage = () => {
+  const { isLoading, selectedGroup } = useAuth0();
+
+  const initialState = {
+    user: {
+      group: selectedGroup,
+    },
+  };
+
+  if (!isLoading) {
+    const { store } = initStore(initialState);
+    return (
+      <Provider store={store}>
+        <Main />
+      </Provider>
+    );
   }
-)(SearchBoxComponent);
+
+  return <Spinner size="large" />;
+};
+
+export default IndexPage;

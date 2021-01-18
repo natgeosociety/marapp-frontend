@@ -17,12 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { APP_NAME } from 'config';
 import React from 'react';
 import { animated, Transition } from 'react-spring/renderprops.cjs';
 
 import { Button } from '@marapp/earth-shared';
 
+import { APP_NAME } from '../../../../config';
 import './styles.scss';
 
 export interface IOutro {

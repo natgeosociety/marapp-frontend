@@ -17,17 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useAuth0 } from 'auth/auth0';
-import { APP_NAME, ENABLE_PUBLIC_ACCESS } from 'config';
 import React, { useState } from 'react';
 import Link from 'redux-first-router-link';
-import ProfileService from 'services/ProfileService';
 
 import { Spinner } from '@marapp/earth-shared/src';
 
+import { useAuth0 } from '../../auth/auth0';
+import { APP_NAME, ENABLE_PUBLIC_ACCESS } from '../../config';
+import ProfileService from '../../services/ProfileService';
 import './styles.scss';
 
-export const APP_LOGO = require('images/unbl_logo.svg');
+export const APP_LOGO = require('../../images/unbl_logo.svg');
 
 enum EmailStates {
   INACTIVE = 'Inactive',

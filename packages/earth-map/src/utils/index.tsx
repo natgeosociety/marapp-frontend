@@ -17,11 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { BASE_URL } from 'config';
 import qs from 'query-string';
 import React from 'react';
 import { Deserializer } from 'ts-jsonapi';
 import urljoin from 'url-join';
+
+import { BASE_URL } from '../config';
 
 const DeserializerService = new Deserializer({
   keyForAttribute: (attribute: any) => {

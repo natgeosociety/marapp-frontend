@@ -16,12 +16,12 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from 'config';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Card } from '@marapp/earth-shared';
 
+import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from '../../config';
 import './styles.scss';
 
 interface IProps {

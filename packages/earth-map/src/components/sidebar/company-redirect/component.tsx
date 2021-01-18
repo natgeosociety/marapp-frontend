@@ -13,9 +13,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { APP_NAME, COMPANY_URL } from 'config';
 import React from 'react';
 
+import { APP_NAME, COMPANY_URL } from '../../../config';
 import './styles.scss';
 
 const SidebarToggle = () => {

@@ -1,13 +1,9 @@
-import { Auth0Context } from 'auth/auth0';
 import classnames from 'classnames';
-import { PUBLIC_URL, REACT_APP_EXTERNAL_IDP_URL } from 'config';
 import { capitalize, identity, omit, pickBy } from 'lodash';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
-import ProfileService from 'services/ProfileService';
-import { APP_LOGO } from 'theme';
 
 import {
   InlineEditCard,
@@ -19,6 +15,10 @@ import {
   valueChangedRule,
 } from '@marapp/earth-shared';
 
+import { Auth0Context } from '../../auth/auth0';
+import { GATSBY_APP_EXTERNAL_IDP_URL, PUBLIC_URL } from '../../config';
+import ProfileService from '../../services/ProfileService';
+import { APP_LOGO } from '../../theme';
 import './styles.scss';
 
 interface IProps {
@@ -289,7 +289,7 @@ export function ProfileComponent(props: IProps) {
               )}
               <div className="ng-width-2-3 ng-push-1-6">
                 <InlineEditCard
-                  {...(!REACT_APP_EXTERNAL_IDP_URL && {
+                  {...(!GATSBY_APP_EXTERNAL_IDP_URL && {
                     render: ({ setIsEditing, setIsLoading, setServerErrors }) => (
                       <>
                         <div className="ng-margin-medium-bottom">
@@ -336,7 +336,7 @@ export function ProfileComponent(props: IProps) {
               </div>
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard
-                  {...(!REACT_APP_EXTERNAL_IDP_URL && {
+                  {...(!GATSBY_APP_EXTERNAL_IDP_URL && {
                     onSubmit: onEmailChange,
                     validForm: isValid,
                     render: ({ setIsEditing, setIsLoading, setServerErrors }) => (
@@ -425,7 +425,7 @@ export function ProfileComponent(props: IProps) {
                   <button
                     className="marapp-qa-resetpassword ng-button ng-button-secondary ng-margin-top"
                     disabled={
-                      !!REACT_APP_EXTERNAL_IDP_URL ||
+                      !!GATSBY_APP_EXTERNAL_IDP_URL ||
                       resetPasswordState !== RESET_PASSWORD_STATE.INITIAL
                     }
                     onClick={sendResetEmail}

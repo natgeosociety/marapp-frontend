@@ -17,21 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Auth0Context } from 'auth/auth0';
 import axios from 'axios';
 import classnames from 'classnames';
-import { API_URL, MAPBOX_TOKEN } from 'config';
-import experienceIMG from 'images/pins/experience-marker.svg';
 import debounce from 'lodash/debounce';
 import React, { useContext } from 'react';
 import { renderToString } from 'react-dom/server';
 import isEqual from 'react-fast-compare';
 import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
-import { APP_ABOUT, RESOURCE_WATCH_URL } from 'theme';
 
 import { Map, Spinner, UserMenu } from '@marapp/earth-shared';
 
+import { Auth0Context } from '../../auth/auth0';
+import { API_URL, MAPBOX_TOKEN } from '../../config';
+import experienceIMG from '../../images/pins/experience-marker.svg';
+import { APP_ABOUT, RESOURCE_WATCH_URL } from '../../theme';
 import {
   extractCoordinatesFromUrl,
   isValidUrlCoordinateGroup,

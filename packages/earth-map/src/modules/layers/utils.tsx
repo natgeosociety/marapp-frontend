@@ -24,12 +24,12 @@ export const getParams = (config = [], params = {}) => {
     let value;
 
     const key = v.key;
-    value = key.includes('REACT_APP') ? process.env[key] : v.default;
+    value = key.includes('GATSBY_APP') ? process.env[key] : v.default;
 
     if (v.key_params) {
       value = v.key_params.reduce((acc_2, v_2) => {
         const key2 = v_2.key;
-        const value2 = key2.includes('REACT_APP') ? process.env[key] : v_2.default;
+        const value2 = key2.includes('GATSBY_APP') ? process.env[key] : v_2.default;
 
         return {
           [key2]: value2,

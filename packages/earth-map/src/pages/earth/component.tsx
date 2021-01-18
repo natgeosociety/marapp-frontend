@@ -16,29 +16,29 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-import { useAuth0 } from 'auth/auth0';
-import CollectionDetails from 'components/collection/collection-details';
-import CollectionNew from 'components/collection/collection-new';
-import CollectionsCard from 'components/collection/collections-card';
-import Header from 'components/header';
-import IndexSidebar from 'components/index-sidebar';
-import LastViewedPlace from 'components/last-viewed-place';
-import LayerConfigError from 'components/layer-config-error';
-import Layers from 'components/layers';
-import Map from 'components/map';
-import Places from 'components/places';
-import FeaturedPlaces from 'components/places/featured-places';
-import Sidebar from 'components/sidebar';
-import Url from 'components/url';
-import { ILastViewedPlace } from 'modules/global/model';
-import { EarthRoutes, IRouter } from 'modules/router/model';
-import { EPanels } from 'modules/sidebar/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icons as VizzIcons } from 'vizzuality-components';
 
 import { ErrorBoundary, Tab, Tabs } from '@marapp/earth-shared';
 
+import { useAuth0 } from '../../auth/auth0';
+import CollectionDetails from '../../components/collection/collection-details';
+import CollectionNew from '../../components/collection/collection-new';
+import CollectionsCard from '../../components/collection/collections-card';
+import Header from '../../components/header';
+import IndexSidebar from '../../components/index-sidebar';
+import LastViewedPlace from '../../components/last-viewed-place';
+import LayerConfigError from '../../components/layer-config-error';
+import Layers from '../../components/layers';
+import Map from '../../components/map';
+import Places from '../../components/places';
+import FeaturedPlaces from '../../components/places/featured-places';
+import Sidebar from '../../components/sidebar';
+import Url from '../../components/url';
+import { ILastViewedPlace } from '../../modules/global/model';
+import { EarthRoutes, IRouter } from '../../modules/router/model';
+import { EPanels } from '../../modules/sidebar/model';
 import './styles.scss';
 import { URL_PROPS } from './url';
 

@@ -18,11 +18,9 @@
 */
 
 import createAuth0Client, { Auth0Client } from '@auth0/auth0-spa-js';
-import auth0 from 'config/auth0';
 import get from 'lodash/get';
 import qs from 'query-string';
 import React, { useContext, useEffect, useState } from 'react';
-import { routeToPage } from 'utils';
 
 import {
   getPrivateGroups,
@@ -34,6 +32,8 @@ import {
   SessionStorage,
 } from '@marapp/earth-shared';
 
+import auth0 from '../config/auth0';
+import { routeToPage } from '../utils';
 import { Auth0 } from './model';
 
 // Auth0 will enforce namespacing when performing OIDC-conformant

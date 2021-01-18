@@ -17,11 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { APP_NAME } from 'config';
 import React from 'react';
-import { APP_ABOUT } from 'theme';
 
 import { NotFoundComponent } from '@marapp/earth-shared';
+
+import { APP_NAME } from '../../config';
+import { APP_ABOUT } from '../../theme';
 
 const NotFoundPage = ({ returnToHome }) => (
   <NotFoundComponent returnToHome={returnToHome} aboutLink={APP_ABOUT} appName={APP_NAME} />

@@ -3,15 +3,15 @@
 Object.defineProperty(window, 'matchMedia', {
   value: () => ({
     matches: false,
-    addListener: () => { },
-    removeListener: () => { }
-  })
+    addListener: () => {},
+    removeListener: () => {},
+  }),
 });
 
 Object.defineProperty(window, 'getComputedStyle', {
   value: () => ({
-    getPropertyValue: () => { }
-  })
+    getPropertyValue: () => {},
+  }),
 });
 
 module.exports = window;

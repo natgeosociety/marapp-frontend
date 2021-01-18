@@ -21,11 +21,11 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { back, push, replace } from 'redux-first-router';
-import PlacesService from 'services/PlacesService';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
 
 import { IRouter } from '../../../modules/router/model';
+import PlacesService from '../../../services/PlacesService';
 
 interface IProps {
   privateGroups: string[];

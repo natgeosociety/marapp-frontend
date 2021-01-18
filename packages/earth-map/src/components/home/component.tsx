@@ -18,9 +18,9 @@
 */
 
 import ReactFullpage from '@fullpage/react-fullpage';
-import { FULLPAGE_LICENSE } from 'config';
 import React from 'react';
 
+import { FULLPAGE_LICENSE } from '../../config';
 import Globe from '../globe';
 import OutroStep from './steps/outro';
 import './styles.scss';

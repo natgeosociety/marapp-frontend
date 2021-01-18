@@ -26,7 +26,7 @@ require('dotenv').config({ path: GATSBY_ACTIVE_ENV });
 module.exports = {
   pathPrefix: process.env.GATSBY_APP_BASE_URL,
   siteMetadata: {
-    siteName: 'Admin',
+    siteName: 'Map',
   },
   plugins: [
     'gatsby-plugin-typescript',
@@ -50,14 +50,15 @@ module.exports = {
         '@app/auth': path.join(__dirname, 'src/auth'),
         '@app/components': path.join(__dirname, 'src/components'),
         '@app/config': path.join(__dirname, 'src/config'),
+        '@app/constants': path.join(__dirname, 'src/constants'),
         '@app/fonts': path.join(__dirname, 'src/fonts'),
         '@app/images': path.join(__dirname, 'src/images'),
-        '@app/layouts': path.join(__dirname, 'src/layouts'),
+        '@app/modules': path.join(__dirname, 'src/modules'),
         '@app/pages': path.join(__dirname, 'src/pages'),
-        '@app/pages-client': path.join(__dirname, 'src/pages-client'),
+        '@app/sagas': path.join(__dirname, 'src/sagas'),
         '@app/services': path.join(__dirname, 'src/services'),
+        '@app/store': path.join(__dirname, 'src/store'),
         '@app/utils': path.join(__dirname, 'src/utils'),
-        '@app/theme': path.join(__dirname, 'src/theme'),
         styles: path.join(__dirname, 'src/styles'),
       },
     },

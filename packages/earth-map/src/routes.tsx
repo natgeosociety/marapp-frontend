@@ -17,11 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { BASE_URL, ENABLE_PUBLIC_ACCESS } from 'config';
 import { noop, stubFalse, stubTrue } from 'lodash';
 import qs from 'query-string';
 import { NOT_FOUND } from 'redux-first-router';
 import restoreScroll from 'redux-first-router-restore-scroll';
+
+import { BASE_URL, ENABLE_PUBLIC_ACCESS } from './config';
 
 const UNAUTHORIZED_PAGE = 'UNAUTHORIZED';
 const VERIFY_EMAIL = 'VERIFY_EMAIL';

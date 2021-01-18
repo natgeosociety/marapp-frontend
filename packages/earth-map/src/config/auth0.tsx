@@ -20,11 +20,11 @@
 import urljoin from 'url-join';
 
 const config = {
-  domain: process.env.REACT_APP_AUTH0_DOMAIN,
-  clientId: process.env.REACT_APP_AUTH0_CLIENT_ID,
-  redirectUri: urljoin(window.location.origin, process.env.REACT_APP_BASE_URL || ''),
-  audience: process.env.REACT_APP_AUTH0_AUDIENCE,
-  namespace: process.env.REACT_APP_AUTH0_NAMESPACE,
+  domain: process.env.GATSBY_APP_AUTH0_DOMAIN,
+  clientId: process.env.GATSBY_APP_AUTH0_CLIENT_ID,
+  redirectUri: urljoin(window.location.origin, process.env.GATSBY_APP_BASE_URL || ''),
+  audience: process.env.GATSBY_APP_AUTH0_AUDIENCE,
+  namespace: process.env.GATSBY_APP_AUTH0_NAMESPACE,
 };
 
 export default { config };

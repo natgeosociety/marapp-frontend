@@ -17,9 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useAuth0 } from 'auth/auth0';
-import AsyncPage from 'pages/main/async';
 import React, { useEffect } from 'react';
+
+import { useAuth0 } from '../../../auth/auth0';
+import AsyncPage from '../async';
 
 const AuthenticatedPage = ({ component: Component, fallbackRoute, redirect, ...rest }) => {
   const { isAuthenticated, isEmailVerified, login } = useAuth0();

@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setSidebarPanel } from 'modules/sidebar/actions';
 import { connect } from 'react-redux';
 
+import { setSidebarPanel } from '../../modules/sidebar/actions';
 import EarthComponent from './component';
 
 export default connect(
