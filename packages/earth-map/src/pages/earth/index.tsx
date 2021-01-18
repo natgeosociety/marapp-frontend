@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setSidebarPanel } from 'modules/sidebar/actions';
+import { setSidebarOpen, setSidebarPanel } from 'modules/sidebar/actions';
 import { connect } from 'react-redux';
 
 import EarthComponent from './component';
@@ -29,8 +29,10 @@ export default connect(
     group: state.user.group,
     lastViewedPlace: state.global.lastViewedPlace,
     collection: state.collections.data,
+    selectedPlace: state.places.data,
   }),
   {
+    setSidebarOpen,
     setSidebarPanel,
   }
 )(EarthComponent);
