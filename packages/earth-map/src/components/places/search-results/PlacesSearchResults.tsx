@@ -18,61 +18,74 @@
  */
 
 import React from 'react';
-import { useInfiniteList } from '@marapp/earth-shared';
-import { BaseAPIService, metaDeserializer } from 'services/base/APIBase';
+import { Spinner } from '@marapp/earth-shared';
 import List from '@researchgate/react-intersection-list';
 import ListItem from 'components/list-item';
+import { LocationTypeEnum } from 'modules/places/model';
+import { EarthRoutes } from 'modules/router/model';
+import { useTranslation } from 'react-i18next';
+import { PAGE_SIZE } from 'theme';
+import useLocations from 'fetchers/useLocations';
+import { serializeFilters } from '@marapp/earth-shared';
 
-export function PlacesSearchResults(props) {
-  const { search, group } = props;
-  const pageSize = 20;
-  const getQueryFn = (cursor: string): { query: any; resourceType: string } => {
-    const query = {
-      search,
-      sort: 'name',
-      page: { size: pageSize, cursor },
-      select: 'name,slug,organization',
-      group: group.join(),
-    };
-    return { query, resourceType: 'locations' };
-  };
-  const { listProps, mutate } = useInfiniteList(getQueryFn, (url) =>
-    BaseAPIService.requestSWR(url, undefined, metaDeserializer)
-  );
+interface IProps {
+  setPlacesSearch?: (value: any) => {};
+  search?: any;
+  filters?: any;
+  group?: any;
+}
 
-  const data = listProps.data || [];
-  console.log(listProps);
+export function PlacesSearchResults(props: IProps) {
+  const { search, filters, group, setPlacesSearch } = props;
+  const { t } = useTranslation();
+  const title = t('Search results');
+
+  const { data, awaitMore, nextPage, isValidating } = useLocations({
+    search,
+    filters: serializeFilters(filters),
+    select: 'name,slug,organization,type',
+    group: group.join(),
+  });
+
+  if (!data) {
+    return <Spinner position="relative" />;
+  }
 
   return (
-    <List
-      awaitMore={listProps.awaitMore}
-      pageSize={pageSize}
-      itemCount={data.length}
-      renderItem={(index) => {
-        const { id, $searchHint, name, slug, organization, type } = data[index];
+    <div className="marapp-qa-infinitelist ng-section-background ng-position-relative ng-padding-medium-bottom">
+      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
+        {title}
+      </h2>
+      <List
+        awaitMore={awaitMore}
+        pageSize={PAGE_SIZE}
+        itemCount={data.length}
+        renderItem={(index) => {
+          const { id, $searchHint, name, slug, organization, type } = data[index];
 
-        return (
-          <ListItem
-            hint={$searchHint.name}
-            title={name}
-            key={`${slug}-${organization}`}
-            onClick={() => {
-              // setSidebarPanelExpanded(false);
-              // setPlacesSearch({ search: name });
-            }}
-            // linkTo={{
-            //   type:
-            //     type === LocationTypeEnum.COLLECTION
-            //       ? EarthRoutes.COLLECTION
-            //       : EarthRoutes.LOCATION,
-            //   payload: { slug, id, organization },
-            // }}
-            organization={group.length > 1 && organization}
-            labels={[type]}
-          />
-        );
-      }}
-      onIntersection={listProps.onIntersection}
-    />
+          return (
+            <ListItem
+              hint={$searchHint.name}
+              title={name}
+              key={`${slug}-${organization}`}
+              onClick={() => {
+                setPlacesSearch({ search: name });
+              }}
+              linkTo={{
+                type:
+                  type === LocationTypeEnum.COLLECTION
+                    ? EarthRoutes.COLLECTION
+                    : EarthRoutes.LOCATION,
+                payload: { slug, id, organization },
+              }}
+              organization={group.length > 1 && organization}
+              labels={[type]}
+            />
+          );
+        }}
+        onIntersection={nextPage}
+      />
+      {isValidating && <Spinner position="relative" />}
+    </div>
   );
 }

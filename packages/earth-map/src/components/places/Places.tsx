@@ -58,21 +58,6 @@ const Places = (props: IProps) => {
     children,
   } = props;
 
-  const nextPageCursor = 'x';
-
-  const nextPlacesPage = () => {
-    console.log('!!next places page');
-  };
-
-  const page = 0;
-
-  const query = merge(LOCATION_QUERY, { group: group.join(), search: search.search });
-  const cacheKey = generateCacheKey(`places/${page}`, query);
-
-  const fetcher = () => PlacesService.fetchPlaces(query).then((response: any) => response.data);
-
-  const { data: results = [], error, revalidate, mutate } = useSWR(cacheKey, fetcher);
-
   const hasSearchTerm = !!search.search;
   const showX = selected || hasSearchTerm;
   const showFilter = !selected || panelExpanded;
@@ -133,7 +118,16 @@ const Places = (props: IProps) => {
         </>
       }
     >
-      {showSearchResults ? <PlacesSearchResults search={search.search} group={group} /> : children}
+      {showSearchResults ? (
+        <PlacesSearchResults
+          search={search.search}
+          filters={search.filters}
+          group={group}
+          setPlacesSearch={setPlacesSearch}
+        />
+      ) : (
+        children
+      )}
     </SidebarLayoutSearch>
   );
 };

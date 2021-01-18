@@ -26,19 +26,18 @@ import { LocationTypeEnum } from 'modules/places/model';
 import { BaseAPIService } from 'services/base/APIBase';
 
 import { CollectionsCard } from './CollectionsCard';
+import useLocations from 'fetchers/useLocations';
 
 export default function WithData(props) {
   const { group } = props;
 
-  const cacheKey = `/locations?${queryStringEncode({
+  const { data } = useLocations({
     select: 'slug,name,id,organization,type,updatedAt',
     filter: ['type', '==', LocationTypeEnum.COLLECTION].join(''),
     page: { size: 5 },
     sort: '-updatedAt',
     group: group.toString(),
-  })}`;
-
-  const { data } = useSWR(cacheKey, BaseAPIService.requestSWR);
+  });
 
   return <CollectionsCard data={data} {...props} />;
 }
