@@ -23,11 +23,11 @@ import { Provider } from 'react-redux';
 import { Spinner, TranslationService } from '@marapp/earth-shared';
 
 import { useAuth0 } from '../auth/auth0';
-import { WEGLOT_API_KEY } from '../config';
+import { MAP_WEGLOT_API_KEY } from '../config';
+import Main from '../pages-client/main';
 import initStore from '../store';
-import Main from './main';
 
-TranslationService.init(WEGLOT_API_KEY);
+TranslationService.init(MAP_WEGLOT_API_KEY);
 
 const IndexPage = () => {
   const { isLoading, selectedGroup } = useAuth0();
