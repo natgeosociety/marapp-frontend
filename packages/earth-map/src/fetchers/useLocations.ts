@@ -23,7 +23,7 @@ import { useSWRInfinite } from 'swr';
 import { BaseAPIService, metaDeserializer } from 'services/base/APIBase';
 import { encodeQueryToURL } from 'utils/query';
 
-interface IQuery {
+interface IQueryLocation {
   filter?: string;
   search?: string;
   select?: string;
@@ -37,7 +37,7 @@ interface IQuery {
 
 const DEFAULT_PAGE_SIZE = 30;
 
-export default function useLocations(query: IQuery) {
+export default function useLocations(query: IQueryLocation) {
   const swrKeyLoader = (pageIndex: number, previousPage: any): string => {
     if (previousPage && !previousPage.data) {
       return null; // reached the end;

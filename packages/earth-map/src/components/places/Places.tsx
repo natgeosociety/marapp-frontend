@@ -21,7 +21,6 @@ interface IProps {
   group?: any;
   locationName?: string;
   locationOrganization?: string;
-  nextPlacesPage?: () => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
   resetPlace?: (value: any) => {};
@@ -104,7 +103,7 @@ const Places = (props: IProps) => {
               onOpenToggle={setPlacesSearchOpen}
               onChange={setPlacesSearch}
               filters={search.filters}
-              availableFilters={metadata?.filters || {}}
+              availableFilters={metadata?.filters}
             />
           )}
           {showBack && (

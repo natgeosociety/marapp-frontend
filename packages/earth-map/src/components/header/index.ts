@@ -20,7 +20,7 @@
 import { resetCollection } from 'modules/collections/actions';
 import { resetLayerCache, resetLayers, setLayersSearch } from 'modules/layers/actions';
 import { resetMap } from 'modules/map/actions';
-import { resetPlace, resetPlacesFeatured, setPlacesSearch } from 'modules/places/actions';
+import { resetPlace, setPlacesSearch } from 'modules/places/actions';
 import { setSidebarPanel } from 'modules/sidebar/actions';
 import { setUserGroup } from 'modules/user/actions';
 import { connect } from 'react-redux';
@@ -37,7 +37,6 @@ export default connect(
     setPlacesSearch,
     resetPlace,
     resetCollection,
-    resetPlacesFeatured,
     resetLayerCache,
     resetMap,
     setLayersSearch,

@@ -93,8 +93,6 @@ const Layers = (props: IProps) => {
   } = props;
   const { t } = useTranslation();
 
-  console.log('####', layers);
-
   const { loading, search, listActive, nextPageCursor } = layers;
 
   const hasSearchTerm = !!search.search;
