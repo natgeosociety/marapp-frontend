@@ -192,6 +192,17 @@ body {
       background: $marapp-gray-7;
       border-color: $marapp-gray-5;
 
+      .auth0-lock-input-with-placeholder {
+        background-color: transparent !important;
+        color: $marapp-gray-5 !important;
+      }
+
+      svg *{
+        background-color: transparent;
+        color: $marapp-gray-5;
+        fill: $marapp-gray-5;
+      }
+
       &.auth0-lock-focused {
         border-color: $marapp-primary-color;
       }
@@ -266,6 +277,17 @@ body {
       a {
         color: inherit;
         text-decoration: underline;
+      }
+
+      label {
+        display: flex;
+
+        input {
+          margin-right: 10px;
+          margin-top: 6px;
+          transform: scale3d(1.5, 1.5, 1.5);
+          box-sizing: border-box;
+        }
       }
     }
 
