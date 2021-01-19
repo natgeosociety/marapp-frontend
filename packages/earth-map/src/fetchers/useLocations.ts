@@ -17,10 +17,10 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { noop } from 'lodash/fp';
 import { groupBy, sortBy } from 'lodash';
-import { useSWRInfinite } from 'swr';
+import { noop } from 'lodash/fp';
 import { BaseAPIService, metaDeserializer } from 'services/base/APIBase';
+import { useSWRInfinite } from 'swr';
 import { encodeQueryToURL } from 'utils/query';
 
 interface IQueryLocation {
@@ -56,6 +56,8 @@ export default function useLocations(query: IQueryLocation) {
 
     return encodeQueryToURL('/locations', finalQuery);
   };
+
+  // Also includes some transformation of the meta.filters
   const fetcher = (url) => {
     return BaseAPIService.requestSWR(url, undefined, metaDeserializer).then((response) => {
       const transformer = (payload) => {
@@ -93,13 +95,13 @@ export default function useLocations(query: IQueryLocation) {
 
   const lastPage = rawData[rawData.length - 1] || {};
   const data = rawData.map((item) => item.data).flat();
-  const metadata = lastPage.meta || {};
-  const isNoMore = !metadata.pagination?.nextCursor;
+  const meta = lastPage.meta || {};
+  const isNoMore = !meta.pagination?.nextCursor;
   const awaitMore = !isValidating && !isNoMore;
 
   return {
     data,
-    metadata,
+    meta,
     isNoMore,
     awaitMore,
     nextPage: awaitMore ? () => setSize(size + 1) : noop,

@@ -17,16 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import useSWR from 'swr';
-import queryStringEncode from 'query-string-encode';
-
-import { generateCacheKey } from 'services/base/APIBase';
+import useLocations from 'fetchers/useLocations';
 import { LocationTypeEnum } from 'modules/places/model';
-import { BaseAPIService } from 'services/base/APIBase';
+import React from 'react';
 
 import { CollectionsCard } from './CollectionsCard';
-import useLocations from 'fetchers/useLocations';
 
 export default function WithData(props) {
   const { group } = props;

@@ -17,16 +17,16 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
-import { Spinner } from '@marapp/earth-shared';
 import List from '@researchgate/react-intersection-list';
 import ListItem from 'components/list-item';
+import useLocations from 'fetchers/useLocations';
 import { LocationTypeEnum } from 'modules/places/model';
 import { EarthRoutes } from 'modules/router/model';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { PAGE_SIZE } from 'theme';
-import useLocations from 'fetchers/useLocations';
-import { serializeFilters } from '@marapp/earth-shared';
+
+import { serializeFilters, Spinner } from '@marapp/earth-shared';
 
 interface IProps {
   setPlacesSearch?: (value: any) => {};

@@ -29,7 +29,7 @@ interface IProps {
   onOpenToggle: (payload?) => void;
   onChange: (payload?) => void;
   filters: { [key: string]: string[] };
-  availableFilters: { [key: string]: { [key: string]: any }[] };
+  availableFilters: { [key: string]: Array<{ [key: string]: any }> };
 }
 
 const FilterBy = (props: IProps) => {
@@ -57,8 +57,6 @@ const FilterBy = (props: IProps) => {
       }),
     });
   };
-
-  console.log(`availableFilters`, availableFilters);
 
   const clearCheckedFilters = () =>
     onChange({

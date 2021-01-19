@@ -2,13 +2,15 @@ import BackToLocation from 'components/back-to-location';
 import FilterBy from 'components/filter-by';
 import SearchBox from 'components/searchbox';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
+import useLocations from 'fetchers/useLocations';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
 import { hasFilters } from 'utils/filters';
-import PlacesSearchResults from './search-results';
-import useLocations from 'fetchers/useLocations';
+
 import { serializeFilters } from '@marapp/earth-shared';
+
+import PlacesSearchResults from './search-results';
 
 interface IProps {
   selected: boolean;
@@ -48,7 +50,7 @@ const Places = (props: IProps) => {
     children,
   } = props;
 
-  const { metadata } = useLocations({
+  const { meta } = useLocations({
     search: search.search,
     filter: serializeFilters(search.filters),
     select: 'name,slug,organization,type',
@@ -103,7 +105,7 @@ const Places = (props: IProps) => {
               onOpenToggle={setPlacesSearchOpen}
               onChange={setPlacesSearch}
               filters={search.filters}
-              availableFilters={metadata?.filters}
+              availableFilters={meta?.filters}
             />
           )}
           {showBack && (

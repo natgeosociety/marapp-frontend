@@ -18,11 +18,11 @@
 */
 
 import ListItem from 'components/list-item';
+import useLocations from 'fetchers/useLocations';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Spinner } from '@marapp/earth-shared';
-import useLocations from 'fetchers/useLocations';
 
 interface IFeaturedPlaces {
   meta?: object;

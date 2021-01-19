@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import useSWR from 'swr';
 import queryStringEncode from 'query-string-encode';
+import React from 'react';
 import { BaseAPIService, metaDeserializer } from 'services/base/APIBase';
+import useSWR from 'swr';
 
 export { FeaturedPlacesComponent as default } from './component';
 
