@@ -22,28 +22,28 @@ import useSWR from 'swr';
 import queryStringEncode from 'query-string-encode';
 import { BaseAPIService, metaDeserializer } from 'services/base/APIBase';
 
-import FeaturedPlacesComponent from './component';
+export { FeaturedPlacesComponent as default } from './component';
 
-export default function WithData(props) {
-  const { group } = props;
+// export default function WithData(props) {
+//   const { group } = props;
 
-  const cacheKey = `/locations?${queryStringEncode({
-    select: 'slug,name,id,organization,type',
-    page: { size: 100 },
-    filter: 'featured==true',
-    sort: 'name',
-    group: group.toString(),
-  })}`;
+//   const cacheKey = `/locations?${queryStringEncode({
+//     select: 'slug,name,id,organization,type',
+//     page: { size: 100 },
+//     filter: 'featured==true',
+//     sort: 'name',
+//     group: group.toString(),
+//   })}`;
 
-  const { data } = useSWR(cacheKey, (url) =>
-    BaseAPIService.requestSWR(url, undefined, metaDeserializer)
-  );
+//   const { data } = useSWR(cacheKey, (url) =>
+//     BaseAPIService.requestSWR(url, undefined, metaDeserializer)
+//   );
 
-  const componentProps = {
-    ...props,
-    data: data?.data,
-    meta: data?.meta,
-  };
+//   const componentProps = {
+//     ...props,
+//     data: data?.data,
+//     meta: data?.meta,
+//   };
 
-  return <FeaturedPlacesComponent {...componentProps} />;
-}
+//   return <FeaturedPlacesComponent {...componentProps} />;
+// }

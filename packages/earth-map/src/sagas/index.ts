@@ -19,21 +19,11 @@
 
 import { all, fork } from 'redux-saga/effects';
 import collections from 'sagas/collections';
-import earth from 'sagas/earth';
 import global from 'sagas/global';
 import indexes from 'sagas/indexes';
 import layers from 'sagas/layers';
 import location from 'sagas/location';
-import places from 'sagas/places';
 
 export default function* root() {
-  yield all([
-    fork(earth),
-    fork(global),
-    fork(places),
-    fork(collections),
-    fork(layers),
-    fork(indexes),
-    fork(location),
-  ]);
+  yield all([fork(global), fork(collections), fork(layers), fork(indexes), fork(location)]);
 }

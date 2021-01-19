@@ -22,16 +22,24 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Spinner } from '@marapp/earth-shared';
+import useLocations from 'fetchers/useLocations';
 
 interface IFeaturedPlaces {
-  data: [];
   meta?: object;
-  group?: string;
+  group?: string[];
 }
 
-const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
-  const { group, data, meta } = props;
+export const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
+  const { group } = props;
   const { t } = useTranslation();
+
+  const { data } = useLocations({
+    select: 'slug,name,id,organization,type',
+    page: { size: 100 },
+    filter: 'featured==true',
+    sort: 'name',
+    group: group.join(),
+  });
 
   return (
     <div className="marapp-qa-featuredplaces ng-section-background ng-position-relative ng-padding-medium-bottom">
@@ -39,7 +47,7 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
         {t('Featured places')}
       </h2>
       <div>
-        {!data?.length && !meta && (
+        {!data && (
           <div className="ng-padding-large ng-position-relative">
             <Spinner />
           </div>
@@ -61,5 +69,3 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
     </div>
   );
 };
-
-export default FeaturedPlacesComponent;
