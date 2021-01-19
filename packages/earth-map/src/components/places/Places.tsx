@@ -1,21 +1,15 @@
 import BackToLocation from 'components/back-to-location';
 import FilterBy from 'components/filter-by';
-import InfiniteList from 'components/infinite-list';
-import ListItem from 'components/list-item';
 import SearchBox from 'components/searchbox';
 import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
-import { LocationTypeEnum } from 'modules/places/model';
-import { EarthRoutes } from 'modules/router/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
 import { hasFilters } from 'utils/filters';
-import useSWR from 'swr';
-import { merge } from 'lodash/fp';
-import { generateCacheKey } from 'services/base/APIBase';
-import { LOCATION_QUERY } from 'sagas/model';
-import PlacesService from 'services/PlacesService';
 import PlacesSearchResults from './search-results';
+import useLocations from 'fetchers/useLocations';
+import { serializeFilters } from '@marapp/earth-shared';
+
 interface IProps {
   selected: boolean;
   children: any;
@@ -42,12 +36,9 @@ const Places = (props: IProps) => {
   const {
     panelExpanded,
     search,
-    // results,
-    // nextPageCursor,
     group,
     locationName,
     locationOrganization,
-    // nextPlacesPage,
     resetPlace,
     resetCollection,
     resetMap,
@@ -57,6 +48,13 @@ const Places = (props: IProps) => {
     selected,
     children,
   } = props;
+
+  const { metadata } = useLocations({
+    search: search.search,
+    filter: serializeFilters(search.filters),
+    select: 'name,slug,organization,type',
+    group: group.join(),
+  });
 
   const hasSearchTerm = !!search.search;
   const showX = selected || hasSearchTerm;
@@ -105,9 +103,8 @@ const Places = (props: IProps) => {
               open={search.open}
               onOpenToggle={setPlacesSearchOpen}
               onChange={setPlacesSearch}
-              group={group}
-              search={search.search}
               filters={search.filters}
+              availableFilters={metadata?.filters || {}}
             />
           )}
           {showBack && (

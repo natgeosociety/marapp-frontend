@@ -157,6 +157,8 @@ const Layers = (props: IProps) => {
               open={search.open}
               onOpenToggle={setLayersSearchOpen}
               onChange={setLayersSearch}
+              filters={search.filters}
+              availableFilters={search.availableFilters}
             />
           )}
           {showBack && (

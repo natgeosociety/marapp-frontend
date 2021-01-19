@@ -21,8 +21,6 @@ import classnames from 'classnames';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { cleanFilters, countFilters } from 'utils/filters';
-import useLocations from 'fetchers/useLocations';
-import { serializeFilters } from '@marapp/earth-shared';
 
 import './styles.scss';
 
@@ -30,23 +28,13 @@ interface IProps {
   open: boolean;
   onOpenToggle: (payload?) => void;
   onChange: (payload?) => void;
-  group?: string[];
-  search?: string;
-  filters?: any;
+  filters: any;
+  availableFilters: any[];
 }
 
 const FilterBy = (props: IProps) => {
-  const { group, filters, search, open, onOpenToggle, onChange } = props;
+  const { open, availableFilters, filters, onOpenToggle, onChange } = props;
   const { t } = useTranslation();
-
-  const { metadata, awaitMore, nextPage, isValidating } = useLocations({
-    search,
-    filter: serializeFilters(filters),
-    select: 'name,slug,organization,type',
-    group: group.join(),
-  });
-
-  const availableFilters = metadata?.filters || {};
 
   const numberOfFilters = countFilters(filters);
 
