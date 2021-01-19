@@ -44,9 +44,9 @@ import { Icons as VizzIcons } from 'vizzuality-components';
 
 import { ErrorBoundary, TitleHero } from '@marapp/earth-shared';
 
+import { ExpansionContent } from '../../components/expansion-content';
 import './styles.scss';
 import { URL_PROPS } from './url';
-import { ExpansionContent } from '../../components/expansion-content';
 
 const useStyles = makeStyles((theme) => {
   const minTabHeight = theme.spacing(4.5);

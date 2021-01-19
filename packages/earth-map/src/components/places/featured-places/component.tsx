@@ -72,7 +72,7 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
         </div>
       )}
       {!!featured.data.length && (
-        <List disablePadding={true}>
+        <List>
           {featured.data.map((place: any) => {
             const { slug, name, id, organization, type } = place;
 
