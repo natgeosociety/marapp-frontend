@@ -42,7 +42,7 @@ export const LastViewedPlace = ({ place, group }: IProps) => {
           <Typography variant="subtitle1">{t('Last viewed place')}</Typography>
         </Box>
 
-        <List disablePadding={true}>
+        <List>
           <ListItem
             title={name}
             key={`${slug}-${organization}`}

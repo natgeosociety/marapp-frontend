@@ -16,28 +16,62 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-
+import Drawer from '@material-ui/core/Drawer';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import classNames from 'classnames';
 import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from 'config';
 import React from 'react';
-import { animated, Keyframes } from 'react-spring/renderprops.cjs';
-import { withStyles } from '@material-ui/core/styles';
 
-import CompanyRedirect from './company-redirect';
 import SidebarToggle from './sidebar-toggle';
-import './styles.scss';
 
-const styles = (theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.default,
-  },
-});
+const useStyles = makeStyles((theme) => {
+  const getDrawerWidth = (props: ISidebarPanel) =>
+    props.selectedOpen ? SIDEBAR_WIDTH_WIDE : SIDEBAR_WIDTH;
 
-// Creates a spring with predefined animation slots
-const SidebarPanel: any = Keyframes.Spring({
-  open: { x: 0, width: SIDEBAR_WIDTH, from: { x: -100 }, delay: 0 },
-  openW: { x: 0, width: SIDEBAR_WIDTH_WIDE, from: { x: 0 }, delay: 0 },
-  close: { x: -100, delay: 100 },
+  return {
+    drawerPaper: {
+      maxHeight: '100vh',
+      backgroundColor: theme.palette.background.default,
+      '& .scroll-container': {
+        flex: '1 1 auto',
+        overflow: 'auto',
+      },
+    },
+    drawer: (props: ISidebarPanel) => ({
+      width: getDrawerWidth(props),
+    }),
+    drawerOpen: (props: ISidebarPanel) => ({
+      width: getDrawerWidth(props),
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      [theme.breakpoints.down('xs')]: {
+        width: 'calc(100vw - 60px)',
+      },
+    }),
+    drawerClose: {
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      width: 0,
+    },
+    sidebarToggle: {
+      position: 'fixed',
+      [theme.breakpoints.down('xs')]: {
+        left: (props: ISidebarPanel) => (props.open ? 'calc(100vw - 60px)' : 0),
+      },
+      [theme.breakpoints.up('sm')]: {
+        transition: theme.transitions.create('left', {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+        left: (props: ISidebarPanel) => (props.open ? getDrawerWidth(props) : 0),
+      },
+    },
+  };
 });
 
 interface ISidebarPanel {
@@ -57,15 +91,27 @@ interface ISidebarPanel {
   classes?: any;
 }
 
-class Sidebar extends React.Component<ISidebarPanel> {
-  public onClose = () => {
-    const { setSidebarOpen } = this.props;
-    setSidebarOpen(false);
-  };
+const Sidebar = (props: ISidebarPanel) => {
+  const {
+    children,
+    layersPanel,
+    open,
+    resetCollection,
+    resetLayers,
+    resetMap,
+    resetPlace,
+    selectedOpen,
+    setPlacesSearch,
+    setSidebarOpen,
+  } = props;
 
-  public resetMap = () => {
-    const { setPlacesSearch, resetMap, resetPlace, resetCollection, resetLayers } = this.props;
+  const classes = useStyles(props);
+  const theme = useTheme();
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const onClose = () => setSidebarOpen(false);
+
+  const onResetMap = () => {
     resetPlace();
     resetCollection();
     setPlacesSearch({ search: '' });
@@ -73,39 +119,43 @@ class Sidebar extends React.Component<ISidebarPanel> {
     resetMap();
   };
 
-  public render() {
-    const { children, open, selectedOpen, layersPanel, setSidebarOpen, classes } = this.props;
-    let state;
+  const drawerProps: any = {
+    ...(isSmallDevice
+      ? {
+          open,
+          onClose,
+          variant: 'temporary',
+        }
+      : {
+          variant: 'permanent',
+        }),
+  };
 
-    if (open) {
-      state = 'open';
-      if (selectedOpen) {
-        state = 'openW';
-      }
-    } else {
-      state = 'close';
-    }
+  return (
+    <>
+      <Drawer
+        className={classNames(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: classNames({
+            [classes.drawerPaper]: true,
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
+        }}
+        {...drawerProps}
+      >
+        {children}
+      </Drawer>
+      <SidebarToggle
+        className={classes.sidebarToggle}
+        open={open}
+        setSidebarOpen={setSidebarOpen}
+      />
+    </>
+  );
+};
 
-    return (
-      <SidebarPanel native={true} state={state}>
-        {({ x, ...props }) => (
-          <animated.div
-            className={classNames(classes.root, 'marapp-qa-sidebar c-sidebar ng-c-sidebar', {
-              'no-scroll': layersPanel,
-            })}
-            style={{
-              transform: x.interpolate((x) => `translate3d(${x}%,0,0)`),
-              ...props,
-            }}
-          >
-            {/*<CompanyRedirect />*/}
-            <SidebarToggle open={open} setSidebarOpen={setSidebarOpen} />
-            {children}
-          </animated.div>
-        )}
-      </SidebarPanel>
-    );
-  }
-}
-
-export default withStyles(styles)(Sidebar);
+export default Sidebar;

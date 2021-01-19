@@ -11,6 +11,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
 import { hasFilters } from 'utils/filters';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { setSidebarOpen } from '../../modules/sidebar/actions';
 
 interface IProps {
   selected: boolean;
@@ -24,6 +27,7 @@ interface IProps {
   locationName?: string;
   locationOrganization?: string;
   nextPlacesPage?: () => void;
+  setSidebarOpen?: (value: boolean) => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
   resetPlace?: (value: any) => {};
@@ -49,11 +53,14 @@ const Places = (props: IProps) => {
     resetMap,
     setPlacesSearch,
     setSidebarPanelExpanded,
+    setSidebarOpen,
     setPlacesSearchOpen,
     selected,
     children,
   } = props;
 
+  const theme = useTheme();
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down('sm'));
   const hasSearchTerm = !!search.search;
   const showX = selected || hasSearchTerm;
   const showFilter = !selected || panelExpanded;
@@ -143,6 +150,8 @@ const Places = (props: IProps) => {
                 onClick={() => {
                   setSidebarPanelExpanded(false);
                   setPlacesSearch({ search: item.name });
+
+                  isSmallDevice && setSidebarOpen(false);
                 }}
                 linkTo={{
                   type:

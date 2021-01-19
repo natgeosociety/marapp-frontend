@@ -16,45 +16,58 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-
-import type from '@material-ui/lab/themeAugmentation';
 import { createMuiTheme } from '@material-ui/core';
 
+const COLORS = {
+  SECONDARY_LIGHT: '#7ecace',
+  SECONDARY_MAIN: '#0099A1',
+  SECONDARY_DARK: '#006b70',
+  GREY_0: '#FFFFFF',
+  GREY_1: '#F8F9FA',
+  GREY_2: '#E9ECEF',
+  GREY_3: '#DEE2E6',
+  GREY_4: '#CED4DA',
+  GREY_5: '#ADB5BD',
+  GREY_6: '#6C757D',
+  GREY_7: '#495057',
+  GREY_8: '#343A40',
+  GREY_9: '#212529',
+};
+
+const SPACING = 8;
+
 export default createMuiTheme({
+  spacing: SPACING,
   palette: {
     type: 'dark',
     primary: {
-      light: '#F8F9FA',
-      main: '#E9ECEF',
-      dark: '#DEE2E6',
+      light: COLORS.GREY_1,
+      main: COLORS.GREY_2,
+      dark: COLORS.GREY_3,
     },
     secondary: {
-      dark: '#006b70',
-      main: '#0099A1',
-      light: '#33adb3',
+      light: COLORS.SECONDARY_LIGHT,
+      main: COLORS.SECONDARY_MAIN,
+      dark: COLORS.SECONDARY_DARK,
     },
     text: {
-      primary: '#FFFFFF',
+      primary: COLORS.GREY_0,
     },
     background: {
-      default: '#212529',
-      paper: '#343A40',
+      default: COLORS.GREY_9,
+      paper: COLORS.GREY_8,
     },
     grey: {
-      50: '#F8F9FA',
-      100: '#E9ECEF',
-      200: '#DEE2E6',
-      300: '#CED4DA',
-      400: '#ADB5BD',
-      500: '#6C757D',
-      600: '#495057',
-      700: '#343A40',
-      800: '#212529',
-      900: '#212529',
-      // A100: '#d5d5d5',
-      // A200: '#aaaaaa',
-      // A400: '#303030',
-      // A700: '#616161',
+      50: COLORS.GREY_1,
+      100: COLORS.GREY_2,
+      200: COLORS.GREY_3,
+      300: COLORS.GREY_4,
+      400: COLORS.GREY_5,
+      500: COLORS.GREY_6,
+      600: COLORS.GREY_7,
+      700: COLORS.GREY_8,
+      800: COLORS.GREY_9,
+      900: COLORS.GREY_9,
     },
   },
   typography: {
@@ -69,27 +82,33 @@ export default createMuiTheme({
     MuiTab: {
       textColorPrimary: {
         '&$selected': {
-          color: '#F8F9FA',
+          color: COLORS.GREY_1,
         },
       },
     },
     MuiOutlinedInput: {
       root: {
-        backgroundColor: '#343a40',
+        backgroundColor: COLORS.GREY_8,
       },
     },
     MuiChip: {
       root: {
-        backgroundColor: '#F8F9FA',
-        color: '#212529',
+        backgroundColor: COLORS.GREY_1,
+        color: COLORS.GREY_9,
+      },
+    },
+    MuiListItem: {
+      gutters: {
+        paddingLeft: SPACING * 2,
+        paddingRight: SPACING * 2,
       },
     },
     MuiFab: {
       root: {
-        backgroundColor: '#343a40',
-        color: '#F8F9FA',
+        backgroundColor: COLORS.GREY_8,
+        color: COLORS.GREY_1,
         '&:hover': {
-          backgroundColor: '#495057',
+          backgroundColor: COLORS.GREY_7,
         },
       },
     },

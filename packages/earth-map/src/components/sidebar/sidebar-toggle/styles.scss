@@ -20,13 +20,10 @@
 @import '~styles/config';
 
 .c-sidebar-close {
-  position: absolute;
   display: flex;
   top: 99px;
-  right: 0px;
   width: 40px;
-  transform: translateX(40px);
-  z-index: $z-index-3;
+  z-index: 99999;
   height: 50px;
 
   .sidebar--btn {
