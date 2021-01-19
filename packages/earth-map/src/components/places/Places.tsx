@@ -105,7 +105,9 @@ const Places = (props: IProps) => {
               open={search.open}
               onOpenToggle={setPlacesSearchOpen}
               onChange={setPlacesSearch}
-              data={search}
+              group={group}
+              search={search.search}
+              filters={search.filters}
             />
           )}
           {showBack && (

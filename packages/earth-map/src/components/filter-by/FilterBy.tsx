@@ -21,20 +21,33 @@ import classnames from 'classnames';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { cleanFilters, countFilters } from 'utils/filters';
+import useLocations from 'fetchers/useLocations';
+import { serializeFilters } from '@marapp/earth-shared';
 
 import './styles.scss';
 
 interface IProps {
-  data: any;
   open: boolean;
   onOpenToggle: (payload?) => void;
   onChange: (payload?) => void;
+  group?: string[];
+  search?: string;
+  filters?: any;
 }
 
 const FilterBy = (props: IProps) => {
-  const { data, open, onOpenToggle, onChange } = props;
+  const { group, filters, search, open, onOpenToggle, onChange } = props;
   const { t } = useTranslation();
-  const { filters, availableFilters } = data;
+
+  const { metadata, awaitMore, nextPage, isValidating } = useLocations({
+    search,
+    filter: serializeFilters(filters),
+    select: 'name,slug,organization,type',
+    group: group.join(),
+  });
+
+  const availableFilters = metadata?.filters || {};
+
   const numberOfFilters = countFilters(filters);
 
   const toggleFilter = (key: string, value: string) => {

@@ -42,7 +42,7 @@ export function PlacesSearchResults(props: IProps) {
 
   const { data, awaitMore, nextPage, isValidating } = useLocations({
     search,
-    filters: serializeFilters(filters),
+    filter: serializeFilters(filters),
     select: 'name,slug,organization,type',
     group: group.join(),
   });

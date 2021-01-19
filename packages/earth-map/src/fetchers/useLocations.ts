@@ -18,13 +18,26 @@
  */
 
 import { noop } from 'lodash/fp';
+import { groupBy, sortBy } from 'lodash';
 import { useSWRInfinite } from 'swr';
-import queryStringEncode from 'query-string-encode';
 import { BaseAPIService, metaDeserializer } from 'services/base/APIBase';
+import { encodeQueryToURL } from 'utils/query';
+
+interface IQuery {
+  filter?: string;
+  search?: string;
+  select?: string;
+  group?: string;
+  sort?: string;
+  page?: {
+    size?: number;
+    cursor?: string;
+  };
+}
 
 const DEFAULT_PAGE_SIZE = 30;
 
-export default function useLocations(query: any) {
+export default function useLocations(query: IQuery) {
   const swrKeyLoader = (pageIndex: number, previousPage: any): string => {
     if (previousPage && !previousPage.data) {
       return null; // reached the end;
@@ -41,9 +54,36 @@ export default function useLocations(query: any) {
       ...query,
     };
 
-    return `/locations?${queryStringEncode(finalQuery)}`;
+    return encodeQueryToURL('/locations', finalQuery);
   };
-  const fetcher = (url) => BaseAPIService.requestSWR(url, undefined, metaDeserializer);
+  const fetcher = (url) => {
+    return BaseAPIService.requestSWR(url, undefined, metaDeserializer).then((response) => {
+      const transformer = (payload) => {
+        const filtersWithLabels = payload.map((filter) => ({
+          ...filter,
+          label: filter.value,
+          ...(typeof filter.value === 'boolean' && {
+            label: filter.value ? 'Yes' : 'No',
+            value: filter.value ? 'true' : 'false',
+          }),
+        }));
+
+        const availableFilters = groupBy(sortBy(filtersWithLabels, 'value'), 'key');
+
+        return availableFilters;
+      };
+
+      const result = {
+        ...response,
+        meta: {
+          ...response.meta,
+          filters: transformer(response.meta.filters),
+        },
+      };
+
+      return result;
+    });
+  };
 
   const { data: rawData, isValidating, size, setSize }: any = useSWRInfinite(swrKeyLoader, fetcher);
 
