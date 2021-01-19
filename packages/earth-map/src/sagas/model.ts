@@ -20,7 +20,7 @@
 import { PAGE_SIZE } from 'theme';
 
 export const LOCATION_QUERY = {
-  select: '-geojson',
+  select: 'name,slug,organization,type',
   page: { size: PAGE_SIZE },
   sort: 'name',
 };
