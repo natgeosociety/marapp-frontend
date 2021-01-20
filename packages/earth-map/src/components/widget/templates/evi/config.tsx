@@ -17,19 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import WidgetTooltip from 'components/widget/tooltip';
-import { getColorFromPallete, replace } from 'components/widget/utils';
 import { format } from 'd3-format';
 import ceil from 'lodash/ceil';
-import { IPlace } from 'modules/places/model';
-import { IWidgetConfig } from 'modules/widget/model';
 import React from 'react';
 
+import WidgetTooltip from '../../../../components/widget/tooltip';
+import { IPlace } from '../../../../modules/places/model';
+import { IWidgetConfig } from '../../../../modules/widget/model';
+import { getColorFromPallete, replace } from '../../utils';
 import { EviMetric } from './model';
-
-// Utils
-
-// Components
 
 interface EviConfig {
   metric: EviMetric;

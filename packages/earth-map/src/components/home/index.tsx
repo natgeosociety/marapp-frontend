@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setRouter } from 'modules/router/actions';
 import { connect } from 'react-redux';
 
+import { setRouter } from '../../modules/router/actions';
 import HomeComponent from './component';
 
 export default connect(

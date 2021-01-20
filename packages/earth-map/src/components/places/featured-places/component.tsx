@@ -17,12 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import ListItem from 'components/list-item';
-import useLocations from 'fetchers/useLocations';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Spinner } from '@marapp/earth-shared';
+
+import ListItem from '../../../components/list-item';
+import useLocations from '../../../fetchers/useLocations';
 
 interface IFeaturedPlaces {
   meta?: object;

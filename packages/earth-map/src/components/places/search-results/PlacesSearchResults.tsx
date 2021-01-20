@@ -18,15 +18,16 @@
  */
 
 import List from '@researchgate/react-intersection-list';
-import ListItem from 'components/list-item';
-import useLocations from 'fetchers/useLocations';
-import { LocationTypeEnum } from 'modules/places/model';
-import { EarthRoutes } from 'modules/router/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { PAGE_SIZE } from 'theme';
 
 import { serializeFilters, Spinner } from '@marapp/earth-shared';
+
+import useLocations from '../../../fetchers/useLocations';
+import { LocationTypeEnum } from '../../../modules/places/model';
+import { EarthRoutes } from '../../../modules/router/model';
+import { PAGE_SIZE } from '../../../theme';
+import ListItem from '../../list-item';
 
 interface IProps {
   setPlacesSearch?: (value: any) => {};

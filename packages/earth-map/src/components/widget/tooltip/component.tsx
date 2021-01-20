@@ -19,7 +19,6 @@
 
 import React from 'react';
 
-// Styles
 import './styles.scss';
 
 interface TooltipProps {

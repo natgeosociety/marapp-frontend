@@ -7,7 +7,7 @@ const HtmlWebpackInlineStylePlugin = require('html-webpack-inline-style-plugin')
 
 const ACTIVE_ENV = process.env.NODE_ENV === 'production' ? '.env' : '.env.local';
 
-require('dotenv').config({path: ACTIVE_ENV});
+require('dotenv').config({ path: ACTIVE_ENV });
 
 module.exports = {
   mode: 'production',
@@ -26,7 +26,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   externals: {
-    'react': 'React',
+    react: 'React',
     'react-dom': 'ReactDOM',
     'auth0-lock': 'Auth0Lock',
   },
@@ -40,7 +40,7 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          {loader: MiniCssExtractPlugin.loader, options: {injectType: 'styleTag'}},
+          { loader: MiniCssExtractPlugin.loader, options: { injectType: 'styleTag' } },
           'css-loader',
           'sass-loader',
         ],

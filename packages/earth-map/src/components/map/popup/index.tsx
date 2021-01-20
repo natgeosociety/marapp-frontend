@@ -17,11 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { getActiveInteractiveLayers } from 'modules/layers/selectors';
-import { setMapInteractions } from 'modules/map/actions';
-import { getPopup } from 'modules/map/selectors';
 import { connect } from 'react-redux';
 
+import { getActiveInteractiveLayers } from '../../../modules/layers/selectors';
+import { setMapInteractions } from '../../../modules/map/actions';
+import { getPopup } from '../../../modules/map/selectors';
 import LayerManager from './component';
 
 export default connect(

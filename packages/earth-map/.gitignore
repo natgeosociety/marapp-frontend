@@ -20,6 +20,10 @@ yarn-debug.log*
 yarn-error.log*
 /.idea/
 
+### Gatsby ###
+public
+.cache
+
 # dotenv environment variables file
 .env*
 !.env.sample

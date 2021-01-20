@@ -34,14 +34,14 @@ import {
   mapAuthzScopes,
 } from '@marapp/earth-shared';
 
-import { GATSBY_APP_AUTH0_NAMESPACE } from '@app/config';
+import { ADMIN_AUTH0_NAMESPACE } from '@app/config';
 import { routeToPage } from '@app/utils';
 import { Auth0Context } from '@app/utils/contexts';
 
 // Auth0 will enforce namespacing when performing OIDC-conformant
 // login flows, meaning that any custom claims without HTTP/HTTPS
 // namespaces will be silently excluded from tokens.
-const NAMESPACE = GATSBY_APP_AUTH0_NAMESPACE;
+const NAMESPACE = ADMIN_AUTH0_NAMESPACE;
 
 export const useAuth0: any = () => useContext(Auth0Context);
 

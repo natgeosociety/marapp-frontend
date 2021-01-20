@@ -17,19 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useAuth0 } from 'auth/auth0';
 import cn from 'classnames';
-import Widget from 'components/widget';
-import TEMPLATES from 'components/widget/templates';
-import CONFIGS from 'components/widget/templates/configs';
-import { IPlace } from 'modules/places/model';
-import { IWidget } from 'modules/widget/model';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InView } from 'react-intersection-observer';
 
 import { AuthzGuards, DropdownSimple, TitleHero } from '@marapp/earth-shared';
 
+import { useAuth0 } from '../../auth/auth0';
+import Widget from '../../components/widget';
+import TEMPLATES from '../../components/widget/templates';
+import CONFIGS from '../../components/widget/templates/configs';
+import { IPlace } from '../../modules/places/model';
+import { IWidget } from '../../modules/widget/model';
 import { ClipLayer } from '../clip-layer';
 import './styles.scss';
 

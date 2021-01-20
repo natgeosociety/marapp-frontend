@@ -2,10 +2,7 @@
   "compilerOptions": {
     "target": "ES2019",
     "module": "commonjs",
-    "lib": [
-      "dom",
-      "es2017"
-    ],
+    "lib": ["dom", "es2017"],
     "allowJs": true,
     "jsx": "react",
     "strict": false,
@@ -16,9 +13,7 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "strictNullChecks": false,
-    "baseUrl": "src",
+    "baseUrl": "src"
   },
-  "include": [
-    "./src/**/*"
-  ]
+  "include": ["./src/**/*"]
 }

@@ -19,9 +19,10 @@
 
 import { groupBy, sortBy } from 'lodash';
 import { noop } from 'lodash/fp';
-import { BaseAPIService, metaDeserializer } from 'services/base/APIBase';
 import { useSWRInfinite } from 'swr';
-import { encodeQueryToURL } from 'utils/query';
+
+import { BaseAPIService, metaDeserializer } from '../services/base/APIBase';
+import { encodeQueryToURL } from '../utils/query';
 
 interface IQueryLocation {
   filter?: string;

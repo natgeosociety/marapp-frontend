@@ -20,17 +20,17 @@
 import urljoin from 'url-join';
 
 import {
-  GATSBY_APP_AUTH0_AUDIENCE,
-  GATSBY_APP_AUTH0_CLIENT_ID,
-  GATSBY_APP_AUTH0_DOMAIN,
-  GATSBY_APP_BASE_URL,
+  ADMIN_AUTH0_AUDIENCE,
+  ADMIN_AUTH0_CLIENT_ID,
+  ADMIN_AUTH0_DOMAIN,
+  ADMIN_BASE_URL,
 } from '@app/config';
 
 const auth0 = {
-  domain: GATSBY_APP_AUTH0_DOMAIN,
-  clientId: GATSBY_APP_AUTH0_CLIENT_ID,
-  redirectUri: urljoin(window.location.origin, GATSBY_APP_BASE_URL),
-  audience: GATSBY_APP_AUTH0_AUDIENCE,
+  domain: ADMIN_AUTH0_DOMAIN,
+  clientId: ADMIN_AUTH0_CLIENT_ID,
+  redirectUri: urljoin(window.location.origin, ADMIN_BASE_URL),
+  audience: ADMIN_AUTH0_AUDIENCE,
 };
 
 export default { auth0 };

@@ -19,13 +19,14 @@
 
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import axios from 'axios';
-import { routeToPage } from 'utils';
 
 import {
   reqNoopInterceptor,
   resErrorInterceptor,
   resSuccessInterceptor,
 } from '@marapp/earth-shared';
+
+import { routeToPage } from '../utils';
 
 /**
  * Routes the user to the right place after login.

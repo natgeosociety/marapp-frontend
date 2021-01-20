@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import useLocations from 'fetchers/useLocations';
-import { LocationTypeEnum } from 'modules/places/model';
 import React from 'react';
 
+import useLocations from '../../../fetchers/useLocations';
+import { LocationTypeEnum } from '../../../modules/places/model';
 import { CollectionsCard } from './CollectionsCard';
 
 export default function WithData(props) {

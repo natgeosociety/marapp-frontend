@@ -47,7 +47,7 @@ import { MapComponent } from '@app/components/map';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Metrics } from '@app/components/places';
 import { Toggle } from '@app/components/toggle';
-import { PUBLIC_ORG } from '@app/config';
+import { ADMIN_PUBLIC_ORG } from '@app/config';
 import { ContentLayout } from '@app/layouts';
 import { generateCacheKey } from '@app/services';
 import MetricService from '@app/services/metrics';
@@ -274,7 +274,7 @@ export function PlaceDetail(props: IProps) {
                     onChange={onSubmit}
                     ref={register({})}
                   />
-                  {PUBLIC_ORG === selectedGroup && published && (
+                  {ADMIN_PUBLIC_ORG === selectedGroup && published && (
                     <Toggle
                       name="publicResource"
                       label="Public"

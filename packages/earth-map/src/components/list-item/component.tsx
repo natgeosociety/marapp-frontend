@@ -17,12 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import Toggle from 'components/toggle';
 import { noop } from 'lodash';
 import React from 'react';
 import Link from 'redux-first-router-link';
-import { parseHintBold } from 'utils';
 
+import Toggle from '../../components/toggle';
+import { parseHintBold } from '../../utils';
 import './style.scss';
 
 interface IProps {

@@ -17,21 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import WidgetTooltip from 'components/widget/tooltip';
-import { formatKM2, replace } from 'components/widget/utils';
 import { format } from 'd3-format';
 import sumBy from 'lodash/sumBy';
-import { IPlace } from 'modules/places/model';
-import { IWidgetConfig } from 'modules/widget/model';
 import moment from 'moment';
 import React from 'react';
-import { getStats } from 'utils/widget';
 
+import WidgetTooltip from '../../../../components/widget/tooltip';
+import { IPlace } from '../../../../modules/places/model';
+import { IWidgetConfig } from '../../../../modules/widget/model';
+import { getStats } from '../../../../utils/widget';
+import { formatKM2, replace } from '../../utils';
 import { FireMetric } from './model';
-
-// Components
-
-// Helpers
 
 interface FireConfig {
   metric: FireMetric;

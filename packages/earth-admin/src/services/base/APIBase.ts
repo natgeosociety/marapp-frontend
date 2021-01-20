@@ -21,7 +21,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { merge } from 'lodash/fp';
 import { Deserializer } from 'ts-jsonapi';
 
-import { GATSBY_API_URL } from '@app/config';
+import { ADMIN_API_URL } from '@app/config';
 import { encodeQueryToURL } from '@app/utils';
 
 export interface RequestQuery {
@@ -58,7 +58,7 @@ export const BaseAPIService = {
     const params = merge(defaults, config);
 
     const options: AxiosRequestConfig = {
-      baseURL: GATSBY_API_URL,
+      baseURL: ADMIN_API_URL,
       url: encodeQueryToURL(path, params.query),
       method: params.method,
       data: params.data,
