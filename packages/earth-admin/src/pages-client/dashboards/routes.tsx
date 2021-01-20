@@ -26,7 +26,7 @@ import { SidebarLayout } from '@app/layouts';
 import { RequestQuery } from '@app/services';
 import DashboardsService from '@app/services/dashboards';
 import { setPage } from '@app/utils';
-import { useInfiniteList } from '@marapp/earth-shared';
+import { useInfiniteList } from '@app/utils/hooks';
 
 import { DashboardDetail } from './details';
 import { DashboardsHome } from './home';
