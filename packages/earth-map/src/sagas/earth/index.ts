@@ -17,20 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setFeaturedCollections } from 'modules/collections/actions';
-import { ICollection } from 'modules/collections/model';
-import { resetLayerCache } from 'modules/layers/actions';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+
+import { setFeaturedCollections } from '../../modules/collections/actions';
+import { ICollection } from '../../modules/collections/model';
+import { resetLayerCache } from '../../modules/layers/actions';
 import {
   resetPlacesFeatured,
   setPlacesCache,
   setPlacesSearchAvailableFilters,
-} from 'modules/places/actions';
-import { IPlace, LocationTypeEnum } from 'modules/places/model';
-import { all, call, put, select, takeLatest } from 'redux-saga/effects';
-import { loadDataIndexes } from 'sagas/layers';
-import { nextPage } from 'sagas/places';
-import { getGroup, ignoreRedirectsTo } from 'sagas/saga-utils';
-import PlacesService from 'services/PlacesService';
+} from '../../modules/places/actions';
+import { IPlace, LocationTypeEnum } from '../../modules/places/model';
+import PlacesService from '../../services/PlacesService';
+import { loadDataIndexes } from '../layers';
+import { nextPage } from '../places';
+import { getGroup, ignoreRedirectsTo } from '../saga-utils';
 
 const ignoreRedirectsToEarth = ignoreRedirectsTo('EARTH');
 

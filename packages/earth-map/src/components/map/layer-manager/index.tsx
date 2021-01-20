@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { getActiveBoundsLayer, getActiveLayers } from 'modules/layers/selectors';
 import { connect } from 'react-redux';
 
+import { getActiveBoundsLayer, getActiveLayers } from '../../../modules/layers/selectors';
 import LayerManager from './component';
 
 export default connect((state) => ({

@@ -17,10 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setPlacesSearch } from 'modules/places/actions';
-import { setRouter } from 'modules/router/actions';
 import { connect } from 'react-redux';
 
+import { setPlacesSearch } from '../../modules/places/actions';
+import { setRouter } from '../../modules/router/actions';
 import SearchBoxComponent from './Searchbox';
 
 export default connect(

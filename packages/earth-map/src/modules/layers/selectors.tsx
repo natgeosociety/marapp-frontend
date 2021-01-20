@@ -22,9 +22,9 @@ import compact from 'lodash/compact';
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
-import { EarthRoutes } from 'modules/router/model';
 import { createSelector } from 'reselect';
 
+import { EarthRoutes } from '../router/model';
 import decodes from './decodes';
 import { ILayer } from './model';
 import { getParams } from './utils';

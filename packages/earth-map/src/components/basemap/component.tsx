@@ -18,10 +18,10 @@
 */
 
 import React from 'react';
-import { APP_BASEMAPS } from 'theme';
 
 import { Layer } from '@marapp/earth-shared';
 
+import { APP_BASEMAPS } from '../../theme';
 import './styles.scss';
 
 interface IBasemap {

@@ -17,16 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { replace } from 'components/widget/utils';
 import { format } from 'd3-format';
-import { IPlace } from 'modules/places/model';
-import { IWidgetConfig } from 'modules/widget/model';
 import React from 'react';
 
+import { IPlace } from '../../../../modules/places/model';
+import { IWidgetConfig } from '../../../../modules/widget/model';
+import { replace } from '../../utils';
 import { TerrestrialCarbonMetric } from './model';
 import Tick from './tick';
 
-// Utils
 interface TerrestrialCarbonConfig {
   metric: TerrestrialCarbonMetric;
 }

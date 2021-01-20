@@ -17,16 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { getActiveInteractiveLayersIds } from 'modules/layers/selectors';
+import { connect } from 'react-redux';
+
+import { getActiveInteractiveLayersIds } from '../../modules/layers/selectors';
 import {
   setMapBounds,
   setMapHoverInteractions,
   setMapInteractions,
   setMapViewport,
-} from 'modules/map/actions';
-import { sidebarAwareMapBounds } from 'modules/map/selectors';
-import { connect } from 'react-redux';
-
+} from '../../modules/map/actions';
+import { sidebarAwareMapBounds } from '../../modules/map/selectors';
 import MapComponent from './component';
 
 export default connect(

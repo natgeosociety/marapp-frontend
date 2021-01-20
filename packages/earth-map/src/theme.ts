@@ -20,7 +20,7 @@
 import grayscale from './images/layers/grayscale.png';
 import satellite from './images/layers/satellite.png';
 
-export const APP_LOGO = require('images/unbl_logo.svg');
+export const APP_LOGO = require('./images/unbl_logo.svg');
 export const PAGE_SIZE = 30;
 
 export const APP_BASEMAPS = [

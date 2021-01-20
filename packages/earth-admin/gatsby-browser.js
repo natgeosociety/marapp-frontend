@@ -27,9 +27,9 @@ TranslationService.init();
 
 export const wrapRootElement = ({ element }) => (
   <Auth0Provider
-    domain={`${config.auth0.domain}`}
-    client_id={`${config.auth0.clientId}`}
-    redirect_uri={`${config.auth0.redirectUri}`}
+    domain={config.auth0.domain}
+    client_id={config.auth0.clientId}
+    redirect_uri={config.auth0.redirectUri}
     audience={config.auth0.audience}
     onRedirectCallback={onRedirectCallback}
     onSuccessHook={onSuccessHook}

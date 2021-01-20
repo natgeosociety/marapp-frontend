@@ -24,7 +24,7 @@ import queryStringEncode from 'query-string-encode';
 import { RefObject } from 'react';
 
 import { ADMIN_PAGES } from '@app/components/sidebar-select/model';
-import { BASE_URL } from '@app/config';
+import { ADMIN_BASE_URL } from '@app/config';
 
 /**
  * Wrapper over navigate that takes into account baseURL.
@@ -32,7 +32,7 @@ import { BASE_URL } from '@app/config';
 export const routeToPage = (targetPath: string, stripBase: boolean = false) => {
   let path = targetPath;
   if (stripBase && path !== '/') {
-    path = path.replace(BASE_URL, '');
+    path = path.replace(ADMIN_BASE_URL, '');
   }
   navigate(path);
 };

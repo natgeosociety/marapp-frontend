@@ -17,16 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import WidgetTooltip from 'components/widget/tooltip';
-import { replace } from 'components/widget/utils';
 import { format } from 'd3-format';
 import findLast from 'lodash/findLast';
 import React from 'react';
-import { parseObject } from 'utils/widget';
 
-// Utils
-
-// Components
+import WidgetTooltip from '../../../../components/widget/tooltip';
+import { parseObject } from '../../../../utils/widget';
+import { replace } from '../../utils';
 
 export const CONFIG = {
   parse: ({ rows }, params, widgetConfig, place) => {

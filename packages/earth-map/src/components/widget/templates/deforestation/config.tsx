@@ -17,19 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import WidgetTooltip from 'components/widget/tooltip';
-import { formatKM2, formatPercentage, replace } from 'components/widget/utils';
 import { format } from 'd3-format';
-import { IPlace } from 'modules/places/model';
-import { IWidgetConfig } from 'modules/widget/model';
 import React from 'react';
-import { calculateTotal, formatYearObject } from 'utils/widget';
 
+import WidgetTooltip from '../../../../components/widget/tooltip';
+import { IPlace } from '../../../../modules/places/model';
+import { IWidgetConfig } from '../../../../modules/widget/model';
+import { calculateTotal, formatYearObject } from '../../../../utils/widget';
+import { formatKM2, formatPercentage, replace } from '../../utils';
 import { DeforestationMetric } from './model';
-
-// Utils
-
-// Components
 
 interface DeforestationConfig {
   metric: DeforestationMetric;

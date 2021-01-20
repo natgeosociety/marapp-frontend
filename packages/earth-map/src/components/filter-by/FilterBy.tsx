@@ -20,8 +20,8 @@
 import classnames from 'classnames';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { cleanFilters, countFilters } from 'utils/filters';
 
+import { cleanFilters, countFilters } from '../../utils/filters';
 import './styles.scss';
 
 interface IProps {
