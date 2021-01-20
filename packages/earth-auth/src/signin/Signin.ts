@@ -18,8 +18,8 @@
 */
 import { AuthEnv } from '../config';
 import { Auth0LockConfig } from './model';
-import { COUNTRY_LIST } from '@marapp/earth-shared/src/data';
-
+import axios from 'axios';
+import { Deserializer } from 'ts-jsonapi';
 const profile = require('../assets/profile.svg') as string;
 
 const AUTH_CONFIG: Auth0LockConfig = JSON.parse(
@@ -45,6 +45,12 @@ if (AUTH_CONFIG.dict && AUTH_CONFIG.dict.signin && AUTH_CONFIG.dict.signin.title
 }
 const loginHint = AUTH_CONFIG.extraParams.login_hint;
 const colors = AUTH_CONFIG.colors || {};
+
+const DeserializerService = new Deserializer({
+  keyForAttribute: (attribute: any) => {
+    return attribute;
+  },
+});
 
 const lock: Auth0LockStatic = new Auth0Lock(AUTH_CONFIG.clientID, AUTH_CONFIG.auth0Domain, {
   avatar: null,
@@ -111,7 +117,11 @@ const lock: Auth0LockStatic = new Auth0Lock(AUTH_CONFIG.clientID, AUTH_CONFIG.au
       name: 'country',
       placeholder: 'country or region',
       options: function (cb) {
-        cb(null, COUNTRY_LIST);
+        axios.get(`${AuthEnv.apiUrl}/profile/countries`).then((response) => {
+          const countries = DeserializerService.deserialize(response.data);
+
+          cb(null, countries);
+        });
       },
       // prefill: function(cb) {
       //   cb(null, 'RO');
