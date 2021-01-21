@@ -18,8 +18,6 @@
 */
 import { AuthEnv } from '../config';
 import { Auth0LockConfig } from './model';
-import axios from 'axios';
-import { Deserializer } from 'ts-jsonapi';
 const profile = require('../assets/profile.svg') as string;
 
 const AUTH_CONFIG: Auth0LockConfig = JSON.parse(
@@ -36,7 +34,7 @@ if (AUTH_CONFIG.dict && AUTH_CONFIG.dict.signin && AUTH_CONFIG.dict.signin.title
   languageDictionary = {
     title: AUTH_CONFIG.extraParams.emailState ? AUTH_CONFIG.extraParams.emailState : '',
     signUpTerms: `I have read and agree to the ${AUTH_CONFIG.dict.signin.title}’s <a target="_blank" href=${AuthEnv.terms}>terms of use</a>,
-        and I consent ${AUTH_CONFIG.dict.signin.title}to process my personal data and have read the <a target="_blank" href=${AuthEnv.privacy}>privacy notice</a>.`,
+        and I consent ${AUTH_CONFIG.dict.signin.title} to process my personal data and have read the <a target="_blank" href=${AuthEnv.privacy}>privacy notice</a>.`,
     forgotPasswordAction: 'Forgot password?',
     loginSubmitLabel: 'Sign in',
   };
@@ -45,12 +43,6 @@ if (AUTH_CONFIG.dict && AUTH_CONFIG.dict.signin && AUTH_CONFIG.dict.signin.title
 }
 const loginHint = AUTH_CONFIG.extraParams.login_hint;
 const colors = AUTH_CONFIG.colors || {};
-
-const DeserializerService = new Deserializer({
-  keyForAttribute: (attribute: any) => {
-    return attribute;
-  },
-});
 
 const lock: Auth0LockStatic = new Auth0Lock(AUTH_CONFIG.clientID, AUTH_CONFIG.auth0Domain, {
   avatar: null,
@@ -117,15 +109,14 @@ const lock: Auth0LockStatic = new Auth0Lock(AUTH_CONFIG.clientID, AUTH_CONFIG.au
       name: 'country',
       placeholder: 'country or region',
       options: function (cb) {
-        axios.get(`${AuthEnv.apiUrl}/profile/countries`).then((response) => {
-          const countries = DeserializerService.deserialize(response.data);
+        fetch(`${AuthEnv.apiUrl}/profile/countries`)
+          .then((response) => response.json())
+          .then((response) => {
+            const countries = response.data.map(({ attributes }) => attributes);
 
-          cb(null, countries);
-        });
+            cb(null, countries);
+          });
       },
-      // prefill: function(cb) {
-      //   cb(null, 'RO');
-      // }
     },
     {
       name: 'institution',
@@ -137,21 +128,6 @@ const lock: Auth0LockStatic = new Auth0Lock(AUTH_CONFIG.clientID, AUTH_CONFIG.au
         };
       },
     },
-    // Auth0 lock doesn't allow checkbox validation and custom html label
-    // {
-    //   type: "checkbox",
-    //   name: "termsOfUseConsent",
-    //   prefill: "true",
-    //   placeholder: `By signing up, you agree to our <a target="_blank" href=${AuthEnv.terms}>terms of service</a> and
-    //     <a target="_blank" href=${AuthEnv.privacy}>privacy policy.</a>`,
-    //   //@ts-ignore
-    //   validator: function() {
-    //     return {
-    //       valid: false,
-    //       hint: "First name can't be blank",
-    //     };
-    //   }
-    // },
   ],
 });
 
