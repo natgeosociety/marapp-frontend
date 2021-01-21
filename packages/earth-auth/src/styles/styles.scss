@@ -228,6 +228,39 @@ body {
       }
     }
 
+
+    .auth0-lock-select-country {
+      background: $marapp-gray-7;
+
+      .auth0-lock-search {
+        background: $marapp-gray-7;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.075);
+
+        .auth0-lock-input {
+          border: 1px solid $marapp-gray-5;
+          border-radius: 3px;
+        }
+
+        .auth0-lock-back-button {
+          background: $marapp-primary-color;
+          border-color: $marapp-primary-color;
+
+          svg *{
+            stroke: $marapp-gray-1;
+          }
+        }
+      }
+
+      .auth0-lock-list-code li {
+        border-bottom-color: transparent;
+        color: $marapp-gray-1;
+
+        &.auth0-lock-list-code-highlighted {
+          background: $marapp-primary-color;
+        }
+      }
+    }
+
     //submit button
     .auth0-lock-submit {
       background: $marapp-primary-color;
