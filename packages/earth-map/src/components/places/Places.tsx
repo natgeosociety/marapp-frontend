@@ -20,21 +20,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
 
 import { serializeFilters } from '@marapp/earth-shared';
 
 import BackToLocation from '../../components/back-to-location';
 import FilterBy from '../../components/filter-by';
-import InfiniteList from '../../components/infinite-list';
-import ListItem from '../../components/list-item';
-import MenuItemSkeleton from '../../components/MenuItemSkeleton';
 import SearchBox from '../../components/searchbox';
 import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search';
-import { LocationTypeEnum } from '../../modules/places/model';
-import { EarthRoutes } from '../../modules/router/model';
-import { setSidebarOpen } from '../../modules/sidebar/actions';
 import useLocations from '../../fetchers/useLocations';
 import { hasFilters } from '../../utils/filters';
 import PlacesSearchResults from './search-results';
@@ -86,8 +78,6 @@ const Places = (props: IProps) => {
     group: group.join(),
   });
 
-  const theme = useTheme();
-  const isSmallDevice = useMediaQuery(theme.breakpoints.down('sm'));
   const hasSearchTerm = !!search.search;
   const showX = selected || hasSearchTerm;
   const showFilter = !selected || panelExpanded;
@@ -116,12 +106,6 @@ const Places = (props: IProps) => {
     setPlacesSearch({ search: '' });
     resetMap();
     push('/earth');
-  };
-
-  const fakeResultsMapping = {
-    '1': 10,
-    '2': 5,
-    '3': 2,
   };
 
   return (
@@ -161,56 +145,12 @@ const Places = (props: IProps) => {
           filters={search.filters}
           group={group}
           setPlacesSearch={setPlacesSearch}
+          setSidebarPanelExpanded={setSidebarPanelExpanded}
+          setSidebarOpen={setSidebarOpen}
         />
       ) : (
         children
       )}
-
-      {/*
-       {showSearchResults ? (
-        <InfiniteList
-          title={t('Search results')}
-          data={
-            search.loading
-              ? Array(fakeResultsMapping[search.search.length] || 1).fill(null)
-              : results
-          }
-          loading={false}
-          nextPageCursor={nextPageCursor}
-          onNextPage={nextPlacesPage}
-        >
-          {(item) =>
-            search.loading ? (
-              <MenuItemSkeleton />
-            ) : (
-              <ListItem
-                hint={item.$searchHint.name}
-                title={item.name}
-                key={`${item.slug}-${item.organization}`}
-                onClick={() => {
-                  setSidebarPanelExpanded(false);
-                  setPlacesSearch({ search: item.name });
-
-                  isSmallDevice && setSidebarOpen(false);
-                }}
-                linkTo={{
-                  type:
-                    item.type === LocationTypeEnum.COLLECTION
-                      ? EarthRoutes.COLLECTION
-                      : EarthRoutes.LOCATION,
-                  payload: {
-                    slug: item.slug,
-                    id: item.id,
-                    organization: item.organization,
-                  },
-                }}
-                organization={group.length > 1 && item.organization}
-                labels={[item.type]}
-              />
-            )
-          }
-        </InfiniteList>
-      */}
     </SidebarLayoutSearch>
   );
 };

@@ -17,12 +17,17 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import Box from '@material-ui/core/Box';
+import { useTheme } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import List from '@researchgate/react-intersection-list';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { serializeFilters, Spinner } from '@marapp/earth-shared';
 
+import MenuItemSkeleton from '../../../components/MenuItemSkeleton';
 import useLocations from '../../../fetchers/useLocations';
 import { LocationTypeEnum } from '../../../modules/places/model';
 import { EarthRoutes } from '../../../modules/router/model';
@@ -34,12 +39,24 @@ interface IProps {
   search?: any;
   filters?: any;
   group?: any;
+  setSidebarOpen?: (value: boolean) => void;
+  setSidebarPanelExpanded?: (value: boolean) => void;
 }
 
 export function PlacesSearchResults(props: IProps) {
-  const { search, filters, group, setPlacesSearch } = props;
+  const {
+    search,
+    filters,
+    group,
+    setPlacesSearch,
+    setSidebarOpen,
+    setSidebarPanelExpanded,
+  } = props;
   const { t } = useTranslation();
   const title = t('Search results');
+
+  const theme = useTheme();
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { data, awaitMore, nextPage, isValidating } = useLocations({
     search,
@@ -48,20 +65,30 @@ export function PlacesSearchResults(props: IProps) {
     group: group.join(),
   });
 
-  if (!data) {
-    return <Spinner position="relative" />;
-  }
+  const fakeResultsMapping = {
+    '1': 10,
+    '2': 5,
+    '3': 2,
+  };
+
+  const isLoading = isValidating !== false;
+
+  const itemCount = isLoading ? fakeResultsMapping[search.length] || 1 : data?.length || 0;
 
   return (
     <div className="marapp-qa-infinitelist ng-section-background ng-position-relative ng-padding-medium-bottom">
-      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-        {title}
-      </h2>
+      <Box p={2} pb={0}>
+        <Typography variant="subtitle1">{title}</Typography>
+      </Box>
       <List
         awaitMore={awaitMore}
         pageSize={PAGE_SIZE}
-        itemCount={data.length}
+        itemCount={itemCount}
         renderItem={(index) => {
+          if (isLoading) {
+            return <MenuItemSkeleton />;
+          }
+
           const { id, $searchHint, name, slug, organization, type } = data[index];
 
           return (
@@ -70,7 +97,9 @@ export function PlacesSearchResults(props: IProps) {
               title={name}
               key={`${slug}-${organization}`}
               onClick={() => {
+                setSidebarPanelExpanded(false);
                 setPlacesSearch({ search: name });
+                isSmallDevice && setSidebarOpen(false);
               }}
               linkTo={{
                 type:
