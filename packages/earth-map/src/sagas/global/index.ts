@@ -17,13 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { navigateToAdmin } from 'modules/global/actions';
 import { select, takeLatest } from 'redux-saga/effects';
 
 import { IEphemeralState } from '../../store/ephemeral-state';
 import { getAll } from '../saga-utils';
 
+import { ADMIN_URL } from '../../config';
+
 export default function* global() {
   yield takeLatest('GLOBAL/persistData', persistData);
+  yield takeLatest(navigateToAdmin, onNavigateToAdmin);
 }
 
 function* persistData() {
@@ -40,4 +44,22 @@ function* persistData() {
   };
 
   sessionStorage.setItem('ephemeral', JSON.stringify(keepThis));
+}
+
+/**
+ * When switching between the map and admin apps, reset ephemeral state
+ */
+function* onNavigateToAdmin({ payload }) {
+  const ephemeralState = JSON.parse(sessionStorage.getItem('ephemeral'));
+
+  if (ephemeralState) {
+    ephemeralState.places = {
+      search: '',
+      filters: {},
+    };
+
+    sessionStorage.setItem('ephemeral', JSON.stringify(ephemeralState));
+  }
+
+  window.location.assign(`${ADMIN_URL}${payload}`);
 }

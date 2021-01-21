@@ -16,7 +16,6 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-
 import * as actions from './actions';
 import { ILastViewedPlace } from './model';
 
@@ -25,6 +24,9 @@ interface LastViewedPlacePayload {
 }
 
 export default {
+  [actions.navigateToAdmin]: (state, { payload }) => {
+    return state;
+  },
   [actions.persistData]: (state, { payload }) => {
     return state;
   },
