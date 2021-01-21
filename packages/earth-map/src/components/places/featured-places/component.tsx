@@ -26,20 +26,26 @@ import { useTranslation } from 'react-i18next';
 
 import ListItem from '../../../components/list-item';
 import MenuItemSkeleton from '../../../components/MenuItemSkeleton';
+import useLocations from '../../../fetchers/useLocations';
 
 import { Spinner } from '@marapp/earth-shared';
 
 interface IFeaturedPlaces {
-  featured?: {
-    data: [];
-    meta?: object;
-  };
-  group?: string;
+  meta?: object;
+  group?: string[];
 }
 
-const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
-  const { featured, group } = props;
+export const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
+  const { group } = props;
   const { t } = useTranslation();
+
+  const { data } = useLocations({
+    select: 'slug,name,id,organization,type',
+    page: { size: 100 },
+    filter: 'featured==true',
+    sort: 'name',
+    group: group.join(),
+  });
 
   if (!featured.data) {
     return (
@@ -92,5 +98,3 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
     </Paper>
   );
 };
-
-export default FeaturedPlacesComponent;

@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -34,10 +34,11 @@ import { cleanFilters, countFilters } from '../../utils/filters';
 import './styles.scss';
 
 interface IProps {
-  data: any;
   open: boolean;
   onOpenToggle: (payload?) => void;
   onChange: (payload?) => void;
+  filters: { [key: string]: string[] };
+  availableFilters: { [key: string]: Array<{ [key: string]: any }> };
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -54,10 +55,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FilterBy = (props: IProps) => {
-  const { data, open, onOpenToggle, onChange } = props;
+  const { open, availableFilters, filters, onOpenToggle, onChange } = props;
   const { t } = useTranslation();
   const classes = useStyles();
-  const { filters, availableFilters } = data;
+  const [currentAvailableFilters, setCurrentAvailableFilters] = useState({});
+
+  // Keep old available filters while new filters are fetched
+  useEffect(() => availableFilters && setCurrentAvailableFilters(availableFilters), [
+    availableFilters,
+  ]);
+
   const numberOfFilters = countFilters(filters);
 
   const toggleFilter = (key: string, value: string) => {
@@ -104,9 +111,9 @@ const FilterBy = (props: IProps) => {
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
-        {Object.keys(availableFilters).map((key) => (
+        {Object.keys(currentAvailableFilters).map((key) => (
           <Grid key={key} container={true} spacing={1}>
-            {availableFilters[key].map((filter, i) => {
+            {currentAvailableFilters[key].map((filter, i) => {
               const checked = !!(filters[key] && filters[key].includes(filter.value));
               const disabled = filter.count === 0;
 
