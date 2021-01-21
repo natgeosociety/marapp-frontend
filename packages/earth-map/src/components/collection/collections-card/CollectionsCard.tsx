@@ -48,15 +48,12 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   canCreate: boolean;
   group: string[];
-  featured?: {
-    data: ICollection[];
-  };
+  data: ICollection[];
 }
 
 export const CollectionsCard = (props: IProps) => {
-  const { canCreate, featured, group } = props;
+  const { canCreate, data, group } = props;
   const { t } = useTranslation();
-  const { data } = featured;
   const hasCollections = !!data?.length;
   const classes = useStyles();
 

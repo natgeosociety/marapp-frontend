@@ -24,24 +24,30 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import ListItem from '../../../components/list-item';
-import MenuItemSkeleton from '../../../components/MenuItemSkeleton';
-
 import { Spinner } from '@marapp/earth-shared';
 
+import ListItem from '../../../components/list-item';
+import MenuItemSkeleton from '../../../components/MenuItemSkeleton';
+import useLocations from '../../../fetchers/useLocations';
+
 interface IFeaturedPlaces {
-  featured?: {
-    data: [];
-    meta?: object;
-  };
-  group?: string;
+  meta?: object;
+  group?: string[];
 }
 
-const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
-  const { featured, group } = props;
+export const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
+  const { group } = props;
   const { t } = useTranslation();
 
-  if (!featured.data) {
+  const { data } = useLocations({
+    select: 'slug,name,id,organization,type',
+    page: { size: 100 },
+    filter: 'featured==true',
+    sort: 'name',
+    group: group.join(),
+  });
+
+  if (!data) {
     return (
       <Box mb={1} position="relative">
         <Paper className="marapp-qa-other" square={true}>
@@ -67,14 +73,14 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
         <Typography variant="subtitle1">{t('Featured places')}</Typography>
       </Box>
 
-      {!featured?.data.length && !featured?.meta && (
+      {!data.length && (
         <div className="ng-padding-large ng-position-relative">
           <Spinner />
         </div>
       )}
-      {!!featured.data.length && (
+      {!!data.length && (
         <List>
-          {featured.data.map((place: any) => {
+          {data.map((place: any) => {
             const { slug, name, id, organization, type } = place;
 
             return (
@@ -92,5 +98,3 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
     </Paper>
   );
 };
-
-export default FeaturedPlacesComponent;

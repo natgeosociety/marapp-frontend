@@ -38,14 +38,8 @@ export default {
   // Search
   search: {
     index: 0,
-    loading: false,
     term: '', // probably deprecated
-    availableFilters: {},
     filters: {},
     search: '',
   },
-
-  // Places list
-  results: [],
-  nextPageCursor: null,
 };

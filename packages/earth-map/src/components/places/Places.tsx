@@ -1,8 +1,29 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+
+import { serializeFilters } from '@marapp/earth-shared';
 
 import BackToLocation from '../../components/back-to-location';
 import FilterBy from '../../components/filter-by';
@@ -14,7 +35,9 @@ import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search'
 import { LocationTypeEnum } from '../../modules/places/model';
 import { EarthRoutes } from '../../modules/router/model';
 import { setSidebarOpen } from '../../modules/sidebar/actions';
+import useLocations from '../../fetchers/useLocations';
 import { hasFilters } from '../../utils/filters';
+import PlacesSearchResults from './search-results';
 
 interface IProps {
   selected: boolean;
@@ -27,7 +50,6 @@ interface IProps {
   group?: any;
   locationName?: string;
   locationOrganization?: string;
-  nextPlacesPage?: () => void;
   setSidebarOpen?: (value: boolean) => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
@@ -43,12 +65,9 @@ const Places = (props: IProps) => {
   const {
     panelExpanded,
     search,
-    results,
-    nextPageCursor,
     group,
     locationName,
     locationOrganization,
-    nextPlacesPage,
     resetPlace,
     resetCollection,
     resetMap,
@@ -59,6 +78,13 @@ const Places = (props: IProps) => {
     selected,
     children,
   } = props;
+
+  const { meta } = useLocations({
+    search: search.search,
+    filter: serializeFilters(search.filters),
+    select: 'name,slug,organization,type',
+    group: group.join(),
+  });
 
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down('sm'));
@@ -115,7 +141,8 @@ const Places = (props: IProps) => {
               open={search.open}
               onOpenToggle={setPlacesSearchOpen}
               onChange={setPlacesSearch}
-              data={search}
+              filters={search.filters}
+              availableFilters={meta?.filters}
             />
           )}
           {showBack && (
@@ -129,6 +156,18 @@ const Places = (props: IProps) => {
       }
     >
       {showSearchResults ? (
+        <PlacesSearchResults
+          search={search.search}
+          filters={search.filters}
+          group={group}
+          setPlacesSearch={setPlacesSearch}
+        />
+      ) : (
+        children
+      )}
+
+      {/*
+       {showSearchResults ? (
         <InfiniteList
           title={t('Search results')}
           data={
@@ -171,9 +210,7 @@ const Places = (props: IProps) => {
             )
           }
         </InfiniteList>
-      ) : (
-        children
-      )}
+      */}
     </SidebarLayoutSearch>
   );
 };
