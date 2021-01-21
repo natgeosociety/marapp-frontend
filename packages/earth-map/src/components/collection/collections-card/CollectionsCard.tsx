@@ -18,23 +18,19 @@
 */
 
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import ListItem from 'components/list-item';
-import MenuItemSkeleton from 'components/MenuItemSkeleton';
-import { ICollection } from 'modules/collections/model';
-import { EMainType, SubType } from 'modules/global/model';
-import { EarthRoutes } from 'modules/router/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Link from 'redux-first-router-link';
 
-import { Card, getGenericDate } from '@marapp/earth-shared';
-import Button from '@material-ui/core/Button';
+import Link from 'redux-first-router-link';
+import { getGenericDate } from '@marapp/earth-shared';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ListItem from '../../../components/list-item';
+import MenuItemSkeleton from '../../../components/MenuItemSkeleton';
 import { ICollection } from '../../../modules/collections/model';
 import { EMainType } from '../../../modules/global/model';
 import { EarthRoutes } from '../../../modules/router/model';

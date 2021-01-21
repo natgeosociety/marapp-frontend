@@ -28,7 +28,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { makeStyles } from '@material-ui/core/styles';
-import { Auth0Context } from 'auth/auth0';
 import { remove } from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -36,7 +35,7 @@ import Link from 'redux-first-router-link';
 
 import { AppContextSwitcher, checkAdminRole } from '@marapp/earth-shared';
 
-import { MAP_ADMIN_URL, MAP_APP_NAME, COMPANY_URL } from '../../config';
+import { MAP_ADMIN_URL, MAP_APP_NAME, MAP_COMPANY_URL } from '../../config';
 import { EPanels } from '../../modules/sidebar/model';
 import OrganizationService from '../../services/OrganizationService';
 import { APP_LOGO } from '../../theme';
@@ -209,7 +208,12 @@ const Header = (props: IProps) => {
               }
             />
             <ListItemSecondaryAction>
-              <Button component="a" href={`${ADMIN_URL}${g.name}`} variant="outlined" size="small">
+              <Button
+                component="a"
+                href={`${MAP_ADMIN_URL}${g.name}`}
+                variant="outlined"
+                size="small"
+              >
                 Admin
               </Button>
             </ListItemSecondaryAction>
@@ -231,8 +235,14 @@ const Header = (props: IProps) => {
       renderDropdown={isAuthenticated}
       onChange={(g) => window.location.assign(`${MAP_ADMIN_URL}${g}`)}
     >
-      {COMPANY_URL ? (
-        <Option value="map-view" divider={true} component="a" href={COMPANY_URL} title={APP_NAME}>
+      {MAP_COMPANY_URL ? (
+        <Option
+          value="map-view"
+          divider={true}
+          component="a"
+          href={MAP_COMPANY_URL}
+          title={MAP_APP_NAME}
+        >
           <strong>{t('Home')}</strong>
         </Option>
       ) : null}
@@ -248,11 +258,17 @@ const Header = (props: IProps) => {
         </List>
       ) : null} */}
 
-      <Option value="map-view" divider={true} component="a" href={COMPANY_URL} title={APP_NAME}>
+      <Option
+        value="map-view"
+        divider={true}
+        component="a"
+        href={MAP_COMPANY_URL}
+        title={MAP_APP_NAME}
+      >
         <strong>{t('About')}</strong>
       </Option>
 
-      <Option value="map-view" component="a" href={COMPANY_URL} title={APP_NAME}>
+      <Option value="map-view" component="a" href={MAP_COMPANY_URL} title={MAP_APP_NAME}>
         <strong>{t('Support')}</strong>
       </Option>
     </AppContextSwitcher>
