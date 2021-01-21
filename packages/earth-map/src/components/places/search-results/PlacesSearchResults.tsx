@@ -20,33 +20,25 @@
 import List from '@researchgate/react-intersection-list';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { serializeFilters, Spinner } from '@marapp/earth-shared';
-
-import useLocations from '../../../fetchers/useLocations';
+import { Spinner } from '@marapp/earth-shared';
 import { LocationTypeEnum } from '../../../modules/places/model';
 import { EarthRoutes } from '../../../modules/router/model';
 import { PAGE_SIZE } from '../../../theme';
 import ListItem from '../../list-item';
 
 interface IProps {
+  data: any[];
+  awaitMore: boolean;
+  isValidating: boolean;
+  nextPage: () => void;
   setPlacesSearch?: (value: any) => {};
-  search?: any;
-  filters?: any;
   group?: any;
 }
 
 export function PlacesSearchResults(props: IProps) {
-  const { search, filters, group, setPlacesSearch } = props;
+  const { data, group, awaitMore, isValidating, nextPage, setPlacesSearch } = props;
   const { t } = useTranslation();
   const title = t('Search results');
-
-  const { data, awaitMore, nextPage, isValidating } = useLocations({
-    search,
-    filter: serializeFilters(filters),
-    select: 'name,slug,organization,type',
-    group: group.join(),
-  });
 
   if (!data) {
     return <Spinner position="relative" />;

@@ -23,24 +23,16 @@ import { useTranslation } from 'react-i18next';
 import { Spinner } from '@marapp/earth-shared';
 
 import ListItem from '../../../components/list-item';
-import useLocations from '../../../fetchers/useLocations';
+import { useLocations, QUERY_LOCATION } from '../../../fetchers';
 
-interface IFeaturedPlaces {
-  meta?: object;
+interface IProps {
   group?: string[];
 }
 
-export const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
+export const FeaturedPlacesComponent = (props: IProps) => {
   const { group } = props;
   const { t } = useTranslation();
-
-  const { data } = useLocations({
-    select: 'slug,name,id,organization,type',
-    page: { size: 100 },
-    filter: 'featured==true',
-    sort: 'name',
-    group: group.join(),
-  });
+  const { data } = useLocations(QUERY_LOCATION.getFeatured(group.join()));
 
   return (
     <div className="marapp-qa-featuredplaces ng-section-background ng-position-relative ng-padding-medium-bottom">

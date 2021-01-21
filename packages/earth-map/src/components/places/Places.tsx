@@ -21,13 +21,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
 
-import { serializeFilters } from '@marapp/earth-shared';
-
 import BackToLocation from '../../components/back-to-location';
 import FilterBy from '../../components/filter-by';
 import SearchBox from '../../components/searchbox';
 import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search';
-import useLocations from '../../fetchers/useLocations';
+import { useLocations, QUERY_LOCATION } from '../../fetchers';
 import { hasFilters } from '../../utils/filters';
 import PlacesSearchResults from './search-results';
 
@@ -69,12 +67,9 @@ const Places = (props: IProps) => {
     children,
   } = props;
 
-  const { meta } = useLocations({
-    search: search.search,
-    filter: serializeFilters(search.filters),
-    select: 'name,slug,organization,type',
-    group: group.join(),
-  });
+  const { data, meta, awaitMore, nextPage, isValidating } = useLocations(
+    QUERY_LOCATION.getFiltered(search.search, search.filters, group.join())
+  );
 
   const hasSearchTerm = !!search.search;
   const showX = selected || hasSearchTerm;
@@ -139,8 +134,10 @@ const Places = (props: IProps) => {
     >
       {showSearchResults ? (
         <PlacesSearchResults
-          search={search.search}
-          filters={search.filters}
+          data={data}
+          awaitMore={awaitMore}
+          nextPage={nextPage}
+          isValidating={isValidating}
           group={group}
           setPlacesSearch={setPlacesSearch}
         />

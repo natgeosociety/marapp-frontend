@@ -21,24 +21,13 @@ import { groupBy, sortBy } from 'lodash';
 import { noop } from 'lodash/fp';
 import { useSWRInfinite } from 'swr';
 
-import { BaseAPIService, metaDeserializer } from '../services/base/APIBase';
-import { encodeQueryToURL } from '../utils/query';
-
-interface IQueryLocation {
-  filter?: string;
-  search?: string;
-  select?: string;
-  group?: string;
-  sort?: string;
-  page?: {
-    size?: number;
-    cursor?: string;
-  };
-}
+import { BaseAPIService, metaDeserializer } from '../../services/base/APIBase';
+import { encodeQueryToURL } from '../../utils/query';
+import { IQueryMultipleLocations } from './queries';
 
 const DEFAULT_PAGE_SIZE = 30;
 
-export default function useLocations(query: IQueryLocation) {
+export function useLocations(query: IQueryMultipleLocations) {
   const swrKeyLoader = (pageIndex: number, previousPage: any): string => {
     if (previousPage && !previousPage.data) {
       return null; // reached the end;

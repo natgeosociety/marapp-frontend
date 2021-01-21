@@ -19,12 +19,6 @@
 
 import { PAGE_SIZE } from '../theme';
 
-export const LOCATION_QUERY = {
-  select: 'name,slug,organization,type',
-  page: { size: PAGE_SIZE },
-  sort: 'name',
-};
-
 export const DATA_INDEX_QUERY = {
   page: { size: 10, number: 1 },
   include: 'widgets,widgets.layers,widgets.layers.references',
