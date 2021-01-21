@@ -192,8 +192,12 @@ body {
       background: $marapp-gray-7;
       border-color: $marapp-gray-5;
 
-      .auth0-lock-input-with-placeholder {
+      .auth0-lock-input-location {
         background-color: transparent !important;
+        color: $marapp-gray-1 !important;
+      }
+
+      .auth0-lock-input-with-placeholder {
         color: $marapp-gray-5 !important;
       }
 
