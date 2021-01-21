@@ -1,4 +1,4 @@
-import { LocationTypeEnum } from 'modules/places/model';
+import { LocationTypeEnum } from '../places/model';
 
 export interface ILastViewedPlace {
   id: string;

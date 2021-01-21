@@ -18,22 +18,22 @@
  */
 
 import isBoolean from 'lodash/isBoolean';
-import { ICollection } from 'modules/collections/model';
 import React, { BaseSyntheticEvent, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
-import PlacesService from 'services/PlacesService';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
-
-import { CollectionConflict } from '../collection-conflict';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+
+import { ICollection } from '../../../modules/collections/model';
+import PlacesService from '../../../services/PlacesService';
+import { CollectionConflict } from '../collection-conflict';
 
 interface IProps {
   collection: ICollection;
@@ -49,9 +49,9 @@ export function CollectionRename(props: IProps) {
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
   const { register, errors, handleSubmit, formState, getValues, control } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
-  const { touched, dirty, isValid, isSubmitting } = formState;
+  const { touched, isDirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   return (
@@ -86,7 +86,7 @@ export function CollectionRename(props: IProps) {
                   type="submit"
                   variant="contained"
                   color="secondary"
-                  disabled={!dirty || !isValid || isSubmitting}
+                  disabled={!isDirty || !isValid || isSubmitting}
                 >
                   {isSubmitting ? t('Renaming collection') : t('Rename Collection')}
                 </Button>

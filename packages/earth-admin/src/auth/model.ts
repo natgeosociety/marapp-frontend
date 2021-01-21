@@ -41,12 +41,11 @@ export interface Auth0 {
   setupUserOrg?(o?: string): void;
   setIsLoading?(boolean): void;
   getPermissions?(type: string[]): boolean;
+  updateToken?(): Promise<void>;
 }
 
 export interface User {
   name?: string;
   email?: string;
   picture?: string;
-  allGroups?: string[];
-  roles?: { [key: string]: any };
 }

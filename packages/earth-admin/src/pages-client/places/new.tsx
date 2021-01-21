@@ -47,9 +47,9 @@ export function NewPlace(props: IProps) {
   const { onDataChange = noop, dynamicOptions } = props;
   const { type: placeTypeOptions = [] } = dynamicOptions;
   const { register, handleSubmit, watch, formState, errors, setValue, reset, control } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
-  const { touched, dirty, isValid } = formState;
+  const { touched, isDirty, isValid } = formState;
   const watchName = watch('name');
   const [isLoading, setIsLoading] = useState(false);
   const [geojsonValue, setGeojson] = useState(null);
@@ -64,6 +64,7 @@ export function NewPlace(props: IProps) {
     setPanel(e);
     setGeojson(null);
     setJsonError(true);
+    setServerErrors([]);
   };
 
   async function onSubmit(values) {
@@ -98,7 +99,7 @@ export function NewPlace(props: IProps) {
     e.preventDefault();
     try {
       const { data } = await PlacesService.getPlaceSlug(watchName, { group: selectedGroup });
-      setValue('slug', data.slug, true);
+      setValue('slug', data.slug, { shouldDirty: true, shouldValidate: true });
     } catch (error) {
       setServerErrors(error.data.errors);
     }
@@ -230,7 +231,7 @@ export function NewPlace(props: IProps) {
             <div className="ng-flex">
               <button
                 className="marapp-qa-actionsave ng-button ng-button-primary ng-button-large ng-margin-medium-right"
-                disabled={!isValid || jsonError || !dirty}
+                disabled={!isValid || jsonError || !isDirty}
               >
                 {t('Save and view details')}
               </button>

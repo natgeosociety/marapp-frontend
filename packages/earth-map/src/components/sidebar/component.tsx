@@ -20,14 +20,15 @@ import Drawer from '@material-ui/core/Drawer';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import classNames from 'classnames';
-import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_WIDE } from 'config';
 import React from 'react';
 
+import { MAP_SIDEBAR_WIDTH, MAP_SIDEBAR_WIDTH_WIDE } from '../../config';
+import CompanyRedirect from './company-redirect';
 import SidebarToggle from './sidebar-toggle';
 
 const useStyles = makeStyles((theme) => {
   const getDrawerWidth = (props: ISidebarPanel) =>
-    props.selectedOpen ? SIDEBAR_WIDTH_WIDE : SIDEBAR_WIDTH;
+    props.selectedOpen ? MAP_SIDEBAR_WIDTH_WIDE : MAP_SIDEBAR_WIDTH;
 
   return {
     drawerPaper: {

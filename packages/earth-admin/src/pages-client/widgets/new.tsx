@@ -59,10 +59,10 @@ export function NewWidget(props: IProps) {
   const { selectedGroup } = useAuth0();
   const { t } = useTranslation('admin');
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
-  const { touched, dirty, isValid } = formState;
+  const { touched, isDirty, isValid } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   const watchName = watch('name');
@@ -96,7 +96,7 @@ export function NewWidget(props: IProps) {
     e.preventDefault();
     try {
       const { data } = await WidgetsService.getWidgetSlug(watchName, { group: selectedGroup });
-      setValue('slug', data.slug, true);
+      setValue('slug', data.slug, { shouldDirty: true, shouldValidate: true });
     } catch (error) {
       setServerErrors(error.data.errors);
     }
@@ -233,7 +233,7 @@ export function NewWidget(props: IProps) {
             <div className="ng-flex">
               <button
                 className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
-                disabled={!isValid || !dirty || jsonError || !watchJson}
+                disabled={!isValid || !isDirty || jsonError || !watchJson}
               >
                 {t('Save and view details')}
               </button>

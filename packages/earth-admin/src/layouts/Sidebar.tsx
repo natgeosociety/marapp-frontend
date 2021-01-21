@@ -26,7 +26,7 @@ import { AppContextSwitcher, Spinner } from '@marapp/earth-shared';
 
 import { SidebarSelect } from '@app/components/sidebar-select';
 import { IAdminPage } from '@app/components/sidebar-select/model';
-import { MAP_PATH } from '@app/config';
+import { ADMIN_MAP_PATH } from '@app/config';
 import { Auth0Context } from '@app/utils/contexts';
 
 import { APP_LOGO, APP_NAME } from '../theme';
@@ -40,7 +40,7 @@ interface IProps {
   page?: IAdminPage[];
 }
 
-const EARTH_MAP_URL = urljoin(MAP_PATH, 'earth');
+const EARTH_MAP_URL = urljoin(ADMIN_MAP_PATH, 'earth');
 
 const SidebarLayout = (props: IProps) => {
   const { groups, selectedGroup } = useContext(Auth0Context);

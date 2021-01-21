@@ -17,13 +17,14 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { ICollection } from 'modules/collections/model';
-import { EPanels } from 'modules/sidebar/model';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import PlacesService from 'services/PlacesService';
 
 import { Modal } from '@marapp/earth-shared';
+
+import { ICollection } from '../../../modules/collections/model';
+import { EPanels } from '../../../modules/sidebar/model';
+import PlacesService from '../../../services/PlacesService';
 
 interface IProps {
   collection: ICollection;

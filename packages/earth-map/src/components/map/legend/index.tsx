@@ -17,6 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { connect } from 'react-redux';
+
 import {
   setLayerGroupCurrent,
   setLayerInfo,
@@ -25,10 +27,8 @@ import {
   setLayerSettings,
   setLayerVisibility,
   toggleLayer,
-} from 'modules/layers/actions';
-import { getLegendLayers } from 'modules/layers/selectors';
-import { connect } from 'react-redux';
-
+} from '../../../modules/layers/actions';
+import { getLegendLayers } from '../../../modules/layers/selectors';
 import LegendComponent from './component';
 
 export default connect(

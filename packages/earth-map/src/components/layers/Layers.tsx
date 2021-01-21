@@ -17,21 +17,22 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { debounce, sortBy } from 'lodash';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
-import BackToLocation from 'components/back-to-location';
 import Typography from '@material-ui/core/Typography';
-import FilterBy from 'components/filter-by';
-import InfiniteList from 'components/infinite-list';
-import ListItem from 'components/list-item';
-import SearchBox from 'components/searchbox';
-import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
-import { debounce, sortBy } from 'lodash';
-import { EPanels } from 'modules/sidebar/model';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
+import BackToLocation from '../../components/back-to-location';
+import FilterBy from '../../components/filter-by';
+import InfiniteList from '../../components/infinite-list';
+import ListItem from '../../components/list-item';
+import SearchBox from '../../components/searchbox';
+import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search';
+import { EPanels } from '../../modules/sidebar/model';
 import './styles.scss';
 
 interface IProps {

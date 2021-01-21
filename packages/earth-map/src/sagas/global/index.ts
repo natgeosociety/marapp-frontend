@@ -18,8 +18,9 @@
 */
 
 import { select, takeLatest } from 'redux-saga/effects';
-import { getAll } from 'sagas/saga-utils';
-import { IEphemeralState } from 'store/ephemeral-state';
+
+import { IEphemeralState } from '../../store/ephemeral-state';
+import { getAll } from '../saga-utils';
 
 export default function* global() {
   yield takeLatest('GLOBAL/persistData', persistData);

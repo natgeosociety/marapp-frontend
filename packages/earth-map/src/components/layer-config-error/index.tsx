@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { resetLayersActive } from 'modules/layers/actions';
 import { connect } from 'react-redux';
 
+import { resetLayersActive } from '../../modules/layers/actions';
 import LayerConfigError from './component';
 
 export default connect(

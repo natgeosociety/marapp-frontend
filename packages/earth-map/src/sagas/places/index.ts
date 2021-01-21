@@ -17,7 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { persistData } from 'modules/global/actions';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+
+import { serializeFilters } from '@marapp/earth-shared';
+
+import { persistData } from '../../modules/global/actions';
 import {
   nextPlacesPage,
   resetPlacesResults,
@@ -25,14 +29,10 @@ import {
   setPlacesSearchAvailableFilters,
   setPlacesSearchLoading,
   setPlacesSearchResults,
-} from 'modules/places/actions';
-import { all, call, put, select, takeLatest } from 'redux-saga/effects';
-import { getGroup, getPlaces } from 'sagas/saga-utils';
-import PlacesService from 'services/PlacesService';
-
-import { serializeFilters } from '@marapp/earth-shared';
-
+} from '../../modules/places/actions';
+import PlacesService from '../../services/PlacesService';
 import { LOCATION_QUERY } from '../model';
+import { getGroup, getPlaces } from '../saga-utils';
 
 export default function* places() {
   yield all([takeLatest(setPlacesSearch, searchPlaces), takeLatest(nextPlacesPage, nextPage)]);

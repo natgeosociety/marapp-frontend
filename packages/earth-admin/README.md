@@ -21,16 +21,16 @@ The following environment variables are required by the application.
 | **Key** | **Description** |
 | ------------- |:----------------|
 | `NODE_ENV` | Node.js environment (e.g. `development`, `production`) |
-| `GATSBY_APP_NAME` | The name of the app (e.g. `marapp`) |
-| `GATSBY_APP_PUBLIC_ORG` | The name of the public organization (e.g. `MARAPP`) |
+| `GATSBY_APP_ADMIN_NAME` | The name of the app (e.g. `marapp`) |
+| `GATSBY_APP_ADMIN_PUBLIC_ORG` | The name of the public organization (e.g. `MARAPP`) |
+| `GATSBY_APP_ADMIN_BASE_URL` | https://reach.tech/router/api/Router - `basepath` |
+| `GATSBY_APP_ADMIN_API_URL` | https://www.gatsbyjs.org/docs/environment-variables/#client-side-javascript - API URL |
+| `GATSBY_APP_ADMIN_MAPBOX_TOKEN` | https://docs.mapbox.com/help/glossary/access-token - Mapbox access token |
+| `GATSBY_APP_ADMIN_AUTH0_DOMAIN` | https://auth0.com/docs/custom-domains - Auth0 domain |
+| `GATSBY_APP_ADMIN_AUTH0_CLIENT_ID`| https://auth0.com/docs/flows/concepts/client-credentials - Auth0 Client ID |
+| `GATSBY_APP_ADMIN_AUTH0_AUDIENCE` | https://auth0.com/docs/tokens/guides/get-access-tokens - Auth0 audience |
+| `GATSBY_APP_ADMIN_AUTH0_NAMESPACE` | https://auth0.com/docs/tokens/guides/create-namespaced-custom-claims - Auth0 namespace |
 | `GATSBY_TELEMETRY_DISABLED` |  https://www.gatsbyjs.org/docs/telemetry/ |
-| `GATSBY_APP_BASE_URL` | https://reach.tech/router/api/Router - `basepath` |
-| `GATSBY_API_URL` | https://www.gatsbyjs.org/docs/environment-variables/#client-side-javascript - API URL |
-| `GATSBY_APP_MAPBOX_TOKEN` | https://docs.mapbox.com/help/glossary/access-token - Mapbox access token |
-| `GATSBY_APP_AUTH0_DOMAIN` | https://auth0.com/docs/custom-domains - Auth0 domain |
-| `GATSBY_APP_AUTH0_CLIENT_ID`| https://auth0.com/docs/flows/concepts/client-credentials - Auth0 Client ID |
-| `GATSBY_APP_AUTH0_AUDIENCE` | https://auth0.com/docs/tokens/guides/get-access-tokens - Auth0 audience |
-| `GATSBY_APP_AUTH0_NAMESPACE` | https://auth0.com/docs/tokens/guides/create-namespaced-custom-claims - Auth0 namespace |
 
 The required environment variables are also described in [.env.sample](.env.sample).
 

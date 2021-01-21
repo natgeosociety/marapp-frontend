@@ -18,16 +18,18 @@
 */
 
 import MuiListItem from '@material-ui/core/ListItem';
-import { makeStyles } from '@material-ui/core/styles';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Switch from '@material-ui/core/Switch';
+import { makeStyles } from '@material-ui/core/styles';
+import IconCircleSmall from 'mdi-material-ui/CircleSmall';
 import classnames from 'classnames';
 import { noop } from 'lodash';
-import IconCircleSmall from 'mdi-material-ui/CircleSmall';
 import React from 'react';
 import Link from 'redux-first-router-link';
-import { parseHintBold } from 'utils';
+
+import { parseHintBold } from '../../utils';
+import './style.scss';
 
 const useStyles = makeStyles((theme) => ({
   root: (props: any) => {

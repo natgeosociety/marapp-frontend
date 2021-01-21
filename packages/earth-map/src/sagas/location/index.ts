@@ -18,10 +18,13 @@
 */
 
 import groupBy from 'lodash/groupBy';
-import { persistData, setLastViewedPlace } from 'modules/global/actions';
-import { EMainType } from 'modules/global/model';
-import { setMapBounds } from 'modules/map/actions';
-import { setMetrics, setMetricsLoading } from 'modules/metrics/actions';
+import { replace } from 'redux-first-router';
+import { call, cancelled, delay, put, select, takeLatest } from 'redux-saga/effects';
+
+import { persistData, setLastViewedPlace } from '../../modules/global/actions';
+import { EMainType } from '../../modules/global/model';
+import { setMapBounds } from '../../modules/map/actions';
+import { setMetrics, setMetricsLoading } from '../../modules/metrics/actions';
 import {
   setPlaceData,
   setPlaceSelectedFilter,
@@ -29,14 +32,12 @@ import {
   setPlacesError,
   setPlacesLoading,
   setPlacesSearch,
-} from 'modules/places/actions';
-import { IPlace } from 'modules/places/model';
-import { setSidebarPanelExpanded } from 'modules/sidebar/actions';
-import { replace } from 'redux-first-router';
-import { call, cancelled, delay, put, select, takeLatest } from 'redux-saga/effects';
-import { loadDataIndexes } from 'sagas/layers';
-import { ignoreRedirectsTo } from 'sagas/saga-utils';
-import PlacesService from 'services/PlacesService';
+} from '../../modules/places/actions';
+import { IPlace } from '../../modules/places/model';
+import { setSidebarPanelExpanded } from '../../modules/sidebar/actions';
+import PlacesService from '../../services/PlacesService';
+import { loadDataIndexes } from '../layers';
+import { getAll, ignoreRedirectsTo } from '../saga-utils';
 
 const ignoreRedirectsToLocation = ignoreRedirectsTo('LOCATION');
 
@@ -99,6 +100,15 @@ function* toLocation({ payload, meta }) {
   } catch (e) {
     // TODO better error handling for sagas
     if ([403, 404].includes(e.request.status)) {
+      const {
+        global: { lastViewedPlace },
+      } = yield select(getAll);
+
+      if (lastViewedPlace?.slug === slug) {
+        yield put(setLastViewedPlace(null));
+        yield put(persistData());
+      }
+
       replace('/404');
     }
   } finally {

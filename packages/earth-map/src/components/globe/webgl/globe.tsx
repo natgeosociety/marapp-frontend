@@ -17,21 +17,21 @@
   specific language governing permissions and limitations under the License.
 */
 
-import ATMOSPHERE from 'images/spinny-globe/atsmosphere.png';
-import GLOBE_SPECULAR from 'images/spinny-globe/Earth_Glossiness-minified.jpg';
-import GLOBE_BUMP from 'images/spinny-globe/Earth_NormalNRM-minified.jpg';
-import GLOBE_MAP from 'images/spinny-globe/equirectangular-basemap-02-min.png';
-import CLOUDS from 'images/spinny-globe/fair_clouds-min.jpg';
 import {
   Color,
   Mesh,
   MeshPhongMaterial,
   RepeatWrapping,
-  // Utils
   SphereBufferGeometry,
   SphereGeometry,
   TextureLoader,
 } from 'three';
+
+import ATMOSPHERE from '../../../images/spinny-globe/atsmosphere.png';
+import GLOBE_SPECULAR from '../../../images/spinny-globe/Earth_Glossiness-minified.jpg';
+import GLOBE_BUMP from '../../../images/spinny-globe/Earth_NormalNRM-minified.jpg';
+import GLOBE_MAP from '../../../images/spinny-globe/equirectangular-basemap-02-min.png';
+import CLOUDS from '../../../images/spinny-globe/fair_clouds-min.jpg';
 
 const TEXTURES = {
   globe: {

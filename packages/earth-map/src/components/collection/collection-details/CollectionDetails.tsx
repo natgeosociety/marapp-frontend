@@ -19,7 +19,6 @@
 
 import cn from 'classnames';
 import { isEmpty } from 'lodash';
-import { ICollection } from 'modules/collections/model';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -32,6 +31,7 @@ import {
   TitleHero,
 } from '@marapp/earth-shared';
 
+import { ICollection } from '../../../modules/collections/model';
 import CollectionDelete from '../collection-delete';
 import { CollectionDownloadMetrics } from '../collection-downloadmetrics';
 import { CollectionEditPlaces } from '../collection-editplaces';

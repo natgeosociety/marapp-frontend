@@ -28,10 +28,6 @@ import React, { PureComponent } from 'react';
 import WidgetDownload from '../download';
 import './styles.scss';
 
-// Components
-
-// Styles
-
 class WidgetToolbarComponent extends PureComponent<any, any> {
   public static propTypes = {
     className: PropTypes.string,

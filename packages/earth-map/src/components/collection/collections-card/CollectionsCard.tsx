@@ -34,6 +34,11 @@ import { Card, getGenericDate } from '@marapp/earth-shared';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
+import ListItem from '../../../components/list-item';
+import { ICollection } from '../../../modules/collections/model';
+import { EMainType } from '../../../modules/global/model';
+import { EarthRoutes } from '../../../modules/router/model';
+
 const { NEW_COLLECTION } = EarthRoutes;
 
 const useStyles = makeStyles((theme) => ({

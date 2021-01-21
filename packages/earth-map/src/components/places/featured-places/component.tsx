@@ -21,10 +21,11 @@ import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import ListItem from 'components/list-item';
-import MenuItemSkeleton from 'components/MenuItemSkeleton';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
+import ListItem from '../../../components/list-item';
+import MenuItemSkeleton from '../../../components/MenuItemSkeleton';
 
 import { Spinner } from '@marapp/earth-shared';
 

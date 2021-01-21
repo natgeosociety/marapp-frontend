@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { replace } from 'components/widget/utils';
+import { replace } from '../../utils';
 
 const MAGNITUDE_SYMBOLS = ['t', 'kt', 'Mt', 'Gt', 'Tt'];
 const MAGNITUDE_WORDS = ['', 'thousand', 'million', 'billion', 'trillion'];

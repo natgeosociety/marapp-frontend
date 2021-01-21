@@ -17,9 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { extractCoordinatesFromUrl, isValidUrlCoordinateGroup } from 'utils/map';
-
 import { APP_BASEMAPS } from '../../theme';
+import { extractCoordinatesFromUrl, isValidUrlCoordinateGroup } from '../../utils/map';
 
 const coordinatesFromUrl = extractCoordinatesFromUrl();
 

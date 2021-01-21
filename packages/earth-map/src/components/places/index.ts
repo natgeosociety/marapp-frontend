@@ -1,14 +1,14 @@
-import { resetCollection } from 'modules/collections/actions';
-import { resetMap } from 'modules/map/actions';
+import { connect } from 'react-redux';
+
+import { resetCollection } from '../../modules/collections/actions';
+import { resetMap } from '../../modules/map/actions';
 import {
   nextPlacesPage,
   resetPlace,
   setPlacesSearch,
   setPlacesSearchOpen,
-} from 'modules/places/actions';
-import { setSidebarPanelExpanded, setSidebarOpen } from 'modules/sidebar/actions';
-import { connect } from 'react-redux';
-
+} from '../../modules/places/actions';
+import { setSidebarPanelExpanded, setSidebarOpen } from '../../modules/sidebar/actions';
 import Places from './Places';
 
 export default connect(

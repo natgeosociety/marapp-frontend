@@ -29,8 +29,8 @@ import Typography from '@material-ui/core/Typography';
 import IconChevronDown from 'mdi-material-ui/ChevronDown';
 
 import { useTranslation } from 'react-i18next';
-import { cleanFilters, countFilters } from 'utils/filters';
 
+import { cleanFilters, countFilters } from '../../utils/filters';
 import './styles.scss';
 
 interface IProps {

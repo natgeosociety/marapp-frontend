@@ -4,9 +4,9 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import { PAGE_SIZE } from 'theme';
-
 import { Spinner } from '@marapp/earth-shared';
+
+import { PAGE_SIZE } from '../../theme';
 
 interface IProps {
   data: any[];

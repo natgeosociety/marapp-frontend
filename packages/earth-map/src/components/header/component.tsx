@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
+import classNames from 'classnames';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
@@ -28,16 +29,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { makeStyles } from '@material-ui/core/styles';
 import { Auth0Context } from 'auth/auth0';
-import { ADMIN_URL, APP_NAME, COMPANY_URL } from 'config';
 import { remove } from 'lodash';
-import { EPanels } from 'modules/sidebar/model';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'redux-first-router-link';
-import OrganizationService from 'services/OrganizationService';
-import { APP_LOGO } from 'theme';
 
 import { AppContextSwitcher, checkAdminRole } from '@marapp/earth-shared';
+
+import { MAP_ADMIN_URL, MAP_APP_NAME, COMPANY_URL } from '../../config';
+import { EPanels } from '../../modules/sidebar/model';
+import OrganizationService from '../../services/OrganizationService';
+import { APP_LOGO } from '../../theme';
+import { Auth0Context } from '../../utils/contexts';
 
 const { Option } = AppContextSwitcher;
 
@@ -163,7 +166,7 @@ const Header = (props: IProps) => {
     >
       <img
         src={APP_LOGO}
-        alt={APP_NAME}
+        alt={MAP_APP_NAME}
         className="ng-margin-remove ng-display-block"
         onClick={handleResetLocation}
       />
@@ -226,7 +229,7 @@ const Header = (props: IProps) => {
       value="map-view"
       checkedCount={selectedGroups.length}
       renderDropdown={isAuthenticated}
-      onChange={(g) => window.location.assign(`${ADMIN_URL}${g}`)}
+      onChange={(g) => window.location.assign(`${MAP_ADMIN_URL}${g}`)}
     >
       {COMPANY_URL ? (
         <Option value="map-view" divider={true} component="a" href={COMPANY_URL} title={APP_NAME}>
