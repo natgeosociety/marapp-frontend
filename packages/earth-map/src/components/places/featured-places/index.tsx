@@ -17,16 +17,4 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-
-import { setIndexesList } from '../../../modules/indexes/actions';
-import { setSidebarPanel } from '../../../modules/sidebar/actions';
-import FeaturedPlacesComponent from './component';
-
-export default connect(
-  (state: any) => ({
-    featured: state.places.cache.featured,
-    group: state.user.group,
-  }),
-  { setSidebarPanel, setIndexesList }
-)(FeaturedPlacesComponent);
+export { FeaturedPlacesComponent as default } from './component';

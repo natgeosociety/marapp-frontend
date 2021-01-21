@@ -18,23 +18,30 @@
 */
 
 import classnames from 'classnames';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { cleanFilters, countFilters } from '../../utils/filters';
 import './styles.scss';
 
 interface IProps {
-  data: any;
   open: boolean;
   onOpenToggle: (payload?) => void;
   onChange: (payload?) => void;
+  filters: { [key: string]: string[] };
+  availableFilters: { [key: string]: Array<{ [key: string]: any }> };
 }
 
 const FilterBy = (props: IProps) => {
-  const { data, open, onOpenToggle, onChange } = props;
+  const { open, availableFilters, filters, onOpenToggle, onChange } = props;
   const { t } = useTranslation();
-  const { filters, availableFilters } = data;
+  const [currentAvailableFilters, setCurrentAvailableFilters] = useState({});
+
+  // Keep old available filters while new filters are fetched
+  useEffect(() => availableFilters && setCurrentAvailableFilters(availableFilters), [
+    availableFilters,
+  ]);
+
   const numberOfFilters = countFilters(filters);
 
   const toggleFilter = (key: string, value: string) => {
@@ -86,11 +93,11 @@ const FilterBy = (props: IProps) => {
         />
       </div>
       {open &&
-        Object.keys(availableFilters).map((key) => (
+        Object.keys(currentAvailableFilters).map((key) => (
           <React.Fragment key={key}>
             {/* {<h2 className="ng-color-ltgray ng-text-display-s ng-margin-bottom">{key}</h2>} */}
             <div className="ng-grid ng-form-dark ng-form" key={`${key}-form`}>
-              {availableFilters[key].map((filter, i) => {
+              {currentAvailableFilters[key].map((filter, i) => {
                 const checked = !!(filters[key] && filters[key].includes(filter.value));
                 const domId = `${key}-${filter.value}`;
                 const disabled = filter.count === 0;

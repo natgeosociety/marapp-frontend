@@ -23,18 +23,24 @@ import { useTranslation } from 'react-i18next';
 import { Spinner } from '@marapp/earth-shared';
 
 import ListItem from '../../../components/list-item';
+import useLocations from '../../../fetchers/useLocations';
 
 interface IFeaturedPlaces {
-  featured?: {
-    data: [];
-    meta?: object;
-  };
-  group?: string;
+  meta?: object;
+  group?: string[];
 }
 
-const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
-  const { featured, group } = props;
+export const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
+  const { group } = props;
   const { t } = useTranslation();
+
+  const { data } = useLocations({
+    select: 'slug,name,id,organization,type',
+    page: { size: 100 },
+    filter: 'featured==true',
+    sort: 'name',
+    group: group.join(),
+  });
 
   return (
     <div className="marapp-qa-featuredplaces ng-section-background ng-position-relative ng-padding-medium-bottom">
@@ -42,28 +48,25 @@ const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
         {t('Featured places')}
       </h2>
       <div>
-        {!featured?.data.length && !featured?.meta && (
+        {!data && (
           <div className="ng-padding-large ng-position-relative">
             <Spinner />
           </div>
         )}
-        {!!featured.data.length &&
-          featured.data.map((place: any) => {
-            const { slug, name, id, organization, type } = place;
+        {data?.map((place: any) => {
+          const { slug, name, id, organization, type } = place;
 
-            return (
-              <ListItem
-                title={name}
-                key={`${slug}-${organization}`}
-                linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
-                organization={group.length > 1 && organization}
-                labels={[type]}
-              />
-            );
-          })}
+          return (
+            <ListItem
+              title={name}
+              key={`${slug}-${organization}`}
+              linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
+              organization={group.length > 1 && organization}
+              labels={[type]}
+            />
+          );
+        })}
       </div>
     </div>
   );
 };
-
-export default FeaturedPlacesComponent;

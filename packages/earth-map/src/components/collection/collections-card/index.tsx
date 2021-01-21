@@ -17,10 +17,22 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
+import React from 'react';
 
+import useLocations from '../../../fetchers/useLocations';
+import { LocationTypeEnum } from '../../../modules/places/model';
 import { CollectionsCard } from './CollectionsCard';
 
-export default connect((state: any) => ({
-  featured: state.collections.featured,
-}))(CollectionsCard);
+export default function WithData(props) {
+  const { group } = props;
+
+  const { data } = useLocations({
+    select: 'slug,name,id,organization,type,updatedAt',
+    filter: ['type', '==', LocationTypeEnum.COLLECTION].join(''),
+    page: { size: 5 },
+    sort: '-updatedAt',
+    group: group.toString(),
+  });
+
+  return <CollectionsCard data={data} {...props} />;
+}

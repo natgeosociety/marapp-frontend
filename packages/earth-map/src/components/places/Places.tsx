@@ -1,16 +1,35 @@
+/*
+  Copyright 2018-2020 National Geographic Society
+
+  Use of this software does not constitute endorsement by National Geographic
+  Society (NGS). The NGS name and NGS logo may not be used for any purpose without
+  written permission from NGS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed
+  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
 
+import { serializeFilters } from '@marapp/earth-shared';
+
 import BackToLocation from '../../components/back-to-location';
 import FilterBy from '../../components/filter-by';
-import InfiniteList from '../../components/infinite-list';
-import ListItem from '../../components/list-item';
 import SearchBox from '../../components/searchbox';
 import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search';
-import { LocationTypeEnum } from '../../modules/places/model';
-import { EarthRoutes } from '../../modules/router/model';
+import useLocations from '../../fetchers/useLocations';
 import { hasFilters } from '../../utils/filters';
+import PlacesSearchResults from './search-results';
 
 interface IProps {
   selected: boolean;
@@ -23,7 +42,6 @@ interface IProps {
   group?: any;
   locationName?: string;
   locationOrganization?: string;
-  nextPlacesPage?: () => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
   resetPlace?: (value: any) => {};
@@ -38,12 +56,9 @@ const Places = (props: IProps) => {
   const {
     panelExpanded,
     search,
-    results,
-    nextPageCursor,
     group,
     locationName,
     locationOrganization,
-    nextPlacesPage,
     resetPlace,
     resetCollection,
     resetMap,
@@ -53,6 +68,13 @@ const Places = (props: IProps) => {
     selected,
     children,
   } = props;
+
+  const { meta } = useLocations({
+    search: search.search,
+    filter: serializeFilters(search.filters),
+    select: 'name,slug,organization,type',
+    group: group.join(),
+  });
 
   const hasSearchTerm = !!search.search;
   const showX = selected || hasSearchTerm;
@@ -101,7 +123,8 @@ const Places = (props: IProps) => {
               open={search.open}
               onOpenToggle={setPlacesSearchOpen}
               onChange={setPlacesSearch}
-              data={search}
+              filters={search.filters}
+              availableFilters={meta?.filters}
             />
           )}
           {showBack && (
@@ -115,34 +138,12 @@ const Places = (props: IProps) => {
       }
     >
       {showSearchResults ? (
-        <InfiniteList
-          title={t('Search results')}
-          data={results}
-          loading={search.loading}
-          nextPageCursor={nextPageCursor}
-          onNextPage={nextPlacesPage}
-        >
-          {({ id, $searchHint, name, slug, organization, type }) => (
-            <ListItem
-              hint={$searchHint.name}
-              title={name}
-              key={`${slug}-${organization}`}
-              onClick={() => {
-                setSidebarPanelExpanded(false);
-                setPlacesSearch({ search: name });
-              }}
-              linkTo={{
-                type:
-                  type === LocationTypeEnum.COLLECTION
-                    ? EarthRoutes.COLLECTION
-                    : EarthRoutes.LOCATION,
-                payload: { slug, id, organization },
-              }}
-              organization={group.length > 1 && organization}
-              labels={[type]}
-            />
-          )}
-        </InfiniteList>
+        <PlacesSearchResults
+          search={search.search}
+          filters={search.filters}
+          group={group}
+          setPlacesSearch={setPlacesSearch}
+        />
       ) : (
         children
       )}
