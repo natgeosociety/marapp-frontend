@@ -25,12 +25,25 @@ import 'styles/index.scss';
 import { Auth0Provider } from './src/auth/auth0';
 import { onRedirectCallback, onSuccessHook, onFailureHook } from './src/auth/hooks';
 import auth0 from './src/config/auth0';
+import { TranslationService } from '@marapp/earth-shared';
 
-import { MAP_GTM_TAG } from './src/config';
+import { MAP_GTM_TAG, MAP_WEGLOT_API_KEY } from './src/config';
 
 if (MAP_GTM_TAG) {
   const tagManagerArgs = { gtmId: MAP_GTM_TAG };
   TagManager.initialize(tagManagerArgs);
+}
+
+if (MAP_WEGLOT_API_KEY) {
+  window.onload = () => {
+    const script = document.createElement('script');
+
+    script.onload = () => TranslationService.init(MAP_WEGLOT_API_KEY);
+    script.async = true;
+    script.src = 'https://cdn.weglot.com/weglot.min.js';
+    
+    document.head.appendChild(script);
+  };
 }
 
 export const wrapRootElement = ({ element }) => (
