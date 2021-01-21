@@ -20,9 +20,9 @@
 exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
   actions.setWebpackConfig({
     node: {
-      fs: 'empty'
-    }
-  })
+      fs: 'empty',
+    },
+  });
 
   if (stage === 'build-html') {
     actions.setWebpackConfig({
@@ -53,4 +53,3 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
     });
   }
 };
-

@@ -47,7 +47,7 @@ import { MapComponent } from '@app/components/map';
 import { DeleteConfirmation } from '@app/components/modals/delete-confirmation';
 import { Metrics } from '@app/components/places';
 import { Toggle } from '@app/components/toggle';
-import { PUBLIC_ORG } from '@app/config';
+import { ADMIN_PUBLIC_ORG } from '@app/config';
 import { ContentLayout } from '@app/layouts';
 import { generateCacheKey } from '@app/services';
 import MetricService from '@app/services/metrics';
@@ -95,10 +95,11 @@ export function PlaceDetail(props: IProps) {
   const [metricsLoading, setMetricsLoading] = useState(false);
   const [panel, setPanel] = useState('upload');
 
-  const switchGeojsonTab = (e) => {
+  const switchGeojsonTab = (e, setServerErrors?: (errors) => {}) => {
     setPanel(e);
     setGeojson(geojsonValue);
     setJsonError(true);
+    setServerErrors && setServerErrors([]);
   };
 
   useEffect(() => {
@@ -125,10 +126,10 @@ export function PlaceDetail(props: IProps) {
   } = place;
 
   const { getValues, register, formState, errors } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
-  const { touched, dirty, isValid } = formState;
+  const { touched, isDirty, isValid } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   useEffect(() => {
@@ -273,7 +274,7 @@ export function PlaceDetail(props: IProps) {
                     onChange={onSubmit}
                     ref={register({})}
                   />
-                  {PUBLIC_ORG === selectedGroup && published && (
+                  {ADMIN_PUBLIC_ORG === selectedGroup && published && (
                     <Toggle
                       name="publicResource"
                       label="Public"
@@ -382,7 +383,7 @@ export function PlaceDetail(props: IProps) {
                           <>
                             <Tabs
                               value={panel}
-                              onChange={switchGeojsonTab}
+                              onChange={(e) => switchGeojsonTab(e, setServerErrors)}
                               className="ng-ep-background-dark"
                             >
                               <Tab label={t('Shape File')} value="upload" />

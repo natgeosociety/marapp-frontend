@@ -108,10 +108,10 @@ export function WidgetsDetail(props: WidgetProps) {
   }, [widget]);
 
   const { getValues, register, formState, errors, control } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
-  const { touched, dirty, isValid } = formState;
+  const { touched, isDirty, isValid } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   async function onSubmit(e?, setIsEditing?, setIsLoading?, setServerErrors?) {

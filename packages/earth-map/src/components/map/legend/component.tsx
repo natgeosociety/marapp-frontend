@@ -17,9 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import Modal from 'components/modal';
 import debounce from 'lodash/debounce';
-import { EarthRoutes, IRouter } from 'modules/router/model';
 import React from 'react';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 import {
@@ -34,12 +32,12 @@ import {
   LegendListItem,
 } from 'vizzuality-components';
 
+import Modal from '../../../components/modal';
+import { EarthRoutes, IRouter } from '../../../modules/router/model';
 import LegendInfo from './legend-info';
 import LegendItemGroup from './legend-item-group';
 import './styles.scss';
 import TEMPLATES from './templates';
-
-// styles
 
 // Creates a spring with predefined animation slots
 const LegendWrapper: any = Keyframes.Spring({

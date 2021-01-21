@@ -21,10 +21,12 @@ import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { back, push, replace } from 'redux-first-router';
-import PlacesService from 'services/PlacesService';
+import PlacesService from '../../../services/PlacesService';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -33,7 +35,6 @@ import Radio from '@material-ui/core/Radio';
 import { Card, setupErrors } from '@marapp/earth-shared';
 
 import { IRouter } from '../../../modules/router/model';
-import { Button, Grid } from '@material-ui/core';
 
 interface IProps {
   privateGroups: string[];
@@ -45,8 +46,8 @@ const CollectionNew = (props: IProps) => {
   const { t } = useTranslation();
   const canCreateCollection = !!privateGroups.length;
   const [saveError, setSaveError] = useState(null);
-  const { handleSubmit, register, errors, formState, control } = useForm({ mode: 'onChange' });
-  const { touched, dirty, isValid, isSubmitting } = formState;
+  const { handleSubmit, register, errors, formState, control } = useForm({ mode: 'all' });
+  const { touched, isDirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   const onSubmit = async (values) => {
@@ -140,7 +141,7 @@ const CollectionNew = (props: IProps) => {
                     variant="contained"
                     color="secondary"
                     type="submit"
-                    disabled={!isValid || !dirty || isSubmitting || !canCreateCollection}
+                    disabled={!isValid || !isDirty || isSubmitting || !canCreateCollection}
                   >
                     {t('Create Collection')}
                   </Button>

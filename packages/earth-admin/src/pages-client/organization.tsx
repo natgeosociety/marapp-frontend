@@ -25,7 +25,7 @@ import { useTranslation } from 'react-i18next';
 import { isSuperAdmin, isValidGroup, Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '@app/auth/auth0';
-import { BASE_URL } from '@app/config';
+import { ADMIN_BASE_URL } from '@app/config';
 
 import './styles.scss';
 
@@ -36,7 +36,7 @@ interface IProps {
 
 const Organization = (props: IProps) => {
   const { org, children } = props;
-  const { isLoading, groups, setupUserOrg, setIsLoading, userData } = useAuth0();
+  const { isLoading, groups, setupUserOrg, setIsLoading, roles } = useAuth0();
   const { t } = useTranslation('admin');
 
   // CodeMirror is not working without window.JSHINT
@@ -47,7 +47,7 @@ const Organization = (props: IProps) => {
 
   // Important check for valid ORG and sets it on the context.
   // Happens everytime org changes (runtime/refresh)
-  const allowSuperAdminGroup = isSuperAdmin(userData.roles);
+  const allowSuperAdminGroup = isSuperAdmin(roles);
 
   useEffect(() => {
     if (org && isValidGroup(groups, org, allowSuperAdminGroup)) {
@@ -60,8 +60,8 @@ const Organization = (props: IProps) => {
     return <OrgSwitcherPage groups={groups} t={t} />;
   }
 
-  if (org === '*' && !location.pathname.startsWith(`${BASE_URL}*/organizations`)) {
-    window.location.assign(`${BASE_URL}*/organizations`);
+  if (org === '*' && !location.pathname.startsWith(`${ADMIN_BASE_URL}*/organizations`)) {
+    window.location.assign(`${ADMIN_BASE_URL}*/organizations`);
 
     return null;
   }

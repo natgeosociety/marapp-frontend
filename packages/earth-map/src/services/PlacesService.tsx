@@ -17,8 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { LocationTypeEnum } from 'modules/places/model';
-
+import { LocationTypeEnum } from '../modules/places/model';
 import { BaseAPIService, metaDeserializer, RequestQuery } from './base/APIBase';
 
 const fetchPlaceById = async (id: string, query?: RequestQuery): Promise<any> => {

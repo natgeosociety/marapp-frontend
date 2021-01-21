@@ -17,11 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import WidgetNoDataComponent from 'components/widget/no-data';
 import React from 'react';
 
 import { Html } from '@marapp/earth-shared';
 
+import WidgetNoDataComponent from '../../../../components/widget/no-data';
 import { IWidgetTemplate } from '../model';
 import './styles.scss';
 

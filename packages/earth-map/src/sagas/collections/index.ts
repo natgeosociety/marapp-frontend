@@ -17,21 +17,22 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { replace } from 'redux-first-router';
+import { call, put, takeLatest } from 'redux-saga/effects';
+
 import {
   reloadCollection,
   setCollectionData,
   setCollectionsLoading,
-} from 'modules/collections/actions';
-import { persistData, setLastViewedPlace } from 'modules/global/actions';
-import { EMainType, SubType } from 'modules/global/model';
-import { setMapBounds } from 'modules/map/actions';
-import { setPlacesSearch } from 'modules/places/actions';
-import { EarthRoutes } from 'modules/router/model';
-import { setSidebarPanelExpanded } from 'modules/sidebar/actions';
-import { replace } from 'redux-first-router';
-import { call, put, takeLatest } from 'redux-saga/effects';
-import { ignoreRedirectsTo } from 'sagas/saga-utils';
-import PlacesService from 'services/PlacesService';
+} from '../../modules/collections/actions';
+import { persistData, setLastViewedPlace } from '../../modules/global/actions';
+import { EMainType, SubType } from '../../modules/global/model';
+import { setMapBounds } from '../../modules/map/actions';
+import { setPlacesSearch } from '../../modules/places/actions';
+import { EarthRoutes } from '../../modules/router/model';
+import { setSidebarPanelExpanded } from '../../modules/sidebar/actions';
+import PlacesService from '../../services/PlacesService';
+import { ignoreRedirectsTo } from '../saga-utils';
 
 const ignoreRedirectsToCollection = ignoreRedirectsTo(EarthRoutes.COLLECTION);
 export default function* collections() {

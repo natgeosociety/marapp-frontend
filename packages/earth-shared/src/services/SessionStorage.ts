@@ -28,11 +28,15 @@ class SessionStorage implements Storage {
   constructor() {}
 
   add(key: string, value: string): void {
-    return sessionStorage.setItem(key, value);
+    if (typeof sessionStorage !== 'undefined') {
+      return sessionStorage.setItem(key, value);
+    }
   }
 
   get(key: string): string {
-    return sessionStorage.getItem(key);
+    if (typeof sessionStorage !== 'undefined') {
+      return sessionStorage.getItem(key);
+    }
   }
 
   getObject(key: string, defaultValue: any = {}): any {
@@ -46,7 +50,9 @@ class SessionStorage implements Storage {
   }
 
   remove(key: string): void {
-    return sessionStorage.removeItem(key);
+    if (typeof sessionStorage !== 'undefined') {
+      return sessionStorage.removeItem(key);
+    }
   }
 }
 

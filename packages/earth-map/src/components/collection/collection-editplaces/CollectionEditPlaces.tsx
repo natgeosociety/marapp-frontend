@@ -17,18 +17,18 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { ENABLE_PUBLIC_ACCESS } from 'config';
 import isBoolean from 'lodash/isBoolean';
-import { ICollection } from 'modules/collections/model';
-import { LocationTypeEnum } from 'modules/places/model';
 import React, { BaseSyntheticEvent, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
-import PlacesService from 'services/PlacesService';
 
 import { AsyncSelect, Card, DropdownItem, TitleHero } from '@marapp/earth-shared';
 
+import { MAP_ENABLE_PUBLIC_ACCESS } from '../../../config';
+import { ICollection } from '../../../modules/collections/model';
+import { LocationTypeEnum } from '../../../modules/places/model';
+import PlacesService from '../../../services/PlacesService';
 import { CollectionConflict } from '../collection-conflict';
 
 interface IProps {
@@ -46,9 +46,9 @@ export function CollectionEditPlaces(props: IProps) {
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
   const { control, handleSubmit, formState, getValues } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
-  const { isValid, isSubmitting, dirty } = formState;
+  const { isValid, isSubmitting, isDirty } = formState;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-edit-places">
@@ -73,7 +73,7 @@ export function CollectionEditPlaces(props: IProps) {
                 title: option.name,
               };
 
-              if (ENABLE_PUBLIC_ACCESS) {
+              if (MAP_ENABLE_PUBLIC_ACCESS) {
                 itemProps.subtitle = option.organization;
               }
 
@@ -100,7 +100,7 @@ export function CollectionEditPlaces(props: IProps) {
 
           <button
             className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-right"
-            disabled={!isValid || isSubmitting || !dirty}
+            disabled={!isValid || isSubmitting || !isDirty}
           >
             {isSubmitting ? t('Saving') : t('Save')}
           </button>

@@ -1,19 +1,20 @@
-import BackToLocation from 'components/back-to-location';
-import FilterBy from 'components/filter-by';
-import InfiniteList from 'components/infinite-list';
-import ListItem from 'components/list-item';
-import MenuItemSkeleton from 'components/MenuItemSkeleton';
-import SearchBox from 'components/searchbox';
-import SidebarLayoutSearch from 'components/sidebar/sidebar-layout-search';
-import { LocationTypeEnum } from 'modules/places/model';
-import { EarthRoutes } from 'modules/router/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
-import { hasFilters } from 'utils/filters';
-import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+
+import BackToLocation from '../../components/back-to-location';
+import FilterBy from '../../components/filter-by';
+import InfiniteList from '../../components/infinite-list';
+import ListItem from '../../components/list-item';
+import MenuItemSkeleton from '../../components/MenuItemSkeleton';
+import SearchBox from '../../components/searchbox';
+import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search';
+import { LocationTypeEnum } from '../../modules/places/model';
+import { EarthRoutes } from '../../modules/router/model';
 import { setSidebarOpen } from '../../modules/sidebar/actions';
+import { hasFilters } from '../../utils/filters';
 
 interface IProps {
   selected: boolean;

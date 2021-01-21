@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, favicon, Spinner, UserMenu } from '@marapp/earth-shared';
 
 import { LinkWithOrg } from '@app/components/link-with-org';
-import { MAP_PATH } from '@app/config';
+import { ADMIN_MAP_PATH } from '@app/config';
 import { Auth0Context } from '@app/utils/contexts';
 
 import '../styles/app.scss';
@@ -69,7 +69,7 @@ export default function ContentLayout(props: ILayoutProps) {
         <UserMenu
           isAuthenticated={isAuthenticated}
           userName={userData.name}
-          profileLink={<a href={`${MAP_PATH}profile`}>Profile</a>}
+          profileLink={<a href={`${ADMIN_MAP_PATH}profile`}>Profile</a>}
           onLogin={login}
           onLogout={logout}
           onSignUp={() => login({ initialScreen: 'signUp' })}

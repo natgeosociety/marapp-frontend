@@ -3,7 +3,7 @@ import React from 'react';
 
 import { NotFoundComponent } from '@marapp/earth-shared';
 
-import { GATSBY_APP_NAME } from '@app/config';
+import { ADMIN_NAME } from '@app/config';
 
 import { APP_ABOUT } from '../theme';
 
@@ -13,11 +13,7 @@ const NotFoundPage = () => {
   };
 
   return (
-    <NotFoundComponent
-      returnToHome={returnToHome}
-      aboutLink={APP_ABOUT}
-      appName={GATSBY_APP_NAME}
-    />
+    <NotFoundComponent returnToHome={returnToHome} aboutLink={APP_ABOUT} appName={ADMIN_NAME} />
   );
 };
 

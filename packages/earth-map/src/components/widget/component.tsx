@@ -29,12 +29,12 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
 import IconDown from 'mdi-material-ui/ChevronDown';
-import { IWidgetConfig } from 'modules/widget/model';
 import React from 'react';
 import isEqual from 'react-fast-compare';
 
 import { Html, Spinner } from '@marapp/earth-shared';
 
+import { IWidgetConfig } from '../../modules/widget/model';
 import Footer from './footer';
 import './styles.scss';
 import Toolbar from './toolbar';

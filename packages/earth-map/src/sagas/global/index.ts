@@ -19,8 +19,9 @@
 
 import { navigateToAdmin } from 'modules/global/actions';
 import { select, takeLatest } from 'redux-saga/effects';
-import { getAll } from 'sagas/saga-utils';
-import { IEphemeralState } from 'store/ephemeral-state';
+
+import { IEphemeralState } from '../../store/ephemeral-state';
+import { getAll } from '../saga-utils';
 
 import { ADMIN_URL } from '../../config';
 

@@ -17,11 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { BASE_URL, ENABLE_PUBLIC_ACCESS } from 'config';
 import { noop, stubFalse, stubTrue } from 'lodash';
 import qs from 'query-string';
 import { NOT_FOUND } from 'redux-first-router';
 import restoreScroll from 'redux-first-router-restore-scroll';
+
+import { MAP_BASE_URL, MAP_ENABLE_PUBLIC_ACCESS } from './config';
 
 const UNAUTHORIZED_PAGE = 'UNAUTHORIZED';
 const VERIFY_EMAIL = 'VERIFY_EMAIL';
@@ -31,7 +32,7 @@ const VERIFY_EMAIL = 'VERIFY_EMAIL';
  * @param context
  */
 const isAuthRequired = (context: any = {}): boolean => {
-  return !ENABLE_PUBLIC_ACCESS;
+  return !MAP_ENABLE_PUBLIC_ACCESS;
 };
 
 /**
@@ -39,7 +40,7 @@ const isAuthRequired = (context: any = {}): boolean => {
  * @param context
  */
 const isAuthzRequired = (context: any = {}): boolean => {
-  return !ENABLE_PUBLIC_ACCESS;
+  return !MAP_ENABLE_PUBLIC_ACCESS;
 };
 
 /**
@@ -50,7 +51,7 @@ const fallbackRouteResolver = (context: any = {}): string => {
   switch (true) {
     case !context.isEmailVerified:
       return VERIFY_EMAIL;
-    case !ENABLE_PUBLIC_ACCESS:
+    case !MAP_ENABLE_PUBLIC_ACCESS:
       return UNAUTHORIZED_PAGE;
     default:
       return null;
@@ -138,7 +139,7 @@ export const ROUTES = {
 };
 
 export const CONFIG = {
-  basename: BASE_URL,
+  basename: MAP_BASE_URL,
   location: 'router',
   querySerializer: {
     stringify: qs.stringify,

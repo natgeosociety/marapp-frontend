@@ -19,7 +19,7 @@ custom:
   # Plugins configuration
   s3Sync:
     - bucketName: ${self:custom.mapS3Bucket}
-      localDir: packages/earth-map/build
+      localDir: packages/earth-map/public
       acl: public-read
       params:
         - index.html:

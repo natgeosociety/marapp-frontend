@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 import { groupBy, sortBy } from 'lodash';
-import { flattenLayerConfig } from 'sagas/saga-utils';
 
+import { flattenLayerConfig } from '../../sagas/saga-utils';
 import * as actions from './actions';
 import initialState from './initial-state';
 

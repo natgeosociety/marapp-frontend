@@ -13,16 +13,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { APP_NAME, COMPANY_URL } from 'config';
 import React from 'react';
 
+import { MAP_APP_NAME, MAP_COMPANY_URL } from '../../../config';
 import './styles.scss';
 
 const SidebarToggle = () => {
-  return COMPANY_URL ? (
+  return MAP_COMPANY_URL ? (
     <a
-      href={COMPANY_URL}
-      title={APP_NAME}
+      href={MAP_COMPANY_URL}
+      title={MAP_APP_NAME}
       className="marapp-qa-company-link company-link ng-flex ng-flex-center ng-flex-middle"
     >
       <i className="ng-body-color ng-icon-small ng-icon-home" />

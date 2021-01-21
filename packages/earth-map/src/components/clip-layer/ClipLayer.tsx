@@ -18,12 +18,9 @@
  */
 
 import FileSaver from 'file-saver';
-import { IPlace } from 'modules/places/model';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import ExportService from 'services/ExportService';
-import LayersService from 'services/LayersService';
 
 import {
   AsyncSelect,
@@ -34,6 +31,10 @@ import {
   Spinner,
   TitleHero,
 } from '@marapp/earth-shared';
+
+import { IPlace } from '../../modules/places/model';
+import ExportService from '../../services/ExportService';
+import LayersService from '../../services/LayersService';
 
 interface IProps {
   place: Partial<IPlace>;
@@ -48,9 +49,9 @@ export function ClipLayer(props: IProps) {
   const [childLayers, setChildLayers] = useState([]);
   const { t } = useTranslation();
   const { register, handleSubmit, formState, control, watch, setValue } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
-  const { dirty, isValid, isSubmitting } = formState;
+  const { isDirty, isValid, isSubmitting } = formState;
   const selectedPrimaryLayer = watch('primaryLayer');
   const selectedChildLayer = watch('childLayer');
   const selectedExportType = watch('exportType');
@@ -170,7 +171,7 @@ export function ClipLayer(props: IProps) {
           <button
             type="submit"
             className="marapp-qa-actiondownload ng-button ng-button-primary ng-margin-right"
-            disabled={!isValidCustom || isSubmitting || !dirty}
+            disabled={!isValidCustom || isSubmitting || !isDirty}
           >
             {isSubmitting ? (
               <>

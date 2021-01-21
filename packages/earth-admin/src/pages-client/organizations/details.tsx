@@ -39,7 +39,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [localOrgData, setLocalOrgData] = useState({});
   const [ownersFeedback, setOwnersFeedback] = useState([]);
-  const { getPermissions, selectedGroup } = useAuth0();
+  const { getPermissions, updateToken } = useAuth0();
   const { t } = useTranslation('admin');
   const writePermissions = getPermissions(AuthzGuards.accessOrganizationsGuard);
 
@@ -68,7 +68,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
     watch,
     reset,
   } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
   const { touched } = formState;
@@ -99,11 +99,10 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
       setIsLoading && setIsLoading(false);
       setIsEditing && setIsEditing(false);
 
+      await updateToken(); // refresh context state;
       await onDataChange();
     } catch (err) {
       const errors = err.data?.errors;
-
-      console.log(err, errors);
 
       setIsLoading && setIsLoading(false);
       processOwnersFeedback(errors ? [] : err.data);
@@ -201,7 +200,7 @@ export function OrganizationDetails(props: OrganizationDetailsProps) {
               <InlineEditCard
                 onSubmit={onSubmit}
                 onCancel={() => [reset(), setOwnersFeedback([])]}
-                validForm={!formErrors.owners && formState.dirty && ownersWatcher?.length > 0}
+                validForm={!formErrors.owners && formState.isDirty && ownersWatcher?.length > 0}
                 render={() => (
                   <>
                     <p className="ng-text-weight-bold ng-margin-remove">{t('Owners')}*</p>

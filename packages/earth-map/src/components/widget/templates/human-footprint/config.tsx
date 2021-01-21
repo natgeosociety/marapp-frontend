@@ -17,19 +17,15 @@
   specific language governing permissions and limitations under the License.
 */
 
-import WidgetTooltip from 'components/widget/tooltip';
-import { replace } from 'components/widget/utils';
 import { format } from 'd3-format';
 import findLast from 'lodash/findLast';
-import { IPlace } from 'modules/places/model';
-import { IWidgetConfig } from 'modules/widget/model';
 import React from 'react';
 
+import WidgetTooltip from '../../../../components/widget/tooltip';
+import { IPlace } from '../../../../modules/places/model';
+import { IWidgetConfig } from '../../../../modules/widget/model';
+import { replace } from '../../utils';
 import { HumanFootprintMetric } from './model';
-
-// Utils
-
-// Components
 
 interface HumanFootprintConfig {
   metric: HumanFootprintMetric;
