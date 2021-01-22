@@ -61,7 +61,7 @@ export function useLocations(query: IQueryMany, swrOptions?: SWRInfiniteConfigIn
 }
 
 export function useLocation(idOrSlug: string, query: IQueryOne, swrOptions?: ConfigInterface) {
-  return useFetchOne(`/location/${idOrSlug}`, query, {
+  return useFetchOne(`/locations/${idOrSlug}`, query, {
     swrOptions,
   });
 }

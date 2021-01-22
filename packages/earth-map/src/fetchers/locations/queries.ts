@@ -17,6 +17,7 @@
  * specific language governing permissions and limitations under the License.
  */
 import { serializeFilters } from '@marapp/earth-shared';
+import { IQueryOne } from '../useFetchOne';
 import { LocationTypeEnum } from '../../modules/places/model';
 import { IQueryMany } from '../useFetchMany';
 
@@ -44,6 +45,13 @@ export const QUERY_LOCATION = {
       page: { size: 100 },
       filter: 'featured==true',
       sort: 'name',
+    };
+  },
+
+  getOne(group: string): IQueryOne {
+    return {
+      include: 'metrics',
+      group,
     };
   },
 };

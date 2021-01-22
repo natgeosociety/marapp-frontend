@@ -25,7 +25,7 @@ export interface IQueryOne {
   include?: string;
   select?: string;
   sort?: string;
-  group: string;
+  group?: string;
 }
 
 interface IOptions {
