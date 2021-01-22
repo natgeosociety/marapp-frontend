@@ -17,67 +17,71 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { groupBy, sortBy } from 'lodash';
-import { noop } from 'lodash/fp';
+import { noop } from 'lodash';
 import { useSWRInfinite } from 'swr';
 
-import { BaseAPIService, metaDeserializer } from '../../services/base/APIBase';
-import { encodeQueryToURL } from '../../utils/query';
-import { IQueryMultipleLocations } from './queries';
+import { BaseAPIService, metaDeserializer } from '../services/base/APIBase';
+import { encodeQueryToURL } from '../utils/query';
+import { PAGE_SIZE } from '../theme';
 
-const DEFAULT_PAGE_SIZE = 30;
+export interface IQueryMany {
+  search?: string;
+  filter?: string;
+  include?: string;
+  select?: string;
+  sort?: string;
+  page?: {
+    size?: number;
+    number?: number;
+    cursor?: string;
+  };
+  group?: string;
+  public?: boolean;
+}
 
-export function useLocations(query: IQueryMultipleLocations) {
+interface IOptions {
+  fetcher?: (url: string) => Promise<any>;
+  transformResponse?: (response: any) => any;
+  swrOptions?: {
+    [key: string]: any;
+  };
+}
+
+const defaultOptions = {
+  fetcher: (url) => BaseAPIService.requestSWR(url, undefined, metaDeserializer),
+  transformResponse: (response) => response,
+  swrOptions: {},
+};
+
+export function useFetchMany(url: string, query: IQueryMany, passedOptions?: IOptions) {
+  const options = {
+    ...defaultOptions,
+    ...passedOptions,
+  };
   const swrKeyLoader = (pageIndex: number, previousPage: any): string => {
     if (previousPage && !previousPage.data) {
       return null; // reached the end;
     }
     const cursor = pageIndex === 0 ? -1 : previousPage?.meta?.pagination?.nextCursor;
     const defaults = {
-      sort: 'name',
-      select: 'name',
-      page: { size: DEFAULT_PAGE_SIZE, cursor },
+      page: { size: PAGE_SIZE, cursor },
     };
-
     const finalQuery = {
       ...defaults,
       ...query,
     };
 
-    return encodeQueryToURL('/locations', finalQuery);
+    return encodeQueryToURL(url, finalQuery);
   };
 
-  // Also includes some transformation of the meta.filters
   const fetcher = (url) => {
-    return BaseAPIService.requestSWR(url, undefined, metaDeserializer).then((response) => {
-      const transformer = (payload) => {
-        const filtersWithLabels = payload.map((filter) => ({
-          ...filter,
-          label: filter.value,
-          ...(typeof filter.value === 'boolean' && {
-            label: filter.value ? 'Yes' : 'No',
-            value: filter.value ? 'true' : 'false',
-          }),
-        }));
-
-        const availableFilters = groupBy(sortBy(filtersWithLabels, 'value'), 'key');
-
-        return availableFilters;
-      };
-
-      const result = {
-        ...response,
-        meta: {
-          ...response.meta,
-          filters: transformer(response.meta.filters),
-        },
-      };
-
-      return result;
-    });
+    return options.fetcher(url).then(options.transformResponse);
   };
-
-  const { data: rawData, isValidating, size, setSize }: any = useSWRInfinite(swrKeyLoader, fetcher);
+  const { data: rawData, isValidating, size, setSize }: any = useSWRInfinite(
+    swrKeyLoader,
+    fetcher,
+    options.swrOptions
+  );
 
   if (!rawData) {
     return {};

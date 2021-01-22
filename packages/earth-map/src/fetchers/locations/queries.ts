@@ -18,56 +18,32 @@
  */
 import { serializeFilters } from '@marapp/earth-shared';
 import { LocationTypeEnum } from '../../modules/places/model';
-
-export interface IQuerySingleLocation {
-  include?: string;
-  select?: string;
-  sort?: string;
-  group: string;
-}
-
-export interface IQueryMultipleLocations {
-  search?: string;
-  filter?: string;
-  include?: string;
-  select?: string;
-  sort?: string;
-  page?: {
-    size?: number;
-    number?: number;
-    cursor?: string;
-  };
-  group: string;
-  public?: boolean;
-}
+import { IQueryMany } from '../useFetchMany';
 
 export const QUERY_LOCATION = {
-  getLatestCollections(group: string): IQueryMultipleLocations {
+  getLatestCollections(): IQueryMany {
     return {
       select: 'slug,name,id,organization,type,updatedAt',
       filter: ['type', '==', LocationTypeEnum.COLLECTION].join(''),
       page: { size: 5 },
       sort: '-updatedAt',
-      group,
     };
   },
 
-  getFiltered(search: string, filters, group: string): IQueryMultipleLocations {
+  getFiltered(search: string, filters): IQueryMany {
     return {
       search,
       filter: serializeFilters(filters),
       select: 'name,slug,organization,type',
-      group,
     };
   },
 
-  getFeatured(group: string): IQueryMultipleLocations {
+  getFeatured(): IQueryMany {
     return {
       select: 'slug,name,id,organization,type',
       page: { size: 100 },
       filter: 'featured==true',
       sort: 'name',
-      group,
     };
   },
 };

@@ -68,7 +68,7 @@ const Places = (props: IProps) => {
   } = props;
 
   const { data, meta, awaitMore, nextPage, isValidating } = useLocations(
-    QUERY_LOCATION.getFiltered(search.search, search.filters, group.join())
+    QUERY_LOCATION.getFiltered(search.search, search.filters)
   );
 
   const hasSearchTerm = !!search.search;

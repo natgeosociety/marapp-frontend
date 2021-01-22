@@ -32,7 +32,7 @@ interface IProps {
 export const FeaturedPlacesComponent = (props: IProps) => {
   const { group } = props;
   const { t } = useTranslation();
-  const { data } = useLocations(QUERY_LOCATION.getFeatured(group.join()));
+  const { data } = useLocations(QUERY_LOCATION.getFeatured());
 
   return (
     <div className="marapp-qa-featuredplaces ng-section-background ng-position-relative ng-padding-medium-bottom">

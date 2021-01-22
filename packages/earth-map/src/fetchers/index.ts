@@ -18,4 +18,4 @@
  */
 
 export { QUERY_LOCATION } from './locations/queries';
-export { useLocations } from './locations/useLocations';
+export { useLocations, useLocation } from './locations/hooks';
