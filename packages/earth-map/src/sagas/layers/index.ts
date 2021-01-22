@@ -18,9 +18,14 @@
 */
 
 import sortBy from 'lodash/sortBy';
-import { persistData } from 'modules/global/actions';
-import { setIndexesList } from 'modules/indexes/actions';
-import { IIndex } from 'modules/indexes/model';
+import { replace } from 'redux-first-router';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+
+import { serializeFilters } from '@marapp/earth-shared';
+
+import { persistData } from '../../modules/global/actions';
+import { setIndexesList } from '../../modules/indexes/actions';
+import { IIndex } from '../../modules/indexes/model';
 import {
   nextLayersPage,
   resetLayersResults,
@@ -30,21 +35,16 @@ import {
   setLayersSearchAvailableFilters,
   setLayersSearchResults,
   setListActiveLayers,
-} from 'modules/layers/actions';
-import { ILayer } from 'modules/layers/model';
-import { setSidebarPanel } from 'modules/sidebar/actions';
-import { EPanels } from 'modules/sidebar/model';
-import { IWidget } from 'modules/widget/model';
-import { setWidgets, setWidgetsError, setWidgetsLoading } from 'modules/widgets/actions';
-import { replace } from 'redux-first-router';
-import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { flattenLayerConfig, getGroup, getLayers, onlyMatch } from 'sagas/saga-utils';
-import DashboardsService from 'services/DashboardsService';
-import LayersService from 'services/LayersService';
-
-import { serializeFilters } from '@marapp/earth-shared';
-
+} from '../../modules/layers/actions';
+import { ILayer } from '../../modules/layers/model';
+import { setSidebarPanel } from '../../modules/sidebar/actions';
+import { EPanels } from '../../modules/sidebar/model';
+import { IWidget } from '../../modules/widget/model';
+import { setWidgets, setWidgetsError, setWidgetsLoading } from '../../modules/widgets/actions';
+import DashboardsService from '../../services/DashboardsService';
+import LayersService from '../../services/LayersService';
 import { DATA_INDEX_QUERY, LAYER_QUERY } from '../model';
+import { flattenLayerConfig, getGroup, getLayers, onlyMatch } from '../saga-utils';
 
 export default function* layers() {
   // @ts-ignore

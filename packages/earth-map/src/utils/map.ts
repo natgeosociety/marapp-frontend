@@ -1,4 +1,3 @@
-import { INITIAL_VIEW_PORT } from '../modules/map/initial-state';
 import { getUrlQueryParams } from './index';
 
 export interface IUrlCoordinates {
@@ -59,14 +58,16 @@ export const mapReduxStoreViewportToUrlParams = (value: IUrlCoordinates) => {
  * Url params (from the URL component) are returned as an array
  * Create a valid viewport, based on the coordinates provided by the URL component
  */
-export const mapUrlParamsToReduxStoreViewport = (value: number[]): IUrlCoordinates => {
-  const [
-    latitude = INITIAL_VIEW_PORT.latitude,
-    longitude = INITIAL_VIEW_PORT.longitude,
-    zoom = INITIAL_VIEW_PORT.zoom,
-  ] = value;
+export const mapUrlParamsToReduxStoreViewport = (initialView: IUrlCoordinates) => {
+  return (value: number[]): IUrlCoordinates => {
+    const [
+      latitude = initialView.latitude,
+      longitude = initialView.longitude,
+      zoom = initialView.zoom,
+    ] = value;
 
-  return { latitude, longitude, zoom };
+    return { latitude, longitude, zoom };
+  };
 };
 
 export const isValidUrlCoordinateGroup = (value: IUrlCoordinates) => {

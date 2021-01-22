@@ -17,11 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { toggleLayer } from 'modules/layers/actions';
-import { setSidebarInfo } from 'modules/sidebar/actions';
-import { getWidgets } from 'modules/widgets/selectors';
 import { connect } from 'react-redux';
 
+import { toggleLayer } from '../../modules/layers/actions';
+import { setSidebarInfo } from '../../modules/sidebar/actions';
+import { getWidgets } from '../../modules/widgets/selectors';
 import WidgetsComponent from './component';
 
 export default connect(

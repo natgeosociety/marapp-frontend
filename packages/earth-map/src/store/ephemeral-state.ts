@@ -17,10 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setLastViewedPlace } from 'modules/global/actions';
-import { setMapStyle } from 'modules/map/actions';
-import { IPlace } from 'modules/places/model';
 import { Store } from 'redux';
+
+import { setLastViewedPlace } from '../modules/global/actions';
+import { setMapStyle } from '../modules/map/actions';
+import { IPlace } from '../modules/places/model';
 
 export interface IEphemeralState {
   global?: {

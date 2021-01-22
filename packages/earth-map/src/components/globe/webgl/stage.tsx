@@ -17,10 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import SCENE_BACKGROUND from 'images/spinny-globe/background-min.png';
 import OrbitControls from 'orbit-controls-es6';
 import { PerspectiveCamera, Scene, TextureLoader, WebGLRenderer } from 'three';
 import { CSS2DRenderer } from 'three-css2drender';
+
+import SCENE_BACKGROUND from '../../../images/spinny-globe/background-min.png';
 
 export default (rendererMount, renderer2dMount, props) => {
   const scene = new Scene();

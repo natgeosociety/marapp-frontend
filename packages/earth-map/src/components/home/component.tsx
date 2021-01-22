@@ -18,9 +18,9 @@
 */
 
 import ReactFullpage from '@fullpage/react-fullpage';
-import { FULLPAGE_LICENSE } from 'config';
 import React from 'react';
 
+import { MAP_FULLPAGE_LICENSE } from '../../config';
 import Globe from '../globe';
 import OutroStep from './steps/outro';
 import './styles.scss';
@@ -31,7 +31,7 @@ class HomeComponent extends React.PureComponent {
       <React.Fragment>
         <div className="c-landing marapp-qa-home">
           <ReactFullpage
-            licenseKey={FULLPAGE_LICENSE}
+            licenseKey={MAP_FULLPAGE_LICENSE}
             render={({ state, fullpageApi }) => {
               return (
                 <ReactFullpage.Wrapper>

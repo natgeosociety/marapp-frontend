@@ -17,9 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { setLayerSettings, setLayerTimelineCurrent } from 'modules/layers/actions';
 import { connect } from 'react-redux';
 
+import { setLayerSettings, setLayerTimelineCurrent } from '../../../../../modules/layers/actions';
 import YearDatePickerLegendComponent from './component';
 
 export default connect(null, {

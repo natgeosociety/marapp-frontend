@@ -24,7 +24,7 @@ const GATSBY_ACTIVE_ENV = process.env.GATSBY_ACTIVE_ENV || '.env';
 require('dotenv').config({ path: GATSBY_ACTIVE_ENV });
 
 module.exports = {
-  pathPrefix: process.env.GATSBY_APP_BASE_URL,
+  pathPrefix: process.env.GATSBY_APP_ADMIN_BASE_URL,
   siteMetadata: {
     siteName: 'Admin',
   },
@@ -38,14 +38,14 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-portal`,
+      resolve: 'gatsby-plugin-portal',
       options: {
         key: 'portal',
         id: 'portal',
       },
     },
     {
-      resolve: `gatsby-plugin-root-import`,
+      resolve: 'gatsby-plugin-root-import',
       options: {
         '@app/auth': path.join(__dirname, 'src/auth'),
         '@app/components': path.join(__dirname, 'src/components'),
@@ -58,7 +58,7 @@ module.exports = {
         '@app/services': path.join(__dirname, 'src/services'),
         '@app/utils': path.join(__dirname, 'src/utils'),
         '@app/theme': path.join(__dirname, 'src/theme'),
-        'styles': path.join(__dirname, 'src/styles'),
+        styles: path.join(__dirname, 'src/styles'),
       },
     },
   ],

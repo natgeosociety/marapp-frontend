@@ -17,12 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { APP_NAME } from 'config';
 import React from 'react';
 import { animated, Transition } from 'react-spring/renderprops.cjs';
 
 import { Button } from '@marapp/earth-shared';
 
+import { MAP_APP_NAME } from '../../../../config';
 import './styles.scss';
 
 export interface IOutro {
@@ -47,7 +47,7 @@ class OutroComponent extends React.PureComponent<IOutro> {
             <animated.div style={props} className="landing-outro--container">
               <div className="outro">
                 <p className="landing-outro--text">Start Exploring</p>
-                <h3 className="landing-outro--title">{APP_NAME}</h3>
+                <h3 className="landing-outro--title">{MAP_APP_NAME}</h3>
                 <Button className="ng-button ng-button-primary" link={{ to: '/earth' }}>
                   Launch
                 </Button>

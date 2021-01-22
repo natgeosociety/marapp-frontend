@@ -17,14 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import WidgetTooltip from 'components/widget/tooltip';
-import { formatKM2, formatPercentage, replace } from 'components/widget/utils';
 import { format } from 'd3-format';
 import React from 'react';
 
-// Utils
-
-// Components
+import WidgetTooltip from '../../../../components/widget/tooltip';
+import { formatKM2, formatPercentage, replace } from '../../utils';
 
 const COLORS = {
   10: '#030676',
