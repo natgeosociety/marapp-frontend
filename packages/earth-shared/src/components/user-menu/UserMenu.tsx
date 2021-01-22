@@ -141,6 +141,15 @@ export const UserMenu = (props: IProps) => {
                         Français
                       </a>
                     </li>
+                    <li
+                      className={classnames({
+                        selected: selectedLanguage === Elang.RU,
+                      })}
+                    >
+                      <a className="marapp-qa-lang-ru" onClick={(e) => changeLanguage(e, Elang.RU)}>
+                        Pусский
+                      </a>
+                    </li>
                   </ul>
                 </animated.div>
               )}
