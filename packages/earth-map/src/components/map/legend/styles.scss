@@ -73,6 +73,8 @@ body {
       background: $marapp-gray-8;
 
       .vizzuality__open-legend.vizzuality__-active {
+        max-height: calc(100vh - 177px) !important;
+
         .vizzuality__toggle-legend {
           background: $marapp-gray-8;
           border-radius: 0;
