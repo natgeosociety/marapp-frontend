@@ -20,15 +20,28 @@
 import React, { useEffect } from 'react';
 import { replace } from 'redux-first-router';
 import { connect } from 'react-redux';
+import { useAuth0 } from '../../../auth/auth0';
 import { useLocation, QUERY_LOCATION } from '../../../fetchers';
+import Places from '../../../components/places';
 import { EMainType, SubType } from '../../../modules/global/model';
 import { persistData, setLastViewedPlace } from '../../../modules/global/actions';
 import { setMapBounds } from '../../../modules/map/actions';
 import { setSidebarPanelExpanded } from '../../../modules/sidebar/actions';
 import CollectionDetails from './CollectionDetails';
 import { setPlacesSearch } from '../../../modules/places/actions';
+import { Spinner } from '@marapp/earth-shared';
 
-function WithData(props) {
+interface IProps {
+  selected: boolean;
+  slug?: string;
+  organization?: string;
+  setSidebarPanelExpanded?: (payload?: any) => void;
+  setMapBounds?: (payload?: any) => void;
+  setLastViewedPlace?: (payload?: any) => void;
+  persistData?: (payload?: any) => void;
+}
+
+function WithData(props: IProps) {
   const {
     slug,
     organization,
@@ -38,14 +51,13 @@ function WithData(props) {
     persistData,
   } = props;
   const swrProps = useLocation(slug, QUERY_LOCATION.getCollection(organization));
+  const { privateGroups } = useAuth0();
+  const { data } = swrProps;
 
   useEffect(() => {
     if (!swrProps.data) {
       return;
     }
-
-    const { data } = swrProps;
-    console.log(`@@`, data);
 
     setSidebarPanelExpanded(false);
     setPlacesSearch({ search: data.name });
@@ -80,7 +92,23 @@ function WithData(props) {
     }
   }, [swrProps.error]);
 
-  return <CollectionDetails swr={swrProps} {...props} />;
+  return (
+    <Places
+      selected={props.selected}
+      locationName={data?.name}
+      locationOrganization={data?.organization}
+    >
+      {data ? (
+        <CollectionDetails
+          swr={swrProps}
+          privateGroups={privateGroups}
+          setMapBounds={setMapBounds}
+        />
+      ) : (
+        <Spinner />
+      )}
+    </Places>
+  );
 }
 
 export default connect(

@@ -43,7 +43,6 @@ interface IProps {
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
   resetPlace?: (value: any) => {};
-  resetCollection?: () => {};
   setIndexesSelected?: (value: any) => {};
   setPlacesSearch?: (value: any) => {};
   setPlacesSearchOpen?: (value: boolean) => {};
@@ -58,7 +57,6 @@ const Places = (props: IProps) => {
     locationName,
     locationOrganization,
     resetPlace,
-    resetCollection,
     resetMap,
     setPlacesSearch,
     setSidebarPanelExpanded,
@@ -94,7 +92,6 @@ const Places = (props: IProps) => {
   };
 
   const handleReset = () => {
-    resetCollection();
     resetPlace({ keepCache: true });
     setPlacesSearch({ search: '' });
     resetMap();

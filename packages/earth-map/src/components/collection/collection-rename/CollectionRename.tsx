@@ -25,7 +25,7 @@ import { replace } from 'redux-first-router';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
 
-import { ICollection } from '../../../modules/collections/model';
+import { ICollection } from '../../../fetchers/locations/queries';
 import PlacesService from '../../../services/PlacesService';
 import { CollectionConflict } from '../collection-conflict';
 

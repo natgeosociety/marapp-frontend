@@ -28,7 +28,6 @@ export default connect(
     router: state.router,
     group: state.user.group,
     lastViewedPlace: state.global.lastViewedPlace,
-    collection: state.collections.data,
   }),
   {
     setSidebarPanel,

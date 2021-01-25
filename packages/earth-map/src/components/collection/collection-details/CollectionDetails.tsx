@@ -30,7 +30,7 @@ import {
   TitleHero,
 } from '@marapp/earth-shared';
 
-import { ICollection } from '../../../modules/collections/model';
+import { ICollection } from '../../../fetchers/locations/queries';
 import CollectionDelete from '../collection-delete';
 import { CollectionDownloadMetrics } from '../collection-downloadmetrics';
 import { CollectionEditPlaces } from '../collection-editplaces';
@@ -39,15 +39,13 @@ import './styles.scss';
 
 interface IProps {
   privateGroups: string[];
-  loading?: boolean;
-  error?: any;
-
   // need better types here
   swr?: {
     data?: ICollection;
+    error?: any;
+    mutate?: any;
   };
-
-  setMapBounds?: (payload: any) => void;
+  setMapBounds: (payload: any) => void;
 }
 
 const CollectionDetails = (props: IProps) => {
@@ -60,10 +58,6 @@ const CollectionDetails = (props: IProps) => {
   const [isOnDownloadMetrics, setIsOnDownloadMetrics] = useState(false);
   const [isDownloadingMetrics, setIsDownloadingMetrics] = useState(false);
   const [downloadError, setDownloadError] = useState('');
-
-  if (!data) {
-    return <Spinner />;
-  }
 
   const canEdit = privateGroups.includes(data.organization);
 

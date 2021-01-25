@@ -19,7 +19,6 @@
 
 import { connect } from 'react-redux';
 
-import { resetCollection } from '../../modules/collections/actions';
 import { resetLayerCache, resetLayers, setLayersSearch } from '../../modules/layers/actions';
 import { resetMap } from '../../modules/map/actions';
 import { resetPlace, setPlacesSearch } from '../../modules/places/actions';
@@ -36,7 +35,6 @@ export default connect(
     setUserGroup,
     setPlacesSearch,
     resetPlace,
-    resetCollection,
     resetLayerCache,
     resetMap,
     setLayersSearch,

@@ -18,7 +18,7 @@
  */
 import { serializeFilters } from '@marapp/earth-shared';
 import { IQueryOne } from '../useFetchOne';
-import { LocationTypeEnum } from '../../modules/places/model';
+import { LocationTypeEnum, IPlace } from '../../modules/places/model';
 import { IQueryMany } from '../useFetchMany';
 
 export const QUERY_LOCATION = {
@@ -56,3 +56,21 @@ export const QUERY_LOCATION = {
     };
   },
 };
+
+export interface ICollection {
+  id: string;
+  slug?: string;
+  name?: string;
+  description: string;
+  organization?: string;
+
+  // relationships
+  locations?: IPlace[];
+  metrics?: any[];
+
+  published?: boolean;
+  featured?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  version?: number;
+}

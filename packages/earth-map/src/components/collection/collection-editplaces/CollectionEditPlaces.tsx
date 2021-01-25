@@ -26,7 +26,7 @@ import { replace } from 'redux-first-router';
 import { AsyncSelect, Card, DropdownItem, TitleHero } from '@marapp/earth-shared';
 
 import { MAP_ENABLE_PUBLIC_ACCESS } from '../../../config';
-import { ICollection } from '../../../modules/collections/model';
+import { ICollection } from '../../../fetchers/locations/queries';
 import { LocationTypeEnum } from '../../../modules/places/model';
 import PlacesService from '../../../services/PlacesService';
 import { CollectionConflict } from '../collection-conflict';
