@@ -48,9 +48,10 @@ export const QUERY_LOCATION = {
     };
   },
 
-  getOne(group: string): IQueryOne {
+  getCollection(group: string): IQueryOne {
     return {
-      include: 'metrics',
+      include: 'locations',
+      select: 'locations.slug,locations.name',
       group,
     };
   },

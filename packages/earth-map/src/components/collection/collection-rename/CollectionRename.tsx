@@ -33,11 +33,11 @@ interface IProps {
   collection: ICollection;
   onCancel: () => void;
   toggleRenaming: (payload?: any) => void;
-  reloadCollection: (payload?: any) => void;
+  mutateCollection: any;
 }
 
 export function CollectionRename(props: IProps) {
-  const { collection, onCancel, reloadCollection, toggleRenaming } = props;
+  const { collection, onCancel, mutateCollection, toggleRenaming } = props;
   const { id, slug, name, organization, version } = collection;
   const { t } = useTranslation();
   const [saveError, setSaveError] = useState('');
@@ -102,16 +102,18 @@ export function CollectionRename(props: IProps) {
   async function onSubmit(values, optional: BaseSyntheticEvent | boolean) {
     const shouldOverwrite = isBoolean(optional);
     try {
-      const { data } = await PlacesService.updatePlace(
-        id,
-        {
-          name: values.name,
-          slug: null,
-          // Sending the version to the backend will kick in the version validation
-          // To keep the api backwards compatible, when no version is passed, we overwrite
-          ...(!shouldOverwrite && { version }),
-        },
-        { group: organization }
+      const { data } = await mutateCollection(
+        PlacesService.updatePlace(
+          id,
+          {
+            name: values.name,
+            slug: null,
+            // Sending the version to the backend will kick in the version validation
+            // To keep the api backwards compatible, when no version is passed, we overwrite
+            ...(!shouldOverwrite && { version }),
+          },
+          { group: organization }
+        )
       );
       replace(`/collection/${organization}/${data.slug}`);
       onCancel();
@@ -127,7 +129,7 @@ export function CollectionRename(props: IProps) {
   }
 
   function refresh() {
-    reloadCollection({ organization, id, slug });
+    mutateCollection();
     toggleRenaming();
   }
 

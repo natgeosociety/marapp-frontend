@@ -19,16 +19,6 @@
 import * as actions from './actions';
 
 export default {
-  [actions.setCollectionData]: (state, { payload }) => ({
-    ...state,
-    data: {
-      ...payload,
-    },
-  }),
-  [actions.setCollectionsLoading]: (state, { payload }) => ({
-    ...state,
-    loading: payload,
-  }),
   [actions.setCollectionsError]: (state, { payload }) => ({
     ...state,
     error: payload,

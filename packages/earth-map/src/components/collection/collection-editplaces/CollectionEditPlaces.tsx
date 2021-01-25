@@ -34,13 +34,12 @@ import { CollectionConflict } from '../collection-conflict';
 interface IProps {
   collection: ICollection;
   setMapBounds: (payload?: any) => void;
-  setCollectionData: (payload?: any) => void;
   toggleEditPlaces: () => void;
-  reloadCollection: (payload?: any) => void;
+  mutateCollection: any;
 }
 
 export function CollectionEditPlaces(props: IProps) {
-  const { collection, setCollectionData, setMapBounds, toggleEditPlaces, reloadCollection } = props;
+  const { collection, setMapBounds, toggleEditPlaces, mutateCollection } = props;
   const { t } = useTranslation();
   const { id, slug, organization, name, locations, version } = collection;
   const [saveError, setSaveError] = useState('');
@@ -134,11 +133,16 @@ export function CollectionEditPlaces(props: IProps) {
     };
 
     try {
-      const { data } = await PlacesService.updateCollection(id, parsedValues, {
-        group: organization,
-        include: 'locations',
-      });
-      setCollectionData(data);
+      // by passing the promise straight to SWR, it will update the cached value using the API response
+      // passing false as the second param means it will not trigger another req
+      const { data } = await mutateCollection(
+        PlacesService.updateCollection(id, parsedValues, {
+          group: organization,
+          include: 'locations',
+        }),
+        false
+      );
+
       resetErrors();
 
       // someone changed the slug, redirect to the new collection
@@ -163,7 +167,7 @@ export function CollectionEditPlaces(props: IProps) {
   }
 
   function refresh() {
-    reloadCollection({ organization, id, slug });
+    mutateCollection();
     toggleEditPlaces();
   }
 
