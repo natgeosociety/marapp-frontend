@@ -18,7 +18,6 @@
 */
 import { AuthEnv } from '../config';
 import { Auth0LockConfig } from './model';
-
 const profile = require('../assets/profile.svg') as string;
 
 const AUTH_CONFIG: Auth0LockConfig = JSON.parse(
@@ -34,8 +33,8 @@ let language;
 if (AUTH_CONFIG.dict && AUTH_CONFIG.dict.signin && AUTH_CONFIG.dict.signin.title) {
   languageDictionary = {
     title: AUTH_CONFIG.extraParams.emailState ? AUTH_CONFIG.extraParams.emailState : '',
-    signUpTerms: `By signing up, you agree to our <a target="_blank" href=${AuthEnv.terms}>terms of service</a> and
-        <a target="_blank" href=${AuthEnv.privacy}>privacy policy.</a>`,
+    signUpTerms: `I have read and agree to the ${AUTH_CONFIG.dict.signin.title}’s <a target="_blank" href=${AuthEnv.terms}>terms of use</a>,
+        and I consent ${AUTH_CONFIG.dict.signin.title} to process my personal data and have read the <a target="_blank" href=${AuthEnv.privacy}>privacy notice</a>.`,
     forgotPasswordAction: 'Forgot password?',
     loginSubmitLabel: 'Sign in',
   };
@@ -65,6 +64,7 @@ const lock: Auth0LockStatic = new Auth0Lock(AUTH_CONFIG.clientID, AUTH_CONFIG.au
   rememberLastLogin: !prompt,
   language: language,
   languageDictionary: languageDictionary,
+  mustAcceptTerms: true,
   theme: {
     logo: AUTH_CONFIG.icon,
     primaryColor: colors.primary ? colors.primary : 'green',
@@ -79,6 +79,8 @@ const lock: Auth0LockStatic = new Auth0Lock(AUTH_CONFIG.clientID, AUTH_CONFIG.au
       placeholder: 'first name',
       icon: profile,
       //@ts-ignore
+      // Only certain fields can be stored on the user's root level
+      // https://auth0.com/docs/api/management/v2#!/Users/patch_users_by_id
       storage: 'root',
       validator: (givenName) => {
         return {
@@ -92,11 +94,37 @@ const lock: Auth0LockStatic = new Auth0Lock(AUTH_CONFIG.clientID, AUTH_CONFIG.au
       placeholder: 'last name',
       icon: profile,
       //@ts-ignore
+      // Only certain fields can be stored on the user's root level
+      // https://auth0.com/docs/api/management/v2#!/Users/patch_users_by_id
       storage: 'root',
       validator: (familyName) => {
         return {
           valid: familyName.trim().length >= 1,
           hint: "Last name can't be blank",
+        };
+      },
+    },
+    {
+      type: 'select',
+      name: 'country',
+      placeholder: 'country or region',
+      options: function (cb) {
+        fetch(`${AuthEnv.apiUrl}/profile/countries`)
+          .then((response) => response.json())
+          .then((response) => {
+            const countries = response.data.map(({ attributes }) => attributes);
+
+            cb(null, countries);
+          });
+      },
+    },
+    {
+      name: 'institution',
+      placeholder: 'institution or organization',
+      validator: (organizationName) => {
+        return {
+          valid: organizationName.trim().length >= 1,
+          hint: "Organization can't be blank",
         };
       },
     },
