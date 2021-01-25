@@ -25,8 +25,8 @@ import { useAuth0 } from '../../auth/auth0';
 export function useLocations(query: IQueryMany, swrOptions?: SWRInfiniteConfigInterface) {
   const { groups } = useAuth0();
   const specificQuery: IQueryMany = {
-    ...query,
     group: groups.join(),
+    ...query,
   };
 
   return useFetchMany('/locations', specificQuery, {

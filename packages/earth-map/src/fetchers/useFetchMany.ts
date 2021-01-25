@@ -39,6 +39,16 @@ export interface IQueryMany {
   public?: boolean;
 }
 
+export interface IResponseMany {
+  data: any;
+  meta: any;
+  isNoMore: boolean;
+  awaitMore: boolean;
+  isValidating: boolean;
+  nextPage: () => void;
+  previousPage: () => void;
+}
+
 interface IOptions {
   fetcher?: (url: string) => Promise<any>;
   transformResponse?: (response: any) => any;
@@ -53,7 +63,11 @@ const defaultOptions = {
   swrOptions: {},
 };
 
-export function useFetchMany(url: string, query: IQueryMany, passedOptions?: IOptions) {
+export function useFetchMany(
+  url: string,
+  query: IQueryMany,
+  passedOptions?: IOptions
+): IResponseMany | Object {
   const options = {
     ...defaultOptions,
     ...passedOptions,

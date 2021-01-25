@@ -52,5 +52,12 @@ export function useFetchOne(url: string, query: IQueryOne, passedOptions?: IOpti
   };
   const finalUrl = encodeQueryToURL(url, query);
 
-  return useSWR(finalUrl, fetcher, options.swrOptions);
+  const { data: rawData = {}, ...rest } = useSWR(finalUrl, fetcher, options.swrOptions);
+  const { data, meta } = rawData;
+
+  return {
+    data,
+    meta,
+    ...rest,
+  };
 }
