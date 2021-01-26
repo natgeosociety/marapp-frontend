@@ -19,14 +19,13 @@
 
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Link from 'redux-first-router-link';
 import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
-import { EarthRoutes } from '../../../modules/router/model';
+import Link from 'redux-first-router-link';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
 
-import { IRouter } from '../../../modules/router/model';
+import { EarthRoutes, IRouter } from '../../../modules/router/model';
 import PlacesService from '../../../services/PlacesService';
 
 interface IProps {
