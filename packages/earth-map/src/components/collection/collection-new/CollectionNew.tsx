@@ -35,7 +35,7 @@ interface IProps {
 
 const CollectionNew = (props: IProps) => {
   const { privateGroups, router } = props;
-  const { query } = router;
+  const { prev } = router;
   const { t } = useTranslation();
   const canCreateCollection = !!privateGroups.length;
   const [saveError, setSaveError] = useState(null);
@@ -130,7 +130,7 @@ const CollectionNew = (props: IProps) => {
           className="marapp-qa-cancel-collection ng-button ng-button-secondary"
           to={{
             type: EarthRoutes.EARTH,
-            query,
+            query: prev.query,
           }}
         >
           {t('Cancel')}
