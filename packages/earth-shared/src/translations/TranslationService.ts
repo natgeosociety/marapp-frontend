@@ -16,7 +16,7 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-// @ts-nocheck
+
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
@@ -26,14 +26,16 @@ import SessionStorage from '../services/SessionStorage';
 import translationEN from './en/translation.json';
 import translationES from './es/translation.json';
 import translationFR from './fr/translation.json';
+import translationRU from './ru/translation.json';
 import translationENAdmin from './en/admin.translation.json';
 import translationESAdmin from './es/admin.translation.json';
 import translationFRAdmin from './fr/admin.translation.json';
+import translationRUAdmin from './ru/admin.translation.json';
 
 import * as weglot from './weglot';
 
 interface ITranslationService {
-  init(): void;
+  init(key: string): void;
   getDefaultLanguage(): string;
 }
 
@@ -41,11 +43,9 @@ class TranslationService implements ITranslationService {
   constructor() {}
 
   getDefaultLanguage() {
-    const {
-      fallbackLng: [defaultLanguage],
-    } = i18n.options;
+    const { fallbackLng: defaultLanguage } = i18n.options;
 
-    return defaultLanguage || Elang.EN;
+    return <string>defaultLanguage || Elang.EN;
   }
 
   init(weglotApiKey) {
@@ -70,6 +70,10 @@ class TranslationService implements ITranslationService {
         [Elang.FR]: {
           translation: translationFR,
           admin: translationFRAdmin,
+        },
+        [Elang.RU]: {
+          translation: translationRU,
+          admin: translationRUAdmin,
         },
       },
       lng: lang,
