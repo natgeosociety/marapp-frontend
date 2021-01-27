@@ -20,6 +20,9 @@ import { createMuiTheme } from '@material-ui/core';
 
 const COLORS = {
   SECONDARY_LIGHT: '#7ecace',
+  // SECONDARY_MAIN: '#2CD787',
+  // SECONDARY_DARK: '#2CD787',
+
   SECONDARY_MAIN: '#0099A1',
   SECONDARY_DARK: '#006b70',
   GREY_0: '#FFFFFF',
@@ -72,9 +75,11 @@ export default createMuiTheme({
   },
   typography: {
     subtitle1: {
-      textTransform: 'uppercase',
+      textTransform: 'capitalize',
+      color: COLORS.GREY_5,
       fontWeight: 800,
       fontSize: 14,
+      lineHeight: '20px',
       letterSpacing: 1.1,
     },
   },

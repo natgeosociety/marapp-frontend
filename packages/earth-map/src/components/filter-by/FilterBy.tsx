@@ -22,6 +22,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
@@ -101,12 +102,14 @@ const FilterBy = (props: IProps) => {
             {t('Filters')}
           </Typography>{' '}
           {numberOfFilters > 0 && (
-            <a
-              className="marapp-qa-filterbyclear ng-link ng-nohover ng-text-weight-regular ng-text-capital"
+            <Button
+              className="marapp-qa-filterbyclear"
               onClick={clearCheckedFilters}
+              size="small"
+              variant="outlined"
             >
               {t('Clear')} {`(${numberOfFilters})`}
-            </a>
+            </Button>
           )}
         </Typography>
       </AccordionSummary>

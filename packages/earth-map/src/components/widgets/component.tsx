@@ -22,6 +22,12 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InView } from 'react-intersection-observer';
 
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Fab from '@material-ui/core/Fab';
+import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
+import IconDotsHorizontal from 'mdi-material-ui/DotsHorizontal';
+
 import { AuthzGuards, DropdownSimple, TitleHero } from '@marapp/earth-shared';
 
 import { useAuth0 } from '../../auth/auth0';
@@ -59,25 +65,28 @@ export default function WidgetsComponent(props: IProps) {
     widgetId: null,
   });
   const { getPermissions } = useAuth0();
+  const popupState = usePopupState({ variant: 'popover', popupId: 'demoMenu' });
   const [isOnClipLayer, setIsOnClipLayer] = useState(false);
   const { collapsedState } = widgetState;
   const { t } = useTranslation();
   const canExport = getPermissions(AuthzGuards.readExportsGuard, place.organization);
 
   const editActions = (
-    <DropdownSimple
-      trigger={(open) => (
-        <i
-          className={cn({
-            'ng-icon-ellipse ng-toolbar-button': true,
-            'ng-toolbar-button-raised': true,
-            'ng-toolbar-button-open': open,
-          })}
-        />
-      )}
-    >
-      <a onClick={() => setIsOnClipLayer(true)}>{t('Clip and Export Layers')}</a>
-    </DropdownSimple>
+    <>
+      <Fab size="small" {...bindTrigger(popupState)}>
+        <IconDotsHorizontal />
+      </Fab>
+      <Menu {...bindMenu(popupState)}>
+        <MenuItem
+          onClick={() => {
+            setIsOnClipLayer(true);
+            popupState.close();
+          }}
+        >
+          {t('Clip and Export Layers')}
+        </MenuItem>
+      </Menu>
+    </>
   );
 
   return (

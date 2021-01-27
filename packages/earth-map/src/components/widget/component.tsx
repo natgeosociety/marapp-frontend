@@ -283,8 +283,8 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
           <AccordionSummary expandIcon={<IconDown onClick={this.toggleExpanded} />}>
             <Grid alignItems="center" container={true}>
               <Grid item={true} xs={true} onClick={this.toggleExpanded}>
-                <Typography variant="subtitle1">
-                  {showOrgLabel && `${organization} -`} {name}
+                <Typography color="textPrimary" variant="subtitle1">
+                  {name} {showOrgLabel && ` - ${organization}`}
                 </Typography>
               </Grid>
 

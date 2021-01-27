@@ -17,19 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import cn from 'classnames';
 import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-  Card,
-  DropdownSimple,
-  getGenericDate,
-  Pill,
-  Spinner,
-  TitleHero,
-} from '@marapp/earth-shared';
+import { Card, getGenericDate, Spinner, TitleHero } from '@marapp/earth-shared';
 
 import { ICollection } from '../../../modules/collections/model';
 import CollectionDelete from '../collection-delete';
