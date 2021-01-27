@@ -24,6 +24,7 @@ import { call, cancelled, delay, put, select, takeLatest } from 'redux-saga/effe
 import { persistData, setLastViewedPlace } from '../../modules/global/actions';
 import { EMainType } from '../../modules/global/model';
 import { setMapBounds } from '../../modules/map/actions';
+import { resetLayerCache } from '../../modules/layers/actions';
 import { setMetrics, setMetricsLoading } from '../../modules/metrics/actions';
 import {
   setPlaceData,
@@ -46,6 +47,8 @@ export default function* location() {
   yield takeLatest(ignoreRedirectsToLocation, loadDataIndexes);
   // @ts-ignore
   yield takeLatest(ignoreRedirectsToLocation, toLocation);
+  // @ts-ignore
+  yield takeLatest(resetLayerCache, loadDataIndexes);
 }
 
 function* toLocation({ payload, meta }) {

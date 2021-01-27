@@ -253,7 +253,7 @@ export function ProfileComponent(props: IProps) {
       className={`marapp-qa-user-profile ng-flex ng-flex-column ng-ep-background-gray-9`}
       id="portal"
     >
-      <div className="ng-position-fixed ng-width-1">
+      <div className="ng-position-fixed ng-width-1 ng-ep-background-gray-9 ng-position-z-index">
         <div>
           {
             // TODO: remove this when we find a way to do a full reset (redux and auth0 context) and use redux-first-router link
