@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { replace } from 'redux-first-router';
 import { connect } from 'react-redux';
 import { useAuth0 } from '../../../auth/auth0';
@@ -36,6 +36,7 @@ interface IProps {
   slug?: string;
   organization?: string;
   setSidebarPanelExpanded?: (payload?: any) => void;
+  setPlacesSearch?: (payload?: any) => void;
   setMapBounds?: (payload?: any) => void;
   setLastViewedPlace?: (payload?: any) => void;
   persistData?: (payload?: any) => void;
@@ -45,17 +46,19 @@ function WithData(props: IProps) {
   const {
     slug,
     organization,
+    setPlacesSearch,
     setSidebarPanelExpanded,
     setMapBounds,
     setLastViewedPlace,
     persistData,
   } = props;
-  const swrProps = useLocation(slug, QUERY_LOCATION.getCollection(organization));
+  const [resourceId, setResourceId] = useState();
+  const swrProps = useLocation(resourceId || slug, QUERY_LOCATION.getCollection(organization));
   const { privateGroups } = useAuth0();
-  const { data } = swrProps;
+  const { data, error } = swrProps;
 
   useEffect(() => {
-    if (!swrProps.data) {
+    if (!data) {
       return;
     }
 
@@ -81,16 +84,16 @@ function WithData(props: IProps) {
     });
 
     persistData();
-  }, [swrProps.data]);
+  }, [data]);
 
   useEffect(() => {
-    if (swrProps.error) {
-      console.log(swrProps.error);
-      if ([403, 404].includes(swrProps.error.status)) {
+    if (error) {
+      console.log(error);
+      if ([403, 404].includes(error.status)) {
         replace('/404');
       }
     }
-  }, [swrProps.error]);
+  }, [error]);
 
   return (
     <Places
@@ -103,6 +106,7 @@ function WithData(props: IProps) {
           swr={swrProps}
           privateGroups={privateGroups}
           setMapBounds={setMapBounds}
+          onSlugChange={setResourceId}
         />
       ) : (
         <Spinner />
@@ -116,6 +120,7 @@ export default connect(
     ...state.router.payload,
   }),
   {
+    setPlacesSearch,
     setSidebarPanelExpanded,
     setLastViewedPlace,
     setMapBounds,

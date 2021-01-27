@@ -23,7 +23,9 @@ import { useLocations, QUERY_LOCATION } from '../../../fetchers';
 import { CollectionsCard } from './CollectionsCard';
 
 export default function WithData(props) {
-  const { data } = useLocations(QUERY_LOCATION.getLatestCollections());
+  const { data } = useLocations(QUERY_LOCATION.getLatestCollections(), {
+    revalidateAll: true,
+  });
 
   return <CollectionsCard data={data} {...props} />;
 }

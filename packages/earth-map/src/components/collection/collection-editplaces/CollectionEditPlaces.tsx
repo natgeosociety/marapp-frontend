@@ -36,10 +36,11 @@ interface IProps {
   setMapBounds: (payload?: any) => void;
   toggleEditPlaces: () => void;
   mutateCollection: any;
+  onSlugChange: (payload: any) => void;
 }
 
 export function CollectionEditPlaces(props: IProps) {
-  const { collection, setMapBounds, toggleEditPlaces, mutateCollection } = props;
+  const { collection, toggleEditPlaces, mutateCollection, onSlugChange } = props;
   const { t } = useTranslation();
   const { id, slug, organization, name, locations, version } = collection;
   const [saveError, setSaveError] = useState('');
@@ -111,7 +112,15 @@ export function CollectionEditPlaces(props: IProps) {
           </button>
         </Card>
 
-        {isSaveConflict && <CollectionConflict onRefresh={refresh} onOverwrite={saveAnyway} />}
+        {isSaveConflict && (
+          <CollectionConflict
+            onRefresh={() => {
+              onSlugChange(id);
+              toggleEditPlaces();
+            }}
+            onOverwrite={saveAnyway}
+          />
+        )}
       </div>
     </form>
   );
@@ -134,25 +143,14 @@ export function CollectionEditPlaces(props: IProps) {
 
     try {
       // by passing the promise straight to SWR, it will update the cached value using the API response
-      // passing false as the second param means it will not trigger another req
       const { data } = await mutateCollection(
         PlacesService.updateCollection(id, parsedValues, {
           group: organization,
           include: 'locations',
         }),
-        false
+        false // don't trigger another request
       );
-
       resetErrors();
-
-      // someone changed the slug, redirect to the new collection
-      if (slug !== data.slug) {
-        replace(`/collection/${organization}/${data.slug}`);
-      }
-
-      if (data.bbox2d.length) {
-        setMapBounds({ bbox: data.bbox2d });
-      }
       toggleEditPlaces();
     } catch (e) {
       if (!e) {
@@ -164,11 +162,6 @@ export function CollectionEditPlaces(props: IProps) {
       }
       console.log(e);
     }
-  }
-
-  function refresh() {
-    mutateCollection();
-    toggleEditPlaces();
   }
 
   function saveAnyway() {

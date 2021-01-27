@@ -39,8 +39,8 @@ import Url from '../../components/url';
 import { ILastViewedPlace } from '../../modules/global/model';
 import { EarthRoutes, IRouter } from '../../modules/router/model';
 import { EPanels } from '../../modules/sidebar/model';
-import './styles.scss';
 import { URL_PROPS } from './url';
+import './styles.scss';
 
 interface IProps {
   setSidebarPanel?: () => void;
@@ -102,15 +102,7 @@ const EarthPage = (props: IProps) => {
                     <IndexSidebar {...props} selectedOpen={selectedOpen} />
                   </Places>
                 )}
-                {type === COLLECTION && (
-                  <Places
-                    selected={selectedOpen}
-                    locationName={collection.name}
-                    locationOrganization={collection.organization}
-                  >
-                    <CollectionDetails privateGroups={privateGroups} />
-                  </Places>
-                )}
+                {type === COLLECTION && <CollectionDetails selected={selectedOpen} />}
               </>
             )}
             {panel === EPanels.LAYERS && (

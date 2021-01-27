@@ -34,10 +34,11 @@ interface IProps {
   onCancel: () => void;
   toggleRenaming: (payload?: any) => void;
   mutateCollection: any;
+  onSlugChange: (payload: any) => void;
 }
 
 export function CollectionRename(props: IProps) {
-  const { collection, onCancel, mutateCollection, toggleRenaming } = props;
+  const { collection, onCancel, mutateCollection, onSlugChange, toggleRenaming } = props;
   const { id, slug, name, organization, version } = collection;
   const { t } = useTranslation();
   const [saveError, setSaveError] = useState('');
@@ -94,7 +95,15 @@ export function CollectionRename(props: IProps) {
           </div>
         </Card>
 
-        {isSaveConflict && <CollectionConflict onRefresh={refresh} onOverwrite={saveAnyway} />}
+        {isSaveConflict && (
+          <CollectionConflict
+            onRefresh={() => {
+              onSlugChange(id);
+              toggleRenaming();
+            }}
+            onOverwrite={saveAnyway}
+          />
+        )}
       </div>
     </form>
   );
@@ -113,9 +122,9 @@ export function CollectionRename(props: IProps) {
             ...(!shouldOverwrite && { version }),
           },
           { group: organization }
-        )
+        ),
+        false // don't trigger another request
       );
-      replace(`/collection/${organization}/${data.slug}`);
       onCancel();
     } catch (e) {
       if (!e) {
@@ -126,11 +135,6 @@ export function CollectionRename(props: IProps) {
         setIsSaveConflict(true);
       }
     }
-  }
-
-  function refresh() {
-    mutateCollection();
-    toggleRenaming();
   }
 
   function saveAnyway() {

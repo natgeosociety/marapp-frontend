@@ -46,10 +46,11 @@ interface IProps {
     mutate?: any;
   };
   setMapBounds: (payload: any) => void;
+  onSlugChange: (payload: any) => void;
 }
 
 const CollectionDetails = (props: IProps) => {
-  const { swr, privateGroups, setMapBounds } = props;
+  const { swr, privateGroups, setMapBounds, onSlugChange } = props;
   const { data, error, mutate } = swr;
   const { t } = useTranslation();
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
@@ -190,6 +191,7 @@ const CollectionDetails = (props: IProps) => {
           mutateCollection={mutate}
           onCancel={() => setIsRenaming(false)}
           toggleRenaming={toggleRenaming}
+          onSlugChange={onSlugChange}
         />
       )}
 
@@ -199,6 +201,7 @@ const CollectionDetails = (props: IProps) => {
           mutateCollection={mutate}
           setMapBounds={setMapBounds}
           toggleEditPlaces={toggleEditPlaces}
+          onSlugChange={onSlugChange}
         />
       )}
 
