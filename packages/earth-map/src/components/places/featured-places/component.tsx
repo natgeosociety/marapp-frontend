@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { Spinner } from '@marapp/earth-shared';
 
 import ListItem from '../../../components/list-item';
-import { useLocations, QUERY_LOCATION } from '../../../fetchers';
+import { QUERY_LOCATION, useLocations } from '../../../fetchers';
 
 interface IProps {
   group?: string[];

@@ -20,7 +20,9 @@
 import List from '@researchgate/react-intersection-list';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { Spinner } from '@marapp/earth-shared';
+
 import { LocationTypeEnum } from '../../../modules/places/model';
 import { EarthRoutes } from '../../../modules/router/model';
 import { PAGE_SIZE } from '../../../theme';

@@ -17,27 +17,28 @@
   specific language governing permissions and limitations under the License.
 */
 
+import { groupBy, orderBy, sortBy } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import IndexContentComponent from './component';
+
+import { Spinner } from '@marapp/earth-shared';
+
 import { useAuth0 } from '../../auth/auth0';
-import { sortBy, orderBy } from 'lodash';
+import { QUERY_DASHBOARD, QUERY_LOCATION, useDashboards, useLocation } from '../../fetchers';
+import { persistData, setLastViewedPlace } from '../../modules/global/actions';
+import { EMainType } from '../../modules/global/model';
+import { toggleLayer } from '../../modules/layers/actions';
+import { setMapBounds } from '../../modules/map/actions';
+import { setPlaceData, setPlacesSearch } from '../../modules/places/actions';
+import { setSidebarInfo } from '../../modules/sidebar/actions';
 import { IWidget } from '../../modules/widget/model';
+import { flattenLayerConfig } from '../../sagas/saga-utils';
+import WidgetsComponent from '../widgets/component';
 
-import { useLocation, useDashboards, QUERY_LOCATION, QUERY_DASHBOARD } from '../../fetchers';
-
-const parseWidgets = (place, widgets, activeLayers) => {
+const parseWidgets = (place, widgets, activeLayers, slugs) => {
   if (!widgets) {
     return [];
   }
-
-  const slugs = sortBy(widgets, ['organization', 'name'])
-    .filter((w: IWidget) => !!w.slug)
-    .map((w: IWidget) => ({
-      slug: w.slug,
-      collapsed: false,
-      box: true,
-    }));
 
   const filteredWidgets: IWidget[] = widgets
     .filter((widget) => {
@@ -53,6 +54,7 @@ const parseWidgets = (place, widgets, activeLayers) => {
     .map((widget) => ({
       ...widget,
       ...widget.config,
+      ...{ layers: widget.layers.map(flattenLayerConfig) },
       slug: widget.slug,
       description: widget.description,
       active: !!activeLayers.find((slug) => widget.layers[0] && slug === widget.layers[0].slug),
@@ -65,41 +67,87 @@ const parseWidgets = (place, widgets, activeLayers) => {
 };
 
 function WithData(props) {
-  const { slug, organization, activeLayers } = props;
+  const {
+    slug,
+    organization,
+    activeLayers,
+    setPlacesSearch,
+    setPlaceData,
+    setMapBounds,
+    setLastViewedPlace,
+    persistData,
+  } = props;
   const { selectedGroup, groups } = useAuth0();
   const { data: placeData } = useLocation(slug, QUERY_LOCATION.getOne(organization));
   const { data: dashboardsData } = useDashboards(QUERY_DASHBOARD.getWithWidgets(selectedGroup));
 
   if (!(placeData && dashboardsData)) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
-  const widgetsData = dashboardsData?.map((dasboard) => dasboard.widgets).flat();
+  setPlacesSearch({ search: placeData.name });
+  setMapBounds({ bbox: placeData.bbox2d });
 
-  const widgets = parseWidgets(placeData, widgetsData, activeLayers);
+  const mappedIntersections = groupBy(placeData.intersections, 'type');
+
+  const formattedData = {
+    ...placeData,
+    ...{
+      jurisdictions: mappedIntersections.Jurisdiction,
+      biomes: mappedIntersections.Biome,
+      countries: mappedIntersections.Country,
+      continents: mappedIntersections.Continent,
+    },
+  };
+
+  setPlaceData(formattedData);
+  setLastViewedPlace({
+    id: placeData.id,
+    name: placeData.name,
+    slug: placeData.slug,
+    organization: placeData.organization,
+    mainType: EMainType.LOCATION,
+    subType: placeData.type,
+  });
+  persistData();
+
+  const widgetsData = dashboardsData?.map((dasboard) => dasboard.widgets).flat();
+  const slugs = sortBy(widgetsData, ['organization', 'name'])
+    .filter((w: IWidget) => !!w.slug)
+    .map((w: IWidget) => ({
+      slug: w.slug,
+      collapsed: false,
+      box: true,
+    }));
+  const widgets = parseWidgets(placeData, widgetsData, activeLayers, slugs);
 
   // console.log(selectedGroup, groups);
 
   return (
-    <IndexContentComponent
-      {...props}
-      place={placeData}
-      widgets={widgets}
-      groups={selectedGroup}
-      metrics={placeData.metrics}
-    />
+    <div className="index-content--section marapp-qa-indexcontent">
+      <WidgetsComponent
+        {...props}
+        widgets={widgets}
+        place={placeData}
+        groups={groups}
+        metrics={placeData.metrics}
+        slugs={slugs}
+      />
+    </div>
   );
 }
 
-export default connect((state: any) => ({
-  activeLayers: state.layers.active,
-}))(WithData);
-
-// export default connect((state: any) => ({
-//   ...state.indexes,
-//   place: state.places.data,
-//   widgets: state.widgets.list,
-//   loading: state.places.loading,
-//   metricsLoading: state.places.loading,
-//   widgetsLoading: state.widgets.loading,
-// }))(IndexContentComponent);
+export default connect(
+  (state: any) => ({
+    activeLayers: state.layers.active,
+  }),
+  {
+    setSidebarInfo,
+    toggleLayer,
+    setMapBounds,
+    setPlacesSearch,
+    setPlaceData,
+    setLastViewedPlace,
+    persistData,
+  }
+)(WithData);

@@ -18,8 +18,9 @@
  */
 
 import { SWRInfiniteConfigInterface } from 'swr';
-import { useFetchMany, IQueryMany, IResponseMany } from '../useFetchMany';
+
 import { useAuth0 } from '../../auth/auth0';
+import { IQueryMany, IResponseMany, useFetchMany } from '../useFetchMany';
 
 export function useDashboards(query: IQueryMany, swrOptions?: SWRInfiniteConfigInterface) {
   const { groups } = useAuth0();
@@ -28,5 +29,5 @@ export function useDashboards(query: IQueryMany, swrOptions?: SWRInfiniteConfigI
     ...query,
   };
 
-  return <IResponseMany>useFetchMany('/dashboards', specificQuery, { swrOptions });
+  return useFetchMany('/dashboards', specificQuery, { swrOptions }) as IResponseMany;
 }

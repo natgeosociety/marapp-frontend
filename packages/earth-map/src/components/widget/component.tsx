@@ -182,7 +182,6 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
 
       newState.data = parse(metric, params, widgetConfig, place);
     } catch (e) {
-      console.log('!!!!!!!', e);
       newState.error = t('Failed to extract layer details', { value: name });
     } finally {
       this.setState({
