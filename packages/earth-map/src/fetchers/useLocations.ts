@@ -19,7 +19,7 @@
 
 import { groupBy, sortBy } from 'lodash';
 import { noop } from 'lodash/fp';
-import { useSWRInfinite } from 'swr';
+import { useSWRInfinite, SWRInfiniteConfigInterface } from 'swr';
 
 import { BaseAPIService, metaDeserializer } from '../services/base/APIBase';
 import { encodeQueryToURL } from '../utils/query';
@@ -38,7 +38,10 @@ interface IQueryLocation {
 
 const DEFAULT_PAGE_SIZE = 30;
 
-export default function useLocations(query: IQueryLocation) {
+export default function useLocations(
+  query: IQueryLocation,
+  passedOptions: SWRInfiniteConfigInterface = {}
+) {
   const swrKeyLoader = (pageIndex: number, previousPage: any): string => {
     if (previousPage && !previousPage.data) {
       return null; // reached the end;
@@ -88,7 +91,11 @@ export default function useLocations(query: IQueryLocation) {
     });
   };
 
-  const { data: rawData, isValidating, size, setSize }: any = useSWRInfinite(swrKeyLoader, fetcher);
+  const { data: rawData, isValidating, size, setSize }: any = useSWRInfinite(
+    swrKeyLoader,
+    fetcher,
+    passedOptions
+  );
 
   if (!rawData) {
     return {};

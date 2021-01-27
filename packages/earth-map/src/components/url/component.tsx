@@ -67,6 +67,10 @@ interface IUrl {
   paramsFromUrl: {};
 }
 
+/**
+ * Dispatches actions based on with payload created from query params
+ * TODO: Could be removed entirely if we find another way to apply side effects based on query params
+ */
 class UrlComponent extends PureComponent<IUrl, any> {
   public componentDidMount() {
     const { urlProps, paramsFromUrl } = this.props;

@@ -142,7 +142,9 @@ export const CONFIG = {
   basename: MAP_BASE_URL,
   location: 'router',
   querySerializer: {
-    stringify: qs.stringify,
+    stringify: (params) => {
+      return qs.stringify(params, { arrayFormat: 'comma' });
+    },
     parse: (url) => {
       return qs.parse(url, {
         arrayFormat: 'comma',
