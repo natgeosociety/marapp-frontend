@@ -21,4 +21,5 @@ export enum Elang {
   EN = 'en',
   ES = 'es',
   FR = 'fr',
+  RU = 'ru',
 }

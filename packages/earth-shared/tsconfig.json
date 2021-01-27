@@ -13,7 +13,8 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "strictNullChecks": false,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "resolveJsonModule": true
   },
   "include": ["./src/**/*"]
 }
