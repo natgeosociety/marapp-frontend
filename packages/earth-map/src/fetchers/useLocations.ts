@@ -36,14 +36,6 @@ interface IQueryLocation {
   };
 }
 
-interface IOptions {
-  fetcher?: (url: string) => Promise<any>;
-  transformResponse?: (response: any) => any;
-  swrOptions?: {
-    [key: string]: any;
-  };
-}
-
 const DEFAULT_PAGE_SIZE = 30;
 
 export default function useLocations(
