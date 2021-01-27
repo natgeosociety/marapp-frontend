@@ -23,6 +23,6 @@ import { getActiveBoundsLayer, getActiveLayers } from '../../../modules/layers/s
 import LayerManager from './component';
 
 export default connect((state) => ({
-  bounds: getActiveBoundsLayer(state),
+  // bounds: getActiveBoundsLayer(state),
   layers: getActiveLayers(state),
 }))(LayerManager);

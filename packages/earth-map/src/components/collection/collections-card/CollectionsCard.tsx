@@ -24,7 +24,7 @@ import Link from 'redux-first-router-link';
 import { Card, getGenericDate } from '@marapp/earth-shared';
 
 import ListItem from '../../../components/list-item';
-import { ICollection } from '../../../modules/collections/model';
+import { ICollection } from '../../../fetchers/locations/queries';
 import { EMainType } from '../../../modules/global/model';
 import { EarthRoutes } from '../../../modules/router/model';
 

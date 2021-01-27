@@ -26,7 +26,6 @@ import { handleModule } from 'vizzuality-redux-tools';
 
 import { SessionStorage } from '@marapp/earth-shared';
 
-import * as collections from '../modules/collections';
 import * as global from '../modules/global';
 import * as indexes from '../modules/indexes';
 import * as layers from '../modules/layers';
@@ -60,7 +59,6 @@ const initStore = (initialState = {}) => {
     sidebar: handleModule(sidebar),
     indexes: handleModule(indexes),
     places: handleModule(places),
-    collections: handleModule(collections),
     layers: handleModule(layers),
     widgets: handleModule(widgets),
     widget: handleModule(widget),

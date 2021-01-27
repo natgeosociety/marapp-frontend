@@ -18,7 +18,6 @@
 */
 
 import cn from 'classnames';
-import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -31,7 +30,7 @@ import {
   TitleHero,
 } from '@marapp/earth-shared';
 
-import { ICollection } from '../../../modules/collections/model';
+import { ICollection } from '../../../fetchers/locations/queries';
 import CollectionDelete from '../collection-delete';
 import { CollectionDownloadMetrics } from '../collection-downloadmetrics';
 import { CollectionEditPlaces } from '../collection-editplaces';
@@ -40,17 +39,19 @@ import './styles.scss';
 
 interface IProps {
   privateGroups: string[];
-  data?: ICollection;
-  loading?: boolean;
-  error?: any;
-
-  reloadCollection?: (payload: ICollection) => void;
-  setCollectionData?: (payload: ICollection) => void;
-  setMapBounds?: (payload: any) => void;
+  // need better types here
+  swr?: {
+    data?: ICollection;
+    error?: any;
+    mutate?: any;
+  };
+  setMapBounds: (payload: any) => void;
+  onSlugChange: (payload: any) => void;
 }
 
 const CollectionDetails = (props: IProps) => {
-  const { reloadCollection, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
+  const { swr, privateGroups, setMapBounds, onSlugChange } = props;
+  const { data, error, mutate } = swr;
   const { t } = useTranslation();
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
@@ -60,10 +61,6 @@ const CollectionDetails = (props: IProps) => {
   const [downloadError, setDownloadError] = useState('');
 
   const canEdit = privateGroups.includes(data.organization);
-
-  if (loading || isEmpty(data)) {
-    return <Spinner />;
-  }
 
   const editActions = (
     <DropdownSimple
@@ -191,19 +188,20 @@ const CollectionDetails = (props: IProps) => {
       {isRenaming && (
         <CollectionRename
           collection={data}
+          mutateCollection={mutate}
           onCancel={() => setIsRenaming(false)}
           toggleRenaming={toggleRenaming}
-          reloadCollection={reloadCollection}
+          onSlugChange={onSlugChange}
         />
       )}
 
       {isAddingPlaces && (
         <CollectionEditPlaces
           collection={data}
-          setCollectionData={setCollectionData}
+          mutateCollection={mutate}
           setMapBounds={setMapBounds}
           toggleEditPlaces={toggleEditPlaces}
-          reloadCollection={reloadCollection}
+          onSlugChange={onSlugChange}
         />
       )}
 

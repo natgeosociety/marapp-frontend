@@ -36,7 +36,6 @@ const { Option } = AppContextSwitcher;
 interface IProps {
   group?: string[];
   resetPlace?: Function;
-  resetCollection?: Function;
   setPlacesSearch?: Function;
   resetMap?: Function;
   resetLayerCache?: Function;
@@ -59,7 +58,6 @@ const Header = (props: IProps) => {
     resetLayerCache,
     resetMap,
     resetPlace,
-    resetCollection,
     setUserGroup,
     setPlacesSearch,
     setLayersSearch,
@@ -92,7 +90,6 @@ const Header = (props: IProps) => {
   // Same as the action from <SearchBox /> find a way to reuse bundled actions
   const handleResetLocation = () => {
     resetPlace({ keepCache: true });
-    resetCollection();
     setPlacesSearch({ search: '' });
     setLayersSearch({ search: '' });
     setSidebarPanel(EPanels.PLACES);

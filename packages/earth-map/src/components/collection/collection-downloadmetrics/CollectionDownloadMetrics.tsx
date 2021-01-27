@@ -28,7 +28,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Card, ReactSelect, serializeFilters, TitleHero } from '@marapp/earth-shared';
 
-import { ICollection } from '../../../modules/collections/model';
+import { ICollection } from '../../../fetchers/locations/queries';
 import MetricService from '../../../services/MetricService';
 
 interface IProps {

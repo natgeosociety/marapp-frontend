@@ -17,8 +17,7 @@
  * specific language governing permissions and limitations under the License.
  */
 import { serializeFilters } from '@marapp/earth-shared';
-
-import { LocationTypeEnum } from '../../modules/places/model';
+import { LocationTypeEnum, IPlace } from '../../modules/places/model';
 import { IQueryMany } from '../useFetchMany';
 import { IQueryOne } from '../useFetchOne';
 
@@ -49,10 +48,29 @@ export const QUERY_LOCATION = {
     };
   },
 
-  getOne(group: string): IQueryOne {
+  getCollection(group: string): IQueryOne {
     return {
-      include: 'metrics',
+      include: 'locations',
+      select: 'locations.slug,locations.name',
       group,
     };
   },
 };
+
+export interface ICollection {
+  id: string;
+  slug?: string;
+  name?: string;
+  description: string;
+  organization?: string;
+
+  // relationships
+  locations?: IPlace[];
+  metrics?: any[];
+
+  published?: boolean;
+  featured?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  version?: number;
+}
