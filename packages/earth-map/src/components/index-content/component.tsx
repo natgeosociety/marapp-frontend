@@ -39,11 +39,13 @@ interface IIndexContent {
   list?: ILIst[];
   metricsLoading?: boolean;
   widgetsLoading?: boolean;
+  groups: string[];
+  metrics: any[];
 }
 
 class IndexContentComponent extends React.PureComponent<IIndexContent> {
   public render() {
-    const { place, widgets, metricsLoading, widgetsLoading } = this.props;
+    const { place, widgets, metricsLoading, widgetsLoading, groups, metrics } = this.props;
     if (isEmpty(place) || metricsLoading || widgetsLoading) {
       return <Spinner />;
     }
@@ -53,7 +55,10 @@ class IndexContentComponent extends React.PureComponent<IIndexContent> {
         <React.Fragment>
           <div className="index-content--section marapp-qa-indexcontent">
             <Widgets
+              widgets={widgets}
               place={place}
+              groups={groups}
+              metrics={metrics}
               slugs={sortBy(widgets, ['organization', 'name'])
                 .filter((w: IWidget) => !!w.slug)
                 .map((w: IWidget) => {

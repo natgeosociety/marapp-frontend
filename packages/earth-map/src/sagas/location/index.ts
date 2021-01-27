@@ -43,9 +43,9 @@ const ignoreRedirectsToLocation = ignoreRedirectsTo('LOCATION');
 
 export default function* location() {
   // @ts-ignore
-  yield takeLatest(ignoreRedirectsToLocation, loadDataIndexes);
+  // yield takeLatest(ignoreRedirectsToLocation, loadDataIndexes);
   // @ts-ignore
-  yield takeLatest(ignoreRedirectsToLocation, toLocation);
+  // yield takeLatest(ignoreRedirectsToLocation, toLocation);
 }
 
 function* toLocation({ payload, meta }) {

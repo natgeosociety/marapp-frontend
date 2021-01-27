@@ -34,9 +34,9 @@ export class ErrorBoundary extends PureComponent<IErrorBoundaryProps, IErrorBoun
     this.state = { error: null };
   }
 
-  static getDerivedStateFromError(error) {
-    return { error };
-  }
+  // static getDerivedStateFromError(error) {
+  //   return { error };
+  // }
 
   /* On re-render cycle, reset error and check if children still throw errors */
   UNSAFE_componentWillReceiveProps(nextProps: Readonly<IErrorBoundaryProps>, nextContext: any) {

@@ -28,6 +28,7 @@ interface IndexSidebar {
   children?: any;
   open?: boolean;
   selectedOpen?: boolean;
+  router?: any;
 }
 
 class IndexSidebarComponent extends React.Component<IndexSidebar> {
@@ -36,7 +37,10 @@ class IndexSidebarComponent extends React.Component<IndexSidebar> {
   };
 
   public render() {
-    const { selectedOpen } = this.props;
+    const {
+      selectedOpen,
+      router: { payload: locationPayload },
+    } = this.props;
     const state = selectedOpen ? 'open' : 'close';
 
     return (
@@ -57,7 +61,11 @@ class IndexSidebarComponent extends React.Component<IndexSidebar> {
                 ...props,
               }}
             >
-              <IndexContent state={state} />
+              <IndexContent
+                state={state}
+                slug={locationPayload.slug}
+                organization={locationPayload.organization}
+              />
             </animated.div>
           ))
         }
