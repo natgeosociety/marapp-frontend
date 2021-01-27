@@ -18,11 +18,11 @@
  */
 let Weglot;
 
-if (typeof window !== `undefined`) {
-  Weglot = window['Weglot'];
-}
-
 export function init(weglotApiKey): Promise<any> {
+  if (typeof window !== 'undefined') {
+    Weglot = window['Weglot'];
+  }
+
   if (!Weglot) {
     return;
   }

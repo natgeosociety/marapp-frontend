@@ -20,7 +20,12 @@
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { back, push, replace } from 'redux-first-router';
+import { replace } from 'redux-first-router';
+import Link from 'redux-first-router-link';
+
+import { Card, setupErrors } from '@marapp/earth-shared';
+
+import { EarthRoutes, IRouter } from '../../../modules/router/model';
 import PlacesService from '../../../services/PlacesService';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
@@ -32,10 +37,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 
-import { Card, setupErrors } from '@marapp/earth-shared';
-
-import { IRouter } from '../../../modules/router/model';
-
 interface IProps {
   privateGroups: string[];
   router?: IRouter;
@@ -43,6 +44,7 @@ interface IProps {
 
 const CollectionNew = (props: IProps) => {
   const { privateGroups, router } = props;
+  const { prev } = router;
   const { t } = useTranslation();
   const canCreateCollection = !!privateGroups.length;
   const [saveError, setSaveError] = useState(null);
@@ -63,19 +65,6 @@ const CollectionNew = (props: IProps) => {
         const [firstError] = e.data.errors;
         return setSaveError(firstError.detail);
       }
-    }
-  };
-
-  const onCancel = () => {
-    // When navigating back to earth view keep track of the current coordinates and active layers, if available
-    const canGoBack = !!router.prev.pathname;
-
-    if (canGoBack) {
-      back();
-    }
-    // if the user just hit the /collection/new from the start
-    else {
-      push('/earth');
     }
   };
 
@@ -147,7 +136,16 @@ const CollectionNew = (props: IProps) => {
                   </Button>
                 </Grid>
                 <Grid item={true}>
-                  <Button onClick={onCancel}>{t('Cancel')}</Button>
+                  <Button
+                    className="marapp-qa-cancel-collection"
+                    component={Link}
+                    to={{
+                      type: EarthRoutes.EARTH,
+                      query: prev.query,
+                    }}
+                  >
+                    {t('Cancel')}
+                  </Button>
                 </Grid>
               </Grid>
             </Grid>
