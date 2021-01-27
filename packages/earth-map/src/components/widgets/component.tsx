@@ -43,6 +43,7 @@ interface IProps {
   setSidebarInfo?: (s: any) => {};
   toggleLayer?: (s: any) => {};
   metrics?: [];
+  widgets?: [];
 }
 
 interface IWidgetsState {
@@ -52,7 +53,7 @@ interface IWidgetsState {
 }
 
 export default function WidgetsComponent(props: IProps) {
-  const { groups, place, list, embed, toolbar, toggleLayer, metrics = [{}] } = props;
+  const { groups, place, widgets: list = [], embed, toolbar, toggleLayer, metrics = [{}] } = props;
   const [widgetState, setWidgetState] = useState<IWidgetsState>({
     collapsedState: {},
     share: false,

@@ -16,11 +16,12 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-import { ConfigInterface, SWRInfiniteConfigInterface } from 'swr';
 import { groupBy, sortBy } from 'lodash';
-import { useFetchMany, IQueryMany } from '../useFetchMany';
-import { useFetchOne, IQueryOne } from '../useFetchOne';
+import { ConfigInterface, SWRInfiniteConfigInterface } from 'swr';
+
 import { useAuth0 } from '../../auth/auth0';
+import { IQueryMany, useFetchMany } from '../useFetchMany';
+import { IQueryOne, useFetchOne } from '../useFetchOne';
 
 export function useLocations(query: IQueryMany, swrOptions?: SWRInfiniteConfigInterface) {
   const { groups } = useAuth0();

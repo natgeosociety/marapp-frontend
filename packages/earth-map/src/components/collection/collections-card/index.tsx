@@ -19,7 +19,7 @@
 
 import React from 'react';
 
-import { useLocations, QUERY_LOCATION } from '../../../fetchers';
+import { QUERY_LOCATION, useLocations } from '../../../fetchers';
 import { CollectionsCard } from './CollectionsCard';
 
 export default function WithData(props) {

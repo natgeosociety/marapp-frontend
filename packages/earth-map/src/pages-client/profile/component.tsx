@@ -1,10 +1,12 @@
 import classnames from 'classnames';
 import { capitalize, identity, omit, pickBy } from 'lodash';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import Select from 'react-select';
 import Link from 'redux-first-router-link';
 
+import { CUSTOM_STYLES, SELECT_THEME } from '@marapp/earth-admin/src/theme';
 import {
   InlineEditCard,
   Input,
@@ -37,7 +39,7 @@ export function ProfileComponent(props: IProps) {
   const { page, resetStore } = props;
   const { t } = useTranslation();
 
-  const { getValues, register, formState, errors: formErrors } = useForm({
+  const { getValues, register, formState, errors: formErrors, control } = useForm({
     mode: 'all',
   });
 
@@ -51,8 +53,12 @@ export function ProfileComponent(props: IProps) {
     firstName: '',
     lastName: '',
     name: '',
+    country: '',
+    institution: '',
     groups: [],
   });
+  const [countries, setCountries] = useState([]);
+  const [userCountry, setUserCountry] = useState({});
   const [resetPasswordState, setResetPasswordState] = useState(RESET_PASSWORD_STATE.INITIAL);
   const [markedOrgsForLeave, setMarkedOrgsForLeave] = useState({});
   const [hasLeftOrg, setHasLeftOrg] = useState(false); // detect when the user is leaving an org in order to
@@ -104,19 +110,45 @@ export function ProfileComponent(props: IProps) {
     }
   }, []);
 
+  const fetchProfileCountries = useCallback(async () => {
+    try {
+      const response = await ProfileService.fetchProfileCountries();
+
+      setCountries(response.data);
+    } catch (error) {
+      setCountries([]);
+    }
+  }, []);
+
   useEffect(() => {
     fetchUserProfile();
     fetchUserGroups();
+    fetchProfileCountries();
   }, []);
 
-  async function onSubmitName(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
+  useEffect(() => {
+    if (userProfile && countries) {
+      const country = countries.find((country) => country.value === userProfile.country);
+
+      setUserCountry(country);
+    }
+  }, [userProfile, countries]);
+
+  async function onUpdateProfile(e?, setIsEditing?, setIsLoading?, setServerErrors?) {
     e.preventDefault();
 
-    const formData = getValues();
+    const values = getValues();
+
     try {
       setIsLoading && setIsLoading(true);
+      const { country, ...rest } = values;
 
-      const response = await ProfileService.updateProfile(formData);
+      const parsed = {
+        ...rest,
+        ...(country && { country: country.value }),
+      };
+
+      const response = await ProfileService.updateProfile(parsed);
       setUserProfile(response.data);
       processUserName(response.data);
 
@@ -325,7 +357,7 @@ export function ProfileComponent(props: IProps) {
                       </>
                     ),
                     validForm: isValid && formState.isDirty,
-                    onSubmit: onSubmitName,
+                    onSubmit: onUpdateProfile,
                   })}
                 >
                   <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
@@ -442,6 +474,73 @@ export function ProfileComponent(props: IProps) {
                   </button>
                 </InlineEditCard>
               </div>
+
+              <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
+                <InlineEditCard
+                  render={() => (
+                    <div className="ng-margin-medium-bottom ng-width-2-3 ">
+                      <label htmlFor="type">{t('Country or region')}</label>
+                      <Controller
+                        as={Select}
+                        control={control}
+                        className="marapp-qa-profile-country"
+                        classNamePrefix="marapp-qa-select"
+                        name="country"
+                        options={countries}
+                        defaultValue={userCountry}
+                        isSearchable={true}
+                        placeholder={t('Select country or region')}
+                        styles={CUSTOM_STYLES}
+                        theme={(theme) => ({
+                          ...theme,
+                          ...SELECT_THEME,
+                        })}
+                        rules={{ required: true }}
+                      />
+                    </div>
+                  )}
+                  validForm={isValid && formState.isDirty}
+                  onSubmit={onUpdateProfile}
+                >
+                  <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                    {t('Country or region')}
+                  </h3>
+                  <p className="marapp-qa-user-name ng-margin-remove">
+                    {userCountry?.label || t('No country provided')}
+                  </p>
+                </InlineEditCard>
+              </div>
+
+              <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
+                <InlineEditCard
+                  render={() => (
+                    <div className="ng-margin-medium-bottom ng-width-2-3 ">
+                      <Input
+                        name="institution"
+                        placeholder={t('Institution')}
+                        label={t('Institution')}
+                        defaultValue={userProfile?.institution}
+                        error={renderErrorFor('institution')}
+                        ref={register({
+                          minLength: 1,
+                          maxLength: 127,
+                        })}
+                        className="marapp-qa-input-institution ng-display-block"
+                      />
+                    </div>
+                  )}
+                  validForm={isValid && formState.isDirty}
+                  onSubmit={onUpdateProfile}
+                >
+                  <h3 className="ng-margin-small-bottom ng-color-mdgray ng-text-uppercase ng-text-display-s ng-text-weight-medium user-profile-section-title">
+                    {t('Institution')}
+                  </h3>
+                  <p className="marapp-qa-user-name ng-margin-remove">
+                    {userProfile?.institution || t('No institution provided')}
+                  </p>
+                </InlineEditCard>
+              </div>
+
               <div className="ng-width-2-3 ng-push-1-6 ng-margin-top">
                 <InlineEditCard
                   hideEditButton={isUserRolesLoading || !Object.keys(userRoles).length}

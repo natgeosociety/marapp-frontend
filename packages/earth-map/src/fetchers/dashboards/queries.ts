@@ -17,8 +17,17 @@
  * specific language governing permissions and limitations under the License.
  */
 
-export { QUERY_LOCATION } from './locations/queries';
-export { QUERY_DASHBOARD } from './dashboards/queries';
+import { serializeFilters } from '@marapp/earth-shared';
 
-export { useLocations, useLocation } from './locations/hooks';
-export { useDashboards } from './dashboards/hooks';
+import { LocationTypeEnum } from '../../modules/places/model';
+import { IQueryMany } from '../useFetchMany';
+import { IQueryOne } from '../useFetchOne';
+
+export const QUERY_DASHBOARD = {
+  getWithWidgets(group: string[]): IQueryOne {
+    return {
+      include: ['widgets', 'widgets.layers', 'widgets.layers.references'].join(','),
+      group: group.join(','),
+    };
+  },
+};

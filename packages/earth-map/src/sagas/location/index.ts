@@ -23,6 +23,7 @@ import { call, cancelled, delay, put, select, takeLatest } from 'redux-saga/effe
 
 import { persistData, setLastViewedPlace } from '../../modules/global/actions';
 import { EMainType } from '../../modules/global/model';
+import { resetLayerCache } from '../../modules/layers/actions';
 import { setMapBounds } from '../../modules/map/actions';
 import { setMetrics, setMetricsLoading } from '../../modules/metrics/actions';
 import {
@@ -43,77 +44,77 @@ const ignoreRedirectsToLocation = ignoreRedirectsTo('LOCATION');
 
 export default function* location() {
   // @ts-ignore
-  yield takeLatest(ignoreRedirectsToLocation, loadDataIndexes);
+  // yield takeLatest(ignoreRedirectsToLocation, loadDataIndexes);
   // @ts-ignore
-  yield takeLatest(ignoreRedirectsToLocation, toLocation);
+  // yield takeLatest(ignoreRedirectsToLocation, toLocation);
 }
 
-function* toLocation({ payload, meta }) {
-  const { organization, slug } = payload;
+// function* toLocation({ payload, meta }) {
+//   const { organization, slug } = payload;
 
-  yield put(setSidebarPanelExpanded(false));
-  yield put(setPlacesLoading(true));
-  yield put(setMetricsLoading(true));
+//   yield put(setSidebarPanelExpanded(false));
+//   yield put(setPlacesLoading(true));
+//   yield put(setMetricsLoading(true));
 
-  try {
-    const { data }: { data: IPlace } = yield call(PlacesService.fetchPlaceById, slug, {
-      include: 'metrics',
-      group: organization,
-    });
+//   try {
+//     const { data }: { data: IPlace } = yield call(PlacesService.fetchPlaceById, slug, {
+//       include: 'metrics',
+//       group: organization,
+//     });
 
-    const mappedIntersections = groupBy(data.intersections, 'type');
+//     const mappedIntersections = groupBy(data.intersections, 'type');
 
-    const formattedData = {
-      ...data,
-      ...{
-        jurisdictions: mappedIntersections.Jurisdiction,
-        biomes: mappedIntersections.Biome,
-        countries: mappedIntersections.Country,
-        continents: mappedIntersections.Continent,
-      },
-    };
+//     const formattedData = {
+//       ...data,
+//       ...{
+//         jurisdictions: mappedIntersections.Jurisdiction,
+//         biomes: mappedIntersections.Biome,
+//         countries: mappedIntersections.Country,
+//         continents: mappedIntersections.Continent,
+//       },
+//     };
 
-    yield put(setMapBounds({ bbox: data.bbox2d }));
+//     yield put(setMapBounds({ bbox: data.bbox2d }));
 
-    // Let animations finish before we change the place
-    yield delay(750);
+//     // Let animations finish before we change the place
+//     yield delay(750);
 
-    yield put(setPlacesSearch({ search: data.name }));
-    yield put(setPlaceSelectedFilter(''));
-    yield put(setPlaceSelectedSearch(''));
-    yield put(setPlaceData(formattedData));
-    yield put(
-      setLastViewedPlace({
-        id: data.id,
-        name: data.name,
-        slug: data.slug,
-        organization: data.organization,
-        mainType: EMainType.LOCATION,
-        subType: data.type,
-      })
-    );
-    yield put(setMetrics(formattedData.metrics));
-    yield put(setPlacesLoading(false));
-    yield put(setPlacesError(null));
-    yield put(setMetricsLoading(false));
-    yield put(persistData()); // to keep last viewed place
-  } catch (e) {
-    // TODO better error handling for sagas
-    if ([403, 404].includes(e.request.status)) {
-      const {
-        global: { lastViewedPlace },
-      } = yield select(getAll);
+//     yield put(setPlacesSearch({ search: data.name }));
+//     yield put(setPlaceSelectedFilter(''));
+//     yield put(setPlaceSelectedSearch(''));
+//     yield put(setPlaceData(formattedData));
+//     yield put(
+//       setLastViewedPlace({
+//         id: data.id,
+//         name: data.name,
+//         slug: data.slug,
+//         organization: data.organization,
+//         mainType: EMainType.LOCATION,
+//         subType: data.type,
+//       })
+//     );
+//     yield put(setMetrics(formattedData.metrics));
+//     yield put(setPlacesLoading(false));
+//     yield put(setPlacesError(null));
+//     yield put(setMetricsLoading(false));
+//     yield put(persistData()); // to keep last viewed place
+//   } catch (e) {
+//     // TODO better error handling for sagas
+//     if ([403, 404].includes(e.request.status)) {
+//       const {
+//         global: { lastViewedPlace },
+//       } = yield select(getAll);
 
-      if (lastViewedPlace?.slug === slug) {
-        yield put(setLastViewedPlace(null));
-        yield put(persistData());
-      }
+//       if (lastViewedPlace?.slug === slug) {
+//         yield put(setLastViewedPlace(null));
+//         yield put(persistData());
+//       }
 
-      replace('/404');
-    }
-  } finally {
-    if (yield cancelled()) {
-      console.error('Cancelled!!!!!!!');
-    }
-  }
-}
+//       replace('/404');
+//     }
+//   } finally {
+//     if (yield cancelled()) {
+//       console.error('Cancelled!!!!!!!');
+//     }
+//   }
+// }

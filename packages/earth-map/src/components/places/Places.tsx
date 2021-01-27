@@ -25,7 +25,7 @@ import BackToLocation from '../../components/back-to-location';
 import FilterBy from '../../components/filter-by';
 import SearchBox from '../../components/searchbox';
 import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search';
-import { useLocations, QUERY_LOCATION } from '../../fetchers';
+import { QUERY_LOCATION, useLocations } from '../../fetchers';
 import { hasFilters } from '../../utils/filters';
 import PlacesSearchResults from './search-results';
 

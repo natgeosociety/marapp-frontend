@@ -17,9 +17,9 @@
  * specific language governing permissions and limitations under the License.
  */
 import { serializeFilters } from '@marapp/earth-shared';
-import { IQueryOne } from '../useFetchOne';
 import { LocationTypeEnum, IPlace } from '../../modules/places/model';
 import { IQueryMany } from '../useFetchMany';
+import { IQueryOne } from '../useFetchOne';
 
 export const QUERY_LOCATION = {
   getLatestCollections(): IQueryMany {

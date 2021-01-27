@@ -17,8 +17,17 @@
  * specific language governing permissions and limitations under the License.
  */
 
-export { QUERY_LOCATION } from './locations/queries';
-export { QUERY_DASHBOARD } from './dashboards/queries';
+import { SWRInfiniteConfigInterface } from 'swr';
 
-export { useLocations, useLocation } from './locations/hooks';
-export { useDashboards } from './dashboards/hooks';
+import { useAuth0 } from '../../auth/auth0';
+import { IQueryMany, IResponseMany, useFetchMany } from '../useFetchMany';
+
+export function useDashboards(query: IQueryMany, swrOptions?: SWRInfiniteConfigInterface) {
+  const { groups } = useAuth0();
+  const specificQuery: IQueryMany = {
+    group: groups.join(),
+    ...query,
+  };
+
+  return useFetchMany('/dashboards', specificQuery, { swrOptions }) as IResponseMany;
+}
