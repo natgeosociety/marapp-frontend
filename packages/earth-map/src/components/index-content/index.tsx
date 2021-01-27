@@ -78,7 +78,7 @@ function WithData(props) {
     persistData,
   } = props;
   const { selectedGroup, groups } = useAuth0();
-  const { data: placeData } = useLocation(slug, QUERY_LOCATION.getOne(organization));
+  const { data: placeData } = useLocation(slug, QUERY_LOCATION.getWithMetrics(organization));
   const { data: dashboardsData } = useDashboards(QUERY_DASHBOARD.getWithWidgets(selectedGroup));
 
   if (!(placeData && dashboardsData)) {
