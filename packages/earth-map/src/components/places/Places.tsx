@@ -92,7 +92,6 @@ const Places = (props: IProps) => {
   };
 
   const handleReset = () => {
-    resetPlace({ keepCache: true });
     setPlacesSearch({ search: '' });
     resetMap();
     push('/earth');

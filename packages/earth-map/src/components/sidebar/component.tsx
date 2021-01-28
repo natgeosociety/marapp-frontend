@@ -56,8 +56,6 @@ class Sidebar extends React.Component<ISidebarPanel> {
 
   public resetMap = () => {
     const { setPlacesSearch, resetMap, resetPlace, resetLayers } = this.props;
-
-    resetPlace();
     setPlacesSearch({ search: '' });
     resetLayers();
     resetMap();

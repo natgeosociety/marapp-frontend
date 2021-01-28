@@ -18,7 +18,7 @@
 */
 
 import { groupBy, orderBy, sortBy } from 'lodash';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { Spinner } from '@marapp/earth-shared';
@@ -29,7 +29,7 @@ import { persistData, setLastViewedPlace } from '../../modules/global/actions';
 import { EMainType } from '../../modules/global/model';
 import { toggleLayer } from '../../modules/layers/actions';
 import { setMapBounds } from '../../modules/map/actions';
-import { setPlaceData, setPlacesSearch } from '../../modules/places/actions';
+import { setPlacesSearch } from '../../modules/places/actions';
 import { setSidebarInfo } from '../../modules/sidebar/actions';
 import { IWidget } from '../../modules/widget/model';
 import { flattenLayerConfig } from '../../sagas/saga-utils';
@@ -81,35 +81,40 @@ function WithData(props) {
   const { data: placeData } = useLocation(slug, QUERY_LOCATION.getOne(organization));
   const { data: dashboardsData } = useDashboards(QUERY_DASHBOARD.getWithWidgets(selectedGroup));
 
+  useEffect(() => {
+    if (!(placeData && dashboardsData)) {
+      return;
+    }
+    setPlacesSearch({ search: placeData.name });
+    setMapBounds({ bbox: placeData.bbox2d });
+
+    // const mappedIntersections = groupBy(placeData.intersections, 'type');
+
+    // const formattedData = {
+    //   ...placeData,
+    //   ...{
+    //     jurisdictions: mappedIntersections.Jurisdiction,
+    //     biomes: mappedIntersections.Biome,
+    //     countries: mappedIntersections.Country,
+    //     continents: mappedIntersections.Continent,
+    //   },
+    // };
+    // setPlaceData(formattedData);
+
+    setLastViewedPlace({
+      id: placeData.id,
+      name: placeData.name,
+      slug: placeData.slug,
+      organization: placeData.organization,
+      mainType: EMainType.LOCATION,
+      subType: placeData.type,
+    });
+    persistData();
+  }, [placeData, dashboardsData]);
+
   if (!(placeData && dashboardsData)) {
     return <Spinner />;
   }
-
-  setPlacesSearch({ search: placeData.name });
-  setMapBounds({ bbox: placeData.bbox2d });
-
-  const mappedIntersections = groupBy(placeData.intersections, 'type');
-
-  const formattedData = {
-    ...placeData,
-    ...{
-      jurisdictions: mappedIntersections.Jurisdiction,
-      biomes: mappedIntersections.Biome,
-      countries: mappedIntersections.Country,
-      continents: mappedIntersections.Continent,
-    },
-  };
-
-  setPlaceData(formattedData);
-  setLastViewedPlace({
-    id: placeData.id,
-    name: placeData.name,
-    slug: placeData.slug,
-    organization: placeData.organization,
-    mainType: EMainType.LOCATION,
-    subType: placeData.type,
-  });
-  persistData();
 
   const widgetsData = dashboardsData?.map((dasboard) => dasboard.widgets).flat();
   const slugs = sortBy(widgetsData, ['organization', 'name'])
@@ -120,8 +125,6 @@ function WithData(props) {
       box: true,
     }));
   const widgets = parseWidgets(placeData, widgetsData, activeLayers, slugs);
-
-  // console.log(selectedGroup, groups);
 
   return (
     <div className="index-content--section marapp-qa-indexcontent">
@@ -146,7 +149,6 @@ export default connect(
     toggleLayer,
     setMapBounds,
     setPlacesSearch,
-    setPlaceData,
     setLastViewedPlace,
     persistData,
   }

@@ -19,17 +19,6 @@
 
 import { createAction } from 'vizzuality-redux-tools';
 
-/* Places actions */
-export const setPlace = createAction('PLACES/setPlace');
-export const resetPlace = createAction('PLACES/resetPlace');
-
-// Selected
-export const setPlaceData = createAction('PLACES/setPlaceData');
-export const setPlacesLoading = createAction('PLACES/setPlacesLoading');
-export const setPlacesError = createAction('PLACES/setPlacesError');
-export const setPlaceSelectedSearch = createAction('PLACES/setPlaceSelectedSearch');
-export const setPlaceSelectedFilter = createAction('PLACES/setPlaceSelectedFilter');
-
 // Search
 export const setPlacesSearch = createAction('PLACES/setPlacesSearch');
 export const setPlacesSearchOpen = createAction('PLACES/setPlacesSearchOpen');

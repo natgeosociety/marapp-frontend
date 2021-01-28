@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { resetMap } from '../../modules/map/actions';
-import { resetPlace, setPlacesSearch, setPlacesSearchOpen } from '../../modules/places/actions';
+import { setPlacesSearch, setPlacesSearchOpen } from '../../modules/places/actions';
 import { setSidebarPanelExpanded } from '../../modules/sidebar/actions';
 import Places from './Places';
 
@@ -12,12 +12,11 @@ export default connect(
     group: state.user.group,
     results: state.places.results,
     nextPageCursor: state.places.nextPageCursor,
-    locationName: props.locationName || state.places.data.name,
-    locationOrganization: props.locationOrganization || state.places.data.organization,
+    locationName: props.locationName,
+    locationOrganization: props.locationOrganization,
   }),
   {
     resetMap,
-    resetPlace,
     setPlacesSearch,
     setSidebarPanelExpanded,
     setPlacesSearchOpen,
