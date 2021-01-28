@@ -17,8 +17,9 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import Box from '@material-ui/core/Box';
 import { useTheme } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import List from '@researchgate/react-intersection-list';
@@ -76,46 +77,48 @@ export function PlacesSearchResults(props: IProps) {
   const itemCount = isLoading ? fakeResultsMapping[search.length] || 1 : data?.length || 0;
 
   return (
-    <div className="marapp-qa-infinitelist ng-section-background ng-position-relative ng-padding-medium-bottom">
-      <Box p={2} pb={0}>
-        <Typography variant="subtitle1">{title}</Typography>
+    <Paper square={true} className="marapp-qa-infinitelist">
+      <Box pb={2}>
+        <Box p={2} pb={0}>
+          <Typography variant="subtitle1">{title}</Typography>
+        </Box>
+        <List
+          awaitMore={awaitMore}
+          pageSize={PAGE_SIZE}
+          itemCount={itemCount}
+          renderItem={(index) => {
+            if (isLoading) {
+              return <MenuItemSkeleton key={index} />;
+            }
+
+            const { id, $searchHint, name, slug, organization, type } = data[index];
+
+            return (
+              <ListItem
+                hint={$searchHint.name}
+                title={name}
+                key={`${slug}-${organization}`}
+                onClick={() => {
+                  setSidebarPanelExpanded(false);
+                  setPlacesSearch({ search: name });
+                  isSmallDevice && setSidebarOpen(false);
+                }}
+                linkTo={{
+                  type:
+                    type === LocationTypeEnum.COLLECTION
+                      ? EarthRoutes.COLLECTION
+                      : EarthRoutes.LOCATION,
+                  payload: { slug, id, organization },
+                }}
+                organization={group.length > 1 && organization}
+                labels={[type]}
+              />
+            );
+          }}
+          onIntersection={nextPage}
+        />
+        {isValidating && <Spinner position="relative" />}
       </Box>
-      <List
-        awaitMore={awaitMore}
-        pageSize={PAGE_SIZE}
-        itemCount={itemCount}
-        renderItem={(index) => {
-          if (isLoading) {
-            return <MenuItemSkeleton />;
-          }
-
-          const { id, $searchHint, name, slug, organization, type } = data[index];
-
-          return (
-            <ListItem
-              hint={$searchHint.name}
-              title={name}
-              key={`${slug}-${organization}`}
-              onClick={() => {
-                setSidebarPanelExpanded(false);
-                setPlacesSearch({ search: name });
-                isSmallDevice && setSidebarOpen(false);
-              }}
-              linkTo={{
-                type:
-                  type === LocationTypeEnum.COLLECTION
-                    ? EarthRoutes.COLLECTION
-                    : EarthRoutes.LOCATION,
-                payload: { slug, id, organization },
-              }}
-              organization={group.length > 1 && organization}
-              labels={[type]}
-            />
-          );
-        }}
-        onIntersection={nextPage}
-      />
-      {isValidating && <Spinner position="relative" />}
-    </div>
+    </Paper>
   );
 }

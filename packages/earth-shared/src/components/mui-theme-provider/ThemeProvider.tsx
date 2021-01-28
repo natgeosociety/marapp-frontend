@@ -17,38 +17,25 @@
   specific language governing permissions and limitations under the License.
 */
 
-import Button from '@material-ui/core/Button';
+import { CssBaseline, ThemeProvider as MuiThemeProvider } from '@material-ui/core';
+import theme from './theme';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
-interface IWidgetFooter {
-  active: boolean;
-  collapsed?: any;
-  color?: any;
-  onToggleLayer: (active: boolean) => {};
-  onCollapse: (active: boolean) => {};
+interface IProps {
+  children?: React.ReactNode;
 }
 
-function WidgetFooterComponent(props: IWidgetFooter) {
-  const { active, onToggleLayer } = props;
-  const { t } = useTranslation();
-
-  const toggleLayer = () => {
-    onToggleLayer(active);
-  };
+const ThemeProvider = (props: IProps) => {
+  const { children } = props;
 
   return (
-    <footer className="marapp-qa-widgetfooter widget--footer">
-      <Button
-        variant={active ? 'contained' : 'outlined'}
-        color={active ? 'secondary' : 'default'}
-        onClick={toggleLayer}
-        size="large"
-      >
-        {active ? t('Remove from map') : t('Show on map')}
-      </Button>
-    </footer>
+    <>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </MuiThemeProvider>
+    </>
   );
-}
+};
 
-export default WidgetFooterComponent;
+export default ThemeProvider;

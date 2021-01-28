@@ -17,13 +17,29 @@
   specific language governing permissions and limitations under the License.
 */
 
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import classNames from 'classnames';
-import React from 'react';
 import ToggleIcon from 'material-ui-toggle-icon';
 import IconLeft from 'mdi-material-ui/ChevronLeft';
 import IconRight from 'mdi-material-ui/ChevronRight';
+import React from 'react';
 
-import './styles.scss';
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.grey['600'],
+    display: 'flex',
+    justifyContent: 'center',
+    top: theme.spacing(5),
+    width: theme.spacing(5),
+    height: theme.spacing(6),
+    zIndex: 9,
+  },
+  button: {
+    width: theme.spacing(5),
+    backgroundColor: theme.palette.grey['600'],
+    transition: 'all 0.3s ease',
+  },
+}));
 
 interface ISidebarToggle {
   className?: any;
@@ -33,10 +49,11 @@ interface ISidebarToggle {
 
 const SidebarToggle = (props: ISidebarToggle) => {
   const { className, open, setSidebarOpen } = props;
+  const classes = useStyles();
 
   return (
-    <div className={classNames(className, 'marapp-qa-sidebarclose c-sidebar-close')}>
-      <button type="button" onClick={() => setSidebarOpen(!open)} className="sidebar--btn">
+    <div className={classNames(className, classes.root, 'marapp-qa-sidebarclose')}>
+      <button type="button" onClick={() => setSidebarOpen(!open)} className={classes.button}>
         <ToggleIcon
           on={open}
           onIcon={<IconLeft color="primary" />}

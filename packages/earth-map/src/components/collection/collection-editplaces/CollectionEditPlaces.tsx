@@ -17,13 +17,18 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import isBoolean from 'lodash/isBoolean';
 import React, { BaseSyntheticEvent, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
 
-import { AsyncSelect, Card, DropdownItem, TitleHero } from '@marapp/earth-shared';
+import { AsyncSelect, Card, DropdownItem } from '@marapp/earth-shared';
 
 import { MAP_ENABLE_PUBLIC_ACCESS } from '../../../config';
 import { ICollection } from '../../../modules/collections/model';
@@ -52,65 +57,98 @@ export function CollectionEditPlaces(props: IProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-edit-places">
-      <Card elevation="high" className="ng-margin-bottom header-card">
-        <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
-      </Card>
+      <Box mb={1}>
+        <Paper square={true} elevation={3}>
+          <Box p={2}>
+            <Typography variant="subtitle1" color="textPrimary" gutterBottom={true}>
+              {organization} |{' '}
+              <Typography component="span" variant="subtitle1" color="textPrimary">
+                {t('Collection')}
+              </Typography>
+            </Typography>
+
+            <Typography variant="h5" component="h2" color="textPrimary">
+              {name}
+            </Typography>
+          </Box>
+        </Paper>
+      </Box>
 
       <div className="scroll-container">
-        <Card elevation="raised">
-          <label>{t('Add places')}:</label>
-          <Controller
-            as={AsyncSelect}
-            name="locations"
-            type="places"
-            label={t('Add places')}
-            placeholder={t('Add places to your collection')}
-            className="marapp-qa-locationsdropdown ng-margin-medium-bottom"
-            control={control}
-            defaultValue={locations}
-            getOptionLabel={(option, extra) => {
-              const itemProps: any = {
-                title: option.name,
-              };
+        <Paper square={true}>
+          <Box p={2}>
+            <Grid container={true} spacing={2}>
+              <Grid item={true} xs={12}>
+                <label>{t('Add places')}:</label>
+                <Controller
+                  as={AsyncSelect}
+                  name="locations"
+                  type="places"
+                  label={t('Add places')}
+                  placeholder={t('Add places to your collection')}
+                  className="marapp-qa-locationsdropdown"
+                  control={control}
+                  defaultValue={locations}
+                  getOptionLabel={(option, extra) => {
+                    const itemProps: any = {
+                      title: option.name,
+                    };
 
-              if (MAP_ENABLE_PUBLIC_ACCESS) {
-                itemProps.subtitle = option.organization;
-              }
+                    if (MAP_ENABLE_PUBLIC_ACCESS) {
+                      itemProps.subtitle = option.organization;
+                    }
 
-              return <DropdownItem {...itemProps} />;
-            }}
-            getOptionValue={(option) => option.id}
-            loadFunction={(query) =>
-              PlacesService.fetchPlaces({
-                ...query,
-                filter: ['type', '!=', LocationTypeEnum.COLLECTION].join(''),
-                select: ['id', 'slug', 'name', 'organization'].join(','),
-                group: organization,
-                public: true,
-              })
-            }
-            selectedGroup={organization}
-            isClearable={true}
-            isSearchable={true}
-            isMulti={true}
-            closeMenuOnSelect={false}
-          />
+                    return <DropdownItem {...itemProps} />;
+                  }}
+                  getOptionValue={(option) => option.id}
+                  loadFunction={(query) =>
+                    PlacesService.fetchPlaces({
+                      ...query,
+                      filter: ['type', '!=', LocationTypeEnum.COLLECTION].join(''),
+                      select: ['id', 'slug', 'name', 'organization'].join(','),
+                      group: organization,
+                      public: true,
+                    })
+                  }
+                  selectedGroup={organization}
+                  isClearable={true}
+                  isSearchable={true}
+                  isMulti={true}
+                  closeMenuOnSelect={false}
+                />
+              </Grid>
 
-          {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
+              {saveError && (
+                <Grid item={true} xs={12}>
+                  <Typography color="error">{saveError}</Typography>
+                </Grid>
+              )}
 
-          <button
-            className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-right"
-            disabled={!isValid || isSubmitting || !isDirty}
-          >
-            {isSubmitting ? t('Saving') : t('Save')}
-          </button>
-          <button
-            className="marapp-qa-actioncancel ng-button ng-button-secondary"
-            onClick={toggleEditPlaces}
-          >
-            {t('Cancel')}
-          </button>
-        </Card>
+              <Grid item={true} xs={12} container={true} spacing={1}>
+                <Grid item={true}>
+                  <Button
+                    className="marapp-qa-actionsave"
+                    color="secondary"
+                    variant="contained"
+                    size="large"
+                    disabled={!isValid || isSubmitting || !isDirty}
+                  >
+                    {isSubmitting ? t('Saving') : t('Save')}
+                  </Button>
+                </Grid>
+                <Grid item={true}>
+                  <Button
+                    className="marapp-qa-actioncancel"
+                    onClick={toggleEditPlaces}
+                    size="large"
+                  >
+                    {t('Cancel')}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Box>
+        </Paper>
 
         {isSaveConflict && <CollectionConflict onRefresh={refresh} onOverwrite={saveAnyway} />}
       </div>

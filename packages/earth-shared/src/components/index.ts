@@ -36,6 +36,7 @@ export { default as SlickNextArrow } from './slick/arrows/next';
 export { default as Spinner } from './spinner';
 export { default as Tooltip } from './tooltip';
 export { default as AsyncSelect } from './multiselect';
+export { default as ThemeProvider } from './mui-theme-provider';
 export { TitleHero } from './title-hero';
 export { ReactSelect } from './react-select';
 export { Pill } from './pill';

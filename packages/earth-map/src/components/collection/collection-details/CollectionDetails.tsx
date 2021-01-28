@@ -17,19 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import cn from 'classnames';
 import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-  Card,
-  DropdownSimple,
-  getGenericDate,
-  Pill,
-  Spinner,
-  TitleHero,
-} from '@marapp/earth-shared';
+import { Card, getGenericDate, Spinner, TitleHero } from '@marapp/earth-shared';
 
 import { ICollection } from '../../../modules/collections/model';
 import CollectionDelete from '../collection-delete';
@@ -132,13 +124,13 @@ const CollectionDetails = (props: IProps) => {
       {hasLocations ? (
         <Grid container={true} direction="column" spacing={1}>
           <Grid item={true}>
-            <Paper>
+            <Paper square={true}>
               <Box position="relative" p={2}>
                 {canEdit && (
                   <Button
-                    color="secondary"
+                    variant="outlined"
+                    color="primary"
                     size="small"
-                    variant="contained"
                     className={`${classes.cardEditButton} marapp-qa-actioneditinline`}
                     onClick={toggleEditPlaces}
                   >
@@ -167,7 +159,7 @@ const CollectionDetails = (props: IProps) => {
             </Paper>
           </Grid>
           <Grid item={true}>
-            <Paper>
+            <Paper square={true}>
               <Box position="relative" p={2}>
                 <Box mb={1}>
                   <Typography variant="subtitle1">
@@ -190,6 +182,7 @@ const CollectionDetails = (props: IProps) => {
                 </Typography>
                 <Button
                   variant="outlined"
+                  size="large"
                   onClick={() => setIsOnDownloadMetrics(true)}
                   disabled={isDownloadingMetrics}
                 >
@@ -210,7 +203,7 @@ const CollectionDetails = (props: IProps) => {
           </Grid>
         </Grid>
       ) : (
-        <Paper>
+        <Paper square={true}>
           <Box position="relative" p={2}>
             <Typography variant="subtitle1">
               {t('Collection places')} {hasLocations && locations.length}

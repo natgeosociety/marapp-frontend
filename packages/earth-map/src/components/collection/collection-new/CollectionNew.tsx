@@ -17,25 +17,25 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
 import Link from 'redux-first-router-link';
 
-import { Card, setupErrors } from '@marapp/earth-shared';
+import { setupErrors } from '@marapp/earth-shared';
 
 import { EarthRoutes, IRouter } from '../../../modules/router/model';
 import PlacesService from '../../../services/PlacesService';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
 
 interface IProps {
   privateGroups: string[];
@@ -70,11 +70,15 @@ const CollectionNew = (props: IProps) => {
 
   return (
     <form className="marapp-qa-collection-new" onSubmit={handleSubmit(onSubmit)}>
-      <Card elevation="high" className="ng-margin-bottom">
-        <Typography variant="h5" component="h2" color="textPrimary">
-          {t('Create a Collection')}
-        </Typography>
-      </Card>
+      <Box mb={1}>
+        <Paper elevation={3}>
+          <Box p={2}>
+            <Typography variant="h5" component="h2" color="textPrimary">
+              {t('Create a Collection')}
+            </Typography>
+          </Box>
+        </Paper>
+      </Box>
 
       <Paper>
         <Box p={2} mb={1}>
@@ -98,7 +102,8 @@ const CollectionNew = (props: IProps) => {
               <Typography variant="subtitle1" gutterBottom={true}>
                 {t('Select an Organization')}
               </Typography>
-              <Typography>
+
+              <Typography variant="body2">
                 {canCreateCollection
                   ? t(
                       `Please select an organization to create a collection under. After selecting an organization, you will be able to select places and share insights with members of your selected organization. Organizations can not be edited once picked`
@@ -130,6 +135,7 @@ const CollectionNew = (props: IProps) => {
                     variant="contained"
                     color="secondary"
                     type="submit"
+                    size="large"
                     disabled={!isValid || !isDirty || isSubmitting || !canCreateCollection}
                   >
                     {t('Create Collection')}
@@ -137,8 +143,9 @@ const CollectionNew = (props: IProps) => {
                 </Grid>
                 <Grid item={true}>
                   <Button
-                    className="marapp-qa-cancel-collection"
                     component={Link}
+                    className="marapp-qa-cancel-collection"
+                    size="large"
                     to={{
                       type: EarthRoutes.EARTH,
                       query: prev.query,

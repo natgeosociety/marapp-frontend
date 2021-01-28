@@ -22,6 +22,8 @@ import { navigate } from 'gatsby';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { ThemeProvider } from '@marapp/earth-shared';
+
 import { useAuth0 } from '@app/auth/auth0';
 import { ProtectedRoute } from '@app/components/protected-route';
 import { ADMIN_BASE_URL } from '@app/config';
@@ -41,20 +43,23 @@ import WidgetsPage from '@app/pages-client/widgets/routes';
  */
 export default function IndexPage() {
   return (
-    <Router basepath={ADMIN_BASE_URL}>
-      <ProtectedRoute exact={true} path="/" component={RedirectToOrgHomepage} />
-      <ProtectedRoute exact={true} path="/:org" component={Organization}>
-        <Homepage exact={true} path="/" />
-        <PlacesPage exact={true} path="/places/*" />
-        <DashboardsPage exact={true} path="/dashboards/*" />
-        <LayersPage exact={true} path="/layers/*" />
-        <WidgetsPage exact={true} path="/widgets/*" />
-        <UsersPage exact={true} path="/users/*" />
-        <OrganizationsPage exact={true} path="/organizations/*" />
-        <NotFound default={true} />
-      </ProtectedRoute>
-      <UnauthorizedPage exact={true} path="/unauthorized" />
-    </Router>
+    <ThemeProvider>
+      <Router basepath={ADMIN_BASE_URL}>
+        <ProtectedRoute exact={true} path="/" component={RedirectToOrgHomepage} />
+        <ProtectedRoute exact={true} path="/:org" component={Organization}>
+          <Homepage exact={true} path="/" />
+          <PlacesPage exact={true} path="/places/*" />
+          <DashboardsPage exact={true} path="/dashboards/*" />
+          <LayersPage exact={true} path="/layers/*" />
+          <WidgetsPage exact={true} path="/widgets/*" />
+          <UsersPage exact={true} path="/users/*" />
+          <OrganizationsPage exact={true} path="/organizations/*" />
+          {/*@ts-ignore*/}
+          <NotFound default={true} />
+        </ProtectedRoute>
+        <UnauthorizedPage exact={true} path="/unauthorized" />
+      </Router>
+    </ThemeProvider>
   );
 }
 

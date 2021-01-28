@@ -27,6 +27,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles';
 import classnames from 'classnames';
 import IconDown from 'mdi-material-ui/ChevronDown';
 import React from 'react';
@@ -80,6 +81,7 @@ interface IWidgetState {
   loading?: boolean;
   loaded?: boolean;
   error?: any;
+  classes?: any;
 
   // States
   activeInfo?: boolean;
@@ -92,6 +94,12 @@ interface IWidgetState {
   params?: any;
   url?: string;
 }
+
+const styles = (theme) => ({
+  accordionTitle: {
+    maxWidth: 'calc(100% - 36px)',
+  },
+});
 
 class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
   public static defaultProps = {
@@ -227,6 +235,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
       subtitle,
       description,
       color,
+      classes,
       className,
       children,
       widgetDescription,
@@ -280,12 +289,32 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
           defaultExpanded={true}
           expanded={expanded}
         >
-          <AccordionSummary expandIcon={<IconDown onClick={this.toggleExpanded} />}>
+          <AccordionSummary
+            classes={{
+              content: expanded ? '' : classes.accordionTitle,
+            }}
+            expandIcon={<IconDown onClick={this.toggleExpanded} />}
+          >
             <Grid alignItems="center" container={true}>
-              <Grid item={true} xs={true} onClick={this.toggleExpanded}>
-                <Typography variant="subtitle1">
-                  {showOrgLabel && `${organization} -`} {name}
+              <Grid
+                item={true}
+                xs={true}
+                onClick={this.toggleExpanded}
+                style={{ overflow: 'hidden' }}
+              >
+                <Typography color="textPrimary" variant="subtitle1" noWrap={!expanded}>
+                  {name} {showOrgLabel && ` - ${organization}`}
                 </Typography>
+
+                {!expanded && data?.template && (
+                  <Typography
+                    color="textSecondary"
+                    variant="body2"
+                    dangerouslySetInnerHTML={{
+                      __html: data?.template,
+                    }}
+                  />
+                )}
               </Grid>
 
               {toolbar && (
@@ -356,7 +385,9 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
           )}
 
           <DialogActions>
-            <Button onClick={() => this.setState({ activeInfo: !activeInfo })}>{t('Close')}</Button>
+            <Button size="large" onClick={() => this.setState({ activeInfo: !activeInfo })}>
+              {t('Close')}
+            </Button>
           </DialogActions>
         </Dialog>
       </>
@@ -364,4 +395,4 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
   }
 }
 
-export default Widget;
+export default withStyles(styles)(Widget);

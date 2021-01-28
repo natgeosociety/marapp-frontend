@@ -58,8 +58,8 @@ export const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
           <List>
             {Array(5)
               .fill(null)
-              .map(() => (
-                <MenuItemSkeleton />
+              .map((_, index) => (
+                <MenuItemSkeleton key={index} />
               ))}
           </List>
         </Paper>

@@ -19,13 +19,10 @@
 
 import React from 'react';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
 
-import { Spinner, TranslationService } from '@marapp/earth-shared';
+import { Spinner, ThemeProvider, TranslationService } from '@marapp/earth-shared';
 
 import { useAuth0 } from '../auth/auth0';
-import theme from '../config/theme';
 import { MAP_WEGLOT_API_KEY } from '../config';
 import Main from '../pages-client/main';
 import initStore from '../store';
@@ -46,8 +43,7 @@ const IndexPage = () => {
     return (
       // @ts-ignore
       <>
-        <CssBaseline />
-        <ThemeProvider theme={theme}>
+        <ThemeProvider>
           <Provider store={store}>
             <Main />
           </Provider>
