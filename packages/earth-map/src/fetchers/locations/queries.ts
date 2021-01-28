@@ -55,6 +55,13 @@ export const QUERY_LOCATION = {
       group,
     };
   },
+
+  getOne(group): IQueryOne {
+    return {
+      include: 'metrics',
+      group,
+    };
+  },
 };
 
 export interface ICollection {
