@@ -232,70 +232,6 @@ export const getActiveLayers = createSelector(
   }
 );
 
-/**
- * Computes the data needed to display the location/collection path on the map
- * Checks the router to know when to compute location or collection path
- */
-export const getActiveBoundsLayer = createSelector(
-  [routeType, place, collection],
-  (_routeType, _place, _collection) => {
-    const routeAwareMapping = {
-      [EarthRoutes.LOCATION]: _place,
-      [EarthRoutes.COLLECTION]: _collection,
-    };
-    const selectedResource = routeAwareMapping[_routeType];
-
-    if (!selectedResource || isEmpty(selectedResource)) {
-      return null;
-    }
-
-    const { id, geojson } = selectedResource;
-
-    if (!geojson) {
-      return;
-    }
-
-    return {
-      key: `bounds-${id}`,
-      id: `bounds-${id}`,
-      slug: `bounds-${id}`,
-      name: 'Bounds',
-      zIndex: 2000,
-      provider: 'geojson',
-      type: 'geojson',
-      source: {
-        type: 'geojson',
-        data: geojson,
-      },
-      render: {
-        metadata: {
-          position: 'top',
-        },
-        layers: [
-          {
-            id: `${id}-fill`,
-            type: 'fill',
-            source: id,
-            paint: {
-              'fill-color': 'transparent',
-              'fill-opacity': 0.25,
-            },
-          },
-          {
-            id: `${id}-line`,
-            type: 'line',
-            source: id,
-            paint: {
-              'line-color': '#000000',
-              'line-width': 3,
-            },
-          },
-        ],
-      },
-    };
-  }
-);
-
 export const getActiveInteractiveLayersIds = createSelector(
   [layers, settings, active],
   (_layers: ILayer[], _settings, _active) => {
@@ -423,7 +359,6 @@ export const getActiveInteractiveLayer = createSelector(
 export default {
   getLegendLayers,
   getActiveLayers,
-  getActiveBoundsLayer,
   getActiveInteractiveLayersIds,
   getActiveInteractiveLayer,
   getActiveInteractiveLayers,

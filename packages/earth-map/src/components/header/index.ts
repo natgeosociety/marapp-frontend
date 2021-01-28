@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 
 import { resetLayerCache, resetLayers, setLayersSearch } from '../../modules/layers/actions';
 import { resetMap } from '../../modules/map/actions';
-import { resetPlace, setPlacesSearch } from '../../modules/places/actions';
+import { setPlacesSearch } from '../../modules/places/actions';
 import { setSidebarPanel } from '../../modules/sidebar/actions';
 import { setUserGroup } from '../../modules/user/actions';
 import OrgSwitcher from './component';
@@ -34,7 +34,6 @@ export default connect(
   {
     setUserGroup,
     setPlacesSearch,
-    resetPlace,
     resetLayerCache,
     resetMap,
     setLayersSearch,

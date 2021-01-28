@@ -25,7 +25,7 @@ import { useLocation, QUERY_LOCATION } from '../../../fetchers';
 import Places from '../../../components/places';
 import { EMainType, SubType } from '../../../modules/global/model';
 import { persistData, setLastViewedPlace } from '../../../modules/global/actions';
-import { setMapBounds } from '../../../modules/map/actions';
+import { setMapBounds, setLocationHighlight, resetMap } from '../../../modules/map/actions';
 import { setSidebarPanelExpanded } from '../../../modules/sidebar/actions';
 import CollectionDetails from './CollectionDetails';
 import { setPlacesSearch } from '../../../modules/places/actions';
@@ -40,6 +40,8 @@ interface IProps {
   setMapBounds?: (payload?: any) => void;
   setLastViewedPlace?: (payload?: any) => void;
   persistData?: (payload?: any) => void;
+  resetMap?: (payload?: any) => void;
+  setLocationHighlight?: (payload?: any) => void;
 }
 
 function WithData(props: IProps) {
@@ -48,7 +50,9 @@ function WithData(props: IProps) {
     organization,
     setPlacesSearch,
     setSidebarPanelExpanded,
+    resetMap,
     setMapBounds,
+    setLocationHighlight,
     setLastViewedPlace,
     persistData,
   } = props;
@@ -64,6 +68,13 @@ function WithData(props: IProps) {
 
     setSidebarPanelExpanded(false);
     setPlacesSearch({ search: data.name });
+
+    if (data.geojson) {
+      setLocationHighlight({
+        id: data.id,
+        geojson: data.geojson,
+      });
+    }
 
     // someone changed the slug, redirect to the new collection
     if (slug !== data.slug) {
@@ -84,7 +95,12 @@ function WithData(props: IProps) {
     });
 
     persistData();
-  }, [data]);
+
+    return function cleanup() {
+      setPlacesSearch({ search: '' });
+      resetMap();
+    };
+  }, [data?.version]);
 
   useEffect(() => {
     if (error) {
@@ -120,9 +136,11 @@ export default connect(
     ...state.router.payload,
   }),
   {
+    resetMap,
     setPlacesSearch,
     setSidebarPanelExpanded,
     setLastViewedPlace,
+    setLocationHighlight,
     setMapBounds,
     persistData,
   }

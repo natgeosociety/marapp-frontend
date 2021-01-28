@@ -19,10 +19,10 @@
 
 import { connect } from 'react-redux';
 
-import { getActiveBoundsLayer, getActiveLayers } from '../../../modules/layers/selectors';
+import { getActiveLayers } from '../../../modules/layers/selectors';
 import LayerManager from './component';
 
-export default connect((state) => ({
-  // bounds: getActiveBoundsLayer(state),
+export default connect((state: any) => ({
+  bounds: state.map.locationHighlight,
   layers: getActiveLayers(state),
 }))(LayerManager);

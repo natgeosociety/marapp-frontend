@@ -28,7 +28,7 @@ import { QUERY_DASHBOARD, QUERY_LOCATION, useDashboards, useLocation } from '../
 import { persistData, setLastViewedPlace } from '../../modules/global/actions';
 import { EMainType } from '../../modules/global/model';
 import { toggleLayer } from '../../modules/layers/actions';
-import { setMapBounds } from '../../modules/map/actions';
+import { setMapBounds, setLocationHighlight, resetMap } from '../../modules/map/actions';
 import { setPlacesSearch } from '../../modules/places/actions';
 import { setSidebarInfo } from '../../modules/sidebar/actions';
 import { IWidget } from '../../modules/widget/model';
@@ -72,21 +72,27 @@ function WithData(props) {
     organization,
     activeLayers,
     setPlacesSearch,
-    setPlaceData,
+    setLocationHighlight,
     setMapBounds,
+    resetMap,
     setLastViewedPlace,
     persistData,
   } = props;
   const { selectedGroup, groups } = useAuth0();
   const { data: placeData } = useLocation(slug, QUERY_LOCATION.getOne(organization));
   const { data: dashboardsData } = useDashboards(QUERY_DASHBOARD.getWithWidgets(selectedGroup));
+  const hasData = !!(placeData && dashboardsData);
 
   useEffect(() => {
-    if (!(placeData && dashboardsData)) {
+    if (!hasData) {
       return;
     }
     setPlacesSearch({ search: placeData.name });
     setMapBounds({ bbox: placeData.bbox2d });
+    setLocationHighlight({
+      id: placeData.id,
+      geojson: placeData.geojson,
+    });
 
     // const mappedIntersections = groupBy(placeData.intersections, 'type');
 
@@ -110,9 +116,14 @@ function WithData(props) {
       subType: placeData.type,
     });
     persistData();
-  }, [placeData, dashboardsData]);
 
-  if (!(placeData && dashboardsData)) {
+    return function cleanup() {
+      setPlacesSearch({ search: '' });
+      resetMap();
+    };
+  }, [hasData]);
+
+  if (!hasData) {
     return <Spinner />;
   }
 
@@ -148,8 +159,10 @@ export default connect(
     setSidebarInfo,
     toggleLayer,
     setMapBounds,
+    resetMap,
     setPlacesSearch,
     setLastViewedPlace,
     persistData,
+    setLocationHighlight,
   }
 )(WithData);
