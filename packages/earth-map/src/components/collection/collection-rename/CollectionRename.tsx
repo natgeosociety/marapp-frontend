@@ -18,15 +18,15 @@
  */
 
 import isBoolean from 'lodash/isBoolean';
-import { ICollection } from 'modules/collections/model';
 import React, { BaseSyntheticEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
-import PlacesService from 'services/PlacesService';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
 
+import { ICollection } from '../../../modules/collections/model';
+import PlacesService from '../../../services/PlacesService';
 import { CollectionConflict } from '../collection-conflict';
 
 interface IProps {
@@ -43,9 +43,9 @@ export function CollectionRename(props: IProps) {
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
   const { register, errors, handleSubmit, formState, getValues } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
-  const { touched, dirty, isValid, isSubmitting } = formState;
+  const { touched, isDirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   return (
@@ -79,7 +79,7 @@ export function CollectionRename(props: IProps) {
           <div className="ng-flex">
             <button
               type="submit"
-              disabled={!dirty || !isValid || isSubmitting}
+              disabled={!isDirty || !isValid || isSubmitting}
               className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
             >
               {isSubmitting ? t('Renaming collection') : t('Rename Collection')}

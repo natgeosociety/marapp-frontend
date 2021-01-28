@@ -39,7 +39,7 @@ export default function UserEdit(props: UserEditProps) {
   const { name, email, groups, id } = data || {};
 
   const { handleSubmit, register, errors, control, getValues, formState } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
   const [serverErrors, setServerErrors] = useState(null);
   const [selectedGroups, setSelectedGroups] = useState([]);

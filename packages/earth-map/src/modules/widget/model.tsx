@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { ILayer } from 'modules/layers/model';
+import { ILayer } from '../layers/model';
 
 export interface IWidget {
   type: string;

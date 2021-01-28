@@ -23,6 +23,10 @@ const fetchProfile = async (query?: RequestQuery): Promise<any> => {
   return BaseAPIService.request('/users/profile', { query }, metaDeserializer);
 };
 
+const fetchProfileCountries = async (): Promise<any> => {
+  return BaseAPIService.request('/profile/countries', null, metaDeserializer);
+};
+
 const updateProfile = async (data: any, query?: RequestQuery): Promise<any> => {
   return BaseAPIService.request('/users/profile', { query, method: 'put', data }, metaDeserializer);
 };
@@ -77,6 +81,7 @@ const deleteAccount = async (): Promise<any> => {
 
 export default {
   fetchProfile,
+  fetchProfileCountries,
   updateProfile,
   changeEmail,
   changeEmailConfirmation,

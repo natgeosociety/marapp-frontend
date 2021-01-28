@@ -17,13 +17,13 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { resetCollection } from 'modules/collections/actions';
-import { resetLayers } from 'modules/layers/actions';
-import { resetMap } from 'modules/map/actions';
-import { resetPlace, setPlacesSearch } from 'modules/places/actions';
-import { setSidebarOpen } from 'modules/sidebar/actions';
 import { connect } from 'react-redux';
 
+import { resetCollection } from '../../modules/collections/actions';
+import { resetLayers } from '../../modules/layers/actions';
+import { resetMap } from '../../modules/map/actions';
+import { resetPlace, setPlacesSearch } from '../../modules/places/actions';
+import { setSidebarOpen } from '../../modules/sidebar/actions';
 import SidebarComponent from './component';
 
 export default connect(

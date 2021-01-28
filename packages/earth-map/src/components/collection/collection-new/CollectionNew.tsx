@@ -20,12 +20,13 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { back, push, replace } from 'redux-first-router';
-import PlacesService from 'services/PlacesService';
+import { replace } from 'redux-first-router';
+import Link from 'redux-first-router-link';
 
 import { Card, Input, setupErrors } from '@marapp/earth-shared';
 
-import { IRouter } from '../../../modules/router/model';
+import { EarthRoutes, IRouter } from '../../../modules/router/model';
+import PlacesService from '../../../services/PlacesService';
 
 interface IProps {
   privateGroups: string[];
@@ -34,11 +35,12 @@ interface IProps {
 
 const CollectionNew = (props: IProps) => {
   const { privateGroups, router } = props;
+  const { prev } = router;
   const { t } = useTranslation();
   const canCreateCollection = !!privateGroups.length;
   const [saveError, setSaveError] = useState(null);
-  const { handleSubmit, register, errors, formState } = useForm({ mode: 'onChange' });
-  const { touched, dirty, isValid, isSubmitting } = formState;
+  const { handleSubmit, register, errors, formState } = useForm({ mode: 'all' });
+  const { touched, isDirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   const onSubmit = async (values) => {
@@ -54,19 +56,6 @@ const CollectionNew = (props: IProps) => {
         const [firstError] = e.data.errors;
         return setSaveError(firstError.detail);
       }
-    }
-  };
-
-  const onCancel = () => {
-    // When navigating back to earth view keep track of the current coordinates and active layers, if available
-    const canGoBack = !!router.prev.pathname;
-
-    if (canGoBack) {
-      back();
-    }
-    // if the user just hit the /collection/new from the start
-    else {
-      push('/earth');
     }
   };
 
@@ -131,19 +120,21 @@ const CollectionNew = (props: IProps) => {
       <Card elevation="flush">
         {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
         <button
-          disabled={!isValid || !dirty || isSubmitting || !canCreateCollection}
+          disabled={!isValid || !isDirty || isSubmitting || !canCreateCollection}
           type="submit"
           className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
         >
           {t('Create Collection')}
         </button>
-        <button
-          onClick={onCancel}
-          type="button"
+        <Link
           className="marapp-qa-cancel-collection ng-button ng-button-secondary"
+          to={{
+            type: EarthRoutes.EARTH,
+            query: prev.query,
+          }}
         >
           {t('Cancel')}
-        </button>
+        </Link>
       </Card>
     </form>
   );

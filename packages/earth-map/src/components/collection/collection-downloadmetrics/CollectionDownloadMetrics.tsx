@@ -22,13 +22,14 @@ import flatten from 'flat';
 import json2csv from 'json2csv';
 import JSZip from 'jszip';
 import { groupBy } from 'lodash';
-import { ICollection } from 'modules/collections/model';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import MetricService from 'services/MetricService';
 
 import { Card, ReactSelect, serializeFilters, TitleHero } from '@marapp/earth-shared';
+
+import { ICollection } from '../../../modules/collections/model';
+import MetricService from '../../../services/MetricService';
 
 interface IProps {
   collection: ICollection;
@@ -53,9 +54,9 @@ export function CollectionDownloadMetrics(props: IProps) {
   const [metricSlugs, setMetricSlugs] = useState([]);
   const [isLoadingMetricSlugs, setIsLoadingMetricSlugs] = useState(false);
   const { register, handleSubmit, formState, control, watch } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
-  const { dirty, isValid, isSubmitting } = formState;
+  const { isDirty, isValid, isSubmitting } = formState;
   const metricsWatcher = watch('metrics');
 
   useEffect(() => {
@@ -132,7 +133,7 @@ export function CollectionDownloadMetrics(props: IProps) {
           <button
             type="submit"
             className="marapp-qa-actiondownload ng-button ng-button-primary ng-margin-right"
-            disabled={!isValid || isSubmitting || !dirty || !metricsWatcher?.length}
+            disabled={!isValid || isSubmitting || !isDirty || !metricsWatcher?.length}
           >
             {t('Download')}
           </button>

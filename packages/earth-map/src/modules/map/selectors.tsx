@@ -17,9 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { SIDEBAR_WIDTH_WIDE } from 'config';
 import isEmpty from 'lodash/isEmpty';
 import { createSelector } from 'reselect';
+
+import { MAP_SIDEBAR_WIDTH_WIDE } from '../../config';
 
 const latlng = (state) => state.map.latlng;
 const bbox = (state) => state.map.bounds.bbox;
@@ -44,7 +45,7 @@ export const sidebarAwareMapBounds = createSelector([bbox, sidebarOpen], (_bbox,
     padding: {
       top: 50,
       bottom: 50,
-      left: _sidebarOpen ? SIDEBAR_WIDTH_WIDE + 50 : 50,
+      left: _sidebarOpen ? MAP_SIDEBAR_WIDTH_WIDE + 50 : 50,
       right: 50,
     },
   },

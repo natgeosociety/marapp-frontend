@@ -18,13 +18,13 @@
 */
 
 import classnames from 'classnames';
-import ModalComponent from 'components/modal';
-import { IWidgetConfig } from 'modules/widget/model';
 import React from 'react';
 import isEqual from 'react-fast-compare';
 
 import { Html, Spinner } from '@marapp/earth-shared';
 
+import ModalComponent from '../../components/modal';
+import { IWidgetConfig } from '../../modules/widget/model';
 import Footer from './footer';
 import './styles.scss';
 import Toolbar from './toolbar';

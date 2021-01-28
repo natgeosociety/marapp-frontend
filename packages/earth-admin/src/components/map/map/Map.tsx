@@ -24,7 +24,7 @@ import { Map } from '@marapp/earth-shared';
 import MapControls from '@app/components/map/controls';
 import RecenterControl from '@app/components/map/controls/recenter';
 import ZoomControl from '@app/components/map/controls/zoom';
-import { GATSBY_APP_MAPBOX_TOKEN } from '@app/config';
+import { ADMIN_MAPBOX_TOKEN } from '@app/config';
 import { MapComponentContext } from '@app/utils/contexts';
 
 import { LayerManagerComponent } from '../layer-manager';
@@ -71,7 +71,7 @@ export default function MapComponent(props: { height?: string }) {
   return (
     <div className="marapp-qa-mapwrapper c-map-wrapper -open" style={{ height }}>
       <Map
-        mapboxApiAccessToken={GATSBY_APP_MAPBOX_TOKEN}
+        mapboxApiAccessToken={ADMIN_MAPBOX_TOKEN}
         bounds={bounds}
         mapStyle={MAP_DEFAULT.mapStyle}
         viewport={viewport}

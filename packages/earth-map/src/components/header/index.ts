@@ -17,14 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { resetCollection } from 'modules/collections/actions';
-import { resetLayerCache, resetLayers, setLayersSearch } from 'modules/layers/actions';
-import { resetMap } from 'modules/map/actions';
-import { resetPlace, resetPlacesFeatured, setPlacesSearch } from 'modules/places/actions';
-import { setSidebarPanel } from 'modules/sidebar/actions';
-import { setUserGroup } from 'modules/user/actions';
 import { connect } from 'react-redux';
 
+import { resetCollection } from '../../modules/collections/actions';
+import { resetLayerCache, resetLayers, setLayersSearch } from '../../modules/layers/actions';
+import { resetMap } from '../../modules/map/actions';
+import { resetPlace, setPlacesSearch } from '../../modules/places/actions';
+import { setSidebarPanel } from '../../modules/sidebar/actions';
+import { setUserGroup } from '../../modules/user/actions';
 import OrgSwitcher from './component';
 
 export default connect(
@@ -37,7 +37,6 @@ export default connect(
     setPlacesSearch,
     resetPlace,
     resetCollection,
-    resetPlacesFeatured,
     resetLayerCache,
     resetMap,
     setLayersSearch,

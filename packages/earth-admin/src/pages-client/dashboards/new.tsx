@@ -52,10 +52,10 @@ export function NewDashboard(props: IProps) {
   const { selectedGroup } = useAuth0();
   const { t } = useTranslation('admin');
   const { register, watch, formState, errors, setValue, control, handleSubmit } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
 
-  const { touched, dirty, isValid } = formState;
+  const { touched, isDirty, isValid } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
   const watchName = watch('name');
@@ -89,7 +89,7 @@ export function NewDashboard(props: IProps) {
       const { data } = await DashboardsService.getDashboardSlug(watchName, {
         group: selectedGroup,
       });
-      setValue('slug', data.slug, true);
+      setValue('slug', data.slug, { shouldDirty: true, shouldValidate: true });
     } catch (error) {
       setServerErrors(error.data.errors);
     }
@@ -196,7 +196,7 @@ export function NewDashboard(props: IProps) {
             <div className="ng-flex">
               <button
                 className="ng-button ng-button-primary ng-button-large ng-margin-medium-right marapp-qa-actionsubmit"
-                disabled={!isValid || !dirty}
+                disabled={!isValid || !isDirty}
               >
                 {t('Save and view details')}
               </button>

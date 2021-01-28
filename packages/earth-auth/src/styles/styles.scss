@@ -192,6 +192,21 @@ body {
       background: $marapp-gray-7;
       border-color: $marapp-gray-5;
 
+      .auth0-lock-input-location {
+        background-color: transparent !important;
+        color: $marapp-gray-1 !important;
+      }
+
+      .auth0-lock-input-with-placeholder {
+        color: $marapp-gray-5 !important;
+      }
+
+      svg *{
+        background-color: transparent;
+        color: $marapp-gray-5;
+        fill: $marapp-gray-5;
+      }
+
       &.auth0-lock-focused {
         border-color: $marapp-primary-color;
       }
@@ -209,6 +224,39 @@ body {
         &::placeholder {
           color: $marapp-gray-5;
           font-style: italic;
+        }
+      }
+    }
+
+
+    .auth0-lock-select-country {
+      background: $marapp-gray-7;
+
+      .auth0-lock-search {
+        background: $marapp-gray-7;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.075);
+
+        .auth0-lock-input {
+          border: 1px solid $marapp-gray-5;
+          border-radius: 3px;
+        }
+
+        .auth0-lock-back-button {
+          background: $marapp-primary-color;
+          border-color: $marapp-primary-color;
+
+          svg *{
+            stroke: $marapp-gray-1;
+          }
+        }
+      }
+
+      .auth0-lock-list-code li {
+        border-bottom-color: transparent;
+        color: $marapp-gray-1;
+
+        &.auth0-lock-list-code-highlighted {
+          background: $marapp-primary-color;
         }
       }
     }
@@ -266,6 +314,17 @@ body {
       a {
         color: inherit;
         text-decoration: underline;
+      }
+
+      label {
+        display: flex;
+
+        input {
+          margin-right: 10px;
+          margin-top: 6px;
+          transform: scale3d(1.5, 1.5, 1.5);
+          box-sizing: border-box;
+        }
       }
     }
 

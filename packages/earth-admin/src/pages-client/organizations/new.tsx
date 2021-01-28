@@ -51,7 +51,7 @@ export function NewOrganization(props: IProps) {
   const [ownersFeedback, setOwnersFeedback] = useState([]);
   const { selectedGroup, updateToken } = useContext(Auth0Context);
   const { handleSubmit, register, errors, formState, setValue, control, watch } = useForm({
-    mode: 'onChange',
+    mode: 'all',
   });
   const { isValid, touched } = formState;
   const renderErrorFor = setupErrors(errors, touched);
