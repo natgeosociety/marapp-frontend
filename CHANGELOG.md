@@ -1,3 +1,31 @@
+# [1.17.0](https://github.com/natgeosociety/marapp-frontend/compare/v1.16.3...v1.17.0) (2021-01-28)
+
+
+### Bug Fixes
+
+* **admin:** default value for empty references [EP-3661] ([#435](https://github.com/natgeosociety/marapp-frontend/issues/435)) ([d55763e](https://github.com/natgeosociety/marapp-frontend/commit/d55763e5d56432653f78c922e19a89d123dfa815))
+* **admin:** react-hook-form setValue update [EP-3673] ([6a8a3de](https://github.com/natgeosociety/marapp-frontend/commit/6a8a3de2ecefc16e8d5e05396a2dac0fa950c8cc))
+* **admin:** widgets empty value [EP-3658] ([98169fb](https://github.com/natgeosociety/marapp-frontend/commit/98169fb1a1cdca505c133c6ad58a4385c6348f10))
+* **earth-admin:** prefix environment variables with ADMIN namespace ([677ee5d](https://github.com/natgeosociety/marapp-frontend/commit/677ee5d1e29c2b8ca23b349b0959eaec8e83ee8f))
+* **earth-map:** prefix environment variables with MAP namespace ([8cfcbbc](https://github.com/natgeosociety/marapp-frontend/commit/8cfcbbc4bd146ad195a6c2d84a6de07ea5a11f25))
+* **map:** Fix Bug caused by cancel collection [IOPLAT-4165] ([00a5376](https://github.com/natgeosociety/marapp-frontend/commit/00a5376e470bc1615c506cc2ea80adaf6815d17b))
+* **map:** Fix latest collection refresh [IOPLAT-4170] ([c3ba3f0](https://github.com/natgeosociety/marapp-frontend/commit/c3ba3f062bd204fb36531621b03acb89855e594d))
+* **map:** Refresh widgets list on ORG change [IOPLAT-4171] ([3947704](https://github.com/natgeosociety/marapp-frontend/commit/394770419617ad7c3ae21248d26f76677b5015cd))
+* **map:** weglot gatsby integration [EP-3710] ([#445](https://github.com/natgeosociety/marapp-frontend/issues/445)) ([f708b6e](https://github.com/natgeosociety/marapp-frontend/commit/f708b6e0d29a393a196a4a79ef09798191be26ee))
+* **marapp-admin:** exclude edited layer from included layers dropdown [EP-3676] ([60dd5e8](https://github.com/natgeosociety/marapp-frontend/commit/60dd5e8216b2e4ed58725896a9e49915d3f0fb7f))
+* avoid circular imports in initial-state ([eca3ce4](https://github.com/natgeosociety/marapp-frontend/commit/eca3ce4e22ba05e71dd2120b38fb878abfeb93df))
+* change build directory for earth-map ([90174d2](https://github.com/natgeosociety/marapp-frontend/commit/90174d2279dbec6421ff2f6465f01e7cea497c66))
+* change useForm mode to trigger validation on multiple ways [EP-3675] ([5048ffe](https://github.com/natgeosociety/marapp-frontend/commit/5048ffe7548fc9900d670f576f446402d061b0e1))
+* location query to include only required fields ([9abd21e](https://github.com/natgeosociety/marapp-frontend/commit/9abd21e69ceed09fa9fe1bfddd213dbde31cdc0d))
+
+
+### Features
+
+* **earth-map:** migrate map module to gatsby ([25354f7](https://github.com/natgeosociety/marapp-frontend/commit/25354f7ce86ea2048b5401d3880519ea2420d7c4))
+* **map:** Set page background to dark [EP-3281] ([0384a17](https://github.com/natgeosociety/marapp-frontend/commit/0384a1751cf135677a43771f1a320f9974d30767))
+* **map:** SWR support on earth page [EP-3524] ([02daba4](https://github.com/natgeosociety/marapp-frontend/commit/02daba45ae7b232c05000342e2e5bbce19593397)), closes [#2](https://github.com/natgeosociety/marapp-frontend/issues/2) [#3](https://github.com/natgeosociety/marapp-frontend/issues/3) [#4](https://github.com/natgeosociety/marapp-frontend/issues/4) [#5](https://github.com/natgeosociety/marapp-frontend/issues/5) [#6](https://github.com/natgeosociety/marapp-frontend/issues/6) [#7](https://github.com/natgeosociety/marapp-frontend/issues/7) [#8](https://github.com/natgeosociety/marapp-frontend/issues/8) [#9](https://github.com/natgeosociety/marapp-frontend/issues/9)
+* **map & admin:** russian language support [EP-3723] ([#449](https://github.com/natgeosociety/marapp-frontend/issues/449)) ([7284f4d](https://github.com/natgeosociety/marapp-frontend/commit/7284f4dfbd75b77c4a7b78dd217832a6948a8ae0))
+
 ## [1.16.3](https://github.com/natgeosociety/marapp-frontend/compare/v1.16.2...v1.16.3) (2021-01-12)
 
 
