@@ -68,8 +68,8 @@ export const CollectionsCard = (props: IProps) => {
           <List>
             {Array(3)
               .fill(null)
-              .map(() => (
-                <MenuItemSkeleton />
+              .map((_, index) => (
+                <MenuItemSkeleton key={index} />
               ))}
           </List>
         </Paper>
@@ -87,10 +87,9 @@ export const CollectionsCard = (props: IProps) => {
           {canCreate && (
             <Button
               variant="outlined"
-              // variant="contained"
+              color="primary"
               component={Link}
               size="small"
-              color="secondary"
               to={{ type: NEW_COLLECTION }}
               className={`${classes.cardEditButton} marapp-qa-actioneditinline`}
             >
@@ -122,11 +121,13 @@ export const CollectionsCard = (props: IProps) => {
     <Box mb={1}>
       <Paper className="marapp-qa-other" square={true}>
         <Box p={2} pb={0}>
-          <Typography variant="subtitle1">{t('Collections')}</Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            {t('Collections')}
+          </Typography>
         </Box>
-        <Box p={2} pt={0}>
-          <Typography gutterBottom={true}>
-            {t('You currently do not have any collections in your organizations')}.
+        <Box p={2} pt={1}>
+          <Typography paragraph={true}>
+            {t('You currently do not have any collections in your organizations')}.&nbsp;
             {canCreate &&
               t(
                 `Create a collection and start sharing your insights with your organization members`
@@ -134,7 +135,7 @@ export const CollectionsCard = (props: IProps) => {
             .
           </Typography>
           {canCreate && (
-            <Button variant="outlined" component={Link} to={{ type: NEW_COLLECTION }}>
+            <Button variant="outlined" size="large" component={Link} to={{ type: NEW_COLLECTION }}>
               {t('Create New Collection')}
             </Button>
           )}

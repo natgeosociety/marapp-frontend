@@ -40,6 +40,7 @@ export function MenuItemSkeleton() {
             <Skeleton animation="wave" variant="text" width={`${itemWidth + 10}%`} />
           </Box>
         }
+        disableTypography={true}
       />
     </MuiListItem>
   );

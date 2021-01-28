@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 auto',
     overflow: 'auto',
   },
+  radioGroup: {
+    flexDirection: 'row',
+  },
 }));
 
 import {
@@ -173,7 +176,7 @@ export function ClipLayer(props: IProps) {
                   name="exportType"
                   control={control}
                   as={
-                    <RadioGroup>
+                    <RadioGroup className={classes.radioGroup}>
                       {EXPORT_TYPES.map((type) => (
                         <FormControlLabel
                           control={<Radio />}
@@ -196,37 +199,32 @@ export function ClipLayer(props: IProps) {
                 </Grid>
               )}
 
-              <Grid item={true} xs={12}>
-                <Box display="flex">
-                  <Box mr={1}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="secondary"
-                      className="marapp-qa-actiondownload"
-                      disabled={!isValidCustom || isSubmitting || !isDirty}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Spinner size="nano" position="relative" className="ng-display-inline" />
-                          {t('Downloading')}
-                        </>
-                      ) : (
-                        <>{t('Download')}</>
-                      )}
-                    </Button>
-                  </Box>
+              <Grid item={true} xs={12} container={true} spacing={1}>
+                <Grid item={true}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    color="secondary"
+                    className="marapp-qa-actiondownload"
+                    disabled={!isValidCustom || isSubmitting || !isDirty}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Spinner size="nano" position="relative" className="ng-display-inline" />
+                        {t('Downloading')}
+                      </>
+                    ) : (
+                      <>{t('Download')}</>
+                    )}
+                  </Button>
+                </Grid>
 
-                  <Box>
-                    <Button
-                      className="marapp-qa-actioncancel"
-                      variant="outlined"
-                      onClick={onCancel}
-                    >
-                      {t('Cancel')}
-                    </Button>
-                  </Box>
-                </Box>
+                <Grid item={true}>
+                  <Button className="marapp-qa-actioncancel" size="large" onClick={onCancel}>
+                    {t('Cancel')}
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </Box>

@@ -107,6 +107,7 @@ const FilterBy = (props: IProps) => {
               onClick={clearCheckedFilters}
               size="small"
               variant="outlined"
+              color="primary"
             >
               {t('Clear')} {`(${numberOfFilters})`}
             </Button>

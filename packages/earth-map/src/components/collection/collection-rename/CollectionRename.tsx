@@ -56,14 +56,18 @@ export function CollectionRename(props: IProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-rename">
-      <Card elevation="high" className="ng-margin-bottom header-card">
-        <Typography variant="h5" component="h2" color="textPrimary">
-          {t('Rename Collection')}
-        </Typography>
-      </Card>
+      <Box mb={1}>
+        <Paper square={true} elevation={3}>
+          <Box p={2}>
+            <Typography variant="h5" component="h2" color="textPrimary">
+              {t('Rename Collection')}
+            </Typography>
+          </Box>
+        </Paper>
+      </Box>
 
       <div className="scroll-container">
-        <Paper>
+        <Paper square={true}>
           <Box p={2} mb={1}>
             <Box mb={2}>
               <Controller
@@ -86,13 +90,16 @@ export function CollectionRename(props: IProps) {
                   type="submit"
                   variant="contained"
                   color="secondary"
+                  size="large"
                   disabled={!isDirty || !isValid || isSubmitting}
                 >
                   {isSubmitting ? t('Renaming collection') : t('Rename Collection')}
                 </Button>
               </Grid>
               <Grid item={true}>
-                <Button onClick={onCancel}>{t('Cancel')}</Button>
+                <Button onClick={onCancel} size="large">
+                  {t('Cancel')}
+                </Button>
               </Grid>
             </Grid>
           </Box>

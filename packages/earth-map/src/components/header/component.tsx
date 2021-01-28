@@ -17,7 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import classNames from 'classnames';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';

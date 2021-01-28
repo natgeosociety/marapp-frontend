@@ -19,6 +19,8 @@
 
 import React from 'react';
 
+import withStyles from '@material-ui/core/styles/withStyles';
+
 import classnames from 'classnames';
 
 import renderHTML from 'react-render-html';
@@ -26,8 +28,35 @@ import renderHTML from 'react-render-html';
 // Styles
 import './styles.scss';
 
+const styles = (theme) => ({
+  root: {
+    '& h1': {
+      ...theme.typography.h1,
+    },
+    '& h2': {
+      ...theme.typography.h2,
+    },
+    '& h3': {
+      ...theme.typography.h3,
+    },
+    '& h4': {
+      ...theme.typography.h4,
+    },
+    '& h5': {
+      ...theme.typography.h5,
+    },
+    '& h6': {
+      ...theme.typography.h6,
+    },
+    '& p': {
+      ...theme.typography.body1,
+    },
+  },
+});
+
 interface HTMLProps {
   html: string;
+  classes?: any;
   className?: string;
 }
 
@@ -37,11 +66,11 @@ class HTML extends React.Component<HTMLProps> {
   };
 
   render() {
-    const { html, className } = this.props;
+    const { classes, html, className } = this.props;
 
     return (
       <div
-        className={classnames('marapp-qa-html', 'c-html', {
+        className={classnames('marapp-qa-html', 'c-html', classes.root, {
           [className]: !!className,
         })}
       >
@@ -51,4 +80,4 @@ class HTML extends React.Component<HTMLProps> {
   }
 }
 
-export default HTML;
+export default withStyles(styles)(HTML);

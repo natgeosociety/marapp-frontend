@@ -74,38 +74,19 @@ export default createMuiTheme({
     },
   },
   typography: {
+    h2: {
+      textTransform: 'uppercase',
+    },
     subtitle1: {
+      fontWeight: 600,
       textTransform: 'capitalize',
-      color: COLORS.GREY_5,
-      fontWeight: 800,
-      fontSize: 14,
-      lineHeight: '20px',
-      letterSpacing: 1.1,
     },
   },
   overrides: {
-    MuiTab: {
-      textColorPrimary: {
-        '&$selected': {
-          color: COLORS.GREY_1,
-        },
-      },
-    },
-    MuiOutlinedInput: {
-      root: {
-        backgroundColor: COLORS.GREY_8,
-      },
-    },
     MuiChip: {
       root: {
         backgroundColor: COLORS.GREY_1,
         color: COLORS.GREY_9,
-      },
-    },
-    MuiListItem: {
-      gutters: {
-        paddingLeft: SPACING * 2,
-        paddingRight: SPACING * 2,
       },
     },
     MuiFab: {
@@ -114,6 +95,24 @@ export default createMuiTheme({
         color: COLORS.GREY_1,
         '&:hover': {
           backgroundColor: COLORS.GREY_7,
+        },
+      },
+    },
+    MuiListItem: {
+      gutters: {
+        paddingLeft: SPACING * 2,
+        paddingRight: SPACING * 2,
+      },
+    },
+    MuiOutlinedInput: {
+      root: {
+        backgroundColor: COLORS.GREY_8,
+      },
+    },
+    MuiTab: {
+      textColorPrimary: {
+        '&$selected': {
+          color: COLORS.GREY_1,
         },
       },
     },

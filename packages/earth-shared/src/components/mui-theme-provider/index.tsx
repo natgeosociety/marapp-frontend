@@ -17,19 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import '~styles/config';
+import ThemeProvider from './ThemeProvider';
 
-.c-sidebar-close {
-  display: flex;
-  top: 99px;
-  width: 40px;
-  z-index: 99999;
-  height: 50px;
-
-  .sidebar--btn {
-    width: 40px;
-    background-color: $marapp-gray-8;
-    box-shadow: 0 0 5px 0 rgba($marapp-gray-100, 0.5);
-    transition: all 0.3s ease;
-  }
-}
+export default ThemeProvider;

@@ -25,7 +25,7 @@ import Badge from '@material-ui/core/Badge';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import IconChevronDown from 'mdi-material-ui/ChevronDown';
+import IconMenu from 'mdi-material-ui/Menu';
 import IconClose from 'mdi-material-ui/Close';
 import Menu from '@material-ui/core/Menu';
 import ToggleIcon from 'material-ui-toggle-icon';
@@ -94,9 +94,7 @@ const AppContextSwitcher = (props: IProps) => {
             <>
               <Button
                 onClick={toggleDropdown}
-                endIcon={
-                  <ToggleIcon on={isOpen} onIcon={<IconClose />} offIcon={<IconChevronDown />} />
-                }
+                endIcon={<ToggleIcon on={isOpen} onIcon={<IconClose />} offIcon={<IconMenu />} />}
               >
                 <Badge badgeContent={checkedCount} color="secondary" showZero={false}>
                   {label}
