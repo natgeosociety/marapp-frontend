@@ -244,16 +244,21 @@ class Chart extends PureComponent<ChartProps> {
                     data={data}
                     dataKey={key}
                     startAngle={450}
+                    // @ts-ignore
+                    paddingAngle={data.find(({ percentage }) => percentage === 0) ? 0 : 3}
                     endAngle={90}
                     {...pies[key]}
                   >
-                    {data.map((item) => (
-                      <Cell
-                        key={`c_${item[pies[key].colorKey || 'color']}`}
-                        fill={item[pies[key].colorKey || 'color']}
-                        stroke={item[pies[key].colorKey || 'color']}
-                      />
-                    ))}
+                    {data.map((item, index) => {
+                      console.log(data);
+                      return (
+                        <Cell
+                          key={`c_${item[pies[key].colorKey || 'color']}`}
+                          fill={item[pies[key].colorKey || 'color']}
+                          stroke={item[pies[key].colorKey || 'color']}
+                        />
+                      );
+                    })}
                   </Pie>
                 ))}
 

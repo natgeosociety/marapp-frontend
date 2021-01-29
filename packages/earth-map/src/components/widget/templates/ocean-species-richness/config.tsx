@@ -75,7 +75,7 @@ export const CONFIG = {
       ),
       config: {
         xKey: 'percentile',
-        margin: { top: 20, right: 0, left: 60, bottom: 0 },
+        margin: { top: 20, right: 0, left: 40, bottom: 0 },
         yKeys: {
           bars: {
             km2: {

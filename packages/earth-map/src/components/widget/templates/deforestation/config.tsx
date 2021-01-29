@@ -74,12 +74,13 @@ export const CONFIG = {
       ),
       config: {
         xKey: 'year',
-        margin: { top: 20, right: 0, left: 60, bottom: 5 },
+        margin: { top: 20, right: 0, left: 40, bottom: 5 },
         yKeys: {
           bars: {
             loss: {
               maxBarSize: 100,
               fill: '#FD6B85',
+              radius: [5, 5, 0, 0],
             },
           },
         },
