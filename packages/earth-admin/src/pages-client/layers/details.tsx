@@ -16,7 +16,6 @@
 import { ErrorMessage } from '@hookform/error-message';
 import Collapse from '@kunukn/react-collapse';
 import classnames from 'classnames';
-import { JSHINT } from 'jshint';
 import { noop } from 'lodash';
 import { merge } from 'lodash/fp';
 import React, { useEffect, useRef, useState } from 'react';
@@ -493,7 +492,12 @@ export function LayerDetail(props: any) {
                           control={control}
                           getOptionLabel={(option) => option.name}
                           getOptionValue={(option) => option.id}
-                          loadFunction={LayersService.getAllLayers}
+                          loadFunction={(query) =>
+                            LayersService.getAllLayers({
+                              ...query,
+                              filter: ['slug', '!=', slug].join(''),
+                            })
+                          }
                           defaultValue={references || []}
                           selectedGroup={selectedGroup}
                           onChange={([e]) => e}

@@ -21,6 +21,7 @@
 
 html,
 body {
+  background-color: $marapp-gray-9;
   &.-no-scroll,
   &.no-scroll {
     width: 100%;
