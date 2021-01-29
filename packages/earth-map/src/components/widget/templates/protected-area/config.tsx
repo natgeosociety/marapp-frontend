@@ -128,7 +128,7 @@ export const CONFIG = {
               cy: '75%',
               dataKey: 'percentage',
               nameKey: 'x',
-              innerRadius: '45%',
+              innerRadius: '47%',
               outerRadius: '78%',
             },
           },

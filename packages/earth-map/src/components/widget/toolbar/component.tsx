@@ -18,10 +18,14 @@
 */
 
 import Box from '@material-ui/core/Box';
+import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
-import IconInfo from 'mdi-material-ui/InformationOutline';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+import ToggleIcon from 'material-ui-toggle-icon';
+import IconInfo from 'mdi-material-ui/InformationOutline';
+import IconRemoveLayer from 'mdi-material-ui/LayersOffOutline';
+import IconAddLayer from 'mdi-material-ui/LayersPLus';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 
@@ -30,6 +34,8 @@ import './styles.scss';
 
 class WidgetToolbarComponent extends PureComponent<any, any> {
   public static propTypes = {
+    active: PropTypes.bool,
+    collapsed: PropTypes.bool,
     className: PropTypes.string,
     activeInfo: PropTypes.bool.isRequired,
     activeShare: PropTypes.bool.isRequired,
@@ -37,6 +43,7 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
     onDownload: PropTypes.func.isRequired,
     onInfo: PropTypes.func.isRequired,
     onShare: PropTypes.func.isRequired,
+    onToggleLayer: PropTypes.func.isRequired,
   };
 
   public static defaultProps = {
@@ -44,7 +51,7 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
   };
 
   public render() {
-    const { className, activeInfo, onInfo, data } = this.props;
+    const { className, active, collapsed, onToggleLayer, onInfo, data } = this.props;
 
     const classNames = classnames({
       [className]: !!className,
@@ -58,6 +65,18 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
         flexDirection="row"
         className={`marapp-qa-widgettoolbar  ${classNames}`}
       >
+        {collapsed ? (
+          <Fade in={true}>
+            <IconButton onClick={onToggleLayer}>
+              <ToggleIcon
+                on={active}
+                onIcon={<IconRemoveLayer fontSize="small" />}
+                offIcon={<IconAddLayer fontSize="small" />}
+              />
+            </IconButton>
+          </Fade>
+        ) : null}
+
         {!isEmpty(data) && <WidgetDownload data={data} />}
         <IconButton onClick={onInfo}>
           <IconInfo fontSize="small" />

@@ -18,8 +18,21 @@
 */
 
 import Button from '@material-ui/core/Button';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import ToggleIcon from 'material-ui-toggle-icon';
+import IconRemoveLayer from 'mdi-material-ui/LayersOffOutline';
+import IconAddLayer from 'mdi-material-ui/LayersPLus';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+}));
 
 interface IWidgetFooter {
   active: boolean;
@@ -32,6 +45,7 @@ interface IWidgetFooter {
 function WidgetFooterComponent(props: IWidgetFooter) {
   const { active, onToggleLayer } = props;
   const { t } = useTranslation();
+  const classes = useStyles();
 
   const toggleLayer = () => {
     onToggleLayer(active);
@@ -42,8 +56,16 @@ function WidgetFooterComponent(props: IWidgetFooter) {
       <Button
         variant={active ? 'contained' : 'outlined'}
         color={active ? 'secondary' : 'default'}
+        className={classes.root}
         onClick={toggleLayer}
         size="large"
+        endIcon={
+          <ToggleIcon
+            on={active}
+            onIcon={<IconRemoveLayer fontSize="small" />}
+            offIcon={<IconAddLayer fontSize="small" />}
+          />
+        }
       >
         {active ? t('Remove from map') : t('Show on map')}
       </Button>

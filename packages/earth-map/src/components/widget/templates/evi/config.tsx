@@ -86,6 +86,7 @@ export const CONFIG = {
           value: `${format(eviFormat)(y.norm)}`,
           mean: mean_norm,
           fill: getColorFromPallete(EVI_PALLETE, y.norm),
+          radius: [5, 5, 0, 0],
         };
       }),
       template: replace(
@@ -104,7 +105,7 @@ export const CONFIG = {
       ),
       config: {
         xKey: 'year',
-        margin: { top: 20, right: 0, left: 60, bottom: 5 },
+        margin: { top: 20, right: 0, left: 40, bottom: 5 },
         yKeys: {
           lines: {
             mean: {

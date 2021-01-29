@@ -17,84 +17,125 @@
   specific language governing permissions and limitations under the License.
 */
 
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
 import { format } from 'd3-format';
 import moment from 'moment';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React from 'react';
 
-import './styles.scss';
+const useStyles = makeStyles((theme) => ({
+  root: {
+    maxWidth: 300,
+  },
+  layerSelect: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    opacity: 0,
+  },
+  table: {
+    '& tr': {
+      '&:last-child td': {
+        borderBottomColor: 'transparent',
+      },
+      '& td': {
+        verticalAlign: 'baseline',
+        '&:nth-child(1)': {
+          fontWeight: 500,
+          width: '40%',
+        },
+        '&:nth-child(2)': {
+          width: '60%',
+        },
+      },
+    },
+  },
+  title: {
+    position: 'relative',
+  },
+}));
 
-class LayerPopupComponent extends PureComponent<any, any> {
-  public static propTypes = {
-    activeInteractiveLayers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  };
+interface ILayerPopupComponent {
+  activeInteractiveLayer: any;
+  activeInteractiveLayers: any;
+}
 
-  public formatValue = (config, data) => {
-    const { column, format: format_str, prefix, suffix, type } = config;
-    let value = data[column];
+const formatValue = (config, data) => {
+  const { column, format: format_str, prefix, suffix, type } = config;
+  let value = data[column];
 
-    switch (type) {
-      case 'date': {
-        if (value && format_str) {
-          value = moment(value).format(format_str);
-        }
-
-        break;
+  switch (type) {
+    case 'date': {
+      if (value && format_str) {
+        value = moment(value).format(format_str);
       }
 
-      case 'number': {
-        if (value && format_str) {
-          value = format(format_str)(value);
-        }
-
-        break;
-      }
-
-      default: {
-        value = data[column];
-      }
+      break;
     }
 
-    return `${prefix} ${value} ${suffix}`;
-  };
+    case 'number': {
+      if (value && format_str) {
+        value = format(format_str)(value);
+      }
 
-  public render() {
-    const { activeInteractiveLayer, activeInteractiveLayers } = this.props;
-    const { name, data } = activeInteractiveLayer;
-    const { interactionConfig } = activeInteractiveLayer.config || activeInteractiveLayer;
-    const { output } = interactionConfig;
+      break;
+    }
 
-    return (
-      <div className="c-layer-popup">
-        <h4 className="layer-popup--title">
-          {name}
+    default: {
+      value = data[column];
+    }
+  }
 
-          <select className="layer-popup--select">
-            {activeInteractiveLayers.map((l) => (
-              <option key={l.id} value={l.id}>
-                {l.name}
-              </option>
-            ))}
-          </select>
-        </h4>
+  return `${prefix} ${value} ${suffix}`;
+};
 
-        <table className="layer-popup--table">
-          <tbody>
+const LayerPopupComponent = (props: ILayerPopupComponent) => {
+  const { activeInteractiveLayer, activeInteractiveLayers } = props;
+  const classes = useStyles();
+
+  const { name, data } = activeInteractiveLayer;
+  const { interactionConfig } = activeInteractiveLayer.config || activeInteractiveLayer;
+  const { output } = interactionConfig;
+
+  return (
+    <div className={classes.root}>
+      <Typography variant="h5" className={classes.title}>
+        {name}
+
+        {/*<select className={classes.layerSelect}>*/}
+        {/*  {activeInteractiveLayers.map((l) => (*/}
+        {/*    <option key={l.id} value={l.id}>*/}
+        {/*      {l.name}*/}
+        {/*    </option>*/}
+        {/*  ))}*/}
+        {/*</select>*/}
+      </Typography>
+
+      <TableContainer>
+        <Table className={classes.table}>
+          <TableBody>
             {output
               .filter((o) => !o.hidden)
               .map((o) => {
                 return (
-                  <tr key={o.column} className="layer-popup--table-item">
-                    <td className="layer-popup--list-dt">{o.property}:</td>
-                    <td className="layer-popup--list-dd">{this.formatValue(o, data.data)}</td>
-                  </tr>
+                  <TableRow key={o.column}>
+                    <TableCell align="right">{o.property}:</TableCell>
+                    <TableCell>{formatValue(o, data.data)}</TableCell>
+                  </TableRow>
                 );
               })}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
+};
 
 export default LayerPopupComponent;

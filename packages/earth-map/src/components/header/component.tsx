@@ -258,13 +258,18 @@ const Header = (props: IProps) => {
         value="map-view"
         divider={true}
         component="a"
-        href={MAP_COMPANY_URL}
+        href={`${MAP_COMPANY_URL}/about`}
         title={MAP_APP_NAME}
       >
         <strong>{t('About')}</strong>
       </Option>
 
-      <Option value="map-view" component="a" href={MAP_COMPANY_URL} title={MAP_APP_NAME}>
+      <Option
+        value="map-view"
+        component="a"
+        href={`${MAP_COMPANY_URL}/support`}
+        title={MAP_APP_NAME}
+      >
         <strong>{t('Support')}</strong>
       </Option>
     </AppContextSwitcher>

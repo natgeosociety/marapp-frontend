@@ -53,7 +53,10 @@ const FILE_TYPES = [
   { name: 'JSON', value: 'json', className: 'marapp-qa-downloadmetricsjson' },
 ];
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  header: {
+    backgroundColor: theme.palette.grey['600'],
+  },
   radioGroup: {
     flexDirection: 'row',
   },
@@ -94,7 +97,7 @@ export function CollectionDownloadMetrics(props: IProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full ng-form ng-form-dark">
       <Box mb={1}>
-        <Paper square={true} elevation={3}>
+        <Paper square={true} elevation={3} className={classes.header}>
           <Box p={2}>
             <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
           </Box>

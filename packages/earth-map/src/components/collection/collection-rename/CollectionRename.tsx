@@ -19,17 +19,18 @@
 
 import isBoolean from 'lodash/isBoolean';
 import React, { BaseSyntheticEvent, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
 
-import { Card, Input, setupErrors } from '@marapp/earth-shared';
+import { setupErrors } from '@marapp/earth-shared';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import { ICollection } from '../../../modules/collections/model';
 import PlacesService from '../../../services/PlacesService';
@@ -42,10 +43,17 @@ interface IProps {
   reloadCollection: (payload?: any) => void;
 }
 
+const useStyles = makeStyles((theme) => ({
+  header: {
+    backgroundColor: theme.palette.grey['600'],
+  },
+}));
+
 export function CollectionRename(props: IProps) {
   const { collection, onCancel, reloadCollection, toggleRenaming } = props;
   const { id, slug, name, organization, version } = collection;
   const { t } = useTranslation();
+  const classes = useStyles();
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
   const { register, errors, handleSubmit, formState, getValues, control } = useForm({
@@ -57,7 +65,7 @@ export function CollectionRename(props: IProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-rename">
       <Box mb={1}>
-        <Paper square={true} elevation={3}>
+        <Paper square={true} elevation={3} className={classes.header}>
           <Box p={2}>
             <Typography variant="h5" component="h2" color="textPrimary">
               {t('Rename Collection')}

@@ -26,6 +26,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -42,10 +43,17 @@ interface IProps {
   router?: IRouter;
 }
 
+const useStyles = makeStyles((theme) => ({
+  header: {
+    backgroundColor: theme.palette.grey['600'],
+  },
+}));
+
 const CollectionNew = (props: IProps) => {
   const { privateGroups, router } = props;
   const { prev } = router;
   const { t } = useTranslation();
+  const classes = useStyles();
   const canCreateCollection = !!privateGroups.length;
   const [saveError, setSaveError] = useState(null);
   const { handleSubmit, register, errors, formState, control } = useForm({ mode: 'all' });
@@ -71,7 +79,7 @@ const CollectionNew = (props: IProps) => {
   return (
     <form className="marapp-qa-collection-new" onSubmit={handleSubmit(onSubmit)}>
       <Box mb={1}>
-        <Paper elevation={3}>
+        <Paper elevation={3} square={true} className={classes.header}>
           <Box p={2}>
             <Typography variant="h5" component="h2" color="textPrimary">
               {t('Create a Collection')}
@@ -80,7 +88,7 @@ const CollectionNew = (props: IProps) => {
         </Paper>
       </Box>
 
-      <Paper>
+      <Paper square={true}>
         <Box p={2} mb={1}>
           <Grid container={true} direction="column" spacing={3}>
             <Grid item={true}>

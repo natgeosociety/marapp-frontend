@@ -85,6 +85,7 @@ const CollectionDetails = (props: IProps) => {
       <Fab size="small" {...bindTrigger(popupState)}>
         <IconDotsHorizontal />
       </Fab>
+
       <Menu {...bindMenu(popupState)}>
         <MenuItem
           onClick={() => {
@@ -106,7 +107,7 @@ const CollectionDetails = (props: IProps) => {
     </>
   );
 
-  const { id, organization, name, locations, updatedAt } = data;
+  const { organization, name, locations, updatedAt } = data;
   const hasLocations = locations.length > 0;
 
   return (

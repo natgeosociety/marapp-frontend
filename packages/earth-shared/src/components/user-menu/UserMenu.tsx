@@ -122,7 +122,14 @@ export const UserMenu = (props: IProps) => {
             >
               {selectedLanguage}
             </Button>
-            <Menu {...bindMenu(popupStateLang)} classes={{ paper: classes.menu }}>
+            <Menu
+              {...bindMenu(popupStateLang)}
+              classes={{ paper: classes.menu }}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+              transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+              marginThreshold={42} // hack to push the menu below the trigger button
+              getContentAnchorEl={null}
+            >
               {[
                 { name: 'English', value: Elang.EN },
                 { name: 'Español', value: Elang.ES },
@@ -159,7 +166,14 @@ export const UserMenu = (props: IProps) => {
           )}
         </Fab>
 
-        <Menu {...bindMenu(popupState)} classes={{ paper: classes.menu }}>
+        <Menu
+          {...bindMenu(popupState)}
+          classes={{ paper: classes.menu }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          marginThreshold={42} // hack to push the menu below the trigger button
+          getContentAnchorEl={null}
+        >
           <MenuItem disabled={true}>{t('Account')}:</MenuItem>
 
           {isAuthenticated

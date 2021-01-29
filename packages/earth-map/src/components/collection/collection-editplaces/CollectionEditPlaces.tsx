@@ -18,9 +18,10 @@
  */
 
 import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
 import isBoolean from 'lodash/isBoolean';
 import React, { BaseSyntheticEvent, useState } from 'react';
@@ -44,9 +45,16 @@ interface IProps {
   reloadCollection: (payload?: any) => void;
 }
 
+const useStyles = makeStyles((theme) => ({
+  header: {
+    backgroundColor: theme.palette.grey['600'],
+  },
+}));
+
 export function CollectionEditPlaces(props: IProps) {
   const { collection, setCollectionData, setMapBounds, toggleEditPlaces, reloadCollection } = props;
   const { t } = useTranslation();
+  const classes = useStyles();
   const { id, slug, organization, name, locations, version } = collection;
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
@@ -58,7 +66,7 @@ export function CollectionEditPlaces(props: IProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-edit-places">
       <Box mb={1}>
-        <Paper square={true} elevation={3}>
+        <Paper square={true} elevation={3} className={classes.header}>
           <Box p={2}>
             <Typography variant="subtitle1" color="textPrimary" gutterBottom={true}>
               {organization} |{' '}
