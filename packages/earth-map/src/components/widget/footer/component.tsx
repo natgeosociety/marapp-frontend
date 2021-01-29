@@ -21,7 +21,7 @@ import Button from '@material-ui/core/Button';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import ToggleIcon from 'material-ui-toggle-icon';
 import IconRemoveLayer from 'mdi-material-ui/LayersOffOutline';
-import IconAddLayer from 'mdi-material-ui/LayersPLus';
+import IconAddLayer from 'mdi-material-ui/LayersPlus';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
