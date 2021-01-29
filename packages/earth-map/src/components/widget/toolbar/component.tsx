@@ -25,7 +25,7 @@ import { isEmpty } from 'lodash';
 import ToggleIcon from 'material-ui-toggle-icon';
 import IconInfo from 'mdi-material-ui/InformationOutline';
 import IconRemoveLayer from 'mdi-material-ui/LayersOffOutline';
-import IconAddLayer from 'mdi-material-ui/LayersPLus';
+import IconAddLayer from 'mdi-material-ui/LayersPlus';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 

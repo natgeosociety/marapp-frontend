@@ -16,11 +16,8 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -28,16 +25,15 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import Fade from '@material-ui/core/Fade';
-import Slide from '@material-ui/core/Slide';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
 import ToggleIcon from 'material-ui-toggle-icon';
-import IconCircleSmall from 'mdi-material-ui/CircleSmall';
 import IconDown from 'mdi-material-ui/ChevronDown';
 import IconUp from 'mdi-material-ui/ChevronUp';
+import IconCircleSmall from 'mdi-material-ui/CircleSmall';
 import React from 'react';
 import isEqual from 'react-fast-compare';
 
