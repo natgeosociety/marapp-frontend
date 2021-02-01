@@ -19,11 +19,11 @@
 
 import React from 'react';
 
-import { QUERY_LOCATION, useLocations } from '../../../fetchers';
+import { QUERY_LOCATIONS, useLocations } from '../../../fetchers';
 import { CollectionsCard } from './CollectionsCard';
 
 export default function WithData(props) {
-  const { data } = useLocations(QUERY_LOCATION.getLatestCollections(), {
+  const { data } = useLocations(QUERY_LOCATIONS.getLatestCollections(), {
     revalidateAll: true,
   });
 

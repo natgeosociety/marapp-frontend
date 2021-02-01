@@ -17,13 +17,26 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { IQueryOne } from '../useFetchOne';
+import { SWRInfiniteConfigInterface } from 'swr';
 
-export const QUERY_DASHBOARDS = {
-  getWithWidgets(group: string[]): IQueryOne {
-    return {
-      include: ['widgets', 'widgets.layers', 'widgets.layers.references'].join(','),
-      group: group.join(','),
-    };
-  },
-};
+import { useAuth0 } from '../../auth/auth0';
+import { IQueryMany, IResponseMany, useFetchMany } from '../useFetchMany';
+import { flattenLayerConfig } from '../../sagas/saga-utils';
+
+export function useLayers(query: IQueryMany, swrOptions?: SWRInfiniteConfigInterface) {
+  const { groups } = useAuth0();
+  const specificQuery: IQueryMany = {
+    group: groups.join(),
+    ...query,
+  };
+
+  return useFetchMany('/layers', query ? specificQuery : null, {
+    swrOptions,
+    transformResponse(response) {
+      return {
+        ...response,
+        data: response.data.map(flattenLayerConfig),
+      };
+    },
+  });
+}

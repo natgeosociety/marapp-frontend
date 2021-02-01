@@ -21,7 +21,7 @@ import React, { useEffect, useState } from 'react';
 import { replace } from 'redux-first-router';
 import { connect } from 'react-redux';
 import { useAuth0 } from '../../../auth/auth0';
-import { useLocation, QUERY_LOCATION } from '../../../fetchers';
+import { useLocation, QUERY_LOCATIONS } from '../../../fetchers';
 import Places from '../../../components/places';
 import { EMainType, SubType } from '../../../modules/global/model';
 import { persistData, setLastViewedPlace } from '../../../modules/global/actions';
@@ -57,7 +57,7 @@ function WithData(props: IProps) {
     persistData,
   } = props;
   const [resourceId, setResourceId] = useState();
-  const swrProps = useLocation(resourceId || slug, QUERY_LOCATION.getCollection(organization));
+  const swrProps = useLocation(resourceId || slug, QUERY_LOCATIONS.getCollection(organization));
   const { privateGroups } = useAuth0();
   const { data, error } = swrProps;
 

@@ -17,8 +17,10 @@
  * specific language governing permissions and limitations under the License.
  */
 
-export { QUERY_LOCATION } from './locations/queries';
-export { QUERY_DASHBOARD } from './dashboards/queries';
+export { QUERY_LOCATIONS } from './locations/queries';
+export { QUERY_DASHBOARDS } from './dashboards/queries';
+export { QUERY_LAYERS } from './layers/queries';
 
 export { useLocations, useLocation } from './locations/hooks';
+export { useLayers } from './layers/hooks';
 export { useDashboards } from './dashboards/hooks';

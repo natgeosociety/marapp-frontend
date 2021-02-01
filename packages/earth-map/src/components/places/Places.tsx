@@ -25,7 +25,7 @@ import BackToLocation from '../../components/back-to-location';
 import FilterBy from '../../components/filter-by';
 import SearchBox from '../../components/searchbox';
 import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search';
-import { QUERY_LOCATION, useLocations } from '../../fetchers';
+import { QUERY_LOCATIONS, useLocations } from '../../fetchers';
 import { hasFilters } from '../../utils/filters';
 import PlacesSearchResults from './search-results';
 
@@ -66,7 +66,7 @@ const Places = (props: IProps) => {
   } = props;
 
   const { data, meta, awaitMore, nextPage, isValidating } = useLocations(
-    QUERY_LOCATION.getFiltered(search.search, search.filters)
+    QUERY_LOCATIONS.getFiltered(search.search, search.filters)
   );
 
   const hasSearchTerm = !!search.search;

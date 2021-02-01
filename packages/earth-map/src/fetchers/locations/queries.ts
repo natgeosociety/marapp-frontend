@@ -21,7 +21,7 @@ import { LocationTypeEnum, IPlace } from '../../modules/places/model';
 import { IQueryMany } from '../useFetchMany';
 import { IQueryOne } from '../useFetchOne';
 
-export const QUERY_LOCATION = {
+export const QUERY_LOCATIONS = {
   getLatestCollections(): IQueryMany {
     return {
       select: 'slug,name,id,organization,type,updatedAt',

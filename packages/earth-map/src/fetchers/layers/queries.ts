@@ -17,13 +17,32 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { IQueryOne } from '../useFetchOne';
+import { serializeFilters } from '@marapp/earth-shared';
+import { IQueryMany } from '../useFetchMany';
+import { LAYER_QUERY } from '../../sagas/model';
 
-export const QUERY_DASHBOARDS = {
-  getWithWidgets(group: string[]): IQueryOne {
+export const QUERY_LAYERS = {
+  getActive(slugs: string): IQueryMany {
+    if (!slugs) {
+      // prevent SWR from fetching
+      return null;
+    }
+
     return {
-      include: ['widgets', 'widgets.layers', 'widgets.layers.references'].join(','),
-      group: group.join(','),
+      filter: serializeFilters({
+        slug: slugs,
+      }),
+      // can we remove this?
+      include: 'references',
+    };
+  },
+  getFiltered(search: string, slug: string): IQueryMany {
+    return {
+      ...LAYER_QUERY,
+      filter: serializeFilters({
+        slug,
+      }),
+      search,
     };
   },
 };

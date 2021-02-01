@@ -53,7 +53,7 @@ export default function* layers() {
   yield takeLatest(nextLayersPage, nextPage);
 
   // Queries the api and loads the active layers objects. Does nothing to display the layer on the map. That is handled in the <Url /> component that reacts to query param changes
-  yield takeLatest(setLayersActive, loadActiveLayers);
+  // yield takeLatest(setLayersActive, loadActiveLayers);
 }
 
 /**

@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
+import React from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -31,6 +32,10 @@ import { setPlacesSearch } from '../../modules/places/actions';
 import { setSidebarPanel, setSidebarPanelExpanded } from '../../modules/sidebar/actions';
 import Layers from './Layers';
 
+function WithData(props) {
+  return <Layers {...props} />;
+}
+
 export default connect(
   (state: any, props: any) => ({
     ...state.sidebar,
@@ -40,8 +45,8 @@ export default connect(
     mapStyle: state.map.mapStyle,
     mapLabels: state.map.mapLabels,
     mapRoads: state.map.mapRoads,
-    locationName: props.locationName || state.places.data.name,
-    locationOrganization: props.locationOrganization || state.places.data.organization,
+    locationName: props.locationName,
+    locationOrganization: props.locationOrganization,
   }),
   {
     toggleLayer,
@@ -56,4 +61,4 @@ export default connect(
     nextLayersPage,
     setLayersSearchOpen,
   }
-)(Layers);
+)(WithData);

@@ -24,7 +24,7 @@ import { connect } from 'react-redux';
 import { Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '../../auth/auth0';
-import { QUERY_DASHBOARD, QUERY_LOCATION, useDashboards, useLocation } from '../../fetchers';
+import { QUERY_DASHBOARDS, QUERY_LOCATIONS, useDashboards, useLocation } from '../../fetchers';
 import { persistData, setLastViewedPlace } from '../../modules/global/actions';
 import { EMainType } from '../../modules/global/model';
 import { toggleLayer } from '../../modules/layers/actions';
@@ -79,8 +79,8 @@ function WithData(props) {
     persistData,
   } = props;
   const { selectedGroup, groups } = useAuth0();
-  const { data: placeData } = useLocation(slug, QUERY_LOCATION.getOne(organization));
-  const { data: dashboardsData } = useDashboards(QUERY_DASHBOARD.getWithWidgets(selectedGroup));
+  const { data: placeData } = useLocation(slug, QUERY_LOCATIONS.getOne(organization));
+  const { data: dashboardsData } = useDashboards(QUERY_DASHBOARDS.getWithWidgets(selectedGroup));
   const hasData = !!(placeData && dashboardsData);
 
   useEffect(() => {

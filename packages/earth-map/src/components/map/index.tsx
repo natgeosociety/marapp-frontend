@@ -17,9 +17,12 @@
   specific language governing permissions and limitations under the License.
 */
 
+import React from 'react';
 import { connect } from 'react-redux';
-
-import { getActiveInteractiveLayersIds } from '../../modules/layers/selectors';
+import compact from 'lodash/compact';
+import flatten from 'lodash/flatten';
+import isEmpty from 'lodash/isEmpty';
+import { ILayer } from '../../modules/layers/model';
 import {
   setMapBounds,
   setMapHoverInteractions,
@@ -29,11 +32,24 @@ import {
 import { sidebarAwareMapBounds } from '../../modules/map/selectors';
 import MapComponent from './component';
 
+const GROUP_LEGEND = (type) => type === 'group';
+const YEAR_PICKER_LEGEND = (type) => type === 'yearpicker';
+const YEAR_DATE_PICKER_LEGEND = (type) => type === 'yeardatepicker';
+
+function WithData({ activeLayers, active, settings, ...rest }) {
+  return (
+    <MapComponent
+      activeInteractiveLayersIds={getActiveInteractiveLayersIds(activeLayers, settings, active)}
+      {...rest}
+    />
+  );
+}
+
 export default connect(
   (state: any) => ({
     ...state.map,
+    ...state.layers,
     bounds: sidebarAwareMapBounds(state),
-    activeInteractiveLayersIds: getActiveInteractiveLayersIds(state),
   }),
   {
     setMapViewport,
@@ -41,4 +57,63 @@ export default connect(
     setMapInteractions,
     setMapHoverInteractions,
   }
-)(MapComponent);
+)(WithData);
+
+function getActiveInteractiveLayersIds(_layers: ILayer[], _settings, _active) {
+  if (!_layers) {
+    return [];
+  }
+
+  const getIds = (layer: ILayer) => {
+    const { id, source, interactionConfig, render } = layer;
+
+    if (isEmpty(render) || isEmpty(interactionConfig)) {
+      return null;
+    }
+
+    const { layers } = render;
+
+    if (!layers) {
+      return null;
+    }
+
+    return layers.map((l, i) => {
+      const { id: vectorLayerId, type: vectorLayerType } = l;
+
+      return vectorLayerId || `${id}-${vectorLayerType}-${i}`;
+    });
+  };
+
+  return flatten(
+    compact(
+      _active.map((kActive, i) => {
+        const layer = _layers.find((l: any) => l.slug === kActive);
+        if (!layer) {
+          return null;
+        }
+
+        const { slug, source, legendConfig, type } = layer;
+        const { legendType } = legendConfig as any;
+
+        if (
+          GROUP_LEGEND(type) ||
+          YEAR_PICKER_LEGEND(legendType) ||
+          YEAR_DATE_PICKER_LEGEND(legendType)
+        ) {
+          const layerConfigLayers = layer.references;
+
+          const current =
+            _settings[slug] && _settings[slug].current
+              ? _settings[slug].current
+              : layerConfigLayers[0].id;
+
+          const layer1 = layerConfigLayers.find((l) => l.id === current);
+
+          return getIds(layer1);
+        }
+
+        return getIds(layer);
+      })
+    )
+  );
+}

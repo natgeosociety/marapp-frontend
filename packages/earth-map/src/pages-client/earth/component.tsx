@@ -41,6 +41,7 @@ import { EarthRoutes, IRouter } from '../../modules/router/model';
 import { EPanels } from '../../modules/sidebar/model';
 import { URL_PROPS } from './url';
 import './styles.scss';
+import { useLayers, QUERY_LAYERS } from '../../fetchers';
 
 interface IProps {
   setSidebarPanel?: () => void;
@@ -51,16 +52,17 @@ interface IProps {
   group?: any;
   selected?: string;
   collection?: any;
-  router?: IRouter;
+  router?: any;
 }
 
 const { EARTH, COLLECTION, LOCATION, NEW_COLLECTION } = EarthRoutes;
 
 const EarthPage = (props: IProps) => {
   const { setSidebarPanel, panel, router, lastViewedPlace, group, collection } = props;
+  const { type, query = {} } = router;
   const { t } = useTranslation();
   const { groups, privateGroups, publicGroups } = useAuth0();
-  const { type } = router;
+  const { data: activeLayers, mutate } = useLayers(QUERY_LAYERS.getActive(query.layers));
   const selectedOpen = [LOCATION, COLLECTION, NEW_COLLECTION].includes(type);
   const withHeaderLayout = [EARTH, LOCATION, COLLECTION].includes(type);
   const newCollectionLayout = [NEW_COLLECTION].includes(type);
@@ -122,7 +124,7 @@ const EarthPage = (props: IProps) => {
 
       <div className="l-content">
         <ErrorBoundary fallbackComponent={<LayerConfigError selectedOpen={selectedOpen} />}>
-          <Map page={props.page} selectedOpen={selectedOpen} t={t} />
+          <Map page={props.page} selectedOpen={selectedOpen} t={t} activeLayers={activeLayers} />
         </ErrorBoundary>
       </div>
     </main>

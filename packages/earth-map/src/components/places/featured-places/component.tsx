@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { Spinner } from '@marapp/earth-shared';
 
 import ListItem from '../../../components/list-item';
-import { QUERY_LOCATION, useLocations } from '../../../fetchers';
+import { QUERY_LOCATIONS, useLocations } from '../../../fetchers';
 
 interface IProps {
   group?: string[];
@@ -32,7 +32,7 @@ interface IProps {
 export const FeaturedPlacesComponent = (props: IProps) => {
   const { group } = props;
   const { t } = useTranslation();
-  const { data } = useLocations(QUERY_LOCATION.getFeatured());
+  const { data } = useLocations(QUERY_LOCATIONS.getFeatured());
 
   return (
     <div className="marapp-qa-featuredplaces ng-section-background ng-position-relative ng-padding-medium-bottom">

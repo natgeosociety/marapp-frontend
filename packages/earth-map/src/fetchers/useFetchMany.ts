@@ -18,7 +18,7 @@
  */
 
 import { noop } from 'lodash';
-import { useSWRInfinite } from 'swr';
+import { useSWRInfinite, SWRInfiniteResponseInterface } from 'swr';
 
 import { BaseAPIService, metaDeserializer } from '../services/base/APIBase';
 import { PAGE_SIZE } from '../theme';
@@ -39,15 +39,16 @@ export interface IQueryMany {
   public?: boolean;
 }
 
-export interface IResponseMany {
-  data: any;
+interface IBaseResponseMany {
+  data: any[];
   meta: any;
   isNoMore: boolean;
   awaitMore: boolean;
-  isValidating: boolean;
   nextPage: () => void;
   previousPage: () => void;
 }
+
+export type IResponseMany = Partial<IBaseResponseMany> & SWRInfiniteResponseInterface;
 
 interface IOptions {
   fetcher?: (url: string) => Promise<any>;
@@ -67,14 +68,20 @@ export function useFetchMany(
   url: string,
   query: IQueryMany,
   passedOptions?: IOptions
-): IResponseMany | Object {
+): IResponseMany {
   const options = {
     ...defaultOptions,
     ...passedOptions,
   };
   const swrKeyLoader = (pageIndex: number, previousPage: any): string => {
+    // skip data fetching
+    if (!query) {
+      return null;
+    }
+
+    // reached the end;
     if (previousPage && !previousPage.data) {
-      return null; // reached the end;
+      return null;
     }
     const cursor = pageIndex === 0 ? -1 : previousPage?.meta?.pagination?.nextCursor;
     const defaults = {
@@ -91,29 +98,30 @@ export function useFetchMany(
   const fetcher = (url) => {
     return options.fetcher(url).then(options.transformResponse);
   };
-  const { data: rawData, isValidating, size, setSize }: any = useSWRInfinite(
-    swrKeyLoader,
-    fetcher,
-    options.swrOptions
-  );
+
+  const response = useSWRInfinite(swrKeyLoader, fetcher, options.swrOptions);
+
+  const { data: rawData, isValidating, size, setSize } = response;
 
   if (!rawData) {
-    return {};
+    return response;
   }
 
   const lastPage = rawData[rawData.length - 1] || {};
-  const data = rawData.map((item) => item.data).flat();
+
+  // combine array of pages in a single list of results
+  const flatData = rawData.map((item) => item.data).flat();
   const meta = lastPage.meta || {};
   const isNoMore = !meta.pagination?.nextCursor;
   const awaitMore = !isValidating && !isNoMore;
 
   return {
-    data,
+    ...response,
+    data: flatData,
     meta,
     isNoMore,
     awaitMore,
     nextPage: awaitMore ? () => setSize(size + 1) : noop,
     previousPage: size === 0 ? noop : () => setSize(size - 1),
-    isValidating,
   };
 }
