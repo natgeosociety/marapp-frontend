@@ -22,6 +22,7 @@ import { connect } from 'react-redux';
 import compact from 'lodash/compact';
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
+import uniqBy from 'lodash/uniqBy';
 import { replace } from 'layer-manager';
 import { ILayer } from '../../modules/layers/model';
 import { getParams } from '../../modules/layers/utils';
@@ -33,16 +34,25 @@ import {
   setMapViewport,
 } from '../../modules/map/actions';
 import { sidebarAwareMapBounds } from '../../modules/map/selectors';
+import { getPopup } from '../../modules/map/selectors';
 import MapComponent from './component';
 
 const GROUP_LEGEND = (type) => type === 'group';
 const YEAR_PICKER_LEGEND = (type) => type === 'yearpicker';
 const YEAR_DATE_PICKER_LEGEND = (type) => type === 'yeardatepicker';
 
-function WithData({ activeLayers, active, settings, ...rest }) {
+function WithData({ activeLayers, active, settings, interactions, interactionsSelected, ...rest }) {
+  const activeInteractiveLayers = getActiveInteractiveLayers(activeLayers, interactions);
+  const activeInteractiveLayer = getActiveInteractiveLayer(
+    activeInteractiveLayers,
+    interactionsSelected
+  );
+
   return (
     <MapComponent
       activeInteractiveLayersIds={getActiveInteractiveLayersIds(activeLayers, settings, active)}
+      activeInteractiveLayers={activeInteractiveLayers}
+      activeInteractiveLayer={activeInteractiveLayer}
       layerGroups={getLegendLayers(activeLayers, settings, active)}
       {...rest}
       layerManagerLayers={getActiveLayers(activeLayers, settings, active)}
@@ -54,6 +64,7 @@ export default connect(
   (state: any) => ({
     ...state.map,
     ...state.layers,
+    popup: getPopup(state),
     bounds: sidebarAwareMapBounds(state),
     layerManagerBounds: state.map.locationHighlight,
   }),
@@ -297,4 +308,62 @@ function getActiveLayers(_layers: ILayer[], _settings, _active) {
       };
     })
   );
+}
+
+function getActiveInteractiveLayers(_layers: ILayer[], _interactions) {
+  if (!_layers || isEmpty(_interactions)) {
+    // should this return an [] ?
+    return [];
+  }
+
+  const allLayers = uniqBy(
+    flatten(
+      _layers.map((l: ILayer) => {
+        const { name } = l;
+        const { type } = l;
+
+        if (GROUP_LEGEND(type)) {
+          return l.references.map((lc) => ({
+            ...lc,
+            name: `${name} - ${lc.name}`,
+          }));
+        }
+
+        return l;
+      })
+    ),
+    'id'
+  );
+
+  const interactiveLayerKeys = Object.keys(_interactions);
+  const interactiveLayers = [];
+
+  allLayers.forEach((layer: ILayer) => {
+    if (!!layer.references && layer.references.length > 0) {
+      layer.references.forEach((layerRef) => {
+        if (interactiveLayerKeys.includes(layerRef.id)) {
+          interactiveLayers.push(layerRef);
+        }
+      });
+    } else {
+      if (interactiveLayerKeys.includes(layer.id)) {
+        interactiveLayers.push(layer);
+      }
+    }
+  });
+
+  return interactiveLayers.map((l: any) => ({
+    ...l,
+    data: _interactions[l.id],
+  }));
+}
+
+function getActiveInteractiveLayer(_layers: ILayer[], _interactionsSelected) {
+  if (!_layers.length) {
+    return {};
+  }
+
+  const current = _layers.find((l: ILayer) => l.id === _interactionsSelected) || _layers[0];
+
+  return current;
 }

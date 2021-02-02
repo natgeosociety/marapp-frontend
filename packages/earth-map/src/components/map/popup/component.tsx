@@ -27,6 +27,8 @@ import LayerTemplate from './templates/layer';
 interface PopupComponentProps {
   popup: {};
   setMapInteractions: (p: any) => void;
+  activeInteractiveLayer?: any;
+  activeInteractiveLayers?: any[];
 }
 
 class PopupComponent extends React.PureComponent<PopupComponentProps> {
@@ -64,7 +66,7 @@ class PopupComponent extends React.PureComponent<PopupComponentProps> {
   };
 
   public render() {
-    const { popup } = this.props;
+    const { popup, activeInteractiveLayers, activeInteractiveLayer } = this.props;
 
     if (isEmpty(popup)) {
       return null;
@@ -89,7 +91,10 @@ class PopupComponent extends React.PureComponent<PopupComponentProps> {
             <i className="ng-icon-close mapbox-prevent-click" />
           </button>
 
-          <LayerTemplate />
+          <LayerTemplate
+            activeInteractiveLayers={activeInteractiveLayers}
+            activeInteractiveLayer={activeInteractiveLayer}
+          />
         </div>
       </Popup>
     );
