@@ -97,7 +97,7 @@ const formatValue = (config, data) => {
 };
 
 const LayerPopupComponent = (props: ILayerPopupComponent) => {
-  const { activeInteractiveLayer, activeInteractiveLayers } = props;
+  const { activeInteractiveLayer } = props;
   const classes = useStyles();
 
   const { name, data } = activeInteractiveLayer;
@@ -108,14 +108,6 @@ const LayerPopupComponent = (props: ILayerPopupComponent) => {
     <div className={classes.root}>
       <Typography variant="h5" className={classes.title}>
         {name}
-
-        {/*<select className={classes.layerSelect}>*/}
-        {/*  {activeInteractiveLayers.map((l) => (*/}
-        {/*    <option key={l.id} value={l.id}>*/}
-        {/*      {l.name}*/}
-        {/*    </option>*/}
-        {/*  ))}*/}
-        {/*</select>*/}
       </Typography>
 
       <TableContainer>
