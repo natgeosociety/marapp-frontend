@@ -29,8 +29,9 @@ export function useLayers(query: IQueryMany, swrOptions?: SWRInfiniteConfigInter
     group: groups.join(),
     ...query,
   };
+  const queryOrPreventFetch = query ? specificQuery : null;
 
-  return useFetchMany('/layers', query ? specificQuery : null, {
+  return useFetchMany('/layers', queryOrPreventFetch, {
     swrOptions,
     transformResponse(response) {
       return {

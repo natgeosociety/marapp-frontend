@@ -47,7 +47,7 @@ const LegendWrapper: any = Keyframes.Spring({
 });
 
 interface ILegend {
-  layerGroups?: [];
+  layerGroups?: any[];
   setLayerVisibility?: (data: any) => void;
   setLayerOrder?: (data: any) => void;
   setLayerOpacity?: (data: any) => void;
