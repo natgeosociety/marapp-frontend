@@ -17,8 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -26,13 +24,13 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import IconChevronDown from 'mdi-material-ui/ChevronDown';
-
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { cleanFilters, countFilters } from '../../utils/filters';
-import './styles.scss';
 
 interface IProps {
   open: boolean;
@@ -53,10 +51,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   expanded: {},
+  summaryExpanded: {
+    minHeight: '0 !important',
+    '& >div': {
+      marginTop: '0 !important',
+      marginBottom: '0 !important',
+    },
+  },
 }));
 
 const FilterBy = (props: IProps) => {
-  const { open, availableFilters, filters, onOpenToggle, onChange } = props;
+  const { availableFilters, filters, onChange } = props;
   const { t } = useTranslation();
   const classes = useStyles();
   const [currentAvailableFilters, setCurrentAvailableFilters] = useState({});
@@ -86,7 +91,6 @@ const FilterBy = (props: IProps) => {
     onChange({
       filters: {},
     });
-  const openToggle = () => onOpenToggle(!open);
 
   return (
     <Accordion
@@ -96,7 +100,12 @@ const FilterBy = (props: IProps) => {
         expanded: classes.expanded,
       }}
     >
-      <AccordionSummary expandIcon={<IconChevronDown />}>
+      <AccordionSummary
+        expandIcon={<IconChevronDown />}
+        classes={{
+          expanded: classes.summaryExpanded,
+        }}
+      >
         <Typography>
           <Typography component="span" variant="button">
             {t('Filters')}

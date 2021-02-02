@@ -17,33 +17,35 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
+import Fab from '@material-ui/core/Fab';
+import Grid from '@material-ui/core/Grid';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import { isEmpty } from 'lodash';
+import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
+import IconDotsHorizontal from 'mdi-material-ui/DotsHorizontal';
+import IconDownload from 'mdi-material-ui/Download';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Card, getGenericDate, Spinner, TitleHero } from '@marapp/earth-shared';
+import { getGenericDate, Spinner, TitleHero } from '@marapp/earth-shared';
 
 import { ICollection } from '../../../modules/collections/model';
 import CollectionDelete from '../collection-delete';
 import { CollectionDownloadMetrics } from '../collection-downloadmetrics';
 import { CollectionEditPlaces } from '../collection-editplaces';
 import { CollectionRename } from '../collection-rename';
-import './styles.scss';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Fab from '@material-ui/core/Fab';
-import Chip from '@material-ui/core/Chip';
-import { makeStyles } from '@material-ui/core/styles';
-import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
-import IconDotsHorizontal from 'mdi-material-ui/DotsHorizontal';
-import IconDownload from 'mdi-material-ui/Download';
 
 const useStyles = makeStyles((theme) => ({
+  header: {
+    backgroundColor: theme.palette.background.default,
+  },
   cardEditButton: {
     position: 'absolute',
     right: theme.spacing(2),
@@ -112,15 +114,17 @@ const CollectionDetails = (props: IProps) => {
 
   return (
     <div className="marapp-qa-collection-details">
-      <Card elevation="flush" className="ng-widget-header">
-        <TitleHero
-          title={name}
-          subtitle={organization}
-          extra={t('Collection')}
-          actions={canEdit ? editActions : null}
-          finePrint={`Updated: ${getGenericDate(updatedAt)}`}
-        />
-      </Card>
+      <Paper square={true} className={classes.header}>
+        <Box p={2}>
+          <TitleHero
+            title={name}
+            subtitle={organization}
+            extra={t('Collection')}
+            actions={canEdit ? editActions : null}
+            finePrint={`Updated: ${getGenericDate(updatedAt)}`}
+          />
+        </Box>
+      </Paper>
 
       {hasLocations ? (
         <Grid container={true} direction="column" spacing={1}>

@@ -17,18 +17,19 @@
   specific language governing permissions and limitations under the License.
 */
 
-import cn from 'classnames';
+import Box from '@material-ui/core/Box';
+import Fab from '@material-ui/core/Fab';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
+import IconDotsHorizontal from 'mdi-material-ui/DotsHorizontal';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InView } from 'react-intersection-observer';
 
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Fab from '@material-ui/core/Fab';
-import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
-import IconDotsHorizontal from 'mdi-material-ui/DotsHorizontal';
-
-import { AuthzGuards, DropdownSimple, TitleHero } from '@marapp/earth-shared';
+import { AuthzGuards, TitleHero } from '@marapp/earth-shared';
 
 import { useAuth0 } from '../../auth/auth0';
 import Widget from '../../components/widget';
@@ -57,6 +58,12 @@ interface IWidgetsState {
   widgetId?: string;
 }
 
+const useStyles = makeStyles((theme) => ({
+  header: {
+    backgroundColor: theme.palette.background.default,
+  },
+}));
+
 export default function WidgetsComponent(props: IProps) {
   const { groups, place, list, embed, toolbar, toggleLayer, metrics = [{}] } = props;
   const [widgetState, setWidgetState] = useState<IWidgetsState>({
@@ -69,6 +76,7 @@ export default function WidgetsComponent(props: IProps) {
   const [isOnClipLayer, setIsOnClipLayer] = useState(false);
   const { collapsedState } = widgetState;
   const { t } = useTranslation();
+  const classes = useStyles();
   const canExport = getPermissions(AuthzGuards.readExportsGuard, place.organization);
 
   const editActions = (
@@ -95,15 +103,16 @@ export default function WidgetsComponent(props: IProps) {
         <ClipLayer place={place} onCancel={() => setIsOnClipLayer(false)} groups={groups} />
       )}
       <div className="widgets--content">
-        <div className="ng-widget-title-container">
-          <TitleHero
-            title={place.name}
-            subtitle={place.organization}
-            extra={place.type}
-            actions={canExport ? editActions : null}
-            className="ng-widget-header ng-margin-medium "
-          />
-        </div>
+        <Paper square={true} elevation={3} className={classes.header}>
+          <Box p={2}>
+            <TitleHero
+              title={place.name}
+              subtitle={place.organization}
+              extra={place.type}
+              actions={canExport ? editActions : null}
+            />
+          </Box>
+        </Paper>
         {list.map((w: any, i) => {
           const [widgetMetricName] = w.metrics;
 

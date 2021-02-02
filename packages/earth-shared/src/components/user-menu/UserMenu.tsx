@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   languageButton: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.grey['600'],
     color: theme.palette.text.primary,
     marginRight: theme.spacing(1),
     '&:hover': {

@@ -22,12 +22,20 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Paper from '@material-ui/core/Paper';
+import withStyles from '@material-ui/core/styles/withStyles';
 import IconRecenter from 'mdi-material-ui/CrosshairsGps';
 
 import './styles.scss';
 
+const styles = (theme) => ({
+  root: {
+    backgroundColor: theme.palette.grey['600'],
+  },
+});
+
 export interface IRecenter {
   className?: string;
+  classes?: any;
   onClick: () => void;
 }
 
@@ -37,7 +45,7 @@ class RecenterControl extends React.PureComponent<IRecenter> {
   };
 
   public render() {
-    const { className, onClick } = this.props;
+    const { className, classes, onClick } = this.props;
 
     const classNames = classnames('marapp-qa-recentercontrol c-recenter-control', {
       [className]: !!className,
@@ -46,7 +54,7 @@ class RecenterControl extends React.PureComponent<IRecenter> {
     return (
       <Box mb={0.5}>
         <ButtonBase onClick={onClick}>
-          <Paper className={classNames}>
+          <Paper className={`${classes.root} ${classNames}`}>
             <Box p={0.5}>
               <IconRecenter fontSize="small" />
             </Box>
@@ -57,4 +65,4 @@ class RecenterControl extends React.PureComponent<IRecenter> {
   }
 }
 
-export default RecenterControl;
+export default withStyles(styles)(RecenterControl);

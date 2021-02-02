@@ -82,7 +82,9 @@ export const CollectionsCard = (props: IProps) => {
       <Box mb={1} position="relative">
         <Paper className="marapp-qa-other" square={true}>
           <Box p={2} pb={0}>
-            <Typography variant="subtitle1">{t('Collections')}</Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              {t('Collections')}
+            </Typography>
           </Box>
           {canCreate && (
             <Button

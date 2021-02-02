@@ -17,40 +17,30 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Collapse from '@material-ui/core/Collapse';
 import React from 'react';
 
-import { Chart, Html } from '@marapp/earth-shared';
+import { Chart } from '@marapp/earth-shared';
 
 import WidgetNoDataComponent from '../../../../components/widget/no-data';
+import WidgetTemplateText from '../../templateText';
 import { IWidgetTemplate } from '../model';
 import './styles.scss';
 
-class TerrestrialCarbon extends React.PureComponent<IWidgetTemplate, any> {
-  public static defaultProps = {
-    collapsed: false,
-  };
+const TerrestrialCarbon = (props: IWidgetTemplate) => {
+  const { chart, config, expanded, noData, template, values } = props;
 
-  public collapsed() {
-    const { template } = this.props;
-
-    return (
-      <div className="widget--template">
-        <Html html={template} />
-      </div>
-    );
+  if (noData) {
+    return <WidgetNoDataComponent expanded={expanded} />;
   }
 
-  public expanded() {
-    const { chart, template, config, values } = this.props;
+  return (
+    <div className="c-terrestial-carbon-widget">
+      <WidgetTemplateText expanded={expanded} template={template} />
 
-    return (
-      <div className="c-terrestial-carbon-widget">
-        <div className="widget--template ng-margin-large-bottom">
-          <Html html={template} />
-        </div>
-
-        {/* Chart */}
-        {!!chart.length && (
+      {/* Chart */}
+      {!!chart.length && (
+        <Collapse in={!!expanded}>
           <div className="tcw--content">
             <div className="tcw--number -center">
               {values.total}
@@ -71,22 +61,10 @@ class TerrestrialCarbon extends React.PureComponent<IWidgetTemplate, any> {
               </div>
             </div>
           </div>
-        )}
-      </div>
-    );
-  }
-
-  public render() {
-    const { collapsed, noData } = this.props;
-
-    if (noData) {
-      return <WidgetNoDataComponent />;
-    }
-
-    const content = collapsed ? this.collapsed() : this.expanded();
-
-    return content;
-  }
-}
+        </Collapse>
+      )}
+    </div>
+  );
+};
 
 export default TerrestrialCarbon;

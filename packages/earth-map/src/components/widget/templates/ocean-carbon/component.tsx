@@ -17,62 +17,38 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Collapse from '@material-ui/core/Collapse';
 import React from 'react';
 
-import { Html } from '@marapp/earth-shared';
-
 import WidgetNoDataComponent from '../../../../components/widget/no-data';
+import WidgetTemplateText from '../../templateText';
 import { IWidgetTemplate } from '../model';
 import './styles.scss';
 
-class OceanCarbon extends React.PureComponent<IWidgetTemplate, any> {
-  public static defaultProps = {
-    collapsed: false,
-  };
+const OceanCarbon = (props: IWidgetTemplate) => {
+  const { expanded, noData, template, values } = props;
 
-  public collapsed() {
-    const { template } = this.props;
-
-    return (
-      <div className="widget--template">
-        <Html html={template} />
-      </div>
-    );
+  if (noData) {
+    return <WidgetNoDataComponent expanded={expanded} />;
   }
 
-  public expanded() {
-    const { template, values } = this.props;
+  return (
+    <>
+      <WidgetTemplateText expanded={expanded} template={template} />
 
-    return (
-      <div className="c-ocean-carbon-widget">
-        <div className="widget--template">
-          <Html html={template} />
-        </div>
-
-        {/* Chart */}
-        {!!values && !!values.total && (
+      {/* Chart */}
+      {!!values && !!values.total && (
+        <Collapse in={!!expanded}>
           <div className="ocw--content">
             <div className="ocw--number -center">
               {values.total}
               <div className="ocw--subtitle">Ocean Carbon</div>
             </div>
           </div>
-        )}
-      </div>
-    );
-  }
-
-  public render() {
-    const { collapsed, noData } = this.props;
-
-    if (noData) {
-      return <WidgetNoDataComponent />;
-    }
-
-    const content = collapsed ? this.collapsed() : this.expanded();
-
-    return content;
-  }
-}
+        </Collapse>
+      )}
+    </>
+  );
+};
 
 export default OceanCarbon;
