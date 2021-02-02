@@ -18,13 +18,11 @@
 */
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Collapse from '@material-ui/core/Collapse';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
-import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -100,6 +98,15 @@ interface IWidgetState {
 }
 
 const styles = (theme) => ({
+  root: {
+    transition: theme.transitions.create('background', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    '&:hover': {
+      background: theme.palette.action.hover,
+    },
+  },
   accordionTitle: {
     display: 'block',
     maxWidth: 'calc(100% - 36px)',
@@ -108,16 +115,22 @@ const styles = (theme) => ({
     minHeight: theme.spacing(7),
   },
   accordionTitleGridItem: {
+    display: '-webkit-box',
+    maxHeight: theme.spacing(7),
     overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '-webkit-line-clamp': 2,
+    '-webkit-box-orient': 'vertical',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   content: {
     marginTop: theme.spacing(2),
   },
-  collapsedDescription: {
-    paddingRight: 8,
-  },
-  collapsedDescriptionHidden: {
-    display: 'none',
+  contentExpanded: {
+    marginBottom: theme.spacing(3),
   },
 });
 
@@ -291,7 +304,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
       expanded,
     } = this.state;
 
-    const classNames = classnames('marapp-qa-widget c-widget ng-ep-border-bottom', {
+    const classNames = classnames(classes.root, 'marapp-qa-widget c-widget ng-ep-border-bottom', {
       '-embed': embed,
       '-footer': footer,
       '-box': box,
@@ -316,7 +329,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
               onClick={this.toggleExpanded}
               className={classes.accordionTitleGridItem}
             >
-              <Typography color="textPrimary" variant="subtitle1" noWrap={!expanded}>
+              <Typography color="textPrimary" variant="subtitle1">
                 {name}
                 {showOrgLabel && (
                   <Typography component="span" color="textSecondary">
@@ -370,49 +383,29 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
             <div className="marapp-qa-widget-config-error ng-form-error-block">{t(error)}</div>
           )}
 
-          {data && (
-            <Fade in={!expanded}>
-              <Typography
-                // color="textSecondary"
-                variant="body2"
-                className={`${classes.collapsedDescription} ${
-                  expanded ? classes.collapsedDescriptionHidden : ''
-                }`}
-                dangerouslySetInnerHTML={{
-                  __html: data?.template || t('No data available'),
-                }}
-              />
-            </Fade>
+          {/* CONTENT || INFO */}
+
+          <div
+            className={`${classes.content} ${
+              expanded ? classes.contentExpanded : ''
+            } translate-content`}
+          >
+            {children({
+              ...this.props,
+              ...data,
+              expanded,
+              loading,
+              loaded,
+              error,
+              params,
+              onChangeParams: this.onChangeParams,
+            })}
+          </div>
+
+          {/* FOOTER */}
+          {!!layers?.length && footer && (
+            <Footer active={active} expanded={expanded} onToggleLayer={onToggleLayer} />
           )}
-
-          <Collapse in={!!expanded}>
-            <div className={classes.content}>
-              {/* CONTENT || INFO */}
-
-              <div className="widget--content ng-margin-large-bottom translate-content">
-                {children({
-                  ...this.props,
-                  ...data,
-                  loading,
-                  loaded,
-                  error,
-                  params,
-                  onChangeParams: this.onChangeParams,
-                })}
-              </div>
-
-              {/* FOOTER */}
-              {!!layers?.length && footer && (
-                <Footer
-                  collapsed={collapsed}
-                  active={active}
-                  color={color}
-                  onCollapse={onCollapse}
-                  onToggleLayer={onToggleLayer}
-                />
-              )}
-            </div>
-          </Collapse>
         </Box>
 
         <Dialog open={!!activeInfo} onClose={() => this.setState({ activeInfo: !activeInfo })}>

@@ -141,6 +141,7 @@ const Places = (props: IProps) => {
     >
       {showSearchResults ? (
         <PlacesSearchResults
+          availableFilters={meta?.filters}
           search={search.search}
           filters={search.filters}
           group={group}
