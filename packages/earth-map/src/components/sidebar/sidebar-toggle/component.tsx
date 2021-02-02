@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Button from '@material-ui/core/Button';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import classNames from 'classnames';
 import ToggleIcon from 'material-ui-toggle-icon';
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     width: theme.spacing(5),
+    minWidth: theme.spacing(5),
     backgroundColor: theme.palette.grey['600'],
     transition: 'all 0.3s ease',
   },
@@ -53,13 +55,13 @@ const SidebarToggle = (props: ISidebarToggle) => {
 
   return (
     <div className={classNames(className, classes.root, 'marapp-qa-sidebarclose')}>
-      <button type="button" onClick={() => setSidebarOpen(!open)} className={classes.button}>
+      <Button type="button" onClick={() => setSidebarOpen(!open)} className={classes.button}>
         <ToggleIcon
           on={open}
           onIcon={<IconLeft color="primary" />}
           offIcon={<IconRight color="primary" />}
         />
-      </button>
+      </Button>
     </div>
   );
 };

@@ -249,16 +249,13 @@ class Chart extends PureComponent<ChartProps> {
                     endAngle={90}
                     {...pies[key]}
                   >
-                    {data.map((item, index) => {
-                      console.log(data);
-                      return (
-                        <Cell
-                          key={`c_${item[pies[key].colorKey || 'color']}`}
-                          fill={item[pies[key].colorKey || 'color']}
-                          stroke={item[pies[key].colorKey || 'color']}
-                        />
-                      );
-                    })}
+                    {data.map((item, index) => (
+                      <Cell
+                        key={`c_${item[pies[key].colorKey || 'color']}`}
+                        fill={item[pies[key].colorKey || 'color']}
+                        stroke={item[pies[key].colorKey || 'color']}
+                      />
+                    ))}
                   </Pie>
                 ))}
 

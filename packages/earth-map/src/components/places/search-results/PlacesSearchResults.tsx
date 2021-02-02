@@ -88,9 +88,11 @@ export function PlacesSearchResults(props: IProps) {
     currentAvailableFilters
   );
 
-  const itemCount =
+  const itemCount = Math.min(
     currentFilteredNumberOfEntities ||
-    (isLoading ? fakeResultsMapping[search.length] || 1 : data?.length || 0);
+      (isLoading ? fakeResultsMapping[search.length] || 1 : data?.length || 0),
+    10
+  );
 
   return (
     <Paper square={true} className="marapp-qa-infinitelist">

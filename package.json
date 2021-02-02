@@ -38,6 +38,7 @@
     "lodash": "^4.17.11",
     "luma.gl": "7.3.2",
     "material-ui-popup-state": "^1.7.1",
+    "material-ui-toggle-icon": "^1.1.1",
     "mdi-material-ui": "^6.21.0",
     "moment": "^2.24.0",
     "node-sass": "^4.11.0",
