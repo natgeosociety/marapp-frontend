@@ -99,8 +99,12 @@ interface IWidgetState {
 
 const styles = (theme) => ({
   root: {
+    transition: theme.transitions.create('background', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
     '&:hover': {
-      backgroundColor: theme.palette.action.hover,
+      background: theme.palette.action.hover,
     },
   },
   accordionTitle: {
