@@ -80,7 +80,9 @@ export function PlacesSearchResults(props: IProps) {
     <Paper square={true} className="marapp-qa-infinitelist">
       <Box pb={2}>
         <Box p={2} pb={0}>
-          <Typography variant="subtitle1">{title}</Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            {title}
+          </Typography>
         </Box>
         <List
           awaitMore={awaitMore}

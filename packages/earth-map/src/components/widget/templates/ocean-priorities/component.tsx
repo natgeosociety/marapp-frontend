@@ -17,41 +17,29 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Collapse from '@material-ui/core/Collapse';
 import classnames from 'classnames';
 import React from 'react';
 
-import { Html } from '@marapp/earth-shared';
-
 import WidgetNoDataComponent from '../../../../components/widget/no-data';
+import WidgetTemplateText from '../../templateText';
 import { IWidgetTemplate } from '../model';
 import './styles.scss';
 
-class OceanCarbonPriorities extends React.PureComponent<IWidgetTemplate, any> {
-  public static defaultProps = {
-    collapsed: false,
-  };
+const OceanCarbonPriorities = (props: IWidgetTemplate) => {
+  const { chart, expanded, noData, template } = props;
 
-  public collapsed() {
-    const { template } = this.props;
-
-    return (
-      <div className="widget--template">
-        <Html html={template} />
-      </div>
-    );
+  if (noData) {
+    return <WidgetNoDataComponent expanded={expanded} />;
   }
 
-  public expanded() {
-    const { chart, template } = this.props;
+  return (
+    <div className="c-chart-ocean-carbon-priorities">
+      <WidgetTemplateText expanded={expanded} template={template} />
 
-    return (
-      <div className="c-chart-ocean-carbon-priorities">
-        <div className="widget--template">
-          <Html html={template} />
-        </div>
-
-        {/* Chart */}
-        {!!chart.length && (
+      {/* Chart */}
+      {!!chart.length && (
+        <Collapse in={!!expanded}>
           <div className="ocp--chart">
             <ul className="ocp--chart-list">
               {chart.map((c: any) => (
@@ -71,22 +59,10 @@ class OceanCarbonPriorities extends React.PureComponent<IWidgetTemplate, any> {
               ))}
             </ul>
           </div>
-        )}
-      </div>
-    );
-  }
-
-  public render() {
-    const { collapsed, noData } = this.props;
-
-    if (noData) {
-      return <WidgetNoDataComponent />;
-    }
-
-    const content = collapsed ? this.collapsed() : this.expanded();
-
-    return content;
-  }
-}
+        </Collapse>
+      )}
+    </div>
+  );
+};
 
 export default OceanCarbonPriorities;

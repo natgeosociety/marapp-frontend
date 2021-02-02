@@ -18,6 +18,7 @@
 */
 
 import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import ToggleIcon from 'material-ui-toggle-icon';
 import IconRemoveLayer from 'mdi-material-ui/LayersOffOutline';
@@ -36,14 +37,12 @@ const useStyles = makeStyles((theme) => ({
 
 interface IWidgetFooter {
   active: boolean;
-  collapsed?: any;
-  color?: any;
+  expanded?: any;
   onToggleLayer: (active: boolean) => {};
-  onCollapse: (active: boolean) => {};
 }
 
 function WidgetFooterComponent(props: IWidgetFooter) {
-  const { active, onToggleLayer } = props;
+  const { active, expanded, onToggleLayer } = props;
   const { t } = useTranslation();
   const classes = useStyles();
 
@@ -52,24 +51,26 @@ function WidgetFooterComponent(props: IWidgetFooter) {
   };
 
   return (
-    <footer className="marapp-qa-widgetfooter widget--footer">
-      <Button
-        variant={active ? 'contained' : 'outlined'}
-        color={active ? 'secondary' : 'default'}
-        className={classes.root}
-        onClick={toggleLayer}
-        size="large"
-        endIcon={
-          <ToggleIcon
-            on={active}
-            onIcon={<IconRemoveLayer fontSize="small" />}
-            offIcon={<IconAddLayer fontSize="small" />}
-          />
-        }
-      >
-        {active ? t('Remove from map') : t('Show on map')}
-      </Button>
-    </footer>
+    <Collapse in={expanded}>
+      <footer className="marapp-qa-widgetfooter widget--footer">
+        <Button
+          variant={active ? 'contained' : 'outlined'}
+          color={active ? 'secondary' : 'default'}
+          className={classes.root}
+          onClick={toggleLayer}
+          size="large"
+          endIcon={
+            <ToggleIcon
+              on={active}
+              onIcon={<IconRemoveLayer fontSize="small" />}
+              offIcon={<IconAddLayer fontSize="small" />}
+            />
+          }
+        >
+          {t(active ? 'Remove from map' : 'Show on map')}
+        </Button>
+      </footer>
+    </Collapse>
   );
 }
 

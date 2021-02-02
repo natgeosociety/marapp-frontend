@@ -37,6 +37,7 @@ import { setupErrors } from '@marapp/earth-shared';
 
 import { EarthRoutes, IRouter } from '../../../modules/router/model';
 import PlacesService from '../../../services/PlacesService';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface IProps {
   privateGroups: string[];
@@ -136,7 +137,7 @@ const CollectionNew = (props: IProps) => {
             </Grid>
 
             <Grid item={true}>
-              {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
+              {saveError && <Typography color="error">{saveError}</Typography>}
               <Grid container={true} spacing={1}>
                 <Grid item={true}>
                   <Button
@@ -145,6 +146,7 @@ const CollectionNew = (props: IProps) => {
                     type="submit"
                     size="large"
                     disabled={!isValid || !isDirty || isSubmitting || !canCreateCollection}
+                    endIcon={isSubmitting && <CircularProgress size={16} />}
                   >
                     {t('Create Collection')}
                   </Button>

@@ -29,8 +29,9 @@ import './styles.scss';
 
 const styles = (theme) => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.grey['600'],
     '& button': {
+      borderColor: 'transparent',
       minWidth: 0,
       padding: theme.spacing(0.5),
     },

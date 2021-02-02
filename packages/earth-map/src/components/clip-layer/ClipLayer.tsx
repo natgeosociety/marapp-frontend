@@ -17,22 +17,45 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import FileSaver from 'file-saver';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import {
+  AsyncSelect,
+  DropdownItem,
+  ReactSelect,
+  serializeFilters,
+  TitleHero,
+} from '@marapp/earth-shared';
+
+import { IPlace } from '../../modules/places/model';
+import ExportService from '../../services/ExportService';
+import LayersService from '../../services/LayersService';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: theme.palette.background.default,
+  },
   header: {
     backgroundColor: theme.palette.grey['600'],
   },
@@ -44,20 +67,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
   },
 }));
-
-import {
-  AsyncSelect,
-  Card,
-  DropdownItem,
-  ReactSelect,
-  serializeFilters,
-  Spinner,
-  TitleHero,
-} from '@marapp/earth-shared';
-
-import { IPlace } from '../../modules/places/model';
-import ExportService from '../../services/ExportService';
-import LayersService from '../../services/LayersService';
 
 interface IProps {
   place: Partial<IPlace>;
@@ -76,7 +85,7 @@ export function ClipLayer(props: IProps) {
   const [saveError, setSaveError] = useState('');
   const [childLayers, setChildLayers] = useState([]);
   const { t } = useTranslation();
-  const { register, handleSubmit, formState, control, watch, setValue } = useForm({
+  const { handleSubmit, formState, control, watch, setValue } = useForm({
     mode: 'all',
   });
   const classes = useStyles();
@@ -108,10 +117,7 @@ export function ClipLayer(props: IProps) {
     (childLayers.length ? selectedChildLayer : true);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="marapp-qa-cliplayer sidebar-content-full ng-form ng-form-dark"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className={`${classes.root} marapp-qa-cliplayer`}>
       <Box mb={1}>
         <Paper className={classes.header} elevation={4} square={true}>
           <Box p={2}>
@@ -125,9 +131,10 @@ export function ClipLayer(props: IProps) {
           <Box p={2}>
             <Grid container={true} spacing={2}>
               <Grid item={true} xs={12}>
-                <label htmlFor="layer-selector" className="ng-text-bold">
+                <Typography htmlFor="layer-selector" component="label" gutterBottom={true}>
                   {t('Select layer for download')}
-                </label>
+                </Typography>
+
                 <Controller
                   as={AsyncSelect}
                   id="layer-selector"
@@ -148,9 +155,10 @@ export function ClipLayer(props: IProps) {
 
               {!!childLayers.length && (
                 <Grid item={true} xs={12}>
-                  <label htmlFor="child-layer-selector" className="ng-text-bold">
+                  <Typography htmlFor="child-layer-selector" component="label" gutterBottom={true}>
                     {t('Select layer for download')}
-                  </label>
+                  </Typography>
+
                   <Box mb={2}>
                     <Controller
                       as={ReactSelect}
@@ -171,7 +179,8 @@ export function ClipLayer(props: IProps) {
               )}
 
               <Grid item={true} xs={12}>
-                <label className="ng-text-bold">{t('Select a file type for download')}</label>
+                <Typography component="label">{t('Select a file type for download')}</Typography>
+
                 <Controller
                   name="exportType"
                   control={control}
@@ -208,15 +217,9 @@ export function ClipLayer(props: IProps) {
                     color="secondary"
                     className="marapp-qa-actiondownload"
                     disabled={!isValidCustom || isSubmitting || !isDirty}
+                    endIcon={isSubmitting && <CircularProgress size={16} />}
                   >
-                    {isSubmitting ? (
-                      <>
-                        <Spinner size="nano" position="relative" className="ng-display-inline" />
-                        {t('Downloading')}
-                      </>
-                    ) : (
-                      <>{t('Download')}</>
-                    )}
+                    {isSubmitting ? t('Downloading') : t('Download')}
                   </Button>
                 </Grid>
 

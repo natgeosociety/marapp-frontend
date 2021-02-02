@@ -40,7 +40,9 @@ export const LastViewedPlace = ({ place, group }: IProps) => {
     <Box mb={1}>
       <Paper className="marapp-qa-lastviewedplace" square={true}>
         <Box p={2} pb={0}>
-          <Typography variant="subtitle1">{t('Last viewed place')}</Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            {t('Last viewed place')}
+          </Typography>
         </Box>
 
         <List>

@@ -36,6 +36,7 @@ import { ICollection } from '../../../modules/collections/model';
 import { LocationTypeEnum } from '../../../modules/places/model';
 import PlacesService from '../../../services/PlacesService';
 import { CollectionConflict } from '../collection-conflict';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface IProps {
   collection: ICollection;
@@ -46,8 +47,23 @@ interface IProps {
 }
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: theme.palette.background.default,
+  },
   header: {
     backgroundColor: theme.palette.grey['600'],
+  },
+  scrollContainer: {
+    flex: '1 1 auto',
+    overflow: 'auto',
   },
 }));
 
@@ -64,7 +80,7 @@ export function CollectionEditPlaces(props: IProps) {
   const { isValid, isSubmitting, isDirty } = formState;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-edit-places">
+    <form onSubmit={handleSubmit(onSubmit)} className={`${classes.root} collection-edit-places`}>
       <Box mb={1}>
         <Paper square={true} elevation={3} className={classes.header}>
           <Box p={2}>
@@ -82,12 +98,14 @@ export function CollectionEditPlaces(props: IProps) {
         </Paper>
       </Box>
 
-      <div className="scroll-container">
+      <div className={classes.scrollContainer}>
         <Paper square={true}>
           <Box p={2}>
             <Grid container={true} spacing={2}>
               <Grid item={true} xs={12}>
-                <label>{t('Add places')}:</label>
+                <Typography component="label" gutterBottom={true}>
+                  {t('Add places')}:
+                </Typography>
                 <Controller
                   as={AsyncSelect}
                   name="locations"
@@ -139,9 +157,11 @@ export function CollectionEditPlaces(props: IProps) {
                     color="secondary"
                     variant="contained"
                     size="large"
+                    type="submit"
                     disabled={!isValid || isSubmitting || !isDirty}
+                    endIcon={isSubmitting && <CircularProgress size={16} />}
                   >
-                    {isSubmitting ? t('Saving') : t('Save')}
+                    {t(isSubmitting ? 'Saving' : 'Save')}
                   </Button>
                 </Grid>
                 <Grid item={true}>

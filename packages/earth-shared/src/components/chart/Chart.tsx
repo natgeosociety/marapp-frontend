@@ -245,7 +245,7 @@ class Chart extends PureComponent<ChartProps> {
                     dataKey={key}
                     startAngle={450}
                     // @ts-ignore
-                    paddingAngle={data.find(({ percentage }) => percentage === 0) ? 0 : 3}
+                    paddingAngle={data.find(({ percentage }) => percentage === 0) ? 0 : 2}
                     endAngle={90}
                     {...pies[key]}
                   >

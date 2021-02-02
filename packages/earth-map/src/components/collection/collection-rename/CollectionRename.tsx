@@ -35,6 +35,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import { ICollection } from '../../../modules/collections/model';
 import PlacesService from '../../../services/PlacesService';
 import { CollectionConflict } from '../collection-conflict';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface IProps {
   collection: ICollection;
@@ -44,8 +45,23 @@ interface IProps {
 }
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: theme.palette.background.default,
+  },
   header: {
     backgroundColor: theme.palette.grey['600'],
+  },
+  scrollContainer: {
+    flex: '1 1 auto',
+    overflow: 'auto',
   },
 }));
 
@@ -63,7 +79,7 @@ export function CollectionRename(props: IProps) {
   const renderErrorFor = setupErrors(errors, touched);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-rename">
+    <form onSubmit={handleSubmit(onSubmit)} className={`${classes.root} collection-rename`}>
       <Box mb={1}>
         <Paper square={true} elevation={3} className={classes.header}>
           <Box p={2}>
@@ -74,7 +90,7 @@ export function CollectionRename(props: IProps) {
         </Paper>
       </Box>
 
-      <div className="scroll-container">
+      <div className={classes.scrollContainer}>
         <Paper square={true}>
           <Box p={2} mb={1}>
             <Box mb={2}>
@@ -90,7 +106,11 @@ export function CollectionRename(props: IProps) {
               />
             </Box>
 
-            {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
+            {saveError && (
+              <Typography color="error" paragraph={true}>
+                {saveError}
+              </Typography>
+            )}
 
             <Grid container={true} spacing={1}>
               <Grid item={true}>
@@ -100,8 +120,9 @@ export function CollectionRename(props: IProps) {
                   color="secondary"
                   size="large"
                   disabled={!isDirty || !isValid || isSubmitting}
+                  endIcon={isSubmitting && <CircularProgress size={16} />}
                 >
-                  {isSubmitting ? t('Renaming collection') : t('Rename Collection')}
+                  {t(isSubmitting ? 'Renaming collection' : 'Rename Collection')}
                 </Button>
               </Grid>
               <Grid item={true}>

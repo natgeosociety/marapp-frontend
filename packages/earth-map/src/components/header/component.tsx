@@ -159,12 +159,7 @@ const Header = (props: IProps) => {
         type: 'EARTH',
       }}
     >
-      <img
-        src={APP_LOGO}
-        alt={MAP_APP_NAME}
-        className="ng-margin-remove ng-display-block"
-        onClick={handleResetLocation}
-      />
+      <img src={APP_LOGO} alt={MAP_APP_NAME} onClick={handleResetLocation} />
     </Link>
   );
 

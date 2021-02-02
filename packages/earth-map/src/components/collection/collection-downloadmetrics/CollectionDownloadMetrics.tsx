@@ -25,6 +25,7 @@ import Paper from '@material-ui/core/Paper';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import FileSaver from 'file-saver';
 import flatten from 'flat';
 import json2csv from 'json2csv';
@@ -38,6 +39,7 @@ import { ReactSelect, serializeFilters, TitleHero } from '@marapp/earth-shared';
 
 import { ICollection } from '../../../modules/collections/model';
 import MetricService from '../../../services/MetricService';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface IProps {
   collection: ICollection;
@@ -54,8 +56,23 @@ const FILE_TYPES = [
 ];
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: theme.palette.background.default,
+  },
   header: {
     backgroundColor: theme.palette.grey['600'],
+  },
+  scrollContainer: {
+    flex: '1 1 auto',
+    overflow: 'auto',
   },
   radioGroup: {
     flexDirection: 'row',
@@ -75,7 +92,7 @@ export function CollectionDownloadMetrics(props: IProps) {
   const { name, organization, slug: collectionSlug } = collection;
   const [metricSlugs, setMetricSlugs] = useState([]);
   const [isLoadingMetricSlugs, setIsLoadingMetricSlugs] = useState(false);
-  const { register, handleSubmit, formState, control, watch } = useForm({
+  const { handleSubmit, formState, control, watch } = useForm({
     mode: 'all',
   });
   const { isDirty, isValid, isSubmitting } = formState;
@@ -95,7 +112,7 @@ export function CollectionDownloadMetrics(props: IProps) {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full ng-form ng-form-dark">
+    <form onSubmit={handleSubmit(onSubmit)} className={classes.root}>
       <Box mb={1}>
         <Paper square={true} elevation={3} className={classes.header}>
           <Box p={2}>
@@ -104,12 +121,15 @@ export function CollectionDownloadMetrics(props: IProps) {
         </Paper>
       </Box>
 
-      <div className="scroll-container">
+      <div className={classes.scrollContainer}>
         <Paper square={true}>
           <Box p={2}>
             <Grid container={true} spacing={2}>
               <Grid item={true} xs={12}>
-                <label>{t('Select metrics for download')}</label>
+                <Typography component="label" gutterBottom={true}>
+                  {t('Select metrics for download')}
+                </Typography>
+
                 <Controller
                   as={ReactSelect}
                   name="metrics"
@@ -128,7 +148,8 @@ export function CollectionDownloadMetrics(props: IProps) {
               </Grid>
 
               <Grid item={true} xs={12}>
-                <label>{t('Select a file type for download')}</label>
+                <Typography component="label">{t('Select a file type for download')}</Typography>
+
                 <Controller
                   name="fileType"
                   control={control}
@@ -160,8 +181,9 @@ export function CollectionDownloadMetrics(props: IProps) {
                     size="large"
                     className="marapp-qa-actiondownload"
                     disabled={!isValid || isSubmitting || !isDirty || !metricsWatcher?.length}
+                    endIcon={isSubmitting && <CircularProgress size={16} />}
                   >
-                    {t('Download')}
+                    {t(isSubmitting ? 'Downloading' : 'Download')}
                   </Button>
                 </Grid>
                 <Grid item={true}>
