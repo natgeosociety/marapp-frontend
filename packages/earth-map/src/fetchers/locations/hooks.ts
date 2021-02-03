@@ -16,12 +16,12 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-import { groupBy, sortBy } from 'lodash';
 import { ConfigInterface, SWRInfiniteConfigInterface } from 'swr';
 
 import { useAuth0 } from '../../auth/auth0';
 import { IQueryMany, useFetchMany } from '../useFetchMany';
 import { IQueryOne, useFetchOne } from '../useFetchOne';
+import { TRANSFORM } from '../transformers';
 
 export function useLocations(query: IQueryMany, swrOptions?: SWRInfiniteConfigInterface) {
   const { groups } = useAuth0();
@@ -32,32 +32,7 @@ export function useLocations(query: IQueryMany, swrOptions?: SWRInfiniteConfigIn
 
   return useFetchMany('/locations', specificQuery, {
     swrOptions,
-    transformResponse: (response) => {
-      const transformer = (payload) => {
-        const filtersWithLabels = payload.map((filter) => ({
-          ...filter,
-          label: filter.value,
-          ...(typeof filter.value === 'boolean' && {
-            label: filter.value ? 'Yes' : 'No',
-            value: filter.value ? 'true' : 'false',
-          }),
-        }));
-
-        const availableFilters = groupBy(sortBy(filtersWithLabels, 'value'), 'key');
-
-        return availableFilters;
-      };
-
-      const result = {
-        ...response,
-        meta: {
-          ...response.meta,
-          filters: transformer(response.meta.filters),
-        },
-      };
-
-      return result;
-    },
+    transformResponse: TRANSFORM.groupFilters,
   });
 }
 

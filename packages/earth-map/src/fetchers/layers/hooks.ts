@@ -18,10 +18,11 @@
  */
 
 import { SWRInfiniteConfigInterface } from 'swr';
+import compose from 'lodash/fp/compose';
 
 import { useAuth0 } from '../../auth/auth0';
 import { IQueryMany, IResponseMany, useFetchMany } from '../useFetchMany';
-import { flattenLayerConfig } from '../../sagas/saga-utils';
+import { TRANSFORM } from '../transformers';
 
 export function useLayers(query: IQueryMany, swrOptions?: SWRInfiniteConfigInterface) {
   const { groups } = useAuth0();
@@ -33,11 +34,6 @@ export function useLayers(query: IQueryMany, swrOptions?: SWRInfiniteConfigInter
 
   return useFetchMany('/layers', queryOrPreventFetch, {
     swrOptions,
-    transformResponse(response) {
-      return {
-        ...response,
-        data: response.data.map(flattenLayerConfig),
-      };
-    },
+    transformResponse: compose(TRANSFORM.flattenLayers, TRANSFORM.groupFilters),
   });
 }

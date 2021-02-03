@@ -32,10 +32,6 @@ import { setPlacesSearch } from '../../modules/places/actions';
 import { setSidebarPanel, setSidebarPanelExpanded } from '../../modules/sidebar/actions';
 import Layers from './Layers';
 
-function WithData(props) {
-  return <Layers {...props} />;
-}
-
 export default connect(
   (state: any, props: any) => ({
     ...state.sidebar,
@@ -61,4 +57,4 @@ export default connect(
     nextLayersPage,
     setLayersSearchOpen,
   }
-)(WithData);
+)(Layers);

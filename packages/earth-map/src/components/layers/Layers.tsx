@@ -21,6 +21,7 @@ import { debounce, sortBy } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useLayers, QUERY_LAYERS } from '../../fetchers';
 import BackToLocation from '../../components/back-to-location';
 import FilterBy from '../../components/filter-by';
 import InfiniteList from '../../components/infinite-list';
@@ -91,16 +92,16 @@ const Layers = (props: IProps) => {
     nextLayersPage,
     setLayersSearchOpen,
   } = props;
-  const { t } = useTranslation();
-
-  const { loading, search, listActive, nextPageCursor } = layers;
-
+  const { search, active } = layers;
   const hasSearchTerm = !!search.search;
   const showX = hasSearchTerm;
   const showFilter = !selected || panelExpanded;
   const showBack = selected && panelExpanded;
 
-  const sortedLayers = sortBy(listActive, 'name');
+  const { t } = useTranslation();
+  const { data: layersData, meta, awaitMore, nextPage, isValidating } = useLayers(
+    QUERY_LAYERS.getFiltered(search.search, search.filters)
+  );
 
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -156,7 +157,7 @@ const Layers = (props: IProps) => {
               onOpenToggle={setLayersSearchOpen}
               onChange={setLayersSearch}
               filters={search.filters}
-              availableFilters={search.availableFilters}
+              availableFilters={meta?.filters}
             />
           )}
           {showBack && (
@@ -190,16 +191,16 @@ const Layers = (props: IProps) => {
           </div>
           <InfiniteList
             title={t('Layers')}
-            data={layers.results}
-            loading={loading}
-            nextPageCursor={nextPageCursor}
-            onNextPage={nextLayersPage}
+            data={layersData}
+            isValidating={isValidating}
+            onNextPage={nextPage}
+            awaitMore={awaitMore}
           >
             {(layer) => (
               <ListItem
                 hint={layer.$searchHint.name}
                 title={layer.name}
-                active={!!listActive.find((x) => x.slug === layer.slug)}
+                active={!!active.find((slug) => slug === layer.slug)}
                 key={`${layer.slug}-${layer.organization}`}
                 onClick={debounce(() => onToggleLayer(layer), 200)}
                 organization={group.length > 1 && layer.organization}

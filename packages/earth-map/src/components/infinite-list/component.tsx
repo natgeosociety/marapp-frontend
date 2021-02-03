@@ -7,8 +7,8 @@ import { PAGE_SIZE } from '../../theme';
 
 interface IProps {
   data: any[];
-  loading: boolean;
-  nextPageCursor: string;
+  isValidating: boolean;
+  awaitMore: boolean;
   children: (item: any) => React.ReactElement;
   onNextPage: (config: any) => void;
   pageSize?: number;
@@ -18,24 +18,17 @@ interface IProps {
 const InfiniteList = (props: IProps) => {
   const {
     data,
-    loading,
+    isValidating,
+    awaitMore,
     pageSize = PAGE_SIZE,
-    nextPageCursor,
     children,
     onNextPage,
     title,
   } = props;
-  const awaitMore = !loading && !!nextPageCursor;
 
-  const onIntersection = (size, pageSize) => {
-    if (!awaitMore) {
-      return;
-    }
-    onNextPage({
-      pageCursor: nextPageCursor,
-      pageSize,
-    });
-  };
+  if (!data) {
+    return <Spinner position="relative" />;
+  }
 
   return (
     <div className="marapp-qa-infinitelist ng-section-background ng-position-relative ng-padding-medium-bottom">
@@ -49,9 +42,9 @@ const InfiniteList = (props: IProps) => {
         pageSize={pageSize}
         itemCount={data.length}
         renderItem={(index) => children(data[index])}
-        onIntersection={onIntersection}
+        onIntersection={onNextPage}
       />
-      {loading && <Spinner position="relative" />}
+      {isValidating && <Spinner position="relative" />}
     </div>
   );
 };

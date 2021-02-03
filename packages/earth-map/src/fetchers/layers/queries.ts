@@ -19,7 +19,6 @@
 
 import { serializeFilters } from '@marapp/earth-shared';
 import { IQueryMany } from '../useFetchMany';
-import { LAYER_QUERY } from '../../sagas/model';
 
 export const QUERY_LAYERS = {
   getActive(slugs: string): IQueryMany {
@@ -36,13 +35,12 @@ export const QUERY_LAYERS = {
       include: 'references',
     };
   },
-  getFiltered(search: string, slug: string): IQueryMany {
+
+  getFiltered(search: string, filters): IQueryMany {
     return {
-      ...LAYER_QUERY,
-      filter: serializeFilters({
-        slug,
-      }),
       search,
+      filter: serializeFilters(filters),
+      include: 'references',
     };
   },
 };
