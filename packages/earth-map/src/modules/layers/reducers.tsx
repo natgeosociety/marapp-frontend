@@ -17,11 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 import * as actions from './actions';
+import initialState from './initial-state';
 
 export default {
   [actions.setLayersActive]: (state, { payload }) => ({
     ...state,
     active: payload,
+  }),
+  [actions.resetLayersActive]: (state) => ({
+    ...state,
+    active: [],
   }),
   [actions.toggleLayer]: (state, { payload: layer }) => {
     const { active } = state;
@@ -151,5 +156,9 @@ export default {
         open: payload,
       },
     };
+  },
+
+  [actions.resetLayers]: () => {
+    return initialState;
   },
 };

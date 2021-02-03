@@ -20,6 +20,7 @@
 import { createAction } from 'vizzuality-redux-tools';
 
 export const setLayersActive = createAction('LAYERS/setLayersActive');
+export const resetLayersActive = createAction('LAYERS/resetLayersActive');
 export const toggleLayer = createAction('LAYERS/toggleLayer');
 export const setLayerInfo = createAction('LAYERS/setLayerInfo');
 export const setLayerOrder = createAction('LAYERS/setLayerOrder');
@@ -31,6 +32,7 @@ export const setLayerSettings = createAction('LAYERS/setLayerSettings');
 export const setLayersSearch = createAction('LAYERS/setLayersSearch');
 export const setLayersSearchOpen = createAction('LAYERS/setLayersSearchOpen');
 export const setLayersSearchFilters = createAction('LAYERS/setLayersSearchFilters');
+export const resetLayers = createAction('LAYERS/resetLayers');
 
 export default {
   toggleLayer,
@@ -41,4 +43,6 @@ export default {
   setLayerGroupCurrent,
   setLayerTimelineCurrent,
   setLayerSettings,
+  resetLayersActive,
+  resetLayers,
 };

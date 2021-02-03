@@ -93,9 +93,6 @@ export function CollectionDelete(props: IProps) {
         },
       });
       dispatch({
-        type: 'LAYERS/resetLayers',
-      });
-      dispatch({
         type: 'SIDEBAR/setSidebarPanel',
         payload: EPanels.PLACES,
       });

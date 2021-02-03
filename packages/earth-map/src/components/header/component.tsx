@@ -37,7 +37,6 @@ interface IProps {
   group?: string[];
   setPlacesSearch?: Function;
   resetMap?: Function;
-  resetLayerCache?: Function;
   setUserGroup?: Function;
   setLayersSearch?: Function;
   setSidebarPanel?: Function;
@@ -54,7 +53,6 @@ const Header = (props: IProps) => {
   } = useContext(Auth0Context);
   const {
     group,
-    resetLayerCache,
     resetMap,
     setUserGroup,
     setPlacesSearch,
@@ -113,7 +111,6 @@ const Header = (props: IProps) => {
 
     setSelectedGroups(newSelection);
     setUserGroup(temp);
-    resetLayerCache();
     setPlacesSearch({
       filters: {},
     });

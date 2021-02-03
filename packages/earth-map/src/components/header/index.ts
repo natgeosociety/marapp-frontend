@@ -19,7 +19,7 @@
 
 import { connect } from 'react-redux';
 
-import { resetLayerCache, resetLayers, setLayersSearch } from '../../modules/layers/actions';
+import { resetLayers, setLayersSearch } from '../../modules/layers/actions';
 import { resetMap } from '../../modules/map/actions';
 import { setPlacesSearch } from '../../modules/places/actions';
 import { setSidebarPanel } from '../../modules/sidebar/actions';
@@ -34,7 +34,6 @@ export default connect(
   {
     setUserGroup,
     setPlacesSearch,
-    resetLayerCache,
     resetMap,
     setLayersSearch,
     setSidebarPanel,
