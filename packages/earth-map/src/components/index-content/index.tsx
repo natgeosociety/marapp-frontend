@@ -25,14 +25,14 @@ import { Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '../../auth/auth0';
 import { QUERY_DASHBOARDS, QUERY_LOCATIONS, useDashboards, useLocation } from '../../fetchers';
-import { persistData, setLastViewedPlace } from '../../modules/global/actions';
+import { setLastViewedPlace } from '../../modules/global/actions';
 import { EMainType } from '../../modules/global/model';
 import { toggleLayer } from '../../modules/layers/actions';
 import { setMapBounds, setLocationHighlight, resetMap } from '../../modules/map/actions';
 import { setPlacesSearch } from '../../modules/places/actions';
 import { setSidebarInfo } from '../../modules/sidebar/actions';
 import { IWidget } from '../../modules/widget/model';
-import { flattenLayerConfig } from '../../sagas/saga-utils';
+import { flattenLayerConfig } from '../../fetchers/transformers';
 import WidgetsComponent from '../widgets/component';
 
 const parseWidgets = (place, widgets, activeLayers, slugs) => {
@@ -76,7 +76,6 @@ function WithData(props) {
     setMapBounds,
     resetMap,
     setLastViewedPlace,
-    persistData,
   } = props;
   const { selectedGroup, groups } = useAuth0();
   const { data: placeData } = useLocation(slug, QUERY_LOCATIONS.getOne(organization));
@@ -115,7 +114,6 @@ function WithData(props) {
       mainType: EMainType.LOCATION,
       subType: placeData.type,
     });
-    persistData();
 
     return function cleanup() {
       setPlacesSearch({ search: '' });
@@ -162,7 +160,6 @@ export default connect(
     resetMap,
     setPlacesSearch,
     setLastViewedPlace,
-    persistData,
     setLocationHighlight,
   }
 )(WithData);

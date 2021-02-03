@@ -86,7 +86,6 @@ class UrlComponent extends PureComponent<IUrl, any> {
     const { url: prevUrl } = prevProps;
 
     if (url !== prevUrl) {
-      // causes 'EARTH' and 'LOCATION' sagas to refetch if not ignored by `ignoreRedirectsTo()` function
       replace(url);
     }
   }

@@ -27,7 +27,6 @@ module.exports = {
     '^fonts(.*)$': '<rootDir>/src/fonts$1',
     '^modules(.*)$': '<rootDir>/src/modules$1',
     '^pages(.*)$': '<rootDir>/src/pages$1',
-    '^sagas(.*)$': '<rootDir>/src/sagas$1',
     '^services(.*)$': '<rootDir>/src/services$1',
     '^store(.*)$': '<rootDir>/src/store$1',
     '^utils(.*)$': '<rootDir>/src/utils$1',

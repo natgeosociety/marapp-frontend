@@ -56,7 +56,6 @@ module.exports = {
         '@app/modules': path.join(__dirname, 'src/modules'),
         '@app/pages': path.join(__dirname, 'src/pages'),
         '@app/pages-client': path.join(__dirname, 'src/pages-client'),
-        '@app/sagas': path.join(__dirname, 'src/sagas'),
         '@app/services': path.join(__dirname, 'src/services'),
         '@app/store': path.join(__dirname, 'src/store'),
         '@app/utils': path.join(__dirname, 'src/utils'),

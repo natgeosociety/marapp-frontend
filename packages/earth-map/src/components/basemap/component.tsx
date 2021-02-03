@@ -27,7 +27,6 @@ import './styles.scss';
 interface IBasemap {
   mapStyle: any;
   setMapStyle: any;
-  persistData: any;
   basemap?: string;
   basemaps?: Array<{
     slug: string;
@@ -39,10 +38,9 @@ interface IBasemap {
 
 class BasemapComponent extends React.PureComponent<IBasemap> {
   public onBasemap = ({ id }) => {
-    const { mapStyle, setMapStyle, persistData } = this.props;
+    const { mapStyle, setMapStyle } = this.props;
     if (mapStyle !== id) {
       setMapStyle(id);
-      persistData();
     }
   };
 

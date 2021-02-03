@@ -24,7 +24,7 @@ import { useAuth0 } from '../../../auth/auth0';
 import { useLocation, QUERY_LOCATIONS } from '../../../fetchers';
 import Places from '../../../components/places';
 import { EMainType, SubType } from '../../../modules/global/model';
-import { persistData, setLastViewedPlace } from '../../../modules/global/actions';
+import { setLastViewedPlace } from '../../../modules/global/actions';
 import { setMapBounds, setLocationHighlight, resetMap } from '../../../modules/map/actions';
 import { setSidebarPanelExpanded } from '../../../modules/sidebar/actions';
 import CollectionDetails from './CollectionDetails';
@@ -39,7 +39,6 @@ interface IProps {
   setPlacesSearch?: (payload?: any) => void;
   setMapBounds?: (payload?: any) => void;
   setLastViewedPlace?: (payload?: any) => void;
-  persistData?: (payload?: any) => void;
   resetMap?: (payload?: any) => void;
   setLocationHighlight?: (payload?: any) => void;
 }
@@ -54,7 +53,6 @@ function WithData(props: IProps) {
     setMapBounds,
     setLocationHighlight,
     setLastViewedPlace,
-    persistData,
   } = props;
   const [resourceId, setResourceId] = useState();
   const swrProps = useLocation(resourceId || slug, QUERY_LOCATIONS.getCollection(organization));
@@ -93,8 +91,6 @@ function WithData(props: IProps) {
       mainType: EMainType.COLLECTION,
       subType: SubType.COLLECTION,
     });
-
-    persistData();
 
     return function cleanup() {
       setPlacesSearch({ search: '' });
@@ -142,6 +138,5 @@ export default connect(
     setLastViewedPlace,
     setLocationHighlight,
     setMapBounds,
-    persistData,
   }
 )(WithData);

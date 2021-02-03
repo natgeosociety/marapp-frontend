@@ -19,7 +19,6 @@
 
 import { connect } from 'react-redux';
 
-import { persistData } from '../../modules/global/actions';
 import { setMapStyle } from '../../modules/map/actions';
 import BasemapComponent from './component';
 
@@ -27,5 +26,5 @@ export default connect(
   (state: any) => ({
     mapStyle: state.map.mapStyle,
   }),
-  { setMapStyle, persistData }
+  { setMapStyle }
 )(BasemapComponent);

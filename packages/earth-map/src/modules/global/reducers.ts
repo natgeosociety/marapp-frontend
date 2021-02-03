@@ -25,9 +25,6 @@ interface LastViewedPlacePayload {
 }
 
 export default {
-  [actions.persistData]: (state, { payload }) => {
-    return state;
-  },
   [actions.setLastViewedPlace]: (state, { payload }: LastViewedPlacePayload) => {
     return {
       ...state,

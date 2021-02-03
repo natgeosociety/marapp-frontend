@@ -18,6 +18,7 @@
 */
 
 import { Store } from 'redux';
+import debounce from 'lodash/debounce';
 
 import { setLastViewedPlace } from '../modules/global/actions';
 import { setMapStyle } from '../modules/map/actions';
@@ -37,7 +38,7 @@ export interface IEphemeralState {
  * Put state from ephemeralState back into the store at init time by dispatching actions
  */
 export default (store: Store, ephemeralState: IEphemeralState): void => {
-  // Put data from sessionStorage into redux store before triggering the sagas
+  // Put data from sessionStorage into redux store
   if (ephemeralState) {
     if (ephemeralState.global && ephemeralState.global.lastViewedPlace) {
       store.dispatch(setLastViewedPlace(ephemeralState.global.lastViewedPlace));
@@ -45,4 +46,27 @@ export default (store: Store, ephemeralState: IEphemeralState): void => {
 
     ephemeralState.map && store.dispatch(setMapStyle(ephemeralState.map.mapStyle));
   }
+
+  // subscribe to changes and save them in SessionStorage
+  store.subscribe(
+    debounce(() => {
+      const state = store.getState();
+
+      const keepThis: IEphemeralState = {
+        global: {
+          lastViewedPlace: state.global.lastViewedPlace,
+        },
+        map: {
+          mapStyle: state.map.mapStyle,
+        },
+        user: state.user,
+      };
+
+      try {
+        sessionStorage.setItem('ephemeral', JSON.stringify(keepThis));
+      } catch (e) {
+        console.log(e);
+      }
+    }, 1000)
+  );
 };

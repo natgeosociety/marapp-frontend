@@ -18,7 +18,7 @@
  */
 
 import { groupBy, sortBy } from 'lodash';
-import { flattenLayerConfig } from '../sagas/saga-utils';
+import { ILayer, ILayerRaw } from '../modules/layers/model';
 
 export const TRANSFORM = {
   groupFilters(response) {
@@ -55,3 +55,34 @@ export const TRANSFORM = {
     };
   },
 };
+
+/**
+ * Put layer.config props directly on the layer - include layer reference
+ */
+export function flattenLayerConfig(layer: ILayerRaw) {
+  const adaptedLayer = flattenEachLayerConfig(layer);
+
+  if (!!adaptedLayer?.references?.length) {
+    const adaptedReferences = layer.references.map(flattenEachLayerConfig);
+
+    return {
+      ...adaptedLayer,
+      references: adaptedReferences,
+    };
+  }
+
+  return {
+    ...adaptedLayer,
+  };
+}
+
+/**
+ * Put layer.config props directly on the layer
+ */
+function flattenEachLayerConfig(layer: ILayerRaw): ILayer {
+  const { config, ...rest } = layer;
+  return {
+    ...rest,
+    ...config,
+  };
+}
