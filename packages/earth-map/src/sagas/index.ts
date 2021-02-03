@@ -20,8 +20,7 @@
 import { all, fork } from 'redux-saga/effects';
 
 import global from '../sagas/global';
-import layers from '../sagas/layers';
 
 export default function* root() {
-  yield all([fork(global), fork(layers)]);
+  yield all([fork(global)]);
 }

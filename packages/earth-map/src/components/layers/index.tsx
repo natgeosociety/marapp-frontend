@@ -20,13 +20,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {
-  nextLayersPage,
-  resetLayersActive,
-  setLayersSearch,
-  setLayersSearchOpen,
-  toggleLayer,
-} from '../../modules/layers/actions';
+import { setLayersSearch, setLayersSearchOpen, toggleLayer } from '../../modules/layers/actions';
 import { setMapLabels, setMapRoads, setMapStyle } from '../../modules/map/actions';
 import { setPlacesSearch } from '../../modules/places/actions';
 import { setSidebarPanel, setSidebarPanelExpanded } from '../../modules/sidebar/actions';
@@ -53,8 +47,6 @@ export default connect(
     setSidebarPanelExpanded,
     setLayersSearch,
     setPlacesSearch,
-    resetLayersActive,
-    nextLayersPage,
     setLayersSearchOpen,
   }
 )(Layers);

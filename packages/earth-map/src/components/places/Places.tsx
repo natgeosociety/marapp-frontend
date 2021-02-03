@@ -56,7 +56,6 @@ const Places = (props: IProps) => {
     group,
     locationName,
     locationOrganization,
-    resetPlace,
     resetMap,
     setPlacesSearch,
     setSidebarPanelExpanded,

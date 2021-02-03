@@ -16,62 +16,33 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-import { groupBy, sortBy } from 'lodash';
-
-import { flattenLayerConfig } from '../../sagas/saga-utils';
 import * as actions from './actions';
-import initialState from './initial-state';
 
 export default {
-  [actions.setLayersLoading]: (state, { payload }) => ({
-    ...state,
-    loading: payload,
-  }),
-  [actions.setLayersError]: (state, { payload }) => ({
-    ...state,
-    error: payload,
-  }),
   [actions.setLayersActive]: (state, { payload }) => ({
     ...state,
     active: payload,
   }),
-  [actions.resetLayersActive]: (state) => ({
-    ...state,
-    active: [],
-    listActive: [],
-  }),
-  [actions.setListActiveLayers]: (state, { payload }) => ({
-    ...state,
-    listActive: payload,
-  }),
-  [actions.toggleLayer]: (state, { payload }) => {
-    const { listActive } = state;
-    const layer = payload;
-    const newActiveLayers = listActive.find((x) => x.slug === layer.slug)
-      ? listActive.filter((x) => x.slug !== layer.slug)
-      : [layer, ...listActive];
+  [actions.toggleLayer]: (state, { payload: layer }) => {
+    const { active } = state;
+    const newActiveLayers = active.find((slug) => slug === layer.slug)
+      ? active.filter((slug) => slug !== layer.slug)
+      : [layer.slug, ...active];
 
     return {
       ...state,
-      active: newActiveLayers.map((x) => x.slug),
-      listActive: newActiveLayers,
+      active: newActiveLayers,
     };
   },
   [actions.setLayerOrder]: (state, { payload }) => {
-    const { active, listActive } = state;
+    const { active } = state;
     const { datasetIds } = payload;
-
     const activeFiltered = active.filter((a) => !datasetIds.includes(a));
-
     const activeSlugs = [...datasetIds, ...activeFiltered];
-    const listActiveFiltered = activeSlugs.map((slug: string) =>
-      listActive.find((layer) => layer.slug === slug)
-    );
 
     return {
       ...state,
       active: activeSlugs,
-      listActive: listActiveFiltered,
     };
   },
   [actions.setLayerOpacity]: (state, { payload }) => {
@@ -180,47 +151,5 @@ export default {
         open: payload,
       },
     };
-  },
-
-  // exactly the same code from actions.setPlacesSearchAvailableFilters
-  [actions.setLayersSearchAvailableFilters]: (state, { payload }) => {
-    // Add label and parse boolean values to strings 'true'/'false'
-    const filtersWithLabels = payload.map((filter) => ({
-      ...filter,
-      label: filter.value,
-      ...(typeof filter.value === 'boolean' && {
-        label: filter.value ? 'Yes' : 'No',
-        value: filter.value ? 'true' : 'false',
-      }),
-    }));
-    const availableFilters = groupBy(sortBy(filtersWithLabels, 'value'), 'key');
-    return {
-      ...state,
-      search: {
-        ...state.search,
-        availableFilters,
-      },
-    };
-  },
-  [actions.setLayersSearchResults]: (state, { payload }) => {
-    const { results, nextPageCursor } = payload;
-    return {
-      ...state,
-      results: [...state.results, ...results.map(flattenLayerConfig)],
-      nextPageCursor,
-    };
-  },
-  [actions.resetLayersResults]: (state) => ({
-    ...state,
-    results: [],
-    nextPageCursor: null,
-  }),
-  // Search end
-
-  [actions.resetLayers]: () => {
-    return initialState;
-  },
-  [actions.resetLayerCache]: (state, { payload }) => {
-    return { ...state, list: [] };
   },
 };

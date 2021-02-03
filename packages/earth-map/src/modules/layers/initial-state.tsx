@@ -18,24 +18,12 @@
 */
 
 export default {
-  error: null,
-  loading: false,
-  contextual: [],
-  media: [],
-  data: [],
   active: [], // keep active layers slugs - for URL management - should be in sync with listActive
-  listActive: [], // keep active layers object
   settings: {},
 
   // Search
   search: {
-    index: 0,
-    loading: false,
-    availableFilters: {},
     filters: {},
     search: '',
   },
-
-  results: [],
-  nextPageCursor: null,
 };
