@@ -17,47 +17,81 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Fade from '@material-ui/core/Fade';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { animated, Transition } from 'react-spring/renderprops.cjs';
-
-import { Button } from '@marapp/earth-shared';
+import Link from 'redux-first-router-link';
 
 import { MAP_APP_NAME } from '../../../../config';
-import './styles.scss';
 
 export interface IOutro {
   active?: boolean;
   fullpageApi?: boolean;
 }
 
-class OutroComponent extends React.PureComponent<IOutro> {
-  public render() {
-    const { active } = this.props;
-    return (
-      <Transition
-        native={true}
-        items={active}
-        from={{ opacity: 0 }}
-        enter={{ opacity: 1, delay: 900 }}
-        leave={{ opacity: 0 }}
-      >
-        {(active) =>
-          active &&
-          ((props) => (
-            <animated.div style={props} className="landing-outro--container">
-              <div className="outro">
-                <p className="landing-outro--text">Start Exploring</p>
-                <h3 className="landing-outro--title">{MAP_APP_NAME}</h3>
-                <Button className="ng-button ng-button-primary" link={{ to: '/earth' }}>
-                  Launch
-                </Button>
-              </div>
-            </animated.div>
-          ))
-        }
-      </Transition>
-    );
-  }
-}
+const useStyles = makeStyles((theme) => ({
+  root: {
+    left: '50%',
+    padding: theme.spacing(0, 2),
+    pointerEvents: 'all',
+    position: 'absolute',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+    '& *': {
+      textAlign: 'center',
+      textTransform: 'uppercase',
+    },
+  },
+  subtitle: {
+    fontWeight: 400,
+    letterSpacing: 9,
+    marginBottom: theme.spacing(2),
+    textShadow: theme.shadows[1],
+  },
+  title: {
+    fontWeight: 400,
+    letterSpacing: 16,
+    marginBottom: theme.spacing(6),
+    // whiteSpace: 'nowrap'
+  },
+}));
+
+const OutroComponent = (props: IOutro) => {
+  const { active } = props;
+  const classes = useStyles();
+
+  return (
+    <Fade
+      in={active}
+      timeout={{
+        appear: 900,
+      }}
+    >
+      <div className={classes.root}>
+        <Typography variant="h6" className={classes.subtitle}>
+          Start Exploring
+        </Typography>
+        <Typography variant="h2" className={classes.title}>
+          {MAP_APP_NAME}
+        </Typography>
+        <Box display="flex" justifyContent="center">
+          <Button
+            className="marapp-qa-button"
+            color="secondary"
+            component={Link}
+            size="large"
+            to="/earth"
+            variant="contained"
+          >
+            Launch
+          </Button>
+        </Box>
+      </div>
+    </Fade>
+  );
+};
 
 export default OutroComponent;

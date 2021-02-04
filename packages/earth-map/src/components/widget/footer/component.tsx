@@ -56,7 +56,7 @@ function WidgetFooterComponent(props: IWidgetFooter) {
         <Button
           variant={active ? 'contained' : 'outlined'}
           color={active ? 'secondary' : 'default'}
-          className={classes.root}
+          className={`${classes.root} marapp-qa-show-remove-layer`}
           onClick={toggleLayer}
           size="large"
           endIcon={

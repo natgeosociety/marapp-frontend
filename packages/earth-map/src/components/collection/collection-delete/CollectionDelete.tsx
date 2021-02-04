@@ -55,7 +55,7 @@ export function CollectionDelete(props: IProps) {
   return (
     <Dialog
       open={isDeleting}
-      className="marapp-qa-DeleteConfirmation"
+      className="marapp-qa-deleteConfirmation"
       maxWidth="sm"
       fullWidth={true}
     >

@@ -43,6 +43,9 @@ import { Auth0Context } from '../../utils/contexts';
 const { Option } = AppContextSwitcher;
 
 const useStyles = makeStyles((theme) => ({
+  logo: {
+    border: 'none !important',
+  },
   organisationListItem: {
     paddingRight: 100,
   },
@@ -154,7 +157,7 @@ const Header = (props: IProps) => {
 
   const logo = (
     <Link
-      className="ng-border-remove"
+      className={`${classes.logo} marapp-qa-logo`}
       to={{
         type: 'EARTH',
       }}
@@ -163,59 +166,87 @@ const Header = (props: IProps) => {
     </Link>
   );
 
+  const adminOrgs = Object.keys(roles).filter((group) => checkAdminRole(roles[group]));
+
+  const superAdminGroup = adminOrgs.find((group) => group === '*');
+
+  const menuGroups: any[] = [...availableGroups];
+
+  if (superAdminGroup) {
+    menuGroups.push({
+      name: superAdminGroup,
+    });
+  }
+
   const orgCheckBoxes = (
     <div>
       <List
         className="marapp-qa-orglist"
         subheader={<ListSubheader>{t('Organizations')}</ListSubheader>}
       >
-        {availableGroups.map((g, i) => (
-          <ListItem
-            key={i}
-            dense={true}
-            button={true}
-            onClick={() => onOrgChange(g.name)}
-            classes={{
+        {menuGroups.map((g, i) => {
+          const isSuperAdmin = g.name === '*';
+
+          const listItemProps = {
+            button: true,
+            classes: {
               root: classes.organisationListItem,
-            }}
-          >
-            {hasMultipleGroups && (
-              <ListItemIcon className={classes.organisationSelectionIconContainer}>
-                <Checkbox
-                  checked={!!selectedGroups.find((x) => x === g.name)}
-                  classes={{
-                    root: classes.organisationCheckbox,
-                  }}
-                />
-              </ListItemIcon>
-            )}
-            <ListItemText
-              primary={g.name}
-              secondary={
-                <span>
-                  {t('Places')} ({g.locations})<strong className="ng-icon-bullet" />
-                  {t('Layers')} ({g.layers})
-                </span>
-              }
-            />
-            <ListItemSecondaryAction>
-              <Button
-                component="a"
-                href={`${MAP_ADMIN_URL}${g.name}`}
-                variant="outlined"
-                size="small"
-              >
-                Admin
-              </Button>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
+            },
+            dense: true,
+            key: i,
+            ...(isSuperAdmin
+              ? {
+                  component: 'a',
+                  href: `${MAP_ADMIN_URL}${g.name}`,
+                }
+              : {
+                  onClick: () => onOrgChange(g.name),
+                }),
+          };
+
+          return (
+            <ListItem {...listItemProps}>
+              {hasMultipleGroups && (
+                <ListItemIcon className={classes.organisationSelectionIconContainer}>
+                  {!isSuperAdmin && (
+                    <Checkbox
+                      checked={!!selectedGroups.find((x) => x === g.name)}
+                      classes={{
+                        root: classes.organisationCheckbox,
+                      }}
+                    />
+                  )}
+                </ListItemIcon>
+              )}
+              <ListItemText
+                primary={g.name}
+                secondary={
+                  !isSuperAdmin && (
+                    <span>
+                      {t('Places')} ({g.locations})<strong className="ng-icon-bullet" />
+                      {t('Layers')} ({g.layers})
+                    </span>
+                  )
+                }
+              />
+              <ListItemSecondaryAction>
+                <Button
+                  component="a"
+                  className={`marapp-qa-admin-link marapp-qa-admin-link-${g}`}
+                  href={`${MAP_ADMIN_URL}${g.name}`}
+                  variant="outlined"
+                  size="small"
+                >
+                  Admin
+                </Button>
+              </ListItemSecondaryAction>
+            </ListItem>
+          );
+        })}
       </List>
       <Divider />
     </div>
   );
-
-  const adminOrgs = Object.keys(roles).filter((group) => checkAdminRole(roles[group]));
 
   return (
     <AppContextSwitcher
@@ -239,15 +270,6 @@ const Header = (props: IProps) => {
       ) : null}
 
       {orgCheckBoxes}
-      {/* {adminOrgs?.length ? (
-        <List subheader={<ListSubheader>{t('Administration')}</ListSubheader>}>
-          {adminOrgs.map((group, index) => (
-            <Option value={group} key={group} divider={index === adminOrgs.length - 1}>
-              {group}
-            </Option>
-          ))}
-        </List>
-      ) : null} */}
 
       <Option
         value="map-view"

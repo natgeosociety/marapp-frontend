@@ -17,25 +17,24 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import isBoolean from 'lodash/isBoolean';
 import React, { BaseSyntheticEvent, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
 
-import { setupErrors } from '@marapp/earth-shared';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import { MuiInput, setupErrors } from '@marapp/earth-shared';
 
 import { ICollection } from '../../../modules/collections/model';
 import PlacesService from '../../../services/PlacesService';
 import { CollectionConflict } from '../collection-conflict';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface IProps {
   collection: ICollection;
@@ -95,14 +94,18 @@ export function CollectionRename(props: IProps) {
           <Box p={2} mb={1}>
             <Box mb={2}>
               <Controller
-                as={TextField}
+                as={MuiInput}
                 name="name"
+                className="marapp-qa-collection-name-input"
                 label={t('Name Collection')}
-                variant="outlined"
-                fullWidth={true}
                 placeholder={t('enter a name for your collection')}
-                error={renderErrorFor('name')}
                 control={control}
+                defaultValue={name}
+                required={true}
+                error={renderErrorFor('name')}
+                inputRef={register({
+                  required: t('Collection name is required') as string,
+                })}
               />
             </Box>
 
@@ -115,6 +118,7 @@ export function CollectionRename(props: IProps) {
             <Grid container={true} spacing={1}>
               <Grid item={true}>
                 <Button
+                  className="marapp-qa-save-collection"
                   type="submit"
                   variant="contained"
                   color="secondary"
@@ -126,7 +130,7 @@ export function CollectionRename(props: IProps) {
                 </Button>
               </Grid>
               <Grid item={true}>
-                <Button onClick={onCancel} size="large">
+                <Button className="marapp-qa-cancel-collection" onClick={onCancel} size="large">
                   {t('Cancel')}
                 </Button>
               </Grid>

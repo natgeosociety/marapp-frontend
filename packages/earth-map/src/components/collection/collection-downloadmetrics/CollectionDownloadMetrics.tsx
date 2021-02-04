@@ -74,9 +74,6 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 auto',
     overflow: 'auto',
   },
-  radioGroup: {
-    flexDirection: 'row',
-  },
 }));
 
 export function CollectionDownloadMetrics(props: IProps) {
@@ -154,7 +151,7 @@ export function CollectionDownloadMetrics(props: IProps) {
                   name="fileType"
                   control={control}
                   as={
-                    <RadioGroup className={classes.radioGroup}>
+                    <RadioGroup row={true}>
                       {FILE_TYPES.map((type) => (
                         <FormControlLabel
                           control={<Radio />}

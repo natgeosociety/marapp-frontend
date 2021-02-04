@@ -63,9 +63,6 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 auto',
     overflow: 'auto',
   },
-  radioGroup: {
-    flexDirection: 'row',
-  },
 }));
 
 interface IProps {
@@ -185,7 +182,7 @@ export function ClipLayer(props: IProps) {
                   name="exportType"
                   control={control}
                   as={
-                    <RadioGroup className={classes.radioGroup}>
+                    <RadioGroup row={true}>
                       {EXPORT_TYPES.map((type) => (
                         <FormControlLabel
                           control={<Radio />}

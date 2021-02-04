@@ -145,8 +145,8 @@ const EarthPage = (props: IProps) => {
                 value={panel}
                 onChange={(_, newValue) => setSidebarPanel(newValue)}
               >
-                <Tab label={t('Places')} value="places" />
-                <Tab label={t('Layers')} value="layers" />
+                <Tab label={t('Places')} value="places" className="marapp-qa-places-tab" />
+                <Tab label={t('Layers')} value="layers" className="marapp-qa-layers-tab" />
               </Tabs>
             </Box>
 

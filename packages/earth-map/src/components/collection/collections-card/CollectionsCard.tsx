@@ -80,9 +80,9 @@ export const CollectionsCard = (props: IProps) => {
   if (hasCollections) {
     return (
       <Box mb={1} position="relative">
-        <Paper className="marapp-qa-other" square={true}>
+        <Paper className="marapp-qa-collections" square={true}>
           <Box p={2} pb={0}>
-            <Typography variant="subtitle1" color="textSecondary">
+            <Typography variant="subtitle2" color="textSecondary">
               {t('Collections')}
             </Typography>
           </Box>
@@ -93,7 +93,7 @@ export const CollectionsCard = (props: IProps) => {
               component={Link}
               size="small"
               to={{ type: NEW_COLLECTION }}
-              className={`${classes.cardEditButton} marapp-qa-actioneditinline`}
+              className={`${classes.cardEditButton} marapp-qa-create-collection`}
             >
               {t('create new')}
             </Button>
@@ -121,9 +121,9 @@ export const CollectionsCard = (props: IProps) => {
 
   return (
     <Box mb={1}>
-      <Paper className="marapp-qa-other" square={true}>
+      <Paper className="marapp-qa-collections" square={true}>
         <Box p={2} pb={0}>
-          <Typography variant="subtitle1" color="textSecondary">
+          <Typography variant="subtitle2" color="textSecondary">
             {t('Collections')}
           </Typography>
         </Box>
@@ -137,7 +137,13 @@ export const CollectionsCard = (props: IProps) => {
             .
           </Typography>
           {canCreate && (
-            <Button variant="outlined" size="large" component={Link} to={{ type: NEW_COLLECTION }}>
+            <Button
+              className="marapp-qa-create-collection"
+              variant="outlined"
+              size="large"
+              component={Link}
+              to={{ type: NEW_COLLECTION }}
+            >
               {t('Create New Collection')}
             </Button>
           )}

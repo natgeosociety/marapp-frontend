@@ -238,26 +238,31 @@ class Chart extends PureComponent<ChartProps> {
                 ))}
 
               {pies &&
-                Object.keys(pies).map((key) => (
-                  <Pie
-                    key={key}
-                    data={data}
-                    dataKey={key}
-                    startAngle={450}
-                    // @ts-ignore
-                    paddingAngle={data.find(({ percentage }) => percentage === 0) ? 0 : 2}
-                    endAngle={90}
-                    {...pies[key]}
-                  >
-                    {data.map((item, index) => (
-                      <Cell
-                        key={`c_${item[pies[key].colorKey || 'color']}`}
-                        fill={item[pies[key].colorKey || 'color']}
-                        stroke={item[pies[key].colorKey || 'color']}
-                      />
-                    ))}
-                  </Pie>
-                ))}
+                (() => {
+                  const pieData = data.filter((item) => !!item.percentage);
+                  return Object.keys(pies).map((key) => (
+                    <Pie
+                      key={key}
+                      data={pieData}
+                      dataKey={key}
+                      startAngle={450}
+                      // @ts-ignore
+                      paddingAngle={2}
+                      endAngle={90}
+                      {...pies[key]}
+                    >
+                      {pieData.map((item, index) => {
+                        return (
+                          <Cell
+                            key={`c_${item[pies[key].colorKey || 'color']}`}
+                            fill={item[pies[key].colorKey || 'color']}
+                            stroke={item[pies[key].colorKey || 'color']}
+                          />
+                        );
+                      })}
+                    </Pie>
+                  ));
+                })()}
 
               {/* we need to draw this after the graph, as some elements in a vertical bar will draw above the graph */}
               {layout === 'vertical' && xAxis && (

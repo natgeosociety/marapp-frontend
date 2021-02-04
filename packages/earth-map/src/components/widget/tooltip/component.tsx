@@ -17,25 +17,66 @@
   specific language governing permissions and limitations under the License.
 */
 
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import React from 'react';
 
-import './styles.scss';
-
 interface TooltipProps {
-  payload: [];
+  payload: any[];
   settings: any;
   style: {};
-  hideZeros: boolean;
+  hideZeros?: boolean;
 }
 
-class Tooltip extends React.PureComponent<TooltipProps> {
-  public static defaultProps = {
-    payload: [],
-    style: {},
-    hideZeros: false,
-  };
+const useStyles = makeStyles((theme) => ({
+  root: {
+    boxShadow: theme.shadows[4],
+    backgroundColor: theme.palette.grey['600'],
+    padding: theme.spacing(1, 2),
+    color: theme.palette.text.primary,
+    borderRadius: theme.shape.borderRadius,
+    ...theme.typography.body2,
+  },
+  dataLine: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    '&.right': {
+      textAlign: 'right',
+      justifyContent: 'flex-end',
+    },
+  },
+  dataLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginRight: theme.spacing(2),
+  },
+  breakLabel: {
+    ...theme.typography.body2,
+    fontStyle: 'italic',
+    flexDirection: 'row',
+    paddingBottom: theme.spacing(0.5),
+    paddingTop: theme.spacing(0.5),
+  },
+  dataColor: {
+    height: theme.spacing(1.5),
+    width: theme.spacing(1.5),
+    minHeight: theme.spacing(1.5),
+    minWidth: theme.spacing(1.5),
+    borderRadius: theme.shape.borderRadius,
+    marginRight: theme.spacing(0.5),
+    marginTop: theme.spacing(0.5),
+  },
+}));
 
-  public getValue = (item, value) => {
+const Tooltip = (props: TooltipProps) => {
+  const { payload = [], style = {}, hideZeros = false, settings } = props;
+
+  const classes = useStyles();
+
+  const getValue = (item, value) => {
     const { format, suffix = '', preffix = '' } = item;
     let val = value;
 
@@ -46,44 +87,39 @@ class Tooltip extends React.PureComponent<TooltipProps> {
     return `${preffix}${val}${suffix}`;
   };
 
-  public render() {
-    const { payload, settings, style, hideZeros } = this.props;
+  const values = payload && payload.length > 0 && payload[0].payload;
 
-    // @ts-ignore
-    const values = payload && payload.length > 0 && payload[0].payload;
+  return (
+    <div>
+      {settings && settings.length && (
+        <div className={`${classes.root} marapp-qa-widgettooltip`} style={style}>
+          {settings.map((d: any) =>
+            hideZeros && !values[d.key] ? null : (
+              <div key={d.key} className={`${classes.dataLine} ${d.position || ''}`}>
+                {/* LABEL */}
+                {(d.label || d.labelKey) && (
+                  <div className={classes.dataLabel}>
+                    {d.color && (
+                      <div className={classes.dataColor} style={{ backgroundColor: d.color }} />
+                    )}
 
-    return (
-      <div>
-        {settings && settings.length && (
-          <div className="marapp-qa-widgettooltip c-chart-tooltip" style={style}>
-            {settings.map((d: any) =>
-              hideZeros && !values[d.key] ? null : (
-                <div key={d.key} className={`data-line ${d.position || ''}`}>
-                  {/* LABEL */}
-                  {(d.label || d.labelKey) && (
-                    <div className="data-label">
-                      {d.color && (
-                        <div className="data-color" style={{ backgroundColor: d.color }} />
-                      )}
+                    {d.key === 'break' ? (
+                      <span className={classes.breakLabel}>{d.label}</span>
+                    ) : (
+                      <span>{d.label || values[d.labelKey]}</span>
+                    )}
+                  </div>
+                )}
 
-                      {d.key === 'break' ? (
-                        <span className="break-label">{d.label}</span>
-                      ) : (
-                        <span>{d.label || values[d.labelKey]}</span>
-                      )}
-                    </div>
-                  )}
-
-                  {/* UNIT */}
-                  <div className="data-value">{this.getValue(d, values[d.key])}</div>
-                </div>
-              )
-            )}
-          </div>
-        )}
-      </div>
-    );
-  }
-}
+                {/* UNIT */}
+                <div className="data-value">{getValue(d, values[d.key])}</div>
+              </div>
+            )
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default Tooltip;

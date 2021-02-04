@@ -342,7 +342,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
             </Grid>
 
             {toolbar && (
-              <Grid xs={false}>
+              <Grid item={true} xs={false}>
                 <Toolbar
                   className={className}
                   active={active}
@@ -352,6 +352,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
                   collapsed={!expanded}
                   onInfo={this.onInfo}
                   data={metric}
+                  layers={layers}
                   onDownload={this.onDownload}
                   onShare={this.onShare}
                   onToggleLayer={onToggleLayer}
@@ -361,9 +362,9 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
 
             <Divider flexItem={true} orientation="vertical" />
 
-            <Grid xs={false}>
+            <Grid item={true} xs={false}>
               <Box ml={0.5}>
-                <IconButton onClick={this.toggleExpanded}>
+                <IconButton onClick={this.toggleExpanded} className="marapp-qa-collapse-widget">
                   <ToggleIcon
                     on={!!expanded}
                     onIcon={<IconUp fontSize="small" />}
@@ -409,7 +410,11 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
           )}
         </Box>
 
-        <Dialog open={!!activeInfo} onClose={() => this.setState({ activeInfo: !activeInfo })}>
+        <Dialog
+          open={!!activeInfo}
+          onClose={() => this.setState({ activeInfo: !activeInfo })}
+          className="marapp-qa-widget-info-modal"
+        >
           <DialogTitle>{name}</DialogTitle>
 
           {widgetDescription && (
@@ -419,7 +424,11 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
           )}
 
           <DialogActions>
-            <Button size="large" onClick={() => this.setState({ activeInfo: !activeInfo })}>
+            <Button
+              size="large"
+              className="marapp-qa-modalclose"
+              onClick={() => this.setState({ activeInfo: !activeInfo })}
+            >
               {t('Close')}
             </Button>
           </DialogActions>
