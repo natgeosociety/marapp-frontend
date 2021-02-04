@@ -27,7 +27,6 @@ import OrgSwitcher from './component';
 
 export default connect(
   (state: any) => ({
-    ...state.user,
     ...state.sidebar,
   }),
   {

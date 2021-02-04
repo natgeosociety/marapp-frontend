@@ -26,15 +26,10 @@ import { handleModule } from 'vizzuality-redux-tools';
 import { SessionStorage } from '@marapp/earth-shared';
 
 import * as global from '../modules/global';
-import * as indexes from '../modules/indexes';
 import * as layers from '../modules/layers';
 import * as map from '../modules/map';
-import * as metrics from '../modules/metrics';
 import * as places from '../modules/places';
 import * as sidebar from '../modules/sidebar';
-import * as user from '../modules/user';
-import * as widget from '../modules/widget';
-import * as widgets from '../modules/widgets';
 import { CONFIG, ROUTES } from '../routes';
 import initEphemeralState from '../store/ephemeral-state';
 
@@ -50,15 +45,10 @@ const initStore = (initialState = {}) => {
   const reducers = combineReducers({
     router: routerReducer,
     global: handleModule(global),
-    user: handleModule(user),
     map: handleModule(map),
     sidebar: handleModule(sidebar),
-    indexes: handleModule(indexes),
     places: handleModule(places),
     layers: handleModule(layers),
-    widgets: handleModule(widgets),
-    widget: handleModule(widget),
-    metrics: handleModule(metrics),
   });
 
   const rootReducer = (state, action) => {

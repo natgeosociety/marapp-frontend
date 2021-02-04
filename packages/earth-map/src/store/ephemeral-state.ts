@@ -59,7 +59,6 @@ export default (store: Store, ephemeralState: IEphemeralState): void => {
         map: {
           mapStyle: state.map.mapStyle,
         },
-        user: state.user,
       };
 
       try {
