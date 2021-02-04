@@ -28,26 +28,20 @@ import Main from '../pages-client/main';
 import initStore from '../store';
 
 TranslationService.init(MAP_WEGLOT_API_KEY);
+const { store } = initStore();
 
 const IndexPage = () => {
-  const { isLoading, selectedGroup } = useAuth0();
+  const { isLoading } = useAuth0();
 
-  const initialState = {
-    user: {
-      group: selectedGroup,
-    },
-  };
-
-  if (!isLoading) {
-    const { store } = initStore(initialState);
-    return (
-      <Provider store={store}>
-        <Main />
-      </Provider>
-    );
+  if (isLoading) {
+    return <Spinner size="large" />;
   }
 
-  return <Spinner size="large" />;
+  return (
+    <Provider store={store}>
+      <Main />
+    </Provider>
+  );
 };
 
 export default IndexPage;

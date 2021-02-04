@@ -23,9 +23,9 @@ import { useAuth0 } from '../../auth/auth0';
 import { IQueryMany, IResponseMany, useFetchMany } from '../useFetchMany';
 
 export function useDashboards(query: IQueryMany, swrOptions?: SWRInfiniteConfigInterface) {
-  const { groups } = useAuth0();
+  const { selectedGroup } = useAuth0();
   const specificQuery: IQueryMany = {
-    group: groups.join(),
+    group: selectedGroup.join(),
     ...query,
   };
 

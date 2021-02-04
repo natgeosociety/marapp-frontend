@@ -25,9 +25,9 @@ import { TRANSFORM } from '../transformers';
 import { IQueryMany, IResponseMany, useFetchMany } from '../useFetchMany';
 
 export function useLayers(query: IQueryMany, swrOptions?: SWRInfiniteConfigInterface) {
-  const { groups } = useAuth0();
+  const { selectedGroup } = useAuth0();
   const specificQuery: IQueryMany = {
-    group: groups.join(),
+    group: selectedGroup.join(),
     ...query,
   };
   const queryOrPreventFetch = query ? specificQuery : null;

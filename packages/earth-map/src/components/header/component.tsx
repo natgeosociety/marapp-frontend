@@ -34,10 +34,8 @@ import { Auth0Context } from '../../utils/contexts';
 const { Option } = AppContextSwitcher;
 
 interface IProps {
-  group?: string[];
   setPlacesSearch?: Function;
   resetMap?: Function;
-  setUserGroup?: Function;
   setLayersSearch?: Function;
   setSidebarPanel?: Function;
   resetLayers?: Function;
@@ -50,20 +48,13 @@ const Header = (props: IProps) => {
     userData: { allGroups },
     isAuthenticated,
     groups,
+    setupUserOrg,
+    selectedGroup,
   } = useContext(Auth0Context);
-  const {
-    group,
-    resetMap,
-    setUserGroup,
-    setPlacesSearch,
-    setLayersSearch,
-    setSidebarPanel,
-    resetLayers,
-  } = props;
+  const { resetMap, setPlacesSearch, setLayersSearch, setSidebarPanel, resetLayers } = props;
   const hasMultipleGroups = allGroups.length > 1;
-  const allInitiallySelected = group.length === allGroups.length;
-  const [selectedGroups, setSelectedGroups] = useState(allInitiallySelected ? [] : group);
-  const [dropdownState, setDropdownState] = useState('close');
+  const allInitiallySelected = selectedGroup.length === allGroups.length;
+  const [selectedGroups, setSelectedGroups] = useState(allInitiallySelected ? [] : selectedGroup);
   const [availableGroups, setAvailableGroups] = useState(
     groups.map((group) => ({ name: group, layers: 'N/A', locations: 'N/A' }))
   );
@@ -79,13 +70,10 @@ const Header = (props: IProps) => {
     })();
   }, []);
 
-  const handleDropdownToggle = () => {
-    dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
-  };
-
   // Same as the action from <SearchBox /> find a way to reuse bundled actions
   const handleResetLocation = () => {
     setLayersSearch({ search: '' });
+    setPlacesSearch({ search: '' });
     setSidebarPanel(EPanels.PLACES);
     resetLayers();
     resetMap();
@@ -110,7 +98,7 @@ const Header = (props: IProps) => {
     }
 
     setSelectedGroups(newSelection);
-    setUserGroup(temp);
+    setupUserOrg(newSelection);
     setPlacesSearch({
       filters: {},
     });

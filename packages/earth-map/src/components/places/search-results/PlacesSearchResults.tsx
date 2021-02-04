@@ -34,7 +34,7 @@ interface IProps {
   isValidating: boolean;
   nextPage: () => void;
   setPlacesSearch?: (value: any) => {};
-  group?: any;
+  group: any;
 }
 
 export function PlacesSearchResults(props: IProps) {

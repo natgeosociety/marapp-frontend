@@ -9,7 +9,6 @@ export default connect(
   (state: any, props: any) => ({
     ...state.sidebar,
     search: state.places.search,
-    group: state.user.group,
     results: state.places.results,
     nextPageCursor: state.places.nextPageCursor,
     locationName: props.locationName,

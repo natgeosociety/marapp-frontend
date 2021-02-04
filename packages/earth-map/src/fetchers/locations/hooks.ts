@@ -24,9 +24,9 @@ import { IQueryMany, useFetchMany } from '../useFetchMany';
 import { IQueryOne, useFetchOne } from '../useFetchOne';
 
 export function useLocations(query: IQueryMany, swrOptions?: SWRInfiniteConfigInterface) {
-  const { groups } = useAuth0();
+  const { selectedGroup } = useAuth0();
   const specificQuery: IQueryMany = {
-    group: groups.join(),
+    group: selectedGroup.join(),
     ...query,
   };
 

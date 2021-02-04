@@ -93,11 +93,6 @@ function WithData(props: IProps) {
       mainType: EMainType.COLLECTION,
       subType: SubType.COLLECTION,
     });
-
-    return function cleanup() {
-      setPlacesSearch({ search: '' });
-      resetMap();
-    };
   }, [data?.version]);
 
   useEffect(() => {

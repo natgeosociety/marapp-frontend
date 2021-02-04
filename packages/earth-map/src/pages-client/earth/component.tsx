@@ -49,7 +49,6 @@ interface IProps {
   page?: string;
   layersPanel?: boolean;
   lastViewedPlace?: ILastViewedPlace;
-  group?: any;
   selected?: string;
   collection?: any;
   router?: any;
@@ -58,15 +57,16 @@ interface IProps {
 const { EARTH, COLLECTION, LOCATION, NEW_COLLECTION } = EarthRoutes;
 
 const EarthPage = (props: IProps) => {
-  const { setSidebarPanel, panel, router, lastViewedPlace, group, collection } = props;
+  const { setSidebarPanel, panel, router, lastViewedPlace, collection } = props;
   const { type, query = {} } = router;
   const { t } = useTranslation();
-  const { groups, privateGroups, publicGroups } = useAuth0();
+  const { privateGroups, selectedGroup } = useAuth0();
   const { data: activeLayers, mutate } = useLayers(QUERY_LAYERS.getActive(query.layers));
   const selectedOpen = [LOCATION, COLLECTION, NEW_COLLECTION].includes(type);
   const withHeaderLayout = [EARTH, LOCATION, COLLECTION].includes(type);
   const newCollectionLayout = [NEW_COLLECTION].includes(type);
-  const showLastViewedPlace = lastViewedPlace && group.includes(lastViewedPlace.organization);
+  const showLastViewedPlace =
+    lastViewedPlace && selectedGroup.includes(lastViewedPlace.organization);
   const canCreateCollections = !!privateGroups.length;
 
   return (
@@ -92,10 +92,10 @@ const EarthPage = (props: IProps) => {
                   <Places selected={selectedOpen}>
                     <>
                       {showLastViewedPlace && (
-                        <LastViewedPlace place={lastViewedPlace} group={group} />
+                        <LastViewedPlace place={lastViewedPlace} group={selectedGroup} />
                       )}
-                      <CollectionsCard group={group} canCreate={canCreateCollections} />
-                      <FeaturedPlaces group={group} />
+                      <CollectionsCard group={selectedGroup} canCreate={canCreateCollections} />
+                      <FeaturedPlaces group={selectedGroup} />
                     </>
                   </Places>
                 )}

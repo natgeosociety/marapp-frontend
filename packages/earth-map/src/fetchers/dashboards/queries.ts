@@ -20,10 +20,9 @@
 import { IQueryOne } from '../useFetchOne';
 
 export const QUERY_DASHBOARDS = {
-  getWithWidgets(group: string[]): IQueryOne {
+  getWithWidgets(): IQueryOne {
     return {
       include: ['widgets', 'widgets.layers', 'widgets.layers.references'].join(','),
-      group: group.join(','),
     };
   },
 };

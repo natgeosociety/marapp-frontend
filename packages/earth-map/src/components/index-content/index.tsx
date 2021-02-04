@@ -17,7 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { groupBy, orderBy, sortBy } from 'lodash';
+import { orderBy, sortBy } from 'lodash';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
@@ -29,7 +29,7 @@ import { flattenLayerConfig } from '../../fetchers/transformers';
 import { setLastViewedPlace } from '../../modules/global/actions';
 import { EMainType } from '../../modules/global/model';
 import { toggleLayer } from '../../modules/layers/actions';
-import { resetMap, setLocationHighlight, setMapBounds } from '../../modules/map/actions';
+import { setLocationHighlight, setMapBounds } from '../../modules/map/actions';
 import { setPlacesSearch } from '../../modules/places/actions';
 import { setSidebarInfo } from '../../modules/sidebar/actions';
 import { IWidget } from '../../modules/widget/model';
@@ -77,9 +77,9 @@ function WithData(props) {
     resetMap,
     setLastViewedPlace,
   } = props;
-  const { selectedGroup, groups } = useAuth0();
+  const { groups } = useAuth0();
   const { data: placeData } = useLocation(slug, QUERY_LOCATIONS.getOne(organization));
-  const { data: dashboardsData } = useDashboards(QUERY_DASHBOARDS.getWithWidgets(selectedGroup));
+  const { data: dashboardsData } = useDashboards(QUERY_DASHBOARDS.getWithWidgets());
   const hasData = !!(placeData && dashboardsData);
 
   useEffect(() => {
@@ -93,19 +93,6 @@ function WithData(props) {
       geojson: placeData.geojson,
     });
 
-    // const mappedIntersections = groupBy(placeData.intersections, 'type');
-
-    // const formattedData = {
-    //   ...placeData,
-    //   ...{
-    //     jurisdictions: mappedIntersections.Jurisdiction,
-    //     biomes: mappedIntersections.Biome,
-    //     countries: mappedIntersections.Country,
-    //     continents: mappedIntersections.Continent,
-    //   },
-    // };
-    // setPlaceData(formattedData);
-
     setLastViewedPlace({
       id: placeData.id,
       name: placeData.name,
@@ -114,11 +101,6 @@ function WithData(props) {
       mainType: EMainType.LOCATION,
       subType: placeData.type,
     });
-
-    return function cleanup() {
-      setPlacesSearch({ search: '' });
-      resetMap();
-    };
   }, [hasData]);
 
   if (!hasData) {
@@ -157,7 +139,6 @@ export default connect(
     setSidebarInfo,
     toggleLayer,
     setMapBounds,
-    resetMap,
     setPlacesSearch,
     setLastViewedPlace,
     setLocationHighlight,

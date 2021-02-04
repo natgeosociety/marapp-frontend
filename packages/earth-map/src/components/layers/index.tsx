@@ -29,7 +29,6 @@ import Layers from './Layers';
 export default connect(
   (state: any, props: any) => ({
     ...state.sidebar,
-    group: state.user.group,
     layers: state.layers,
 
     mapStyle: state.map.mapStyle,

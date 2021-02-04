@@ -29,6 +29,7 @@ import SearchBox from '../../components/searchbox';
 import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search';
 import { QUERY_LAYERS, useLayers } from '../../fetchers';
 import { EPanels } from '../../modules/sidebar/model';
+import { useAuth0 } from '../../auth/auth0';
 import './styles.scss';
 
 interface IProps {
@@ -58,7 +59,6 @@ interface IProps {
   };
   open?: boolean;
   layersPanel?: boolean;
-  group?: string;
   panel?: string;
   panelExpanded?: boolean;
   locationName?: string;
@@ -77,7 +77,6 @@ const Layers = (props: IProps) => {
   const {
     selected,
     layers,
-    group,
     mapLabels,
     mapRoads,
     panel,
@@ -99,6 +98,7 @@ const Layers = (props: IProps) => {
   const showBack = selected && panelExpanded;
 
   const { t } = useTranslation();
+  const { selectedGroup } = useAuth0();
   const { data: layersData, meta, awaitMore, nextPage, isValidating } = useLayers(
     QUERY_LAYERS.getFiltered(search.search, search.filters)
   );
@@ -203,7 +203,7 @@ const Layers = (props: IProps) => {
                 active={!!active.find((slug) => slug === layer.slug)}
                 key={`${layer.slug}-${layer.organization}`}
                 onClick={debounce(() => onToggleLayer(layer), 200)}
-                organization={group.length > 1 && layer.organization}
+                organization={selectedGroup.length > 1 && layer.organization}
                 labels={layer.category}
               />
             )}

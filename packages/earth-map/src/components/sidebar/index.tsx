@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 
 import { resetLayers } from '../../modules/layers/actions';
 import { resetMap } from '../../modules/map/actions';
-import { resetPlace, setPlacesSearch } from '../../modules/places/actions';
+import { setPlacesSearch } from '../../modules/places/actions';
 import { setSidebarOpen } from '../../modules/sidebar/actions';
 import SidebarComponent from './component';
 
@@ -33,7 +33,6 @@ export default connect(
     setSidebarOpen,
     setPlacesSearch,
     resetMap,
-    resetPlace,
     resetLayers,
   }
 )(SidebarComponent);

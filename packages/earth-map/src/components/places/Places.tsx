@@ -28,6 +28,7 @@ import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search'
 import { QUERY_LOCATIONS, useLocations } from '../../fetchers';
 import { hasFilters } from '../../utils/filters';
 import PlacesSearchResults from './search-results';
+import { useAuth0 } from '../../auth/auth0';
 
 interface IProps {
   selected: boolean;
@@ -37,12 +38,10 @@ interface IProps {
   search?: any;
   results?: any;
   nextPageCursor?: string;
-  group?: any;
   locationName?: string;
   locationOrganization?: string;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
-  resetPlace?: (value: any) => {};
   setIndexesSelected?: (value: any) => {};
   setPlacesSearch?: (value: any) => {};
   setPlacesSearchOpen?: (value: boolean) => {};
@@ -53,7 +52,6 @@ const Places = (props: IProps) => {
   const {
     panelExpanded,
     search,
-    group,
     locationName,
     locationOrganization,
     resetMap,
@@ -64,6 +62,7 @@ const Places = (props: IProps) => {
     children,
   } = props;
 
+  const { selectedGroup } = useAuth0();
   const { data: placesData, meta, awaitMore, nextPage, isValidating } = useLocations(
     QUERY_LOCATIONS.getFiltered(search.search, search.filters)
   );
@@ -132,8 +131,8 @@ const Places = (props: IProps) => {
           data={placesData}
           awaitMore={awaitMore}
           nextPage={nextPage}
+          group={selectedGroup}
           isValidating={isValidating}
-          group={group}
           setPlacesSearch={setPlacesSearch}
         />
       ) : (
