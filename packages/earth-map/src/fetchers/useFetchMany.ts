@@ -18,7 +18,7 @@
  */
 
 import { noop } from 'lodash';
-import { useSWRInfinite, SWRInfiniteResponseInterface } from 'swr';
+import { SWRInfiniteResponseInterface, useSWRInfinite } from 'swr';
 
 import { BaseAPIService, metaDeserializer } from '../services/base/APIBase';
 import { PAGE_SIZE } from '../theme';

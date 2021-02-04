@@ -21,13 +21,13 @@ import { debounce, sortBy } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useLayers, QUERY_LAYERS } from '../../fetchers';
 import BackToLocation from '../../components/back-to-location';
 import FilterBy from '../../components/filter-by';
 import InfiniteList from '../../components/infinite-list';
 import ListItem from '../../components/list-item';
 import SearchBox from '../../components/searchbox';
 import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search';
+import { QUERY_LAYERS, useLayers } from '../../fetchers';
 import { EPanels } from '../../modules/sidebar/model';
 import './styles.scss';
 

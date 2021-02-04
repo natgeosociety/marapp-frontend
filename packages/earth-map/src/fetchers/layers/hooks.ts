@@ -17,12 +17,12 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { SWRInfiniteConfigInterface } from 'swr';
 import compose from 'lodash/fp/compose';
+import { SWRInfiniteConfigInterface } from 'swr';
 
 import { useAuth0 } from '../../auth/auth0';
-import { IQueryMany, IResponseMany, useFetchMany } from '../useFetchMany';
 import { TRANSFORM } from '../transformers';
+import { IQueryMany, IResponseMany, useFetchMany } from '../useFetchMany';
 
 export function useLayers(query: IQueryMany, swrOptions?: SWRInfiniteConfigInterface) {
   const { groups } = useAuth0();

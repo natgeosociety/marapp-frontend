@@ -18,18 +18,20 @@
 */
 
 import React, { useEffect, useState } from 'react';
-import { replace } from 'redux-first-router';
 import { connect } from 'react-redux';
+import { replace } from 'redux-first-router';
+
+import { Spinner } from '@marapp/earth-shared';
+
 import { useAuth0 } from '../../../auth/auth0';
-import { useLocation, QUERY_LOCATIONS } from '../../../fetchers';
 import Places from '../../../components/places';
-import { EMainType, SubType } from '../../../modules/global/model';
+import { QUERY_LOCATIONS, useLocation } from '../../../fetchers';
 import { setLastViewedPlace } from '../../../modules/global/actions';
-import { setMapBounds, setLocationHighlight, resetMap } from '../../../modules/map/actions';
+import { EMainType, SubType } from '../../../modules/global/model';
+import { resetMap, setLocationHighlight, setMapBounds } from '../../../modules/map/actions';
+import { setPlacesSearch } from '../../../modules/places/actions';
 import { setSidebarPanelExpanded } from '../../../modules/sidebar/actions';
 import CollectionDetails from './CollectionDetails';
-import { setPlacesSearch } from '../../../modules/places/actions';
-import { Spinner } from '@marapp/earth-shared';
 
 interface IProps {
   selected: boolean;

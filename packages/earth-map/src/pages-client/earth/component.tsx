@@ -36,12 +36,12 @@ import Places from '../../components/places';
 import FeaturedPlaces from '../../components/places/featured-places';
 import Sidebar from '../../components/sidebar';
 import Url from '../../components/url';
+import { QUERY_LAYERS, useLayers } from '../../fetchers';
 import { ILastViewedPlace } from '../../modules/global/model';
 import { EarthRoutes, IRouter } from '../../modules/router/model';
 import { EPanels } from '../../modules/sidebar/model';
-import { URL_PROPS } from './url';
 import './styles.scss';
-import { useLayers, QUERY_LAYERS } from '../../fetchers';
+import { URL_PROPS } from './url';
 
 interface IProps {
   setSidebarPanel?: () => void;

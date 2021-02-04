@@ -18,6 +18,7 @@
  */
 
 import { groupBy, sortBy } from 'lodash';
+
 import { ILayer, ILayerRaw } from '../modules/layers/model';
 
 export const TRANSFORM = {

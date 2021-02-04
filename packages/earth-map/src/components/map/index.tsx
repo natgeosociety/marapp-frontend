@@ -17,24 +17,24 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React from 'react';
-import { connect } from 'react-redux';
+import { replace } from 'layer-manager';
 import compact from 'lodash/compact';
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
-import { replace } from 'layer-manager';
+import React from 'react';
+import { connect } from 'react-redux';
+
+import decodes from '../../modules/layers/decodes';
 import { ILayer } from '../../modules/layers/model';
 import { getParams } from '../../modules/layers/utils';
-import decodes from '../../modules/layers/decodes';
 import {
   setMapBounds,
   setMapHoverInteractions,
   setMapInteractions,
   setMapViewport,
 } from '../../modules/map/actions';
-import { sidebarAwareMapBounds } from '../../modules/map/selectors';
-import { getPopup } from '../../modules/map/selectors';
+import { getPopup, sidebarAwareMapBounds } from '../../modules/map/selectors';
 import MapComponent from './component';
 
 const GROUP_LEGEND = (type) => type === 'group';

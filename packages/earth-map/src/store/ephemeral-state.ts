@@ -17,8 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Store } from 'redux';
 import debounce from 'lodash/debounce';
+import { Store } from 'redux';
 
 import { setLastViewedPlace } from '../modules/global/actions';
 import { setMapStyle } from '../modules/map/actions';

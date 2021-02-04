@@ -18,6 +18,7 @@
  */
 
 import { serializeFilters } from '@marapp/earth-shared';
+
 import { IQueryMany } from '../useFetchMany';
 
 export const QUERY_LAYERS = {

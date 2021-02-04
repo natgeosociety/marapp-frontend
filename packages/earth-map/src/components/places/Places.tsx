@@ -64,7 +64,7 @@ const Places = (props: IProps) => {
     children,
   } = props;
 
-  const { data, meta, awaitMore, nextPage, isValidating } = useLocations(
+  const { data: placesData, meta, awaitMore, nextPage, isValidating } = useLocations(
     QUERY_LOCATIONS.getFiltered(search.search, search.filters)
   );
 
@@ -129,7 +129,7 @@ const Places = (props: IProps) => {
     >
       {showSearchResults ? (
         <PlacesSearchResults
-          data={data}
+          data={placesData}
           awaitMore={awaitMore}
           nextPage={nextPage}
           isValidating={isValidating}

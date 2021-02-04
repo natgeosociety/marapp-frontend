@@ -19,9 +19,9 @@
 import { ConfigInterface, SWRInfiniteConfigInterface } from 'swr';
 
 import { useAuth0 } from '../../auth/auth0';
+import { TRANSFORM } from '../transformers';
 import { IQueryMany, useFetchMany } from '../useFetchMany';
 import { IQueryOne, useFetchOne } from '../useFetchOne';
-import { TRANSFORM } from '../transformers';
 
 export function useLocations(query: IQueryMany, swrOptions?: SWRInfiniteConfigInterface) {
   const { groups } = useAuth0();
