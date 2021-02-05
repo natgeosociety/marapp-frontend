@@ -132,6 +132,14 @@ export const CONFIG = {
           verticalAlign: 'middle',
           layout: 'vertical',
           content: (properties) => {
+            /**
+             * Our implementation of the pie chart filters out all the 0 values from being displayed
+             * on the chart.
+             *
+             * In order to display them in the legend, we need to gather the legend info from
+             * the 'data' prop, instead of 'payload' which is received from the pie chart implementation
+             * itself.
+             * */
             const { data } = properties;
             const groups = groupBy(data, (d) => d.category);
 

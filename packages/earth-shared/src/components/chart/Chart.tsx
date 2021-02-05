@@ -239,7 +239,8 @@ class Chart extends PureComponent<ChartProps> {
 
               {pies &&
                 (() => {
-                  const pieData = data.filter((item) => !!item.percentage);
+                  // Hide 0 value sectors from the pie chart, only display relevant values
+                  const pieData = data.filter((item: any) => !!item.percentage);
                   return Object.keys(pies).map((key) => (
                     <Pie
                       key={key}

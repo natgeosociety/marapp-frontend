@@ -21,9 +21,9 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import React from 'react';
 
 interface TooltipProps {
-  payload: any[];
-  settings: any;
-  style: {};
+  payload?: any[];
+  settings?: any;
+  style?: {};
   hideZeros?: boolean;
 }
 

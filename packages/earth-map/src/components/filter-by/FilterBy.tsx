@@ -25,6 +25,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Fade from '@material-ui/core/Fade';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
+import useTheme from '@material-ui/core/styles/useTheme';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import IconChevronDown from 'mdi-material-ui/ChevronDown';
@@ -65,6 +66,7 @@ const FilterBy = (props: IProps) => {
   const { availableFilters, filters, onChange } = props;
   const { t } = useTranslation();
   const classes = useStyles();
+  const theme = useTheme();
   const [currentAvailableFilters, setCurrentAvailableFilters] = useState({});
 
   // Keep old available filters while new filters are fetched
@@ -113,7 +115,13 @@ const FilterBy = (props: IProps) => {
           <Typography component="span" variant="button">
             {t('Filters')}
           </Typography>{' '}
-          <Fade in={numberOfFilters > 0}>
+          <Fade
+            in={numberOfFilters > 0}
+            timeout={{
+              enter: theme.transitions.duration.enteringScreen,
+              exit: 0, // quickly remove the button in order to hide "Clear(0)"
+            }}
+          >
             <Button
               className="marapp-qa-filterbyclear"
               onClick={clearCheckedFilters}
