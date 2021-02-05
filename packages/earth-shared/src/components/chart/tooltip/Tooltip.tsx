@@ -17,10 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { PureComponent } from 'react';
-
-// Styles
-import './styles.scss';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import React from 'react';
 
 interface TooltipProps {
   settings: any[];
@@ -28,13 +26,56 @@ interface TooltipProps {
   hideZeros?: boolean;
 }
 
-class Tooltip extends PureComponent<TooltipProps> {
-  static defaultProps = {
-    payload: [],
-    hideZeros: false,
-  };
+const useStyles = makeStyles((theme) => ({
+  root: {
+    boxShadow: theme.shadows[4],
+    backgroundColor: theme.palette.grey['600'],
+    padding: theme.spacing(1, 2),
+    color: theme.palette.text.primary,
+    borderRadius: theme.shape.borderRadius,
+    ...theme.typography.body2,
+  },
+  dataLine: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    '&.right': {
+      textAlign: 'right',
+      justifyContent: 'flex-end',
+    },
+  },
+  dataLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginRight: theme.spacing(2),
+  },
+  breakLabel: {
+    ...theme.typography.body2,
+    fontStyle: 'italic',
+    flexDirection: 'row',
+    paddingBottom: theme.spacing(0.5),
+    paddingTop: theme.spacing(0.5),
+  },
+  dataColor: {
+    height: theme.spacing(1.5),
+    width: theme.spacing(1.5),
+    minHeight: theme.spacing(1.5),
+    minWidth: theme.spacing(1.5),
+    borderRadius: theme.shape.borderRadius,
+    marginRight: theme.spacing(0.5),
+    marginTop: theme.spacing(0.5),
+  },
+}));
 
-  getValue = (item, value) => {
+const Tooltip = (props: TooltipProps) => {
+  const { payload = [], hideZeros = false, settings } = props;
+
+  const classes = useStyles();
+
+  const getValue = (item, value) => {
     const { format, suffix = '', preffix = '' } = item;
     let val = value;
 
@@ -45,41 +86,38 @@ class Tooltip extends PureComponent<TooltipProps> {
     return `${preffix}${val}${suffix}`;
   };
 
-  render() {
-    const { payload, settings, hideZeros } = this.props;
-    const values = payload && payload.length > 0 && payload[0].payload;
-    return (
-      <div>
-        {settings && settings.length && (
-          <div className="c-chart-tooltip">
-            {settings.map((d) =>
-              hideZeros && !values[d.key] ? null : (
-                <div key={d.key} className={`data-line ${d.position || ''}`}>
-                  {/* LABEL */}
-                  {(d.label || d.labelKey) && (
-                    <div className="data-label">
-                      {d.color && (
-                        <div className="data-color" style={{ backgroundColor: d.color }} />
-                      )}
+  const values = payload && payload.length > 0 && payload[0].payload;
+  return (
+    <div>
+      {settings && settings.length && (
+        <div className={classes.root}>
+          {settings.map((d) =>
+            hideZeros && !values[d.key] ? null : (
+              <div key={d.key} className={`${classes.dataLine} ${d.position || ''}`}>
+                {/* LABEL */}
+                {(d.label || d.labelKey) && (
+                  <div className={classes.dataLabel}>
+                    {d.color && (
+                      <div className={classes.dataColor} style={{ backgroundColor: d.color }} />
+                    )}
 
-                      {d.key === 'break' ? (
-                        <span className="break-label">{d.label}</span>
-                      ) : (
-                        <span>{d.label || values[d.labelKey]}</span>
-                      )}
-                    </div>
-                  )}
+                    {d.key === 'break' ? (
+                      <span className={classes.breakLabel}>{d.label}</span>
+                    ) : (
+                      <span>{d.label || values[d.labelKey]}</span>
+                    )}
+                  </div>
+                )}
 
-                  {/* UNIT */}
-                  <div className="data-value">{this.getValue(d, values[d.key])}</div>
-                </div>
-              )
-            )}
-          </div>
-        )}
-      </div>
-    );
-  }
-}
+                {/* UNIT */}
+                <div>{getValue(d, values[d.key])}</div>
+              </div>
+            )
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default Tooltip;

@@ -16,7 +16,7 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-import { createMuiTheme } from '@material-ui/core';
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core';
 
 const COLORS = {
   SECONDARY_LIGHT: '#7ecace',
@@ -39,82 +39,87 @@ const COLORS = {
 
 const SPACING = 8;
 
-export default createMuiTheme({
-  spacing: SPACING,
-  palette: {
-    type: 'dark',
-    primary: {
-      light: COLORS.GREY_1,
-      main: COLORS.GREY_2,
-      dark: COLORS.GREY_3,
-    },
-    secondary: {
-      light: COLORS.SECONDARY_LIGHT,
-      main: COLORS.SECONDARY_MAIN,
-      dark: COLORS.SECONDARY_DARK,
-    },
-    text: {
-      primary: COLORS.GREY_0,
-    },
-    background: {
-      default: COLORS.GREY_9,
-      paper: COLORS.GREY_8,
-    },
-    grey: {
-      50: COLORS.GREY_1,
-      100: COLORS.GREY_2,
-      200: COLORS.GREY_3,
-      300: COLORS.GREY_4,
-      400: COLORS.GREY_5,
-      500: COLORS.GREY_6,
-      600: COLORS.GREY_7,
-      700: COLORS.GREY_8,
-      800: COLORS.GREY_9,
-      900: COLORS.GREY_9,
-    },
-  },
-  typography: {
-    h2: {
-      textTransform: 'uppercase',
-    },
-    subtitle1: {
-      fontWeight: 600,
-      textTransform: 'capitalize',
-    },
-  },
-  overrides: {
-    MuiChip: {
-      root: {
-        backgroundColor: COLORS.GREY_1,
-        color: COLORS.GREY_9,
+export default responsiveFontSizes(
+  createMuiTheme({
+    spacing: SPACING,
+    palette: {
+      type: 'dark',
+      primary: {
+        light: COLORS.GREY_1,
+        main: COLORS.GREY_2,
+        dark: COLORS.GREY_3,
+      },
+      secondary: {
+        light: COLORS.SECONDARY_LIGHT,
+        main: COLORS.SECONDARY_MAIN,
+        dark: COLORS.SECONDARY_DARK,
+      },
+      text: {
+        primary: COLORS.GREY_0,
+      },
+      background: {
+        default: COLORS.GREY_9,
+        paper: COLORS.GREY_8,
+      },
+      grey: {
+        50: COLORS.GREY_1,
+        100: COLORS.GREY_2,
+        200: COLORS.GREY_3,
+        300: COLORS.GREY_4,
+        400: COLORS.GREY_5,
+        500: COLORS.GREY_6,
+        600: COLORS.GREY_7,
+        700: COLORS.GREY_8,
+        800: COLORS.GREY_9,
+        900: COLORS.GREY_9,
       },
     },
-    MuiFab: {
-      root: {
-        backgroundColor: COLORS.GREY_8,
-        color: COLORS.GREY_1,
-        '&:hover': {
-          backgroundColor: COLORS.GREY_7,
+    typography: {
+      h2: {
+        textTransform: 'uppercase',
+      },
+      subtitle1: {
+        fontWeight: 600,
+        textTransform: 'capitalize',
+      },
+      subtitle2: {
+        textTransform: 'capitalize',
+      },
+    },
+    overrides: {
+      MuiChip: {
+        root: {
+          backgroundColor: COLORS.GREY_1,
+          color: COLORS.GREY_9,
         },
       },
-    },
-    MuiListItem: {
-      gutters: {
-        paddingLeft: SPACING * 2,
-        paddingRight: SPACING * 2,
-      },
-    },
-    MuiOutlinedInput: {
-      root: {
-        backgroundColor: COLORS.GREY_8,
-      },
-    },
-    MuiTab: {
-      textColorPrimary: {
-        '&$selected': {
+      MuiFab: {
+        root: {
+          backgroundColor: COLORS.GREY_8,
           color: COLORS.GREY_1,
+          '&:hover': {
+            backgroundColor: COLORS.GREY_7,
+          },
+        },
+      },
+      MuiListItem: {
+        gutters: {
+          paddingLeft: SPACING * 2,
+          paddingRight: SPACING * 2,
+        },
+      },
+      MuiOutlinedInput: {
+        root: {
+          backgroundColor: COLORS.GREY_8,
+        },
+      },
+      MuiTab: {
+        textColorPrimary: {
+          '&$selected': {
+            color: COLORS.GREY_1,
+          },
         },
       },
     },
-  },
-});
+  })
+);

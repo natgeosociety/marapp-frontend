@@ -19,25 +19,24 @@
 
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
 import Link from 'redux-first-router-link';
 
-import { setupErrors } from '@marapp/earth-shared';
+import { MuiInput, setupErrors } from '@marapp/earth-shared';
 
 import { EarthRoutes, IRouter } from '../../../modules/router/model';
 import PlacesService from '../../../services/PlacesService';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface IProps {
   privateGroups: string[];
@@ -95,14 +94,17 @@ const CollectionNew = (props: IProps) => {
             <Grid item={true}>
               {canCreateCollection && (
                 <Controller
-                  as={TextField}
-                  name="name"
+                  as={MuiInput}
+                  className="marapp-qa-collection-name-input"
                   label={t('Name Collection')}
-                  variant="outlined"
-                  fullWidth={true}
                   placeholder={t('enter a name for your collection')}
-                  error={renderErrorFor('name')}
                   control={control}
+                  required={true}
+                  error={renderErrorFor('name')}
+                  name="name"
+                  inputRef={register({
+                    required: t('Collection name is required') as string,
+                  })}
                 />
               )}
             </Grid>
@@ -127,7 +129,7 @@ const CollectionNew = (props: IProps) => {
                 name="organization"
                 control={control}
                 as={
-                  <RadioGroup>
+                  <RadioGroup className="marapp-qa-collection-organizations">
                     {privateGroups.map((group) => (
                       <FormControlLabel value={group} control={<Radio />} label={group} />
                     ))}
@@ -136,11 +138,19 @@ const CollectionNew = (props: IProps) => {
               />
             </Grid>
 
+            {saveError && (
+              <Grid item={true}>
+                <Typography className="marapp-qa-create-collection-error" color="error">
+                  {saveError}
+                </Typography>
+              </Grid>
+            )}
+
             <Grid item={true}>
-              {saveError && <Typography color="error">{saveError}</Typography>}
               <Grid container={true} spacing={1}>
                 <Grid item={true}>
                   <Button
+                    className="marapp-qa-save-collection"
                     variant="contained"
                     color="secondary"
                     type="submit"

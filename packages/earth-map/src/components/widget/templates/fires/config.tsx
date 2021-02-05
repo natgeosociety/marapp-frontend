@@ -164,7 +164,6 @@ export const CONFIG = {
           content: (
             <WidgetTooltip
               style={{
-                color: '#FFF',
                 backgroundColor: '#F75353',
               }}
               settings={[

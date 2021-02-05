@@ -98,7 +98,7 @@ export function CollectionEditPlaces(props: IProps) {
         </Paper>
       </Box>
 
-      <div className={classes.scrollContainer}>
+      <div className={`${classes.scrollContainer} marapp-qa-edit-collection-places`}>
         <Paper square={true}>
           <Box p={2}>
             <Grid container={true} spacing={2}>

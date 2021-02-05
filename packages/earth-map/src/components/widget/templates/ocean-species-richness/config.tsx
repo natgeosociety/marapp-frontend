@@ -106,10 +106,6 @@ export const CONFIG = {
           cursor: false,
           content: (
             <WidgetTooltip
-              style={{
-                color: '#FFFFFF',
-                backgroundColor: '#383838',
-              }}
               settings={[
                 {
                   label: 'Percentile:',

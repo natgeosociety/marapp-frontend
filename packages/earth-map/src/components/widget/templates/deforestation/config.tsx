@@ -80,7 +80,6 @@ export const CONFIG = {
             loss: {
               maxBarSize: 100,
               fill: '#FD6B85',
-              radius: [5, 5, 0, 0],
             },
           },
         },
@@ -109,10 +108,6 @@ export const CONFIG = {
           cursor: false,
           content: (
             <WidgetTooltip
-              style={{
-                color: '#FFFFFF',
-                backgroundColor: '#383838',
-              }}
               settings={[
                 { label: 'Year:', key: 'year' },
                 {

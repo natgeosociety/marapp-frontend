@@ -41,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0,
   },
   table: {
+    '& *': {
+      wordBreak: 'break-all',
+    },
     '& tr': {
       '&:last-child td': {
         borderBottomColor: 'transparent',
@@ -48,8 +51,10 @@ const useStyles = makeStyles((theme) => ({
       '& td': {
         verticalAlign: 'baseline',
         '&:nth-child(1)': {
-          fontWeight: 500,
           width: '40%',
+          '& p': {
+            fontWeight: 500,
+          },
         },
         '&:nth-child(2)': {
           width: '60%',
@@ -106,20 +111,24 @@ const LayerPopupComponent = (props: ILayerPopupComponent) => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h5" className={classes.title}>
+      <Typography variant="h6" className={classes.title} paragraph={true}>
         {name}
       </Typography>
 
       <TableContainer>
-        <Table className={classes.table}>
+        <Table className={classes.table} size="small">
           <TableBody>
             {output
               .filter((o) => !o.hidden)
               .map((o) => {
                 return (
                   <TableRow key={o.column}>
-                    <TableCell align="right">{o.property}:</TableCell>
-                    <TableCell>{formatValue(o, data.data)}</TableCell>
+                    <TableCell align="right">
+                      <Typography variant="body2">{o.property}:</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2">{formatValue(o, data.data)}</Typography>
+                    </TableCell>
                   </TableRow>
                 );
               })}

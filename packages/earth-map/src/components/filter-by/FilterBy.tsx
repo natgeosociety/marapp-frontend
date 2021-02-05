@@ -22,8 +22,10 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
+import Fade from '@material-ui/core/Fade';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
+import useTheme from '@material-ui/core/styles/useTheme';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import IconChevronDown from 'mdi-material-ui/ChevronDown';
@@ -53,9 +55,9 @@ const useStyles = makeStyles((theme) => ({
   expanded: {},
   summaryExpanded: {
     minHeight: '0 !important',
-    '& >div': {
-      marginTop: '0 !important',
-      marginBottom: '0 !important',
+    '& >div:first-child': {
+      marginTop: '12px !important',
+      marginBottom: '12px !important',
     },
   },
 }));
@@ -64,6 +66,7 @@ const FilterBy = (props: IProps) => {
   const { availableFilters, filters, onChange } = props;
   const { t } = useTranslation();
   const classes = useStyles();
+  const theme = useTheme();
   const [currentAvailableFilters, setCurrentAvailableFilters] = useState({});
 
   // Keep old available filters while new filters are fetched
@@ -87,10 +90,12 @@ const FilterBy = (props: IProps) => {
     });
   };
 
-  const clearCheckedFilters = () =>
+  const clearCheckedFilters = (ev) => {
+    ev && ev.stopPropagation();
     onChange({
       filters: {},
     });
+  };
 
   return (
     <Accordion
@@ -101,7 +106,7 @@ const FilterBy = (props: IProps) => {
       }}
     >
       <AccordionSummary
-        expandIcon={<IconChevronDown />}
+        expandIcon={<IconChevronDown className="marapp-qa-filterbyarrow" />}
         classes={{
           expanded: classes.summaryExpanded,
         }}
@@ -110,7 +115,13 @@ const FilterBy = (props: IProps) => {
           <Typography component="span" variant="button">
             {t('Filters')}
           </Typography>{' '}
-          {numberOfFilters > 0 && (
+          <Fade
+            in={numberOfFilters > 0}
+            timeout={{
+              enter: theme.transitions.duration.enteringScreen,
+              exit: 0, // quickly remove the button in order to hide "Clear(0)"
+            }}
+          >
             <Button
               className="marapp-qa-filterbyclear"
               onClick={clearCheckedFilters}
@@ -120,7 +131,7 @@ const FilterBy = (props: IProps) => {
             >
               {t('Clear')} {`(${numberOfFilters})`}
             </Button>
-          )}
+          </Fade>
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
@@ -134,7 +145,7 @@ const FilterBy = (props: IProps) => {
                 <Grid key={`${filter.key}-${filter.value}`} item={true} xs={12} sm={6}>
                   <FormControlLabel
                     label={
-                      <span>
+                      <span className="marapp-qa-filter-option">
                         {filter.label} <em>({filter.count})</em>
                       </span>
                     }

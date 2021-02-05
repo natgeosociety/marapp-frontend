@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     '& .layers--item-bg': {
       border: 0,
-      borderRadius: theme.spacing(0.5),
+      borderRadius: theme.shape.borderRadius,
       height: theme.spacing(10),
       width: theme.spacing(15),
       transition: theme.transitions.create('opacity', {
@@ -60,15 +60,14 @@ const useStyles = makeStyles((theme) => ({
     '& .layers--item-title': {
       ...theme.typography.body1,
       fontWeight: 500,
-      // textShadow: `2px 2px 2px ${theme.palette.grey['600']}`,
       position: 'absolute',
       right: 0,
       left: 0,
       bottom: -9,
       marginBottom: theme.spacing(1),
       background: 'rgba(0, 0, 0, 0.5)',
-      borderBottomLeftRadius: theme.spacing(0.5),
-      borderBottomRightRadius: theme.spacing(0.5),
+      borderBottomLeftRadius: theme.shape.borderRadius,
+      borderBottomRightRadius: theme.shape.borderRadius,
     },
   },
 }));

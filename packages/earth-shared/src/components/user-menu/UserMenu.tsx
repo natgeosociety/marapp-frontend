@@ -19,10 +19,8 @@
 
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
+import { bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
 import ToggleIcon from 'material-ui-toggle-icon';
 import IconAccount from 'mdi-material-ui/Account';
 import IconAccountOutline from 'mdi-material-ui/AccountOutline';
@@ -35,7 +33,7 @@ import compose from 'lodash/fp/compose';
 import noop from 'lodash/noop';
 import { getInitials } from '../../utils';
 
-import { Elang, TranslationService } from '@marapp/earth-shared';
+import { Elang, Menu, TranslationService } from '@marapp/earth-shared';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: theme.spacing(15),
     '& a': {
       borderBottom: 0,
+      width: '100%',
     },
   },
   languageButton: {
@@ -112,7 +111,7 @@ export const UserMenu = (props: IProps) => {
         {!!selectedLanguage && (
           <>
             <Button
-              className={classes.languageButton}
+              className={`${classes.languageButton} marapp-qa-language-button`}
               {...bindTrigger(popupStateLang)}
               size="small"
               variant="contained"
@@ -123,36 +122,25 @@ export const UserMenu = (props: IProps) => {
               {selectedLanguage}
             </Button>
             <Menu
-              {...bindMenu(popupStateLang)}
+              popupState={popupStateLang}
               classes={{ paper: classes.menu }}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-              transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-              marginThreshold={42} // hack to push the menu below the trigger button
-              getContentAnchorEl={null}
-            >
-              {[
+              options={[
                 { name: 'English', value: Elang.EN },
                 { name: 'Español', value: Elang.ES },
                 { name: 'Français', value: Elang.FR },
                 { name: 'Pусский', value: Elang.RU },
-              ].map(({ name, value }) => (
-                <MenuItem
-                  key={name}
-                  selected={selectedLanguage === value}
-                  onClick={() => {
-                    changeLanguage(value);
-                  }}
-                >
-                  {name}
-                </MenuItem>
-              ))}
-            </Menu>
+              ].map(({ name, value }) => ({
+                label: name,
+                onClick: () => changeLanguage(value),
+                selected: selectedLanguage === value,
+              }))}
+            />
           </>
         )}
       </div>
       <div>
         <Fab
-          className={classes.authButton}
+          className={`${classes.authButton} marapp-qa-user-menu-button`}
           {...bindTrigger(popupState)}
           size="small"
           color="primary"
@@ -167,46 +155,39 @@ export const UserMenu = (props: IProps) => {
         </Fab>
 
         <Menu
-          {...bindMenu(popupState)}
+          popupState={popupState}
           classes={{ paper: classes.menu }}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          marginThreshold={42} // hack to push the menu below the trigger button
-          getContentAnchorEl={null}
-        >
-          <MenuItem disabled={true}>{t('Account')}:</MenuItem>
-
-          {isAuthenticated
-            ? [
-                <MenuItem key="profile" selected={selected === 'profile'} divider={true}>
-                  {profileLink}
-                </MenuItem>,
-                <MenuItem
-                  key="sign-out"
-                  className="marapp-qa-signout"
-                  onClick={compose(handleLogout, onLogout, () => popupState.close())}
-                >
-                  {t('Sign Out')}
-                </MenuItem>,
-              ]
-            : [
-                <MenuItem
-                  key="sign-in"
-                  className="marapp-qa-signin"
-                  onClick={compose(onLogin, () => popupState.close())}
-                  divider={true}
-                >
-                  {t('Sign in')}
-                </MenuItem>,
-                <MenuItem
-                  key="sign-out"
-                  className="marapp-qa-signup"
-                  onClick={compose(onSignUp, () => popupState.close())}
-                >
-                  {t('Sign up')}
-                </MenuItem>,
-              ]}
-        </Menu>
+          options={[
+            { label: t('Account'), disabled: true },
+            ...(isAuthenticated
+              ? [
+                  {
+                    divider: true,
+                    label: profileLink,
+                    selected: selected === 'profile',
+                    className: 'marapp-qa-profile',
+                  },
+                  {
+                    label: t('Sign Out'),
+                    className: 'marapp-qa-signout',
+                    onClick: compose(handleLogout, onLogout),
+                  },
+                ]
+              : [
+                  {
+                    label: t('Sign in'),
+                    className: 'marapp-qa-signin',
+                    onClick: onLogin,
+                    divider: true,
+                  },
+                  {
+                    label: t('Sign up'),
+                    className: 'marapp-qa-signin',
+                    onClick: onSignUp,
+                  },
+                ]),
+          ]}
+        />
       </div>
     </div>
   );

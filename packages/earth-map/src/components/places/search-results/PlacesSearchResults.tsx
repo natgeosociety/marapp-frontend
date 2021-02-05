@@ -23,7 +23,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import List from '@researchgate/react-intersection-list';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { serializeFilters, Spinner } from '@marapp/earth-shared';
@@ -33,7 +33,6 @@ import useLocations from '../../../fetchers/useLocations';
 import { LocationTypeEnum } from '../../../modules/places/model';
 import { EarthRoutes } from '../../../modules/router/model';
 import { PAGE_SIZE } from '../../../theme';
-import { countSelectedFiltersEntities } from '../../../utils/filters';
 import ListItem from '../../list-item';
 
 interface IProps {
@@ -48,7 +47,6 @@ interface IProps {
 
 export function PlacesSearchResults(props: IProps) {
   const {
-    availableFilters,
     search,
     filters,
     group,
@@ -58,15 +56,9 @@ export function PlacesSearchResults(props: IProps) {
   } = props;
   const { t } = useTranslation();
   const title = t('Search results');
-  const [currentAvailableFilters, setCurrentAvailableFilters] = useState({});
 
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down('sm'));
-
-  // Keep old available filters while new filters are fetched
-  useEffect(() => availableFilters && setCurrentAvailableFilters(availableFilters), [
-    availableFilters,
-  ]);
 
   const { data, awaitMore, nextPage, isValidating } = useLocations({
     search,
@@ -83,16 +75,11 @@ export function PlacesSearchResults(props: IProps) {
 
   const isLoading = isValidating !== false;
 
-  const currentFilteredNumberOfEntities = countSelectedFiltersEntities(
-    filters,
-    currentAvailableFilters
-  );
+  let itemCount = data?.length || 0;
 
-  const itemCount = Math.min(
-    currentFilteredNumberOfEntities ||
-      (isLoading ? fakeResultsMapping[search.length] || 1 : data?.length || 0),
-    10
-  );
+  if (isLoading) {
+    itemCount += fakeResultsMapping[search.length] || 1;
+  }
 
   return (
     <Paper square={true} className="marapp-qa-infinitelist">
@@ -107,7 +94,7 @@ export function PlacesSearchResults(props: IProps) {
           pageSize={PAGE_SIZE}
           itemCount={itemCount}
           renderItem={(index) => {
-            if (isLoading || !data[index]) {
+            if (!(data && data[index])) {
               return <MenuItemSkeleton key={index} />;
             }
 
@@ -137,7 +124,7 @@ export function PlacesSearchResults(props: IProps) {
           }}
           onIntersection={nextPage}
         />
-        {isValidating && <Spinner position="relative" />}
+        {/*{isValidating && <Spinner position="relative" />}*/}
       </Box>
     </Paper>
   );

@@ -86,7 +86,6 @@ export const CONFIG = {
           value: `${format(eviFormat)(y.norm)}`,
           mean: mean_norm,
           fill: getColorFromPallete(EVI_PALLETE, y.norm),
-          radius: [5, 5, 0, 0],
         };
       }),
       template: replace(
@@ -141,10 +140,6 @@ export const CONFIG = {
           cursor: false,
           content: (
             <WidgetTooltip
-              style={{
-                color: '#FFFFFF',
-                backgroundColor: '#383838',
-              }}
               settings={[
                 { label: 'Year:', key: 'year' },
                 {

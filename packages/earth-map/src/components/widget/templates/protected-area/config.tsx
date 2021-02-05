@@ -172,10 +172,6 @@ export const CONFIG = {
         //   cursor: false,
         //   content: (
         //     <WidgetTooltip
-        //       style={{
-        //         color: '#FFFFFF',
-        //         backgroundColor: '#383838'
-        //       }}
         //       settings={[
         //         { key: "x" },
         //         { key: "percentage", format: (value) => `Percentage: ${format('.1%')(value/100)}` }

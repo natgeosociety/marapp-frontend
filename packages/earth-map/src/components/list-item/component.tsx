@@ -46,6 +46,11 @@ const useStyles = makeStyles((theme) => ({
 
     return rootStyles;
   },
+  container: {
+    '&:last-child > div': {
+      borderBottom: 'none',
+    },
+  },
 }));
 
 interface IProps {
@@ -71,6 +76,9 @@ const ListItem = (props: IProps) => {
   const listItemProps: any = {
     onClick,
     className: classnames(classes.root, 'marapp-qa-listitem'),
+    classes: {
+      container: classes.container,
+    },
     component: linkTo ? Link : 'div',
     button: true,
   };
@@ -95,8 +103,8 @@ const ListItem = (props: IProps) => {
             {labels?.length && <span>{labels.join(', ')}</span>}
           </span>
         }
-        primaryTypographyProps={{ noWrap: true }}
-        secondaryTypographyProps={{ noWrap: true }}
+        primaryTypographyProps={{ className: 'marapp-qa-list-item-title', noWrap: true }}
+        secondaryTypographyProps={{ className: 'marapp-qa-list-item-description', noWrap: true }}
       />
 
       {showToggle && (

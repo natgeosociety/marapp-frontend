@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => {
     drawerPaper: {
       maxHeight: '100vh',
       backgroundColor: theme.palette.background.default,
+      borderRight: 'none',
       '& .scroll-container': {
         flex: '1 1 auto',
         overflow: 'auto',

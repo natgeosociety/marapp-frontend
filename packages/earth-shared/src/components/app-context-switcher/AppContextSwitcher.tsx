@@ -109,7 +109,7 @@ const AppContextSwitcher = (props: IProps) => {
                 marginThreshold={48} // hack to push the menu below the trigger button
                 getContentAnchorEl={null}
                 onClose={closeDropdown}
-                className="marapp-qa-dropdown"
+                className="marapp-qa-dropdown marapp-qa-menu-dropdown"
                 PopoverClasses={{
                   root: classes.menuPopOver,
                 }}

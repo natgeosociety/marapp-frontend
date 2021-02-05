@@ -19,17 +19,15 @@
 
 import Box from '@material-ui/core/Box';
 import Fab from '@material-ui/core/Fab';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
+import { bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
 import IconDotsHorizontal from 'mdi-material-ui/DotsHorizontal';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InView } from 'react-intersection-observer';
 
-import { AuthzGuards, TitleHero } from '@marapp/earth-shared';
+import { AuthzGuards, Menu, TitleHero } from '@marapp/earth-shared';
 
 import { useAuth0 } from '../../auth/auth0';
 import Widget from '../../components/widget';
@@ -84,16 +82,10 @@ export default function WidgetsComponent(props: IProps) {
       <Fab size="small" {...bindTrigger(popupState)}>
         <IconDotsHorizontal />
       </Fab>
-      <Menu {...bindMenu(popupState)}>
-        <MenuItem
-          onClick={() => {
-            setIsOnClipLayer(true);
-            popupState.close();
-          }}
-        >
-          {t('Clip and Export Layers')}
-        </MenuItem>
-      </Menu>
+      <Menu
+        popupState={popupState}
+        options={[{ label: t('Clip and Export Layers'), onClick: () => setIsOnClipLayer(true) }]}
+      />
     </>
   );
 

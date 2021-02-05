@@ -52,7 +52,7 @@ export const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
       <Box mb={1} position="relative">
         <Paper className="marapp-qa-other" square={true}>
           <Box p={2} pb={0}>
-            <Typography variant="subtitle1" color="textSecondary">
+            <Typography variant="subtitle2" color="textSecondary">
               {t('Featured places')}
             </Typography>
           </Box>
@@ -72,7 +72,7 @@ export const FeaturedPlacesComponent = (props: IFeaturedPlaces) => {
   return (
     <Paper className="marapp-qa-featuredplaces" square={true}>
       <Box p={2} pb={0}>
-        <Typography variant="subtitle1" color="textSecondary">
+        <Typography variant="subtitle2" color="textSecondary">
           {t('Featured places')}
         </Typography>
       </Box>

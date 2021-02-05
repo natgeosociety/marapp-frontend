@@ -40,6 +40,7 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
     activeInfo: PropTypes.bool.isRequired,
     activeShare: PropTypes.bool.isRequired,
     activeDownload: PropTypes.bool.isRequired,
+    layers: PropTypes.any,
     onDownload: PropTypes.func.isRequired,
     onInfo: PropTypes.func.isRequired,
     onShare: PropTypes.func.isRequired,
@@ -51,7 +52,7 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
   };
 
   public render() {
-    const { className, active, collapsed, onToggleLayer, onInfo, data } = this.props;
+    const { className, active, collapsed, layers, onToggleLayer, onInfo, data } = this.props;
 
     const classNames = classnames({
       [className]: !!className,
@@ -65,9 +66,9 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
         flexDirection="row"
         className={`marapp-qa-widgettoolbar  ${classNames}`}
       >
-        {collapsed ? (
+        {collapsed && !!layers?.length ? (
           <Fade in={true}>
-            <IconButton onClick={onToggleLayer}>
+            <IconButton onClick={onToggleLayer} className="marapp-qa-show-remove-layer">
               <ToggleIcon
                 on={active}
                 onIcon={<IconRemoveLayer fontSize="small" />}
@@ -78,7 +79,7 @@ class WidgetToolbarComponent extends PureComponent<any, any> {
         ) : null}
 
         {!isEmpty(data) && <WidgetDownload data={data} />}
-        <IconButton onClick={onInfo}>
+        <IconButton onClick={onInfo} className="marapp-qa-widget-info">
           <IconInfo fontSize="small" />
         </IconButton>
       </Box>

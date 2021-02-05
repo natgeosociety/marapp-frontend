@@ -25,6 +25,7 @@ import { Spinner } from '@marapp/earth-shared';
 
 import Widgets from '../../components/widgets';
 import { IWidget } from '../../modules/widget/model';
+import WidgetSkeleton from '../WidgetSkeleton';
 import './styles.scss';
 
 interface ILIst {
@@ -44,8 +45,9 @@ interface IIndexContent {
 class IndexContentComponent extends React.PureComponent<IIndexContent> {
   public render() {
     const { place, widgets, metricsLoading, widgetsLoading } = this.props;
+
     if (isEmpty(place) || metricsLoading || widgetsLoading) {
-      return <Spinner />;
+      return <WidgetSkeleton />;
     }
 
     return (

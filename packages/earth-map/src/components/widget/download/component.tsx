@@ -18,14 +18,12 @@
 */
 
 import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
+import { bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
 import IconDownload from 'mdi-material-ui/Download';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { downloadCSVFile, downloadJSONFile, useDomWatcher } from '@marapp/earth-shared';
+import { downloadCSVFile, downloadJSONFile, Menu, useDomWatcher } from '@marapp/earth-shared';
 
 import './styles.scss';
 
@@ -36,7 +34,7 @@ interface IMetric {
 const WidgetDownload = (props: IMetric) => {
   const { t } = useTranslation();
   const [showDropdown, setShowDropdown] = useState(false);
-  const popupState = usePopupState({ variant: 'popover', popupId: 'demoMenu' });
+  const popupState = usePopupState({ variant: 'popover', popupId: 'download-actions' });
   const {
     data: { metric, slug },
   } = props;
@@ -56,29 +54,29 @@ const WidgetDownload = (props: IMetric) => {
         <IconDownload fontSize="small" />
       </IconButton>
 
-      <Menu className="marapp-qa-dropdown" {...bindMenu(popupState)}>
-        <MenuItem disabled={true}>{t('Download metric as a')}:</MenuItem>
-
-        <MenuItem
-          component="a"
-          href={csvBlobUrl}
-          download={`${slug}.csv`}
-          className="marapp-qa-actioncsv"
-          onClick={popupState.close}
-        >
-          CSV
-        </MenuItem>
-
-        <MenuItem
-          component="a"
-          href={blobUrl}
-          download={`${slug}.json`}
-          className="marapp-qa-actionjson"
-          onClick={popupState.close}
-        >
-          JSON
-        </MenuItem>
-      </Menu>
+      <Menu
+        popupState={popupState}
+        options={[
+          {
+            label: t('Download metric as a'),
+            disabled: true,
+          },
+          {
+            label: 'CSV',
+            className: 'marapp-qa-actioncsv',
+            component: 'a',
+            href: csvBlobUrl,
+            download: `${slug}.csv`,
+          },
+          {
+            label: 'JSON',
+            className: 'marapp-qa-actionjson',
+            component: 'a',
+            href: blobUrl,
+            download: `${slug}.json`,
+          },
+        ]}
+      />
     </div>
   );
 };

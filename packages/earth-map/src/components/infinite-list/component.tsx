@@ -41,10 +41,12 @@ const InfiniteList = (props: IProps) => {
   };
 
   return (
-    <div className="marapp-qa-infinitelist ng-section-background ng-position-relative ng-padding-medium-bottom">
+    <div className="marapp-qa-infinitelist">
       {title && (
         <Box p={2} pb={0}>
-          <Typography variant="subtitle1">{title}</Typography>
+          <Typography variant="subtitle2" color="textSecondary">
+            {title}
+          </Typography>
         </Box>
       )}
       <List

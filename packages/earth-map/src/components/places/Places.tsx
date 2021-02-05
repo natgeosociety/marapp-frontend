@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
@@ -139,19 +140,21 @@ const Places = (props: IProps) => {
         </>
       }
     >
-      {showSearchResults ? (
-        <PlacesSearchResults
-          availableFilters={meta?.filters}
-          search={search.search}
-          filters={search.filters}
-          group={group}
-          setPlacesSearch={setPlacesSearch}
-          setSidebarPanelExpanded={setSidebarPanelExpanded}
-          setSidebarOpen={setSidebarOpen}
-        />
-      ) : (
-        children
-      )}
+      <Box mt={1}>
+        {showSearchResults ? (
+          <PlacesSearchResults
+            availableFilters={meta?.filters}
+            search={search.search}
+            filters={search.filters}
+            group={group}
+            setPlacesSearch={setPlacesSearch}
+            setSidebarPanelExpanded={setSidebarPanelExpanded}
+            setSidebarOpen={setSidebarOpen}
+          />
+        ) : (
+          children
+        )}
+      </Box>
     </SidebarLayoutSearch>
   );
 };

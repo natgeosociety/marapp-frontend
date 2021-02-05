@@ -22,19 +22,17 @@ import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { isEmpty } from 'lodash';
-import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
+import { bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
 import IconDotsHorizontal from 'mdi-material-ui/DotsHorizontal';
 import IconDownload from 'mdi-material-ui/Download';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { getGenericDate, Spinner, TitleHero } from '@marapp/earth-shared';
+import { getGenericDate, Menu, Spinner, TitleHero } from '@marapp/earth-shared';
 
 import { ICollection } from '../../../modules/collections/model';
 import CollectionDelete from '../collection-delete';
@@ -68,7 +66,7 @@ const CollectionDetails = (props: IProps) => {
   const { reloadCollection, privateGroups, loading, data, setMapBounds, setCollectionData } = props;
   const { t } = useTranslation();
   const classes = useStyles();
-  const popupState = usePopupState({ variant: 'popover', popupId: 'demoMenu' });
+  const popupState = usePopupState({ variant: 'popover', popupId: 'collection-details-actions' });
   const [isAddingPlaces, setIsAddingPlaces] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -84,28 +82,25 @@ const CollectionDetails = (props: IProps) => {
 
   const editActions = (
     <>
-      <Fab size="small" {...bindTrigger(popupState)}>
+      <Fab className="marapp-qa-collection-actions" size="small" {...bindTrigger(popupState)}>
         <IconDotsHorizontal />
       </Fab>
 
-      <Menu {...bindMenu(popupState)}>
-        <MenuItem
-          onClick={() => {
-            setIsRenaming(true);
-            popupState.close();
-          }}
-        >
-          {t('Rename Collection')}
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            setIsDeleting(true);
-            popupState.close();
-          }}
-        >
-          {t('Delete')}
-        </MenuItem>
-      </Menu>
+      <Menu
+        popupState={popupState}
+        options={[
+          {
+            className: 'marapp-qa-rename-collection',
+            onClick: () => setIsRenaming(true),
+            label: t('Rename Collection'),
+          },
+          {
+            className: 'marapp-qa-delete-collection',
+            onClick: () => setIsDeleting(true),
+            label: t('Delete'),
+          },
+        ]}
+      />
     </>
   );
 
@@ -151,7 +146,7 @@ const CollectionDetails = (props: IProps) => {
                   {locations
                     .filter((x) => !!x)
                     .map((location) => (
-                      <Grid item={true}>
+                      <Grid item={true} key={location.name}>
                         <Chip
                           label={location.name}
                           size="small"
@@ -186,6 +181,7 @@ const CollectionDetails = (props: IProps) => {
                   )}
                 </Typography>
                 <Button
+                  className="marapp-qa-actiondownloadmetrics"
                   variant="outlined"
                   size="large"
                   onClick={() => setIsOnDownloadMetrics(true)}

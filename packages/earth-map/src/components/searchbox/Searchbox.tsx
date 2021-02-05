@@ -68,6 +68,7 @@ const SearchBox = (props: ISearchbox) => {
         onChange={onChange}
         onFocus={onFocus}
         InputProps={{
+          className: 'marapp-qa-searchboxinput',
           startAdornment: (
             <InputAdornment position="start">
               <IconMagnify fontSize="large" />
@@ -75,7 +76,7 @@ const SearchBox = (props: ISearchbox) => {
           ),
           endAdornment: showClose ? (
             <InputAdornment position="start">
-              <IconButton onClick={onReset} size="small">
+              <IconButton onClick={onReset} className="marapp-qa-searchboxclear" size="small">
                 <IconClose fontSize="small" />
               </IconButton>
             </InputAdornment>
