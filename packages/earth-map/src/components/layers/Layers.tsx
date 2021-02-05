@@ -21,6 +21,7 @@ import { debounce, sortBy } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAuth0 } from '../../auth/auth0';
 import BackToLocation from '../../components/back-to-location';
 import FilterBy from '../../components/filter-by';
 import InfiniteList from '../../components/infinite-list';
@@ -29,7 +30,6 @@ import SearchBox from '../../components/searchbox';
 import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search';
 import { QUERY_LAYERS, useLayers } from '../../fetchers';
 import { EPanels } from '../../modules/sidebar/model';
-import { useAuth0 } from '../../auth/auth0';
 import './styles.scss';
 
 interface IProps {

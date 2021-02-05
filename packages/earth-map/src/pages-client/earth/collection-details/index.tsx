@@ -24,6 +24,7 @@ import { replace } from 'redux-first-router';
 import { Spinner } from '@marapp/earth-shared';
 
 import { useAuth0 } from '../../../auth/auth0';
+import Layers from '../../../components/layers';
 import Places from '../../../components/places';
 import { QUERY_LOCATIONS, useLocation } from '../../../fetchers';
 import { setLastViewedPlace } from '../../../modules/global/actions';
@@ -31,10 +32,12 @@ import { EMainType, SubType } from '../../../modules/global/model';
 import { resetMap, setLocationHighlight, setMapBounds } from '../../../modules/map/actions';
 import { setPlacesSearch } from '../../../modules/places/actions';
 import { setSidebarPanelExpanded } from '../../../modules/sidebar/actions';
+import { EPanels } from '../../../modules/sidebar/model';
 import CollectionDetails from './CollectionDetails';
 
 interface IProps {
   selected: boolean;
+  panel: EPanels;
   slug?: string;
   organization?: string;
   setSidebarPanelExpanded?: (payload?: any) => void;
@@ -48,10 +51,12 @@ interface IProps {
 function WithData(props: IProps) {
   const {
     slug,
+    selected,
     organization,
     setPlacesSearch,
     setSidebarPanelExpanded,
     resetMap,
+    panel,
     setMapBounds,
     setLocationHighlight,
     setLastViewedPlace,
@@ -104,24 +109,36 @@ function WithData(props: IProps) {
     }
   }, [error]);
 
-  return (
-    <Places
-      selected={props.selected}
-      locationName={data?.name}
-      locationOrganization={data?.organization}
-    >
-      {data ? (
-        <CollectionDetails
-          swr={swrProps}
-          privateGroups={privateGroups}
-          setMapBounds={setMapBounds}
-          onSlugChange={setResourceId}
-        />
-      ) : (
-        <Spinner />
-      )}
-    </Places>
-  );
+  if (panel === EPanels.LAYERS) {
+    return (
+      <Layers
+        selected={selected}
+        locationName={data.name}
+        locationOrganization={data.organization}
+      />
+    );
+  }
+
+  if (panel === EPanels.PLACES) {
+    return (
+      <Places
+        selected={selected}
+        locationName={data?.name}
+        locationOrganization={data?.organization}
+      >
+        {data ? (
+          <CollectionDetails
+            swr={swrProps}
+            privateGroups={privateGroups}
+            setMapBounds={setMapBounds}
+            onSlugChange={setResourceId}
+          />
+        ) : (
+          <Spinner />
+        )}
+      </Places>
+    );
+  }
 }
 
 export default connect(

@@ -18,6 +18,7 @@
 */
 
 import cn from 'classnames';
+import { orderBy, sortBy } from 'lodash';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InView } from 'react-intersection-observer';
@@ -28,22 +29,21 @@ import { useAuth0 } from '../../auth/auth0';
 import Widget from '../../components/widget';
 import TEMPLATES from '../../components/widget/templates';
 import CONFIGS from '../../components/widget/templates/configs';
+import { flattenLayerConfig } from '../../fetchers/transformers';
+import { ILayer } from '../../modules/layers/model';
 import { IPlace } from '../../modules/places/model';
-import { IWidget } from '../../modules/widget/model';
 import { ClipLayer } from '../clip-layer';
 import './styles.scss';
 
 interface IProps {
   groups?: string[];
-  slugs?: Array<{}>;
-  list?: IWidget[];
   place?: Partial<IPlace>;
   embed?: boolean;
   toolbar?: boolean;
+  activeLayers: ILayer[];
   setSidebarInfo?: (s: any) => {};
   toggleLayer?: (s: any) => {};
-  metrics?: [];
-  widgets?: [];
+  dashboards: any[];
 }
 
 interface IWidgetsState {
@@ -53,7 +53,8 @@ interface IWidgetsState {
 }
 
 export default function WidgetsComponent(props: IProps) {
-  const { groups, place, widgets: list = [], embed, toolbar, toggleLayer, metrics = [{}] } = props;
+  const { groups, place, embed, toolbar, toggleLayer, dashboards, activeLayers } = props;
+  const { metrics = [{}] } = place;
   const [widgetState, setWidgetState] = useState<IWidgetsState>({
     collapsedState: {},
     share: false,
@@ -64,6 +65,16 @@ export default function WidgetsComponent(props: IProps) {
   const { collapsedState } = widgetState;
   const { t } = useTranslation();
   const canExport = getPermissions(AuthzGuards.readExportsGuard, place.organization);
+
+  const widgetsData = dashboards?.map((dasboard) => dasboard.widgets).flat();
+  const slugs = sortBy(widgetsData, ['organization', 'name'])
+    .filter((w) => !!w.slug)
+    .map((w) => ({
+      slug: w.slug,
+      collapsed: false,
+      box: true,
+    }));
+  const widgets = parseWidgets(place, widgetsData, activeLayers, slugs);
 
   const editActions = (
     <DropdownSimple
@@ -96,7 +107,7 @@ export default function WidgetsComponent(props: IProps) {
             className="ng-widget-header ng-margin-medium "
           />
         </div>
-        {list.map((w: any, i) => {
+        {widgets.map((w: any, i) => {
           const [widgetMetricName] = w.metrics;
 
           const [filteredMetric] = metrics.filter(
@@ -158,4 +169,35 @@ export default function WidgetsComponent(props: IProps) {
       </div>
     </div>
   );
+}
+
+function parseWidgets(place, widgets, activeLayers, slugs) {
+  if (!widgets) {
+    return [];
+  }
+
+  const filteredWidgets = widgets
+    .filter((widget) => {
+      const { location_types } = widget.config.widgetConfig;
+
+      const thereIsSlug = !!slugs.find((s) => s.slug === widget.slug);
+      const thereIsLocationType = Array.isArray(location_types)
+        ? location_types.includes(place.locationType.toLowerCase())
+        : true;
+
+      return thereIsSlug && thereIsLocationType;
+    })
+    .map((widget) => ({
+      ...widget,
+      ...widget.config,
+      ...{ layers: widget.layers.map(flattenLayerConfig) },
+      slug: widget.slug,
+      description: widget.description,
+      active: !!activeLayers.find((slug) => widget.layers[0] && slug === widget.layers[0].slug),
+      params: {
+        id: place.id,
+      },
+    }));
+
+  return orderBy([...filteredWidgets], ['organization', 'name']);
 }

@@ -23,11 +23,9 @@ import { Icons as VizzIcons } from 'vizzuality-components';
 import { ErrorBoundary, Tab, Tabs } from '@marapp/earth-shared';
 
 import { useAuth0 } from '../../auth/auth0';
-import CollectionDetails from '../../components/collection/collection-details';
 import CollectionNew from '../../components/collection/collection-new';
 import CollectionsCard from '../../components/collection/collections-card';
 import Header from '../../components/header';
-import IndexSidebar from '../../components/index-sidebar';
 import LastViewedPlace from '../../components/last-viewed-place';
 import LayerConfigError from '../../components/layer-config-error';
 import Layers from '../../components/layers';
@@ -40,6 +38,8 @@ import { QUERY_LAYERS, useLayers } from '../../fetchers';
 import { ILastViewedPlace } from '../../modules/global/model';
 import { EarthRoutes, IRouter } from '../../modules/router/model';
 import { EPanels } from '../../modules/sidebar/model';
+import CollectionDetails from './collection-details';
+import PlaceDetails from './place-details';
 import './styles.scss';
 import { URL_PROPS } from './url';
 
@@ -86,9 +86,10 @@ const EarthPage = (props: IProps) => {
               <Tab label={t('Places')} value="places" />
               <Tab label={t('Layers')} value="layers" />
             </Tabs>
-            {panel === EPanels.PLACES && (
+
+            {type === EARTH && (
               <>
-                {type === EARTH && (
+                {panel === EPanels.PLACES && (
                   <Places selected={selectedOpen}>
                     <>
                       {showLastViewedPlace && (
@@ -99,23 +100,13 @@ const EarthPage = (props: IProps) => {
                     </>
                   </Places>
                 )}
-                {type === LOCATION && (
-                  <Places selected={selectedOpen}>
-                    <IndexSidebar {...props} selectedOpen={selectedOpen} />
-                  </Places>
-                )}
-                {type === COLLECTION && <CollectionDetails selected={selectedOpen} />}
+                {panel === EPanels.LAYERS && <Layers selected={selectedOpen} />}
               </>
             )}
-            {panel === EPanels.LAYERS && (
-              <Layers
-                selected={selectedOpen}
-                {...(type === COLLECTION && {
-                  locationName: collection.name,
-                  locationOrganization: collection.organization,
-                })}
-              />
-            )}
+
+            {type === LOCATION && <PlaceDetails panel={panel} selected={selectedOpen} />}
+
+            {type === COLLECTION && <CollectionDetails panel={panel} selected={selectedOpen} />}
           </>
         )}
 

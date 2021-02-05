@@ -30,11 +30,11 @@ import {
   TitleHero,
 } from '@marapp/earth-shared';
 
+import CollectionDelete from '../../../components/collection/collection-delete';
+import { CollectionDownloadMetrics } from '../../../components/collection/collection-downloadmetrics';
+import { CollectionEditPlaces } from '../../../components/collection/collection-editplaces';
+import { CollectionRename } from '../../../components/collection/collection-rename';
 import { ICollection } from '../../../fetchers/locations/queries';
-import CollectionDelete from '../collection-delete';
-import { CollectionDownloadMetrics } from '../collection-downloadmetrics';
-import { CollectionEditPlaces } from '../collection-editplaces';
-import { CollectionRename } from '../collection-rename';
 import './styles.scss';
 
 interface IProps {

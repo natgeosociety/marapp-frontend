@@ -21,6 +21,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
 
+import { useAuth0 } from '../../auth/auth0';
 import BackToLocation from '../../components/back-to-location';
 import FilterBy from '../../components/filter-by';
 import SearchBox from '../../components/searchbox';
@@ -28,7 +29,6 @@ import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search'
 import { QUERY_LOCATIONS, useLocations } from '../../fetchers';
 import { hasFilters } from '../../utils/filters';
 import PlacesSearchResults from './search-results';
-import { useAuth0 } from '../../auth/auth0';
 
 interface IProps {
   selected: boolean;
