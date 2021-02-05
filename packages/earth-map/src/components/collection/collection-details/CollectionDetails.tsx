@@ -209,7 +209,7 @@ const CollectionDetails = (props: IProps) => {
             <Typography variant="subtitle1">
               {t('Collection places')} {hasLocations && locations.length}
             </Typography>
-            <Typography>
+            <Typography paragraph={true}>
               {canEdit
                 ? t(
                     `You currently don’t have any places added to your collection. Add places to your collection to access data metrics and share your insights with your team`
@@ -218,13 +218,15 @@ const CollectionDetails = (props: IProps) => {
               .
             </Typography>
             {canEdit && (
-              <button
+              <Button
                 type="submit"
-                className="marapp-qa-actionaddplaces ng-button ng-button-secondary ng-margin-right"
+                className="marapp-qa-actionaddplaces"
+                variant="outlined"
+                size="large"
                 onClick={toggleEditPlaces}
               >
                 {t('Add places')}
-              </button>
+              </Button>
             )}
           </Box>
         </Paper>
