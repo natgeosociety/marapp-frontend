@@ -19,7 +19,7 @@
 
 import { connect } from 'react-redux';
 
-import { setSidebarPanel } from '../../modules/sidebar/actions';
+import { setSidebarOpen, setSidebarPanel } from '../../modules/sidebar/actions';
 import EarthComponent from './component';
 
 export default connect(
@@ -29,8 +29,10 @@ export default connect(
     group: state.user.group,
     lastViewedPlace: state.global.lastViewedPlace,
     collection: state.collections.data,
+    selectedPlace: state.places.data,
   }),
   {
+    setSidebarOpen,
     setSidebarPanel,
   }
 )(EarthComponent);

@@ -17,22 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import '~styles/config';
+import ThemeProvider from './ThemeProvider';
 
-.sidebar-content-full {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-
-  background-color: $marapp-gray-9;
-}
-
-.ng-toolbar-button-raised {
-    border-radius: 20px;
-    background: $marapp-gray-8;
-}
+export default ThemeProvider;

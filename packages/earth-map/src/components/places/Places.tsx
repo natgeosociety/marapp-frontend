@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
@@ -42,6 +43,7 @@ interface IProps {
   group?: any;
   locationName?: string;
   locationOrganization?: string;
+  setSidebarOpen?: (value: boolean) => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
   resetPlace?: (value: any) => {};
@@ -64,6 +66,7 @@ const Places = (props: IProps) => {
     resetMap,
     setPlacesSearch,
     setSidebarPanelExpanded,
+    setSidebarOpen,
     setPlacesSearchOpen,
     selected,
     children,
@@ -137,16 +140,21 @@ const Places = (props: IProps) => {
         </>
       }
     >
-      {showSearchResults ? (
-        <PlacesSearchResults
-          search={search.search}
-          filters={search.filters}
-          group={group}
-          setPlacesSearch={setPlacesSearch}
-        />
-      ) : (
-        children
-      )}
+      <Box mt={1}>
+        {showSearchResults ? (
+          <PlacesSearchResults
+            availableFilters={meta?.filters}
+            search={search.search}
+            filters={search.filters}
+            group={group}
+            setPlacesSearch={setPlacesSearch}
+            setSidebarPanelExpanded={setSidebarPanelExpanded}
+            setSidebarOpen={setSidebarOpen}
+          />
+        ) : (
+          children
+        )}
+      </Box>
     </SidebarLayoutSearch>
   );
 };

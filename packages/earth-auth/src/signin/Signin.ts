@@ -121,11 +121,9 @@ const lock: Auth0LockStatic = new Auth0Lock(AUTH_CONFIG.clientID, AUTH_CONFIG.au
     {
       name: 'institution',
       placeholder: 'institution or organization',
-      validator: (organizationName) => {
-        return {
-          valid: organizationName.trim().length >= 1,
-          hint: "Organization can't be blank",
-        };
+      //@ts-ignore
+      validator: () => {
+        return true;
       },
     },
   ],

@@ -17,12 +17,17 @@
   specific language governing permissions and limitations under the License.
 */
 
-import cn from 'classnames';
+import Box from '@material-ui/core/Box';
+import Fab from '@material-ui/core/Fab';
+import Paper from '@material-ui/core/Paper';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import { bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
+import IconDotsHorizontal from 'mdi-material-ui/DotsHorizontal';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InView } from 'react-intersection-observer';
 
-import { AuthzGuards, DropdownSimple, TitleHero } from '@marapp/earth-shared';
+import { AuthzGuards, Menu, TitleHero } from '@marapp/earth-shared';
 
 import { useAuth0 } from '../../auth/auth0';
 import Widget from '../../components/widget';
@@ -51,6 +56,12 @@ interface IWidgetsState {
   widgetId?: string;
 }
 
+const useStyles = makeStyles((theme) => ({
+  header: {
+    backgroundColor: theme.palette.background.default,
+  },
+}));
+
 export default function WidgetsComponent(props: IProps) {
   const { groups, place, list, embed, toolbar, toggleLayer, metrics = [{}] } = props;
   const [widgetState, setWidgetState] = useState<IWidgetsState>({
@@ -59,25 +70,23 @@ export default function WidgetsComponent(props: IProps) {
     widgetId: null,
   });
   const { getPermissions } = useAuth0();
+  const popupState = usePopupState({ variant: 'popover', popupId: 'demoMenu' });
   const [isOnClipLayer, setIsOnClipLayer] = useState(false);
   const { collapsedState } = widgetState;
   const { t } = useTranslation();
+  const classes = useStyles();
   const canExport = getPermissions(AuthzGuards.readExportsGuard, place.organization);
 
   const editActions = (
-    <DropdownSimple
-      trigger={(open) => (
-        <i
-          className={cn({
-            'ng-icon-ellipse ng-toolbar-button': true,
-            'ng-toolbar-button-raised': true,
-            'ng-toolbar-button-open': open,
-          })}
-        />
-      )}
-    >
-      <a onClick={() => setIsOnClipLayer(true)}>{t('Clip and Export Layers')}</a>
-    </DropdownSimple>
+    <>
+      <Fab size="small" {...bindTrigger(popupState)}>
+        <IconDotsHorizontal />
+      </Fab>
+      <Menu
+        popupState={popupState}
+        options={[{ label: t('Clip and Export Layers'), onClick: () => setIsOnClipLayer(true) }]}
+      />
+    </>
   );
 
   return (
@@ -86,15 +95,16 @@ export default function WidgetsComponent(props: IProps) {
         <ClipLayer place={place} onCancel={() => setIsOnClipLayer(false)} groups={groups} />
       )}
       <div className="widgets--content">
-        <div className="ng-widget-title-container">
-          <TitleHero
-            title={place.name}
-            subtitle={place.organization}
-            extra={place.type}
-            actions={canExport ? editActions : null}
-            className="ng-widget-header ng-margin-medium "
-          />
-        </div>
+        <Paper square={true} elevation={3} className={classes.header}>
+          <Box p={2}>
+            <TitleHero
+              title={place.name}
+              subtitle={place.organization}
+              extra={place.type}
+              actions={canExport ? editActions : null}
+            />
+          </Box>
+        </Paper>
         {list.map((w: any, i) => {
           const [widgetMetricName] = w.metrics;
 
@@ -106,7 +116,7 @@ export default function WidgetsComponent(props: IProps) {
             <div key={`${w.slug}-${i}`} className="widgets--list-item ng-position-relative">
               <InView threshold={0.2} triggerOnce={true}>
                 {({ ref, inView }) => (
-                  <div style={{ minHeight: '40vh' }} ref={ref}>
+                  <div style={{ minHeight: inView ? 0 : '40vh' }} ref={ref}>
                     {inView && (
                       <Widget
                         {...w}

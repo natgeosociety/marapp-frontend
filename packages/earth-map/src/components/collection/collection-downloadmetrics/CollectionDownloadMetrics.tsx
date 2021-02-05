@@ -17,6 +17,15 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import FileSaver from 'file-saver';
 import flatten from 'flat';
 import json2csv from 'json2csv';
@@ -26,10 +35,11 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Card, ReactSelect, serializeFilters, TitleHero } from '@marapp/earth-shared';
+import { ReactSelect, serializeFilters, TitleHero } from '@marapp/earth-shared';
 
 import { ICollection } from '../../../modules/collections/model';
 import MetricService from '../../../services/MetricService';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface IProps {
   collection: ICollection;
@@ -39,6 +49,32 @@ interface IProps {
   onDownloadError: (err: string) => void;
   onDownloadSuccess: () => void;
 }
+
+const FILE_TYPES = [
+  { name: 'CSV', value: 'csv', className: 'marapp-qa-downloadmetricscsv' },
+  { name: 'JSON', value: 'json', className: 'marapp-qa-downloadmetricsjson' },
+];
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: theme.palette.background.default,
+  },
+  header: {
+    backgroundColor: theme.palette.grey['600'],
+  },
+  scrollContainer: {
+    flex: '1 1 auto',
+    overflow: 'auto',
+  },
+}));
 
 export function CollectionDownloadMetrics(props: IProps) {
   const {
@@ -53,11 +89,12 @@ export function CollectionDownloadMetrics(props: IProps) {
   const { name, organization, slug: collectionSlug } = collection;
   const [metricSlugs, setMetricSlugs] = useState([]);
   const [isLoadingMetricSlugs, setIsLoadingMetricSlugs] = useState(false);
-  const { register, handleSubmit, formState, control, watch } = useForm({
+  const { handleSubmit, formState, control, watch } = useForm({
     mode: 'all',
   });
   const { isDirty, isValid, isSubmitting } = formState;
   const metricsWatcher = watch('metrics');
+  const classes = useStyles();
 
   useEffect(() => {
     (async () => {
@@ -72,78 +109,89 @@ export function CollectionDownloadMetrics(props: IProps) {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full ng-form ng-form-dark">
-      <Card elevation="high" className="ng-margin-bottom">
-        <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
-      </Card>
+    <form onSubmit={handleSubmit(onSubmit)} className={classes.root}>
+      <Box mb={1}>
+        <Paper square={true} elevation={3} className={classes.header}>
+          <Box p={2}>
+            <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
+          </Box>
+        </Paper>
+      </Box>
 
-      <div className="scroll-container">
-        <Card elevation="raised">
-          <label>{t('Select metrics for download')}</label>
-          <Controller
-            as={ReactSelect}
-            name="metrics"
-            type="metrics"
-            placeholder={t('Select metrics to download data files')}
-            className="marapp-qa-downloadmetricsdropdown ng-margin-medium-bottom"
-            options={metricSlugs}
-            isLoading={isLoadingMetricSlugs}
-            defaultValue={[]}
-            control={control}
-            isClearable={true}
-            isSearchable={true}
-            isMulti={true}
-            closeMenuOnSelect={false}
-          />
-          <label>{t('Select a file type for download')}</label>
-          <div className="legend-item-group--radio ng-margin-top ng-margin-medium-bottom">
-            <div className="ng-display-inline-block ng-margin-medium-right">
-              <input
-                type="radio"
-                id={`radio-csv`}
-                value={'csv'}
-                name="fileType"
-                ref={register({
-                  required: true,
-                })}
-                className="marapp-qa-downloadmetricscsv"
-              />
-              <label htmlFor={`radio-csv`}>
-                <span className="legend-item-group--symbol" />
-                <span className="legend-item-group--name">CSV</span>
-              </label>
-            </div>
-            <div className="ng-display-inline-block ng-margin-medium-left">
-              <input
-                type="radio"
-                id={`radio-json`}
-                value={'json'}
-                name="fileType"
-                ref={register({
-                  required: true,
-                })}
-                className="marapp-qa-downloadmetricsjson"
-              />
-              <label htmlFor={`radio-json`}>
-                <span className="legend-item-group--symbol" />
-                <span className="legend-item-group--name">JSON</span>
-              </label>
-            </div>
-          </div>
-          <button
-            type="submit"
-            className="marapp-qa-actiondownload ng-button ng-button-primary ng-margin-right"
-            disabled={!isValid || isSubmitting || !isDirty || !metricsWatcher?.length}
-          >
-            {t('Download')}
-          </button>
-          <button
-            className="marapp-qa-actioncancel ng-button ng-button-secondary"
-            onClick={onCancel}
-          >
-            {t('Cancel')}
-          </button>
-        </Card>
+      <div className={classes.scrollContainer}>
+        <Paper square={true}>
+          <Box p={2}>
+            <Grid container={true} spacing={2}>
+              <Grid item={true} xs={12}>
+                <Typography component="label" gutterBottom={true}>
+                  {t('Select metrics for download')}
+                </Typography>
+
+                <Controller
+                  as={ReactSelect}
+                  name="metrics"
+                  type="metrics"
+                  placeholder={t('Select metrics to download data files')}
+                  className="marapp-qa-downloadmetricsdropdown"
+                  options={metricSlugs}
+                  isLoading={isLoadingMetricSlugs}
+                  defaultValue={[]}
+                  control={control}
+                  isClearable={true}
+                  isSearchable={true}
+                  isMulti={true}
+                  closeMenuOnSelect={false}
+                />
+              </Grid>
+
+              <Grid item={true} xs={12}>
+                <Typography component="label">{t('Select a file type for download')}</Typography>
+
+                <Controller
+                  name="fileType"
+                  control={control}
+                  as={
+                    <RadioGroup row={true}>
+                      {FILE_TYPES.map((type) => (
+                        <FormControlLabel
+                          control={<Radio />}
+                          className={type.className}
+                          key={type.name}
+                          label={type.name}
+                          value={type.value}
+                        />
+                      ))}
+                    </RadioGroup>
+                  }
+                  rules={{
+                    required: true,
+                  }}
+                />
+              </Grid>
+
+              <Grid item={true} xs={12} container={true} spacing={1}>
+                <Grid item={true}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    type="submit"
+                    size="large"
+                    className="marapp-qa-actiondownload"
+                    disabled={!isValid || isSubmitting || !isDirty || !metricsWatcher?.length}
+                    endIcon={isSubmitting && <CircularProgress size={16} />}
+                  >
+                    {t(isSubmitting ? 'Downloading' : 'Download')}
+                  </Button>
+                </Grid>
+                <Grid item={true}>
+                  <Button className="marapp-qa-actioncancel" onClick={onCancel} size="large">
+                    {t('Cancel')}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Box>
+        </Paper>
       </div>
     </form>
   );

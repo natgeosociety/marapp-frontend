@@ -17,6 +17,16 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import FileSaver from 'file-saver';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -24,11 +34,9 @@ import { useTranslation } from 'react-i18next';
 
 import {
   AsyncSelect,
-  Card,
   DropdownItem,
   ReactSelect,
   serializeFilters,
-  Spinner,
   TitleHero,
 } from '@marapp/earth-shared';
 
@@ -36,11 +44,37 @@ import { IPlace } from '../../modules/places/model';
 import ExportService from '../../services/ExportService';
 import LayersService from '../../services/LayersService';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: theme.palette.background.default,
+  },
+  header: {
+    backgroundColor: theme.palette.grey['600'],
+  },
+  scrollContainer: {
+    flex: '1 1 auto',
+    overflow: 'auto',
+  },
+}));
+
 interface IProps {
   place: Partial<IPlace>;
   onCancel?: () => void;
   groups?: string[];
 }
+
+const EXPORT_TYPES = [
+  { name: 'GeoTIFF', value: 'geotiff', className: 'marapp-qa-downloadgeotiff' },
+  { name: 'JPG', value: 'thumbnail', className: 'marapp-qa-downloadjpg' },
+];
 
 export function ClipLayer(props: IProps) {
   const { onCancel, place, groups } = props;
@@ -48,9 +82,10 @@ export function ClipLayer(props: IProps) {
   const [saveError, setSaveError] = useState('');
   const [childLayers, setChildLayers] = useState([]);
   const { t } = useTranslation();
-  const { register, handleSubmit, formState, control, watch, setValue } = useForm({
+  const { handleSubmit, formState, control, watch, setValue } = useForm({
     mode: 'all',
   });
+  const classes = useStyles();
   const { isDirty, isValid, isSubmitting } = formState;
   const selectedPrimaryLayer = watch('primaryLayer');
   const selectedChildLayer = watch('childLayer');
@@ -73,122 +108,127 @@ export function ClipLayer(props: IProps) {
 
   // unable to make layers dropdown required otherwise
   const isValidCustom =
-    isValid && selectedPrimaryLayer && (childLayers.length ? selectedChildLayer : true);
+    isValid &&
+    selectedExportType &&
+    selectedPrimaryLayer &&
+    (childLayers.length ? selectedChildLayer : true);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="marapp-qa-cliplayer sidebar-content-full ng-form ng-form-dark"
-    >
-      <Card elevation="high" className="ng-margin-bottom">
-        <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
-      </Card>
+    <form onSubmit={handleSubmit(onSubmit)} className={`${classes.root} marapp-qa-cliplayer`}>
+      <Box mb={1}>
+        <Paper className={classes.header} elevation={4} square={true}>
+          <Box p={2}>
+            <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
+          </Box>
+        </Paper>
+      </Box>
 
-      <div className="scroll-container">
-        <Card elevation="raised">
-          <label htmlFor="layer-selector" className="ng-text-bold">
-            {t('Select layer for download')}
-          </label>
-          <Controller
-            as={AsyncSelect}
-            id="layer-selector"
-            name="primaryLayer"
-            className="marapp-qa-primarylayers ng-margin-medium-bottom"
-            placeholder={t('Select Widget Layers')}
-            control={control}
-            getOptionLabel={(option, extra) => (
-              <DropdownItem title={option.name} subtitle={option.organization} />
-            )}
-            getOptionValue={(option) => option.id}
-            loadFunction={fetchPrimaryLayers}
-            selectedGroup={organization}
-            isClearable={true}
-            isSearchable={true}
-          />
+      <div className={classes.scrollContainer}>
+        <Paper elevation={3}>
+          <Box p={2}>
+            <Grid container={true} spacing={2}>
+              <Grid item={true} xs={12}>
+                <Typography htmlFor="layer-selector" component="label" gutterBottom={true}>
+                  {t('Select layer for download')}
+                </Typography>
 
-          {!!childLayers.length && (
-            <>
-              <label htmlFor="child-layer-selector" className="ng-text-bold">
-                {t('Select layer for download')}
-              </label>
-              <Controller
-                as={ReactSelect}
-                id="child-layer-selector"
-                name="childLayer"
-                className="marapp-qa-childlayers ng-margin-medium-bottom"
-                placeholder={t('Select Widget Layers')}
-                options={childLayers}
-                control={control}
-                getOptionLabel={(option) => option.name}
-                getOptionValue={(option) => option.id}
-                selectedGroup={organization}
-                isClearable={true}
-                isSearchable={true}
-              />
-            </>
-          )}
+                <Controller
+                  as={AsyncSelect}
+                  id="layer-selector"
+                  name="primaryLayer"
+                  className="marapp-qa-primarylayers"
+                  placeholder={t('Select Widget Layers')}
+                  control={control}
+                  getOptionLabel={(option, extra) => (
+                    <DropdownItem title={option.name} subtitle={option.organization} />
+                  )}
+                  getOptionValue={(option) => option.id}
+                  loadFunction={fetchPrimaryLayers}
+                  selectedGroup={organization}
+                  isClearable={true}
+                  isSearchable={true}
+                />
+              </Grid>
 
-          <label className="ng-text-bold">{t('Select a file type for download')}</label>
-          <div className="legend-item-group--radio ng-margin-top ng-margin-medium-bottom">
-            <div className="ng-display-inline-block ng-margin-medium-right">
-              <input
-                type="radio"
-                id="radio-geotiff"
-                value="geotiff"
-                name="exportType"
-                ref={register({
-                  required: true,
-                })}
-                className="marapp-qa-downloadgeotiff"
-              />
-              <label htmlFor="radio-geotiff">
-                <span className="legend-item-group--symbol" />
-                <span className="legend-item-group--name">GeoTIFF</span>
-              </label>
-            </div>
-            <div className="ng-display-inline-block ng-margin-medium-left">
-              <input
-                type="radio"
-                id="radio-jpg"
-                value="thumbnail"
-                name="exportType"
-                ref={register({
-                  required: true,
-                })}
-                className="marapp-qa-downloadjpg"
-              />
-              <label htmlFor="radio-jpg">
-                <span className="legend-item-group--symbol" />
-                <span className="legend-item-group--name">JPG</span>
-              </label>
-            </div>
-          </div>
+              {!!childLayers.length && (
+                <Grid item={true} xs={12}>
+                  <Typography htmlFor="child-layer-selector" component="label" gutterBottom={true}>
+                    {t('Select layer for download')}
+                  </Typography>
 
-          {saveError && (
-            <p className="marapp-qa-formerror ng-form-error-block ng-margin-bottom">{saveError}</p>
-          )}
+                  <Box mb={2}>
+                    <Controller
+                      as={ReactSelect}
+                      id="child-layer-selector"
+                      name="childLayer"
+                      className="marapp-qa-childlayers"
+                      placeholder={t('Select Widget Layers')}
+                      options={childLayers}
+                      control={control}
+                      getOptionLabel={(option) => option.name}
+                      getOptionValue={(option) => option.id}
+                      selectedGroup={organization}
+                      isClearable={true}
+                      isSearchable={true}
+                    />
+                  </Box>
+                </Grid>
+              )}
 
-          <button
-            type="submit"
-            className="marapp-qa-actiondownload ng-button ng-button-primary ng-margin-right"
-            disabled={!isValidCustom || isSubmitting || !isDirty}
-          >
-            {isSubmitting ? (
-              <>
-                <Spinner size="nano" position="relative" className="ng-display-inline" />
-                {t('Downloading')}
-              </>
-            ) : (
-              <>{t('Download')}</>
-            )}
-          </button>
-          <button
-            className="marapp-qa-actioncancel ng-button ng-button-secondary"
-            onClick={onCancel}
-          >
-            {t('Cancel')}
-          </button>
-        </Card>
+              <Grid item={true} xs={12}>
+                <Typography component="label">{t('Select a file type for download')}</Typography>
+
+                <Controller
+                  name="exportType"
+                  control={control}
+                  as={
+                    <RadioGroup row={true}>
+                      {EXPORT_TYPES.map((type) => (
+                        <FormControlLabel
+                          control={<Radio />}
+                          className={type.className}
+                          key={type.name}
+                          label={type.name}
+                          value={type.value}
+                        />
+                      ))}
+                    </RadioGroup>
+                  }
+                />
+              </Grid>
+
+              {saveError && (
+                <Grid item={true} xs={12}>
+                  <Typography className="marapp-qa-formerror" color="error">
+                    {saveError}
+                  </Typography>
+                </Grid>
+              )}
+
+              <Grid item={true} xs={12} container={true} spacing={1}>
+                <Grid item={true}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    color="secondary"
+                    className="marapp-qa-actiondownload"
+                    disabled={!isValidCustom || isSubmitting || !isDirty}
+                    endIcon={isSubmitting && <CircularProgress size={16} />}
+                  >
+                    {isSubmitting ? t('Downloading') : t('Download')}
+                  </Button>
+                </Grid>
+
+                <Grid item={true}>
+                  <Button className="marapp-qa-actioncancel" size="large" onClick={onCancel}>
+                    {t('Cancel')}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Box>
+        </Paper>
       </div>
     </form>
   );

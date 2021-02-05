@@ -128,7 +128,7 @@ export const CONFIG = {
               cy: '75%',
               dataKey: 'percentage',
               nameKey: 'x',
-              innerRadius: '45%',
+              innerRadius: '47%',
               outerRadius: '78%',
             },
           },
@@ -172,10 +172,6 @@ export const CONFIG = {
         //   cursor: false,
         //   content: (
         //     <WidgetTooltip
-        //       style={{
-        //         color: '#FFFFFF',
-        //         backgroundColor: '#383838'
-        //       }}
         //       settings={[
         //         { key: "x" },
         //         { key: "percentage", format: (value) => `Percentage: ${format('.1%')(value/100)}` }

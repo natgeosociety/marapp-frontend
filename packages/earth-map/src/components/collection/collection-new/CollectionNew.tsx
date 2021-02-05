@@ -17,13 +17,23 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
 import Link from 'redux-first-router-link';
 
-import { Card, Input, setupErrors } from '@marapp/earth-shared';
+import { MuiInput, setupErrors } from '@marapp/earth-shared';
 
 import { EarthRoutes, IRouter } from '../../../modules/router/model';
 import PlacesService from '../../../services/PlacesService';
@@ -33,13 +43,20 @@ interface IProps {
   router?: IRouter;
 }
 
+const useStyles = makeStyles((theme) => ({
+  header: {
+    backgroundColor: theme.palette.grey['600'],
+  },
+}));
+
 const CollectionNew = (props: IProps) => {
   const { privateGroups, router } = props;
   const { prev } = router;
   const { t } = useTranslation();
+  const classes = useStyles();
   const canCreateCollection = !!privateGroups.length;
   const [saveError, setSaveError] = useState(null);
-  const { handleSubmit, register, errors, formState } = useForm({ mode: 'all' });
+  const { handleSubmit, register, errors, formState, control } = useForm({ mode: 'all' });
   const { touched, isDirty, isValid, isSubmitting } = formState;
   const renderErrorFor = setupErrors(errors, touched);
 
@@ -60,82 +77,108 @@ const CollectionNew = (props: IProps) => {
   };
 
   return (
-    <form
-      className="marapp-qa-collection-new ng-form ng-form-dark"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <Card elevation="high" className="ng-margin-bottom">
-        <h3 className="ng-text-edit-s ng-margin-remove">{t('Create a Collection')}</h3>
-      </Card>
+    <form className="marapp-qa-collection-new" onSubmit={handleSubmit(onSubmit)}>
+      <Box mb={1}>
+        <Paper elevation={3} square={true} className={classes.header}>
+          <Box p={2}>
+            <Typography variant="h5" component="h2" color="textPrimary">
+              {t('Create a Collection')}
+            </Typography>
+          </Box>
+        </Paper>
+      </Box>
 
-      {canCreateCollection && (
-        <Card className="ng-margin-bottom">
-          <label>
-            <Input
-              label={t('Name Collection')}
-              placeholder={t('enter a name for your collection')}
-              name="name"
-              error={renderErrorFor('name')}
-              ref={register({
-                required: 'Collection name is required',
-              })}
-            />
-          </label>
-        </Card>
-      )}
+      <Paper square={true}>
+        <Box p={2} mb={1}>
+          <Grid container={true} direction="column" spacing={3}>
+            <Grid item={true}>
+              {canCreateCollection && (
+                <Controller
+                  as={MuiInput}
+                  className="marapp-qa-collection-name-input"
+                  label={t('Name Collection')}
+                  placeholder={t('enter a name for your collection')}
+                  control={control}
+                  required={true}
+                  error={renderErrorFor('name')}
+                  name="name"
+                  inputRef={register({
+                    required: t('Collection name is required') as string,
+                  })}
+                />
+              )}
+            </Grid>
 
-      <Card className="c-legend-item-group">
-        <h2 className="ng-text-display-s ng-body-color ng-margin-bottom">
-          {t('Select an Organization')}
-        </h2>
-        <p>
-          {canCreateCollection
-            ? t(
-                `Please select an organization to create a collection under. After selecting an organization, you will be able to select places and share insights with members of your selected organization. Organizations can not be edited once picked`
-              )
-            : t(`You don't have rights to create a new collection`)}
-          .
-        </p>
-        <div className="legend-item-group--radio ng-padding-medium-left">
-          {privateGroups.map((group) => (
-            <div>
-              <input
-                type="radio"
-                id={`radio-${group}`}
-                value={group}
+            <Grid item={true}>
+              <Typography variant="subtitle1" gutterBottom={true}>
+                {t('Select an Organization')}
+              </Typography>
+
+              <Typography variant="body2">
+                {canCreateCollection
+                  ? t(
+                      `Please select an organization to create a collection under. After selecting an organization, you will be able to select places and share insights with members of your selected organization. Organizations can not be edited once picked`
+                    )
+                  : t(`You don't have rights to create a new collection`)}
+                .
+              </Typography>
+            </Grid>
+
+            <Grid item={true}>
+              <Controller
                 name="organization"
-                ref={register({
-                  required: true,
-                })}
+                control={control}
+                as={
+                  <RadioGroup className="marapp-qa-collection-organizations">
+                    {privateGroups.map((group) => (
+                      <FormControlLabel value={group} control={<Radio />} label={group} />
+                    ))}
+                  </RadioGroup>
+                }
               />
-              <label htmlFor={`radio-${group}`}>
-                <span className="legend-item-group--symbol" />
-                <span className="legend-item-group--name">{group}</span>
-              </label>
-            </div>
-          ))}
-        </div>
-      </Card>
+            </Grid>
 
-      <Card elevation="flush">
-        {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
-        <button
-          disabled={!isValid || !isDirty || isSubmitting || !canCreateCollection}
-          type="submit"
-          className="marapp-qa-save-collection ng-button ng-button-primary ng-margin-right"
-        >
-          {t('Create Collection')}
-        </button>
-        <Link
-          className="marapp-qa-cancel-collection ng-button ng-button-secondary"
-          to={{
-            type: EarthRoutes.EARTH,
-            query: prev.query,
-          }}
-        >
-          {t('Cancel')}
-        </Link>
-      </Card>
+            {saveError && (
+              <Grid item={true}>
+                <Typography className="marapp-qa-create-collection-error" color="error">
+                  {saveError}
+                </Typography>
+              </Grid>
+            )}
+
+            <Grid item={true}>
+              <Grid container={true} spacing={1}>
+                <Grid item={true}>
+                  <Button
+                    className="marapp-qa-save-collection"
+                    variant="contained"
+                    color="secondary"
+                    type="submit"
+                    size="large"
+                    disabled={!isValid || !isDirty || isSubmitting || !canCreateCollection}
+                    endIcon={isSubmitting && <CircularProgress size={16} />}
+                  >
+                    {t('Create Collection')}
+                  </Button>
+                </Grid>
+                <Grid item={true}>
+                  <Button
+                    component={Link}
+                    className="marapp-qa-cancel-collection"
+                    size="large"
+                    to={{
+                      type: EarthRoutes.EARTH,
+                      query: prev.query,
+                    }}
+                  >
+                    {t('Cancel')}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
     </form>
   );
 };

@@ -18,6 +18,7 @@
 */
 
 import React from 'react';
+import MenuItem from '@material-ui/core/MenuItem';
 import classnames from 'classnames';
 
 interface IProps {
@@ -28,17 +29,18 @@ interface IProps {
 }
 
 export const Option = (props: IProps) => {
-  const { value, selected, onClick, children } = props;
+  const { value, selected, onClick, children, ...rest } = props;
 
   return (
-    <li
+    <MenuItem
       title={children}
       className={classnames('ng-option ng-text-display-s ng-padding-medium-horizontal', {
         selected: selected,
       })}
       onClick={() => onClick(value)}
+      {...rest}
     >
       {children}
-    </li>
+    </MenuItem>
   );
 };

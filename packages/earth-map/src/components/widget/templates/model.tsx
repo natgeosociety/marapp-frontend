@@ -22,6 +22,7 @@ export interface IWidgetTemplate {
   chart?: [];
   collapsed?: boolean;
   config: any;
+  expanded?: boolean;
   noData?: boolean;
   values?: any;
 }

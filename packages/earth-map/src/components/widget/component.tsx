@@ -16,14 +16,27 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
+import ToggleIcon from 'material-ui-toggle-icon';
+import IconDown from 'mdi-material-ui/ChevronDown';
+import IconUp from 'mdi-material-ui/ChevronUp';
+import IconCircleSmall from 'mdi-material-ui/CircleSmall';
 import React from 'react';
 import isEqual from 'react-fast-compare';
 
-import { Html, Spinner } from '@marapp/earth-shared';
+import { Html } from '@marapp/earth-shared';
 
-import ModalComponent from '../../components/modal';
 import { IWidgetConfig } from '../../modules/widget/model';
 import Footer from './footer';
 import './styles.scss';
@@ -70,17 +83,57 @@ interface IWidgetState {
   loading?: boolean;
   loaded?: boolean;
   error?: any;
+  classes?: any;
 
   // States
   activeInfo?: boolean;
   activeDownload?: boolean;
   activeShare?: boolean;
+  expanded?: boolean;
 
   // DATA
   data?: any;
   params?: any;
   url?: string;
 }
+
+const styles = (theme) => ({
+  root: {
+    transition: theme.transitions.create('background', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    '&:hover': {
+      background: theme.palette.action.hover,
+    },
+  },
+  accordionTitle: {
+    display: 'block',
+    maxWidth: 'calc(100% - 36px)',
+  },
+  accordionTitleGridContainer: {
+    minHeight: theme.spacing(7),
+  },
+  accordionTitleGridItem: {
+    cursor: 'pointer',
+    display: '-webkit-box',
+    maxHeight: theme.spacing(7),
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '-webkit-line-clamp': 2,
+    '-webkit-box-orient': 'vertical',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  content: {
+    marginTop: theme.spacing(2),
+  },
+  contentExpanded: {
+    marginBottom: theme.spacing(3),
+  },
+});
 
 class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
   public static defaultProps = {
@@ -106,6 +159,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
     onCollapse: () => {},
     onToggleLayer: () => {},
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -117,6 +171,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
       activeInfo: false,
       activeDownload: false,
       activeShare: false,
+      expanded: true,
 
       // DATA
       data: {
@@ -169,6 +224,11 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
     });
   };
 
+  public toggleExpanded = () => {
+    const { expanded } = this.state;
+    this.setState({ expanded: !expanded });
+  };
+
   public fetchWidget = () => {
     const { config, name, parse, params, widgetConfig, place, metric = {}, t } = this.props;
 
@@ -210,6 +270,7 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
       subtitle,
       description,
       color,
+      classes,
       className,
       children,
       widgetDescription,
@@ -241,9 +302,10 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
       activeInfo,
       activeShare,
       data,
+      expanded,
     } = this.state;
 
-    const classNames = classnames('marapp-qa-widget c-widget ng-ep-border-bottom', {
+    const classNames = classnames(classes.root, 'marapp-qa-widget c-widget ng-ep-border-bottom', {
       '-embed': embed,
       '-footer': footer,
       '-box': box,
@@ -255,39 +317,68 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
     }
 
     return (
-      <div id={`widget-${id}`} className={classNames}>
-        {/* Spinner */}
-        {loading && <Spinner size="medium" />}
-
-        <div className="widget--container ng-padding-large-vertical ng-padding-medium-horizontal">
-          {/* HEADER */}
-          {header && (
-            <header className="ng-flex ng-flex-middle ng-flex-space-between ng-padding-medium-bottom">
-              <div className="widget--header-title">
-                <h4 className="ng-text-display-s ng-body-color ng-margin-remove">
-                  {showOrgLabel && `${organization} -`} {name}
-                </h4>
-
-                {subtitle && (
-                  <h4 className="widget--subtitle">
-                    <em>{subtitle}</em>
-                  </h4>
+      <>
+        <Box id={`widget-${id}`} className={classNames} p={2} pr={1}>
+          <Grid
+            container={true}
+            alignItems="center"
+            className={classes.accordionTitleGridContainer}
+          >
+            <Grid
+              item={true}
+              xs={true}
+              onClick={this.toggleExpanded}
+              className={classes.accordionTitleGridItem}
+            >
+              <Typography color="textPrimary" variant="subtitle1">
+                {name}
+                {showOrgLabel && (
+                  <Typography component="span" color="textSecondary">
+                    <IconCircleSmall />
+                    {organization}
+                  </Typography>
                 )}
-              </div>
+              </Typography>
+            </Grid>
 
-              {toolbar && (
+            {toolbar && (
+              <Grid item={true} xs={false}>
                 <Toolbar
                   className={className}
+                  active={active}
                   activeInfo={activeInfo}
                   activeDownload={false}
                   activeShare={activeShare}
+                  collapsed={!expanded}
                   onInfo={this.onInfo}
                   data={metric}
+                  layers={layers}
                   onDownload={this.onDownload}
                   onShare={this.onShare}
+                  onToggleLayer={onToggleLayer}
                 />
-              )}
-            </header>
+              </Grid>
+            )}
+
+            <Divider flexItem={true} orientation="vertical" />
+
+            <Grid item={true} xs={false}>
+              <Box ml={0.5}>
+                <IconButton onClick={this.toggleExpanded} className="marapp-qa-collapse-widget">
+                  <ToggleIcon
+                    on={!!expanded}
+                    onIcon={<IconUp fontSize="small" />}
+                    offIcon={<IconDown fontSize="small" />}
+                  />
+                </IconButton>
+              </Box>
+            </Grid>
+          </Grid>
+
+          {subtitle && (
+            <h4 className="widget--subtitle">
+              <em>{subtitle}</em>
+            </h4>
           )}
 
           {error && (
@@ -296,10 +387,15 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
 
           {/* CONTENT || INFO */}
 
-          <div className="widget--content ng-margin-large-bottom translate-content">
+          <div
+            className={`${classes.content} ${
+              expanded ? classes.contentExpanded : ''
+            } translate-content`}
+          >
             {children({
               ...this.props,
               ...data,
+              expanded,
               loading,
               loaded,
               error,
@@ -310,28 +406,36 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
 
           {/* FOOTER */}
           {!!layers?.length && footer && (
-            <Footer
-              collapsed={collapsed}
-              active={active}
-              color={color}
-              onCollapse={onCollapse}
-              onToggleLayer={onToggleLayer}
-            />
+            <Footer active={active} expanded={expanded} onToggleLayer={onToggleLayer} />
           )}
-        </div>
+        </Box>
 
-        <ModalComponent
-          isOpen={activeInfo}
-          onRequestClose={() => this.setState({ activeInfo: !activeInfo })}
+        <Dialog
+          open={!!activeInfo}
+          onClose={() => this.setState({ activeInfo: !activeInfo })}
+          className="marapp-qa-widget-info-modal"
         >
-          <h3 className="ng-text-display-m ng-body-color">{name}</h3>
+          <DialogTitle>{name}</DialogTitle>
+
           {widgetDescription && (
-            <Html html={widgetDescription} className="widget--info translate-content" />
+            <DialogContent>
+              <Html html={widgetDescription} className="widget--info translate-content" />
+            </DialogContent>
           )}
-        </ModalComponent>
-      </div>
+
+          <DialogActions>
+            <Button
+              size="large"
+              className="marapp-qa-modalclose"
+              onClick={() => this.setState({ activeInfo: !activeInfo })}
+            >
+              {t('Close')}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </>
     );
   }
 }
 
-export default Widget;
+export default withStyles(styles)(Widget);

@@ -18,6 +18,10 @@
 */
 
 import React from 'react';
+import Box from '@material-ui/core/Box';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 
 import ListItem from '../../components/list-item';
@@ -33,17 +37,24 @@ export const LastViewedPlace = ({ place, group }: IProps) => {
   const { t } = useTranslation();
 
   return (
-    <div className="marapp-qa-lastviewedplace ng-section-background ng-position-relative ng-padding-medium-bottom ng-margin-bottom">
-      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-        {t('Last viewed place')}
-      </h2>
-      <ListItem
-        title={name}
-        key={`${slug}-${organization}`}
-        linkTo={{ type: mainType, payload: { slug, id, organization } }}
-        organization={group.length > 1 && organization}
-        labels={[subType]}
-      />
-    </div>
+    <Box mb={1}>
+      <Paper className="marapp-qa-lastviewedplace" square={true}>
+        <Box p={2} pb={0}>
+          <Typography variant="subtitle2" color="textSecondary">
+            {t('Last viewed place')}
+          </Typography>
+        </Box>
+
+        <List>
+          <ListItem
+            title={name}
+            key={`${slug}-${organization}`}
+            linkTo={{ type: mainType, payload: { slug, id, organization } }}
+            organization={group.length > 1 && organization}
+            labels={[subType]}
+          />
+        </List>
+      </Paper>
+    </Box>
   );
 };

@@ -17,7 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
-import classNames from 'classnames';
+import Checkbox from '@material-ui/core/Checkbox';
+import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import { makeStyles } from '@material-ui/core/styles';
 import { remove } from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,13 +34,28 @@ import Link from 'redux-first-router-link';
 
 import { AppContextSwitcher, checkAdminRole } from '@marapp/earth-shared';
 
-import { MAP_ADMIN_URL, MAP_APP_NAME } from '../../config';
+import { MAP_ADMIN_URL, MAP_APP_NAME, MAP_COMPANY_URL } from '../../config';
 import { EPanels } from '../../modules/sidebar/model';
 import OrganizationService from '../../services/OrganizationService';
 import { APP_LOGO } from '../../theme';
 import { Auth0Context } from '../../utils/contexts';
 
 const { Option } = AppContextSwitcher;
+
+const useStyles = makeStyles((theme) => ({
+  logo: {
+    border: 'none !important',
+  },
+  organisationListItem: {
+    paddingRight: 100,
+  },
+  organisationSelectionIconContainer: {
+    minWidth: theme.spacing(5),
+  },
+  organisationCheckbox: {
+    padding: 0,
+  },
+}));
 
 interface IProps {
   group?: string[];
@@ -74,6 +98,8 @@ const Header = (props: IProps) => {
     groups.map((group) => ({ name: group, layers: 'N/A', locations: 'N/A' }))
   );
 
+  const classes = useStyles();
+
   useEffect(() => {
     (async () => {
       try {
@@ -100,13 +126,13 @@ const Header = (props: IProps) => {
     resetMap();
   };
 
-  const onOrgChange = (e) => {
-    const exists = selectedGroups.includes(e.target.value);
+  const onOrgChange = (org) => {
+    const exists = selectedGroups.includes(org);
     let temp = [...selectedGroups];
 
     let newSelection;
     if (exists) {
-      remove(temp, (g) => g === e.target.value);
+      remove(temp, (g) => g === org);
       newSelection = temp;
 
       if (temp.length <= 0) {
@@ -114,7 +140,7 @@ const Header = (props: IProps) => {
         newSelection = [];
       }
     } else {
-      temp.push(e.target.value);
+      temp.push(org);
       newSelection = temp;
     }
 
@@ -131,52 +157,95 @@ const Header = (props: IProps) => {
 
   const logo = (
     <Link
-      className="ng-border-remove"
+      className={`${classes.logo} marapp-qa-logo`}
       to={{
         type: 'EARTH',
       }}
     >
-      <img
-        src={APP_LOGO}
-        alt={MAP_APP_NAME}
-        className="ng-margin-remove ng-display-block"
-        onClick={handleResetLocation}
-      />
+      <img src={APP_LOGO} alt={MAP_APP_NAME} onClick={handleResetLocation} />
     </Link>
   );
+
+  const adminOrgs = Object.keys(roles).filter((group) => checkAdminRole(roles[group]));
+
+  const superAdminGroup = adminOrgs.find((group) => group === '*');
+
+  const menuGroups: any[] = [...availableGroups];
+
+  if (superAdminGroup) {
+    menuGroups.push({
+      name: superAdminGroup,
+    });
+  }
+
   const orgCheckBoxes = (
-    <li className="marapp-qa-orglist ng-form ng-form-dark">
-      <div className="ng-padding-medium-horizontal ng-padding-top">
-        {availableGroups.map((g, i) => (
-          <label
-            htmlFor={g.name}
-            className={classNames('ng-padding-bottom ng-flex', {
-              'ng-c-cursor-pointer': hasMultipleGroups,
-            })}
-            key={i}
-          >
-            {hasMultipleGroups && (
-              <input
-                className="ng-checkbox-input ng-flex-item-none ng-margin-top-remove"
-                type="checkbox"
-                id={g.name}
-                value={g.name}
-                checked={!!selectedGroups.find((x) => x === g.name)}
-                name={g.name}
-                onChange={(e) => onOrgChange(e)}
+    <div>
+      <List
+        className="marapp-qa-orglist"
+        subheader={<ListSubheader>{t('Organizations')}</ListSubheader>}
+      >
+        {menuGroups.map((g, i) => {
+          const isSuperAdmin = g.name === '*';
+
+          const listItemProps = {
+            button: true,
+            classes: {
+              root: classes.organisationListItem,
+            },
+            dense: true,
+            key: i,
+            ...(isSuperAdmin
+              ? {
+                  component: 'a',
+                  href: `${MAP_ADMIN_URL}${g.name}`,
+                }
+              : {
+                  onClick: () => onOrgChange(g.name),
+                }),
+          };
+
+          return (
+            <ListItem {...listItemProps}>
+              {hasMultipleGroups && (
+                <ListItemIcon className={classes.organisationSelectionIconContainer}>
+                  {!isSuperAdmin && (
+                    <Checkbox
+                      checked={!!selectedGroups.find((x) => x === g.name)}
+                      classes={{
+                        root: classes.organisationCheckbox,
+                      }}
+                    />
+                  )}
+                </ListItemIcon>
+              )}
+              <ListItemText
+                primary={g.name}
+                secondary={
+                  !isSuperAdmin && (
+                    <span>
+                      {t('Places')} ({g.locations})<strong className="ng-icon-bullet" />
+                      {t('Layers')} ({g.layers})
+                    </span>
+                  )
+                }
               />
-            )}
-            <div>
-              {g.name}
-              <span className="ng-display-block ng-color-mdgray">
-                {t('Places')} ({g.locations})<strong className="ng-icon-bullet" />
-                {t('Layers')} ({g.layers})
-              </span>
-            </div>
-          </label>
-        ))}
-      </div>
-    </li>
+              <ListItemSecondaryAction>
+                <Button
+                  component="a"
+                  className={`marapp-qa-admin-link marapp-qa-admin-link-${g}`}
+                  href={`${MAP_ADMIN_URL}${g.name}`}
+                  variant="outlined"
+                  size="small"
+                >
+                  Admin
+                </Button>
+              </ListItemSecondaryAction>
+            </ListItem>
+          );
+        })}
+      </List>
+      <Divider />
+    </div>
   );
 
   return (
@@ -188,16 +257,38 @@ const Header = (props: IProps) => {
       renderDropdown={isAuthenticated}
       onChange={(g) => window.location.assign(`${MAP_ADMIN_URL}${g}`)}
     >
-      <Option value="map-view">{t('Map View')}</Option>
+      {MAP_COMPANY_URL ? (
+        <Option
+          value="map-view"
+          divider={true}
+          component="a"
+          href={MAP_COMPANY_URL}
+          title={MAP_APP_NAME}
+        >
+          <strong>{t('Home')}</strong>
+        </Option>
+      ) : null}
+
       {orgCheckBoxes}
-      {Object.keys(roles).map(
-        (g) =>
-          checkAdminRole(roles[g]) && (
-            <Option value={g} key={g}>
-              {g} - ADMIN
-            </Option>
-          )
-      )}
+
+      <Option
+        value="map-view"
+        divider={true}
+        component="a"
+        href={`${MAP_COMPANY_URL}/about`}
+        title={MAP_APP_NAME}
+      >
+        <strong>{t('About')}</strong>
+      </Option>
+
+      <Option
+        value="map-view"
+        component="a"
+        href={`${MAP_COMPANY_URL}/support`}
+        title={MAP_APP_NAME}
+      >
+        <strong>{t('Support')}</strong>
+      </Option>
     </AppContextSwitcher>
   );
 };

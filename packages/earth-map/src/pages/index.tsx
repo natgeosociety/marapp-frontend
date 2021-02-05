@@ -20,7 +20,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 
-import { Spinner, TranslationService } from '@marapp/earth-shared';
+import { Spinner, ThemeProvider, TranslationService } from '@marapp/earth-shared';
 
 import { useAuth0 } from '../auth/auth0';
 import { MAP_WEGLOT_API_KEY } from '../config';
@@ -41,9 +41,14 @@ const IndexPage = () => {
   if (!isLoading) {
     const { store } = initStore(initialState);
     return (
-      <Provider store={store}>
-        <Main />
-      </Provider>
+      // @ts-ignore
+      <>
+        <ThemeProvider>
+          <Provider store={store}>
+            <Main />
+          </Provider>
+        </ThemeProvider>
+      </>
     );
   }
 

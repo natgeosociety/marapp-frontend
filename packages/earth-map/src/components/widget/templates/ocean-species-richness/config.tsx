@@ -75,7 +75,7 @@ export const CONFIG = {
       ),
       config: {
         xKey: 'percentile',
-        margin: { top: 20, right: 0, left: 60, bottom: 0 },
+        margin: { top: 20, right: 0, left: 40, bottom: 0 },
         yKeys: {
           bars: {
             km2: {
@@ -106,10 +106,6 @@ export const CONFIG = {
           cursor: false,
           content: (
             <WidgetTooltip
-              style={{
-                color: '#FFFFFF',
-                backgroundColor: '#383838',
-              }}
               settings={[
                 {
                   label: 'Percentile:',

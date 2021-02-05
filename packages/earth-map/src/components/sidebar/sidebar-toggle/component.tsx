@@ -17,30 +17,51 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Button from '@material-ui/core/Button';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import classNames from 'classnames';
+import ToggleIcon from 'material-ui-toggle-icon';
+import IconLeft from 'mdi-material-ui/ChevronLeft';
+import IconRight from 'mdi-material-ui/ChevronRight';
 import React from 'react';
 
-import './styles.scss';
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.grey['600'],
+    display: 'flex',
+    justifyContent: 'center',
+    top: theme.spacing(5),
+    width: theme.spacing(5),
+    height: theme.spacing(6),
+    zIndex: 9,
+  },
+  button: {
+    width: theme.spacing(5),
+    minWidth: theme.spacing(5),
+    backgroundColor: theme.palette.grey['600'],
+    transition: 'all 0.3s ease',
+  },
+}));
 
 interface ISidebarToggle {
+  className?: any;
   open?: boolean;
   setSidebarOpen?: (o: boolean) => void;
 }
 
 const SidebarToggle = (props: ISidebarToggle) => {
-  const { open, setSidebarOpen } = props;
+  const { className, open, setSidebarOpen } = props;
+  const classes = useStyles();
 
   return (
-    <div className="marapp-qa-sidebarclose c-sidebar-close">
-      <button type="button" onClick={() => setSidebarOpen(!open)} className="sidebar--btn">
-        <i
-          className={classNames({
-            'ng-body-color ng-text-bold ng-icon-small': true,
-            'ng-icon-directionleft': open,
-            'ng-icon-directionright': !open,
-          })}
+    <div className={classNames(className, classes.root, 'marapp-qa-sidebarclose')}>
+      <Button type="button" onClick={() => setSidebarOpen(!open)} className={classes.button}>
+        <ToggleIcon
+          on={open}
+          onIcon={<IconLeft color="primary" />}
+          offIcon={<IconRight color="primary" />}
         />
-      </button>
+      </Button>
     </div>
   );
 };

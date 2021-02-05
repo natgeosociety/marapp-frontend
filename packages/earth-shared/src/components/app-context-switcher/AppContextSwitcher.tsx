@@ -17,12 +17,18 @@
   specific language governing permissions and limitations under the License.
 */
 
-import React, { useState, Children, cloneElement } from 'react';
-import classnames from 'classnames';
+import React, { Children, cloneElement } from 'react';
 import { noop } from 'lodash';
 
-import { useDomWatcher } from '@marapp/earth-shared';
-
+import { makeStyles } from '@material-ui/core/styles';
+import Badge from '@material-ui/core/Badge';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import IconMenu from 'mdi-material-ui/Menu';
+import IconClose from 'mdi-material-ui/Close';
+import Menu from '@material-ui/core/Menu';
+import ToggleIcon from 'material-ui-toggle-icon';
 import './styles.scss';
 
 import { Option } from './Option';
@@ -37,6 +43,20 @@ interface IProps {
   onChange?: () => {};
 }
 
+const useStyles = makeStyles((theme) => {
+  return {
+    root: {
+      backgroundColor: theme.palette.grey['600'],
+    },
+    menuRoot: {
+      paddingLeft: '0px !important',
+    },
+    menuPopOver: {
+      background: 'rgba(0,0,0,0.5)',
+    },
+  };
+});
+
 const AppContextSwitcher = (props: IProps) => {
   const {
     label,
@@ -48,73 +68,80 @@ const AppContextSwitcher = (props: IProps) => {
     onChange = noop,
   } = props;
 
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleDropdown = () => setIsOpen(!isOpen);
-  const closeDropdown = () => setIsOpen(false);
+  const classes = useStyles();
 
-  const closeOnClickOutside = useDomWatcher(toggleDropdown, !isOpen);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const toggleDropdown = (event) => setAnchorEl(event.currentTarget);
+
+  const closeDropdown = () => setAnchorEl(null);
+
+  const isOpen = !!anchorEl;
 
   return (
-    <div
-      ref={closeOnClickOutside}
-      className="marapp-qa-context-switcher ng-app-context-switcher  ng-position-relative"
-    >
-      <div className="ng-flex ng-padding-medium-horizontal ng-padding-small-top">
-        {logo && (
-          <div className="logo-container marapp-qa-logo" onClick={closeDropdown}>
-            {logo}
-            {renderDropdown && <span className="ng-margin-small-horizontal ng-color-white">|</span>}
-          </div>
-        )}
+    <Box className={classes.root} p={1} pl={2} pb={0}>
+      <Grid
+        container={true}
+        className="marapp-qa-context-switcher"
+        justify="space-between"
+        spacing={2}
+      >
+        <Grid item={true} className="marapp-qa-logo" onClick={closeDropdown}>
+          {logo}
+        </Grid>
+        <Grid item={true}>
+          {renderDropdown && (
+            <>
+              <Button
+                onClick={toggleDropdown}
+                endIcon={<ToggleIcon on={isOpen} onIcon={<IconClose />} offIcon={<IconMenu />} />}
+              >
+                <Badge badgeContent={checkedCount} color="secondary" showZero={false}>
+                  {label}
+                </Badge>
+              </Button>
 
-        {renderDropdown && (
-          <>
-            <div
-              onClick={toggleDropdown}
-              className="ng-c-cursor-pointer ng-flex ng-flex-middle ng-padding-medium-left ng-padding-right ng-position-relative"
-            >
-              <div className="ng-text-display-s ng-text-weight-regular ng-color-white ng-margin-remove ng-org-name ng-padding-right">
-                {label}
-              </div>
-              <i
-                className={classnames({
-                  'ng-icon ng-color-white': true,
-                  'ng-icon-directionup': isOpen,
-                  'ng-icon-directiondown': !isOpen,
+              <Menu
+                open={isOpen}
+                anchorEl={anchorEl}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                marginThreshold={48} // hack to push the menu below the trigger button
+                getContentAnchorEl={null}
+                onClose={closeDropdown}
+                className="marapp-qa-dropdown marapp-qa-menu-dropdown"
+                PopoverClasses={{
+                  root: classes.menuPopOver,
+                }}
+                classes={{
+                  list: classes.menuRoot,
+                }}
+              >
+                {Children.map(children, (child: any) => {
+                  if (!child) {
+                    return;
+                  }
+                  const isOptionElement = child.props.value;
+                  const selected = child.props.value === value;
+                  return isOptionElement
+                    ? cloneElement(child, {
+                        ...child.props,
+                        selected,
+                        onClick: (value: any) => {
+                          if (!selected) {
+                            onChange(value);
+                          }
+                          closeDropdown();
+                        },
+                      })
+                    : child;
                 })}
-              />
-              {checkedCount > 0 && <span className="ng-org-badge">{checkedCount}</span>}
-            </div>
-
-            {isOpen && (
-              <>
-                <div className="overlay" onClick={closeDropdown} />
-                <ul className="marapp-qa-dropdown ng-ep-dropdown">
-                  {Children.map(children, (child: any) => {
-                    if (!child) {
-                      return;
-                    }
-                    const isOptionElement = child.props.value;
-                    const selected = child.props.value === value;
-                    return isOptionElement
-                      ? cloneElement(child, {
-                          selected,
-                          onClick: (value: any) => {
-                            if (!selected) {
-                              onChange(value);
-                            }
-                            closeDropdown();
-                          },
-                        })
-                      : child;
-                  })}
-                </ul>
-              </>
-            )}
-          </>
-        )}
-      </div>
-    </div>
+              </Menu>
+            </>
+          )}
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 

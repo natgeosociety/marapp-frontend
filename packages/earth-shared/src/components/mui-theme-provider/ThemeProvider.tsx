@@ -17,45 +17,25 @@
   specific language governing permissions and limitations under the License.
 */
 
-import Fuse from 'fuse.js';
+import { CssBaseline, ThemeProvider as MuiThemeProvider } from '@material-ui/core';
+import theme from './theme';
 import React from 'react';
 
-interface IFilter {
-  children?: any;
-  filter?: string;
-  items?: [];
-  keys?: [] | string[];
+interface IProps {
+  children?: React.ReactNode;
 }
 
-class FilterComponent extends React.Component<IFilter, any> {
-  public static defaultProps = {
-    items: [],
-    keys: [],
-    filter: '',
-  };
-  private fuse: any;
+const ThemeProvider = (props: IProps) => {
+  const { children } = props;
 
-  constructor(props) {
-    super(props);
+  return (
+    <>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </MuiThemeProvider>
+    </>
+  );
+};
 
-    const { items, keys } = props;
-
-    this.fuse = new Fuse(items, {
-      shouldSort: true,
-      threshold: 0.4,
-      location: 0,
-      distance: 100,
-      maxPatternLength: 32,
-      minMatchCharLength: 1,
-      keys,
-    });
-  }
-
-  public render() {
-    const { filter, items } = this.props;
-    const filteredItems = filter && filter.length > 0 ? this.fuse.search(filter) : items;
-    return this.props.children({ items: filteredItems });
-  }
-}
-
-export default FilterComponent;
+export default ThemeProvider;

@@ -46,6 +46,27 @@ export const cleanFilters = (filters: IFilters): IFilters => {
     }, {});
 };
 
+/**
+ * Get the total sum of entities the current filter should return
+ */
+export const countSelectedFiltersEntities = (
+  selectedFilters: any,
+  availableFilters: any
+): number => {
+  return Object.keys(selectedFilters).reduce((acc, current) => {
+    const val = selectedFilters[current];
+
+    const count = val?.reduce((acc, current) => {
+      const currentFilterEntities = availableFilters?.type?.find(
+        (filter) => filter.value === current
+      );
+
+      return acc + (currentFilterEntities ? currentFilterEntities.count : 0);
+    }, 0);
+    return acc + count;
+  }, 0);
+};
+
 export interface IFilters {
   [key: string]: string[] | boolean[];
 }
