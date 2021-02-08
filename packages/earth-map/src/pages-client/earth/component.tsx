@@ -170,7 +170,7 @@ const EarthPage = (props: IProps) => {
       <div className="l-content">
         <div className={classes.mapContainer}>
           <ErrorBoundary fallbackComponent={<LayerConfigError selectedOpen={selectedOpen} />}>
-            <Map page={props.page} selectedOpen={selectedOpen} t={t} />
+            <Map page={props.page} selectedOpen={selectedOpen} t={t} activeLayers={activeLayers} />
           </ErrorBoundary>
         </div>
       </div>
