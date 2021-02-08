@@ -17,8 +17,16 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import withStyles from '@material-ui/core/styles/withStyles';
 import debounce from 'lodash/debounce';
+import compose from 'lodash/fp/compose';
 import React from 'react';
+import { withTranslation } from 'react-i18next';
 import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 import {
   Legend,
@@ -32,9 +40,9 @@ import {
   LegendListItem,
 } from 'vizzuality-components';
 
-import Modal from '../../../components/modal';
+import { Html } from '@marapp/earth-shared';
+
 import { EarthRoutes, IRouter } from '../../../modules/router/model';
-import LegendInfo from './legend-info';
 import LegendItemGroup from './legend-item-group';
 import './styles.scss';
 import TEMPLATES from './templates';
@@ -46,7 +54,14 @@ const LegendWrapper: any = Keyframes.Spring({
   close: { x: 0, opacity: 1, delay: 100 },
 });
 
+const styles = (theme) => ({
+  root: {
+    backgroundColor: theme.palette.grey['600'],
+  },
+});
+
 interface ILegend {
+  classes: any;
   layerGroups?: any[];
   setLayerVisibility?: (data: any) => void;
   setLayerOrder?: (data: any) => void;
@@ -57,6 +72,7 @@ interface ILegend {
   setLayerSettings?: (data: any) => void;
   open?: boolean;
   router?: IRouter;
+  t?: (arg: any) => any;
 }
 
 class LegendComponent extends React.PureComponent<ILegend> {
@@ -130,7 +146,7 @@ class LegendComponent extends React.PureComponent<ILegend> {
   };
 
   public render() {
-    const { layerGroups } = this.props;
+    const { classes, t, layerGroups } = this.props;
 
     const state = this.getState();
 
@@ -138,7 +154,7 @@ class LegendComponent extends React.PureComponent<ILegend> {
       <LegendWrapper native={true} state={state}>
         {({ x, ...props }) => (
           <animated.div
-            className="c-legend"
+            className={`${classes.root} c-legend`}
             style={{
               transform: x.interpolate((x) => `translate3d(${x}px,0,0)`),
               ...props,
@@ -207,12 +223,30 @@ class LegendComponent extends React.PureComponent<ILegend> {
                       />
                     )}
 
-                    <Modal
-                      isOpen={!!layerGroup.info}
-                      onRequestClose={() => this.onChangeInfo(false, layerGroup.slug)}
+                    <Dialog
+                      open={!!layerGroup.info}
+                      onClose={() => this.onChangeInfo(false, layerGroup.slug)}
+                      className="marapp-qa-layerinfo"
                     >
-                      <LegendInfo title={layerGroup.name} description={layerGroup.description} />
-                    </Modal>
+                      <DialogTitle>{layerGroup?.name}</DialogTitle>
+
+                      <DialogContent>
+                        <Html
+                          className="layer-info--html translate-content"
+                          html={layerGroup?.description}
+                        />
+                      </DialogContent>
+
+                      <DialogActions>
+                        <Button
+                          size="large"
+                          className="marapp-qa-modalclose"
+                          onClick={() => this.onChangeInfo(false, layerGroup.slug)}
+                        >
+                          {t('Close')}
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                   </LegendListItem>
                 );
               })}
@@ -224,4 +258,4 @@ class LegendComponent extends React.PureComponent<ILegend> {
   }
 }
 
-export default LegendComponent;
+export default compose(withStyles(styles), withTranslation())(LegendComponent);

@@ -83,6 +83,7 @@ export const CONFIG = {
 
             return {
               x: l.label,
+              name: l.label,
               color: l.color,
               percentage,
               area,
@@ -122,8 +123,16 @@ export const CONFIG = {
           verticalAlign: 'middle',
           layout: 'vertical',
           content: (properties) => {
-            const { payload } = properties;
-            const groups = groupBy(payload, (p) => p.payload.category);
+            /**
+             * Our implementation of the pie chart filters out all the 0 values from being displayed
+             * on the chart.
+             *
+             * In order to display them in the legend, we need to gather the legend info from
+             * the 'data' prop, instead of 'payload' which is received from the pie chart implementation
+             * itself.
+             * */
+            const { data } = properties;
+            const groups = groupBy(data, (d) => d.category);
 
             return (
               <div className="widget--legend">
@@ -140,10 +149,10 @@ export const CONFIG = {
                             />
 
                             <span>
-                              {item.value}{' '}
+                              {item.name}{' '}
                               <span className="widget--legend-list-item-value">
                                 {' '}
-                                - {format('.2%')(item.payload.percentage / 100)}
+                                - {format('.2%')(item.percentage / 100)}
                               </span>
                             </span>
                           </li>
@@ -159,10 +168,6 @@ export const CONFIG = {
           cursor: false,
           content: (
             <WidgetTooltip
-              style={{
-                color: '#FFFFFF',
-                backgroundColor: '#383838',
-              }}
               settings={[
                 {
                   label: 'Category:',

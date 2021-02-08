@@ -17,12 +17,14 @@
   specific language governing permissions and limitations under the License.
 */
 
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Paper from '@material-ui/core/Paper';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import React from 'react';
 
 import { Layer } from '@marapp/earth-shared';
 
 import { APP_BASEMAPS } from '../../theme';
-import './styles.scss';
 
 interface IBasemap {
   mapStyle: any;
@@ -36,33 +38,60 @@ interface IBasemap {
   }>;
 }
 
-class BasemapComponent extends React.PureComponent<IBasemap> {
-  public onBasemap = ({ id }) => {
-    const { mapStyle, setMapStyle } = this.props;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .layers--item-bg': {
+      border: 0,
+      borderRadius: theme.shape.borderRadius,
+      height: theme.spacing(10),
+      width: theme.spacing(15),
+      transition: theme.transitions.create('opacity', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      '&:hover': {
+        opacity: 0.85,
+      },
+      '&:after': {
+        display: 'none',
+      },
+    },
+    '& .layers--item-title': {
+      ...theme.typography.body1,
+      fontWeight: 500,
+      position: 'absolute',
+      right: 0,
+      left: 0,
+      bottom: -9,
+      marginBottom: theme.spacing(1),
+      background: 'rgba(0, 0, 0, 0.5)',
+      borderBottomLeftRadius: theme.shape.borderRadius,
+      borderBottomRightRadius: theme.shape.borderRadius,
+    },
+  },
+}));
+
+const BasemapComponent = (props: IBasemap) => {
+  const { mapStyle, setMapStyle } = props;
+  const classes = useStyles();
+
+  const onBasemap = ({ id }) => {
     if (mapStyle !== id) {
       setMapStyle(id);
     }
   };
 
-  public render() {
-    const { mapStyle } = this.props;
-
-    return (
-      <div className="layers--list marapp-qa-basemap">
+  return (
+    <ButtonBase>
+      <div className={`${classes.root} marapp-qa-basemap`}>
         {APP_BASEMAPS.filter((l) => l.id !== mapStyle).map((basemap) => (
-          <div key={basemap.id}>
-            <Layer
-              {...basemap}
-              key={basemap.slug}
-              onClick={() => {
-                this.onBasemap(basemap);
-              }}
-            />
-          </div>
+          <Paper elevation={3} key={basemap.id}>
+            <Layer {...basemap} key={basemap.slug} onClick={() => onBasemap(basemap)} />
+          </Paper>
         ))}
       </div>
-    );
-  }
-}
+    </ButtonBase>
+  );
+};
 
 export default BasemapComponent;

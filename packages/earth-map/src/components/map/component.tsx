@@ -114,7 +114,7 @@ class MapComponent extends React.Component<IMap, IMapState> {
   }
 
   public componentWillUnmount() {
-    clearInterval(this.state.loadingTilesIntervalRef);
+    clearInterval(this.state?.loadingTilesIntervalRef);
   }
 
   public componentDidUpdate(prevProps) {

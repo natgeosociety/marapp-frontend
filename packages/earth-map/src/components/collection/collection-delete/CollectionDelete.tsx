@@ -17,10 +17,15 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { Modal } from '@marapp/earth-shared';
 
 import { ICollection } from '../../../fetchers/locations/queries';
 import { EPanels } from '../../../modules/sidebar/model';
@@ -33,38 +38,67 @@ interface IProps {
   dispatch?: (p: any) => void;
 }
 
+const useStyles = makeStyles((theme) => ({
+  dialogActions: {
+    marginTop: theme.spacing(2),
+    justifyContent: 'center',
+  },
+}));
+
 export function CollectionDelete(props: IProps) {
   const [saveError, setSaveError] = useState('');
   const { collection, isDeleting, setIsDeleting, dispatch } = props;
   const { t } = useTranslation();
   const { id, organization, name } = collection;
+  const classes = useStyles();
 
   return (
-    <Modal isOpen={isDeleting} className="marapp-qa-DeleteConfirmation ng-text-center">
-      <h4 className="ng-text-display-s ng-margin-bottom">
-        {t('Delete')} {name}
-      </h4>
-      <p className="ng-space-wrap">
-        {t('Are you sure you want to permanently delete this collection')}?
-      </p>
-      <div className="ng-flex ng-flex-center">
-        <button
+    <Dialog
+      open={isDeleting}
+      className="marapp-qa-deleteConfirmation"
+      maxWidth="sm"
+      fullWidth={true}
+    >
+      <DialogTitle disableTypography={true}>
+        <Typography variant="h5" align="center">
+          {t('Delete')} {name}
+        </Typography>
+      </DialogTitle>
+
+      <DialogContent>
+        <Typography align="center" paragraph={true}>
+          {t('Are you sure you want to permanently delete this collection')}?
+        </Typography>
+
+        {saveError && (
+          <Typography color="error" align="center">
+            {saveError}
+          </Typography>
+        )}
+      </DialogContent>
+
+      <DialogActions className={classes.dialogActions}>
+        <Button
           autoFocus={true}
           tabIndex={0}
-          className="marapp-qa-actioncancel ng-button ng-button-secondary ng-margin-medium-right"
+          className="marapp-qa-actioncancel"
           onClick={() => setIsDeleting(false)}
+          size="large"
         >
           {t('Cancel')}
-        </button>
-        <button
-          className="marapp-qa-actiondelete ng-button ng-button-primary"
+        </Button>
+
+        <Button
+          className="marapp-qa-actiondelete"
+          size="large"
+          variant="contained"
+          color="secondary"
           onClick={handleDelete}
         >
           {t('Delete')}
-        </button>
-      </div>
-      {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
-    </Modal>
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 
   async function handleDelete() {

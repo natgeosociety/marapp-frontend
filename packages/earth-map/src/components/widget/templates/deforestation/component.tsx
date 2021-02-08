@@ -17,54 +17,34 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Collapse from '@material-ui/core/Collapse';
 import React from 'react';
 
-import { Chart, Html } from '@marapp/earth-shared';
+import { Chart } from '@marapp/earth-shared';
 
 import WidgetNoDataComponent from '../../../../components/widget/no-data';
+import WidgetTemplateText from '../../templateText';
 import { IWidgetTemplate } from '../model';
 
-class Deforestation extends React.PureComponent<IWidgetTemplate, any> {
-  public static defaultProps = {
-    collapsed: false,
-  };
+const Deforestation = (props: IWidgetTemplate) => {
+  const { chart, config, expanded, noData, template } = props;
 
-  public collapsed() {
-    const { template } = this.props;
-
-    return (
-      <div className="widget--template">
-        <Html html={template} />
-      </div>
-    );
+  if (noData) {
+    return <WidgetNoDataComponent expanded={expanded} />;
   }
 
-  public expanded() {
-    const { chart, template, config } = this.props;
+  return (
+    <>
+      <WidgetTemplateText expanded={expanded} template={template} />
 
-    return (
-      <React.Fragment>
-        <div className="widget--template ng-margin-large-bottom">
-          <Html html={template} />
-        </div>
-
-        {/* Chart */}
-        {!!chart.length && <Chart data={chart} config={config} />}
-      </React.Fragment>
-    );
-  }
-
-  public render() {
-    const { collapsed, noData } = this.props;
-
-    if (noData) {
-      return <WidgetNoDataComponent />;
-    }
-
-    const content = collapsed ? this.collapsed() : this.expanded();
-
-    return content;
-  }
-}
+      {/* Chart */}
+      {!!chart.length && (
+        <Collapse in={!!expanded}>
+          <Chart data={chart} config={config} />
+        </Collapse>
+      )}
+    </>
+  );
+};
 
 export default Deforestation;

@@ -20,8 +20,21 @@
 import classnames from 'classnames';
 import { noop } from 'lodash';
 import React from 'react';
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import Box from '@material-ui/core/Box';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import IconMagnify from 'mdi-material-ui/Magnify';
+import IconClose from 'mdi-material-ui/Close';
 
-import './styles.scss';
+const useStyles = makeStyles((theme) => {
+  return {
+    root: {
+      backgroundColor: theme.palette.grey['600'],
+    },
+  };
+});
 
 interface ISearchbox {
   value: string;
@@ -42,40 +55,34 @@ interface ISearchbox {
 
 const SearchBox = (props: ISearchbox) => {
   const { value, placeholder, onChange = noop, onReset = noop, onFocus = noop, showClose } = props;
-
-  const searchBoxClasses = classnames(
-    'ng-c-input-container',
-    'ng-background-ultradkgray',
-    'ng-background-ultradkgray',
-    'ng-padding-vertical',
-    'ng-padding-small-horizontal',
-    'ng-c-flex-grow-1',
-    'ng-flex',
-    'ng-flex-middle',
-    {
-      'is-focused': true, // make this conditional
-    }
-  );
+  const classes = useStyles();
 
   return (
-    <div className="marapp-qa-searchbox ng-padding-medium ng-ep-background-dark ng-padding-top-remove">
-      <div className={searchBoxClasses}>
-        <i className="ng-icon ng-icon-small ng-icon-search ng-color-mdgray ng-margin-small-horizontal" />
-        <input
-          type="text"
-          placeholder={placeholder}
-          className="marapp-qa-searchboxinput ng-width-1-1 ng-search-box"
-          value={value}
-          onChange={onChange}
-          onFocus={onFocus}
-        />
-        {showClose && (
-          <div className="marapp-qa-searchboxclear ng-c-cursor-pointer" onClick={onReset}>
-            <i className="ng-color-mdgray ng-margin-small-right ng-icon-small ng-icon-close ng-display-block" />
-          </div>
-        )}
-      </div>
-    </div>
+    <Box className={classnames(classes.root, 'marapp-qa-searchbox')} p={2}>
+      <TextField
+        variant="outlined"
+        fullWidth={true}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        onFocus={onFocus}
+        InputProps={{
+          className: 'marapp-qa-searchboxinput',
+          startAdornment: (
+            <InputAdornment position="start">
+              <IconMagnify fontSize="large" />
+            </InputAdornment>
+          ),
+          endAdornment: showClose ? (
+            <InputAdornment position="start">
+              <IconButton onClick={onReset} className="marapp-qa-searchboxclear" size="small">
+                <IconClose fontSize="small" />
+              </IconButton>
+            </InputAdornment>
+          ) : null,
+        }}
+      />
+    </Box>
   );
 };
 

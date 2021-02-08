@@ -17,38 +17,60 @@
   specific language governing permissions and limitations under the License.
 */
 
-import classnames from 'classnames';
+import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import ToggleIcon from 'material-ui-toggle-icon';
+import IconRemoveLayer from 'mdi-material-ui/LayersOffOutline';
+import IconAddLayer from 'mdi-material-ui/LayersPlus';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+}));
+
 interface IWidgetFooter {
   active: boolean;
-  collapsed?: any;
-  color?: any;
+  expanded?: any;
   onToggleLayer: (active: boolean) => {};
-  onCollapse: (active: boolean) => {};
 }
 
 function WidgetFooterComponent(props: IWidgetFooter) {
-  const { active, onToggleLayer } = props;
+  const { active, expanded, onToggleLayer } = props;
   const { t } = useTranslation();
+  const classes = useStyles();
 
   const toggleLayer = () => {
     onToggleLayer(active);
   };
 
   return (
-    <footer className="marapp-qa-widgetfooter widget--footer">
-      <button
-        className={classnames({
-          'ng-button ng-button-secondary': true,
-          active,
-        })}
-        onClick={toggleLayer}
-      >
-        {active ? t('Remove from map') : t('Show on map')}
-      </button>
-    </footer>
+    <Collapse in={expanded}>
+      <footer className="marapp-qa-widgetfooter widget--footer">
+        <Button
+          variant={active ? 'contained' : 'outlined'}
+          color={active ? 'secondary' : 'default'}
+          className={`${classes.root} marapp-qa-show-remove-layer`}
+          onClick={toggleLayer}
+          size="large"
+          endIcon={
+            <ToggleIcon
+              on={active}
+              onIcon={<IconRemoveLayer fontSize="small" />}
+              offIcon={<IconAddLayer fontSize="small" />}
+            />
+          }
+        >
+          {t(active ? 'Remove from map' : 'Show on map')}
+        </Button>
+      </footer>
+    </Collapse>
   );
 }
 

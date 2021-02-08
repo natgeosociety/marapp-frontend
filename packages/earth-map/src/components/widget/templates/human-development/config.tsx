@@ -149,10 +149,6 @@ export const CONFIG = {
           },
           content: (
             <WidgetTooltip
-              style={{
-                color: '#FFFFFF',
-                backgroundColor: '#383838',
-              }}
               settings={[
                 { label: 'Year:', key: 'year' },
                 {

@@ -16,21 +16,63 @@
   CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-
+import Drawer from '@material-ui/core/Drawer';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import classNames from 'classnames';
 import React from 'react';
-import { animated, Keyframes } from 'react-spring/renderprops.cjs';
 
 import { MAP_SIDEBAR_WIDTH, MAP_SIDEBAR_WIDTH_WIDE } from '../../config';
-import CompanyRedirect from './company-redirect';
 import SidebarToggle from './sidebar-toggle';
-import './styles.scss';
 
-// Creates a spring with predefined animation slots
-const SidebarPanel: any = Keyframes.Spring({
-  open: { x: 0, width: MAP_SIDEBAR_WIDTH, from: { x: -100 }, delay: 0 },
-  openW: { x: 0, width: MAP_SIDEBAR_WIDTH_WIDE, from: { x: 0 }, delay: 0 },
-  close: { x: -100, delay: 100 },
+const useStyles = makeStyles((theme) => {
+  const getDrawerWidth = (props: ISidebarPanel) =>
+    props.selectedOpen ? MAP_SIDEBAR_WIDTH_WIDE : MAP_SIDEBAR_WIDTH;
+
+  return {
+    drawerPaper: {
+      maxHeight: '100vh',
+      backgroundColor: theme.palette.background.default,
+      borderRight: 'none',
+      '& .scroll-container': {
+        flex: '1 1 auto',
+        overflow: 'auto',
+      },
+    },
+    drawer: (props: ISidebarPanel) => ({
+      width: getDrawerWidth(props),
+    }),
+    drawerOpen: (props: ISidebarPanel) => ({
+      width: getDrawerWidth(props),
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      [theme.breakpoints.down('xs')]: {
+        width: 'calc(100vw - 60px)',
+      },
+    }),
+    drawerClose: {
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      width: 0,
+    },
+    sidebarToggle: {
+      position: 'fixed',
+      [theme.breakpoints.down('xs')]: {
+        left: (props: ISidebarPanel) => (props.open ? 'calc(100vw - 60px)' : 0),
+      },
+      [theme.breakpoints.up('sm')]: {
+        transition: theme.transitions.create('left', {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+        left: (props: ISidebarPanel) => (props.open ? getDrawerWidth(props) : 0),
+      },
+    },
+  };
 });
 
 interface ISidebarPanel {
@@ -45,57 +87,55 @@ interface ISidebarPanel {
   resetMap?: () => void;
   resetLayers?: () => void;
   selectedOpen?: boolean;
+  classes?: any;
 }
 
-class Sidebar extends React.Component<ISidebarPanel> {
-  public onClose = () => {
-    const { setSidebarOpen } = this.props;
-    setSidebarOpen(false);
+const Sidebar = (props: ISidebarPanel) => {
+  const { children, open, resetLayers, resetMap, setPlacesSearch, setSidebarOpen } = props;
+
+  const classes = useStyles(props);
+  const theme = useTheme();
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const onClose = () => setSidebarOpen(false);
+
+  const drawerProps: any = {
+    ...(isSmallDevice
+      ? {
+          open,
+          onClose,
+          variant: 'temporary',
+        }
+      : {
+          variant: 'permanent',
+        }),
   };
 
-  public resetMap = () => {
-    const { setPlacesSearch, resetMap, resetLayers } = this.props;
-    setPlacesSearch({ search: '' });
-    resetLayers();
-    resetMap();
-  };
-
-  public render() {
-    const { children, open, selectedOpen, layersPanel, setSidebarOpen } = this.props;
-    let state;
-
-    if (open) {
-      state = 'open';
-      if (selectedOpen) {
-        state = 'openW';
-      }
-    } else {
-      state = 'close';
-    }
-
-    return (
-      <SidebarPanel native={true} state={state}>
-        {({ x, ...props }) => (
-          <animated.div
-            className={classNames(
-              'marapp-qa-sidebar c-sidebar ng-c-sidebar ng-subsection-background',
-              {
-                'no-scroll': layersPanel,
-              }
-            )}
-            style={{
-              transform: x.interpolate((x) => `translate3d(${x}%,0,0)`),
-              ...props,
-            }}
-          >
-            <CompanyRedirect />
-            <SidebarToggle open={open} setSidebarOpen={setSidebarOpen} />
-            {children}
-          </animated.div>
-        )}
-      </SidebarPanel>
-    );
-  }
-}
+  return (
+    <>
+      <Drawer
+        className={classNames(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: classNames({
+            [classes.drawerPaper]: true,
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
+        }}
+        {...drawerProps}
+      >
+        {children}
+      </Drawer>
+      <SidebarToggle
+        className={classes.sidebarToggle}
+        open={open}
+        setSidebarOpen={setSidebarOpen}
+      />
+    </>
+  );
+};
 
 export default Sidebar;

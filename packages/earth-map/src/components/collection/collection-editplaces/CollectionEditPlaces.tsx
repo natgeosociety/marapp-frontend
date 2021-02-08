@@ -17,19 +17,26 @@
  * specific language governing permissions and limitations under the License.
  */
 
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import isBoolean from 'lodash/isBoolean';
 import React, { BaseSyntheticEvent, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { replace } from 'redux-first-router';
 
-import { AsyncSelect, Card, DropdownItem, TitleHero } from '@marapp/earth-shared';
+import { AsyncSelect, Card, DropdownItem } from '@marapp/earth-shared';
 
 import { MAP_ENABLE_PUBLIC_ACCESS } from '../../../config';
 import { ICollection } from '../../../fetchers/locations/queries';
 import { LocationTypeEnum } from '../../../modules/places/model';
 import PlacesService from '../../../services/PlacesService';
 import { CollectionConflict } from '../collection-conflict';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface IProps {
   collection: ICollection;
@@ -39,9 +46,31 @@ interface IProps {
   onSlugChange: (payload: any) => void;
 }
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: theme.palette.background.default,
+  },
+  header: {
+    backgroundColor: theme.palette.grey['600'],
+  },
+  scrollContainer: {
+    flex: '1 1 auto',
+    overflow: 'auto',
+  },
+}));
+
 export function CollectionEditPlaces(props: IProps) {
   const { collection, toggleEditPlaces, mutateCollection, onSlugChange } = props;
   const { t } = useTranslation();
+  const classes = useStyles();
   const { id, slug, organization, name, locations, version } = collection;
   const [saveError, setSaveError] = useState('');
   const [isSaveConflict, setIsSaveConflict] = useState(false);
@@ -51,66 +80,103 @@ export function CollectionEditPlaces(props: IProps) {
   const { isValid, isSubmitting, isDirty } = formState;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="sidebar-content-full collection-edit-places">
-      <Card elevation="high" className="ng-margin-bottom header-card">
-        <TitleHero title={name} subtitle={organization} extra={t('Collection')} />
-      </Card>
+    <form onSubmit={handleSubmit(onSubmit)} className={`${classes.root} collection-edit-places`}>
+      <Box mb={1}>
+        <Paper square={true} elevation={3} className={classes.header}>
+          <Box p={2}>
+            <Typography variant="subtitle1" color="textPrimary" gutterBottom={true}>
+              {organization} |{' '}
+              <Typography component="span" variant="subtitle1" color="textPrimary">
+                {t('Collection')}
+              </Typography>
+            </Typography>
 
-      <div className="scroll-container">
-        <Card elevation="raised">
-          <label>{t('Add places')}:</label>
-          <Controller
-            as={AsyncSelect}
-            name="locations"
-            type="places"
-            label={t('Add places')}
-            placeholder={t('Add places to your collection')}
-            className="marapp-qa-locationsdropdown ng-margin-medium-bottom"
-            control={control}
-            defaultValue={locations}
-            getOptionLabel={(option, extra) => {
-              const itemProps: any = {
-                title: option.name,
-              };
+            <Typography variant="h5" component="h2" color="textPrimary">
+              {name}
+            </Typography>
+          </Box>
+        </Paper>
+      </Box>
 
-              if (MAP_ENABLE_PUBLIC_ACCESS) {
-                itemProps.subtitle = option.organization;
-              }
+      <div className={`${classes.scrollContainer} marapp-qa-edit-collection-places`}>
+        <Paper square={true}>
+          <Box p={2}>
+            <Grid container={true} spacing={2}>
+              <Grid item={true} xs={12}>
+                <Typography component="label" gutterBottom={true}>
+                  {t('Add places')}:
+                </Typography>
+                <Controller
+                  as={AsyncSelect}
+                  name="locations"
+                  type="places"
+                  label={t('Add places')}
+                  placeholder={t('Add places to your collection')}
+                  className="marapp-qa-locationsdropdown"
+                  control={control}
+                  defaultValue={locations}
+                  getOptionLabel={(option, extra) => {
+                    const itemProps: any = {
+                      title: option.name,
+                    };
 
-              return <DropdownItem {...itemProps} />;
-            }}
-            getOptionValue={(option) => option.id}
-            loadFunction={(query) =>
-              PlacesService.fetchPlaces({
-                ...query,
-                filter: ['type', '!=', LocationTypeEnum.COLLECTION].join(''),
-                select: ['id', 'slug', 'name', 'organization'].join(','),
-                group: organization,
-                public: true,
-              })
-            }
-            selectedGroup={organization}
-            isClearable={true}
-            isSearchable={true}
-            isMulti={true}
-            closeMenuOnSelect={false}
-          />
+                    if (MAP_ENABLE_PUBLIC_ACCESS) {
+                      itemProps.subtitle = option.organization;
+                    }
 
-          {saveError && <p className="ng-form-error-block ng-margin-bottom">{saveError}</p>}
+                    return <DropdownItem {...itemProps} />;
+                  }}
+                  getOptionValue={(option) => option.id}
+                  loadFunction={(query) =>
+                    PlacesService.fetchPlaces({
+                      ...query,
+                      filter: ['type', '!=', LocationTypeEnum.COLLECTION].join(''),
+                      select: ['id', 'slug', 'name', 'organization'].join(','),
+                      group: organization,
+                      public: true,
+                    })
+                  }
+                  selectedGroup={organization}
+                  isClearable={true}
+                  isSearchable={true}
+                  isMulti={true}
+                  closeMenuOnSelect={false}
+                />
+              </Grid>
 
-          <button
-            className="marapp-qa-actionsave ng-button ng-button-primary ng-margin-right"
-            disabled={!isValid || isSubmitting || !isDirty}
-          >
-            {isSubmitting ? t('Saving') : t('Save')}
-          </button>
-          <button
-            className="marapp-qa-actioncancel ng-button ng-button-secondary"
-            onClick={toggleEditPlaces}
-          >
-            {t('Cancel')}
-          </button>
-        </Card>
+              {saveError && (
+                <Grid item={true} xs={12}>
+                  <Typography color="error">{saveError}</Typography>
+                </Grid>
+              )}
+
+              <Grid item={true} xs={12} container={true} spacing={1}>
+                <Grid item={true}>
+                  <Button
+                    className="marapp-qa-actionsave"
+                    color="secondary"
+                    variant="contained"
+                    size="large"
+                    type="submit"
+                    disabled={!isValid || isSubmitting || !isDirty}
+                    endIcon={isSubmitting && <CircularProgress size={16} />}
+                  >
+                    {t(isSubmitting ? 'Saving' : 'Save')}
+                  </Button>
+                </Grid>
+                <Grid item={true}>
+                  <Button
+                    className="marapp-qa-actioncancel"
+                    onClick={toggleEditPlaces}
+                    size="large"
+                  >
+                    {t('Cancel')}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Box>
+        </Paper>
 
         {isSaveConflict && (
           <CollectionConflict

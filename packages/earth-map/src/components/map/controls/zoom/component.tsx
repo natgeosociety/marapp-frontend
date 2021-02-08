@@ -17,15 +17,32 @@
   specific language governing permissions and limitations under the License.
 */
 
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
+import IconPlus from 'mdi-material-ui/Plus';
+import IconMinus from 'mdi-material-ui/Minus';
 import classnames from 'classnames';
 import React from 'react';
 
 import './styles.scss';
 
+const styles = (theme) => ({
+  root: {
+    backgroundColor: theme.palette.grey['600'],
+    '& button': {
+      borderColor: 'transparent',
+      minWidth: 0,
+      padding: theme.spacing(0.5),
+    },
+  },
+});
+
 interface IZoomControl {
   viewport: { zoom?: number; maxZoom?: number; minZoom?: number };
   className?: string;
   onClick: (zoom: number) => void;
+  classes?: any;
 }
 
 class ZoomControl extends React.PureComponent<IZoomControl, any> {
@@ -52,41 +69,35 @@ class ZoomControl extends React.PureComponent<IZoomControl, any> {
   };
 
   public render() {
-    const { className, viewport } = this.props;
+    const { classes, className, viewport } = this.props;
     const { zoom, maxZoom, minZoom } = viewport;
 
-    const classNames = classnames('marapp-qa-zoomcontrol c-zoom-control', {
+    const classNames = classnames('marapp-qa-zoomcontrol', classes.root, {
       [className]: !!className,
     });
 
-    const zoomInClass = classnames('marapp-qa-zoomin zoom-control--btn ng-ep-border-bottom', {
-      '-disabled': zoom >= maxZoom,
-    });
-    const zoomOutClass = classnames('marapp-qa-zoomout zoom-control--btn', {
-      '-disabled': zoom <= minZoom,
-    });
-
     return (
-      <div className={classNames}>
-        <button
-          className={zoomInClass}
-          type="button"
+      <ButtonGroup orientation="vertical" className={classNames}>
+        <Button
+          className="marapp-qa-zoomin"
           disabled={zoom === maxZoom}
           onClick={this.increaseZoom}
+          size="small"
         >
-          <i className="ng-body-color ng-icon-add" />
-        </button>
-        <button
-          className={zoomOutClass}
-          type="button"
+          <IconPlus fontSize="small" />
+        </Button>
+
+        <Button
+          className="marapp-qa-zoomout"
           disabled={zoom === minZoom}
           onClick={this.decreaseZoom}
+          size="small"
         >
-          <i className="ng-body-color ng-icon-remove" />
-        </button>
-      </div>
+          <IconMinus fontSize="small" />
+        </Button>
+      </ButtonGroup>
     );
   }
 }
 
-export default ZoomControl;
+export default withStyles(styles)(ZoomControl);

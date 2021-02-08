@@ -1,5 +1,8 @@
 import List from '@researchgate/react-intersection-list';
+import MuiList from '@material-ui/core/List';
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 import { Spinner } from '@marapp/earth-shared';
 
@@ -31,17 +34,20 @@ const InfiniteList = (props: IProps) => {
   }
 
   return (
-    <div className="marapp-qa-infinitelist ng-section-background ng-position-relative ng-padding-medium-bottom">
+    <div className="marapp-qa-infinitelist">
       {title && (
-        <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-          {title}
-        </h2>
+        <Box p={2} pb={0}>
+          <Typography variant="subtitle2" color="textSecondary">
+            {title}
+          </Typography>
+        </Box>
       )}
       <List
         awaitMore={awaitMore}
         pageSize={pageSize}
         itemCount={data.length}
         renderItem={(index) => children(data[index])}
+        itemsRenderer={(items, ref) => <MuiList ref={ref}>{items}</MuiList>}
         onIntersection={onNextPage}
       />
       {isValidating && <Spinner position="relative" />}

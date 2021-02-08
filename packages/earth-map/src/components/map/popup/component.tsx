@@ -17,19 +17,64 @@
   specific language governing permissions and limitations under the License.
 */
 
+import IconButton from '@material-ui/core/IconButton';
+import withStyles from '@material-ui/core/styles/withStyles';
 import isEmpty from 'lodash/isEmpty';
+import IconClose from 'mdi-material-ui/Close';
 import React from 'react';
 import isEqual from 'react-fast-compare';
 import { Popup } from 'react-map-gl';
 
-import './styles.scss';
 import LayerTemplate from './templates/layer';
 interface PopupComponentProps {
+  classes: any;
   popup: {};
   setMapInteractions: (p: any) => void;
   activeInteractiveLayer?: any;
   activeInteractiveLayers?: any[];
 }
+
+const styles = (theme) => {
+  return {
+    root: {
+      '&.mapboxgl-popup-anchor-left .mapboxgl-popup-tip': {
+        borderRightColor: theme.palette.background.paper,
+      },
+      '&.mapboxgl-popup-anchor-right .mapboxgl-popup-tip': {
+        borderLeftColor: theme.palette.background.paper,
+      },
+      '&.mapboxgl-popup-anchor-top .mapboxgl-popup-tip': {
+        borderBottomColor: theme.palette.background.paper,
+      },
+      '&.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip': {
+        borderBottomColor: theme.palette.background.paper,
+      },
+      '&.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip': {
+        borderBottomColor: theme.palette.background.paper,
+      },
+      '&.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip': {
+        borderTopColor: theme.palette.background.paper,
+      },
+      '&.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip': {
+        borderTopColor: theme.palette.background.paper,
+      },
+      '&.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip': {
+        borderTopColor: theme.palette.background.paper,
+      },
+      '& .mapboxgl-popup-content': {
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2),
+      },
+    },
+    closeButton: {
+      position: 'absolute',
+      top: theme.spacing(1),
+      right: theme.spacing(1),
+      zIndex: 2,
+    },
+  };
+};
 
 class PopupComponent extends React.PureComponent<PopupComponentProps> {
   private popup: any;
@@ -66,7 +111,7 @@ class PopupComponent extends React.PureComponent<PopupComponentProps> {
   };
 
   public render() {
-    const { popup, activeInteractiveLayers, activeInteractiveLayer } = this.props;
+    const { classes, popup, activeInteractiveLayers, activeInteractiveLayer } = this.props;
 
     if (isEmpty(popup)) {
       return null;
@@ -80,16 +125,18 @@ class PopupComponent extends React.PureComponent<PopupComponentProps> {
         }}
         closeButton={false}
         closeOnClick={false}
+        className={classes.root}
       >
-        <div className="c-map-popup">
-          <button
+        <div>
+          <IconButton
             key="close-button"
-            className="map-popup--close"
+            className={`${classes.closeButton} mapbox-prevent-click`}
             type="button"
+            size="small"
             onClick={this.onClose}
           >
-            <i className="ng-icon-close mapbox-prevent-click" />
-          </button>
+            <IconClose className="mapbox-prevent-click" />
+          </IconButton>
 
           <LayerTemplate
             activeInteractiveLayers={activeInteractiveLayers}
@@ -101,4 +148,5 @@ class PopupComponent extends React.PureComponent<PopupComponentProps> {
   }
 }
 
-export default PopupComponent;
+// @ts-ignore
+export default withStyles(styles)(PopupComponent);

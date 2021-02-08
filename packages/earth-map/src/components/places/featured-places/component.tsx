@@ -17,6 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -24,6 +28,7 @@ import { Spinner } from '@marapp/earth-shared';
 
 import ListItem from '../../../components/list-item';
 import { QUERY_LOCATIONS, useLocations } from '../../../fetchers';
+import MenuItemSkeleton from '../../../components/MenuItemSkeleton';
 
 interface IProps {
   group?: string[];
@@ -34,31 +39,58 @@ export const FeaturedPlacesComponent = (props: IProps) => {
   const { t } = useTranslation();
   const { data } = useLocations(QUERY_LOCATIONS.getFeatured());
 
-  return (
-    <div className="marapp-qa-featuredplaces ng-section-background ng-position-relative ng-padding-medium-bottom">
-      <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-        {t('Featured places')}
-      </h2>
-      <div>
-        {!data && (
-          <div className="ng-padding-large ng-position-relative">
-            <Spinner />
-          </div>
-        )}
-        {data?.map((place: any) => {
-          const { slug, name, id, organization, type } = place;
+  if (!data) {
+    return (
+      <Box mb={1} position="relative">
+        <Paper className="marapp-qa-other" square={true}>
+          <Box p={2} pb={0}>
+            <Typography variant="subtitle2" color="textSecondary">
+              {t('Featured places')}
+            </Typography>
+          </Box>
 
-          return (
-            <ListItem
-              title={name}
-              key={`${slug}-${organization}`}
-              linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
-              organization={group.length > 1 && organization}
-              labels={[type]}
-            />
-          );
-        })}
-      </div>
-    </div>
+          <List>
+            {Array(5)
+              .fill(null)
+              .map((_, index) => (
+                <MenuItemSkeleton key={index} />
+              ))}
+          </List>
+        </Paper>
+      </Box>
+    );
+  }
+
+  return (
+    <Paper className="marapp-qa-featuredplaces" square={true}>
+      <Box p={2} pb={0}>
+        <Typography variant="subtitle2" color="textSecondary">
+          {t('Featured places')}
+        </Typography>
+      </Box>
+
+      {!data.length && (
+        <div className="ng-padding-large ng-position-relative">
+          <Spinner />
+        </div>
+      )}
+      {!!data.length && (
+        <List>
+          {data.map((place: any) => {
+            const { slug, name, id, organization, type } = place;
+
+            return (
+              <ListItem
+                title={name}
+                key={`${slug}-${organization}`}
+                linkTo={{ type: 'LOCATION', payload: { slug, id, organization } }}
+                organization={group.length > 1 && organization}
+                labels={[type]}
+              />
+            );
+          })}
+        </List>
+      )}
+    </Paper>
   );
 };

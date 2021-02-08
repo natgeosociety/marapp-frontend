@@ -20,28 +20,29 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 
-import { Spinner, TranslationService } from '@marapp/earth-shared';
+import { Spinner, ThemeProvider, TranslationService } from '@marapp/earth-shared';
 
 import { useAuth0 } from '../auth/auth0';
 import { MAP_WEGLOT_API_KEY } from '../config';
 import Main from '../pages-client/main';
 import initStore from '../store';
 
-TranslationService.init(MAP_WEGLOT_API_KEY);
 const { store } = initStore();
+
+TranslationService.init(MAP_WEGLOT_API_KEY);
 
 const IndexPage = () => {
   const { isLoading } = useAuth0();
 
-  if (isLoading) {
-    return <Spinner size="large" />;
+  if (!isLoading) {
+    return (
+      <ThemeProvider>
+        <Provider store={store}>
+          <Main />
+        </Provider>
+      </ThemeProvider>
+    );
   }
-
-  return (
-    <Provider store={store}>
-      <Main />
-    </Provider>
-  );
 };
 
 export default IndexPage;

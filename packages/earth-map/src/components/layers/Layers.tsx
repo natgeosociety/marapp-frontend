@@ -17,7 +17,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { debounce, sortBy } from 'lodash';
+import Box from '@material-ui/core/Box';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { debounce } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -79,7 +83,6 @@ const Layers = (props: IProps) => {
     layers,
     mapLabels,
     mapRoads,
-    panel,
     panelExpanded,
     setSidebarPanel,
     setSidebarPanelExpanded,
@@ -87,8 +90,6 @@ const Layers = (props: IProps) => {
     locationOrganization,
     setLayersSearch,
     setPlacesSearch,
-    resetLayersActive,
-    nextLayersPage,
     setLayersSearchOpen,
   } = props;
   const { search, active } = layers;
@@ -170,46 +171,52 @@ const Layers = (props: IProps) => {
         </>
       }
     >
-      {(!selected || panelExpanded) && (
-        <>
-          <div className="marapp-qa-other ng-section-background ng-position-relative ng-padding-medium-bottom">
-            <h2 className="ng-padding-small-bottom ng-padding-medium-horizontal ng-padding-medium-top ng-text-display-s ng-body-color ng-margin-remove">
-              {t('Other')}
-            </h2>
-            <ListItem
-              title={t('Labels')}
-              active={mapLabels}
-              key="labels"
-              onClick={debounce(onLabels, 200)}
-            />
-            <ListItem
-              title={t('Roads')}
-              active={mapRoads}
-              key="roads"
-              onClick={debounce(onRoads, 200)}
-            />
-          </div>
-          <InfiniteList
-            title={t('Layers')}
-            data={layersData}
-            isValidating={isValidating}
-            onNextPage={nextPage}
-            awaitMore={awaitMore}
-          >
-            {(layer) => (
+      <Box mt={1}>
+        {(!selected || panelExpanded) && (
+          <Paper className="marapp-qa-other" square={true}>
+            <Box p={2} pb={0}>
+              <Typography variant="subtitle2" color="textSecondary">
+                {t('Other')}
+              </Typography>
+            </Box>
+
+            <List>
               <ListItem
-                hint={layer.$searchHint.name}
-                title={layer.name}
-                active={!!active.find((slug) => slug === layer.slug)}
-                key={`${layer.slug}-${layer.organization}`}
-                onClick={debounce(() => onToggleLayer(layer), 200)}
-                organization={selectedGroup.length > 1 && layer.organization}
-                labels={layer.category}
+                title={t('Labels')}
+                active={mapLabels}
+                key="labels"
+                onClick={debounce(onLabels, 200)}
               />
-            )}
-          </InfiniteList>
-        </>
-      )}
+              <ListItem
+                title={t('Roads')}
+                active={mapRoads}
+                key="roads"
+                onClick={debounce(onRoads, 200)}
+              />
+            </List>
+
+            <InfiniteList
+              title={t('Layers')}
+              data={layersData}
+              isValidating={isValidating}
+              onNextPage={nextPage}
+              awaitMore={awaitMore}
+            >
+              {(layer) => (
+                <ListItem
+                  hint={layer.$searchHint.name}
+                  title={layer.name}
+                  active={!!active.find((slug) => slug === layer.slug)}
+                  key={`${layer.slug}-${layer.organization}`}
+                  onClick={debounce(() => onToggleLayer(layer), 200)}
+                  organization={selectedGroup.length > 1 && layer.organization}
+                  labels={layer.category}
+                />
+              )}
+            </InfiniteList>
+          </Paper>
+        )}
+      </Box>
     </SidebarLayoutSearch>
   );
 };

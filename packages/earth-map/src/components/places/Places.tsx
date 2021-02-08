@@ -17,6 +17,7 @@
   specific language governing permissions and limitations under the License.
 */
 
+import Box from '@material-ui/core/Box';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
@@ -40,6 +41,7 @@ interface IProps {
   nextPageCursor?: string;
   locationName?: string;
   locationOrganization?: string;
+  setSidebarOpen?: (value: boolean) => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
   setIndexesSelected?: (value: any) => {};
@@ -57,6 +59,7 @@ const Places = (props: IProps) => {
     resetMap,
     setPlacesSearch,
     setSidebarPanelExpanded,
+    setSidebarOpen,
     setPlacesSearchOpen,
     selected,
     children,
@@ -126,18 +129,24 @@ const Places = (props: IProps) => {
         </>
       }
     >
-      {showSearchResults ? (
-        <PlacesSearchResults
-          data={placesData}
-          awaitMore={awaitMore}
-          nextPage={nextPage}
-          group={selectedGroup}
-          isValidating={isValidating}
-          setPlacesSearch={setPlacesSearch}
-        />
-      ) : (
-        children
-      )}
+      <Box mt={1}>
+        {showSearchResults ? (
+          <PlacesSearchResults
+            data={placesData}
+            awaitMore={awaitMore}
+            nextPage={nextPage}
+            group={selectedGroup}
+            isValidating={isValidating}
+            setPlacesSearch={setPlacesSearch}
+            search={search.search}
+            filters={search.filters}
+            setSidebarPanelExpanded={setSidebarPanelExpanded}
+            setSidebarOpen={setSidebarOpen}
+          />
+        ) : (
+          children
+        )}
+      </Box>
     </SidebarLayoutSearch>
   );
 };

@@ -17,34 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import '~styles/config';
+import WidgetToolbarComponent from './component';
 
-.map-controls--list-item {
-  .c-layer {
-    .layers--item-bg {
-      border: 0;
-      height: 75px;
-      width: 114px;
-      &:hover {
-        opacity: 0.95;
-      }
-      &:after {
-        display: none;
-      }
-    }
-    .layers--item-title {
-      color: $marapp-gray-0;
-      font-family: $marapp-primary-font;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 2.6px;
-      line-height: 28px;
-      margin-bottom: 5px;
-      position: absolute;
-      transform: translateY(-100%);
-      left: 0;
-      right: 0;
-      text-align: center;
-    }
-  }
-}
+export default WidgetToolbarComponent;

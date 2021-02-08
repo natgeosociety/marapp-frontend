@@ -74,7 +74,7 @@ export const CONFIG = {
       ),
       config: {
         xKey: 'year',
-        margin: { top: 20, right: 0, left: 60, bottom: 5 },
+        margin: { top: 20, right: 0, left: 40, bottom: 5 },
         yKeys: {
           bars: {
             loss: {
@@ -108,10 +108,6 @@ export const CONFIG = {
           cursor: false,
           content: (
             <WidgetTooltip
-              style={{
-                color: '#FFFFFF',
-                backgroundColor: '#383838',
-              }}
               settings={[
                 { label: 'Year:', key: 'year' },
                 {

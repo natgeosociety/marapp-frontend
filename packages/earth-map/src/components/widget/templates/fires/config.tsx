@@ -96,7 +96,7 @@ export const CONFIG = {
             },
           },
         },
-        margin: { top: 20, right: 0, left: 60, bottom: 0 },
+        margin: { top: 20, right: 0, left: 40, bottom: 0 },
         xKey: 'date',
         yKeys: {
           lines: {
@@ -164,7 +164,6 @@ export const CONFIG = {
           content: (
             <WidgetTooltip
               style={{
-                color: '#FFF',
                 backgroundColor: '#F75353',
               }}
               settings={[

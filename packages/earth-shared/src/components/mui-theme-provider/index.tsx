@@ -17,22 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-@import '~styles/config';
+import ThemeProvider from './ThemeProvider';
 
-.c-map-popup {
-  padding: $space-1 * 2;
-
-  .map-popup--close {
-    position: absolute;
-    top: $space-1;
-    right: $space-1;
-    z-index: 2;
-  }
-}
-
-
-.mapboxgl-popup {
-  .mapboxgl-popup-content {
-    padding: 0;
-  }
-}
+export default ThemeProvider;
