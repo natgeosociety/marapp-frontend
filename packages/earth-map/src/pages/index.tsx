@@ -34,15 +34,17 @@ TranslationService.init(MAP_WEGLOT_API_KEY);
 const IndexPage = () => {
   const { isLoading } = useAuth0();
 
-  if (!isLoading) {
-    return (
-      <ThemeProvider>
-        <Provider store={store}>
-          <Main />
-        </Provider>
-      </ThemeProvider>
-    );
+  if (isLoading) {
+    return null;
   }
+
+  return (
+    <ThemeProvider>
+      <Provider store={store}>
+        <Main />
+      </Provider>
+    </ThemeProvider>
+  );
 };
 
 export default IndexPage;
