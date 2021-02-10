@@ -48,7 +48,6 @@ interface ISearchbox {
   setMapBounds?: (value: any) => {};
   resetMap?: () => {};
   resetLayers?: () => {};
-  resetPlace?: () => {};
   search?: any;
   open?: boolean;
   showClose?: boolean;

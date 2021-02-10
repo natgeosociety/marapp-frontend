@@ -31,7 +31,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import ListItem from '../../../components/list-item';
 import MenuItemSkeleton from '../../../components/MenuItemSkeleton';
-import { ICollection } from '../../../modules/collections/model';
+import { ICollection } from '../../../fetchers/locations/queries';
 import { EMainType } from '../../../modules/global/model';
 import { EarthRoutes } from '../../../modules/router/model';
 

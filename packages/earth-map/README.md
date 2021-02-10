@@ -14,7 +14,7 @@ Available commands:
 
 ## Running
 
-Create a local `.env` and `.env.local` file based on [.env.sample](.env.sample), add the required configuration for the environment. 
+Create a local `.env` and `.env.local` file based on [.env.sample](.env.sample), add the required configuration for the environment.
 
 The following environment variables are required by the application.
 
@@ -67,13 +67,9 @@ Cluttering components with route-related code
 
 Managed by [`vizzuality-redux-tools`](https://github.com/vizzuality/redux-tools)
 
-### Sagas
-
-As the router dispatch an action, what we are doing now is listening these actions to trigger some actions and prepare the page as a result of some stored params.
-
 ### Services
 
-[`axios`](https://github.com/axios/axios) with [`axios-cache-adapter`](https://github.com/RasCarlito/axios-cache-adapter) will help us to create these services that can be used inside Sagas or Components. Cache adapter stores request results in a configurable store to prevent unneeded network requests.
+[`axios`](https://github.com/axios/axios) with [`axios-cache-adapter`](https://github.com/RasCarlito/axios-cache-adapter) will help us to create these services that can be used inside Components. Cache adapter stores request results in a configurable store to prevent unneeded network requests.
 
 ### Auth
 We are using this library to implement authorization and authentication `@auth0/auth0-spa-js`. Each route can have it's own authorization and authentication.
@@ -126,7 +122,7 @@ They could be `raster`, `vector` and `geojson`. It’s very important to know th
 It helps Layer Manager to define how it should fetch the layer. Possible options are => `cartodb`, `gee`, `mapbox`
 
 ##### `layerConfig`
-It will be used by the layer manager to know how to fetch or handle the current layer. 
+It will be used by the layer manager to know how to fetch or handle the current layer.
 
 ##### `legendConfig`
 It helps us to know how to display the legend. We are using this [Legend Component](https://vizzuality.github.io/vizzuality-components/#!/Legend)
@@ -182,7 +178,7 @@ It helps us to know how to display the popup.
           "property": "Name",
           "suffix": "",
           "type": "string"
-        },        
+        },
       ]
     },
     "applicationConfig": {
@@ -321,7 +317,7 @@ Check `layerConfig.body.layers`. Pay attention of how we are using the Mapbox st
           },
           "source-layer": "layer0",
           "type": "fill"
-        }        
+        }
       ]
     }
   }
@@ -424,7 +420,7 @@ See how we are using `params` and `decodeParams`. The difference between them is
 Layers can be defined as placeholder category layers. In order to achieve this, you can add child layers in the admin section "Included layers". the first child layer will be displayed as default when the "category layer" is selected.
 
 Special configs:
-1. There are two types of special legend displays: `yearpicker` and `yeardatepicker`. 
+1. There are two types of special legend displays: `yearpicker` and `yeardatepicker`.
 
 ```
 {
@@ -439,7 +435,7 @@ This will take the child layers from "Included layers" and add a dropdown select
 
 ```
 {
-    "legendConfig": {      
+    "legendConfig": {
        "legendType": "yeardatepicker",
         ...other configs
      }

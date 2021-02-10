@@ -44,7 +44,7 @@ export interface Auth0 {
   getUser?(o?: GetUserOptions): void;
   getAccessToken?(o?: GetTokenWithPopupOptions): Promise<string>;
   updateToken?(): Promise<void>;
-  setupUserOrg?(org: string): void;
+  setupUserOrg?(org: string[]): void;
   getPermissions?(type: string[], org: string): boolean;
 }
 

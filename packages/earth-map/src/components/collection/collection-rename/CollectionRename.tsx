@@ -32,7 +32,7 @@ import { replace } from 'redux-first-router';
 
 import { MuiInput, setupErrors } from '@marapp/earth-shared';
 
-import { ICollection } from '../../../modules/collections/model';
+import { ICollection } from '../../../fetchers/locations/queries';
 import PlacesService from '../../../services/PlacesService';
 import { CollectionConflict } from '../collection-conflict';
 
@@ -40,7 +40,8 @@ interface IProps {
   collection: ICollection;
   onCancel: () => void;
   toggleRenaming: (payload?: any) => void;
-  reloadCollection: (payload?: any) => void;
+  mutateCollection: any;
+  onSlugChange: (payload: any) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -65,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function CollectionRename(props: IProps) {
-  const { collection, onCancel, reloadCollection, toggleRenaming } = props;
+  const { collection, onCancel, mutateCollection, onSlugChange, toggleRenaming } = props;
   const { id, slug, name, organization, version } = collection;
   const { t } = useTranslation();
   const classes = useStyles();
@@ -138,7 +139,15 @@ export function CollectionRename(props: IProps) {
           </Box>
         </Paper>
 
-        {isSaveConflict && <CollectionConflict onRefresh={refresh} onOverwrite={saveAnyway} />}
+        {isSaveConflict && (
+          <CollectionConflict
+            onRefresh={() => {
+              onSlugChange(id);
+              toggleRenaming();
+            }}
+            onOverwrite={saveAnyway}
+          />
+        )}
       </div>
     </form>
   );
@@ -146,18 +155,20 @@ export function CollectionRename(props: IProps) {
   async function onSubmit(values, optional: BaseSyntheticEvent | boolean) {
     const shouldOverwrite = isBoolean(optional);
     try {
-      const { data } = await PlacesService.updatePlace(
-        id,
-        {
-          name: values.name,
-          slug: null,
-          // Sending the version to the backend will kick in the version validation
-          // To keep the api backwards compatible, when no version is passed, we overwrite
-          ...(!shouldOverwrite && { version }),
-        },
-        { group: organization }
+      const { data } = await mutateCollection(
+        PlacesService.updatePlace(
+          id,
+          {
+            name: values.name,
+            slug: null,
+            // Sending the version to the backend will kick in the version validation
+            // To keep the api backwards compatible, when no version is passed, we overwrite
+            ...(!shouldOverwrite && { version }),
+          },
+          { group: organization }
+        ),
+        false // don't trigger another request
       );
-      replace(`/collection/${organization}/${data.slug}`);
       onCancel();
     } catch (e) {
       if (!e) {
@@ -168,11 +179,6 @@ export function CollectionRename(props: IProps) {
         setIsSaveConflict(true);
       }
     }
-  }
-
-  function refresh() {
-    reloadCollection({ organization, id, slug });
-    toggleRenaming();
   }
 
   function saveAnyway() {

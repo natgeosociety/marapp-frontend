@@ -17,13 +17,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { groupBy, sortBy } from 'lodash';
-
 import * as actions from './actions';
-import initialState from './initial-state';
 
 export default {
-  // Search
   [actions.setPlacesSearch]: (state, { payload }) => {
     return {
       ...state,
@@ -39,32 +35,4 @@ export default {
       },
     };
   },
-
-  // Selected
-  [actions.setPlaceData]: (state, { payload }) => ({ ...state, ...{ data: payload } }),
-  [actions.setPlacesLoading]: (state, { payload }) => ({
-    ...state,
-    loading: payload,
-  }),
-  [actions.setPlacesError]: (state, { payload }) => ({
-    ...state,
-    error: payload,
-  }),
-  [actions.setPlaceSelectedSearch]: (state, { payload }) => ({
-    ...state,
-    selectedSearch: payload,
-  }),
-  [actions.setPlaceSelectedFilter]: (state, { payload }) => ({
-    ...state,
-    selectedFilter: payload,
-  }),
-  [actions.resetPlace]: (state, { payload }) =>
-    payload?.keepCache
-      ? {
-          ...initialState,
-          cache: {
-            ...state.cache,
-          },
-        }
-      : initialState,
 };

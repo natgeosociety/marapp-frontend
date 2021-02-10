@@ -51,6 +51,8 @@ const CUSTOM_IMAGES = [{ id: 'experience-marker', src: experienceIMG }];
 interface IMap {
   viewport?: { zoom: any };
   bounds?: {};
+  popup: {};
+  layerManagerBounds?: {};
   interactions?: {};
   mapStyle?: string;
   mapLabels?: boolean;
@@ -64,6 +66,10 @@ interface IMap {
   t?: (text: string, opt?: any) => string;
   page?: string;
   activeInteractiveLayersIds?: any;
+  activeInteractiveLayers?: any[];
+  activeInteractiveLayer?: any;
+  layerGroups?: any[];
+  layerManagerLayers?: any[];
 }
 
 interface IMapState {
@@ -315,9 +321,16 @@ class MapComponent extends React.Component<IMap, IMapState> {
       mapStyle,
       viewport,
       bounds,
+      popup,
       mapboxConfig,
       page,
       activeInteractiveLayersIds,
+      activeInteractiveLayers,
+      activeInteractiveLayer,
+      layerGroups,
+      layerManagerLayers,
+      layerManagerBounds,
+      setMapInteractions,
       t,
     } = this.props;
 
@@ -364,17 +377,20 @@ class MapComponent extends React.Component<IMap, IMapState> {
           {(map) => {
             return (
               <>
-                {/* POPUP */}
-                <Popup />
+                <Popup
+                  popup={popup}
+                  setMapInteractions={setMapInteractions}
+                  activeInteractiveLayers={activeInteractiveLayers}
+                  activeInteractiveLayer={activeInteractiveLayer}
+                />
 
-                {/* LAYER MANAGER */}
-                <LayerManager map={map} />
+                <LayerManager map={map} layers={layerManagerLayers} bounds={layerManagerBounds} />
               </>
             );
           }}
         </Map>
 
-        <Legend />
+        <Legend layerGroups={layerGroups} />
 
         <MapControls>
           <BasemapComponent />

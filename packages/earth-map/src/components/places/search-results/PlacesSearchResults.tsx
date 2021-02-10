@@ -26,21 +26,22 @@ import List from '@researchgate/react-intersection-list';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { serializeFilters, Spinner } from '@marapp/earth-shared';
-
 import MenuItemSkeleton from '../../../components/MenuItemSkeleton';
-import useLocations from '../../../fetchers/useLocations';
 import { LocationTypeEnum } from '../../../modules/places/model';
 import { EarthRoutes } from '../../../modules/router/model';
 import { PAGE_SIZE } from '../../../theme';
 import ListItem from '../../list-item';
 
 interface IProps {
+  data: any[];
+  awaitMore: boolean;
+  isValidating: boolean;
+  nextPage: () => void;
   availableFilters?: any;
-  setPlacesSearch?: (value: any) => {};
   search?: any;
   filters?: any;
   group?: any;
+  setPlacesSearch?: (value: any) => {};
   setSidebarOpen?: (value: boolean) => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
 }
@@ -48,7 +49,10 @@ interface IProps {
 export function PlacesSearchResults(props: IProps) {
   const {
     search,
-    filters,
+    data,
+    awaitMore,
+    nextPage,
+    isValidating,
     group,
     setPlacesSearch,
     setSidebarOpen,
@@ -59,13 +63,6 @@ export function PlacesSearchResults(props: IProps) {
 
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const { data, awaitMore, nextPage, isValidating } = useLocations({
-    search,
-    filter: serializeFilters(filters),
-    select: 'name,slug,organization,type',
-    group: group.join(),
-  });
 
   const fakeResultsMapping = {
     '1': 10,
@@ -124,7 +121,6 @@ export function PlacesSearchResults(props: IProps) {
           }}
           onIntersection={nextPage}
         />
-        {/*{isValidating && <Spinner position="relative" />}*/}
       </Box>
     </Paper>
   );

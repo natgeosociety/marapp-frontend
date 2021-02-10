@@ -17,15 +17,10 @@
   specific language governing permissions and limitations under the License.
 */
 
+import React from 'react';
 import { connect } from 'react-redux';
 
-import {
-  nextLayersPage,
-  resetLayersActive,
-  setLayersSearch,
-  setLayersSearchOpen,
-  toggleLayer,
-} from '../../modules/layers/actions';
+import { setLayersSearch, setLayersSearchOpen, toggleLayer } from '../../modules/layers/actions';
 import { setMapLabels, setMapRoads, setMapStyle } from '../../modules/map/actions';
 import { setPlacesSearch } from '../../modules/places/actions';
 import { setSidebarPanel, setSidebarPanelExpanded } from '../../modules/sidebar/actions';
@@ -34,14 +29,13 @@ import Layers from './Layers';
 export default connect(
   (state: any, props: any) => ({
     ...state.sidebar,
-    group: state.user.group,
     layers: state.layers,
 
     mapStyle: state.map.mapStyle,
     mapLabels: state.map.mapLabels,
     mapRoads: state.map.mapRoads,
-    locationName: props.locationName || state.places.data.name,
-    locationOrganization: props.locationOrganization || state.places.data.organization,
+    locationName: props.locationName,
+    locationOrganization: props.locationOrganization,
   }),
   {
     toggleLayer,
@@ -52,8 +46,6 @@ export default connect(
     setSidebarPanelExpanded,
     setLayersSearch,
     setPlacesSearch,
-    resetLayersActive,
-    nextLayersPage,
     setLayersSearchOpen,
   }
 )(Layers);

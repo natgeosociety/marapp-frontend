@@ -19,25 +19,13 @@
 
 import React from 'react';
 
-import useLocations from '../../../fetchers/useLocations';
-import { LocationTypeEnum } from '../../../modules/places/model';
+import { QUERY_LOCATIONS, useLocations } from '../../../fetchers';
 import { CollectionsCard } from './CollectionsCard';
 
 export default function WithData(props) {
-  const { group } = props;
-
-  const { data } = useLocations(
-    {
-      select: 'slug,name,id,organization,type,updatedAt',
-      filter: ['type', '==', LocationTypeEnum.COLLECTION].join(''),
-      page: { size: 5 },
-      sort: '-updatedAt',
-      group: group.toString(),
-    },
-    {
-      revalidateAll: true,
-    }
-  );
+  const { data } = useLocations(QUERY_LOCATIONS.getLatestCollections(), {
+    revalidateAll: true,
+  });
 
   return <CollectionsCard data={data} {...props} />;
 }

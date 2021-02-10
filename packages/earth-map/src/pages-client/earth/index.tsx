@@ -26,10 +26,7 @@ export default connect(
   (state: any) => ({
     ...state.sidebar,
     router: state.router,
-    group: state.user.group,
     lastViewedPlace: state.global.lastViewedPlace,
-    collection: state.collections.data,
-    selectedPlace: state.places.data,
   }),
   {
     setSidebarOpen,

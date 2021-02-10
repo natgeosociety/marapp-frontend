@@ -83,7 +83,7 @@ export const Auth0Provider = ({
   const [roles, setRoles] = useState({});
   const [permissions, setPermissions] = useState({});
   // TODO: rename this to selectedGroups
-  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState([]);
 
   useEffect(() => {
     const initAuth0 = async () => {
@@ -99,6 +99,7 @@ export const Auth0Provider = ({
           // since we don't support IdP-Initiated Single Sign-On,
           // redirect to root page;
           // @ts-ignore
+          console.log(e);
           routeToPage({});
         }
       }
@@ -218,7 +219,7 @@ export const Auth0Provider = ({
         privateGroups,
         roles,
         permissions,
-        selectedGroup,
+        selectedGroup: selectedGroup.length ? selectedGroup : groups,
         login,
         logout,
         getUser,

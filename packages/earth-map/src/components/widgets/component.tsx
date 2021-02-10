@@ -17,6 +17,8 @@
   specific language governing permissions and limitations under the License.
 */
 
+import cn from 'classnames';
+import { orderBy, sortBy } from 'lodash';
 import Box from '@material-ui/core/Box';
 import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
@@ -33,21 +35,21 @@ import { useAuth0 } from '../../auth/auth0';
 import Widget from '../../components/widget';
 import TEMPLATES from '../../components/widget/templates';
 import CONFIGS from '../../components/widget/templates/configs';
+import { flattenLayerConfig } from '../../fetchers/transformers';
+import { ILayer } from '../../modules/layers/model';
 import { IPlace } from '../../modules/places/model';
-import { IWidget } from '../../modules/widget/model';
 import { ClipLayer } from '../clip-layer';
 import './styles.scss';
 
 interface IProps {
   groups?: string[];
-  slugs?: Array<{}>;
-  list?: IWidget[];
   place?: Partial<IPlace>;
   embed?: boolean;
   toolbar?: boolean;
+  activeLayers: ILayer[];
   setSidebarInfo?: (s: any) => {};
   toggleLayer?: (s: any) => {};
-  metrics?: [];
+  dashboards: any[];
 }
 
 interface IWidgetsState {
@@ -63,7 +65,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function WidgetsComponent(props: IProps) {
-  const { groups, place, list, embed, toolbar, toggleLayer, metrics = [{}] } = props;
+  const { groups, place, embed, toolbar, toggleLayer, dashboards, activeLayers } = props;
+  const { metrics = [{}] } = place;
   const [widgetState, setWidgetState] = useState<IWidgetsState>({
     collapsedState: {},
     share: false,
@@ -76,6 +79,16 @@ export default function WidgetsComponent(props: IProps) {
   const { t } = useTranslation();
   const classes = useStyles();
   const canExport = getPermissions(AuthzGuards.readExportsGuard, place.organization);
+
+  const widgetsData = dashboards?.map((dasboard) => dasboard.widgets).flat();
+  const slugs = sortBy(widgetsData, ['organization', 'name'])
+    .filter((w) => !!w.slug)
+    .map((w) => ({
+      slug: w.slug,
+      collapsed: false,
+      box: true,
+    }));
+  const widgets = parseWidgets(place, widgetsData, activeLayers, slugs);
 
   const editActions = (
     <>
@@ -105,7 +118,7 @@ export default function WidgetsComponent(props: IProps) {
             />
           </Box>
         </Paper>
-        {list.map((w: any, i) => {
+        {widgets.map((w: any, i) => {
           const [widgetMetricName] = w.metrics;
 
           const [filteredMetric] = metrics.filter(
@@ -167,4 +180,35 @@ export default function WidgetsComponent(props: IProps) {
       </div>
     </div>
   );
+}
+
+function parseWidgets(place, widgets, activeLayers, slugs) {
+  if (!widgets) {
+    return [];
+  }
+
+  const filteredWidgets = widgets
+    .filter((widget) => {
+      const { location_types } = widget.config.widgetConfig;
+
+      const thereIsSlug = !!slugs.find((s) => s.slug === widget.slug);
+      const thereIsLocationType = Array.isArray(location_types)
+        ? location_types.includes(place.locationType.toLowerCase())
+        : true;
+
+      return thereIsSlug && thereIsLocationType;
+    })
+    .map((widget) => ({
+      ...widget,
+      ...widget.config,
+      ...{ layers: widget.layers.map(flattenLayerConfig) },
+      slug: widget.slug,
+      description: widget.description,
+      active: !!activeLayers.find((slug) => widget.layers[0] && slug === widget.layers[0].slug),
+      params: {
+        id: place.id,
+      },
+    }));
+
+  return orderBy([...filteredWidgets], ['organization', 'name']);
 }

@@ -26,6 +26,50 @@ export default {
     ...state,
     bounds: payload,
   }),
+  [actions.setLocationHighlight]: (state, { payload }) => {
+    const { id, geojson } = payload;
+    return {
+      ...state,
+      locationHighlight: {
+        key: `bounds-${id}`,
+        id: `bounds-${id}`,
+        slug: `bounds-${id}`,
+        name: 'Bounds',
+        zIndex: 2000,
+        provider: 'geojson',
+        type: 'geojson',
+        source: {
+          type: 'geojson',
+          data: geojson,
+        },
+        render: {
+          metadata: {
+            position: 'top',
+          },
+          layers: [
+            {
+              id: `${id}-fill`,
+              type: 'fill',
+              source: id,
+              paint: {
+                'fill-color': 'transparent',
+                'fill-opacity': 0.25,
+              },
+            },
+            {
+              id: `${id}-line`,
+              type: 'line',
+              source: id,
+              paint: {
+                'line-color': '#000000',
+                'line-width': 3,
+              },
+            },
+          ],
+        },
+      },
+    };
+  },
   [actions.setMapStyle]: (state, { payload }) => ({
     ...state,
     mapStyle: payload,

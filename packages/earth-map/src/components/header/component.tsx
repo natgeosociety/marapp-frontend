@@ -58,13 +58,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  group?: string[];
-  resetPlace?: Function;
-  resetCollection?: Function;
   setPlacesSearch?: Function;
   resetMap?: Function;
-  resetLayerCache?: Function;
-  setUserGroup?: Function;
   setLayersSearch?: Function;
   setSidebarPanel?: Function;
   resetLayers?: Function;
@@ -77,23 +72,13 @@ const Header = (props: IProps) => {
     userData: { allGroups },
     isAuthenticated,
     groups,
+    setupUserOrg,
+    selectedGroup,
   } = useContext(Auth0Context);
-  const {
-    group,
-    resetLayerCache,
-    resetMap,
-    resetPlace,
-    resetCollection,
-    setUserGroup,
-    setPlacesSearch,
-    setLayersSearch,
-    setSidebarPanel,
-    resetLayers,
-  } = props;
+  const { resetMap, setPlacesSearch, setLayersSearch, setSidebarPanel, resetLayers } = props;
   const hasMultipleGroups = allGroups.length > 1;
-  const allInitiallySelected = group.length === allGroups.length;
-  const [selectedGroups, setSelectedGroups] = useState(allInitiallySelected ? [] : group);
-  const [dropdownState, setDropdownState] = useState('close');
+  const allInitiallySelected = selectedGroup.length === allGroups.length;
+  const [selectedGroups, setSelectedGroups] = useState(allInitiallySelected ? [] : selectedGroup);
   const [availableGroups, setAvailableGroups] = useState(
     groups.map((group) => ({ name: group, layers: 'N/A', locations: 'N/A' }))
   );
@@ -111,16 +96,10 @@ const Header = (props: IProps) => {
     })();
   }, []);
 
-  const handleDropdownToggle = () => {
-    dropdownState === 'close' ? setDropdownState('open') : setDropdownState('close');
-  };
-
   // Same as the action from <SearchBox /> find a way to reuse bundled actions
   const handleResetLocation = () => {
-    resetPlace({ keepCache: true });
-    resetCollection();
-    setPlacesSearch({ search: '' });
     setLayersSearch({ search: '' });
+    setPlacesSearch({ search: '' });
     setSidebarPanel(EPanels.PLACES);
     resetLayers();
     resetMap();
@@ -145,8 +124,7 @@ const Header = (props: IProps) => {
     }
 
     setSelectedGroups(newSelection);
-    setUserGroup(temp);
-    resetLayerCache();
+    setupUserOrg(newSelection);
     setPlacesSearch({
       filters: {},
     });

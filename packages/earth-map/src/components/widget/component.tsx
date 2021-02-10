@@ -231,7 +231,6 @@ class Widget extends React.PureComponent<IWidgetTemplate, IWidgetState> {
 
   public fetchWidget = () => {
     const { config, name, parse, params, widgetConfig, place, metric = {}, t } = this.props;
-
     const newState: IWidgetState = { loading: false };
 
     try {

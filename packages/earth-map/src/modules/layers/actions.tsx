@@ -19,12 +19,8 @@
 
 import { createAction } from 'vizzuality-redux-tools';
 
-export const setLayersLoading = createAction('LAYERS/loading');
-export const setLayersError = createAction('LAYERS/setLayersError');
 export const setLayersActive = createAction('LAYERS/setLayersActive');
-export const setListActiveLayers = createAction('LAYERS/setListActiveLayers');
 export const resetLayersActive = createAction('LAYERS/resetLayersActive');
-
 export const toggleLayer = createAction('LAYERS/toggleLayer');
 export const setLayerInfo = createAction('LAYERS/setLayerInfo');
 export const setLayerOrder = createAction('LAYERS/setLayerOrder');
@@ -33,30 +29,13 @@ export const setLayerVisibility = createAction('LAYERS/setLayerVisibility');
 export const setLayerGroupCurrent = createAction('LAYERS/setLayerGroupCurrent');
 export const setLayerTimelineCurrent = createAction('LAYERS/setLayerTimelineCurrent');
 export const setLayerSettings = createAction('LAYERS/setLayerSettings');
-
-export const resetLayers = createAction('LAYERS/resetLayers');
-export const resetLayerCache = createAction('LAYERS/resetLayerCache');
-
-// Search
 export const setLayersSearch = createAction('LAYERS/setLayersSearch');
 export const setLayersSearchOpen = createAction('LAYERS/setLayersSearchOpen');
-export const setLayersSearchLoading = createAction('LAYERS/setLayersSearchLoading');
 export const setLayersSearchFilters = createAction('LAYERS/setLayersSearchFilters');
-export const setLayersSearchAvailableFilters = createAction(
-  'LAYERS/setLayersSearchAvailableFilters'
-);
-export const setLayersSearchResults = createAction('LAYERS/setLayersSearchResults');
-export const nextLayersPage = createAction('LAYERS/nextLayersPage');
-
-export const resetLayersResults = createAction('LAYERS/resetLayersResults');
+export const resetLayers = createAction('LAYERS/resetLayers');
 
 export default {
-  setLayersLoading,
-  setLayersError,
-  setLayersActive,
-
   toggleLayer,
-
   setLayerInfo,
   setLayerOrder,
   setLayerOpacity,
@@ -64,7 +43,6 @@ export default {
   setLayerGroupCurrent,
   setLayerTimelineCurrent,
   setLayerSettings,
-
+  resetLayersActive,
   resetLayers,
-  resetLayerCache,
 };

@@ -21,6 +21,7 @@ import { createAction } from 'vizzuality-redux-tools';
 
 export const setMap = createAction('MAP/setMap');
 export const setMapBounds = createAction('MAP/setMapBounds');
+export const setLocationHighlight = createAction('MAP/setLocationHighlight');
 export const setMapStyle = createAction('MAP/setMapStyle');
 export const setMapLabels = createAction('MAP/setMapLabels');
 export const setMapRoads = createAction('MAP/setMapRoads');

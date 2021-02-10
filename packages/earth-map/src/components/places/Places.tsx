@@ -22,13 +22,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { push } from 'redux-first-router';
 
-import { serializeFilters } from '@marapp/earth-shared';
-
+import { useAuth0 } from '../../auth/auth0';
 import BackToLocation from '../../components/back-to-location';
 import FilterBy from '../../components/filter-by';
 import SearchBox from '../../components/searchbox';
 import SidebarLayoutSearch from '../../components/sidebar/sidebar-layout-search';
-import useLocations from '../../fetchers/useLocations';
+import { QUERY_LOCATIONS, useLocations } from '../../fetchers';
 import { hasFilters } from '../../utils/filters';
 import PlacesSearchResults from './search-results';
 
@@ -40,14 +39,11 @@ interface IProps {
   search?: any;
   results?: any;
   nextPageCursor?: string;
-  group?: any;
   locationName?: string;
   locationOrganization?: string;
   setSidebarOpen?: (value: boolean) => void;
   setSidebarPanelExpanded?: (value: boolean) => void;
   resetMap?: () => {};
-  resetPlace?: (value: any) => {};
-  resetCollection?: () => {};
   setIndexesSelected?: (value: any) => {};
   setPlacesSearch?: (value: any) => {};
   setPlacesSearchOpen?: (value: boolean) => {};
@@ -58,11 +54,8 @@ const Places = (props: IProps) => {
   const {
     panelExpanded,
     search,
-    group,
     locationName,
     locationOrganization,
-    resetPlace,
-    resetCollection,
     resetMap,
     setPlacesSearch,
     setSidebarPanelExpanded,
@@ -72,12 +65,10 @@ const Places = (props: IProps) => {
     children,
   } = props;
 
-  const { meta } = useLocations({
-    search: search.search,
-    filter: serializeFilters(search.filters),
-    select: 'name,slug,organization,type',
-    group: group.join(),
-  });
+  const { selectedGroup } = useAuth0();
+  const { data: placesData, meta, awaitMore, nextPage, isValidating } = useLocations(
+    QUERY_LOCATIONS.getFiltered(search.search, search.filters)
+  );
 
   const hasSearchTerm = !!search.search;
   const showX = selected || hasSearchTerm;
@@ -102,8 +93,6 @@ const Places = (props: IProps) => {
   };
 
   const handleReset = () => {
-    resetCollection();
-    resetPlace({ keepCache: true });
     setPlacesSearch({ search: '' });
     resetMap();
     push('/earth');
@@ -143,11 +132,14 @@ const Places = (props: IProps) => {
       <Box mt={1}>
         {showSearchResults ? (
           <PlacesSearchResults
-            availableFilters={meta?.filters}
+            data={placesData}
+            awaitMore={awaitMore}
+            nextPage={nextPage}
+            group={selectedGroup}
+            isValidating={isValidating}
+            setPlacesSearch={setPlacesSearch}
             search={search.search}
             filters={search.filters}
-            group={group}
-            setPlacesSearch={setPlacesSearch}
             setSidebarPanelExpanded={setSidebarPanelExpanded}
             setSidebarOpen={setSidebarOpen}
           />

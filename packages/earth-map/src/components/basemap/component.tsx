@@ -29,7 +29,6 @@ import { APP_BASEMAPS } from '../../theme';
 interface IBasemap {
   mapStyle: any;
   setMapStyle: any;
-  persistData: any;
   basemap?: string;
   basemaps?: Array<{
     slug: string;
@@ -73,13 +72,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const BasemapComponent = (props: IBasemap) => {
-  const { mapStyle, persistData, setMapStyle } = props;
+  const { mapStyle, setMapStyle } = props;
   const classes = useStyles();
 
   const onBasemap = ({ id }) => {
     if (mapStyle !== id) {
       setMapStyle(id);
-      persistData();
     }
   };
 

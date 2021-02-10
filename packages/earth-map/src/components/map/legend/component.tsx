@@ -62,7 +62,7 @@ const styles = (theme) => ({
 
 interface ILegend {
   classes: any;
-  layerGroups?: [];
+  layerGroups?: any[];
   setLayerVisibility?: (data: any) => void;
   setLayerOrder?: (data: any) => void;
   setLayerOpacity?: (data: any) => void;

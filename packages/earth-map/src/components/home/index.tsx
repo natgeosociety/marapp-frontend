@@ -17,15 +17,6 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { connect } from 'react-redux';
-
-import { setRouter } from '../../modules/router/actions';
 import HomeComponent from './component';
 
-export default connect(
-  (state: any) => ({
-    placeId: state.places.selectedId,
-    featured: state.places.cache.featured,
-  }),
-  { setRouter }
-)(HomeComponent);
+export default HomeComponent;

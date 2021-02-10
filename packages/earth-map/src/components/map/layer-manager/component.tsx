@@ -23,7 +23,7 @@ import React from 'react';
 
 interface ILayerManager {
   map?: {};
-  layers?: [];
+  layers?: any[];
   bounds?: {};
 }
 

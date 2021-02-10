@@ -28,12 +28,10 @@ import {
   setLayerVisibility,
   toggleLayer,
 } from '../../../modules/layers/actions';
-import { getLegendLayers } from '../../../modules/layers/selectors';
 import LegendComponent from './component';
 
 export default connect(
   (state: any) => ({
-    layerGroups: getLegendLayers(state),
     ...state.sidebar,
     router: state.router,
   }),

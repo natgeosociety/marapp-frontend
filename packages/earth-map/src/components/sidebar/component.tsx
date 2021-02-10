@@ -23,7 +23,6 @@ import classNames from 'classnames';
 import React from 'react';
 
 import { MAP_SIDEBAR_WIDTH, MAP_SIDEBAR_WIDTH_WIDE } from '../../config';
-import CompanyRedirect from './company-redirect';
 import SidebarToggle from './sidebar-toggle';
 
 const useStyles = makeStyles((theme) => {
@@ -86,40 +85,19 @@ interface ISidebarPanel {
   setPlacesSearch?: (p: { search: string }) => void;
   setIndexesSelected?: (i: string) => void;
   resetMap?: () => void;
-  resetPlace?: () => void;
-  resetCollection?: () => void;
   resetLayers?: () => void;
   selectedOpen?: boolean;
   classes?: any;
 }
 
 const Sidebar = (props: ISidebarPanel) => {
-  const {
-    children,
-    layersPanel,
-    open,
-    resetCollection,
-    resetLayers,
-    resetMap,
-    resetPlace,
-    selectedOpen,
-    setPlacesSearch,
-    setSidebarOpen,
-  } = props;
+  const { children, open, resetLayers, resetMap, setPlacesSearch, setSidebarOpen } = props;
 
   const classes = useStyles(props);
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down('sm'));
 
   const onClose = () => setSidebarOpen(false);
-
-  const onResetMap = () => {
-    resetPlace();
-    resetCollection();
-    setPlacesSearch({ search: '' });
-    resetLayers();
-    resetMap();
-  };
 
   const drawerProps: any = {
     ...(isSmallDevice

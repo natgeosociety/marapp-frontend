@@ -32,7 +32,7 @@ import { replace } from 'redux-first-router';
 import { AsyncSelect, Card, DropdownItem } from '@marapp/earth-shared';
 
 import { MAP_ENABLE_PUBLIC_ACCESS } from '../../../config';
-import { ICollection } from '../../../modules/collections/model';
+import { ICollection } from '../../../fetchers/locations/queries';
 import { LocationTypeEnum } from '../../../modules/places/model';
 import PlacesService from '../../../services/PlacesService';
 import { CollectionConflict } from '../collection-conflict';
@@ -41,9 +41,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 interface IProps {
   collection: ICollection;
   setMapBounds: (payload?: any) => void;
-  setCollectionData: (payload?: any) => void;
   toggleEditPlaces: () => void;
-  reloadCollection: (payload?: any) => void;
+  mutateCollection: any;
+  onSlugChange: (payload: any) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function CollectionEditPlaces(props: IProps) {
-  const { collection, setCollectionData, setMapBounds, toggleEditPlaces, reloadCollection } = props;
+  const { collection, toggleEditPlaces, mutateCollection, onSlugChange } = props;
   const { t } = useTranslation();
   const classes = useStyles();
   const { id, slug, organization, name, locations, version } = collection;
@@ -178,7 +178,15 @@ export function CollectionEditPlaces(props: IProps) {
           </Box>
         </Paper>
 
-        {isSaveConflict && <CollectionConflict onRefresh={refresh} onOverwrite={saveAnyway} />}
+        {isSaveConflict && (
+          <CollectionConflict
+            onRefresh={() => {
+              onSlugChange(id);
+              toggleEditPlaces();
+            }}
+            onOverwrite={saveAnyway}
+          />
+        )}
       </div>
     </form>
   );
@@ -200,21 +208,15 @@ export function CollectionEditPlaces(props: IProps) {
     };
 
     try {
-      const { data } = await PlacesService.updateCollection(id, parsedValues, {
-        group: organization,
-        include: 'locations',
-      });
-      setCollectionData(data);
+      // by passing the promise straight to SWR, it will update the cached value using the API response
+      const { data } = await mutateCollection(
+        PlacesService.updateCollection(id, parsedValues, {
+          group: organization,
+          include: 'locations',
+        }),
+        false // don't trigger another request
+      );
       resetErrors();
-
-      // someone changed the slug, redirect to the new collection
-      if (slug !== data.slug) {
-        replace(`/collection/${organization}/${data.slug}`);
-      }
-
-      if (data.bbox2d.length) {
-        setMapBounds({ bbox: data.bbox2d });
-      }
       toggleEditPlaces();
     } catch (e) {
       if (!e) {
@@ -226,11 +228,6 @@ export function CollectionEditPlaces(props: IProps) {
       }
       console.log(e);
     }
-  }
-
-  function refresh() {
-    reloadCollection({ organization, id, slug });
-    toggleEditPlaces();
   }
 
   function saveAnyway() {

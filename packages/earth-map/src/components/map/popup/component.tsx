@@ -30,6 +30,8 @@ interface PopupComponentProps {
   classes: any;
   popup: {};
   setMapInteractions: (p: any) => void;
+  activeInteractiveLayer?: any;
+  activeInteractiveLayers?: any[];
 }
 
 const styles = (theme) => {
@@ -109,7 +111,7 @@ class PopupComponent extends React.PureComponent<PopupComponentProps> {
   };
 
   public render() {
-    const { classes, popup } = this.props;
+    const { classes, popup, activeInteractiveLayers, activeInteractiveLayer } = this.props;
 
     if (isEmpty(popup)) {
       return null;
@@ -136,7 +138,10 @@ class PopupComponent extends React.PureComponent<PopupComponentProps> {
             <IconClose className="mapbox-prevent-click" />
           </IconButton>
 
-          <LayerTemplate />
+          <LayerTemplate
+            activeInteractiveLayers={activeInteractiveLayers}
+            activeInteractiveLayer={activeInteractiveLayer}
+          />
         </div>
       </Popup>
     );

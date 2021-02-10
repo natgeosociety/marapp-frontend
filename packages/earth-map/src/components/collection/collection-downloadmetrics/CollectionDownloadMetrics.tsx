@@ -37,7 +37,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ReactSelect, serializeFilters, TitleHero } from '@marapp/earth-shared';
 
-import { ICollection } from '../../../modules/collections/model';
+import { ICollection } from '../../../fetchers/locations/queries';
 import MetricService from '../../../services/MetricService';
 import CircularProgress from '@material-ui/core/CircularProgress';
 

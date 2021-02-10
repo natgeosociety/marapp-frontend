@@ -20,28 +20,18 @@
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { connectRoutes } from 'redux-first-router';
-import createSagaMiddleware from 'redux-saga';
 import thunk from 'redux-thunk';
 import { handleModule } from 'vizzuality-redux-tools';
 
 import { SessionStorage } from '@marapp/earth-shared';
 
-import * as collections from '../modules/collections';
 import * as global from '../modules/global';
-import * as indexes from '../modules/indexes';
 import * as layers from '../modules/layers';
 import * as map from '../modules/map';
-import * as metrics from '../modules/metrics';
 import * as places from '../modules/places';
 import * as sidebar from '../modules/sidebar';
-import * as user from '../modules/user';
-import * as widget from '../modules/widget';
-import * as widgets from '../modules/widgets';
 import { CONFIG, ROUTES } from '../routes';
-import sagas from '../sagas';
-import restoreState from '../store/ephemeral-state';
-
-const sagaMiddleware = createSagaMiddleware();
+import initEphemeralState from '../store/ephemeral-state';
 
 const initStore = (initialState = {}) => {
   // Create router reducer, middleware and enhancer
@@ -55,16 +45,10 @@ const initStore = (initialState = {}) => {
   const reducers = combineReducers({
     router: routerReducer,
     global: handleModule(global),
-    user: handleModule(user),
     map: handleModule(map),
     sidebar: handleModule(sidebar),
-    indexes: handleModule(indexes),
     places: handleModule(places),
-    collections: handleModule(collections),
     layers: handleModule(layers),
-    widgets: handleModule(widgets),
-    widget: handleModule(widget),
-    metrics: handleModule(metrics),
   });
 
   const rootReducer = (state, action) => {
@@ -86,7 +70,7 @@ const initStore = (initialState = {}) => {
     traceLimit: 10,
   });
 
-  const middlewares = applyMiddleware(thunk, routerMiddleware, sagaMiddleware);
+  const middlewares = applyMiddleware(thunk, routerMiddleware);
   const enhancers = composeEnhancer(routerEnhancer, middlewares);
 
   // create store
@@ -95,10 +79,8 @@ const initStore = (initialState = {}) => {
 
   // restore state from sessionStorage
   const ephemeralState = SessionStorage.getObject('ephemeral');
-  restoreState(store, ephemeralState);
+  initEphemeralState(store, ephemeralState);
 
-  // run the sagas && initialDispatch
-  sagaMiddleware.run(sagas);
   initialDispatch();
 
   return { store };

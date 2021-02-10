@@ -27,7 +27,7 @@ import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ICollection } from '../../../modules/collections/model';
+import { ICollection } from '../../../fetchers/locations/queries';
 import { EPanels } from '../../../modules/sidebar/model';
 import PlacesService from '../../../services/PlacesService';
 
@@ -115,9 +115,6 @@ export function CollectionDelete(props: IProps) {
       // TODO: move all the following side effects under the `EARTH` action
       // also find out why actions only work with dispatch()
       dispatch({
-        type: 'COLLECTIONS/resetCollection',
-      });
-      dispatch({
         type: 'PLACES/setPlacesSearch',
         payload: {
           search: '',
@@ -128,9 +125,6 @@ export function CollectionDelete(props: IProps) {
         payload: {
           search: '',
         },
-      });
-      dispatch({
-        type: 'LAYERS/resetLayers',
       });
       dispatch({
         type: 'SIDEBAR/setSidebarPanel',
