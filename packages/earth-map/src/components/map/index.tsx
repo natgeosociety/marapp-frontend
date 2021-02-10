@@ -22,7 +22,7 @@ import compact from 'lodash/compact';
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import decodes from '../../modules/layers/decodes';
@@ -42,7 +42,16 @@ const YEAR_PICKER_LEGEND = (type) => type === 'yearpicker';
 const YEAR_DATE_PICKER_LEGEND = (type) => type === 'yeardatepicker';
 
 function WithData({ activeLayers, active, settings, interactions, interactionsSelected, ...rest }) {
-  const activeInteractiveLayers = getActiveInteractiveLayers(activeLayers, interactions);
+  const [stableActiveLayers, setStableActiveLayers] = useState();
+
+  // hack to keep old layers displayed while fetching the new layers
+  useEffect(() => {
+    if (activeLayers) {
+      setStableActiveLayers(activeLayers);
+    }
+  }, [activeLayers]);
+
+  const activeInteractiveLayers = getActiveInteractiveLayers(stableActiveLayers, interactions);
   const activeInteractiveLayer = getActiveInteractiveLayer(
     activeInteractiveLayers,
     interactionsSelected
@@ -50,12 +59,16 @@ function WithData({ activeLayers, active, settings, interactions, interactionsSe
 
   return (
     <MapComponent
-      activeInteractiveLayersIds={getActiveInteractiveLayersIds(activeLayers, settings, active)}
+      activeInteractiveLayersIds={getActiveInteractiveLayersIds(
+        stableActiveLayers,
+        settings,
+        active
+      )}
       activeInteractiveLayers={activeInteractiveLayers}
       activeInteractiveLayer={activeInteractiveLayer}
-      layerGroups={getLegendLayers(activeLayers, settings, active)}
+      layerGroups={getLegendLayers(stableActiveLayers, settings, active)}
       {...rest}
-      layerManagerLayers={getActiveLayers(activeLayers, settings, active)}
+      layerManagerLayers={getActiveLayers(stableActiveLayers, settings, active)}
     />
   );
 }
