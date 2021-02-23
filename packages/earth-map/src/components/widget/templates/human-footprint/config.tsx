@@ -73,7 +73,7 @@ export const CONFIG = {
           x: l.label,
           color: '#E62C90',
           unit: '%',
-          y: Math.round(data[`mean_${l.label.substring(2)}`]),
+          y: Math.round(data[`mean_${l.label}`]),
         };
       }),
       template: replace(
