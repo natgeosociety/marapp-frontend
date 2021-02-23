@@ -50,19 +50,19 @@ export const CONFIG = {
 
     const data = metric;
     const { sentence, legendConfig } = widgetConfig;
-    const mean_93 = Math.round(data.mean_93);
-    const mean_09 = Math.round(data.mean_09);
+    const mean_2000 = Math.round(data.mean_2000);
+    const mean_2013 = Math.round(data.mean_2013);
 
-    const sentenceType = mean_93 !== mean_09 ? 'default' : 'noChange';
+    const sentenceType = mean_2000 !== mean_2013 ? 'default' : 'noChange';
 
-    const change_type = mean_93 > mean_09 ? 'a decrease' : 'an increase';
+    const change_type = mean_2000 > mean_2013 ? 'a decrease' : 'an increase';
 
     const change_category_key = findLast(Object.keys(CATEGORIES), (k) => {
-      if (mean_09 === 0) {
+      if (mean_2013 === 0) {
         return 'no';
       }
       // @ts-ignore
-      return mean_09 >= k;
+      return mean_2013 >= k;
     });
     // @ts-ignore
     const change_category = CATEGORIES[change_category_key];
@@ -80,11 +80,11 @@ export const CONFIG = {
         sentence[sentenceType],
         {
           location: place.name,
-          mean_93: format('.0f')(mean_93),
-          mean_09: format('.0f')(mean_09),
+          mean_2000: format('.0f')(mean_2000),
+          mean_2013: format('.0f')(mean_2013),
           change_type,
           change_category,
-          change_perc: format('.0f')(Math.abs(mean_09 - mean_93)),
+          change_perc: format('.0f')(Math.abs(mean_2013 - mean_2000)),
         },
         {},
         {

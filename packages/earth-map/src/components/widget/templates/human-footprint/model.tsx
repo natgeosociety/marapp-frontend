@@ -20,8 +20,8 @@
 export interface HumanFootprintMetric {
   area_km2: number;
   delta: number;
-  mean_09: number;
-  mean_93: number;
-  sum_09: number;
-  sum_93: number;
+  mean_2013: number;
+  mean_2000: number;
+  sum_2013: number;
+  sum_2000: number;
 }
