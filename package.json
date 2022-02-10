@@ -41,7 +41,7 @@
     "material-ui-toggle-icon": "^1.1.1",
     "mdi-material-ui": "^6.21.0",
     "moment": "^2.24.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^7.0.0",
     "photo-sphere-viewer": "3.5.1",
     "prop-types": "^15.6.2",
     "query-string": "^6.10.1",
